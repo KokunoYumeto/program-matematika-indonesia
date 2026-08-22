@@ -9,13 +9,14 @@ Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
 - Keempat puluh peran kini memiliki korpus terpilih atau spesifikasi asli yang dibekukan; status produksi dan penyelesaian tetap dicatat terpisah.
 - Delapan peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kedelapan peran itu memakai tujuh rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. B80 dan D120 mempertahankan edisi mandiri publik sambil menyelesaikan lapisan kurikulum yang dibekukan dalam catatan koordinasi. C110 kini lengkap 31/31 unit dan terarsip di Zenodo.
+- Backend bersama v1 kini dibekukan: 38 tabel ketat, identitas UUIDv5, varian bahasa terpisah, rute pembelajaran, hak komponen, bukti build/QA, JSONL kanonik, dan CSV lossless. Paket pusat 2.122 rekaman telah lolos dua ekspor identik; backend lengkap DMOI sebanyak 163.583 rekaman telah lolos migrasi lossless tanpa perubahan ID.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
 Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelacak, cookie, atau layanan pihak ketiga yang diperlukan untuk menggunakannya.
 
 ## Snapshot Zenodo aktif
 
-Snapshot v0.40.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22059999](https://doi.org/10.5281/zenodo.22059999), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan, tetapi sebagian besar terjemahan, penutupan solusi, integrasi backend, dan edisi final masih diproduksi.
+Snapshot v0.41.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22060393](https://doi.org/10.5281/zenodo.22060393), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama sudah dapat direproduksi, tetapi sebagian besar terjemahan, penutupan solusi, migrasi backend per-korpus, dan edisi final masih diproduksi.
 
 Zenodo adalah jalur preservasi mandiri, bukan sekadar salinan GitHub. Setiap perubahan keadaan kanon yang material akan memperoleh versi baru pada lineage konsep yang sama. Penangguhan akses sementara pada akun GitHub tidak mengubah identitas atau ketersediaan snapshot Zenodo.
 
@@ -28,6 +29,8 @@ node scripts/validate-static-site.mjs
 ```
 
 Pemeriksa memastikan tepat 40 kode mata kuliah, tidak ada peran sumber yang masih terbuka, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
+
+Backend bersama dapat diregenerasi dan divalidasi dengan skrip Python dalam folder [`scripts`](scripts). Kontrak lengkap dan alasan pemilihannya berada di [`backend/BACKEND_CONVERGENCE_V1.md`](backend/BACKEND_CONVERGENCE_V1.md).
 
 ## Memperbarui kanon
 

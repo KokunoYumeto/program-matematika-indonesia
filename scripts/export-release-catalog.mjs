@@ -9,7 +9,7 @@ if (!outputPath || !sourceCommit) {
 }
 
 const catalog = {
-  $schema: 'https://zenodo.org/records/22059999/files/program-matematika-indonesia-catalog-v1.schema.json',
+  $schema: 'https://zenodo.org/records/22060393/files/program-matematika-indonesia-catalog-v1.schema.json',
   schemaVersion: 1,
   snapshotDate: '2026-08-22',
   sourceCommit,

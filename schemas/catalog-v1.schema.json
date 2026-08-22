@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://zenodo.org/records/22059999/files/program-matematika-indonesia-catalog-v1.schema.json",
+  "$id": "https://zenodo.org/records/22060393/files/program-matematika-indonesia-catalog-v1.schema.json",
   "title": "Program Matematika Indonesia — katalog rilis v1",
   "type": "object",
   "additionalProperties": false,
@@ -15,7 +15,7 @@
     "courses"
   ],
   "properties": {
-    "$schema": { "const": "https://zenodo.org/records/22059999/files/program-matematika-indonesia-catalog-v1.schema.json" },
+    "$schema": { "const": "https://zenodo.org/records/22060393/files/program-matematika-indonesia-catalog-v1.schema.json" },
     "schemaVersion": { "const": 1 },
     "snapshotDate": { "type": "string", "format": "date" },
     "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
@@ -51,12 +51,12 @@
     "program": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "title", "language", "version", "snapshotDate", "totalCourseRoles", "selectedCorpusRoles", "unresolvedRoleIds", "completedPublicCourseRoleIds", "completedPublicRecordDois", "zenodo", "zenodoConcept", "repositories", "status"],
+      "required": ["id", "title", "language", "version", "snapshotDate", "totalCourseRoles", "selectedCorpusRoles", "unresolvedRoleIds", "completedPublicCourseRoleIds", "completedPublicRecordDois", "zenodo", "zenodoConcept", "repositories", "backend", "status"],
       "properties": {
         "id": { "const": "program-matematika-indonesia" },
         "title": { "type": "string", "minLength": 1 },
         "language": { "const": "id-ID" },
-        "version": { "const": "0.40.0" },
+        "version": { "const": "0.41.0" },
         "snapshotDate": { "type": "string", "format": "date" },
         "totalCourseRoles": { "const": 40 },
         "selectedCorpusRoles": { "const": 40 },
@@ -95,6 +95,29 @@
                 "lastConfirmedAt": { "type": "string", "format": "date" }
               }
             }
+          }
+        },
+        "backend": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigration", "schema", "sourceFormatProfile", "package"],
+          "properties": {
+            "schemaVersion": { "const": "1.0.0" },
+            "status": { "const": "validated" },
+            "centralRecordCount": { "const": 2122 },
+            "completeCorpusMigration": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["corpus", "recordCount", "result"],
+              "properties": {
+                "corpus": { "type": "string", "minLength": 1 },
+                "recordCount": { "const": 163583 },
+                "result": { "const": "lossless-zero-copy-pass" }
+              }
+            },
+            "schema": { "$ref": "#/$defs/httpsUrl" },
+            "sourceFormatProfile": { "$ref": "#/$defs/httpsUrl" },
+            "package": { "$ref": "#/$defs/httpsUrl" }
           }
         },
         "status": { "const": "in-progress" }
