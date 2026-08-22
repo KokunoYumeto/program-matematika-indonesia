@@ -1,4 +1,4 @@
-import { courses, topics } from './courses.js';
+import { courses, program, topics } from './courses.js';
 
 const stateLabels = {
   published: 'Edisi publik selesai',
@@ -50,9 +50,18 @@ function prerequisiteLinks(items) {
 
 function actionLinks(course) {
   const links = [];
-  if (course.edition) links.push(`<a class="card-action primary" href="${course.edition}" target="_blank" rel="noreferrer">Buka edisi <span aria-hidden="true">↗</span></a>`);
+  const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
+  const editionIsSuspendedGithub = githubUnavailable && course.edition?.startsWith('https://github.com/KokunoYumeto/');
+  if (course.edition && !editionIsSuspendedGithub) links.push(`<a class="card-action primary" href="${course.edition}" target="_blank" rel="noreferrer">Buka edisi <span aria-hidden="true">↗</span></a>`);
   if (course.zenodo) links.push(`<a class="card-action" href="${course.zenodo}" target="_blank" rel="noreferrer">Arsip DOI <span aria-hidden="true">↗</span></a>`);
-  if (!links.length) links.push(`<span class="card-action muted">${course.state === 'unresolved' ? 'Keputusan korpus masih terbuka' : 'Edisi sedang disiapkan'}</span>`);
+  if (!links.length) {
+    const message = course.state === 'unresolved'
+      ? 'Keputusan korpus masih terbuka'
+      : editionIsSuspendedGithub
+        ? 'Repositori GitHub sementara tidak tersedia'
+        : 'Edisi sedang disiapkan';
+    links.push(`<span class="card-action muted">${message}</span>`);
+  }
   return links.join('');
 }
 

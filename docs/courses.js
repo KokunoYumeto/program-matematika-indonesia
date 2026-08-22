@@ -33,7 +33,9 @@ export const courses = [
     purpose: 'Logika proposisional dan predikat, himpunan, fungsi, relasi, teknik bukti, teori graf, pencacahan, dan barisan.',
     outcome: 'Membaca, menyusun, dan mengkritik bukti elementer sebelum memasuki teori tingkat lanjut.',
     corpus: 'Discrete Mathematics: An Open Introduction 4', note: 'Edisi Bahasa Indonesia selesai dan tersedia untuk umum.',
-    edition: 'https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id'
+    edition: 'https://zenodo.org/records/21973438/files/00_MATEMATIKA_DISKRET_EDISI_KEEMPAT_BAHASA_INDONESIA_READER.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.21973438'
   },
   {
     id: 'B20', level: 'B', topic: 'Fondasi & Kalkulus', state: 'production',
@@ -85,7 +87,8 @@ export const courses = [
     outcome: 'Menerapkan objek dan eksperimen matematis sambil membedakan komputasi, bukti pendukung, dan pembuktian.',
     corpus: 'Rangka asli terpilih: edisi 12 unit + P01/P02 dan penyelesaian SciPy, SageMath, visualisasi, lingkungan, dan penguasaan',
     note: 'Edisi mandiri 12 unit, 60 latihan, dan 98 halaman sudah selesai serta publik. Arsitektur B80 telah dipilih; produksi masih harus menutup P01/P02, SciPy/SageMath yang dijalankan, visualisasi bertahap, penguncian lingkungan, penguasaan, penangguhan prasyarat, dan QA akhir.',
-    edition: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id',
+    edition: 'https://zenodo.org/records/22052053/files/00_KOMPUTASI_MATEMATIS_DAN_EKSPERIMEN_DAPAT_DIREPRODUKSI_ID.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22052053'
   },
   {
@@ -94,7 +97,8 @@ export const courses = [
     purpose: 'Probabilitas diskrit dan kontinu, probabilitas bersyarat, peubah acak, harapan, limit, simulasi, jalan acak, dan rantai Markov.',
     outcome: 'Membangun dan menganalisis model peluang serta menghubungkan hasil analitik dengan simulasi.',
     corpus: 'Grinstead–Snell', note: 'Edisi 554 halaman selesai; backend modular berada dalam edisi kursus yang sama.',
-    edition: 'https://github.com/KokunoYumeto/introduction-to-probability-id',
+    edition: 'https://zenodo.org/records/22048655/files/PENGANTAR_PELUANG_GRINSTEAD_SNELL_ID.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/introduction-to-probability-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22048655'
   },
   {
@@ -124,7 +128,9 @@ export const courses = [
     purpose: 'Grup, subgrup, homomorfisme, struktur hasil bagi, aksi grup, dan penerapan simetri.',
     outcome: 'Bernalar secara struktural dengan objek aljabar dan membuktikan hasil dari aksioma.',
     corpus: 'Judson — Abstract Algebra: Theory and Applications', note: 'Edisi Bahasa Indonesia selesai dan tersedia untuk umum.',
-    edition: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id'
+    edition: 'https://zenodo.org/records/22044963/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.21.1.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22044963'
   },
   {
     id: 'C40', level: 'C', topic: 'Aljabar', state: 'published',
@@ -132,7 +138,9 @@ export const courses = [
     purpose: 'Gelanggang, ideal, gelanggang hasil bagi, domain integral, polinom, medan, perluasan, dan teori Galois awal.',
     outcome: 'Menggunakan struktur aljabar untuk menganalisis persamaan, faktorisasi, dan perluasan medan.',
     corpus: 'Judson — Abstract Algebra: Theory and Applications', note: 'Selesai dalam edisi Judson Bahasa Indonesia yang sama.',
-    edition: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id'
+    edition: 'https://zenodo.org/records/22044963/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.21.1.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22044963'
   },
   {
     id: 'C50', level: 'C', topic: 'Analisis', state: 'production',
@@ -161,7 +169,8 @@ export const courses = [
     purpose: 'Bahasa dan semantik formal, sistem bukti, ketaklengkapan, fondasi komputabilitas, teori himpunan aksiomatik, dan teori model awal.',
     outcome: 'Memahami batas formal dan kerangka fondasional dalam praktik matematika biasa.',
     corpus: 'Open Logic Project — OLP-0722, 722/722 modul', note: 'Edisi Bahasa Indonesia lengkap dan diterbitkan dengan lisensi CC BY 4.0.',
-    edition: 'https://github.com/KokunoYumeto/OpenLogic-id',
+    edition: 'https://zenodo.org/records/21932787/files/00_OPENLOGIC_id_COMPLETE_LINKED_READER_OLP-0722.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/OpenLogic-id',
     zenodo: 'https://doi.org/10.5281/zenodo.21932787'
   },
   {
@@ -181,11 +190,14 @@ export const courses = [
     note: 'Korpus terpilih; repositori dan arsip tetap privat/terbatas sesuai instruksi.'
   },
   {
-    id: 'C110', level: 'C', topic: 'Komputasi & Optimisasi', state: 'production',
+    id: 'C110', level: 'C', topic: 'Komputasi & Optimisasi', state: 'published',
     title: 'Analisis Numerik', prerequisites: ['B30', 'B40', 'B80', 'C10'],
     purpose: 'Galat floating-point, pencarian akar, interpolasi, pendekatan, diferensiasi dan integrasi numerik, serta aljabar linear numerik.',
     outcome: 'Menurunkan, menerapkan, dan menilai algoritma numerik dengan alasan stabilitas dan galat yang eksplisit.',
-    corpus: 'Tea Time Numerical Analysis', note: 'Korpus terpilih; 26 dari 29 berkas sumber dan 18.043 rekaman backend sudah diakui.'
+    corpus: 'Tea Time Numerical Analysis — edisi Bahasa Indonesia lengkap',
+    note: 'Selesai dan terverifikasi publik: 31/31 unit, pembaca 387 halaman, 28.172 rekaman backend, 17.614 relasi, dan 20/20 uji akhir. GitHub sedang tidak tersedia karena penangguhan akun; arsip Zenodo tetap publik.',
+    edition: 'https://zenodo.org/records/22054086/files/Tea-Time-Numerical-Analysis-id-ID.pdf?download=1',
+    zenodo: 'https://doi.org/10.5281/zenodo.22054086'
   },
   {
     id: 'C120', level: 'C', topic: 'Komputasi & Optimisasi', state: 'production',
@@ -252,12 +264,12 @@ export const courses = [
     note: 'Arsitektur dipilih. Pembaca terpusat Unit 1–3 berjumlah 56 halaman dan telah lolos QA lokal; Unit 3 belum publik karena akses akun GitHub sedang ditangguhkan. Produksi berlanjut dari Unit 4, lalu dua jembatan CC BY-SA dan penutupan asesmen 38 butir.'
   },
   {
-    id: 'D60', level: 'D', topic: 'Geometri & Topologi', state: 'unresolved',
+    id: 'D60', level: 'D', topic: 'Geometri & Topologi', state: 'production',
     title: 'Topologi Aljabar', prerequisites: ['C90', 'C30'],
     purpose: 'Grup fundamental, ruang penutup, homologi simplisial/seluler, kohomologi, barisan eksak, derajat, dan metode homotopi terpilih.',
     outcome: 'Menerjemahkan pertanyaan geometri menjadi invarian aljabar yang dapat dihitung dan merekonstruksi bukti standar.',
-    corpus: 'Pilihan terbuka: Roberts + korpus homologi penuh yang ditulis asli, atau sumber terbuka yang lebih lengkap',
-    note: 'Materi homologi, seluler, dan produk kohomologi yang hilang setara dengan rangka kedua; arsitektur belum dipilih.'
+    corpus: 'Roberts lengkap (30 kuliah) + jembatan homologi Fomberg §§1.1–1.13 + penutupan bukti, solusi, dan laboratorium asli',
+    note: 'Arsitektur dibekukan. Edisi Roberts lengkap tetap 30 unit; jalur belajar 14 unit memetakannya ke jembatan homologi tanpa menghapus atau menomori ulang unit. Produksi Roberts sedang berjalan; setelah itu masuk jembatan Fomberg terbatas dan penutupan 108 soal tersolusi serta empat laboratorium.'
   },
   {
     id: 'D70', level: 'D', topic: 'Aljabar', state: 'production',
@@ -304,7 +316,8 @@ export const courses = [
     outcome: 'Berpartisipasi secara konstruktif dalam komunitas matematika sambil menyatakan dependensi, bukti, dan ketidakpastian secara tepat.',
     corpus: 'Kerja Matematika yang Dapat Ditelusuri — rangka asli sembilan unit + donor metodologis Turing Way/PyRSE yang dibekukan',
     note: 'Korpus dipilih dan edisi mandiri 128 halaman sudah publik. Lapisan autentik seminar, penelaahan independen, sumber nyata, kontribusi terbatas, serta backend asesmen masih harus diselesaikan; paketnya sudah dikirim ke pemilik yang sama.',
-    edition: 'https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id',
+    edition: 'https://zenodo.org/records/22051978/files/kerja-matematika-yang-dapat-ditelusuri-id-2026.08.22.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22051978'
   }
 ];
@@ -319,3 +332,34 @@ export const topics = [
   'Komputasi & Optimisasi',
   'Praktik Riset'
 ];
+
+export const program = Object.freeze({
+  id: 'program-matematika-indonesia',
+  title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
+  language: 'id-ID',
+  version: '0.38.0',
+  snapshotDate: '2026-08-22',
+  totalCourseRoles: 40,
+  selectedCorpusRoles: 38,
+  unresolvedRoleIds: ['D90', 'D100'],
+  completedPublicCourseRoleIds: ['B10', 'B80', 'B90', 'C30', 'C40', 'C80', 'C110', 'D120'],
+  completedPublicRecordDois: [
+    '10.5281/zenodo.21973438',
+    '10.5281/zenodo.22052053',
+    '10.5281/zenodo.22048655',
+    '10.5281/zenodo.22044963',
+    '10.5281/zenodo.21932787',
+    '10.5281/zenodo.22054086',
+    '10.5281/zenodo.22051978'
+  ],
+  zenodo: 'https://doi.org/10.5281/zenodo.22059708',
+  zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
+  repositories: {
+    github: {
+      url: 'https://github.com/KokunoYumeto/program-matematika-indonesia',
+      status: 'temporarily-unavailable',
+      lastConfirmedAt: '2026-08-22'
+    }
+  },
+  status: 'in-progress'
+});

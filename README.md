@@ -7,11 +7,17 @@ Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika
 - Peta empat tingkat: A (fondasi), B (dasar universitas), C (inti sarjana), dan D (fondasi pascasarjana serta riset).
 - Prasyarat yang dapat diikuti langsung antarkartu.
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
-- Pemisahan tegas antara 37 korpus yang sudah dipilih dan 3 peran yang masih menunggu keputusan final.
-- Tujuh edisi lengkap sudah dapat dibaca secara publik. B80 dan D120 sudah dipilih; keduanya mempertahankan edisi mandiri publik sambil menyelesaikan lapisan kurikulum yang dibekukan dalam catatan koordinasi.
+- Pemisahan tegas antara 38 korpus yang sudah dipilih dan 2 peran yang masih menunggu keputusan final.
+- Delapan peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kedelapan peran itu memakai tujuh rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. B80 dan D120 mempertahankan edisi mandiri publik sambil menyelesaikan lapisan kurikulum yang dibekukan dalam catatan koordinasi. C110 kini lengkap 31/31 unit dan terarsip di Zenodo.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
 Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelacak, cookie, atau layanan pihak ketiga yang diperlukan untuk menggunakannya.
+
+## Snapshot Zenodo aktif
+
+Snapshot v0.38.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22059708](https://doi.org/10.5281/zenodo.22059708), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 38 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan; D90 dan D100 masih terbuka.
+
+Zenodo adalah jalur preservasi mandiri, bukan sekadar salinan GitHub. Setiap perubahan keadaan kanon yang material akan memperoleh versi baru pada lineage konsep yang sama. Penangguhan akses sementara pada akun GitHub tidak mengubah identitas atau ketersediaan snapshot Zenodo.
 
 ## Memeriksa data
 
@@ -21,7 +27,7 @@ Jalankan:
 node scripts/validate-static-site.mjs
 ```
 
-Pemeriksa memastikan tepat 40 kode mata kuliah, tiga status yang belum dibekukan, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
+Pemeriksa memastikan tepat 40 kode mata kuliah, dua status yang belum dibekukan, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
 
 ## Memperbarui kanon
 
