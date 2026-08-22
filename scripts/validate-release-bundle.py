@@ -134,7 +134,7 @@ def main() -> None:
             "backend": backend_report["checks"],
             "zip_verification": zip_results,
             "standalone_html": "pass",
-            "github_transport": "intentionally_not_attempted_while_account_suspended",
+            "github_transport": "available_for_bounded_push_after_release_validation",
         },
         "files_before_checksum": files,
     }

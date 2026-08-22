@@ -195,7 +195,7 @@ export const courses = [
     purpose: 'Galat floating-point, pencarian akar, interpolasi, pendekatan, diferensiasi dan integrasi numerik, serta aljabar linear numerik.',
     outcome: 'Menurunkan, menerapkan, dan menilai algoritma numerik dengan alasan stabilitas dan galat yang eksplisit.',
     corpus: 'Tea Time Numerical Analysis — edisi Bahasa Indonesia lengkap',
-    note: 'Selesai dan terverifikasi publik: 31/31 unit, pembaca 387 halaman, 28.172 rekaman backend, 17.614 relasi, dan 20/20 uji akhir. GitHub sedang tidak tersedia karena penangguhan akun; arsip Zenodo tetap publik.',
+    note: 'Selesai dan terverifikasi publik: 31/31 unit, pembaca 387 halaman, 28.172 rekaman backend, 17.614 relasi, dan 20/20 uji akhir. Arsip Zenodo tetap publik; akses akun GitHub telah dipulihkan dan sinkronisasi mirror kembali dimungkinkan.',
     edition: 'https://zenodo.org/records/22054086/files/Tea-Time-Numerical-Analysis-id-ID.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22054086'
   },
@@ -261,7 +261,7 @@ export const courses = [
     purpose: 'Lipatan, struktur tangen dan kotangen, bentuk diferensial, integrasi dan Stokes, grup Lie, metrik Riemann, koneksi, dan kelengkungan.',
     outcome: 'Menggunakan bahasa geometri bebas koordinat dan membuktikan hasil dasar tentang lipatan serta kelengkungan.',
     corpus: 'Brenner lengkap — 29 kuliah + 29 lembar kerja; dua jembatan asli grup Lie/de Rham; bank 10 ujian resmi',
-    note: 'Arsitektur dipilih. Pembaca terpusat Unit 1–3 berjumlah 56 halaman dan telah lolos QA lokal; Unit 3 belum publik karena akses akun GitHub sedang ditangguhkan. Produksi berlanjut dari Unit 4, lalu dua jembatan CC BY-SA dan penutupan asesmen 38 butir.'
+    note: 'Arsitektur dipilih. Pembaca terpusat Unit 1–3 berjumlah 56 halaman dan telah lolos QA lokal; akses akun GitHub telah dipulihkan. Produksi berlanjut dari Unit 4, lalu dua jembatan CC BY-SA dan penutupan asesmen 38 butir.'
   },
   {
     id: 'D60', level: 'D', topic: 'Geometri & Topologi', state: 'production',
@@ -372,7 +372,7 @@ export const program = Object.freeze({
   repositories: {
     github: {
       url: 'https://github.com/KokunoYumeto/program-matematika-indonesia',
-      status: 'temporarily-unavailable',
+      status: 'available',
       lastConfirmedAt: '2026-08-22'
     }
   },

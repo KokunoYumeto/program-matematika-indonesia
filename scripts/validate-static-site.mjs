@@ -31,7 +31,7 @@ assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tida
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
 assert.equal(program.backend.completeCorpusMigration.recordCount, 163583, 'Jumlah rekaman migrasi DMOI berubah tanpa pembaruan kanon.');
-assert.equal(program.repositories.github.status, 'temporarily-unavailable', 'Status transport GitHub harus dicatat tanpa mengubah keadaan korpus.');
+assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
 assert.equal(new Set(program.completedPublicRecordDois).size, 7, 'Delapan peran edisi selesai harus memetakan ke tujuh rekaman publik berbeda.');
