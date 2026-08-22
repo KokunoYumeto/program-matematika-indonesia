@@ -13,7 +13,7 @@ const expectedIds = [
   'C10', 'C20', 'C30', 'C40', 'C50', 'C60', 'C70', 'C80', 'C90', 'C100', 'C110', 'C120', 'C130', 'C140',
   'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D80', 'D90', 'D100', 'D110', 'D120',
 ];
-const unresolvedIds = ['D50', 'D60', 'D90', 'D100'];
+const unresolvedIds = ['D60', 'D90', 'D100'];
 const publishedIds = ['B10', 'B90', 'C30', 'C40', 'C80'];
 const completedPublicEditionIds = ['B10', 'B80', 'B90', 'C30', 'C40', 'C80', 'D120'];
 const levelCounts = { A: 4, B: 10, C: 14, D: 12 };
@@ -22,7 +22,7 @@ const allowedStates = new Set(['published', 'near', 'production', 'unresolved'])
 assert.equal(courses.length, 40, 'Katalog harus memuat tepat 40 mata kuliah.');
 assert.deepEqual(courses.map(({ id }) => id), expectedIds, 'Urutan atau identitas kode mata kuliah berubah.');
 assert.equal(new Set(courses.map(({ id }) => id)).size, 40, 'Kode mata kuliah harus unik.');
-assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar lima peran yang belum dibekukan berubah.');
+assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar tiga peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar lima peran kanon dengan edisi publik selesai berubah.');
 for (const id of completedPublicEditionIds) {
   const course = courses.find((candidate) => candidate.id === id);
@@ -33,6 +33,8 @@ assert.equal(courses.find(({ id }) => id === 'D30')?.state, 'production', 'D30 h
 assert.equal(courses.find(({ id }) => id === 'D30')?.edition, 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id', 'D30 harus menunjuk edisi publik parsial yang tepat.');
 assert.equal(courses.find(({ id }) => id === 'D40')?.state, 'production', 'D40 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D40')?.corpus ?? '', /Dionne.*FEniCSx/, 'D40 harus mencatat arsitektur Dionne/FEniCSx yang dipilih.');
+assert.equal(courses.find(({ id }) => id === 'D50')?.state, 'production', 'D50 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
+assert.match(courses.find(({ id }) => id === 'D50')?.corpus ?? '', /Brenner.*jembatan.*ujian/, 'D50 harus mencatat arsitektur Brenner, jembatan asli, dan bank ujian resmi.');
 
 const ids = new Set(courses.map(({ id }) => id));
 for (const course of courses) {
@@ -62,8 +64,8 @@ assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
 assert.match(html, /property="og:image" content="https:\/\/kokunoyumeto\.github\.io\/program-matematika-indonesia\/og\.png"/, 'Kartu sosial publik tidak terhubung.');
 assert.match(html, /rel="canonical" href="https:\/\/kokunoyumeto\.github\.io\/program-matematika-indonesia\/"/, 'URL kanonis tidak tepat.');
-assert.match(html, /36 korpus terpilih/, 'Ringkasan 36 korpus terpilih hilang.');
-assert.match(html, /Empat peran/, 'Ringkasan empat peran terbuka hilang.');
+assert.match(html, /37 korpus terpilih/, 'Ringkasan 37 korpus terpilih hilang.');
+assert.match(html, /Tiga peran/, 'Ringkasan tiga peran terbuka hilang.');
 assert.match(html, /<strong>7<\/strong><span>edisi selesai publik<\/span>/, 'Ringkasan tujuh edisi publik selesai hilang.');
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);

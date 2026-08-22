@@ -244,12 +244,12 @@ export const courses = [
     note: 'Arsitektur dibekukan. Dionne menjadi rangka teori wajib; FEniCSx menghubungkan formulasi lemah dengan komputasi. Enam unit Ivrii yang sudah diterima dipertahankan sebagai pembaca klasik opsional yang terpisah. Produksi belum selesai.'
   },
   {
-    id: 'D50', level: 'D', topic: 'Geometri & Topologi', state: 'unresolved',
+    id: 'D50', level: 'D', topic: 'Geometri & Topologi', state: 'production',
     title: 'Lipatan Mulus dan Geometri Diferensial', prerequisites: ['C90', 'B60', 'C30'],
     purpose: 'Lipatan, struktur tangen dan kotangen, bentuk diferensial, integrasi dan Stokes, grup Lie, metrik Riemann, koneksi, dan kelengkungan.',
     outcome: 'Menggunakan bahasa geometri bebas koordinat dan membuktikan hasil dasar tentang lipatan serta kelengkungan.',
-    corpus: 'Kandidat kuat: Brenner 29 pasangan kuliah/lembar kerja + unit grup Lie wajib',
-    note: 'Pembekuan revisi wiki/media dan cakupan grup Lie wajib masih harus diselesaikan.'
+    corpus: 'Brenner lengkap — 29 kuliah + 29 lembar kerja; dua jembatan asli grup Lie/de Rham; bank 10 ujian resmi',
+    note: 'Arsitektur dipilih. Pembaca terpusat Unit 1–3 berjumlah 56 halaman dan telah lolos QA lokal; Unit 3 belum publik karena akses akun GitHub sedang ditangguhkan. Produksi berlanjut dari Unit 4, lalu dua jembatan CC BY-SA dan penutupan asesmen 38 butir.'
   },
   {
     id: 'D60', level: 'D', topic: 'Geometri & Topologi', state: 'unresolved',
