@@ -339,7 +339,7 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.42.0',
+  version: '0.43.0',
   snapshotDate: '2026-08-22',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
@@ -354,11 +354,11 @@ export const program = Object.freeze({
     '10.5281/zenodo.22054086',
     '10.5281/zenodo.22051978'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22061915',
+  zenodo: 'https://doi.org/10.5281/zenodo.22062318',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
-    role: 'Koordinasi, rekayasa backend, dan penerbitan snapshot pusat atas instruksi Floris; kredit sumber dan kontributor tetap melekat pada setiap komponen.'
+    role: 'Koordinasi, rekayasa backend, dan penerbitan snapshot pusat atas instruksi pengguna; kredit sumber dan kontributor tetap melekat pada setiap komponen.'
   },
   backend: {
     schemaVersion: '1.0.0',
@@ -374,11 +374,21 @@ export const program = Object.freeze({
         corpus: 'Open Logic Project — OLP-0722, Bahasa Indonesia',
         recordCount: 6522,
         result: 'deterministic-zero-copy-pass'
+      },
+      {
+        corpus: 'Judson — Abstract Algebra: Theory and Applications, Bahasa Indonesia',
+        recordCount: 36978,
+        result: 'additive-zero-copy-pass'
+      },
+      {
+        corpus: 'Yet Another Introductory Number Theory Textbook, Bahasa Indonesia',
+        recordCount: 6967,
+        result: 'lossless-additive-adapter-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22061915/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22061915/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22061915/files/program-matematika-indonesia-backend-v1-v0.42.0.zip?download=1'
+    schema: 'https://zenodo.org/records/22062318/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22062318/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22062318/files/program-matematika-indonesia-backend-v1-v0.43.0.zip?download=1'
   },
   repositories: {
     github: {

@@ -19,6 +19,16 @@ def sha256_file(path: Path) -> str:
     return digest.hexdigest()
 
 
+def portable_path(path: Path) -> str:
+    """Return a repository-relative locator without exposing workstation paths."""
+    resolved = path.resolve()
+    working_root = Path.cwd().resolve()
+    try:
+        return resolved.relative_to(working_root).as_posix()
+    except ValueError:
+        return path.name
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--schema", required=True, type=Path)
@@ -37,7 +47,7 @@ def main() -> None:
             raise ValueError(f"{path}: {list(first.absolute_path)}: {first.message}")
         results.append(
             {
-                "path": path.as_posix(),
+                "path": portable_path(path),
                 "bytes": path.stat().st_size,
                 "sha256": sha256_file(path),
                 "migration_id": value["migration_id"],
@@ -46,7 +56,7 @@ def main() -> None:
                 "result": "pass"
             }
         )
-    print(json.dumps({"schema": args.schema.as_posix(), "receipts": results, "result": "pass"}, sort_keys=True, separators=(",", ":")))
+    print(json.dumps({"schema": portable_path(args.schema), "receipts": results, "result": "pass"}, sort_keys=True, separators=(",", ":")))
 
 
 if __name__ == "__main__":

@@ -121,22 +121,39 @@ Editable sources remain authoritative. The source-format profile preserves CNXML
 
 The public course corpora remain external, authority-bound resources; their source files are not copied into this small central package.
 
-### Complete DMOI corpus migration
+### Complete corpus migrations
 
 The complete 163,583-record DMOI backend has passed a lossless zero-copy migration to v1. Every source row was streamed, transformed, validated against the matching v1 strict definition, reversed exactly, and checked for global identity and foreign-key closure. The migration changes only `schema_name` and `schema_version`; it changes zero record IDs and zero payload fields. The six new v1 tables initialize empty until the lane has evidence for them.
 
 The result is recorded at `backend/migrations/dmoi4-id-v1/MIGRATION_RECEIPT.json`. A redundant 437 MB local copy was deliberately not made: the admitted source package plus the deterministic migration program and hash-bound receipt can materialize exactly the same target package.
 
+Three further complete-corpus proofs use the same nonduplicating contract:
+
+- Open Logic OLP-0722 reconstructs 6,522 strict records from 722 frozen source
+  and 722 frozen Indonesian modules with zero source/target payload-byte changes.
+- Judson abstract algebra adapts the immutable public `v2026.08.21.1` backend:
+  24,733 native rows yield 36,978 common records while 24,483 native IDs remain
+  unchanged.
+- Yet Another Introductory Number Theory Textbook reverses exactly from 6,967
+  common records to all 5,272 native records and preserves its complete
+  manifest, projections, assets, artifacts, reader, QA, and public snapshots.
+
+Each proof was assembled twice with byte-identical virtual records and has its
+own schema-valid receipt under `backend/migrations/`.
+
 ## Corpus migration order
 
 1. DMOI: admitted by the completed zero-copy proof.
-2. OpenStax Prealgebra: preserve existing IDs; map canonical units, localized units, expressions, rights, assets, and relations; move A00-specific curriculum fields to an extension/profile.
-3. TTNA: split combined source files into logical files and revisions; source segments into source variants; localizations into `id-ID` variants; protected tokens into placeholders; preserve experiments and build recipes.
-4. AATA: materialize aliases from the persistent ID map, preserve source-frozen GFDL legal text, and turn course views into dependency-closed routes/modules.
-5. O008: map formula evidence to alignment records and core/advanced arrays to route members; leave queued O001 solution references external until solution content exists.
-6. O005: split paired segments into neutral segments plus `en` and `id-ID` variants; promote every mastery problem, hint, answer/check, solution/rubric, notebook, project, dataset, correction, right, and build witness to typed records.
-7. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
-8. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
-9. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
+2. Open Logic OLP-0722: admitted by the completed deterministic reconstruction.
+3. Judson AATA: admitted from the immutable public `v2026.08.21.1` backend.
+4. YAIN number theory: admitted by the completed reversible additive adapter.
+5. TTNA: adapter implemented but fail-closed until the terminology-corrected
+   release and public receipts bind the same bytes.
+6. OpenStax Prealgebra: preserve existing IDs; map canonical units, localized units, expressions, rights, assets, and relations; move A00-specific curriculum fields to an extension/profile.
+7. O008: map formula evidence to alignment records and core/advanced arrays to route members; leave queued O001 solution references external until solution content exists.
+8. O005: split paired segments into neutral segments plus `en` and `id-ID` variants; promote every mastery problem, hint, answer/check, solution/rubric, notebook, project, dataset, correction, right, and build witness to typed records.
+9. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
+10. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
+11. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
 
 Migration is additive. Existing public packages stay immutable, and no lane is allowed to claim common-v1 conformance until its exported bytes pass the common validator.

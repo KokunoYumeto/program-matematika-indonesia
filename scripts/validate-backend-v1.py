@@ -211,7 +211,7 @@ def main() -> None:
     report = {
         "schema_name": "interlanguage-math-modular-backend-validation",
         "schema_version": "1.0.0",
-        "package": args.package.as_posix(),
+        "package": args.package.name,
         "result": "pass",
         "checks": result,
     }

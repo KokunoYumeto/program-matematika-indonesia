@@ -82,10 +82,14 @@ def main() -> None:
         root / "schemas" / "backend-migration-receipt-v1.schema.json": release / "interlanguage-backend-migration-receipt-v1.schema.json",
         root / "backend" / "BACKEND_CONVERGENCE_V1.md": release / "BACKEND_CONVERGENCE_V1.md",
         root / "backend" / "MIGRATION_HANDOFF_V1.md": release / "MIGRATION_HANDOFF_V1.md",
-        root / "backend" / "migrations" / "dmoi4-id-v1" / "MIGRATION_RECEIPT.json": release / "dmoi4-id-backend-v1-migration-receipt.json",
-        root / "backend" / "migrations" / "openlogic-id-v1" / "MIGRATION_RECEIPT.json": release / "openlogic-id-backend-v1-migration-receipt.json",
         backend / "validation_report.json": release / f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
     }
+    migration_receipts = sorted((root / "backend" / "migrations").glob("*/MIGRATION_RECEIPT.json"))
+    if not migration_receipts:
+        raise ValueError("no complete-corpus migration receipts found")
+    for source in migration_receipts:
+        slug = source.parent.name.removesuffix("-v1")
+        copies[source] = release / f"{slug}-backend-v1-migration-receipt.json"
     for source, target in copies.items():
         shutil.copyfile(source, target)
 
@@ -124,20 +128,18 @@ def main() -> None:
         "scripts/build-backend-v1-schema.py",
         "scripts/export-curriculum-backend-v1.py",
         "scripts/validate-backend-v1.py",
-        "scripts/migrate-dmoi-backend-v1.py",
-        "scripts/migrate-openlogic-backend-v1.py",
         "scripts/validate-migration-receipt-v1.py",
         "scripts/build-release-bundle.py",
         "scripts/validate-release-bundle.py",
         "backend/BACKEND_CONVERGENCE_V1.md",
         "backend/MIGRATION_HANDOFF_V1.md",
         "backend/v1/namespace.json",
-        "backend/migrations/dmoi4-id-v1/MIGRATION_RECEIPT.json",
-        "backend/migrations/openlogic-id-v1/MIGRATION_RECEIPT.json",
     ]
     source_paths: list[Path] = []
     for relative in source_roots:
         source_paths.extend(files_under(root, relative))
+    source_paths.extend(sorted((root / "scripts").glob("migrate-*-backend-v1.py")))
+    source_paths.extend(migration_receipts)
     source_paths.extend(
         [
             release / f"program-matematika-indonesia-catalog-v{version}.json",

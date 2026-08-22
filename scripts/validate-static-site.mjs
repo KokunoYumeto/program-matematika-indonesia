@@ -25,8 +25,8 @@ assert.deepEqual(courses.map(({ id }) => id), expectedIds, 'Urutan atau identita
 assert.equal(new Set(courses.map(({ id }) => id)).size, 40, 'Kode mata kuliah harus unik.');
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar enam peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.42.0', 'Versi snapshot pusat harus 0.42.0.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22061915', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.version, '0.43.0', 'Versi snapshot pusat harus 0.43.0.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22062318', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -43,9 +43,19 @@ assert.deepEqual(
       corpus: 'Open Logic Project — OLP-0722, Bahasa Indonesia',
       recordCount: 6522,
       result: 'deterministic-zero-copy-pass'
+    },
+    {
+      corpus: 'Judson — Abstract Algebra: Theory and Applications, Bahasa Indonesia',
+      recordCount: 36978,
+      result: 'additive-zero-copy-pass'
+    },
+    {
+      corpus: 'Yet Another Introductory Number Theory Textbook, Bahasa Indonesia',
+      recordCount: 6967,
+      result: 'lossless-additive-adapter-pass'
     }
   ],
-  'Bukti migrasi korpus lengkap DMOI dan Open Logic berubah tanpa pembaruan kanon.'
+  'Bukti migrasi korpus lengkap berubah tanpa pembaruan kanon.'
 );
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
@@ -96,12 +106,12 @@ assert.match(html, /<html lang="id">/, 'Bahasa dokumen harus Bahasa Indonesia.')
 assert.match(html, /href="styles\.css"/, 'Stylesheet statis tidak terhubung.');
 assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
-assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22061915\/files\/program-matematika-indonesia-og-v0\.42\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
-assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22061915"/, 'URL kanonis Zenodo tidak tepat.');
+assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22062318\/files\/program-matematika-indonesia-og-v0\.43\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
+assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22062318"/, 'URL kanonis Zenodo tidak tepat.');
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Semua peran sumber sudah dibekukan/, 'Ringkasan penutupan pemilihan sumber hilang.');
 assert.match(html, /<strong>8<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan delapan peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22061915/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22062318/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);

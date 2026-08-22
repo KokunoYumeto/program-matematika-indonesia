@@ -8,10 +8,15 @@ if (!outputPath || !sourceCommit) {
   throw new Error('Pemakaian: node scripts/export-release-catalog.mjs <output.json> <source-commit>');
 }
 
+const recordId = new URL(program.zenodo).pathname.split('.').at(-1);
+if (!/^\d+$/.test(recordId ?? '')) {
+  throw new Error(`DOI Zenodo program tidak memiliki record ID yang sah: ${program.zenodo}`);
+}
+
 const catalog = {
-  $schema: 'https://zenodo.org/records/22061915/files/program-matematika-indonesia-catalog-v1.schema.json',
+  $schema: `https://zenodo.org/records/${recordId}/files/program-matematika-indonesia-catalog-v1.schema.json`,
   schemaVersion: 1,
-  snapshotDate: '2026-08-22',
+  snapshotDate: program.snapshotDate,
   sourceCommit,
   program,
   topics,

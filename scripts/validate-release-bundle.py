@@ -83,6 +83,9 @@ def main() -> None:
     )
     static_result = json.loads(static.stdout)
 
+    migration_receipts = sorted((root / "backend" / "migrations").glob("*/MIGRATION_RECEIPT.json"))
+    if not migration_receipts:
+        raise ValueError("no complete-corpus migration receipts found")
     migrations = subprocess.run(
         [
             sys.executable,
@@ -90,8 +93,7 @@ def main() -> None:
             str(root / "scripts" / "validate-migration-receipt-v1.py"),
             "--schema",
             str(root / "schemas" / "backend-migration-receipt-v1.schema.json"),
-            str(root / "backend" / "migrations" / "dmoi4-id-v1" / "MIGRATION_RECEIPT.json"),
-            str(root / "backend" / "migrations" / "openlogic-id-v1" / "MIGRATION_RECEIPT.json"),
+            *[str(path) for path in migration_receipts],
         ],
         cwd=root,
         check=True,

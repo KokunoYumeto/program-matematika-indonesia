@@ -7,8 +7,8 @@ replace its native backend, or delay an in-flight unit/publication transaction.
 ## Frozen contract
 
 - Public repository: <https://github.com/KokunoYumeto/program-matematika-indonesia>
-- Frozen tag: `v0.41.0`
-- Tagged commit: `3efd67eb52dc7c5749d1c1bbc741a7970cd2ba46`
+- Frozen tag: `v0.42.0`
+- Tagged commit: `98334fed7e1f0af81f7901d2b565348260b16b0e`
 - Backend schema: `schemas/backend-v1.schema.json`, 126,423 bytes, SHA-256
   `3de8d107b1c75db0f8d60c42ef7e3488bc3fcc93f72e955def71a771475cf2b2`
 - Source-format profile schema:
@@ -89,6 +89,14 @@ This QA requirement is additive and must not overwrite corpus authority.
   722 frozen English files, 722 Indonesian files, their exact manifests, 725
   import relations, and the existing GitHub/Zenodo release; 6,522 validated v1
   records with no source or target payload-byte changes.
+- Judson abstract algebra Indonesian: additive zero-copy adapter over the
+  immutable public `v2026.08.21.1` source/backend archive; 24,733 native rows
+  yield 36,978 validated common records, with 24,483 native IDs preserved and
+  two byte-identical virtual streams.
+- Yet Another Introductory Number Theory Textbook Indonesian: 5,272 native
+  records reverse exactly from 6,967 validated common records; all native
+  projections, assets, artifacts, reader evidence, and three public snapshots
+  remain bound, with two byte-identical virtual streams.
 
 These proofs establish the contract. They are not instructions to overwrite a
 lane's stronger native representation.

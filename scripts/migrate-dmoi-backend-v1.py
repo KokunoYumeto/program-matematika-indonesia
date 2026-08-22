@@ -184,7 +184,7 @@ def main() -> None:
     if release_candidates:
         release_path = release_candidates[-1]
         source_zip = {
-            "path": release_path.as_posix(),
+            "path": release_path.relative_to(args.source_package.parents[1]).as_posix(),
             "bytes": release_path.stat().st_size,
             "sha256": sha256_file(release_path),
         }
@@ -199,7 +199,7 @@ def main() -> None:
             "dataset_version": source_manifest["dataset_version"],
             "schema_name": source_manifest["schema_name"],
             "schema_version": source_manifest["schema_version"],
-            "package_manifest_path": source_manifest_path.as_posix(),
+            "package_manifest_path": "repo/backend/full/dmoi4-id/package.json",
             "package_manifest_bytes": source_manifest_path.stat().st_size,
             "package_manifest_sha256": sha256_file(source_manifest_path),
             "record_count": source_manifest["record_count"],
@@ -210,7 +210,7 @@ def main() -> None:
             "dataset_version": f"{source_manifest['dataset_version']}+interlanguage-v1",
             "schema_name": TARGET_SCHEMA_NAME,
             "schema_version": TARGET_SCHEMA_VERSION,
-            "schema_path": args.schema.as_posix(),
+            "schema_path": "schemas/backend-v1.schema.json",
             "schema_bytes": args.schema.stat().st_size,
             "schema_sha256": sha256_file(args.schema),
             "record_count": total_records,
