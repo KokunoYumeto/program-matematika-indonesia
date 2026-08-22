@@ -8,6 +8,7 @@ Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika
 - Prasyarat yang dapat diikuti langsung antarkartu.
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
 - Pemisahan tegas antara 32 korpus yang sudah dipilih dan 8 peran yang masih menunggu keputusan final.
+- Enam edisi lengkap sudah dapat dibaca secara publik; salah satunya, B80, tetap ditandai belum dibekukan sebagai kanon.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
 Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelacak, cookie, atau layanan pihak ketiga yang diperlukan untuk menggunakannya.

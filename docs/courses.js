@@ -84,7 +84,9 @@ export const courses = [
     purpose: 'Python, SageMath, SymPy, NumPy/SciPy, komputasi eksak dan floating, visualisasi, pengujian, notebook literat, serta eksperimen reprodusibel.',
     outcome: 'Menerapkan objek dan eksperimen matematis sambil membedakan komputasi, bukti pendukung, dan pembuktian.',
     corpus: 'Kandidat: rangka asli 12 unit + bagian terpilih SPL, RSE, dan Mathematical Python',
-    note: 'Edisi mandiri 12 unit, 60 latihan, dan 98 halaman sudah selesai; batas donor dan pemisahannya dari D120 belum dibekukan sebagai kanon.'
+    note: 'Edisi mandiri 12 unit, 60 latihan, dan 98 halaman sudah selesai serta publik. Untuk menjadi kanon B80, akar seleksi masih harus membekukan tambahan Python pemula, SciPy/SageMath yang dapat dijalankan, visualisasi bertahap, lingkungan, dan batasnya terhadap D120.',
+    edition: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22052053'
   },
   {
     id: 'B90', level: 'B', topic: 'Peluang & Statistika', state: 'published',
