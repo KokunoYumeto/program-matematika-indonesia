@@ -227,12 +227,13 @@ export const courses = [
     edition: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id'
   },
   {
-    id: 'D30', level: 'D', topic: 'Peluang & Statistika', state: 'unresolved',
+    id: 'D30', level: 'D', topic: 'Peluang & Statistika', state: 'production',
     title: 'Probabilitas Teoretis-Ukuran dan Proses Stokastik', prerequisites: ['D10', 'B90', 'C140'],
     purpose: 'Ruang peluang, modus konvergensi, hukum bilangan besar, limit pusat, harapan bersyarat, martingal, proses Markov/Poisson, dan gerak Brown.',
     outcome: 'Membaca literatur peluang modern dan proses stokastik dengan kefasihan teori ukuran.',
-    corpus: 'Kandidat kuat: halaman Random yang terpisah + laboratorium Žitković + jembatan asli',
-    note: 'Batas tanpa Itô sesuai kurikulum; edisi mandiri aktif pada unit stopping time/martingal, tetapi partisi persis terhadap C140 belum dibekukan.'
+    corpus: '27 halaman semantik Random + QuantEcon — Continuous Time Markov Chains (100 hlm.) + 2 irisan laboratorium Žitković + penutupan asli',
+    note: 'Arsitektur dibekukan tanpa teori renewal sebagai syarat kelulusan. Edisi publik sementara telah memuat 14 unit teori dan satu laboratorium; unit Markov berikutnya sedang menjalani QA. Korpus belum selesai.',
+    edition: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id'
   },
   {
     id: 'D40', level: 'D', topic: 'Analisis', state: 'unresolved',
