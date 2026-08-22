@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import sys
 import zipfile
 from pathlib import Path
 
@@ -82,6 +83,23 @@ def main() -> None:
     )
     static_result = json.loads(static.stdout)
 
+    migrations = subprocess.run(
+        [
+            sys.executable,
+            "-B",
+            str(root / "scripts" / "validate-migration-receipt-v1.py"),
+            "--schema",
+            str(root / "schemas" / "backend-migration-receipt-v1.schema.json"),
+            str(root / "backend" / "migrations" / "dmoi4-id-v1" / "MIGRATION_RECEIPT.json"),
+            str(root / "backend" / "migrations" / "openlogic-id-v1" / "MIGRATION_RECEIPT.json"),
+        ],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    migration_result = json.loads(migrations.stdout)
+
     catalog_path = release / f"program-matematika-indonesia-catalog-v{version}.json"
     catalog_schema_path = release / "program-matematika-indonesia-catalog-v1.schema.json"
     catalog = json.loads(catalog_path.read_text(encoding="utf-8"))
@@ -132,6 +150,7 @@ def main() -> None:
             "catalog_course_roles": 40,
             "catalog_unresolved_roles": 0,
             "backend": backend_report["checks"],
+            "complete_corpus_migrations": migration_result,
             "zip_verification": zip_results,
             "standalone_html": "pass",
             "github_transport": "available_for_bounded_push_after_release_validation",

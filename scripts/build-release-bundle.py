@@ -79,8 +79,11 @@ def main() -> None:
     copies = {
         root / "schemas" / "backend-v1.schema.json": release / "interlanguage-math-backend-v1.schema.json",
         root / "schemas" / "profiles" / "source-format-profile-v1.schema.json": release / "interlanguage-source-format-profile-v1.schema.json",
+        root / "schemas" / "backend-migration-receipt-v1.schema.json": release / "interlanguage-backend-migration-receipt-v1.schema.json",
         root / "backend" / "BACKEND_CONVERGENCE_V1.md": release / "BACKEND_CONVERGENCE_V1.md",
+        root / "backend" / "MIGRATION_HANDOFF_V1.md": release / "MIGRATION_HANDOFF_V1.md",
         root / "backend" / "migrations" / "dmoi4-id-v1" / "MIGRATION_RECEIPT.json": release / "dmoi4-id-backend-v1-migration-receipt.json",
+        root / "backend" / "migrations" / "openlogic-id-v1" / "MIGRATION_RECEIPT.json": release / "openlogic-id-backend-v1-migration-receipt.json",
         backend / "validation_report.json": release / f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
     }
     for source, target in copies.items():
@@ -110,6 +113,7 @@ def main() -> None:
         "docs",
         "schemas/catalog-v1.schema.json",
         "schemas/backend-v1.schema.json",
+        "schemas/backend-migration-receipt-v1.schema.json",
         "schemas/profiles/source-format-profile-v1.schema.json",
         "scripts/check-public-links.mjs",
         "scripts/export-release-catalog.mjs",
@@ -121,11 +125,15 @@ def main() -> None:
         "scripts/export-curriculum-backend-v1.py",
         "scripts/validate-backend-v1.py",
         "scripts/migrate-dmoi-backend-v1.py",
+        "scripts/migrate-openlogic-backend-v1.py",
+        "scripts/validate-migration-receipt-v1.py",
         "scripts/build-release-bundle.py",
         "scripts/validate-release-bundle.py",
         "backend/BACKEND_CONVERGENCE_V1.md",
+        "backend/MIGRATION_HANDOFF_V1.md",
         "backend/v1/namespace.json",
         "backend/migrations/dmoi4-id-v1/MIGRATION_RECEIPT.json",
+        "backend/migrations/openlogic-id-v1/MIGRATION_RECEIPT.json",
     ]
     source_paths: list[Path] = []
     for relative in source_roots:

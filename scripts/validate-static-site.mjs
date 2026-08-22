@@ -25,12 +25,28 @@ assert.deepEqual(courses.map(({ id }) => id), expectedIds, 'Urutan atau identita
 assert.equal(new Set(courses.map(({ id }) => id)).size, 40, 'Kode mata kuliah harus unik.');
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar enam peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.41.0', 'Versi snapshot pusat harus 0.41.0.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22060393', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.version, '0.42.0', 'Versi snapshot pusat harus 0.42.0.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22061915', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
-assert.equal(program.backend.completeCorpusMigration.recordCount, 163583, 'Jumlah rekaman migrasi DMOI berubah tanpa pembaruan kanon.');
+assert.equal(program.provenance.model, 'OpenAI Codex gpt-5.6-sol, Ultra', 'Identitas model provenance pusat harus eksplisit dan tepat.');
+assert.deepEqual(
+  program.backend.completeCorpusMigrations,
+  [
+    {
+      corpus: 'Discrete Mathematics: An Open Introduction 4 — Bahasa Indonesia',
+      recordCount: 163583,
+      result: 'lossless-zero-copy-pass'
+    },
+    {
+      corpus: 'Open Logic Project — OLP-0722, Bahasa Indonesia',
+      recordCount: 6522,
+      result: 'deterministic-zero-copy-pass'
+    }
+  ],
+  'Bukti migrasi korpus lengkap DMOI dan Open Logic berubah tanpa pembaruan kanon.'
+);
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
@@ -80,12 +96,12 @@ assert.match(html, /<html lang="id">/, 'Bahasa dokumen harus Bahasa Indonesia.')
 assert.match(html, /href="styles\.css"/, 'Stylesheet statis tidak terhubung.');
 assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
-assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22060393\/files\/program-matematika-indonesia-og-v0\.41\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
-assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22060393"/, 'URL kanonis Zenodo tidak tepat.');
+assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22061915\/files\/program-matematika-indonesia-og-v0\.42\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
+assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22061915"/, 'URL kanonis Zenodo tidak tepat.');
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Semua peran sumber sudah dibekukan/, 'Ringkasan penutupan pemilihan sumber hilang.');
 assert.match(html, /<strong>8<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan delapan peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22060393/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22061915/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);
