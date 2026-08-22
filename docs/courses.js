@@ -236,12 +236,12 @@ export const courses = [
     edition: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id'
   },
   {
-    id: 'D40', level: 'D', topic: 'Analisis', state: 'unresolved',
+    id: 'D40', level: 'D', topic: 'Analisis', state: 'production',
     title: 'Persamaan Diferensial Parsial', prerequisites: ['B70', 'C110', 'D10', 'D20'],
     purpose: 'Persamaan orde satu dan dua klasik, distribusi, ruang Sobolev, solusi lemah, metode energi dan Fourier, serta titik kontak numerik.',
     outcome: 'Mengenali tipe PDP, membuktikan hasil dasar, dan membedakan solusi klasik, lemah, serta numerik.',
-    corpus: 'Pilihan terbuka: Ivrii 97 unit + jembatan lemah/Sobolev dan numerik yang besar, atau korpus yang lebih koheren',
-    note: 'Arsitektur masih terbuka; beban materi asli terlalu besar untuk disebut perbaikan kecil.'
+    corpus: 'Dionne — Partial Differential Equations lengkap + 7 simpul laboratorium FEniCSx + penutupan soal, asesmen, dan laboratorium asli',
+    note: 'Arsitektur dibekukan. Dionne menjadi rangka teori wajib; FEniCSx menghubungkan formulasi lemah dengan komputasi. Enam unit Ivrii yang sudah diterima dipertahankan sebagai pembaca klasik opsional yang terpisah. Produksi belum selesai.'
   },
   {
     id: 'D50', level: 'D', topic: 'Geometri & Topologi', state: 'unresolved',

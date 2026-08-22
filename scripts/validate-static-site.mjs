@@ -13,7 +13,7 @@ const expectedIds = [
   'C10', 'C20', 'C30', 'C40', 'C50', 'C60', 'C70', 'C80', 'C90', 'C100', 'C110', 'C120', 'C130', 'C140',
   'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D80', 'D90', 'D100', 'D110', 'D120',
 ];
-const unresolvedIds = ['D40', 'D50', 'D60', 'D90', 'D100'];
+const unresolvedIds = ['D50', 'D60', 'D90', 'D100'];
 const publishedIds = ['B10', 'B90', 'C30', 'C40', 'C80'];
 const completedPublicEditionIds = ['B10', 'B80', 'B90', 'C30', 'C40', 'C80', 'D120'];
 const levelCounts = { A: 4, B: 10, C: 14, D: 12 };
@@ -31,6 +31,8 @@ for (const id of completedPublicEditionIds) {
 assert.equal(courses.find(({ id }) => id === 'B80')?.state, 'production', 'B80 harus terpilih dan tetap ditandai sedang diproduksi sampai penyelesaian kurikulum.');
 assert.equal(courses.find(({ id }) => id === 'D30')?.state, 'production', 'D30 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
 assert.equal(courses.find(({ id }) => id === 'D30')?.edition, 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id', 'D30 harus menunjuk edisi publik parsial yang tepat.');
+assert.equal(courses.find(({ id }) => id === 'D40')?.state, 'production', 'D40 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
+assert.match(courses.find(({ id }) => id === 'D40')?.corpus ?? '', /Dionne.*FEniCSx/, 'D40 harus mencatat arsitektur Dionne/FEniCSx yang dipilih.');
 
 const ids = new Set(courses.map(({ id }) => id));
 for (const course of courses) {
@@ -60,8 +62,8 @@ assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
 assert.match(html, /property="og:image" content="https:\/\/kokunoyumeto\.github\.io\/program-matematika-indonesia\/og\.png"/, 'Kartu sosial publik tidak terhubung.');
 assert.match(html, /rel="canonical" href="https:\/\/kokunoyumeto\.github\.io\/program-matematika-indonesia\/"/, 'URL kanonis tidak tepat.');
-assert.match(html, /35 korpus terpilih/, 'Ringkasan 35 korpus terpilih hilang.');
-assert.match(html, /Lima peran/, 'Ringkasan lima peran terbuka hilang.');
+assert.match(html, /36 korpus terpilih/, 'Ringkasan 36 korpus terpilih hilang.');
+assert.match(html, /Empat peran/, 'Ringkasan empat peran terbuka hilang.');
 assert.match(html, /<strong>7<\/strong><span>edisi selesai publik<\/span>/, 'Ringkasan tujuh edisi publik selesai hilang.');
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);
