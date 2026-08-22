@@ -7,7 +7,7 @@ Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika
 - Peta empat tingkat: A (fondasi), B (dasar universitas), C (inti sarjana), dan D (fondasi pascasarjana serta riset).
 - Prasyarat yang dapat diikuti langsung antarkartu.
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
-- Pemisahan tegas antara 38 korpus yang sudah dipilih dan 2 peran yang masih menunggu keputusan final.
+- Keempat puluh peran kini memiliki korpus terpilih atau spesifikasi asli yang dibekukan; status produksi dan penyelesaian tetap dicatat terpisah.
 - Delapan peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kedelapan peran itu memakai tujuh rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. B80 dan D120 mempertahankan edisi mandiri publik sambil menyelesaikan lapisan kurikulum yang dibekukan dalam catatan koordinasi. C110 kini lengkap 31/31 unit dan terarsip di Zenodo.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
@@ -15,7 +15,7 @@ Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelac
 
 ## Snapshot Zenodo aktif
 
-Snapshot v0.38.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22059708](https://doi.org/10.5281/zenodo.22059708), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 38 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan; D90 dan D100 masih terbuka.
+Snapshot v0.40.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22059999](https://doi.org/10.5281/zenodo.22059999), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan, tetapi sebagian besar terjemahan, penutupan solusi, integrasi backend, dan edisi final masih diproduksi.
 
 Zenodo adalah jalur preservasi mandiri, bukan sekadar salinan GitHub. Setiap perubahan keadaan kanon yang material akan memperoleh versi baru pada lineage konsep yang sama. Penangguhan akses sementara pada akun GitHub tidak mengubah identitas atau ketersediaan snapshot Zenodo.
 
@@ -27,7 +27,7 @@ Jalankan:
 node scripts/validate-static-site.mjs
 ```
 
-Pemeriksa memastikan tepat 40 kode mata kuliah, dua status yang belum dibekukan, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
+Pemeriksa memastikan tepat 40 kode mata kuliah, tidak ada peran sumber yang masih terbuka, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
 
 ## Memperbarui kanon
 

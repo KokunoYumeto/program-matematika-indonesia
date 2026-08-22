@@ -287,20 +287,22 @@ export const courses = [
     corpus: 'Li — Methods of Algebra Volume 2 lengkap', note: 'Korpus terpilih dan diakui; produksi unit sedang berjalan.'
   },
   {
-    id: 'D90', level: 'D', topic: 'Komputasi & Optimisasi', state: 'unresolved',
+    id: 'D90', level: 'D', topic: 'Komputasi & Optimisasi', state: 'production',
     title: 'Optimisasi Lanjut dan Analisis Konveks', prerequisites: ['C110', 'C130', 'D20'],
     purpose: 'Himpunan dan fungsi konveks, separasi, dualitas, KKT, algoritma, metode nonsmooth, optimisasi stokastik, dan sudut pandang variasional.',
     outcome: 'Menganalisis masalah optimisasi kontinu dan algoritma modern melampaui program linear/integer.',
-    corpus: 'Kandidat: Habring Bab 3–9 + Penn MATH 555 mulai Bab 3 + dukungan penilaian/kode asli',
-    note: 'Penyelarasan edisi dan peta KKT, variasional, nonsmooth, stokastik, serta penilaian masih terbuka.'
+    corpus: 'MIT OCW 6.253 lengkap (395 halaman) + Royer Stochastic Gradient lengkap (45 halaman) + empat unit jembatan, empat laboratorium, dan penutupan solusi asli',
+    note: 'Arsitektur dipilih. Pilot rekonstruksi semantik MIT wajib mendahului produksi massal; target penutupan sedikitnya 70 butir bersolusi lengkap. Edisi Penn–Habring yang sudah dihasilkan dipertahankan sebagai pendamping opsional, bukan dihitung ulang sebagai inti D90.',
+    zenodo: 'https://doi.org/10.5281/zenodo.22059742'
   },
   {
-    id: 'D100', level: 'D', topic: 'Geometri & Topologi', state: 'unresolved',
+    id: 'D100', level: 'D', topic: 'Geometri & Topologi', state: 'production',
     title: 'Jembatan Geometri Aljabar', prerequisites: ['D70', 'D80', 'C90', 'D60'],
     purpose: 'Varietas afin/projektif, gelanggang koordinat, skema, sheaf, morfisme, dimensi, orientasi kohomologis, dan penggunaan terpandu Stacks Project.',
     outcome: 'Berpindah dari aljabar pascasarjana ke geometri aljabar tingkat sumber dan menavigasi korpus rujukan hidup.',
-    corpus: 'Kandidat: Brenner 30 pasangan kuliah/lembar kerja + enam berkas skema Napkin + jembatan asli',
-    note: 'Peta eksplisit untuk seluruh hasil bernama—terutama dimensi, kohomologi, dan Stacks—belum lengkap.'
+    corpus: 'Brenner Algebraische Kurven lengkap (337 halaman) + Bündel, Garben und Kohomologie lengkap (265 halaman) + penutupan penguasaan dan integrasi asli',
+    note: 'Arsitektur dipilih. Unit 1–5 volume klasik sudah publik dalam pembaca 96 halaman. Seluruh dua volume diterjemahkan; jalur belajar menyorot 19 unit skema/kohomologi, sementara Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.',
+    zenodo: 'https://doi.org/10.5281/zenodo.22059687'
   },
   {
     id: 'D110', level: 'D', topic: 'Praktik Riset', state: 'production',
@@ -337,11 +339,11 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.38.0',
+  version: '0.40.0',
   snapshotDate: '2026-08-22',
   totalCourseRoles: 40,
-  selectedCorpusRoles: 38,
-  unresolvedRoleIds: ['D90', 'D100'],
+  selectedCorpusRoles: 40,
+  unresolvedRoleIds: [],
   completedPublicCourseRoleIds: ['B10', 'B80', 'B90', 'C30', 'C40', 'C80', 'C110', 'D120'],
   completedPublicRecordDois: [
     '10.5281/zenodo.21973438',
@@ -352,7 +354,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22054086',
     '10.5281/zenodo.22051978'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22059708',
+  zenodo: 'https://doi.org/10.5281/zenodo.22059999',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   repositories: {
     github: {
