@@ -79,12 +79,12 @@ export const courses = [
     corpus: 'Korpus keluarga Lebl', note: 'Korpus terpilih; produksi berjalan dalam jalur Lebl bersama.'
   },
   {
-    id: 'B80', level: 'B', topic: 'Komputasi & Optimisasi', state: 'unresolved',
+    id: 'B80', level: 'B', topic: 'Komputasi & Optimisasi', state: 'production',
     title: 'Komputasi Matematis dan Eksperimen Reprodusibel', prerequisites: ['A30'],
     purpose: 'Python, SageMath, SymPy, NumPy/SciPy, komputasi eksak dan floating, visualisasi, pengujian, notebook literat, serta eksperimen reprodusibel.',
     outcome: 'Menerapkan objek dan eksperimen matematis sambil membedakan komputasi, bukti pendukung, dan pembuktian.',
-    corpus: 'Kandidat: rangka asli 12 unit + bagian terpilih SPL, RSE, dan Mathematical Python',
-    note: 'Edisi mandiri 12 unit, 60 latihan, dan 98 halaman sudah selesai serta publik. Untuk menjadi kanon B80, akar seleksi masih harus membekukan tambahan Python pemula, SciPy/SageMath yang dapat dijalankan, visualisasi bertahap, lingkungan, dan batasnya terhadap D120.',
+    corpus: 'Rangka asli terpilih: edisi 12 unit + P01/P02 dan penyelesaian SciPy, SageMath, visualisasi, lingkungan, dan penguasaan',
+    note: 'Edisi mandiri 12 unit, 60 latihan, dan 98 halaman sudah selesai serta publik. Arsitektur B80 telah dipilih; produksi masih harus menutup P01/P02, SciPy/SageMath yang dijalankan, visualisasi bertahap, penguncian lingkungan, penguasaan, penangguhan prasyarat, dan QA akhir.',
     edition: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22052053'
   },
@@ -302,7 +302,9 @@ export const courses = [
     purpose: 'Membaca artikel dan monograf, rekonstruksi sumber, sitasi, tulisan ekspositoris, catatan seminar, errata, komputasi reprodusibel, kritik sejawat, dan proyek kontribusi.',
     outcome: 'Berpartisipasi secara konstruktif dalam komunitas matematika sambil menyatakan dependensi, bukti, dan ketidakpastian secara tepat.',
     corpus: 'Kandidat kuat: rangka asli sembilan unit + 21 berkas Turing Way + pilihan RSE persis',
-    note: 'Semua sembilan unit telah diproduksi; PDF dan pembaca HTML yang mudah diakses sedang ditambahkan, sementara korpus dan pemisahannya dari B80 belum dibekukan oleh akar seleksi.'
+    note: 'Edisi mandiri sembilan unit, PDF 128 halaman, dan pembaca HTML sudah publik. Keputusan korpus kurikulum, pemisahannya dari B80, serta lapisan seminar, penelaahan sejawat, dan kontribusi komunitas masih terbuka.',
+    edition: 'https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22051978'
   }
 ];
 
