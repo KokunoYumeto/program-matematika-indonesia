@@ -77,6 +77,7 @@ def main() -> None:
     version = args.version
 
     copies = {
+        root / "schemas" / "catalog-v1.schema.json": release / "program-matematika-indonesia-catalog-v1.schema.json",
         root / "schemas" / "backend-v1.schema.json": release / "interlanguage-math-backend-v1.schema.json",
         root / "schemas" / "profiles" / "source-format-profile-v1.schema.json": release / "interlanguage-source-format-profile-v1.schema.json",
         root / "schemas" / "backend-migration-receipt-v1.schema.json": release / "interlanguage-backend-migration-receipt-v1.schema.json",

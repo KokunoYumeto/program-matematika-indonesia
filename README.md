@@ -8,15 +8,15 @@ Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika
 - Prasyarat yang dapat diikuti langsung antarkartu.
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
 - Keempat puluh peran kini memiliki korpus terpilih atau spesifikasi asli yang dibekukan; status produksi dan penyelesaian tetap dicatat terpisah.
-- Delapan peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kedelapan peran itu memakai tujuh rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. B80 dan D120 mempertahankan edisi mandiri publik sambil menyelesaikan lapisan kurikulum yang dibekukan dalam catatan koordinasi. C110 kini lengkap 31/31 unit dan terarsip di Zenodo.
-- Backend bersama v1 kini dibekukan: 38 tabel ketat, identitas UUIDv5, varian bahasa terpisah, rute pembelajaran, hak komponen, bukti build/QA, JSONL kanonik, dan CSV lossless. Paket pusat 2.122 rekaman telah lolos dua ekspor identik; backend lengkap DMOI sebanyak 163.583 rekaman telah lolos migrasi lossless tanpa perubahan ID; dan 722 modul Open Logic telah direkonstruksi secara deterministik menjadi 6.522 rekaman tervalidasi tanpa mengubah byte sumber atau terjemahan.
+- Sembilan peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kesembilan peran itu memakai delapan rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. C60 kini menunjuk edisi Poritz/YAIN yang tepat, D110 menunjuk edisi lengkap *Mathematics in Lean*, dan D120 tetap berstatus produksi sampai seluruh lapisan praktik risetnya selesai.
+- Backend bersama v1 kini dibekukan: 38 tabel ketat, identitas UUIDv5, varian bahasa terpisah, rute pembelajaran, hak komponen, bukti build/QA, JSONL kanonik, dan CSV lossless. Paket pusat 2.122 rekaman telah lolos dua ekspor identik. Lima bukti migrasi korpus lengkap kini terikat: DMOI 163.583 rekaman, Open Logic 6.522, Judson 36.978, Poritz/YAIN 6.967, dan *Mathematics in Lean* 10.978. Migrasi Lean membalik tepat 10.978/10.978 rekaman serta mengungkap satu salah ketik hitungan pada receipt pemilik tanpa mengubah arsip publik atau lane pemilik.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
 Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelacak, cookie, atau layanan pihak ketiga yang diperlukan untuk menggunakannya.
 
 ## Snapshot Zenodo aktif
 
-Snapshot v0.43.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22062318](https://doi.org/10.5281/zenodo.22062318), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama sudah dapat direproduksi, tetapi sebagian besar terjemahan, penutupan solusi, migrasi backend per-korpus, dan edisi final masih diproduksi.
+Snapshot v0.44.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22062832](https://doi.org/10.5281/zenodo.22062832), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama sudah dapat direproduksi, tetapi sebagian besar terjemahan, penutupan solusi, migrasi backend per-korpus, dan edisi final masih diproduksi. Setiap mata kuliah sekarang membawa `ownerLane` yang divalidasi terhadap peta semantik lengkap, sehingga permutasi pemilik tidak dapat lolos hanya karena jumlah ID tetap 40/40.
 
 Zenodo adalah jalur preservasi mandiri, bukan sekadar salinan GitHub. Setiap perubahan keadaan kanon yang material akan memperoleh versi baru pada lineage konsep yang sama. Akses akun GitHub yang sempat ditangguhkan telah dipulihkan; snapshot Zenodo tetap dipertahankan sebagai arsip independen.
 
@@ -28,7 +28,7 @@ Jalankan:
 node scripts/validate-static-site.mjs
 ```
 
-Pemeriksa memastikan tepat 40 kode mata kuliah, tidak ada peran sumber yang masih terbuka, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
+Pemeriksa memastikan tepat 40 kode mata kuliah, pemetaan semantik 40/40 ke `ownerLane` yang tepat, tidak ada peran sumber yang masih terbuka, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
 
 Backend bersama dapat diregenerasi dan divalidasi dengan skrip Python dalam folder [`scripts`](scripts). Kontrak lengkap dan alasan pemilihannya berada di [`backend/BACKEND_CONVERGENCE_V1.md`](backend/BACKEND_CONVERGENCE_V1.md). Prosedur migrasi tanpa mengganggu produksi korpus berada di [`backend/MIGRATION_HANDOFF_V1.md`](backend/MIGRATION_HANDOFF_V1.md); setiap bukti migrasi mengikuti [`schemas/backend-migration-receipt-v1.schema.json`](schemas/backend-migration-receipt-v1.schema.json).
 

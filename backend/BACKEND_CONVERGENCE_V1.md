@@ -137,6 +137,12 @@ Three further complete-corpus proofs use the same nonduplicating contract:
 - Yet Another Introductory Number Theory Textbook reverses exactly from 6,967
   common records to all 5,272 native records and preserves its complete
   manifest, projections, assets, artifacts, reader, QA, and public snapshots.
+- Mathematics in Lean v4.30.0-id.3 maps all 10,978 native rows one-to-one into
+  10,978 common records across all 38 declared tables and reverses them exactly.
+  Its public GitHub, Zenodo, and Figshare backend archives share the same
+  7,101,665-byte identity and SHA-256. One GitHub receipt scalar said 10,876;
+  the adapter discloses that isolated typo and binds the correct count to the
+  exact public `records.jsonl` hash without changing the owner lane.
 
 Each proof was assembled twice with byte-identical virtual records and has its
 own schema-valid receipt under `backend/migrations/`.
@@ -147,13 +153,24 @@ own schema-valid receipt under `backend/migrations/`.
 2. Open Logic OLP-0722: admitted by the completed deterministic reconstruction.
 3. Judson AATA: admitted from the immutable public `v2026.08.21.1` backend.
 4. YAIN number theory: admitted by the completed reversible additive adapter.
-5. TTNA: adapter implemented but fail-closed until the terminology-corrected
+5. Mathematics in Lean: admitted by the completed one-to-one reversible
+   adapter and public-byte count reconciliation.
+6. TTNA: adapter implemented but fail-closed until the terminology-corrected
    release and public receipts bind the same bytes.
-6. OpenStax Prealgebra: preserve existing IDs; map canonical units, localized units, expressions, rights, assets, and relations; move A00-specific curriculum fields to an extension/profile.
-7. O008: map formula evidence to alignment records and core/advanced arrays to route members; leave queued O001 solution references external until solution content exists.
-8. O005: split paired segments into neutral segments plus `en` and `id-ID` variants; promote every mastery problem, hint, answer/check, solution/rubric, notebook, project, dataset, correction, right, and build witness to typed records.
-9. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
-10. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
-11. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
+7. OpenStax Prealgebra: preserve existing IDs; map canonical units, localized units, expressions, rights, assets, and relations; move A00-specific curriculum fields to an extension/profile.
+8. O008: map formula evidence to alignment records and core/advanced arrays to route members; leave queued O001 solution references external until solution content exists.
+9. O005: split paired segments into neutral segments plus `en` and `id-ID` variants; promote every mastery problem, hint, answer/check, solution/rubric, notebook, project, dataset, correction, right, and build witness to typed records.
+10. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
+11. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
+12. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
+
+## Semantic course-owner invariant
+
+Every central course record now carries a machine-readable `ownerLane`. The
+static validator compares the complete ordered 40-role mapping against an
+explicit semantic authority map; set cardinality alone is insufficient. The
+same mapping is embedded in the central program record and each selected-
+resource/course extension. This closes the failure mode in which nine owners
+were permuted while the registry still appeared to contain 40 unique IDs.
 
 Migration is additive. Existing public packages stay immutable, and no lane is allowed to claim common-v1 conformance until its exported bytes pass the common validator.

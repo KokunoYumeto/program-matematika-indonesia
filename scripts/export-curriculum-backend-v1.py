@@ -188,6 +188,9 @@ class Builder:
                     "interlanguage.curriculum": {
                         "completed_public_course_role_ids": program["completedPublicCourseRoleIds"],
                         "completed_public_record_dois": program["completedPublicRecordDois"],
+                        "course_role_owner_lanes": {
+                            course["id"]: course["ownerLane"] for course in self.catalog["courses"]
+                        },
                         "selected_corpus_roles": program["selectedCorpusRoles"],
                         "total_course_roles": program["totalCourseRoles"],
                         "unresolved_role_ids": program["unresolvedRoleIds"],
@@ -254,6 +257,7 @@ class Builder:
                         "interlanguage.curriculum-selection": {
                             "course_role_id": course_key,
                             "display_note": course["note"],
+                            "owner_lane": course["ownerLane"],
                             "zenodo": course.get("zenodo"),
                         }
                     },
@@ -277,6 +281,11 @@ class Builder:
                     stage=course["level"],
                     title=course["title"],
                     status=course["state"],
+                    extensions={
+                        "interlanguage.curriculum-owner": {
+                            "owner_lane": course["ownerLane"],
+                        }
+                    },
                 ),
             )
             unit_ids[course_key] = self.add(

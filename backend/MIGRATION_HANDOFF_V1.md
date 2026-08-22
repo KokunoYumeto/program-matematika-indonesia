@@ -97,6 +97,12 @@ This QA requirement is additive and must not overwrite corpus authority.
   records reverse exactly from 6,967 validated common records; all native
   projections, assets, artifacts, reader evidence, and three public snapshots
   remain bound, with two byte-identical virtual streams.
+- Mathematics in Lean Indonesian v4.30.0-id.3: 10,978 native records map
+  one-to-one to 10,978 common records and reverse exactly; 38/38 tables are
+  present, 14 are populated, two complete executions emit the identical
+  receipt, and public GitHub/Zenodo/Figshare archive identity is bound. The
+  receipt explicitly adjudicates the isolated 10,876 owner-receipt typo from
+  the public `records.jsonl` bytes without rewriting the owner lane.
 
 These proofs establish the contract. They are not instructions to overwrite a
 lane's stronger native representation.
