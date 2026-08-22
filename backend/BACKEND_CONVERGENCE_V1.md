@@ -105,7 +105,7 @@ Editable sources remain authoritative. The source-format profile preserves CNXML
 
 ### Central 40-course catalog
 
-`backend/v1/program-matematika-indonesia-v0.40.0` is the first native common-v1 package:
+`backend/v1/program-matematika-indonesia-v0.41.0` is the first native common-v1 package:
 
 - 38 declared tables, 20 non-empty;
 - 2,122 records;
