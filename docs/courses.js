@@ -297,12 +297,12 @@ export const courses = [
     corpus: 'Mathematics in Lean — korpus Lean 4 saat ini', note: 'Korpus terpilih; bagian terjemahan yang dikompilasi terus bertambah.'
   },
   {
-    id: 'D120', level: 'D', topic: 'Praktik Riset', state: 'unresolved',
+    id: 'D120', level: 'D', topic: 'Praktik Riset', state: 'production',
     title: 'Membaca Riset, Eksposisi, dan Kerja Matematis Reprodusibel', prerequisites: ['C20', 'C40', 'B80'],
     purpose: 'Membaca artikel dan monograf, rekonstruksi sumber, sitasi, tulisan ekspositoris, catatan seminar, errata, komputasi reprodusibel, kritik sejawat, dan proyek kontribusi.',
     outcome: 'Berpartisipasi secara konstruktif dalam komunitas matematika sambil menyatakan dependensi, bukti, dan ketidakpastian secara tepat.',
-    corpus: 'Kandidat kuat: rangka asli sembilan unit + 21 berkas Turing Way + pilihan RSE persis',
-    note: 'Edisi mandiri sembilan unit, PDF 128 halaman, dan pembaca HTML sudah publik. Keputusan korpus kurikulum, pemisahannya dari B80, serta lapisan seminar, penelaahan sejawat, dan kontribusi komunitas masih terbuka.',
+    corpus: 'Kerja Matematika yang Dapat Ditelusuri — rangka asli sembilan unit + donor metodologis Turing Way/PyRSE yang dibekukan',
+    note: 'Korpus dipilih dan edisi mandiri 128 halaman sudah publik. Lapisan autentik seminar, penelaahan independen, sumber nyata, kontribusi terbatas, serta backend asesmen masih harus diselesaikan; paketnya sudah dikirim ke pemilik yang sama.',
     edition: 'https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22051978'
   }

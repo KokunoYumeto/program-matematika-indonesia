@@ -7,8 +7,8 @@ Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika
 - Peta empat tingkat: A (fondasi), B (dasar universitas), C (inti sarjana), dan D (fondasi pascasarjana serta riset).
 - Prasyarat yang dapat diikuti langsung antarkartu.
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
-- Pemisahan tegas antara 33 korpus yang sudah dipilih dan 7 peran yang masih menunggu keputusan final.
-- Tujuh edisi lengkap sudah dapat dibaca secara publik. B80 sudah dipilih dan sedang diperluas dari edisi mandiri publiknya; D120 memiliki edisi mandiri publik tetapi keputusan korpus kurikulumnya masih terbuka.
+- Pemisahan tegas antara 34 korpus yang sudah dipilih dan 6 peran yang masih menunggu keputusan final.
+- Tujuh edisi lengkap sudah dapat dibaca secara publik. B80 dan D120 sudah dipilih; keduanya mempertahankan edisi mandiri publik sambil menyelesaikan lapisan kurikulum yang dibekukan dalam catatan koordinasi.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
 Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelacak, cookie, atau layanan pihak ketiga yang diperlukan untuk menggunakannya.
@@ -21,7 +21,7 @@ Jalankan:
 node scripts/validate-static-site.mjs
 ```
 
-Pemeriksa memastikan tepat 40 kode mata kuliah, tujuh status yang belum dibekukan, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
+Pemeriksa memastikan tepat 40 kode mata kuliah, enam status yang belum dibekukan, prasyarat yang tertutup, jumlah tingkat yang benar, serta kontrak dasar HTML dan tautan.
 
 ## Memperbarui kanon
 
