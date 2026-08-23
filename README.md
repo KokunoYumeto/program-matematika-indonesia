@@ -8,7 +8,7 @@ Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika
 - Prasyarat yang dapat diikuti langsung antarkartu.
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
 - Keempat puluh peran kini memiliki korpus terpilih atau spesifikasi asli yang dibekukan; status produksi dan penyelesaian tetap dicatat terpisah.
-- Sepuluh peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kesepuluh peran itu memakai sembilan rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. B80 kini menunjuk rangka komputasi 14-unit yang lengkap, dan C70 menunjuk edisi lengkap *Applied Combinatorics*.
+- Sebelas peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kesebelas peran itu memakai sepuluh rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. C10 kini menunjuk Jilid I Lebl lengkap 334 halaman; C20 memiliki cuplikan kerja publik 154 halaman yang tetap dinyatakan belum lengkap.
 - Backend bersama v1 kini dibekukan: 38 tabel ketat, identitas UUIDv5, varian bahasa terpisah, rute pembelajaran, hak komponen, bukti build/QA, JSONL kanonik, dan CSV lossless. Paket pusat 2.122 rekaman telah lolos dua ekspor identik. Tujuh bukti migrasi korpus lengkap kini terikat: DMOI 163.583 rekaman, B80 339, Open Logic 6.522, Judson 36.978, Poritz/YAIN 6.967, Applied Combinatorics 19.049, dan *Mathematics in Lean* 10.978. Seluruh migrasi mempertahankan backend native pemilik sebagai otoritas dan tidak menggandakannya ke paket pusat.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
@@ -16,7 +16,7 @@ Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelac
 
 ## Snapshot Zenodo aktif
 
-Snapshot v0.45.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22063205](https://doi.org/10.5281/zenodo.22063205), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama sudah dapat direproduksi, tetapi sebagian besar terjemahan, penutupan solusi, migrasi backend per-korpus, dan edisi final masih diproduksi. Setiap mata kuliah membawa `ownerLane` yang divalidasi terhadap peta semantik lengkap, sehingga permutasi pemilik tidak dapat lolos hanya karena jumlah ID tetap 40/40.
+Snapshot v0.46.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22063396](https://doi.org/10.5281/zenodo.22063396), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama sudah dapat direproduksi, tetapi sebagian besar terjemahan, penutupan solusi, migrasi backend per-korpus, dan edisi final masih diproduksi. C10 kini lengkap dan publik; C20 tetap produksi meskipun cuplikan U227-nya dapat dibaca. Setiap mata kuliah membawa `ownerLane` yang divalidasi terhadap peta semantik lengkap, sehingga permutasi pemilik tidak dapat lolos hanya karena jumlah ID tetap 40/40.
 
 Zenodo adalah jalur preservasi mandiri, bukan sekadar salinan GitHub. Setiap perubahan keadaan kanon yang material akan memperoleh versi baru pada lineage konsep yang sama. Akses akun GitHub yang sempat ditangguhkan telah dipulihkan; snapshot Zenodo tetap dipertahankan sebagai arsip independen.
 

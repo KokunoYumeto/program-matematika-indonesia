@@ -197,6 +197,9 @@ def main() -> None:
             raise ValueError(f"release migration receipt is absent or changed: {slug}")
     if set(receipt_documents) != set(EXPECTED_MIGRATIONS):
         raise ValueError("complete-corpus migration receipt identity set mismatch")
+    migration_target_records = sum(receipt["target"]["record_count"] for receipt in receipt_documents.values())
+    if len(receipt_documents) != 7 or migration_target_records != 244416:
+        raise ValueError("complete-corpus migration proof boundary must remain seven receipts and 244,416 target records")
 
     catalog_path = release / f"program-matematika-indonesia-catalog-v{version}.json"
     catalog_schema_path = release / "program-matematika-indonesia-catalog-v1.schema.json"
@@ -214,6 +217,41 @@ def main() -> None:
         raise ValueError("catalog Zenodo DOI does not match reserved record")
     if catalog["counts"]["courseRoles"] != 40 or catalog["counts"]["unresolvedRoles"] != 0:
         raise ValueError("catalog course/source closure mismatch")
+    expected_completed_role_ids = [
+        "B10", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "D110"
+    ]
+    expected_completed_record_dois = [
+        "10.5281/zenodo.22060439",
+        "10.5281/zenodo.22053905",
+        "10.5281/zenodo.22062144",
+        "10.5281/zenodo.22063321",
+        "10.5281/zenodo.22062449",
+        "10.5281/zenodo.22052196",
+        "10.5281/zenodo.22062005",
+        "10.5281/zenodo.21932787",
+        "10.5281/zenodo.22054086",
+        "10.5281/zenodo.22062017",
+    ]
+    if catalog["counts"].get("completedPublicCourseRoles") != 11:
+        raise ValueError("catalog completed-public course-role count is not 11")
+    if catalog["counts"].get("completedPublicRecords") != 10:
+        raise ValueError("catalog completed-public record count is not 10")
+    if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
+        raise ValueError("catalog completed-public course-role identities are not the v0.46 canonical set")
+    if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
+        raise ValueError("catalog completed-public DOI identities are not the v0.46 canonical set")
+    published_role_ids = [course["id"] for course in catalog["courses"] if course["state"] == "published"]
+    if published_role_ids != expected_completed_role_ids:
+        raise ValueError("catalog published course states do not match completed-public role identities")
+    courses_by_id = {course["id"]: course for course in catalog["courses"]}
+    if courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321":
+        raise ValueError("C10 does not point to the verified Lebl U227 DOI")
+    if courses_by_id["C20"].get("state") != "production" or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321":
+        raise ValueError("C20 is not preserved as a production-state U227 WIP")
+    for role_id in ("B70", "C50"):
+        course = courses_by_id[role_id]
+        if course.get("state") != "production" or course.get("edition") or course.get("zenodo"):
+            raise ValueError(f"{role_id} incorrectly inherits translated U227 edition evidence")
 
     expected_catalog_migrations = []
     for migration_id, metadata in EXPECTED_MIGRATIONS.items():
@@ -234,6 +272,8 @@ def main() -> None:
         raise ValueError("backend validation report is not admitted")
     if backend_report["checks"]["record_count"] != catalog["program"]["backend"]["centralRecordCount"]:
         raise ValueError("catalog/backend record count mismatch")
+    if backend_report["checks"]["record_count"] != 2122:
+        raise ValueError("central backend record count must remain exactly 2,122")
 
     html_path = release / f"program-matematika-indonesia-v{version}.html"
     html = html_path.read_text(encoding="utf-8")
@@ -304,10 +344,13 @@ def main() -> None:
             "catalog_draft_2020_12": "pass",
             "catalog_course_roles": 40,
             "catalog_unresolved_roles": 0,
+            "catalog_completed_public_course_roles": 11,
+            "catalog_completed_public_records": 10,
             "catalog_schema_identity_and_bytes": "pass",
             "source_commit_binding": args.source_commit,
             "backend": backend_report["checks"],
             "complete_corpus_migrations": migration_result,
+            "complete_corpus_migration_target_records": migration_target_records,
             "migration_claim_cross_check": "pass",
             "release_inventory": {"files_before_report": len(files), "result": "exact"},
             "privacy_scan": "pass",
