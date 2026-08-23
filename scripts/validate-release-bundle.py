@@ -218,10 +218,11 @@ def main() -> None:
     if catalog["counts"]["courseRoles"] != 40 or catalog["counts"]["unresolvedRoles"] != 0:
         raise ValueError("catalog course/source closure mismatch")
     expected_completed_role_ids = [
-        "B10", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "D110"
+        "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "D110"
     ]
     expected_completed_record_dois = [
         "10.5281/zenodo.22060439",
+        "10.5281/zenodo.22070458",
         "10.5281/zenodo.22053905",
         "10.5281/zenodo.22062144",
         "10.5281/zenodo.22063321",
@@ -232,19 +233,20 @@ def main() -> None:
         "10.5281/zenodo.22054086",
         "10.5281/zenodo.22062017",
     ]
-    if catalog["counts"].get("completedPublicCourseRoles") != 11:
-        raise ValueError("catalog completed-public course-role count is not 11")
-    if catalog["counts"].get("completedPublicRecords") != 10:
-        raise ValueError("catalog completed-public record count is not 10")
+    if catalog["counts"].get("completedPublicCourseRoles") != 12:
+        raise ValueError("catalog completed-public course-role count is not 12")
+    if catalog["counts"].get("completedPublicRecords") != 11:
+        raise ValueError("catalog completed-public record count is not 11")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
-        raise ValueError("catalog completed-public course-role identities are not the v0.46 canonical set")
+        raise ValueError("catalog completed-public course-role identities are not the v0.47 canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
-        raise ValueError("catalog completed-public DOI identities are not the v0.46 canonical set")
+        raise ValueError("catalog completed-public DOI identities are not the v0.47 canonical set")
     published_role_ids = [course["id"] for course in catalog["courses"] if course["state"] == "published"]
     if published_role_ids != expected_completed_role_ids:
         raise ValueError("catalog published course states do not match completed-public role identities")
     courses_by_id = {course["id"]: course for course in catalog["courses"]}
     expected_lebl_repository = "https://github.com/KokunoYumeto/lebl-mathematics-family-id"
+    expected_b40_repository = "https://github.com/KokunoYumeto/hefferon-linear-algebra-id"
     expected_c10_edition = "https://zenodo.org/records/22063321/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1"
     expected_c20_edition = "https://zenodo.org/records/22063321/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_Akhir_Bukti_Teorema_Penggantian_Variabel.pdf?download=1"
     if (
@@ -253,6 +255,12 @@ def main() -> None:
         or courses_by_id["C10"].get("repository") != expected_lebl_repository
     ):
         raise ValueError("C10 does not point to the exact verified Lebl U227 edition")
+    if (
+        courses_by_id["B40"].get("state") != "published"
+        or courses_by_id["B40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070458"
+        or courses_by_id["B40"].get("repository") != expected_b40_repository
+    ):
+        raise ValueError("B40 does not point to the exact verified Hefferon edition")
     if (
         courses_by_id["C20"].get("state") != "production"
         or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321"
@@ -356,8 +364,8 @@ def main() -> None:
             "catalog_draft_2020_12": "pass",
             "catalog_course_roles": 40,
             "catalog_unresolved_roles": 0,
-            "catalog_completed_public_course_roles": 11,
-            "catalog_completed_public_records": 10,
+            "catalog_completed_public_course_roles": 12,
+            "catalog_completed_public_records": 11,
             "catalog_schema_identity_and_bytes": "pass",
             "source_commit_binding": args.source_commit,
             "backend": backend_report["checks"],

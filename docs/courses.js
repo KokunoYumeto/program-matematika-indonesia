@@ -53,11 +53,15 @@ export const courses = [
     corpus: 'CLP Calculus — kalkulus integral', note: 'Korpus terpilih dalam jalur produksi CLP bersama.'
   },
   {
-    id: 'B40', ownerLane: 'R005', level: 'B', topic: 'Aljabar', state: 'near',
+    id: 'B40', ownerLane: 'R005', level: 'B', topic: 'Aljabar', state: 'published',
     title: 'Aljabar Linear', prerequisites: ['A30', 'B10'],
     purpose: 'Sistem linear, ruang vektor, pemetaan linear, matriks, determinan, nilai dan vektor eigen, serta penerapan.',
     outcome: 'Berpindah dengan lancar antara perhitungan, struktur, dan pembuktian dalam matematika berdimensi hingga.',
-    corpus: 'Hefferon — Linear Algebra lengkap', note: 'Teks dan 1.037 tautan jawaban tertutup; build dan rilis akhir masih berlangsung.'
+    corpus: 'Hefferon — Linear Algebra lengkap',
+    note: 'Edisi Bahasa Indonesia lengkap dan terverifikasi publik: buku 580 halaman, jawaban bekerja 435 halaman, laboratorium Sage 109 halaman, dan pembaca kumulatif 1.124 halaman.',
+    edition: 'https://zenodo.org/records/22070458',
+    repository: 'https://github.com/KokunoYumeto/hefferon-linear-algebra-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22070458'
   },
   {
     id: 'B50', ownerLane: 'R003', level: 'B', topic: 'Fondasi & Kalkulus', state: 'production',
@@ -359,14 +363,15 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.46.0',
+  version: '0.47.0',
   snapshotDate: '2026-08-23',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
   unresolvedRoleIds: [],
-  completedPublicCourseRoleIds: ['B10', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'D110'],
+  completedPublicCourseRoleIds: ['B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'D110'],
   completedPublicRecordDois: [
     '10.5281/zenodo.22060439',
+    '10.5281/zenodo.22070458',
     '10.5281/zenodo.22053905',
     '10.5281/zenodo.22062144',
     '10.5281/zenodo.22063321',
@@ -426,7 +431,7 @@ export const program = Object.freeze({
     ],
     schema: 'https://zenodo.org/records/22063396/files/interlanguage-math-backend-v1.schema.json?download=1',
     sourceFormatProfile: 'https://zenodo.org/records/22063396/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22063396/files/program-matematika-indonesia-backend-v1-v0.46.0.zip?download=1'
+    package: 'https://zenodo.org/records/22063396/files/program-matematika-indonesia-backend-v1-v0.47.0.zip?download=1'
   },
   repositories: {
     github: {
