@@ -244,10 +244,22 @@ def main() -> None:
     if published_role_ids != expected_completed_role_ids:
         raise ValueError("catalog published course states do not match completed-public role identities")
     courses_by_id = {course["id"]: course for course in catalog["courses"]}
-    if courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321":
-        raise ValueError("C10 does not point to the verified Lebl U227 DOI")
-    if courses_by_id["C20"].get("state") != "production" or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321":
-        raise ValueError("C20 is not preserved as a production-state U227 WIP")
+    expected_lebl_repository = "https://github.com/KokunoYumeto/lebl-mathematics-family-id"
+    expected_c10_edition = "https://zenodo.org/records/22063321/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1"
+    expected_c20_edition = "https://zenodo.org/records/22063321/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_Akhir_Bukti_Teorema_Penggantian_Variabel.pdf?download=1"
+    if (
+        courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321"
+        or courses_by_id["C10"].get("edition") != expected_c10_edition
+        or courses_by_id["C10"].get("repository") != expected_lebl_repository
+    ):
+        raise ValueError("C10 does not point to the exact verified Lebl U227 edition")
+    if (
+        courses_by_id["C20"].get("state") != "production"
+        or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321"
+        or courses_by_id["C20"].get("edition") != expected_c20_edition
+        or courses_by_id["C20"].get("repository") != expected_lebl_repository
+    ):
+        raise ValueError("C20 is not preserved as the exact production-state U227 WIP")
     for role_id in ("B70", "C50"):
         course = courses_by_id[role_id]
         if course.get("state") != "production" or course.get("edition") or course.get("zenodo"):
