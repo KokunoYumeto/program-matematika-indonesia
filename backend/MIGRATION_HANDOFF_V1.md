@@ -85,6 +85,9 @@ This QA requirement is additive and must not overwrite corpus authority.
 
 - DMOI 4 Indonesian: 163,583 records, 32 source tables, exact reverse, zero
   changed IDs and zero changed payload fields.
+- B80 mathematical computing Indonesian: all 326 native catalog entries are
+  checksum-bound and exactly reversible; eight derived rights records and five
+  external-reference anchors yield 339 strict common records across 38 tables.
 - Open Logic OLP-0722 Indonesian: deterministic zero-copy reconstruction from
   722 frozen English files, 722 Indonesian files, their exact manifests, 725
   import relations, and the existing GitHub/Zenodo release; 6,522 validated v1
@@ -103,6 +106,9 @@ This QA requirement is additive and must not overwrite corpus authority.
   receipt, and public GitHub/Zenodo/Figshare archive identity is bound. The
   receipt explicitly adjudicates the isolated 10,876 owner-receipt typo from
   the public `records.jsonl` bytes without rewriting the owner lane.
+- Applied Combinatorics Indonesian: 19,048 unique native records map one-to-one
+  and reverse exactly; one explicit B10 external-prerequisite stub yields
+  19,049 strict common records with complete foreign-key closure.
 
 These proofs establish the contract. They are not instructions to overwrite a
 lane's stronger native representation.

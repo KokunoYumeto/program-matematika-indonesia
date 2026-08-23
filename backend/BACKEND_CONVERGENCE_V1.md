@@ -127,7 +127,12 @@ The complete 163,583-record DMOI backend has passed a lossless zero-copy migrati
 
 The result is recorded at `backend/migrations/dmoi4-id-v1/MIGRATION_RECEIPT.json`. A redundant 437 MB local copy was deliberately not made: the admitted source package plus the deterministic migration program and hash-bound receipt can materialize exactly the same target package.
 
-Three further complete-corpus proofs use the same nonduplicating contract:
+Six further complete-corpus proofs use the same nonduplicating contract:
+
+- The complete B80 mathematical-computing catalog preserves all 326 native
+  entries with checksum-bound payloads, reconstructs the exact 110,511-byte
+  catalog, and adds only eight derived rights records and five explicit
+  external-reference anchors, yielding 339 validated common records.
 
 - Open Logic OLP-0722 reconstructs 6,522 strict records from 722 frozen source
   and 722 frozen Indonesian modules with zero source/target payload-byte changes.
@@ -143,6 +148,9 @@ Three further complete-corpus proofs use the same nonduplicating contract:
   7,101,665-byte identity and SHA-256. One GitHub receipt scalar said 10,876;
   the adapter discloses that isolated typo and binds the correct count to the
   exact public `records.jsonl` hash without changing the owner lane.
+- Applied Combinatorics maps each of its 19,048 unique native records to one
+  reversible common record and adds one explicit external-prerequisite stub for
+  B10, yielding 19,049 validated common records with closed foreign keys.
 
 Each proof was assembled twice with byte-identical virtual records and has its
 own schema-valid receipt under `backend/migrations/`.
@@ -150,19 +158,23 @@ own schema-valid receipt under `backend/migrations/`.
 ## Corpus migration order
 
 1. DMOI: admitted by the completed zero-copy proof.
-2. Open Logic OLP-0722: admitted by the completed deterministic reconstruction.
-3. Judson AATA: admitted from the immutable public `v2026.08.21.1` backend.
-4. YAIN number theory: admitted by the completed reversible additive adapter.
-5. Mathematics in Lean: admitted by the completed one-to-one reversible
+2. B80 mathematical computing: admitted by the completed reversible native-
+   catalog adapter.
+3. Open Logic OLP-0722: admitted by the completed deterministic reconstruction.
+4. Judson AATA: admitted from the immutable public `v2026.08.21.1` backend.
+5. YAIN number theory: admitted by the completed reversible additive adapter.
+6. Applied Combinatorics: admitted by the completed one-record-per-native-record
+   adapter plus its explicit B10 prerequisite stub.
+7. Mathematics in Lean: admitted by the completed one-to-one reversible
    adapter and public-byte count reconciliation.
-6. TTNA: adapter implemented but fail-closed until the terminology-corrected
+8. TTNA: adapter implemented but fail-closed until the terminology-corrected
    release and public receipts bind the same bytes.
-7. OpenStax Prealgebra: preserve existing IDs; map canonical units, localized units, expressions, rights, assets, and relations; move A00-specific curriculum fields to an extension/profile.
-8. O008: map formula evidence to alignment records and core/advanced arrays to route members; leave queued O001 solution references external until solution content exists.
-9. O005: split paired segments into neutral segments plus `en` and `id-ID` variants; promote every mastery problem, hint, answer/check, solution/rubric, notebook, project, dataset, correction, right, and build witness to typed records.
-10. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
-11. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
-12. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
+9. OpenStax Prealgebra: preserve existing IDs; map canonical units, localized units, expressions, rights, assets, and relations; move A00-specific curriculum fields to an extension/profile.
+10. O008: map formula evidence to alignment records and core/advanced arrays to route members; leave queued O001 solution references external until solution content exists.
+11. O005: split paired segments into neutral segments plus `en` and `id-ID` variants; promote every mastery problem, hint, answer/check, solution/rubric, notebook, project, dataset, correction, right, and build witness to typed records.
+12. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
+13. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
+14. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
 
 ## Semantic course-owner invariant
 

@@ -20,6 +20,10 @@ EXPECTED_MIGRATIONS = {
         "corpus": "Discrete Mathematics: An Open Introduction 4 — Bahasa Indonesia",
         "result": "lossless-zero-copy-pass",
     },
+    "o002-b80-id-2026.08.22.1-to-interlanguage-v1.0.0": {
+        "corpus": "Komputasi Matematis dan Eksperimen yang Dapat Direproduksi — Bahasa Indonesia",
+        "result": "lossless-zero-copy-one-to-one-native-catalog-adapter-pass",
+    },
     "openlogic-id-olp-0722-to-interlanguage-v1.0.0": {
         "corpus": "Open Logic Project — OLP-0722, Bahasa Indonesia",
         "result": "deterministic-zero-copy-pass",
@@ -31,6 +35,10 @@ EXPECTED_MIGRATIONS = {
     "yaintt-r014-id-to-interlanguage-v1.0.0": {
         "corpus": "Yet Another Introductory Number Theory Textbook, Bahasa Indonesia",
         "result": "lossless-additive-adapter-pass",
+    },
+    "r012-applied-combinatorics-id-to-v1": {
+        "corpus": "Keller–Trotter — Applied Combinatorics, Bahasa Indonesia",
+        "result": "lossless-additive-one-common-record-per-native-record-pass",
     },
     "mathematics-in-lean-id-v4.30.0-id.3-to-interlanguage-v1.0.0": {
         "corpus": "Mathematics in Lean — Bahasa Indonesia v4.30.0-id.3",

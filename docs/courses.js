@@ -32,10 +32,10 @@ export const courses = [
     title: 'Pembuktian, Logika, dan Struktur Diskrit', prerequisites: ['A30'],
     purpose: 'Logika proposisional dan predikat, himpunan, fungsi, relasi, teknik bukti, teori graf, pencacahan, dan barisan.',
     outcome: 'Membaca, menyusun, dan mengkritik bukti elementer sebelum memasuki teori tingkat lanjut.',
-    corpus: 'Discrete Mathematics: An Open Introduction 4', note: 'Edisi Bahasa Indonesia selesai dan tersedia untuk umum.',
-    edition: 'https://zenodo.org/records/21973438/files/00_MATEMATIKA_DISKRET_EDISI_KEEMPAT_BAHASA_INDONESIA_READER.pdf?download=1',
+    corpus: 'Discrete Mathematics: An Open Introduction 4', note: 'Edisi Bahasa Indonesia selesai dan rilis preservasi 2026.08.22 telah diverifikasi publik.',
+    edition: 'https://zenodo.org/records/22060439/files/00_MATEMATIKA_DISKRET_EDISI_KEEMPAT_BAHASA_INDONESIA_READER.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.21973438'
+    zenodo: 'https://doi.org/10.5281/zenodo.22060439'
   },
   {
     id: 'B20', ownerLane: 'R003', level: 'B', topic: 'Fondasi & Kalkulus', state: 'production',
@@ -81,15 +81,15 @@ export const courses = [
     corpus: 'Korpus keluarga Lebl', note: 'Korpus terpilih; produksi berjalan dalam jalur Lebl bersama.'
   },
   {
-    id: 'B80', ownerLane: 'O002', level: 'B', topic: 'Komputasi & Optimisasi', state: 'production',
+    id: 'B80', ownerLane: 'O002', level: 'B', topic: 'Komputasi & Optimisasi', state: 'published',
     title: 'Komputasi Matematis dan Eksperimen Reprodusibel', prerequisites: ['A30'],
     purpose: 'Python, SageMath, SymPy, NumPy/SciPy, komputasi eksak dan floating, visualisasi, pengujian, notebook literat, serta eksperimen reprodusibel.',
     outcome: 'Menerapkan objek dan eksperimen matematis sambil membedakan komputasi, bukti pendukung, dan pembuktian.',
-    corpus: 'Rangka asli terpilih: edisi 12 unit + P01/P02 dan penyelesaian SciPy, SageMath, visualisasi, lingkungan, dan penguasaan',
-    note: 'Edisi mandiri 12 unit, 60 latihan, dan 98 halaman sudah selesai serta publik. Arsitektur B80 telah dipilih; produksi masih harus menutup P01/P02, SciPy/SageMath yang dijalankan, visualisasi bertahap, penguncian lingkungan, penguasaan, penangguhan prasyarat, dan QA akhir.',
-    edition: 'https://zenodo.org/records/22052053/files/00_KOMPUTASI_MATEMATIS_DAN_EKSPERIMEN_DAPAT_DIREPRODUKSI_ID.pdf?download=1',
+    corpus: 'Rangka asli lengkap: P01/P02 + 12 unit, SciPy, SageMath, visualisasi, lingkungan, dan penguasaan',
+    note: 'Edisi B80 lengkap dan terverifikasi publik: 14 unit, 75 latihan, 177 uji lulus, pembaca PDF 159 halaman, serta HTML, EPUB, sumber editabel, dan paket luring.',
+    edition: 'https://zenodo.org/records/22053905/files/Komputasi-Matematis-dan-Eksperimen-yang-Dapat-Direproduksi.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22052053'
+    zenodo: 'https://doi.org/10.5281/zenodo.22053905'
   },
   {
     id: 'B90', ownerLane: 'R010', level: 'B', topic: 'Peluang & Statistika', state: 'published',
@@ -97,9 +97,9 @@ export const courses = [
     purpose: 'Probabilitas diskrit dan kontinu, probabilitas bersyarat, peubah acak, harapan, limit, simulasi, jalan acak, dan rantai Markov.',
     outcome: 'Membangun dan menganalisis model peluang serta menghubungkan hasil analitik dengan simulasi.',
     corpus: 'Grinstead–Snell', note: 'Edisi 554 halaman selesai; backend modular berada dalam edisi kursus yang sama.',
-    edition: 'https://zenodo.org/records/22048655/files/PENGANTAR_PELUANG_GRINSTEAD_SNELL_ID.pdf?download=1',
+    edition: 'https://zenodo.org/records/22062144/files/PENGANTAR_PELUANG_GRINSTEAD_SNELL_ID.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/introduction-to-probability-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22048655'
+    zenodo: 'https://doi.org/10.5281/zenodo.22062144'
   },
   {
     id: 'B95', ownerLane: 'R011', level: 'B', topic: 'Peluang & Statistika', state: 'production',
@@ -128,9 +128,9 @@ export const courses = [
     purpose: 'Grup, subgrup, homomorfisme, struktur hasil bagi, aksi grup, dan penerapan simetri.',
     outcome: 'Bernalar secara struktural dengan objek aljabar dan membuktikan hasil dari aksioma.',
     corpus: 'Judson — Abstract Algebra: Theory and Applications', note: 'Edisi Bahasa Indonesia selesai dan tersedia untuk umum.',
-    edition: 'https://zenodo.org/records/22044963/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.21.1.pdf?download=1',
+    edition: 'https://zenodo.org/records/22062449/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.22.2.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22044963'
+    zenodo: 'https://doi.org/10.5281/zenodo.22062449'
   },
   {
     id: 'C40', ownerLane: 'R009', level: 'C', topic: 'Aljabar', state: 'published',
@@ -138,9 +138,9 @@ export const courses = [
     purpose: 'Gelanggang, ideal, gelanggang hasil bagi, domain integral, polinom, medan, perluasan, dan teori Galois awal.',
     outcome: 'Menggunakan struktur aljabar untuk menganalisis persamaan, faktorisasi, dan perluasan medan.',
     corpus: 'Judson — Abstract Algebra: Theory and Applications', note: 'Selesai dalam edisi Judson Bahasa Indonesia yang sama.',
-    edition: 'https://zenodo.org/records/22044963/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.21.1.pdf?download=1',
+    edition: 'https://zenodo.org/records/22062449/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.22.2.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22044963'
+    zenodo: 'https://doi.org/10.5281/zenodo.22062449'
   },
   {
     id: 'C50', ownerLane: 'R006-R008', level: 'C', topic: 'Analisis', state: 'production',
@@ -161,11 +161,14 @@ export const courses = [
     zenodo: 'https://doi.org/10.5281/zenodo.22052196'
   },
   {
-    id: 'C70', ownerLane: 'R012', level: 'C', topic: 'Diskrit & Logika', state: 'production',
+    id: 'C70', ownerLane: 'R012', level: 'C', topic: 'Diskrit & Logika', state: 'published',
     title: 'Kombinatorika Terapan', prerequisites: ['B10'],
     purpose: 'Pencacahan lanjut, rekurensi, fungsi pembangkit, teori graf, himpunan terurut sebagian, dan metode ekstremal.',
     outcome: 'Memilih dan membenarkan model serta teknik pembuktian kombinatorial untuk berbagai masalah diskrit.',
-    corpus: 'Keller–Trotter — Applied Combinatorics', note: 'Korpus terpilih; perbaikan aturan segmen backend sedang berlangsung.'
+    corpus: 'Keller–Trotter — Applied Combinatorics', note: 'Edisi Bahasa Indonesia lengkap dan terverifikasi publik: pembaca 350 halaman, 19.048 rekaman native, 19.049 rekaman backend bersama termasuk satu jangkar prasyarat eksternal B10, HTML luring, sumber koresponding, dan tiga mirror preservasi.',
+    edition: 'https://zenodo.org/records/22062005/files/00_KOMBINATORIKA_TERAPAN_ID-ID_COMPLETE_LINKED_READER_2026.08.22.2.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/applied-combinatorics-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22062005'
   },
   {
     id: 'C80', ownerLane: 'R013', level: 'C', topic: 'Diskrit & Logika', state: 'published',
@@ -201,6 +204,7 @@ export const courses = [
     corpus: 'Tea Time Numerical Analysis — edisi Bahasa Indonesia lengkap',
     note: 'Selesai dan terverifikasi publik: 31/31 unit, pembaca 387 halaman, 28.172 rekaman backend, 17.614 relasi, dan 20/20 uji akhir. Arsip Zenodo tetap publik; akses akun GitHub telah dipulihkan dan sinkronisasi mirror kembali dimungkinkan.',
     edition: 'https://zenodo.org/records/22054086/files/Tea-Time-Numerical-Analysis-id-ID.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/tea-time-numerical-analysis-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22054086'
   },
   {
@@ -347,23 +351,24 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.44.0',
+  version: '0.45.0',
   snapshotDate: '2026-08-23',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
   unresolvedRoleIds: [],
-  completedPublicCourseRoleIds: ['B10', 'B80', 'B90', 'C30', 'C40', 'C60', 'C80', 'C110', 'D110'],
+  completedPublicCourseRoleIds: ['B10', 'B80', 'B90', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'D110'],
   completedPublicRecordDois: [
-    '10.5281/zenodo.21973438',
-    '10.5281/zenodo.22052053',
-    '10.5281/zenodo.22048655',
-    '10.5281/zenodo.22044963',
+    '10.5281/zenodo.22060439',
+    '10.5281/zenodo.22053905',
+    '10.5281/zenodo.22062144',
+    '10.5281/zenodo.22062449',
     '10.5281/zenodo.22052196',
+    '10.5281/zenodo.22062005',
     '10.5281/zenodo.21932787',
     '10.5281/zenodo.22054086',
     '10.5281/zenodo.22062017'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22062832',
+  zenodo: 'https://doi.org/10.5281/zenodo.22063205',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -378,6 +383,11 @@ export const program = Object.freeze({
         corpus: 'Discrete Mathematics: An Open Introduction 4 — Bahasa Indonesia',
         recordCount: 163583,
         result: 'lossless-zero-copy-pass'
+      },
+      {
+        corpus: 'Komputasi Matematis dan Eksperimen yang Dapat Direproduksi — Bahasa Indonesia',
+        recordCount: 339,
+        result: 'lossless-zero-copy-one-to-one-native-catalog-adapter-pass'
       },
       {
         corpus: 'Open Logic Project — OLP-0722, Bahasa Indonesia',
@@ -395,14 +405,19 @@ export const program = Object.freeze({
         result: 'lossless-additive-adapter-pass'
       },
       {
+        corpus: 'Keller–Trotter — Applied Combinatorics, Bahasa Indonesia',
+        recordCount: 19049,
+        result: 'lossless-additive-one-common-record-per-native-record-pass'
+      },
+      {
         corpus: 'Mathematics in Lean — Bahasa Indonesia v4.30.0-id.3',
         recordCount: 10978,
         result: 'lossless-zero-copy-one-to-one-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22062832/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22062832/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22062832/files/program-matematika-indonesia-backend-v1-v0.44.0.zip?download=1'
+    schema: 'https://zenodo.org/records/22063205/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22063205/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22063205/files/program-matematika-indonesia-backend-v1-v0.45.0.zip?download=1'
   },
   repositories: {
     github: {
