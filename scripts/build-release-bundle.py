@@ -138,6 +138,7 @@ def main() -> None:
         "scripts/check-public-links.mjs",
         "scripts/export-release-catalog.mjs",
         "scripts/export-single-file-site.mjs",
+        "scripts/build-learner-start-pdf.py",
         "scripts/sync-sites-public.mjs",
         "scripts/validate-static-site.mjs",
         "scripts/verify-http-bytes.mjs",

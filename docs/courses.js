@@ -417,7 +417,7 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.51.1',
+  version: '0.51.2',
   snapshotDate: '2026-08-24',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
@@ -440,7 +440,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22062017'
   ],
   website: 'https://kokunoyumeto.github.io/program-matematika-indonesia/',
-  zenodo: 'https://doi.org/10.5281/zenodo.22087222',
+  zenodo: 'https://doi.org/10.5281/zenodo.22087340',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -502,9 +502,9 @@ export const program = Object.freeze({
         result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22087222/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22087222/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22087222/files/program-matematika-indonesia-backend-v1-v0.51.1.zip?download=1'
+    schema: 'https://zenodo.org/records/22087340/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22087340/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22087340/files/program-matematika-indonesia-backend-v1-v0.51.2.zip?download=1'
   },
   repositories: {
     github: {
