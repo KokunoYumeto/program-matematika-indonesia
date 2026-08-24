@@ -1,0 +1,541 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://doi.org/10.5281/zenodo.22059707/schema/profiles/source-format-profile-v1.schema.json",
+  "title": "Interlanguage source-format extension profile v1",
+  "description": "Strict payload for the interlanguage.source-profile extension. The common backend stays format-neutral while this profile preserves editable-source topology without opaque prose.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/cnxml"
+    },
+    {
+      "$ref": "#/$defs/pretext"
+    },
+    {
+      "$ref": "#/$defs/latex"
+    },
+    {
+      "$ref": "#/$defs/lyx"
+    },
+    {
+      "$ref": "#/$defs/mediawiki"
+    },
+    {
+      "$ref": "#/$defs/html_pressbooks"
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_sha256": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "uuid5": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "binding": {
+      "type": "object",
+      "required": [
+        "authority_file_revision_id",
+        "authority_path",
+        "identity_strategy",
+        "profile_version"
+      ],
+      "properties": {
+        "authority_file_revision_id": {
+          "$ref": "#/$defs/uuid5"
+        },
+        "authority_path": {
+          "type": "string"
+        },
+        "identity_strategy": {
+          "enum": [
+            "native_id",
+            "native_label",
+            "structural_path",
+            "source_order",
+            "target_only_localized_correction"
+          ]
+        },
+        "profile_version": {
+          "const": "1.0.0"
+        }
+      }
+    },
+    "cnxml": {
+      "type": "object",
+      "required": [
+        "authority_file_revision_id",
+        "authority_path",
+        "collection_path",
+        "document_id",
+        "format_profile",
+        "identity_strategy",
+        "profile_version",
+        "structural_xpath"
+      ],
+      "properties": {
+        "format_profile": {
+          "const": "cnxml"
+        },
+        "profile_version": {
+          "const": "1.0.0"
+        },
+        "authority_file_revision_id": {
+          "$ref": "#/$defs/uuid5"
+        },
+        "authority_path": {
+          "type": "string"
+        },
+        "identity_strategy": {
+          "enum": [
+            "native_id",
+            "structural_path",
+            "target_only_localized_correction"
+          ]
+        },
+        "collection_path": {
+          "type": "string"
+        },
+        "document_id": {
+          "type": "string"
+        },
+        "native_xml_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "structural_xpath": {
+          "type": "string"
+        },
+        "mathml_xpath": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "xref_scope": {
+          "enum": [
+            "same_document",
+            "cross_document",
+            "external",
+            "not_applicable"
+          ]
+        },
+        "xref_fragment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "media_occurrence_path": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "pretext": {
+      "type": "object",
+      "required": [
+        "authority_file_revision_id",
+        "authority_path",
+        "format_profile",
+        "identity_strategy",
+        "profile_version",
+        "structural_xpath"
+      ],
+      "properties": {
+        "format_profile": {
+          "const": "pretext"
+        },
+        "profile_version": {
+          "const": "1.0.0"
+        },
+        "authority_file_revision_id": {
+          "$ref": "#/$defs/uuid5"
+        },
+        "authority_path": {
+          "type": "string"
+        },
+        "identity_strategy": {
+          "enum": [
+            "native_id",
+            "native_label",
+            "structural_path",
+            "target_only_localized_correction"
+          ]
+        },
+        "structural_xpath": {
+          "type": "string"
+        },
+        "native_xml_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "xinclude_parent_revision_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/uuid5"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "division_kind": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "exercise_component_role": {
+          "enum": [
+            "statement",
+            "hint",
+            "answer",
+            "solution",
+            "not_applicable"
+          ]
+        },
+        "math_kind": {
+          "enum": [
+            "m",
+            "me",
+            "md",
+            "none"
+          ]
+        },
+        "ref_target": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "resolved_image_source": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "latex": {
+      "type": "object",
+      "required": [
+        "active_source_path",
+        "authority_file_revision_id",
+        "authority_path",
+        "format_profile",
+        "identity_strategy",
+        "profile_version",
+        "raw_end_byte",
+        "raw_start_byte"
+      ],
+      "properties": {
+        "format_profile": {
+          "const": "latex"
+        },
+        "profile_version": {
+          "const": "1.0.0"
+        },
+        "authority_file_revision_id": {
+          "$ref": "#/$defs/uuid5"
+        },
+        "authority_path": {
+          "type": "string"
+        },
+        "identity_strategy": {
+          "enum": [
+            "native_label",
+            "structural_path",
+            "source_order",
+            "target_only_localized_correction"
+          ]
+        },
+        "active_source_path": {
+          "type": "string"
+        },
+        "include_stack": {
+          "$ref": "#/$defs/string_array"
+        },
+        "macro_context_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "conditional_state": {
+          "enum": [
+            "active",
+            "inactive",
+            "unknown"
+          ]
+        },
+        "environment": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "label": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "references": {
+          "$ref": "#/$defs/string_array"
+        },
+        "external_documents": {
+          "$ref": "#/$defs/string_array"
+        },
+        "aux_dependencies": {
+          "$ref": "#/$defs/string_array"
+        },
+        "includegraphics_resolution": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "toolchain_dependencies": {
+          "$ref": "#/$defs/string_array"
+        },
+        "raw_start_byte": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_end_byte": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "raw_slice_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "lyx": {
+      "type": "object",
+      "required": [
+        "authority_file_revision_id",
+        "authority_path",
+        "format_profile",
+        "identity_strategy",
+        "layout",
+        "layout_ordinal",
+        "profile_version"
+      ],
+      "properties": {
+        "format_profile": {
+          "const": "lyx"
+        },
+        "profile_version": {
+          "const": "1.0.0"
+        },
+        "authority_file_revision_id": {
+          "$ref": "#/$defs/uuid5"
+        },
+        "authority_path": {
+          "type": "string"
+        },
+        "identity_strategy": {
+          "enum": [
+            "native_label",
+            "structural_path",
+            "source_order",
+            "target_only_localized_correction"
+          ]
+        },
+        "layout": {
+          "type": "string"
+        },
+        "layout_ordinal": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inset_ordinal": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "protected_token_sha256": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/sha256"
+          }
+        },
+        "ert_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "formula_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "mediawiki": {
+      "type": "object",
+      "required": [
+        "authority_file_revision_id",
+        "authority_path",
+        "format_profile",
+        "identity_strategy",
+        "page_id",
+        "page_title",
+        "profile_version",
+        "revision_id",
+        "revision_sha1"
+      ],
+      "properties": {
+        "format_profile": {
+          "const": "mediawiki"
+        },
+        "profile_version": {
+          "const": "1.0.0"
+        },
+        "authority_file_revision_id": {
+          "$ref": "#/$defs/uuid5"
+        },
+        "authority_path": {
+          "type": "string"
+        },
+        "identity_strategy": {
+          "enum": [
+            "native_id",
+            "structural_path",
+            "target_only_localized_correction"
+          ]
+        },
+        "page_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revision_id": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "revision_sha1": {
+          "type": "string"
+        },
+        "page_title": {
+          "type": "string"
+        },
+        "api_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rendered_html_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "expanded_tex_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "transclusion_revision_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uuid5"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "html_pressbooks": {
+      "type": "object",
+      "required": [
+        "authority_file_revision_id",
+        "authority_path",
+        "format_profile",
+        "html_path",
+        "identity_strategy",
+        "profile_version",
+        "source_html_sha256"
+      ],
+      "properties": {
+        "format_profile": {
+          "const": "html_pressbooks"
+        },
+        "profile_version": {
+          "const": "1.0.0"
+        },
+        "authority_file_revision_id": {
+          "$ref": "#/$defs/uuid5"
+        },
+        "authority_path": {
+          "type": "string"
+        },
+        "identity_strategy": {
+          "enum": [
+            "native_id",
+            "structural_path",
+            "source_order",
+            "target_only_localized_correction"
+          ]
+        },
+        "post_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "canonical_url": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "html_path": {
+          "type": "string"
+        },
+        "source_html_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "target_html_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "notebook_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uuid5"
+          }
+        },
+        "project_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/uuid5"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
