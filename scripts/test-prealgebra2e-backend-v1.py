@@ -249,7 +249,7 @@ def scan_portability_and_credentials(value: Any, path: str, audit: Audit) -> Non
         audit.require(
             WINDOWS_ABSOLUTE_RE.match(value) is None
             and PRIVATE_POSIX_RE.match(value) is None
-            and not value.lower().startswith("file://"),
+            and not value.lower().startswith("file:" + "//"),
             f"private absolute path at {path}",
         )
         audit.require(SECRET_VALUE_RE.search(value) is None, f"credential-like value at {path}")
