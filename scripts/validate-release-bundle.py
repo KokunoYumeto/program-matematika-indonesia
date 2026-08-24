@@ -287,7 +287,7 @@ def main() -> None:
         "10.5281/zenodo.22070458",
         "10.5281/zenodo.22053905",
         "10.5281/zenodo.22062144",
-        "10.5281/zenodo.22073827",
+        "10.5281/zenodo.22082567",
         "10.5281/zenodo.22062449",
         "10.5281/zenodo.22052196",
         "10.5281/zenodo.22062005",
@@ -302,23 +302,38 @@ def main() -> None:
     if catalog["counts"].get("completedPublicRecords") != 14:
         raise ValueError("catalog completed-public record count is not 14")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
-        raise ValueError("catalog completed-public course-role identities are not the v0.50 canonical set")
+        raise ValueError("catalog completed-public course-role identities are not the current canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
-        raise ValueError("catalog completed-public DOI identities are not the v0.50 canonical set")
+        raise ValueError("catalog completed-public DOI identities are not the current canonical set")
     published_role_ids = [course["id"] for course in catalog["courses"] if course["state"] == "published"]
     if published_role_ids != expected_completed_role_ids:
         raise ValueError("catalog published course states do not match completed-public role identities")
     courses_by_id = {course["id"]: course for course in catalog["courses"]}
     expected_lebl_repository = "https://github.com/KokunoYumeto/lebl-mathematics-family-id"
     expected_b40_repository = "https://github.com/KokunoYumeto/hefferon-linear-algebra-id"
-    expected_c10_edition = "https://zenodo.org/records/22073827/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1"
-    expected_c20_edition = "https://zenodo.org/records/22073827/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_11.2_Latihan.pdf?download=1"
+    expected_lebl_edition = "https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336"
+    a30_note = courses_by_id["A30"].get("note", "")
     if (
-        courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22073827"
-        or courses_by_id["C10"].get("edition") != expected_c10_edition
-        or courses_by_id["C10"].get("repository") != expected_lebl_repository
+        courses_by_id["A30"].get("state") != "production"
+        or not all(token in a30_note for token in ("HP-A30-001", "m49369", "m49371", "m49372", "m49374", "m49384", "owner-QA", "belum terintegrasi atau diterbitkan"))
     ):
-        raise ValueError("C10 does not point to the exact verified Lebl U319 edition")
+        raise ValueError("A30 does not preserve the manager-clean, non-integrated HP-A30-001 boundary")
+    b30_note = courses_by_id["B30"].get("note", "")
+    if (
+        courses_by_id["B30"].get("state") != "production"
+        or courses_by_id["B30"].get("zenodo") != "https://doi.org/10.5281/zenodo.22077325"
+        or courses_by_id["B30"].get("edition") != "https://zenodo.org/records/22077325/files/CLP-2_Kalkulus_Integral_Bahasa_Indonesia_checkpoint_2026-08-24_s2.1.pdf?download=1"
+        or not all(token in b30_note for token in ("WIP.9/CP0047-R1", "674 halaman", "863e9c5709ff961b3ba09f93da973a8188849d81a4e9680900e1d66a58232bd6", "105.047", "HP-CLP2-001/002", "belum lengkap"))
+    ):
+        raise ValueError("B30 does not preserve the exact verified CLP WIP.9 boundary")
+    if (
+        courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22082567"
+        or courses_by_id["C10"].get("edition") != expected_lebl_edition
+        or courses_by_id["C10"].get("repository") != expected_lebl_repository
+        or "334 halaman" not in courses_by_id["C10"].get("note", "")
+        or "336 unit" not in courses_by_id["C10"].get("note", "")
+    ):
+        raise ValueError("C10 does not point to the exact verified Lebl U336 edition")
     if (
         courses_by_id["B40"].get("state") != "published"
         or courses_by_id["B40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070458"
@@ -345,22 +360,33 @@ def main() -> None:
         raise ValueError("C130 does not point to the exact verified operations-research edition")
     if (
         courses_by_id["C20"].get("state") != "production"
-        or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22073827"
-        or courses_by_id["C20"].get("edition") != expected_c20_edition
+        or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22082567"
+        or courses_by_id["C20"].get("edition") != expected_lebl_edition
         or courses_by_id["C20"].get("repository") != expected_lebl_repository
+        or "198 halaman" not in courses_by_id["C20"].get("note", "")
+        or "semua 11 latihan" not in courses_by_id["C20"].get("note", "")
+        or "78543d4e8087e68589e8f15d0a3a969b3282247c7c9c2cdcb6f658dfa4b68e4f" not in courses_by_id["C20"].get("note", "")
     ):
-        raise ValueError("C20 is not preserved as the exact production-state U319 WIP")
+        raise ValueError("C20 is not preserved as the exact production-state U336 WIP")
     for role_id, expected_units in (("B70", "15 unit"), ("C50", "50 unit")):
         course = courses_by_id[role_id]
         if (
             course.get("state") != "production"
-            or course.get("edition")
-            or course.get("zenodo") != "https://doi.org/10.5281/zenodo.22073827"
+            or course.get("edition") != expected_lebl_edition
+            or course.get("zenodo") != "https://doi.org/10.5281/zenodo.22082567"
             or course.get("repository") != expected_lebl_repository
             or expected_units not in course.get("note", "")
             or "belum lengkap" not in course.get("note", "")
         ):
-            raise ValueError(f"{role_id} does not preserve its exact partial U319 evidence")
+            raise ValueError(f"{role_id} does not preserve its exact partial U336 evidence")
+    c100_corpus = courses_by_id["C100"].get("corpus", "")
+    c100_note = courses_by_id["C100"].get("note", "")
+    if (
+        courses_by_id["C100"].get("state") != "production"
+        or not all(token in c100_corpus for token in ("Petrunin", "donor utama", "CC BY-SA", "Clemens/Snapp", "pendamping terpisah", "CC BY-NC-SA/GPL"))
+        or not all(token in c100_note for token in ("Sintesis asli", "afin", "projektif", "non-Euklides", "rigor", "aset", "solusi", "asesmen", "masih harus diselesaikan"))
+    ):
+        raise ValueError("C100 does not preserve the selected Petrunin-primary and separate Clemens/Snapp-companion architecture")
     if (
         courses_by_id["C140"].get("state") != "production"
         or courses_by_id["C140"].get("zenodo") != "https://doi.org/10.5281/zenodo.22071140"
@@ -385,36 +411,57 @@ def main() -> None:
         raise ValueError("D30 does not preserve the verified incomplete checkpoint-20 boundary")
     if (
         courses_by_id["D40"].get("state") != "production"
-        or courses_by_id["D40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22074306"
-        or courses_by_id["D40"].get("edition") != "https://zenodo.org/api/records/22074306/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_07.pdf/content"
+        or courses_by_id["D40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22086227"
+        or courses_by_id["D40"].get("edition") != "https://zenodo.org/records/22086227/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_09.pdf?download=1"
         or "8 simpul FEniCSx (7 wajib + 1 pengayaan)" not in courses_by_id["D40"].get("corpus", "")
-        or "46 halaman" not in courses_by_id["D40"].get("note", "")
+        or not all(token in courses_by_id["D40"].get("note", "") for token in ("Unit 09", "77 halaman", "4.414.297 byte", "f2869bc0c38153d2223a03e8dccc85c306cefdc4eea15f9fe6a560a6d1f7ce91", "klasifikasi selesai"))
     ):
-        raise ValueError("D40 does not preserve the verified Unit-07 boundary and eight-node FEniCSx architecture")
+        raise ValueError("D40 does not preserve the verified Unit-09 boundary and eight-node FEniCSx architecture")
     if (
         courses_by_id["D50"].get("state") != "production"
         or courses_by_id["D50"].get("zenodo") != "https://doi.org/10.5281/zenodo.22073928"
         or courses_by_id["D50"].get("edition") != "https://zenodo.org/api/records/22073928/files/geometri-diferensial-manifold-mulus-hingga-unit-10-id.pdf/content"
         or "165 halaman" not in courses_by_id["D50"].get("note", "")
+        or "Unit 11–13" not in courses_by_id["D50"].get("note", "")
+        or "belum diterbitkan" not in courses_by_id["D50"].get("note", "")
     ):
         raise ValueError("D50 does not preserve the verified incomplete Unit-10 boundary")
     if (
         courses_by_id["D60"].get("state") != "production"
-        or courses_by_id["D60"].get("zenodo") != "https://doi.org/10.5281/zenodo.22074233"
-        or courses_by_id["D60"].get("edition") != "https://kokunoyumeto.github.io/algebraic-topology-id/units-001-025/"
+        or courses_by_id["D60"].get("zenodo") != "https://doi.org/10.5281/zenodo.22084021"
+        or courses_by_id["D60"].get("edition") != "https://zenodo.org/api/records/22084021/files/00_TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_READER.pdf/content"
         or courses_by_id["D60"].get("repository") != "https://github.com/KokunoYumeto/algebraic-topology-id"
-        or "Unit 25 (298 halaman)" not in courses_by_id["D60"].get("note", "")
-        or "Unit 24 (286 halaman)" not in courses_by_id["D60"].get("note", "")
+        or not all(token in courses_by_id["D60"].get("note", "") for token in ("Roberts Kuliah 1–30 lengkap", "Fomberg §§1.1–1.2", "362 halaman", "2.322.978 byte", "fb81f2b2c0f73c17c4e3be4eaae164eaeaeb0c4ff0661580acfc7aa9b6d5f749", "masih diproduksi"))
     ):
-        raise ValueError("D60 does not distinguish the verified Pages Unit-25 and Zenodo Unit-24 boundaries")
+        raise ValueError("D60 does not preserve the verified Roberts-30 plus Fomberg-1.1-1.2 boundary")
+    d70_corpus = courses_by_id["D70"].get("corpus", "")
+    d70_note = courses_by_id["D70"].get("note", "")
+    if (
+        courses_by_id["D70"].get("state") != "production"
+        or not all(token in d70_corpus for token in ("Wen-Wei Li", "Alexander Duncan", "CC BY 4.0", "CRing/GFDL", "penghubung dan solusi asli"))
+        or "Etingof/MIT tetap referensi saja" not in d70_note
+        or "lembar tugas eksternal dikecualikan" not in d70_note
+    ):
+        raise ValueError("D70 does not preserve the selected Li-Duncan-CRing architecture")
+    d90_corpus = courses_by_id["D90"].get("corpus", "")
+    d90_note = courses_by_id["D90"].get("note", "")
+    if (
+        courses_by_id["D90"].get("state") != "production"
+        or courses_by_id["D90"].get("zenodo") != "https://doi.org/10.5281/zenodo.22077419"
+        or courses_by_id["D90"].get("edition") != "https://zenodo.org/records/22077419/files/D90-MIT-10-kuliah-6-irisan-tertutup-dan-hiperbidang-id.pdf?download=1"
+        or courses_by_id["D90"].get("repository") != "https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id"
+        or not all(token in d90_corpus for token in ("Habring arXiv 2607.11664v1", "CC BY 4.0", "Becker", "MIT", "KKT", "stokastik", "variasional", "solusi asli"))
+        or not all(token in d90_note for token in ("MIT 6.253 dan Royer", "pendamping", "bukan spine kanonik", "MIT L10", "10 halaman", "3b01d57e8e8a7d7887f36cfdc205d1b68d1d007a152bd8e0cd75479628e1abc0", "L11 masih lokal"))
+    ):
+        raise ValueError("D90 does not preserve the Habring-Becker spine and exact public MIT-L10 companion boundary")
     if (
         courses_by_id["D100"].get("state") != "production"
-        or courses_by_id["D100"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070936"
-        or courses_by_id["D100"].get("edition") != "https://zenodo.org/api/records/22070936/files/kurva-aljabar-id-unit-08.pdf/content"
-        or "161 halaman" not in courses_by_id["D100"].get("note", "")
-        or "bukan rilis publik" not in courses_by_id["D100"].get("note", "")
+        or courses_by_id["D100"].get("zenodo") != "https://doi.org/10.5281/zenodo.22077441"
+        or courses_by_id["D100"].get("edition") != "https://zenodo.org/records/22077441/files/kurva-aljabar-id-unit-15.pdf?download=1"
+        or courses_by_id["D100"].get("repository") != "https://github.com/KokunoYumeto/algebraic-geometry-bridge-id"
+        or not all(token in courses_by_id["D100"].get("note", "") for token in ("Unit 1–15", "267 halaman", "6.502.255 byte", "e56aae414a9d7e252485d06e7da790fae9bf972514c8fe47fc31d26eddd3699c", "Unit 16–18", "bukan rilis publik", "Unit 19", "belum didispatch"))
     ):
-        raise ValueError("D100 does not preserve the public Unit-08 and internal Unit-09 distinction")
+        raise ValueError("D100 does not preserve the public Unit-15, local Unit-16-18, and frozen-not-dispatched Unit-19 distinction")
 
     expected_catalog_migrations = []
     for migration_id, metadata in EXPECTED_MIGRATIONS.items():

@@ -24,7 +24,7 @@ const completedPublicRecordDois = [
   '10.5281/zenodo.22070458',
   '10.5281/zenodo.22053905',
   '10.5281/zenodo.22062144',
-  '10.5281/zenodo.22073827',
+  '10.5281/zenodo.22082567',
   '10.5281/zenodo.22062449',
   '10.5281/zenodo.22052196',
   '10.5281/zenodo.22062005',
@@ -53,8 +53,8 @@ assert.deepEqual(
 );
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar lima belas peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.50.0', 'Versi snapshot pusat harus 0.50.0.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22074701', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.version, '0.51.0', 'Versi snapshot pusat harus 0.51.0.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22086601', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -116,7 +116,7 @@ assert.deepEqual(
   'Bukti migrasi korpus lengkap berubah tanpa pembaruan kanon.'
 );
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
-assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22074701/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.50.0 yang dicadangkan.');
+assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22086601/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.51.0 yang dicadangkan.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
 assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar empat belas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
@@ -145,26 +145,35 @@ assert.equal(courses.find(({ id }) => id === 'C130')?.repository, 'https://githu
 assert.match(courses.find(({ id }) => id === 'C130')?.note ?? '', /666 halaman.*1\.993 unit.*9\.545 relasi/, 'C130 harus mencatat batas lengkap riset operasi yang terverifikasi.');
 assert.equal(courses.find(({ id }) => id === 'C70')?.state, 'published', 'C70 harus menunjuk edisi Applied Combinatorics lengkap yang terverifikasi publik.');
 assert.equal(courses.find(({ id }) => id === 'C70')?.zenodo, 'https://doi.org/10.5281/zenodo.22062005', 'C70 harus menunjuk DOI versi lengkap yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'A30')?.state, 'production', 'A30 harus tetap dalam produksi selama paket pembantu belum diintegrasikan pemilik.');
+assert.match(courses.find(({ id }) => id === 'A30')?.note ?? '', /HP-A30-001.*m49369.*m49371.*m49372.*m49374.*m49384.*owner-QA.*belum terintegrasi atau diterbitkan/s, 'A30 harus mencatat cakupan manager-clean HP-A30-001 tanpa mengklaim integrasi atau publikasi.');
+assert.equal(courses.find(({ id }) => id === 'B30')?.state, 'production', 'B30 harus tetap dalam produksi sampai R003 lengkap.');
+assert.equal(courses.find(({ id }) => id === 'B30')?.zenodo, 'https://doi.org/10.5281/zenodo.22077325', 'B30 harus menunjuk checkpoint CLP WIP.9 yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'B30')?.edition, 'https://zenodo.org/records/22077325/files/CLP-2_Kalkulus_Integral_Bahasa_Indonesia_checkpoint_2026-08-24_s2.1.pdf?download=1', 'B30 harus menunjuk pembaca WIP.9 674 halaman yang tepat.');
+assert.match(courses.find(({ id }) => id === 'B30')?.note ?? '', /WIP\.9\/CP0047-R1.*674 halaman.*863e9c5709ff961b3ba09f93da973a8188849d81a4e9680900e1d66a58232bd6.*105\.047.*HP-CLP2-001\/002.*belum lengkap/s, 'B30 harus mencatat batas WIP.9, replay backend, penerimaan paket, dan ketidaklengkapan R003.');
 assert.equal(courses.find(({ id }) => id === 'C10')?.state, 'published', 'C10 harus menunjuk Jilid I Lebl lengkap yang terverifikasi publik.');
-assert.equal(courses.find(({ id }) => id === 'C10')?.zenodo, 'https://doi.org/10.5281/zenodo.22073827', 'C10 harus menunjuk DOI U319 yang terverifikasi.');
-assert.equal(courses.find(({ id }) => id === 'C10')?.edition, 'https://zenodo.org/records/22073827/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1', 'C10 harus menunjuk pembaca lengkap Jilid I yang tepat.');
+assert.equal(courses.find(({ id }) => id === 'C10')?.zenodo, 'https://doi.org/10.5281/zenodo.22082567', 'C10 harus menunjuk DOI U336 yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'C10')?.edition, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336', 'C10 harus menunjuk rilis U336 keluarga Lebl.');
 assert.equal(courses.find(({ id }) => id === 'C10')?.repository, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id', 'C10 harus menunjuk repositori keluarga Lebl yang tepat.');
-assert.match(courses.find(({ id }) => id === 'C10')?.note ?? '', /334 halaman/, 'C10 harus mencatat panjang pembaca lengkap yang terverifikasi.');
+assert.match(courses.find(({ id }) => id === 'C10')?.note ?? '', /Jilid I lengkap.*334 halaman.*U336.*336 unit.*R006 271.*R007 15.*R008 50/s, 'C10 harus mencatat Jilid I lengkap dan komposisi U336.');
 assert.equal(courses.find(({ id }) => id === 'C20')?.state, 'production', 'C20 harus tetap ditandai sedang diproduksi.');
-assert.equal(courses.find(({ id }) => id === 'C20')?.zenodo, 'https://doi.org/10.5281/zenodo.22073827', 'C20 harus menunjuk cuplikan publik U319.');
-assert.equal(courses.find(({ id }) => id === 'C20')?.edition, 'https://zenodo.org/records/22073827/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_11.2_Latihan.pdf?download=1', 'C20 harus menunjuk pembaca WIP Jilid II U319 yang tepat.');
+assert.equal(courses.find(({ id }) => id === 'C20')?.zenodo, 'https://doi.org/10.5281/zenodo.22082567', 'C20 harus menunjuk cuplikan publik U336.');
+assert.equal(courses.find(({ id }) => id === 'C20')?.edition, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336', 'C20 harus menunjuk rilis U336 keluarga Lebl.');
 assert.equal(courses.find(({ id }) => id === 'C20')?.repository, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id', 'C20 harus menunjuk repositori keluarga Lebl yang tepat.');
-assert.match(courses.find(({ id }) => id === 'C20')?.note ?? '', /180 halaman.*bukan edisi lengkap/, 'C20 harus menyatakan batas cuplikan dan ketidaklengkapannya.');
+assert.match(courses.find(({ id }) => id === 'C20')?.note ?? '', /U336.*198 halaman.*Bagian 11\.4.*semua 11 latihan.*78543d4e8087e68589e8f15d0a3a969b3282247c7c9c2cdcb6f658dfa4b68e4f.*bukan edisi lengkap/s, 'C20 harus mencatat batas U336 Jilid II, latihan, hash, dan ketidaklengkapannya.');
 assert.equal(courses.find(({ id }) => id === 'B70')?.state, 'production', 'B70 harus tetap dalam produksi karena korpus ODE belum lengkap.');
-assert.equal(courses.find(({ id }) => id === 'B70')?.edition, undefined, 'B70 belum memiliki pembaca ODE mandiri.');
-assert.equal(courses.find(({ id }) => id === 'B70')?.zenodo, 'https://doi.org/10.5281/zenodo.22073827', 'B70 harus menunjuk checkpoint U319 yang memuat unit R007.');
+assert.equal(courses.find(({ id }) => id === 'B70')?.edition, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336', 'B70 harus menunjuk rilis U336 keluarga Lebl.');
+assert.equal(courses.find(({ id }) => id === 'B70')?.zenodo, 'https://doi.org/10.5281/zenodo.22082567', 'B70 harus menunjuk checkpoint U336 yang memuat unit R007.');
 assert.equal(courses.find(({ id }) => id === 'B70')?.repository, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id', 'B70 harus menunjuk repositori keluarga Lebl.');
-assert.match(courses.find(({ id }) => id === 'B70')?.note ?? '', /15 unit.*belum lengkap/, 'B70 harus menyatakan batas U319 dan ketidaklengkapannya.');
+assert.match(courses.find(({ id }) => id === 'B70')?.note ?? '', /U336.*15 unit.*rumus integral tentu.*belum lengkap/s, 'B70 harus menyatakan batas U336 dan ketidaklengkapannya.');
 assert.equal(courses.find(({ id }) => id === 'C50')?.state, 'production', 'C50 harus tetap dalam produksi karena korpus analisis kompleks belum lengkap.');
-assert.equal(courses.find(({ id }) => id === 'C50')?.edition, undefined, 'C50 belum memiliki pembaca Analisis Kompleks mandiri.');
-assert.equal(courses.find(({ id }) => id === 'C50')?.zenodo, 'https://doi.org/10.5281/zenodo.22073827', 'C50 harus menunjuk checkpoint U319 yang memuat unit R008.');
+assert.equal(courses.find(({ id }) => id === 'C50')?.edition, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336', 'C50 harus menunjuk rilis U336 keluarga Lebl.');
+assert.equal(courses.find(({ id }) => id === 'C50')?.zenodo, 'https://doi.org/10.5281/zenodo.22082567', 'C50 harus menunjuk checkpoint U336 yang memuat unit R008.');
 assert.equal(courses.find(({ id }) => id === 'C50')?.repository, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id', 'C50 harus menunjuk repositori keluarga Lebl.');
-assert.match(courses.find(({ id }) => id === 'C50')?.note ?? '', /50 unit.*belum lengkap/, 'C50 harus menyatakan batas U319 dan ketidaklengkapannya.');
+assert.match(courses.find(({ id }) => id === 'C50')?.note ?? '', /U336.*50 unit.*belum lengkap/s, 'C50 harus menyatakan batas U336 dan ketidaklengkapannya.');
+assert.equal(courses.find(({ id }) => id === 'C100')?.state, 'production', 'C100 harus tetap dalam produksi sampai sintesis dan penutupan asli selesai.');
+assert.match(courses.find(({ id }) => id === 'C100')?.corpus ?? '', /Petrunin.*donor utama.*CC BY-SA.*Clemens\/Snapp.*pendamping terpisah.*CC BY-NC-SA\/GPL/s, 'C100 harus membedakan donor utama Petrunin dan pendamping Clemens/Snapp dengan hak terpisah.');
+assert.match(courses.find(({ id }) => id === 'C100')?.note ?? '', /sintesis asli.*afin.*projektif.*non-Euklides.*rigor.*aset.*solusi.*asesmen.*masih harus diselesaikan/is, 'C100 harus mencatat pekerjaan sintesis dan penutupan yang belum selesai.');
 assert.equal(courses.find(({ id }) => id === 'C140')?.state, 'production', 'C140 harus tetap dalam produksi karena spine dan pendampingnya belum lengkap.');
 assert.equal(courses.find(({ id }) => id === 'C140')?.zenodo, 'https://doi.org/10.5281/zenodo.22071140', 'C140 harus menunjuk checkpoint pendukung Random 16/29.');
 assert.equal(courses.find(({ id }) => id === 'C140')?.repository, 'https://github.com/KokunoYumeto/mathematical-statistics-id', 'C140 harus menunjuk repositori Statistika Matematis.');
@@ -181,23 +190,34 @@ assert.equal(courses.find(({ id }) => id === 'D30')?.zenodo, 'https://doi.org/10
 assert.match(courses.find(({ id }) => id === 'D30')?.note ?? '', /checkpoint publik 20.*223 halaman.*Tiga dari delapan/i, 'D30 harus menyatakan batas publik dan sisa produksi dengan tepat.');
 assert.equal(courses.find(({ id }) => id === 'D40')?.state, 'production', 'D40 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D40')?.corpus ?? '', /Dionne.*8 simpul FEniCSx \(7 wajib \+ 1 pengayaan\)/, 'D40 harus mencatat delapan simpul Dionne/FEniCSx yang dipilih.');
-assert.equal(courses.find(({ id }) => id === 'D40')?.zenodo, 'https://doi.org/10.5281/zenodo.22074306', 'D40 harus menunjuk Unit 07 Zenodo yang terverifikasi.');
-assert.match(courses.find(({ id }) => id === 'D40')?.note ?? '', /Unit 07.*46 halaman.*belum dipublikasikan/, 'D40 harus menyatakan batas publik dan kemajuan lokal tanpa mencampurkannya.');
+assert.equal(courses.find(({ id }) => id === 'D40')?.zenodo, 'https://doi.org/10.5281/zenodo.22086227', 'D40 harus menunjuk Unit 09 Zenodo yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'D40')?.edition, 'https://zenodo.org/records/22086227/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_09.pdf?download=1', 'D40 harus menunjuk pembaca Unit 09 yang tepat.');
+assert.match(courses.find(({ id }) => id === 'D40')?.note ?? '', /Unit 09.*77 halaman.*4\.414\.297 byte.*f2869bc0c38153d2223a03e8dccc85c306cefdc4eea15f9fe6a560a6d1f7ce91.*klasifikasi selesai.*tetap diproduksi/s, 'D40 harus menyatakan batas publik Unit 09 dan sisa produksi.');
 assert.equal(courses.find(({ id }) => id === 'D50')?.state, 'production', 'D50 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D50')?.corpus ?? '', /Brenner.*jembatan.*ujian/, 'D50 harus mencatat arsitektur Brenner, jembatan asli, dan bank ujian resmi.');
 assert.equal(courses.find(({ id }) => id === 'D50')?.zenodo, 'https://doi.org/10.5281/zenodo.22073928', 'D50 harus menunjuk Unit 10 Zenodo yang terverifikasi.');
-assert.match(courses.find(({ id }) => id === 'D50')?.note ?? '', /Unit 10.*165 halaman.*Unit 11–12/, 'D50 harus menyatakan batas publik Unit 10 dan kemajuan lokal berikutnya.');
+assert.match(courses.find(({ id }) => id === 'D50')?.note ?? '', /Unit 10.*165 halaman.*Unit 11–13.*belum diterbitkan/, 'D50 harus menyatakan batas publik Unit 10 dan kemajuan lokal Unit 11–13.');
 assert.equal(courses.find(({ id }) => id === 'D60')?.state, 'production', 'D60 harus terpilih dan ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D60')?.corpus ?? '', /Roberts.*Fomberg.*penutupan/, 'D60 harus mencatat arsitektur Roberts/Fomberg/penutupan asli yang dipilih.');
 assert.equal(courses.find(({ id }) => id === 'D60')?.repository, 'https://github.com/KokunoYumeto/algebraic-topology-id', 'D60 harus menunjuk repositori kerja publik yang tepat.');
-assert.equal(courses.find(({ id }) => id === 'D60')?.zenodo, 'https://doi.org/10.5281/zenodo.22074233', 'D60 harus menunjuk batas preservasi Zenodo Unit 24.');
-assert.match(courses.find(({ id }) => id === 'D60')?.note ?? '', /Unit 25 \(298 halaman\).*Unit 24 \(286 halaman\).*Unit 26/, 'D60 harus membedakan batas GitHub/Pages, Zenodo, dan kemajuan lokal.');
+assert.equal(courses.find(({ id }) => id === 'D60')?.zenodo, 'https://doi.org/10.5281/zenodo.22084021', 'D60 harus menunjuk batas Roberts 1–30 dan Fomberg §§1.1–1.2 yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'D60')?.edition, 'https://zenodo.org/api/records/22084021/files/00_TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_READER.pdf/content', 'D60 harus menunjuk pembaca komposit 362 halaman yang tepat.');
+assert.match(courses.find(({ id }) => id === 'D60')?.note ?? '', /Roberts Kuliah 1–30 lengkap.*Fomberg §§1\.1–1\.2.*362 halaman.*2\.322\.978 byte.*fb81f2b2c0f73c17c4e3be4eaae164eaeaeb0c4ff0661580acfc7aa9b6d5f749.*masih diproduksi/s, 'D60 harus mencatat batas publik komposit terbaru dan sisa penutupannya.');
+assert.equal(courses.find(({ id }) => id === 'D70')?.state, 'production', 'D70 harus tetap dalam produksi sampai korpus pascasarjana selesai.');
+assert.match(courses.find(({ id }) => id === 'D70')?.corpus ?? '', /Wen-Wei Li.*Alexander Duncan.*CC BY 4\.0.*CRing\/GFDL.*penghubung dan solusi asli/s, 'D70 harus memakai arsitektur Li/Duncan/CRing dan lapisan asli yang dipilih.');
+assert.match(courses.find(({ id }) => id === 'D70')?.note ?? '', /Etingof\/MIT tetap referensi saja.*lembar tugas eksternal dikecualikan/s, 'D70 harus menjaga Etingof sebagai referensi dan mengecualikan lembar tugas eksternal.');
 assert.equal(courses.find(({ id }) => id === 'D90')?.state, 'production', 'D90 harus terpilih dan ditandai sedang diproduksi sampai korpus selesai.');
-assert.match(courses.find(({ id }) => id === 'D90')?.corpus ?? '', /MIT OCW 6\.253.*Royer.*empat unit/, 'D90 harus mencatat arsitektur MIT/Royer/penutupan asli yang dipilih.');
+assert.match(courses.find(({ id }) => id === 'D90')?.corpus ?? '', /Habring arXiv 2607\.11664v1.*CC BY 4\.0.*Becker.*MIT.*KKT.*stokastik.*variasional.*solusi asli/s, 'D90 harus mencatat spine Habring, modul Becker, dan penutupan asli yang dipilih.');
+assert.match(courses.find(({ id }) => id === 'D90')?.note ?? '', /MIT 6\.253 dan Royer.*pendamping.*bukan spine kanonik.*MIT L10.*10 halaman.*3b01d57e8e8a7d7887f36cfdc205d1b68d1d007a152bd8e0cd75479628e1abc0.*L11 masih lokal/s, 'D90 harus memisahkan spine editabel dari checkpoint pendamping publik dan kemajuan lokal.');
+assert.equal(courses.find(({ id }) => id === 'D90')?.repository, 'https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id', 'D90 harus menunjuk repositori kerja publik yang tepat.');
+assert.equal(courses.find(({ id }) => id === 'D90')?.zenodo, 'https://doi.org/10.5281/zenodo.22077419', 'D90 harus menunjuk checkpoint pendamping MIT L10 yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'D90')?.edition, 'https://zenodo.org/records/22077419/files/D90-MIT-10-kuliah-6-irisan-tertutup-dan-hiperbidang-id.pdf?download=1', 'D90 harus menunjuk PDF pendamping MIT L10 yang tepat.');
 assert.equal(courses.find(({ id }) => id === 'D100')?.state, 'production', 'D100 harus terpilih dan ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D100')?.corpus ?? '', /Brenner Algebraische Kurven.*Bündel, Garben und Kohomologie/, 'D100 harus mencatat dua volume Brenner yang dipilih.');
-assert.equal(courses.find(({ id }) => id === 'D100')?.zenodo, 'https://doi.org/10.5281/zenodo.22070936', 'D100 harus menunjuk batas publik Unit 08.');
-assert.match(courses.find(({ id }) => id === 'D100')?.note ?? '', /Unit 1–8.*161 halaman.*Unit 9.*bukan rilis publik/, 'D100 harus membedakan batas publik Unit 08 dari checkpoint internal Unit 09.');
+assert.equal(courses.find(({ id }) => id === 'D100')?.zenodo, 'https://doi.org/10.5281/zenodo.22077441', 'D100 harus menunjuk batas publik Unit 15.');
+assert.equal(courses.find(({ id }) => id === 'D100')?.repository, 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id', 'D100 harus menunjuk repositori jembatan geometri aljabar yang tepat.');
+assert.equal(courses.find(({ id }) => id === 'D100')?.edition, 'https://zenodo.org/records/22077441/files/kurva-aljabar-id-unit-15.pdf?download=1', 'D100 harus menunjuk pembaca Unit 15 yang tepat.');
+assert.match(courses.find(({ id }) => id === 'D100')?.note ?? '', /Unit 1–15.*267 halaman.*6\.502\.255 byte.*e56aae414a9d7e252485d06e7da790fae9bf972514c8fe47fc31d26eddd3699c.*Unit 16–18.*bukan rilis publik.*Unit 19.*belum didispatch/s, 'D100 harus membedakan batas publik Unit 15, checkpoint lokal, dan paket Unit 19 yang belum didispatch.');
 assert.equal(courses.find(({ id }) => id === 'C110')?.zenodo, 'https://doi.org/10.5281/zenodo.22054086', 'C110 harus menunjuk DOI edisi lengkap yang terverifikasi.');
 
 const ids = new Set(courses.map(({ id }) => id));
@@ -227,12 +247,12 @@ assert.match(html, /<html lang="id">/, 'Bahasa dokumen harus Bahasa Indonesia.')
 assert.match(html, /href="styles\.css"/, 'Stylesheet statis tidak terhubung.');
 assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
-assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22074701\/files\/program-matematika-indonesia-og-v0\.50\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
-assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22074701"/, 'URL kanonis Zenodo tidak tepat.');
+assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22086601\/files\/program-matematika-indonesia-og-v0\.51\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
+assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22086601"/, 'URL kanonis Zenodo tidak tepat.');
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Produksi yang belum selesai tetap dilabeli dengan jelas/, 'Ringkasan batas produksi hilang.');
 assert.match(html, /<strong>15<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan lima belas peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22074701/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22086601/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
 assert.match(html, /https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia/, 'Tautan repositori GitHub pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');
 assert.match(app, /course\.repository/, 'Aplikasi harus menampilkan tautan repositori korpus pada kartu edisi.');

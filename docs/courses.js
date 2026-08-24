@@ -29,7 +29,7 @@ export const courses = [
     title: 'Prakalkulus dan Trigonometri', prerequisites: ['A20'],
     purpose: 'Transformasi fungsi, model polinom, rasional, eksponensial dan logaritmik, trigonometri, geometri analitik, sistem, barisan, dan limit awal.',
     outcome: 'Memodelkan dengan fungsi elementer dan memulai kalkulus tanpa menyembunyikan kebutuhan perbaikan aljabar.',
-    corpus: 'OpenStax Precalculus 2e', note: 'Korpus terpilih; fondasi modular enam modul sudah lolos audit byte.'
+    corpus: 'OpenStax Precalculus 2e', note: 'Korpus terpilih; fondasi modular enam modul sudah lolos audit byte. Paket pembantu HP-A30-001 berstatus manager-clean untuk lima unit m49369, m49371, m49372, m49374, dan m49384; paket menunggu QA pemilik kanonik (owner-QA) dan integrasi tiga-arah, serta belum terintegrasi atau diterbitkan.'
   },
   {
     id: 'B10', ownerLane: 'R004', level: 'B', topic: 'Diskrit & Logika', state: 'published',
@@ -54,7 +54,10 @@ export const courses = [
     title: 'Kalkulus Integral', prerequisites: ['B20'],
     purpose: 'Integral, teorema dasar kalkulus, teknik integrasi, penerapan, barisan, deret, dan persamaan diferensial awal.',
     outcome: 'Memilih dan membenarkan metode integral atau deret serta menghubungkan akumulasi dengan laju lokal.',
-    corpus: 'CLP Calculus — kalkulus integral', note: 'Korpus terpilih dalam jalur produksi CLP bersama.'
+    corpus: 'CLP Calculus — kalkulus integral',
+    note: 'Checkpoint publik CLP-2 WIP.9/CP0047-R1 memuat pembaca 674 halaman, SHA-256 863e9c5709ff961b3ba09f93da973a8188849d81a4e9680900e1d66a58232bd6. Backend 105.047 rekaman dapat direproduksi persis dan paket HP-CLP2-001/002 telah diterima; R003 tetap belum lengkap.',
+    edition: 'https://zenodo.org/records/22077325/files/CLP-2_Kalkulus_Integral_Bahasa_Indonesia_checkpoint_2026-08-24_s2.1.pdf?download=1',
+    zenodo: 'https://doi.org/10.5281/zenodo.22077325'
   },
   {
     id: 'B40', ownerLane: 'R005', level: 'B', topic: 'Aljabar', state: 'published',
@@ -87,9 +90,10 @@ export const courses = [
     purpose: 'Persamaan orde satu, persamaan linear orde tinggi, sistem, transformasi, deret, bidang fase nonlinear, dan pengantar Fourier/PDP.',
     outcome: 'Merumuskan, menganalisis, mendekati, dan mengomunikasikan solusi model PDB standar.',
     corpus: 'Korpus keluarga Lebl',
-    note: 'Checkpoint publik U319 memuat 15 unit R007: pengantar selesai dan Bab 1 mencapai rumus integral tentu untuk masalah nilai awal. Korpus ODE tetap belum lengkap dan belum memiliki pembaca mandiri.',
+    note: 'Checkpoint publik U336 memuat 15 unit R007 sampai rumus integral tentu untuk masalah nilai awal. Korpus ODE tetap belum lengkap dan belum memiliki pembaca mandiri.',
+    edition: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336',
     repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
+    zenodo: 'https://doi.org/10.5281/zenodo.22082567'
   },
   {
     id: 'B80', ownerLane: 'O002', level: 'B', topic: 'Komputasi & Optimisasi', state: 'published',
@@ -125,10 +129,10 @@ export const courses = [
     purpose: 'Bilangan real, barisan, deret, kontinuitas, diferensiasi, dan integrasi Riemann dengan penekanan pada bukti.',
     outcome: 'Mengendalikan kuantor dan menyusun argumen rigor tentang limit, kontinuitas, turunan, dan integral.',
     corpus: 'Lebl — Basic Analysis, Volume I',
-    note: 'Jilid I lengkap dan terverifikasi publik: pembaca Bahasa Indonesia 334 halaman. Rekaman U319 mempertahankan pembaca lengkap ini sambil memperbarui kemajuan Jilid II, ODE, dan analisis kompleks.',
-    edition: 'https://zenodo.org/records/22073827/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1',
+    note: 'Jilid I lengkap, 334 halaman, dan tetap terverifikasi publik di U336; keluarga Lebl memuat 336 unit: R006 271, R007 15, dan R008 50.',
+    edition: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336',
     repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
+    zenodo: 'https://doi.org/10.5281/zenodo.22082567'
   },
   {
     id: 'C20', ownerLane: 'R006-R008', level: 'C', topic: 'Analisis', state: 'production',
@@ -136,10 +140,10 @@ export const courses = [
     purpose: 'Barisan fungsi, ruang metrik, diferensiasi dan integrasi multivariabel, serta konstruksi limit.',
     outcome: 'Bekerja fasih dengan abstraksi ruang metrik dan bukti analitik multivariabel.',
     corpus: 'Lebl — Basic Analysis, Volume II',
-    note: 'Cuplikan kerja publik U319 sepanjang 180 halaman mencapai seluruh sepuluh latihan yang menutup Bagian 11.2. Ini tetap pekerjaan berjalan, bukan edisi lengkap C20.',
-    edition: 'https://zenodo.org/records/22073827/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_11.2_Latihan.pdf?download=1',
+    note: 'Checkpoint publik U336 memuat pembaca Jilid II 198 halaman sampai akhir Bagian 11.4, termasuk semua 11 latihan; SHA-256 78543d4e8087e68589e8f15d0a3a969b3282247c7c9c2cdcb6f658dfa4b68e4f. Ini tetap pekerjaan berjalan, bukan edisi lengkap C20.',
+    edition: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336',
     repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
+    zenodo: 'https://doi.org/10.5281/zenodo.22082567'
   },
   {
     id: 'C30', ownerLane: 'R009', level: 'C', topic: 'Aljabar', state: 'published',
@@ -167,9 +171,10 @@ export const courses = [
     purpose: 'Fungsi holomorf, integrasi kontur, teori Cauchy, residu, keluarga normal, pemetaan konformal, fungsi harmonik, dan kelanjutan analitik.',
     outcome: 'Membaca dan menghasilkan pembuktian analisis kompleks pada tingkat masuk pascasarjana.',
     corpus: 'Korpus analisis kompleks Lebl',
-    note: 'Checkpoint publik U319 memuat 50 unit R008 sampai akhir bagian bola Riemann. Korpus Analisis Kompleks tetap belum lengkap dan belum memiliki pembaca mandiri.',
+    note: 'Checkpoint publik U336 memuat 50 unit R008 sampai akhir bagian bola Riemann. Korpus Analisis Kompleks tetap belum lengkap dan belum memiliki pembaca mandiri.',
+    edition: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336',
     repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
+    zenodo: 'https://doi.org/10.5281/zenodo.22082567'
   },
   {
     id: 'C60', ownerLane: 'R014', level: 'C', topic: 'Diskrit & Logika', state: 'published',
@@ -215,8 +220,8 @@ export const courses = [
     title: 'Geometri: Euklides, Afin, Projektif, dan Non-Euklides', prerequisites: ['B10', 'B40', 'B60'],
     purpose: 'Geometri aksiomatik dan transformasional, metode afin dan projektif, geometri hiperbolik dan sferis, permukaan, dan konstruksi.',
     outcome: 'Membandingkan geometri melalui aksioma, transformasi, dan invarian, bukan sebagai satu konvensi tunggal.',
-    corpus: 'Petrunin 20 bab + pendamping Transformasi, Invarian, dan Permukaan Model + volume penguasaan',
-    note: 'Korpus terpilih; repositori dan arsip tetap privat/terbatas sesuai instruksi.'
+    corpus: 'Petrunin sebagai donor utama yang sah untuk buku kursus asli CC BY-SA + Clemens/Snapp sebagai pendamping terpisah berlisensi CC BY-NC-SA/GPL',
+    note: 'Arsitektur sumber dipilih. Sintesis asli geometri afin, projektif, dan non-Euklides, perbaikan rigor, aset bersih, solusi, dan asesmen masih harus diselesaikan; pendamping Clemens/Snapp tetap dikemas terpisah agar hak komponennya tidak disamarkan.'
   },
   {
     id: 'C110', ownerLane: 'R015', level: 'C', topic: 'Komputasi & Optimisasi', state: 'published',
@@ -298,9 +303,9 @@ export const courses = [
     purpose: 'Persamaan orde satu dan dua klasik, distribusi, ruang Sobolev, solusi lemah, metode energi dan Fourier, serta titik kontak numerik.',
     outcome: 'Mengenali tipe PDP, membuktikan hasil dasar, dan membedakan solusi klasik, lemah, serta numerik.',
     corpus: 'Dionne — Partial Differential Equations lengkap + 8 simpul FEniCSx (7 wajib + 1 pengayaan) + penutupan soal, asesmen, dan laboratorium asli',
-    note: 'Unit 07 Dionne telah terbit sebagai pembaca kumulatif 46 halaman. Ekor karakteristik dan bagian klasifikasi berikutnya sudah diterima secara lokal tetapi belum dipublikasikan; Dionne, irisan FEniCSx, dan penutupan asli masih diproduksi.',
-    edition: 'https://zenodo.org/api/records/22074306/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_07.pdf/content',
-    zenodo: 'https://doi.org/10.5281/zenodo.22074306'
+    note: 'Unit 09 Dionne telah terbit dan terverifikasi sebagai pembaca kumulatif 77 halaman, 4.414.297 byte, SHA-256 f2869bc0c38153d2223a03e8dccc85c306cefdc4eea15f9fe6a560a6d1f7ce91. Bab klasifikasi selesai pada batas publik ini; Dionne, irisan FEniCSx, dan penutupan asli tetap diproduksi.',
+    edition: 'https://zenodo.org/records/22086227/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_09.pdf?download=1',
+    zenodo: 'https://doi.org/10.5281/zenodo.22086227'
   },
   {
     id: 'D50', ownerLane: 'O011', level: 'D', topic: 'Geometri & Topologi', state: 'production',
@@ -308,7 +313,7 @@ export const courses = [
     purpose: 'Lipatan, struktur tangen dan kotangen, bentuk diferensial, integrasi dan Stokes, grup Lie, metrik Riemann, koneksi, dan kelengkungan.',
     outcome: 'Menggunakan bahasa geometri bebas koordinat dan membuktikan hasil dasar tentang lipatan serta kelengkungan.',
     corpus: 'Brenner lengkap — 29 kuliah + 29 lembar kerja; dua jembatan asli grup Lie/de Rham; bank 10 ujian resmi',
-    note: 'Unit 10 telah terbit dan terverifikasi sebagai pembaca kumulatif 165 halaman. Unit 11–12 sudah selesai terjemahan dan QA berbatas tetapi belum diterbitkan; Unit 13 aktif, lalu dua jembatan dan penutupan asesmen menyusul.',
+    note: 'Unit 10 telah terbit dan terverifikasi sebagai pembaca kumulatif 165 halaman. Unit 11–13 sudah selesai terjemahan dan QA berbatas tetapi belum diterbitkan; dua jembatan dan penutupan asesmen menyusul.',
     edition: 'https://zenodo.org/api/records/22073928/files/geometri-diferensial-manifold-mulus-hingga-unit-10-id.pdf/content',
     zenodo: 'https://doi.org/10.5281/zenodo.22073928'
   },
@@ -318,17 +323,18 @@ export const courses = [
     purpose: 'Grup fundamental, ruang penutup, homologi simplisial/seluler, kohomologi, barisan eksak, derajat, dan metode homotopi terpilih.',
     outcome: 'Menerjemahkan pertanyaan geometri menjadi invarian aljabar yang dapat dihitung dan merekonstruksi bukti standar.',
     corpus: 'Roberts lengkap (30 kuliah) + jembatan homologi Fomberg §§1.1–1.13 + penutupan bukti, solusi, dan laboratorium asli',
-    note: 'Pembaca GitHub/Pages publik mencapai Unit 25 (298 halaman); preservasi Zenodo mencapai Unit 24 (286 halaman). Unit 26 sudah diterjemahkan dan ditinjau, dengan perluasan backend masih berlangsung; Roberts Unit 27–30, jembatan Fomberg, dan penutupan asli belum selesai.',
-    edition: 'https://kokunoyumeto.github.io/algebraic-topology-id/units-001-025/',
+    note: 'Batas publik mencakup Roberts Kuliah 1–30 lengkap dan jembatan Fomberg §§1.1–1.2 dalam pembaca 362 halaman, 2.322.978 byte, SHA-256 fb81f2b2c0f73c17c4e3be4eaae164eaeaeb0c4ff0661580acfc7aa9b6d5f749. Sisa jembatan Fomberg dan penutupan bukti, solusi, serta laboratorium asli masih diproduksi.',
+    edition: 'https://zenodo.org/api/records/22084021/files/00_TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_READER.pdf/content',
     repository: 'https://github.com/KokunoYumeto/algebraic-topology-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22074233'
+    zenodo: 'https://doi.org/10.5281/zenodo.22084021'
   },
   {
     id: 'D70', ownerLane: 'O013', level: 'D', topic: 'Aljabar', state: 'production',
     title: 'Aljabar Pascasarjana', prerequisites: ['C40', 'B40'],
     purpose: 'Modul, hasil kali tensor, barisan eksak, teori medan/Galois lanjut, aljabar komutatif, teori representasi, dan struktur untuk geometri/topologi.',
     outcome: 'Memasuki literatur aljabar pascasarjana dengan penguasaan konstruksi universal dan bukti struktural.',
-    corpus: 'Li Jilid 1 lengkap + MIT OCW 18.712 lengkap + enam rentang CRing persis', note: 'Korpus terpilih dan digunakan oleh pemilik produksi.',
+    corpus: 'Wen-Wei Li Jilid 1 lengkap + TeX teori representasi Alexander Duncan berlisensi CC BY 4.0 + enam rentang CRing/GFDL berbatas + lapisan penghubung dan solusi asli',
+    note: 'Arsitektur sumber dipilih dan digunakan oleh pemilik produksi. Etingof/MIT tetap referensi saja; lembar tugas eksternal dikecualikan dari korpus yang diterima.',
     repository: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-1-id'
   },
   {
@@ -343,9 +349,11 @@ export const courses = [
     title: 'Optimisasi Lanjut dan Analisis Konveks', prerequisites: ['C110', 'C130', 'D20'],
     purpose: 'Himpunan dan fungsi konveks, separasi, dualitas, KKT, algoritma, metode nonsmooth, optimisasi stokastik, dan sudut pandang variasional.',
     outcome: 'Menganalisis masalah optimisasi kontinu dan algoritma modern melampaui program linear/integer.',
-    corpus: 'MIT OCW 6.253 lengkap (395 halaman) + Royer Stochastic Gradient lengkap (45 halaman) + empat unit jembatan, empat laboratorium, dan penutupan solusi asli',
-    note: 'Arsitektur dipilih. Pilot rekonstruksi semantik MIT wajib mendahului produksi massal; target penutupan sedikitnya 70 butir bersolusi lengkap. Edisi Penn–Habring yang sudah dihasilkan dipertahankan sebagai pendamping opsional, bukan dihitung ulang sebagai inti D90.',
-    zenodo: 'https://doi.org/10.5281/zenodo.22059742'
+    corpus: 'Habring arXiv 2607.11664v1 berlisensi CC BY 4.0 sebagai spine TeX kanonik + modul TeX Becker berlisensi MIT + penutupan KKT, stokastik, variasional, dan solusi asli',
+    note: 'Arsitektur sumber editabel dipilih. Materi MIT 6.253 dan Royer dipertahankan sebagai pendamping berlisensi terpisah, bukan spine kanonik. Checkpoint pendamping publik terbaru adalah MIT L10, Kuliah 6 halaman 64–85, 10 halaman, SHA-256 3b01d57e8e8a7d7887f36cfdc205d1b68d1d007a152bd8e0cd75479628e1abc0; L11 masih lokal.',
+    edition: 'https://zenodo.org/records/22077419/files/D90-MIT-10-kuliah-6-irisan-tertutup-dan-hiperbidang-id.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22077419'
   },
   {
     id: 'D100', ownerLane: 'O016', level: 'D', topic: 'Geometri & Topologi', state: 'production',
@@ -353,9 +361,10 @@ export const courses = [
     purpose: 'Varietas afin/projektif, gelanggang koordinat, skema, sheaf, morfisme, dimensi, orientasi kohomologis, dan penggunaan terpandu Stacks Project.',
     outcome: 'Berpindah dari aljabar pascasarjana ke geometri aljabar tingkat sumber dan menavigasi korpus rujukan hidup.',
     corpus: 'Brenner Algebraische Kurven lengkap (337 halaman) + Bündel, Garben und Kohomologie lengkap (265 halaman) + penutupan penguasaan dan integrasi asli',
-    note: 'Unit 1–8 volume klasik sudah publik dalam pembaca 161 halaman. Unit 9 adalah checkpoint internal terverifikasi 174 halaman, bukan rilis publik; Unit 10–12 menjadi target kumulatif berikutnya. Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.',
-    edition: 'https://zenodo.org/api/records/22070936/files/kurva-aljabar-id-unit-08.pdf/content',
-    zenodo: 'https://doi.org/10.5281/zenodo.22070936'
+    note: 'Unit 1–15 volume klasik sudah publik dalam pembaca 267 halaman, 6.502.255 byte, SHA-256 e56aae414a9d7e252485d06e7da790fae9bf972514c8fe47fc31d26eddd3699c. Unit 16–18 adalah checkpoint internal, bukan rilis publik; Unit 19 dibekukan tetapi belum didispatch. Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.',
+    edition: 'https://zenodo.org/records/22077441/files/kurva-aljabar-id-unit-15.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22077441'
   },
   {
     id: 'D110', ownerLane: 'LEAN', level: 'D', topic: 'Praktik Riset', state: 'published',
@@ -396,7 +405,7 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.50.0',
+  version: '0.51.0',
   snapshotDate: '2026-08-24',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
@@ -408,7 +417,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22070458',
     '10.5281/zenodo.22053905',
     '10.5281/zenodo.22062144',
-    '10.5281/zenodo.22073827',
+    '10.5281/zenodo.22082567',
     '10.5281/zenodo.22062449',
     '10.5281/zenodo.22052196',
     '10.5281/zenodo.22062005',
@@ -418,7 +427,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22070653',
     '10.5281/zenodo.22062017'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22074701',
+  zenodo: 'https://doi.org/10.5281/zenodo.22086601',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -480,9 +489,9 @@ export const program = Object.freeze({
         result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22074701/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22074701/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22074701/files/program-matematika-indonesia-backend-v1-v0.50.0.zip?download=1'
+    schema: 'https://zenodo.org/records/22086601/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22086601/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22086601/files/program-matematika-indonesia-backend-v1-v0.51.0.zip?download=1'
   },
   repositories: {
     github: {
