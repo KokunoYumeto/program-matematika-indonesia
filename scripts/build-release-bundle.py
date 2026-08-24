@@ -126,7 +126,10 @@ def main() -> None:
         "tsconfig.json",
         "vite.config.ts",
         "app",
-        "public",
+        # public/hub is a reproducible prebuild mirror of docs/ and is ignored by
+        # Git. Include only the tracked public input; npm run prebuild recreates
+        # the mirror byte-for-byte from the committed docs source.
+        "public/favicon.svg",
         "docs",
         "schemas/catalog-v1.schema.json",
         "schemas/backend-v1.schema.json",
