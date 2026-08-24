@@ -6,6 +6,7 @@ export const courses = [
     outcome: 'Mengolah representasi numerik dengan andal dan mengenali apakah kesalahan berikutnya bersifat aritmetis atau konseptual.',
     corpus: 'OpenStax Prealgebra 2e — edisi Bahasa Indonesia lengkap',
     note: 'Selesai dan terverifikasi publik: 75/75 referensi sumber, pembaca PDF 3.016 halaman, reader HTML responsif, dan backend deterministik 519.678 rekaman. Item Figshare opsional tetap diblokir oleh akun layanan yang tidak aktif; Zenodo dan GitHub tidak terpengaruh.',
+    reader: 'https://kokunoyumeto.github.io/openstax-prealgebra-2e-id-ID/',
     edition: 'https://zenodo.org/records/22070683/files/prealgebra-2e-id-ID-v0.2.7-reader.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID',
     zenodo: 'https://doi.org/10.5281/zenodo.22070683'
@@ -37,6 +38,7 @@ export const courses = [
     purpose: 'Logika proposisional dan predikat, himpunan, fungsi, relasi, teknik bukti, teori graf, pencacahan, dan barisan.',
     outcome: 'Membaca, menyusun, dan mengkritik bukti elementer sebelum memasuki teori tingkat lanjut.',
     corpus: 'Discrete Mathematics: An Open Introduction 4', note: 'Edisi Bahasa Indonesia selesai dan rilis preservasi 2026.08.22 telah diverifikasi publik.',
+    reader: 'https://kokunoyumeto.github.io/discrete-mathematics-open-introduction-id/',
     edition: 'https://zenodo.org/records/22060439/files/00_MATEMATIKA_DISKRET_EDISI_KEEMPAT_BAHASA_INDONESIA_READER.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/discrete-mathematics-open-introduction-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22060439'
@@ -66,6 +68,7 @@ export const courses = [
     outcome: 'Berpindah dengan lancar antara perhitungan, struktur, dan pembuktian dalam matematika berdimensi hingga.',
     corpus: 'Hefferon — Linear Algebra lengkap',
     note: 'Edisi Bahasa Indonesia lengkap dan terverifikasi publik: buku 580 halaman, jawaban bekerja 435 halaman, laboratorium Sage 109 halaman, dan pembaca kumulatif 1.124 halaman.',
+    reader: 'https://kokunoyumeto.github.io/hefferon-linear-algebra-id/',
     edition: 'https://zenodo.org/records/22070458',
     repository: 'https://github.com/KokunoYumeto/hefferon-linear-algebra-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22070458'
@@ -102,6 +105,7 @@ export const courses = [
     outcome: 'Menerapkan objek dan eksperimen matematis sambil membedakan komputasi, bukti pendukung, dan pembuktian.',
     corpus: 'Rangka asli lengkap: P01/P02 + 12 unit, SciPy, SageMath, visualisasi, lingkungan, dan penguasaan',
     note: 'Edisi B80 lengkap dan terverifikasi publik: 14 unit, 75 latihan, 177 uji lulus, pembaca PDF 159 halaman, serta HTML, EPUB, sumber editabel, dan paket luring.',
+    reader: 'https://kokunoyumeto.github.io/mathematical-computing-reproducible-experiments-id/',
     edition: 'https://zenodo.org/records/22053905/files/Komputasi-Matematis-dan-Eksperimen-yang-Dapat-Direproduksi.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22053905'
@@ -112,6 +116,7 @@ export const courses = [
     purpose: 'Probabilitas diskrit dan kontinu, probabilitas bersyarat, peubah acak, harapan, limit, simulasi, jalan acak, dan rantai Markov.',
     outcome: 'Membangun dan menganalisis model peluang serta menghubungkan hasil analitik dengan simulasi.',
     corpus: 'Grinstead–Snell', note: 'Edisi 554 halaman selesai; backend modular berada dalam edisi kursus yang sama.',
+    reader: 'https://kokunoyumeto.github.io/introduction-to-probability-id/',
     edition: 'https://zenodo.org/records/22062144/files/PENGANTAR_PELUANG_GRINSTEAD_SNELL_ID.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/introduction-to-probability-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22062144'
@@ -151,6 +156,7 @@ export const courses = [
     purpose: 'Grup, subgrup, homomorfisme, struktur hasil bagi, aksi grup, dan penerapan simetri.',
     outcome: 'Bernalar secara struktural dengan objek aljabar dan membuktikan hasil dari aksioma.',
     corpus: 'Judson — Abstract Algebra: Theory and Applications', note: 'Edisi Bahasa Indonesia selesai dan tersedia untuk umum.',
+    reader: 'https://kokunoyumeto.github.io/abstract-algebra-theory-and-applications-id/',
     edition: 'https://zenodo.org/records/22062449/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.22.2.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22062449'
@@ -161,6 +167,7 @@ export const courses = [
     purpose: 'Gelanggang, ideal, gelanggang hasil bagi, domain integral, polinom, medan, perluasan, dan teori Galois awal.',
     outcome: 'Menggunakan struktur aljabar untuk menganalisis persamaan, faktorisasi, dan perluasan medan.',
     corpus: 'Judson — Abstract Algebra: Theory and Applications', note: 'Selesai dalam edisi Judson Bahasa Indonesia yang sama.',
+    reader: 'https://kokunoyumeto.github.io/abstract-algebra-theory-and-applications-id/',
     edition: 'https://zenodo.org/records/22062449/files/ALJABAR_ABSTRAK_TEORI_DAN_PENERAPAN_ID_2026.08.22.2.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/abstract-algebra-theory-and-applications-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22062449'
@@ -183,6 +190,7 @@ export const courses = [
     outcome: 'Membuktikan hasil teori bilangan elementer dan menganalisis asumsi matematika di balik kriptosistem dasar.',
     corpus: 'Jonathan Poritz — Yet Another Introductory Number Theory Textbook',
     note: 'Edisi Bahasa Indonesia lengkap dan terverifikasi publik: 138 halaman, 5.272 rekaman native, dan cakupan hingga kriptografi kunci publik. Pendamping penguasaan tetap merupakan penutupan terpilih untuk keterbatasan solusi sumber dan dilacak terpisah dari selesainya terjemahan buku.',
+    reader: 'https://kokunoyumeto.github.io/yet-another-introductory-number-theory-textbook-id/',
     edition: 'https://github.com/KokunoYumeto/yet-another-introductory-number-theory-textbook-id/releases/tag/v1.0.0',
     repository: 'https://github.com/KokunoYumeto/yet-another-introductory-number-theory-textbook-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22052196'
@@ -193,6 +201,7 @@ export const courses = [
     purpose: 'Pencacahan lanjut, rekurensi, fungsi pembangkit, teori graf, himpunan terurut sebagian, dan metode ekstremal.',
     outcome: 'Memilih dan membenarkan model serta teknik pembuktian kombinatorial untuk berbagai masalah diskrit.',
     corpus: 'Keller–Trotter — Applied Combinatorics', note: 'Edisi Bahasa Indonesia lengkap dan terverifikasi publik: pembaca 350 halaman, 19.048 rekaman native, 19.049 rekaman backend bersama termasuk satu jangkar prasyarat eksternal B10, HTML luring, sumber koresponding, dan tiga mirror preservasi.',
+    reader: 'https://kokunoyumeto.github.io/applied-combinatorics-id/',
     edition: 'https://zenodo.org/records/22062005/files/00_KOMBINATORIKA_TERAPAN_ID-ID_COMPLETE_LINKED_READER_2026.08.22.2.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/applied-combinatorics-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22062005'
@@ -241,6 +250,7 @@ export const courses = [
     outcome: 'Bergerak iteratif antara asumsi, struktur matematika, komputasi, data, dan kritik model.',
     corpus: 'Lega v1.01 plus jembatan komputasi dan penguasaan — edisi Bahasa Indonesia lengkap',
     note: 'Selesai dan terverifikasi publik: 22 unit sumber plus 4 jembatan, 4.105 segmen, 141 rekaman penguasaan, 26 notebook, 12 paket proyek, dan pembaca PDF 355 halaman.',
+    reader: 'https://kokunoyumeto.github.io/mathematical-modeling-nonlinear-dynamics-id/',
     edition: 'https://zenodo.org/records/22070943/files/01_Pengantar_Pemodelan_Matematika_Edisi_Bahasa_Indonesia_Lengkap.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/mathematical-modeling-nonlinear-dynamics-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22070943'
@@ -252,6 +262,7 @@ export const courses = [
     outcome: 'Merumuskan, menyelesaikan, dan mengkritik model optimisasi tanpa bergantung pada solver proprieter.',
     corpus: 'Open Optimization Book 1 plus laboratorium Pyomo/HiGHS O018 — edisi Bahasa Indonesia lengkap',
     note: 'Selesai dan terverifikasi publik: pembaca 666 halaman, 1.993 unit, 5.525 segmen, 9.545 relasi, backend deterministik 32 berkas, dan laboratorium solver terbuka yang diatribusikan terpisah.',
+    reader: 'https://kokunoyumeto.github.io/open-optimization-or-book-id/',
     edition: 'https://zenodo.org/records/22070653/files/pemrograman-matematis-dan-riset-operasi-buku-1-id-ID.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/open-optimization-or-book-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22070653'
@@ -373,6 +384,7 @@ export const courses = [
     outcome: 'Mengodekan dan memverifikasi matematika nontrivial serta menyumbangkan koreksi atau contoh berbatas.',
     corpus: 'Mathematics in Lean — korpus Lean 4 lengkap',
     note: 'Edisi Bahasa Indonesia v4.30.0-id.3 lengkap dan terverifikasi publik: 219 halaman, 10.978 rekaman backend, build Lean lulus, dan QA terminologi Indonesia berbasis arXiv tercatat.',
+    reader: 'https://kokunoyumeto.github.io/mathematics-in-lean-id/',
     edition: 'https://zenodo.org/records/22062017/files/matematika-dalam-lean-bahasa-indonesia.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/mathematics-in-lean-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22062017'
@@ -405,7 +417,7 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.51.0',
+  version: '0.51.1',
   snapshotDate: '2026-08-24',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
@@ -427,7 +439,8 @@ export const program = Object.freeze({
     '10.5281/zenodo.22070653',
     '10.5281/zenodo.22062017'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22086601',
+  website: 'https://kokunoyumeto.github.io/program-matematika-indonesia/',
+  zenodo: 'https://doi.org/10.5281/zenodo.22087222',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -489,9 +502,9 @@ export const program = Object.freeze({
         result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22086601/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22086601/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22086601/files/program-matematika-indonesia-backend-v1-v0.51.0.zip?download=1'
+    schema: 'https://zenodo.org/records/22087222/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22087222/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22087222/files/program-matematika-indonesia-backend-v1-v0.51.1.zip?download=1'
   },
   repositories: {
     github: {

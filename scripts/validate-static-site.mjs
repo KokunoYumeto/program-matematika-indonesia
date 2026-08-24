@@ -18,6 +18,7 @@ const expectedIds = [
 const unresolvedIds = [];
 const publishedIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D110'];
 const completedPublicEditionIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D110'];
+const publishedHtmlReaderIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C30', 'C40', 'C60', 'C70', 'C120', 'C130', 'D110'];
 const completedPublicRecordDois = [
   '10.5281/zenodo.22070683',
   '10.5281/zenodo.22060439',
@@ -53,8 +54,9 @@ assert.deepEqual(
 );
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar lima belas peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.51.0', 'Versi snapshot pusat harus 0.51.0.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22086601', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.version, '0.51.1', 'Versi snapshot pusat harus 0.51.1.');
+assert.equal(program.website, 'https://kokunoyumeto.github.io/program-matematika-indonesia/', 'Situs belajar publik tidak tepat.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22087222', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -116,11 +118,12 @@ assert.deepEqual(
   'Bukti migrasi korpus lengkap berubah tanpa pembaruan kanon.'
 );
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
-assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22086601/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.51.0 yang dicadangkan.');
+assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22087222/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.51.1 yang dicadangkan.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
 assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar empat belas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
 assert.equal(new Set(program.completedPublicRecordDois).size, 14, 'Lima belas peran edisi selesai harus memetakan ke empat belas rekaman publik berbeda.');
+assert.deepEqual(courses.filter(({ reader }) => reader).map(({ id }) => id), publishedHtmlReaderIds, 'Daftar pembaca HTML publik yang diverifikasi berubah.');
 for (const id of completedPublicEditionIds) {
   const course = courses.find((candidate) => candidate.id === id);
   assert.ok(course?.edition, `${id}: edisi publik selesai harus memiliki tautan pembaca atau repositori.`);
@@ -233,7 +236,7 @@ for (const course of courses) {
     assert.ok(typeof course[field] === 'string' && course[field].trim(), `${course.id}: ${field} kosong.`);
   }
   assert.equal(course.ownerLane, expectedOwnerLanes[course.id], `${course.id}: pemilik produksi tidak cocok dengan registri semantik.`);
-  for (const field of ['edition', 'repository', 'zenodo']) {
+  for (const field of ['reader', 'edition', 'repository', 'zenodo']) {
     if (course[field]) assert.match(course[field], /^https:\/\//, `${course.id}: ${field} harus memakai HTTPS.`);
   }
 }
@@ -247,14 +250,16 @@ assert.match(html, /<html lang="id">/, 'Bahasa dokumen harus Bahasa Indonesia.')
 assert.match(html, /href="styles\.css"/, 'Stylesheet statis tidak terhubung.');
 assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
-assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22086601\/files\/program-matematika-indonesia-og-v0\.51\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
-assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22086601"/, 'URL kanonis Zenodo tidak tepat.');
+assert.match(html, /property="og:image" content="https:\/\/kokunoyumeto\.github\.io\/program-matematika-indonesia\/og\.png"/, 'Kartu sosial situs belajar tidak terhubung.');
+assert.match(html, /rel="canonical" href="https:\/\/kokunoyumeto\.github\.io\/program-matematika-indonesia\/"/, 'URL kanonis situs belajar tidak tepat.');
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Produksi yang belum selesai tetap dilabeli dengan jelas/, 'Ringkasan batas produksi hilang.');
 assert.match(html, /<strong>15<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan lima belas peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22086601/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22087222/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /Mulai belajar — buka 40 mata kuliah/, 'Aksi utama untuk pelajar tidak terlihat.');
 assert.match(html, /https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia/, 'Tautan repositori GitHub pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');
+assert.match(app, /Mulai belajar — HTML/, 'Aplikasi harus menempatkan pembaca HTML sebagai aksi utama bila tersedia.');
 assert.match(app, /course\.repository/, 'Aplikasi harus menampilkan tautan repositori korpus pada kartu edisi.');
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);
@@ -268,6 +273,7 @@ console.log(JSON.stringify({
   publishedCanonRoles: publishedIds.length,
   completedPublicCourseRoles: completedPublicEditionIds.length,
   completedPublicRecords: completedPublicRecordDois.length,
+  publishedHtmlReaders: publishedHtmlReaderIds.length,
   topics: topics.length,
   levelCounts,
 }, null, 2));

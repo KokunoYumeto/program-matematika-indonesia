@@ -51,10 +51,12 @@ function prerequisiteLinks(items) {
 function actionLinks(course) {
   const links = [];
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
+  const readerIsSuspendedGithub = githubUnavailable && course.reader?.startsWith('https://github.com/KokunoYumeto/');
   const editionIsSuspendedGithub = githubUnavailable && course.edition?.startsWith('https://github.com/KokunoYumeto/');
   const repositoryIsSuspendedGithub = githubUnavailable && course.repository?.startsWith('https://github.com/KokunoYumeto/');
   const editionLabel = course.state === 'published' ? 'Buka edisi' : 'Buka edisi kerja';
-  if (course.edition && !editionIsSuspendedGithub) links.push(`<a class="card-action primary" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
+  if (course.reader && !readerIsSuspendedGithub) links.push(`<a class="card-action primary" href="${course.reader}" target="_blank" rel="noreferrer">Mulai belajar — HTML <span aria-hidden="true">↗</span></a>`);
+  if (course.edition && course.edition !== course.reader && !editionIsSuspendedGithub) links.push(`<a class="card-action${course.reader ? '' : ' primary'}" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
   if (course.zenodo) links.push(`<a class="card-action" href="${course.zenodo}" target="_blank" rel="noreferrer">Arsip DOI <span aria-hidden="true">↗</span></a>`);
   if (course.repository && course.repository !== course.edition && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.repository}" target="_blank" rel="noreferrer">Repositori <span aria-hidden="true">↗</span></a>`);
   if (!links.length) {

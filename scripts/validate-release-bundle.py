@@ -487,11 +487,15 @@ def main() -> None:
 
     html_path = release / f"program-matematika-indonesia-v{version}.html"
     html = html_path.read_text(encoding="utf-8")
+    learner_html_path = release / f"00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_v{version}.html"
+    if learner_html_path.read_bytes() != html_path.read_bytes():
+        raise ValueError("human-first standalone HTML is not byte-identical to the validated compatibility filename")
     for required in (
         f"10.5281/zenodo.{args.record_id}",
         f"v{version}",
         "40 korpus terpilih",
         "Produksi yang belum selesai tetap dilabeli dengan jelas",
+        "Mulai belajar — buka 40 mata kuliah",
     ):
         if required not in html:
             raise ValueError(f"standalone HTML missing {required!r}")
@@ -528,6 +532,7 @@ def main() -> None:
         "program-matematika-indonesia-catalog-v1.schema.json",
         f"program-matematika-indonesia-catalog-v{version}.json",
         f"program-matematika-indonesia-og-v{version}.png",
+        f"00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_v{version}.html",
         f"program-matematika-indonesia-v{version}.html",
         f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
         f"program-matematika-indonesia-backend-v1-v{version}.zip",

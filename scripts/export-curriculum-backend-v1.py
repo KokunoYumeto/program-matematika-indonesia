@@ -138,13 +138,17 @@ class Builder:
                 "program-matematika-indonesia",
                 authority_policy="Hub metadata authority; corpus authority remains with each owning lane.",
                 creator_name="Program Matematika Indonesia and the local Codex production workflows",
-                official_reader=program["zenodo"],
+                # The learner-facing site is the reader. Zenodo is the durable
+                # archive and must not be promoted ahead of the learning UI.
+                official_reader=program["website"],
                 official_repository=github["url"],
                 original_title=program["title"],
                 resource_key="program-matematika-indonesia",
                 work_type="living_curriculum_hub",
                 extensions={
                     "interlanguage.publication": {
+                        "learner_start_url": program["website"],
+                        "archive_url": program["zenodo"],
                         "github_status": github["status"],
                         "github_last_confirmed_at": github["lastConfirmedAt"],
                         "zenodo_concept": program["zenodoConcept"],
@@ -238,7 +242,9 @@ class Builder:
         for index, course in enumerate(self.catalog["courses"], start=1):
             course_key = course["id"]
             resource_key = f"selected-corpus:{course_key}"
-            reader = course.get("zenodo") or course.get("edition")
+            # Prefer the actual readable edition (HTML/PDF) over its archival
+            # record. A DOI is preservation metadata, not a student start URL.
+            reader = course.get("reader") or course.get("edition") or course.get("zenodo")
             repository = course.get("repository", "")
             selected_resource_ids[course_key] = self.add(
                 "resources",
@@ -257,7 +263,9 @@ class Builder:
                         "interlanguage.curriculum-selection": {
                             "course_role_id": course_key,
                             "display_note": course["note"],
+                            "learner_start_url": reader,
                             "owner_lane": course["ownerLane"],
+                            "archive_url": course.get("zenodo"),
                             "zenodo": course.get("zenodo"),
                         }
                     },
