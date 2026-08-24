@@ -404,7 +404,7 @@ def main() -> None:
         f"10.5281/zenodo.{args.record_id}",
         f"v{version}",
         "40 korpus terpilih",
-        "Semua peran sumber sudah dibekukan",
+        "Produksi yang belum selesai tetap dilabeli dengan jelas",
     ):
         if required not in html:
             raise ValueError(f"standalone HTML missing {required!r}")
