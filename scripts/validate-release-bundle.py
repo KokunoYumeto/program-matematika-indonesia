@@ -287,7 +287,7 @@ def main() -> None:
         "10.5281/zenodo.22070458",
         "10.5281/zenodo.22053905",
         "10.5281/zenodo.22062144",
-        "10.5281/zenodo.22063321",
+        "10.5281/zenodo.22073827",
         "10.5281/zenodo.22062449",
         "10.5281/zenodo.22052196",
         "10.5281/zenodo.22062005",
@@ -302,23 +302,23 @@ def main() -> None:
     if catalog["counts"].get("completedPublicRecords") != 14:
         raise ValueError("catalog completed-public record count is not 14")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
-        raise ValueError("catalog completed-public course-role identities are not the v0.48 canonical set")
+        raise ValueError("catalog completed-public course-role identities are not the v0.49 canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
-        raise ValueError("catalog completed-public DOI identities are not the v0.48 canonical set")
+        raise ValueError("catalog completed-public DOI identities are not the v0.49 canonical set")
     published_role_ids = [course["id"] for course in catalog["courses"] if course["state"] == "published"]
     if published_role_ids != expected_completed_role_ids:
         raise ValueError("catalog published course states do not match completed-public role identities")
     courses_by_id = {course["id"]: course for course in catalog["courses"]}
     expected_lebl_repository = "https://github.com/KokunoYumeto/lebl-mathematics-family-id"
     expected_b40_repository = "https://github.com/KokunoYumeto/hefferon-linear-algebra-id"
-    expected_c10_edition = "https://zenodo.org/records/22063321/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1"
-    expected_c20_edition = "https://zenodo.org/records/22063321/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_Akhir_Bukti_Teorema_Penggantian_Variabel.pdf?download=1"
+    expected_c10_edition = "https://zenodo.org/records/22073827/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1"
+    expected_c20_edition = "https://zenodo.org/records/22073827/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_11.2_Latihan.pdf?download=1"
     if (
-        courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321"
+        courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22073827"
         or courses_by_id["C10"].get("edition") != expected_c10_edition
         or courses_by_id["C10"].get("repository") != expected_lebl_repository
     ):
-        raise ValueError("C10 does not point to the exact verified Lebl U227 edition")
+        raise ValueError("C10 does not point to the exact verified Lebl U319 edition")
     if (
         courses_by_id["B40"].get("state") != "published"
         or courses_by_id["B40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070458"
@@ -345,15 +345,36 @@ def main() -> None:
         raise ValueError("C130 does not point to the exact verified operations-research edition")
     if (
         courses_by_id["C20"].get("state") != "production"
-        or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321"
+        or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22073827"
         or courses_by_id["C20"].get("edition") != expected_c20_edition
         or courses_by_id["C20"].get("repository") != expected_lebl_repository
     ):
-        raise ValueError("C20 is not preserved as the exact production-state U227 WIP")
-    for role_id in ("B70", "C50"):
+        raise ValueError("C20 is not preserved as the exact production-state U319 WIP")
+    for role_id, expected_units in (("B70", "15 unit"), ("C50", "50 unit")):
         course = courses_by_id[role_id]
-        if course.get("state") != "production" or course.get("edition") or course.get("zenodo"):
-            raise ValueError(f"{role_id} incorrectly inherits translated U227 edition evidence")
+        if (
+            course.get("state") != "production"
+            or course.get("edition")
+            or course.get("zenodo") != "https://doi.org/10.5281/zenodo.22073827"
+            or course.get("repository") != expected_lebl_repository
+            or expected_units not in course.get("note", "")
+            or "belum lengkap" not in course.get("note", "")
+        ):
+            raise ValueError(f"{role_id} does not preserve its exact partial U319 evidence")
+    if (
+        courses_by_id["C140"].get("state") != "production"
+        or courses_by_id["C140"].get("zenodo") != "https://doi.org/10.5281/zenodo.22071140"
+        or courses_by_id["C140"].get("repository") != "https://github.com/KokunoYumeto/mathematical-statistics-id"
+        or courses_by_id["C140"].get("edition") != "https://zenodo.org/records/22071140/files/00_statistika-matematis-id-reader-2026.08.23.16.pdf?download=1"
+    ):
+        raise ValueError("C140 does not preserve the verified incomplete Random checkpoint 16")
+    if (
+        courses_by_id["D20"].get("state") != "production"
+        or courses_by_id["D20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22072541"
+        or courses_by_id["D20"].get("repository") != "https://github.com/KokunoYumeto/functional-analysis-erdman-id"
+        or courses_by_id["D20"].get("edition") != "https://zenodo.org/records/22072541/files/analisis-fungsional-dan-aljabar-operator-id-bab-1-12.pdf?download=1"
+    ):
+        raise ValueError("D20 does not preserve the verified incomplete Erdman Chapter 12 checkpoint")
 
     expected_catalog_migrations = []
     for migration_id, metadata in EXPECTED_MIGRATIONS.items():

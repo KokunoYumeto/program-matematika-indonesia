@@ -86,7 +86,10 @@ export const courses = [
     title: 'Persamaan Diferensial Biasa dan Sistem Dinamika Pengantar', prerequisites: ['B30', 'B40'],
     purpose: 'Persamaan orde satu, persamaan linear orde tinggi, sistem, transformasi, deret, bidang fase nonlinear, dan pengantar Fourier/PDP.',
     outcome: 'Merumuskan, menganalisis, mendekati, dan mengomunikasikan solusi model PDB standar.',
-    corpus: 'Korpus keluarga Lebl', note: 'Korpus terpilih; R007/ODE belum diterjemahkan dan tidak termasuk dalam checkpoint U227.'
+    corpus: 'Korpus keluarga Lebl',
+    note: 'Checkpoint publik U319 memuat 15 unit R007: pengantar selesai dan Bab 1 mencapai rumus integral tentu untuk masalah nilai awal. Korpus ODE tetap belum lengkap dan belum memiliki pembaca mandiri.',
+    repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
   },
   {
     id: 'B80', ownerLane: 'O002', level: 'B', topic: 'Komputasi & Optimisasi', state: 'published',
@@ -122,10 +125,10 @@ export const courses = [
     purpose: 'Bilangan real, barisan, deret, kontinuitas, diferensiasi, dan integrasi Riemann dengan penekanan pada bukti.',
     outcome: 'Mengendalikan kuantor dan menyusun argumen rigor tentang limit, kontinuitas, turunan, dan integral.',
     corpus: 'Lebl — Basic Analysis, Volume I',
-    note: 'Jilid I lengkap dan terverifikasi publik: pembaca Bahasa Indonesia 334 halaman. Jalur Lebl bersama tetap aktif karena Jilid II, ODE, dan analisis kompleks belum selesai.',
-    edition: 'https://zenodo.org/records/22063321/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1',
+    note: 'Jilid I lengkap dan terverifikasi publik: pembaca Bahasa Indonesia 334 halaman. Rekaman U319 mempertahankan pembaca lengkap ini sambil memperbarui kemajuan Jilid II, ODE, dan analisis kompleks.',
+    edition: 'https://zenodo.org/records/22073827/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22063321'
+    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
   },
   {
     id: 'C20', ownerLane: 'R006-R008', level: 'C', topic: 'Analisis', state: 'production',
@@ -133,10 +136,10 @@ export const courses = [
     purpose: 'Barisan fungsi, ruang metrik, diferensiasi dan integrasi multivariabel, serta konstruksi limit.',
     outcome: 'Bekerja fasih dengan abstraksi ruang metrik dan bukti analitik multivariabel.',
     corpus: 'Lebl — Basic Analysis, Volume II',
-    note: 'Cuplikan kerja publik 154 halaman mencapai akhir bukti Teorema 10.7.2; latihan Bagian 10.7 belum termasuk dan ini bukan edisi lengkap C20.',
-    edition: 'https://zenodo.org/records/22063321/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_Akhir_Bukti_Teorema_Penggantian_Variabel.pdf?download=1',
+    note: 'Cuplikan kerja publik U319 sepanjang 180 halaman mencapai seluruh sepuluh latihan yang menutup Bagian 11.2. Ini tetap pekerjaan berjalan, bukan edisi lengkap C20.',
+    edition: 'https://zenodo.org/records/22073827/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_11.2_Latihan.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22063321'
+    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
   },
   {
     id: 'C30', ownerLane: 'R009', level: 'C', topic: 'Aljabar', state: 'published',
@@ -163,7 +166,10 @@ export const courses = [
     title: 'Analisis Kompleks', prerequisites: ['C20'],
     purpose: 'Fungsi holomorf, integrasi kontur, teori Cauchy, residu, keluarga normal, pemetaan konformal, fungsi harmonik, dan kelanjutan analitik.',
     outcome: 'Membaca dan menghasilkan pembuktian analisis kompleks pada tingkat masuk pascasarjana.',
-    corpus: 'Korpus analisis kompleks Lebl', note: 'Korpus terpilih; R008/Analisis Kompleks belum diterjemahkan dan tidak termasuk dalam checkpoint U227.'
+    corpus: 'Korpus analisis kompleks Lebl',
+    note: 'Checkpoint publik U319 memuat 50 unit R008 sampai akhir bagian bola Riemann. Korpus Analisis Kompleks tetap belum lengkap dan belum memiliki pembaca mandiri.',
+    repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22073827'
   },
   {
     id: 'C60', ownerLane: 'R014', level: 'C', topic: 'Diskrit & Logika', state: 'published',
@@ -251,7 +257,10 @@ export const courses = [
     purpose: 'Distribusi sampling, kecukupan, estimasi, likelihood, interval kepercayaan, uji hipotesis, perbandingan Bayes, regresi, dan asimtotik.',
     outcome: 'Menurunkan dan menilai prosedur statistik, bukan sekadar menerapkannya sebagai kotak hitam.',
     corpus: 'Penn State STAT 415 lengkap + satu unit Random tentang kecukupan/kelengkapan + pendamping rigor dan penguasaan asli',
-    note: 'Korpus terpilih dan diterima pemilik produksi; checkpoint Random enam halaman sudah publik dan edisi Random penuh tetap proyek terpisah.'
+    note: 'Checkpoint pendukung Random 16 dari 29 unit sudah publik. Edisi Random penuh, spine Penn State, dan pendamping rigor/penguasaan asli tetap belum selesai; C140 tidak diklaim sebagai edisi lengkap.',
+    edition: 'https://zenodo.org/records/22071140/files/00_statistika-matematis-id-reader-2026.08.23.16.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/mathematical-statistics-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22071140'
   },
   {
     id: 'D10', ownerLane: 'O007', level: 'D', topic: 'Analisis', state: 'production',
@@ -266,8 +275,11 @@ export const courses = [
     title: 'Analisis Fungsional', prerequisites: ['D10', 'B40'],
     purpose: 'Ruang bernorma, Banach dan Hilbert; operator terbatas; Hahn–Banach; boundedness seragam; pemetaan terbuka; dualitas; teori kompak dan spektral.',
     outcome: 'Bernalar dengan ruang dan operator berdimensi tak hingga pada tingkat pascasarjana awal.',
-    corpus: 'Erdman — Functional Analysis', note: 'Korpus terpilih; Bab 11 telah terverifikasi untuk publikasi dan produksi berlanjut ke Bab 12.',
-    repository: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id'
+    corpus: 'Erdman — Functional Analysis',
+    note: 'Pembaca kumulatif Bab 1–12 sepanjang 179 halaman sudah terverifikasi publik. Produksi berlanjut ke Bab 13; korpus lengkap D20 belum selesai.',
+    edition: 'https://zenodo.org/records/22072541/files/analisis-fungsional-dan-aljabar-operator-id-bab-1-12.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22072541'
   },
   {
     id: 'D30', ownerLane: 'O009', level: 'D', topic: 'Peluang & Statistika', state: 'production',
@@ -374,8 +386,8 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.48.0',
-  snapshotDate: '2026-08-23',
+  version: '0.49.0',
+  snapshotDate: '2026-08-24',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
   unresolvedRoleIds: [],
@@ -386,7 +398,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22070458',
     '10.5281/zenodo.22053905',
     '10.5281/zenodo.22062144',
-    '10.5281/zenodo.22063321',
+    '10.5281/zenodo.22073827',
     '10.5281/zenodo.22062449',
     '10.5281/zenodo.22052196',
     '10.5281/zenodo.22062005',
@@ -396,7 +408,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22070653',
     '10.5281/zenodo.22062017'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22071700',
+  zenodo: 'https://doi.org/10.5281/zenodo.22074079',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -458,15 +470,15 @@ export const program = Object.freeze({
         result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22071700/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22071700/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22071700/files/program-matematika-indonesia-backend-v1-v0.48.0.zip?download=1'
+    schema: 'https://zenodo.org/records/22074079/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22074079/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22074079/files/program-matematika-indonesia-backend-v1-v0.49.0.zip?download=1'
   },
   repositories: {
     github: {
       url: 'https://github.com/KokunoYumeto/program-matematika-indonesia',
       status: 'available',
-      lastConfirmedAt: '2026-08-23'
+      lastConfirmedAt: '2026-08-24'
     }
   },
   status: 'in-progress'
