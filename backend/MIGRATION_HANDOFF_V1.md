@@ -109,6 +109,22 @@ This QA requirement is additive and must not overwrite corpus authority.
 - Applied Combinatorics Indonesian: 19,048 unique native records map one-to-one
   and reverse exactly; one explicit B10 external-prerequisite stub yields
   19,049 strict common records with complete foreign-key closure.
+- OpenStax Prealgebra 2e Indonesian v0.2.7: all 519,678 owner-native records
+  reverse byte-identically from the zero-copy stream; 3,368 deterministic
+  records yield 523,046 strict common records across 38 tables. Two independent
+  assemblies agree exactly. The proof explicitly closes 75 CNXML modules, 60
+  CollXML bindings, 98 target-only structural units, 408 target-only correction
+  segments, and 183 unique HTTPS external targets without inventing XML
+  authority. Receipt SHA-256: `50093021475d3757ab71395d5bf34f672c18a6714122093b040021c18f333152`.
+- Mathematical Modeling and Nonlinear Dynamics Indonesian: 4,941 direct native
+  records, six common anchors, 81 exact file anchors, 7,553 derived segment
+  variants, and 3,448 translation alignments yield 16,029 strict common records
+  across all 38 tables. Two independent authority reads and assemblies are
+  byte-identical, and the native backend and logical records reverse exactly.
+- Open Optimization OR-Book Indonesian: all 17,987 native records project
+  directly and reverse exactly; 7,818 derived source/target segment variants
+  yield 25,805 strict common records. Native payload bytes are unchanged,
+  foreign keys close, and two independent common assemblies agree.
 
 These proofs establish the contract. They are not instructions to overwrite a
 lane's stronger native representation.

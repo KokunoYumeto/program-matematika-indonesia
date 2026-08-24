@@ -44,6 +44,31 @@ EXPECTED_MIGRATIONS = {
         "corpus": "Mathematics in Lean — Bahasa Indonesia v4.30.0-id.3",
         "result": "lossless-zero-copy-one-to-one-pass",
     },
+    "prealgebra2e-r001-id-v0.2.7-to-interlanguage-v1.0.0": {
+        "corpus": "OpenStax Prealgebra 2e — Bahasa Indonesia v0.2.7",
+        "result": "lossless-streaming-zero-copy-adapter-pass",
+    },
+    "o005-c120-id-v1.01-complete-r5-to-interlanguage-v1.0.0": {
+        "corpus": "Lega v1.01 — Pemodelan Matematis, Bahasa Indonesia",
+        "result": "lossless-replayable-zero-copy-adapter-pass",
+    },
+    "o018-c130-r017-book1-id5-to-interlanguage-v1": {
+        "corpus": "Open Optimization Book 1 + laboratorium Pyomo/HiGHS O018, Bahasa Indonesia",
+        "result": "lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass",
+    },
+}
+
+MIGRATION_RECEIPT_FILENAMES = {
+    "applied-combinatorics-id-v1": "applied-combinatorics-id-backend-v1-migration-receipt.json",
+    "dmoi4-id-v1": "dmoi4-id-backend-v1-migration-receipt.json",
+    "judson-id-v1": "judson-id-backend-v1-migration-receipt.json",
+    "mathematics-in-lean-id-v1": "mathematics-in-lean-id-backend-v1-migration-receipt.json",
+    "o002-b80-id-v1": "o002-b80-id-backend-v1-migration-receipt.json",
+    "o005-c120-id-v1": "o005-c120-id-backend-v1-migration-receipt.json",
+    "o018-c130-id-v1": "o018-c130-id-backend-v1-migration-receipt.json",
+    "openlogic-id-v1": "openlogic-id-backend-v1-migration-receipt.json",
+    "prealgebra2e-id-v1": "prealgebra2e-id-backend-v1-migration-receipt.json",
+    "yaintt-id-v1": "yaintt-id-backend-v1-migration-receipt.json",
 }
 
 PRIVATE_BYTE_MARKERS = (
@@ -73,7 +98,23 @@ def assert_public_bytes(label: str, data: bytes) -> None:
         raise ValueError(f"private or credential-bearing marker in public artifact: {label}")
 
 
-def verify_source_zip(path: Path) -> dict:
+def verify_source_zip(
+    path: Path,
+    root: Path,
+    source_commit: str,
+    allowed_generated_source_paths: set[str],
+) -> dict:
+    tracked_paths = set(
+        subprocess.run(
+            ["git", "ls-tree", "-r", "--name-only", source_commit],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+    )
+    commit_bound_entries = 0
+    generated_entries = 0
     with zipfile.ZipFile(path) as archive:
         bad = archive.testzip()
         if bad:
@@ -93,10 +134,29 @@ def verify_source_zip(path: Path) -> dict:
             if len(data) != entry["bytes"] or hashlib.sha256(data).hexdigest() != entry["sha256"]:
                 raise ValueError(f"source ZIP entry mismatch: {name}")
             assert_public_bytes(f"source ZIP:{name}", data)
+            source_path = entry.get("source_path")
+            if not isinstance(source_path, str) or not source_path or source_path.startswith("/") or ".." in Path(source_path).parts:
+                raise ValueError(f"source ZIP entry has no portable source_path: {name}")
+            if source_path in tracked_paths:
+                committed = subprocess.run(
+                    ["git", "show", f"{source_commit}:{source_path}"],
+                    cwd=root,
+                    check=True,
+                    capture_output=True,
+                ).stdout
+                if committed != data:
+                    raise ValueError(f"source ZIP entry differs from source commit: {source_path}")
+                commit_bound_entries += 1
+            elif source_path in allowed_generated_source_paths:
+                generated_entries += 1
+            else:
+                raise ValueError(f"source ZIP entry is neither commit-bound nor admitted generated output: {source_path}")
     return {
         "entries": len(names),
         "manifest_entries": len(declared),
         "source_commit": manifest.get("source_commit"),
+        "commit_bound_entries": commit_bound_entries,
+        "admitted_generated_entries": generated_entries,
         "privacy_scan": "pass",
         "result": "pass",
     }
@@ -166,8 +226,9 @@ def main() -> None:
     static_result = json.loads(static.stdout)
 
     migration_receipts = sorted((root / "backend" / "migrations").glob("*/MIGRATION_RECEIPT.json"))
-    if not migration_receipts:
-        raise ValueError("no complete-corpus migration receipts found")
+    receipt_directories = {path.parent.name for path in migration_receipts}
+    if receipt_directories != set(MIGRATION_RECEIPT_FILENAMES):
+        raise ValueError("complete-corpus migration receipt directory identity set mismatch")
     migrations = subprocess.run(
         [
             sys.executable,
@@ -191,15 +252,15 @@ def main() -> None:
         if migration_id in receipt_documents:
             raise ValueError(f"duplicate migration ID: {migration_id}")
         receipt_documents[migration_id] = receipt
-        slug = path.parent.name.removesuffix("-v1")
-        copied_receipt = release / f"{slug}-backend-v1-migration-receipt.json"
+        receipt_filename = MIGRATION_RECEIPT_FILENAMES[path.parent.name]
+        copied_receipt = release / receipt_filename
         if not copied_receipt.is_file() or copied_receipt.read_bytes() != path.read_bytes():
-            raise ValueError(f"release migration receipt is absent or changed: {slug}")
+            raise ValueError(f"release migration receipt is absent or changed: {receipt_filename}")
     if set(receipt_documents) != set(EXPECTED_MIGRATIONS):
         raise ValueError("complete-corpus migration receipt identity set mismatch")
     migration_target_records = sum(receipt["target"]["record_count"] for receipt in receipt_documents.values())
-    if len(receipt_documents) != 7 or migration_target_records != 244416:
-        raise ValueError("complete-corpus migration proof boundary must remain seven receipts and 244,416 target records")
+    if len(receipt_documents) != 10 or migration_target_records != 809296:
+        raise ValueError("complete-corpus migration proof boundary must contain ten receipts and 809,296 target records")
 
     catalog_path = release / f"program-matematika-indonesia-catalog-v{version}.json"
     catalog_schema_path = release / "program-matematika-indonesia-catalog-v1.schema.json"
@@ -218,9 +279,10 @@ def main() -> None:
     if catalog["counts"]["courseRoles"] != 40 or catalog["counts"]["unresolvedRoles"] != 0:
         raise ValueError("catalog course/source closure mismatch")
     expected_completed_role_ids = [
-        "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "D110"
+        "A00", "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "C120", "C130", "D110"
     ]
     expected_completed_record_dois = [
+        "10.5281/zenodo.22070683",
         "10.5281/zenodo.22060439",
         "10.5281/zenodo.22070458",
         "10.5281/zenodo.22053905",
@@ -231,16 +293,18 @@ def main() -> None:
         "10.5281/zenodo.22062005",
         "10.5281/zenodo.21932787",
         "10.5281/zenodo.22054086",
+        "10.5281/zenodo.22070943",
+        "10.5281/zenodo.22070653",
         "10.5281/zenodo.22062017",
     ]
-    if catalog["counts"].get("completedPublicCourseRoles") != 12:
-        raise ValueError("catalog completed-public course-role count is not 12")
-    if catalog["counts"].get("completedPublicRecords") != 11:
-        raise ValueError("catalog completed-public record count is not 11")
+    if catalog["counts"].get("completedPublicCourseRoles") != 15:
+        raise ValueError("catalog completed-public course-role count is not 15")
+    if catalog["counts"].get("completedPublicRecords") != 14:
+        raise ValueError("catalog completed-public record count is not 14")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
-        raise ValueError("catalog completed-public course-role identities are not the v0.47 canonical set")
+        raise ValueError("catalog completed-public course-role identities are not the v0.48 canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
-        raise ValueError("catalog completed-public DOI identities are not the v0.47 canonical set")
+        raise ValueError("catalog completed-public DOI identities are not the v0.48 canonical set")
     published_role_ids = [course["id"] for course in catalog["courses"] if course["state"] == "published"]
     if published_role_ids != expected_completed_role_ids:
         raise ValueError("catalog published course states do not match completed-public role identities")
@@ -261,6 +325,24 @@ def main() -> None:
         or courses_by_id["B40"].get("repository") != expected_b40_repository
     ):
         raise ValueError("B40 does not point to the exact verified Hefferon edition")
+    if (
+        courses_by_id["A00"].get("state") != "published"
+        or courses_by_id["A00"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070683"
+        or courses_by_id["A00"].get("repository") != "https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID"
+    ):
+        raise ValueError("A00 does not point to the exact verified Prealgebra 2e v0.2.7 edition")
+    if (
+        courses_by_id["C120"].get("state") != "published"
+        or courses_by_id["C120"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070943"
+        or courses_by_id["C120"].get("repository") != "https://github.com/KokunoYumeto/mathematical-modeling-nonlinear-dynamics-id"
+    ):
+        raise ValueError("C120 does not point to the exact verified modeling edition")
+    if (
+        courses_by_id["C130"].get("state") != "published"
+        or courses_by_id["C130"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070653"
+        or courses_by_id["C130"].get("repository") != "https://github.com/KokunoYumeto/open-optimization-or-book-id"
+    ):
+        raise ValueError("C130 does not point to the exact verified operations-research edition")
     if (
         courses_by_id["C20"].get("state") != "production"
         or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22063321"
@@ -312,17 +394,22 @@ def main() -> None:
 
     source_zip = release / f"program-matematika-indonesia-source-v{version}.zip"
     backend_zip = release / f"program-matematika-indonesia-backend-v1-v{version}.zip"
+    generated_catalog_source_path = (
+        f"releases/v{version}/program-matematika-indonesia-catalog-v{version}.json"
+    )
     zip_results = {
-        "source": verify_source_zip(source_zip),
+        "source": verify_source_zip(
+            source_zip,
+            root,
+            args.source_commit,
+            {generated_catalog_source_path},
+        ),
         "backend": verify_backend_zip(backend_zip, backend),
     }
     if zip_results["source"]["source_commit"] != args.source_commit:
         raise ValueError("source ZIP manifest is not bound to the validated repository commit")
 
-    receipt_release_names = {
-        f"{path.parent.name.removesuffix('-v1')}-backend-v1-migration-receipt.json"
-        for path in migration_receipts
-    }
+    receipt_release_names = set(MIGRATION_RECEIPT_FILENAMES.values())
     expected_release_names = {
         "BACKEND_CONVERGENCE_V1.md",
         "MIGRATION_HANDOFF_V1.md",
@@ -362,10 +449,10 @@ def main() -> None:
         "checks": {
             "static_site": static_result,
             "catalog_draft_2020_12": "pass",
-            "catalog_course_roles": 40,
-            "catalog_unresolved_roles": 0,
-            "catalog_completed_public_course_roles": 12,
-            "catalog_completed_public_records": 11,
+            "catalog_course_roles": catalog["counts"]["courseRoles"],
+            "catalog_unresolved_roles": catalog["counts"]["unresolvedRoles"],
+            "catalog_completed_public_course_roles": catalog["counts"]["completedPublicCourseRoles"],
+            "catalog_completed_public_records": catalog["counts"]["completedPublicRecords"],
             "catalog_schema_identity_and_bytes": "pass",
             "source_commit_binding": args.source_commit,
             "backend": backend_report["checks"],

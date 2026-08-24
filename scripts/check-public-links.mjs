@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import { courses } from '../docs/courses.js';
 
-const links = courses.flatMap((course) => ['edition', 'zenodo']
+const links = courses.flatMap((course) => ['edition', 'zenodo', 'repository']
   .filter((field) => course[field])
   .map((field) => ({ course: course.id, field, url: course[field] })));
 const results = [];

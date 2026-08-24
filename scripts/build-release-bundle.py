@@ -12,6 +12,18 @@ from pathlib import Path
 
 
 FIXED_ZIP_TIME = (2026, 8, 22, 0, 0, 0)
+MIGRATION_RECEIPT_FILENAMES = {
+    "applied-combinatorics-id-v1": "applied-combinatorics-id-backend-v1-migration-receipt.json",
+    "dmoi4-id-v1": "dmoi4-id-backend-v1-migration-receipt.json",
+    "judson-id-v1": "judson-id-backend-v1-migration-receipt.json",
+    "mathematics-in-lean-id-v1": "mathematics-in-lean-id-backend-v1-migration-receipt.json",
+    "o002-b80-id-v1": "o002-b80-id-backend-v1-migration-receipt.json",
+    "o005-c120-id-v1": "o005-c120-id-backend-v1-migration-receipt.json",
+    "o018-c130-id-v1": "o018-c130-id-backend-v1-migration-receipt.json",
+    "openlogic-id-v1": "openlogic-id-backend-v1-migration-receipt.json",
+    "prealgebra2e-id-v1": "prealgebra2e-id-backend-v1-migration-receipt.json",
+    "yaintt-id-v1": "yaintt-id-backend-v1-migration-receipt.json",
+}
 
 
 def sha256_file(path: Path) -> str:
@@ -86,11 +98,11 @@ def main() -> None:
         backend / "validation_report.json": release / f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
     }
     migration_receipts = sorted((root / "backend" / "migrations").glob("*/MIGRATION_RECEIPT.json"))
-    if not migration_receipts:
-        raise ValueError("no complete-corpus migration receipts found")
+    receipt_directories = {source.parent.name for source in migration_receipts}
+    if receipt_directories != set(MIGRATION_RECEIPT_FILENAMES):
+        raise ValueError("complete-corpus migration receipt directory identity set mismatch")
     for source in migration_receipts:
-        slug = source.parent.name.removesuffix("-v1")
-        copies[source] = release / f"{slug}-backend-v1-migration-receipt.json"
+        copies[source] = release / MIGRATION_RECEIPT_FILENAMES[source.parent.name]
     for source, target in copies.items():
         shutil.copyfile(source, target)
 
@@ -132,6 +144,7 @@ def main() -> None:
         "scripts/validate-migration-receipt-v1.py",
         "scripts/build-release-bundle.py",
         "scripts/validate-release-bundle.py",
+        "scripts/write-release-checksums.py",
         "backend/BACKEND_CONVERGENCE_V1.md",
         "backend/MIGRATION_HANDOFF_V1.md",
         "backend/v1/namespace.json",
@@ -140,7 +153,12 @@ def main() -> None:
     for relative in source_roots:
         source_paths.extend(files_under(root, relative))
     source_paths.extend(sorted((root / "scripts").glob("migrate-*-backend-v1.py")))
-    source_paths.extend(migration_receipts)
+    source_paths.extend(sorted((root / "scripts").glob("test-*-backend-v1.py")))
+    source_paths.extend(
+        path
+        for path in files_under(root, "backend/migrations")
+        if "__pycache__" not in path.parts and path.suffix != ".pyc"
+    )
     source_paths.extend(
         [
             release / f"program-matematika-indonesia-catalog-v{version}.json",
@@ -153,15 +171,22 @@ def main() -> None:
     entries: list[tuple[str, bytes]] = []
     manifest_files = []
     for path in sorted(source_paths):
-        if path.is_relative_to(root):
-            name = path.relative_to(root).as_posix()
-        else:
-            name = path.name
+        if not path.is_relative_to(root):
+            raise ValueError(f"source ZIP input escapes project root: {path}")
+        source_path = path.relative_to(root).as_posix()
+        name = source_path
         if path.parent == release:
             name = path.name
         data = path.read_bytes()
         entries.append((name, data))
-        manifest_files.append({"path": name, "bytes": len(data), "sha256": hashlib.sha256(data).hexdigest()})
+        manifest_files.append(
+            {
+                "path": name,
+                "source_path": source_path,
+                "bytes": len(data),
+                "sha256": hashlib.sha256(data).hexdigest(),
+            }
+        )
     source_manifest = {
         "schema_id": "program-matematika-indonesia/source-manifest/v2",
         "version": version,

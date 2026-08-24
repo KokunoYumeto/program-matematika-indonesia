@@ -2,21 +2,23 @@
 
 Situs ini adalah pintu masuk berbahasa Indonesia untuk sebuah program matematika terbuka berisi 40 mata kuliah, dari perbaikan fondasi sampai kesiapan riset.
 
+Situs publik: <https://kokunoyumeto.github.io/program-matematika-indonesia/>. Setiap kartu edisi lengkap menautkan pembaca, DOI preservasi, dan repositori GitHub korpusnya ketika ketiganya tersedia.
+
 ## Yang tersedia
 
 - Peta empat tingkat: A (fondasi), B (dasar universitas), C (inti sarjana), dan D (fondasi pascasarjana serta riset).
 - Prasyarat yang dapat diikuti langsung antarkartu.
 - Pencarian dan penyaringan berdasarkan tingkat, bidang, dan status korpus.
 - Keempat puluh peran kini memiliki korpus terpilih atau spesifikasi asli yang dibekukan; status produksi dan penyelesaian tetap dicatat terpisah.
-- Dua belas peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kedua belas peran itu memakai sebelas rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. B40 kini menunjuk edisi Hefferon lengkap (buku 580 halaman, jawaban 435 halaman, laboratorium Sage 109 halaman); C10 menunjuk Jilid I Lebl lengkap 334 halaman; C20 memiliki cuplikan kerja publik 154 halaman yang tetap dinyatakan belum lengkap.
-- Backend bersama v1 kini dibekukan: 38 tabel ketat, identitas UUIDv5, varian bahasa terpisah, rute pembelajaran, hak komponen, bukti build/QA, JSONL kanonik, dan CSV lossless. Paket pusat 2.122 rekaman telah lolos dua ekspor identik. Tujuh bukti migrasi korpus lengkap kini terikat: DMOI 163.583 rekaman, B80 339, Open Logic 6.522, Judson 36.978, Poritz/YAIN 6.967, Applied Combinatorics 19.049, dan *Mathematics in Lean* 10.978. Seluruh migrasi mempertahankan backend native pemilik sebagai otoritas dan tidak menggandakannya ke paket pusat.
+- Lima belas peran mata kuliah sudah memiliki edisi lengkap yang dapat dibaca secara publik. Kelima belas peran itu memakai empat belas rekaman edisi berbeda karena C30 dan C40 berbagi satu edisi Judson. v0.48.0 menambahkan A00/Praaljabar (3.016 halaman), C120/Pemodelan Matematis (355 halaman), dan C130/Riset Operasi (666 halaman) ke dua belas peran yang sudah terintegrasi.
+- Backend bersama v1 kini dibekukan: 38 tabel ketat, identitas UUIDv5, varian bahasa terpisah, rute pembelajaran, hak komponen, bukti build/QA, JSONL kanonik, dan CSV lossless. Paket pusat 2.122 rekaman telah lolos dua ekspor identik. Sepuluh bukti migrasi korpus lengkap kini terikat, termasuk bukti baru A00, C120, dan C130. Seluruh migrasi mempertahankan backend native pemilik sebagai otoritas, memvalidasi transformasi secara deterministik, dan tidak menggandakan backend besar pemilik ke paket pusat.
 - Tautan hanya menuju edisi atau arsip publik yang identitasnya sudah diketahui.
 
 Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelacak, cookie, atau layanan pihak ketiga yang diperlukan untuk menggunakannya.
 
 ## Snapshot Zenodo aktif
 
-Snapshot v0.47.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22063396](https://doi.org/10.5281/zenodo.22063396), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama sudah dapat direproduksi, tetapi sebagian besar terjemahan, penutupan solusi, migrasi backend per-korpus, dan edisi final masih diproduksi. B40 dan C10 kini lengkap dan publik; C20 tetap produksi meskipun cuplikan U227-nya dapat dibaca. Setiap mata kuliah membawa `ownerLane` yang divalidasi terhadap peta semantik lengkap, sehingga permutasi pemilik tidak dapat lolos hanya karena jumlah ID tetap 40/40.
+Snapshot v0.48.0 dipertahankan di [Zenodo, DOI 10.5281/zenodo.22071700](https://doi.org/10.5281/zenodo.22071700), dalam [lineage konsep 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Snapshot ini sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama dapat direproduksi, tetapi sebagian besar terjemahan, penutupan solusi, migrasi backend per-korpus, dan edisi final masih diproduksi. A00, C120, dan C130 kini lengkap dan publik; C20 tetap produksi meskipun cuplikan U227-nya dapat dibaca. Setiap mata kuliah membawa `ownerLane` yang divalidasi terhadap peta semantik lengkap, sehingga permutasi pemilik tidak dapat lolos hanya karena jumlah ID tetap 40/40.
 
 Zenodo adalah jalur preservasi mandiri, bukan sekadar salinan GitHub. Setiap perubahan keadaan kanon yang material akan memperoleh versi baru pada lineage konsep yang sama. Akses akun GitHub yang sempat ditangguhkan telah dipulihkan; snapshot Zenodo tetap dipertahankan sebagai arsip independen.
 

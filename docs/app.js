@@ -52,8 +52,11 @@ function actionLinks(course) {
   const links = [];
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
   const editionIsSuspendedGithub = githubUnavailable && course.edition?.startsWith('https://github.com/KokunoYumeto/');
-  if (course.edition && !editionIsSuspendedGithub) links.push(`<a class="card-action primary" href="${course.edition}" target="_blank" rel="noreferrer">Buka edisi <span aria-hidden="true">↗</span></a>`);
+  const repositoryIsSuspendedGithub = githubUnavailable && course.repository?.startsWith('https://github.com/KokunoYumeto/');
+  const editionLabel = course.state === 'published' ? 'Buka edisi' : 'Buka edisi kerja';
+  if (course.edition && !editionIsSuspendedGithub) links.push(`<a class="card-action primary" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
   if (course.zenodo) links.push(`<a class="card-action" href="${course.zenodo}" target="_blank" rel="noreferrer">Arsip DOI <span aria-hidden="true">↗</span></a>`);
+  if (course.repository && course.repository !== course.edition && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.repository}" target="_blank" rel="noreferrer">Repositori <span aria-hidden="true">↗</span></a>`);
   if (!links.length) {
     const message = course.state === 'unresolved'
       ? 'Keputusan korpus masih terbuka'

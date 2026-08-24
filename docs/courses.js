@@ -1,10 +1,14 @@
 export const courses = [
   {
-    id: 'A00', ownerLane: 'R001', level: 'A', topic: 'Fondasi & Kalkulus', state: 'production',
+    id: 'A00', ownerLane: 'R001', level: 'A', topic: 'Fondasi & Kalkulus', state: 'published',
     title: 'Praaljabar dan Fondasi Kuantitatif', prerequisites: [],
     purpose: 'Bilangan bulat, pecahan, desimal, persen, rasio, pengukuran, dan persamaan dasar dengan jalur diagnosis yang dapat dilewati.',
     outcome: 'Mengolah representasi numerik dengan andal dan mengenali apakah kesalahan berikutnya bersifat aritmetis atau konseptual.',
-    corpus: 'OpenStax Prealgebra 2e', note: 'Korpus terpilih; edisi Bahasa Indonesia sedang diproduksi.'
+    corpus: 'OpenStax Prealgebra 2e — edisi Bahasa Indonesia lengkap',
+    note: 'Selesai dan terverifikasi publik: 75/75 referensi sumber, pembaca PDF 3.016 halaman, reader HTML responsif, dan backend deterministik 519.678 rekaman. Item Figshare opsional tetap diblokir oleh akun layanan yang tidak aktif; Zenodo dan GitHub tidak terpengaruh.',
+    edition: 'https://zenodo.org/records/22070683/files/prealgebra-2e-id-ID-v0.2.7-reader.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID',
+    zenodo: 'https://doi.org/10.5281/zenodo.22070683'
   },
   {
     id: 'A10', ownerLane: 'OPENSTAX-ELEMENTARY', level: 'A', topic: 'Fondasi & Kalkulus', state: 'production',
@@ -18,7 +22,7 @@ export const courses = [
     title: 'Aljabar Menengah', prerequisites: ['A10'],
     purpose: 'Fungsi, model kuadrat dan rasional, akar, bilangan kompleks, eksponensial, logaritma, irisan kerucut, dan barisan.',
     outcome: 'Memasuki prakalkulus dengan kefasihan simbolik dan pemahaman fungsi yang stabil.',
-    corpus: 'OpenStax Intermediate Algebra 2e — 83 modul', note: 'Korpus terpilih; satu modul telah mencapai batas produksi.'
+    corpus: 'OpenStax Intermediate Algebra 2e — 83 modul', note: 'Korpus terpilih; produksi berada pada batas 39/83 modul dan QA terminologi untuk m81389 sedang ditutup.'
   },
   {
     id: 'A30', ownerLane: 'R002', level: 'A', topic: 'Fondasi & Kalkulus', state: 'production',
@@ -43,7 +47,7 @@ export const courses = [
     purpose: 'Limit, kontinuitas, turunan, pendekatan, optimisasi, dan pemodelan dengan masalah terpecahkan yang terintegrasi.',
     outcome: 'Menggunakan turunan secara komputasional dan konseptual serta menjelaskan hipotesis yang dipakai.',
     corpus: 'CLP Calculus — kalkulus diferensial', note: 'Korpus terpilih; pemetaan latihan dan backend sedang dibangun.',
-    edition: 'https://github.com/KokunoYumeto/clp1-differential-calculus-id'
+    repository: 'https://github.com/KokunoYumeto/clp1-differential-calculus-id'
   },
   {
     id: 'B30', ownerLane: 'R003', level: 'B', topic: 'Fondasi & Kalkulus', state: 'production',
@@ -110,7 +114,7 @@ export const courses = [
     title: 'Statistika Terapan dan Analisis Data', prerequisites: ['A30', 'B90'],
     purpose: 'Pengumpulan data, deskripsi, ketidakpastian, inferensi, eksperimen, regresi, dan analisis reprodusibel dengan perangkat lunak terbuka.',
     outcome: 'Mengkritik proses pembentukan data dan melakukan analisis statistik awal secara transparan.',
-    corpus: 'OpenIntro Statistics', note: 'Korpus terpilih; Bab 1 telah diakui dengan 716 rekaman bertipe.'
+    corpus: 'OpenIntro Statistics', note: 'Korpus terpilih; produksi berlanjut pada Bagian 3.2 setelah checkpoint B009 terverifikasi.'
   },
   {
     id: 'C10', ownerLane: 'R006-R008', level: 'C', topic: 'Analisis', state: 'published',
@@ -197,8 +201,8 @@ export const courses = [
     title: 'Topologi Himpunan-Titik', prerequisites: ['B10', 'C10'],
     purpose: 'Ruang topologis, basis, kontinuitas, produk dan hasil bagi, kekompakan, keterhubungan, aksioma pemisahan, keterhitungan, metrisasi, dan ruang fungsi.',
     outcome: 'Menggunakan invarian dan konstruksi topologis sebagai bahasa bersama analisis, geometri, dan aljabar.',
-    corpus: 'GVSU Topology lengkap + pendamping PreTeXt asli', note: 'Korpus terpilih dan diserahkan; pembaca kumulatif Bab 1–3 berada pada batas build dan QA yang dapat direproduksi.',
-    edition: 'https://github.com/KokunoYumeto/topology-an-inquiry-based-approach-id'
+    corpus: 'GVSU Topology lengkap + pendamping PreTeXt asli', note: 'Korpus terpilih dan diserahkan; dukungan respons pembelajar Bab 12 sedang diproduksi setelah sensus dikoreksi menjadi 79 unit.',
+    repository: 'https://github.com/KokunoYumeto/topology-an-inquiry-based-approach-id'
   },
   {
     id: 'C100', ownerLane: 'O004', level: 'C', topic: 'Geometri & Topologi', state: 'production',
@@ -220,19 +224,26 @@ export const courses = [
     zenodo: 'https://doi.org/10.5281/zenodo.22054086'
   },
   {
-    id: 'C120', ownerLane: 'O005', level: 'C', topic: 'Komputasi & Optimisasi', state: 'production',
+    id: 'C120', ownerLane: 'O005', level: 'C', topic: 'Komputasi & Optimisasi', state: 'published',
     title: 'Pemodelan Matematis dan Dinamika Nonlinear', prerequisites: ['B70', 'B80', 'C10'],
     purpose: 'Analisis dimensi, konstruksi dan validasi model, sistem dinamis diskrit/kontinu, bifurkasi, chaos, dan studi kasus.',
     outcome: 'Bergerak iteratif antara asumsi, struktur matematika, komputasi, data, dan kritik model.',
-    corpus: 'Lega v1.01', note: 'Korpus terpilih; Bab 6 sudah publik dan terverifikasi, lalu produksi bergerak ke Bab 7 tentang epidemiologi.',
-    edition: 'https://github.com/KokunoYumeto/mathematical-modeling-nonlinear-dynamics-id'
+    corpus: 'Lega v1.01 plus jembatan komputasi dan penguasaan — edisi Bahasa Indonesia lengkap',
+    note: 'Selesai dan terverifikasi publik: 22 unit sumber plus 4 jembatan, 4.105 segmen, 141 rekaman penguasaan, 26 notebook, 12 paket proyek, dan pembaca PDF 355 halaman.',
+    edition: 'https://zenodo.org/records/22070943/files/01_Pengantar_Pemodelan_Matematika_Edisi_Bahasa_Indonesia_Lengkap.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/mathematical-modeling-nonlinear-dynamics-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22070943'
   },
   {
-    id: 'C130', ownerLane: 'O018', level: 'C', topic: 'Komputasi & Optimisasi', state: 'production',
+    id: 'C130', ownerLane: 'O018', level: 'C', topic: 'Komputasi & Optimisasi', state: 'published',
     title: 'Optimisasi Linear dan Integer / Riset Operasi', prerequisites: ['B40', 'B80', 'C70'],
     purpose: 'Program linear, dualitas, konsep simpleks/interior, jaringan, program integer, kompleksitas, pemodelan, dan implementasi dengan solver bebas.',
     outcome: 'Merumuskan, menyelesaikan, dan mengkritik model optimisasi tanpa bergantung pada solver proprieter.',
-    corpus: 'Open Optimization + adaptasi solver terbuka O018', note: 'Korpus terpilih; produksi aktif dan tiga cacat rilis Bab 5 yang teridentifikasi sedang diperbaiki sebelum penerimaan backend.'
+    corpus: 'Open Optimization Book 1 plus laboratorium Pyomo/HiGHS O018 — edisi Bahasa Indonesia lengkap',
+    note: 'Selesai dan terverifikasi publik: pembaca 666 halaman, 1.993 unit, 5.525 segmen, 9.545 relasi, backend deterministik 32 berkas, dan laboratorium solver terbuka yang diatribusikan terpisah.',
+    edition: 'https://zenodo.org/records/22070653/files/pemrograman-matematis-dan-riset-operasi-buku-1-id-ID.pdf?download=1',
+    repository: 'https://github.com/KokunoYumeto/open-optimization-or-book-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22070653'
   },
   {
     id: 'C140', ownerLane: 'O006', level: 'C', topic: 'Peluang & Statistika', state: 'production',
@@ -247,16 +258,16 @@ export const courses = [
     title: 'Ukuran dan Integrasi', prerequisites: ['C20', 'C90'],
     purpose: 'Sigma-aljabar, ukuran, fungsi terukur, integral Lebesgue, teorema konvergensi, ukuran produk, Radon–Nikodym, dan ruang Lp.',
     outcome: 'Menggunakan teori integrasi modern sebagai dasar peluang, analisis fungsional, dan PDP.',
-    corpus: 'Fremlin — Measure Theory Jilid 1–2', note: 'Korpus terpilih; unit S114 telah lolos perbaikan browser dan sedang dikemas ulang secara deterministik.',
-    edition: 'https://github.com/KokunoYumeto/fremlin-measure-theory-id'
+    corpus: 'Fremlin — Measure Theory Jilid 1–2', note: 'Korpus terpilih; batch setingkat bab mt133–mt136 sedang ditutup.',
+    repository: 'https://github.com/KokunoYumeto/fremlin-measure-theory-id'
   },
   {
     id: 'D20', ownerLane: 'O008', level: 'D', topic: 'Analisis', state: 'production',
     title: 'Analisis Fungsional', prerequisites: ['D10', 'B40'],
     purpose: 'Ruang bernorma, Banach dan Hilbert; operator terbatas; Hahn–Banach; boundedness seragam; pemetaan terbuka; dualitas; teori kompak dan spektral.',
     outcome: 'Bernalar dengan ruang dan operator berdimensi tak hingga pada tingkat pascasarjana awal.',
-    corpus: 'Erdman — Functional Analysis', note: 'Korpus terpilih; PDF kumulatif Bab 4 sepanjang 75 halaman sudah identik dalam dua build dan memasuki inspeksi akhir.',
-    edition: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id'
+    corpus: 'Erdman — Functional Analysis', note: 'Korpus terpilih; Bab 11 telah terverifikasi untuk publikasi dan produksi berlanjut ke Bab 12.',
+    repository: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id'
   },
   {
     id: 'D30', ownerLane: 'O009', level: 'D', topic: 'Peluang & Statistika', state: 'production',
@@ -265,7 +276,7 @@ export const courses = [
     outcome: 'Membaca literatur peluang modern dan proses stokastik dengan kefasihan teori ukuran.',
     corpus: '27 halaman semantik Random + QuantEcon — Continuous Time Markov Chains (100 hlm.) + 2 irisan laboratorium Žitković + penutupan asli',
     note: 'Arsitektur dibekukan tanpa teori renewal sebagai syarat kelulusan. Edisi publik sementara telah memuat 14 unit teori dan satu laboratorium; unit Markov berikutnya sedang menjalani QA. Korpus belum selesai.',
-    edition: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id'
+    repository: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id'
   },
   {
     id: 'D40', ownerLane: 'O010', level: 'D', topic: 'Analisis', state: 'production',
@@ -281,7 +292,7 @@ export const courses = [
     purpose: 'Lipatan, struktur tangen dan kotangen, bentuk diferensial, integrasi dan Stokes, grup Lie, metrik Riemann, koneksi, dan kelengkungan.',
     outcome: 'Menggunakan bahasa geometri bebas koordinat dan membuktikan hasil dasar tentang lipatan serta kelengkungan.',
     corpus: 'Brenner lengkap — 29 kuliah + 29 lembar kerja; dua jembatan asli grup Lie/de Rham; bank 10 ujian resmi',
-    note: 'Arsitektur dipilih. Pembaca terpusat Unit 1–3 berjumlah 56 halaman dan telah lolos QA lokal; akses akun GitHub telah dipulihkan. Produksi berlanjut dari Unit 4, lalu dua jembatan CC BY-SA dan penutupan asesmen 38 butir.'
+    note: 'Arsitektur dipilih. Unit 7 telah diterbitkan dan terverifikasi; produksi kumulatif berlanjut ke Unit 8–10, lalu dua jembatan CC BY-SA dan penutupan asesmen 38 butir.'
   },
   {
     id: 'D60', ownerLane: 'O012', level: 'D', topic: 'Geometri & Topologi', state: 'production',
@@ -297,7 +308,7 @@ export const courses = [
     purpose: 'Modul, hasil kali tensor, barisan eksak, teori medan/Galois lanjut, aljabar komutatif, teori representasi, dan struktur untuk geometri/topologi.',
     outcome: 'Memasuki literatur aljabar pascasarjana dengan penguasaan konstruksi universal dan bukti struktural.',
     corpus: 'Li Jilid 1 lengkap + MIT OCW 18.712 lengkap + enam rentang CRing persis', note: 'Korpus terpilih dan digunakan oleh pemilik produksi.',
-    edition: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-1-id'
+    repository: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-1-id'
   },
   {
     id: 'D80', ownerLane: 'O014', level: 'D', topic: 'Aljabar', state: 'production',
@@ -321,7 +332,7 @@ export const courses = [
     purpose: 'Varietas afin/projektif, gelanggang koordinat, skema, sheaf, morfisme, dimensi, orientasi kohomologis, dan penggunaan terpandu Stacks Project.',
     outcome: 'Berpindah dari aljabar pascasarjana ke geometri aljabar tingkat sumber dan menavigasi korpus rujukan hidup.',
     corpus: 'Brenner Algebraische Kurven lengkap (337 halaman) + Bündel, Garben und Kohomologie lengkap (265 halaman) + penutupan penguasaan dan integrasi asli',
-    note: 'Arsitektur dipilih. Unit 1–5 volume klasik sudah publik dalam pembaca 96 halaman. Seluruh dua volume diterjemahkan; jalur belajar menyorot 19 unit skema/kohomologi, sementara Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.',
+    note: 'Arsitektur dipilih. Unit 1–5 volume klasik sudah publik dalam pembaca 96 halaman; Unit 10–12 sedang dibekukan dan diterjemahkan sebagai milestone kumulatif berikutnya. Jalur belajar menyorot 19 unit skema/kohomologi, sementara Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.',
     zenodo: 'https://doi.org/10.5281/zenodo.22059687'
   },
   {
@@ -341,7 +352,7 @@ export const courses = [
     purpose: 'Membaca artikel dan monograf, rekonstruksi sumber, sitasi, tulisan ekspositoris, catatan seminar, errata, komputasi reprodusibel, kritik sejawat, dan proyek kontribusi.',
     outcome: 'Berpartisipasi secara konstruktif dalam komunitas matematika sambil menyatakan dependensi, bukti, dan ketidakpastian secara tepat.',
     corpus: 'Kerja Matematika yang Dapat Ditelusuri — rangka asli sembilan unit + donor metodologis Turing Way/PyRSE yang dibekukan',
-    note: 'Korpus dipilih dan edisi mandiri 128 halaman sudah publik. Lapisan autentik seminar, penelaahan independen, sumber nyata, kontribusi terbatas, serta backend asesmen masih harus diselesaikan; paketnya sudah dikirim ke pemilik yang sama.',
+    note: 'Edisi mandiri 128 halaman sudah publik; handoff penyelesaian akhir masih menunggu pemeriksaan status koleksi Figshare yang sudah ada.',
     edition: 'https://zenodo.org/records/22051978/files/kerja-matematika-yang-dapat-ditelusuri-id-2026.08.22.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id',
     zenodo: 'https://doi.org/10.5281/zenodo.22051978'
@@ -363,13 +374,14 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.47.0',
+  version: '0.48.0',
   snapshotDate: '2026-08-23',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
   unresolvedRoleIds: [],
-  completedPublicCourseRoleIds: ['B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'D110'],
+  completedPublicCourseRoleIds: ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D110'],
   completedPublicRecordDois: [
+    '10.5281/zenodo.22070683',
     '10.5281/zenodo.22060439',
     '10.5281/zenodo.22070458',
     '10.5281/zenodo.22053905',
@@ -380,9 +392,11 @@ export const program = Object.freeze({
     '10.5281/zenodo.22062005',
     '10.5281/zenodo.21932787',
     '10.5281/zenodo.22054086',
+    '10.5281/zenodo.22070943',
+    '10.5281/zenodo.22070653',
     '10.5281/zenodo.22062017'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22063396',
+  zenodo: 'https://doi.org/10.5281/zenodo.22071700',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -427,17 +441,32 @@ export const program = Object.freeze({
         corpus: 'Mathematics in Lean — Bahasa Indonesia v4.30.0-id.3',
         recordCount: 10978,
         result: 'lossless-zero-copy-one-to-one-pass'
+      },
+      {
+        corpus: 'OpenStax Prealgebra 2e — Bahasa Indonesia v0.2.7',
+        recordCount: 523046,
+        result: 'lossless-streaming-zero-copy-adapter-pass'
+      },
+      {
+        corpus: 'Lega v1.01 — Pemodelan Matematis, Bahasa Indonesia',
+        recordCount: 16029,
+        result: 'lossless-replayable-zero-copy-adapter-pass'
+      },
+      {
+        corpus: 'Open Optimization Book 1 + laboratorium Pyomo/HiGHS O018, Bahasa Indonesia',
+        recordCount: 25805,
+        result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22063396/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22063396/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22063396/files/program-matematika-indonesia-backend-v1-v0.47.0.zip?download=1'
+    schema: 'https://zenodo.org/records/22071700/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22071700/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22071700/files/program-matematika-indonesia-backend-v1-v0.48.0.zip?download=1'
   },
   repositories: {
     github: {
       url: 'https://github.com/KokunoYumeto/program-matematika-indonesia',
       status: 'available',
-      lastConfirmedAt: '2026-08-22'
+      lastConfirmedAt: '2026-08-23'
     }
   },
   status: 'in-progress'

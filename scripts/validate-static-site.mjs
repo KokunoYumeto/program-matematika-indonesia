@@ -7,6 +7,7 @@ import { courses, program, topics } from '../docs/courses.js';
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const html = await readFile(resolve(root, 'docs/index.html'), 'utf8');
 const app = await readFile(resolve(root, 'docs/app.js'), 'utf8');
+const catalogSchema = JSON.parse(await readFile(resolve(root, 'schemas/catalog-v1.schema.json'), 'utf8'));
 
 const expectedIds = [
   'A00', 'A10', 'A20', 'A30',
@@ -15,9 +16,10 @@ const expectedIds = [
   'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D80', 'D90', 'D100', 'D110', 'D120',
 ];
 const unresolvedIds = [];
-const publishedIds = ['B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'D110'];
-const completedPublicEditionIds = ['B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'D110'];
+const publishedIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D110'];
+const completedPublicEditionIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D110'];
 const completedPublicRecordDois = [
+  '10.5281/zenodo.22070683',
   '10.5281/zenodo.22060439',
   '10.5281/zenodo.22070458',
   '10.5281/zenodo.22053905',
@@ -28,6 +30,8 @@ const completedPublicRecordDois = [
   '10.5281/zenodo.22062005',
   '10.5281/zenodo.21932787',
   '10.5281/zenodo.22054086',
+  '10.5281/zenodo.22070943',
+  '10.5281/zenodo.22070653',
   '10.5281/zenodo.22062017',
 ];
 const expectedOwnerLanes = {
@@ -48,9 +52,9 @@ assert.deepEqual(
   'Pemetaan semantik peran ke pemilik produksi berubah atau terpermutasi.'
 );
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
-assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar dua belas peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.47.0', 'Versi snapshot pusat harus 0.47.0.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22063396', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar lima belas peran kanon dengan edisi publik selesai berubah.');
+assert.equal(program.version, '0.48.0', 'Versi snapshot pusat harus 0.48.0.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22071700', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -92,15 +96,31 @@ assert.deepEqual(
       corpus: 'Mathematics in Lean — Bahasa Indonesia v4.30.0-id.3',
       recordCount: 10978,
       result: 'lossless-zero-copy-one-to-one-pass'
+    },
+    {
+      corpus: 'OpenStax Prealgebra 2e — Bahasa Indonesia v0.2.7',
+      recordCount: 523046,
+      result: 'lossless-streaming-zero-copy-adapter-pass'
+    },
+    {
+      corpus: 'Lega v1.01 — Pemodelan Matematis, Bahasa Indonesia',
+      recordCount: 16029,
+      result: 'lossless-replayable-zero-copy-adapter-pass'
+    },
+    {
+      corpus: 'Open Optimization Book 1 + laboratorium Pyomo/HiGHS O018, Bahasa Indonesia',
+      recordCount: 25805,
+      result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
     }
   ],
   'Bukti migrasi korpus lengkap berubah tanpa pembaruan kanon.'
 );
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
+assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22071700/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.48.0 yang dicadangkan.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
-assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar sebelas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
-assert.equal(new Set(program.completedPublicRecordDois).size, 11, 'Dua belas peran edisi selesai harus memetakan ke sebelas rekaman publik berbeda.');
+assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar empat belas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
+assert.equal(new Set(program.completedPublicRecordDois).size, 14, 'Lima belas peran edisi selesai harus memetakan ke empat belas rekaman publik berbeda.');
 for (const id of completedPublicEditionIds) {
   const course = courses.find((candidate) => candidate.id === id);
   assert.ok(course?.edition, `${id}: edisi publik selesai harus memiliki tautan pembaca atau repositori.`);
@@ -111,6 +131,18 @@ assert.equal(courses.find(({ id }) => id === 'B40')?.state, 'published', 'B40 ha
 assert.equal(courses.find(({ id }) => id === 'B40')?.zenodo, 'https://doi.org/10.5281/zenodo.22070458', 'B40 harus menunjuk DOI Hefferon yang terverifikasi.');
 assert.equal(courses.find(({ id }) => id === 'B40')?.repository, 'https://github.com/KokunoYumeto/hefferon-linear-algebra-id', 'B40 harus menunjuk repositori Hefferon yang tepat.');
 assert.match(courses.find(({ id }) => id === 'B40')?.note ?? '', /580 halaman.*435 halaman.*109 halaman/, 'B40 harus mencatat tiga keluaran Hefferon yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'A00')?.state, 'published', 'A00 harus menunjuk edisi Prealgebra 2e lengkap yang terverifikasi publik.');
+assert.equal(courses.find(({ id }) => id === 'A00')?.zenodo, 'https://doi.org/10.5281/zenodo.22070683', 'A00 harus menunjuk DOI Prealgebra 2e v0.2.7 yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'A00')?.repository, 'https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID', 'A00 harus menunjuk repositori Prealgebra 2e yang tepat.');
+assert.match(courses.find(({ id }) => id === 'A00')?.note ?? '', /75\/75.*3\.016 halaman.*519\.678 rekaman/, 'A00 harus mencatat batas lengkap pembaca dan backend yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'C120')?.state, 'published', 'C120 harus menunjuk edisi pemodelan matematis lengkap yang terverifikasi publik.');
+assert.equal(courses.find(({ id }) => id === 'C120')?.zenodo, 'https://doi.org/10.5281/zenodo.22070943', 'C120 harus menunjuk DOI pemodelan matematis yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'C120')?.repository, 'https://github.com/KokunoYumeto/mathematical-modeling-nonlinear-dynamics-id', 'C120 harus menunjuk repositori pemodelan matematis yang tepat.');
+assert.match(courses.find(({ id }) => id === 'C120')?.note ?? '', /22 unit sumber.*4 jembatan.*355 halaman/, 'C120 harus mencatat batas lengkap pemodelan matematis yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'C130')?.state, 'published', 'C130 harus menunjuk edisi riset operasi lengkap yang terverifikasi publik.');
+assert.equal(courses.find(({ id }) => id === 'C130')?.zenodo, 'https://doi.org/10.5281/zenodo.22070653', 'C130 harus menunjuk DOI riset operasi yang terverifikasi.');
+assert.equal(courses.find(({ id }) => id === 'C130')?.repository, 'https://github.com/KokunoYumeto/open-optimization-or-book-id', 'C130 harus menunjuk repositori riset operasi yang tepat.');
+assert.match(courses.find(({ id }) => id === 'C130')?.note ?? '', /666 halaman.*1\.993 unit.*9\.545 relasi/, 'C130 harus mencatat batas lengkap riset operasi yang terverifikasi.');
 assert.equal(courses.find(({ id }) => id === 'C70')?.state, 'published', 'C70 harus menunjuk edisi Applied Combinatorics lengkap yang terverifikasi publik.');
 assert.equal(courses.find(({ id }) => id === 'C70')?.zenodo, 'https://doi.org/10.5281/zenodo.22062005', 'C70 harus menunjuk DOI versi lengkap yang terverifikasi.');
 assert.equal(courses.find(({ id }) => id === 'C10')?.state, 'published', 'C10 harus menunjuk Jilid I Lebl lengkap yang terverifikasi publik.');
@@ -130,7 +162,7 @@ assert.equal(courses.find(({ id }) => id === 'C50')?.state, 'production', 'C50 h
 assert.equal(courses.find(({ id }) => id === 'C50')?.edition, undefined, 'C50 tidak boleh mewarisi pembaca R006/U227.');
 assert.equal(courses.find(({ id }) => id === 'C50')?.zenodo, undefined, 'C50 tidak boleh mewarisi DOI R006/U227.');
 assert.equal(courses.find(({ id }) => id === 'D30')?.state, 'production', 'D30 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
-assert.equal(courses.find(({ id }) => id === 'D30')?.edition, 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id', 'D30 harus menunjuk edisi publik parsial yang tepat.');
+assert.equal(courses.find(({ id }) => id === 'D30')?.repository, 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id', 'D30 harus menunjuk repositori kerja publik yang tepat tanpa melabelinya sebagai edisi selesai.');
 assert.equal(courses.find(({ id }) => id === 'D40')?.state, 'production', 'D40 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D40')?.corpus ?? '', /Dionne.*FEniCSx/, 'D40 harus mencatat arsitektur Dionne/FEniCSx yang dipilih.');
 assert.equal(courses.find(({ id }) => id === 'D50')?.state, 'production', 'D50 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
@@ -170,13 +202,15 @@ assert.match(html, /<html lang="id">/, 'Bahasa dokumen harus Bahasa Indonesia.')
 assert.match(html, /href="styles\.css"/, 'Stylesheet statis tidak terhubung.');
 assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
-assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22063396\/files\/program-matematika-indonesia-og-v0\.47\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
-assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22063396"/, 'URL kanonis Zenodo tidak tepat.');
+assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22071700\/files\/program-matematika-indonesia-og-v0\.48\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
+assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22071700"/, 'URL kanonis Zenodo tidak tepat.');
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Semua peran sumber sudah dibekukan/, 'Ringkasan penutupan pemilihan sumber hilang.');
-assert.match(html, /<strong>12<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan dua belas peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22063396/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /<strong>15<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan lima belas peran dengan edisi selesai hilang.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22071700/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia/, 'Tautan repositori GitHub pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');
+assert.match(app, /course\.repository/, 'Aplikasi harus menampilkan tautan repositori korpus pada kartu edisi.');
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);
 for (const tag of blankTargets) assert.match(tag, /rel="[^"]*noreferrer[^"]*"/, `Tautan tab baru tanpa rel=noreferrer: ${tag}`);

@@ -127,7 +127,7 @@ The complete 163,583-record DMOI backend has passed a lossless zero-copy migrati
 
 The result is recorded at `backend/migrations/dmoi4-id-v1/MIGRATION_RECEIPT.json`. A redundant 437 MB local copy was deliberately not made: the admitted source package plus the deterministic migration program and hash-bound receipt can materialize exactly the same target package.
 
-Six further complete-corpus proofs use the same nonduplicating contract:
+Nine further complete-corpus proofs use the same nonduplicating contract:
 
 - The complete B80 mathematical-computing catalog preserves all 326 native
   entries with checksum-bound payloads, reconstructs the exact 110,511-byte
@@ -151,6 +151,20 @@ Six further complete-corpus proofs use the same nonduplicating contract:
 - Applied Combinatorics maps each of its 19,048 unique native records to one
   reversible common record and adds one explicit external-prerequisite stub for
   B10, yielding 19,049 validated common records with closed foreign keys.
+- OpenStax Prealgebra 2e preserves all 519,678 owner-native records through a
+  streaming, reversible adapter and adds 3,368 deterministic common-v1 anchors
+  and projections, yielding 523,046 records without materializing a duplicate
+  of the 1.84 GB owner backend. The proof binds 98 target-only structural units,
+  408 target-only correction segments, 60 CollXML records, and 183 unique HTTPS
+  external targets without misclassifying those records as CNXML.
+- O005/C120 maps 4,941 native modeling/mastery/project records one-to-one,
+  adds 7,553 locale variants, 3,448 translation alignments, and bounded file
+  and program anchors, yielding 16,029 replayable records. All 81 native files
+  reconstruct byte-exactly from the receipt-bound adapter.
+- O018/C130 maps all 17,987 native operations-research records one-to-one and
+  adds 7,818 exact source/Indonesian segment variants, yielding 25,805 strict
+  records. Both the native and common foreign-key graphs close, and every
+  native record reverses exactly.
 
 Each proof was assembled twice with byte-identical virtual records and has its
 own schema-valid receipt under `backend/migrations/`.
@@ -167,14 +181,18 @@ own schema-valid receipt under `backend/migrations/`.
    adapter plus its explicit B10 prerequisite stub.
 7. Mathematics in Lean: admitted by the completed one-to-one reversible
    adapter and public-byte count reconciliation.
-8. TTNA: adapter implemented but fail-closed until the terminology-corrected
+8. OpenStax Prealgebra: admitted by the completed streaming, reversible,
+   zero-copy adapter over the frozen v0.2.7 backend.
+9. TTNA: adapter implemented but fail-closed until the terminology-corrected
    release and public receipts bind the same bytes.
-9. OpenStax Prealgebra: preserve existing IDs; map canonical units, localized units, expressions, rights, assets, and relations; move A00-specific curriculum fields to an extension/profile.
 10. O008: map formula evidence to alignment records and core/advanced arrays to route members; leave queued O001 solution references external until solution content exists.
-11. O005: split paired segments into neutral segments plus `en` and `id-ID` variants; promote every mastery problem, hint, answer/check, solution/rubric, notebook, project, dataset, correction, right, and build witness to typed records.
-12. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
-13. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
-14. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
+11. O005: admitted by the completed replayable zero-copy adapter over the
+    frozen complete-r5 backend.
+12. O018: admitted by the completed one-to-one adapter plus exact bilingual
+    segment-variant projection over the frozen id.5 backend.
+13. O016: convert cumulative "editions" to release snapshots; add stable Brenner/BGK source and Indonesian derivative editions; add the complete edition and 19-unit learner routes; demote Napkin to an optional reference.
+14. Hefferon: regenerate the stale backend under the current workflow and require its own validator to pass before migration.
+15. CLP: build an active-LaTeX-closure exporter and preserve the English PreTeXt tree as a separate source representation until individual crosswalks are proved.
 
 ## Semantic course-owner invariant
 
