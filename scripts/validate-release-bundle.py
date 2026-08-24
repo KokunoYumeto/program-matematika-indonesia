@@ -302,9 +302,9 @@ def main() -> None:
     if catalog["counts"].get("completedPublicRecords") != 14:
         raise ValueError("catalog completed-public record count is not 14")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
-        raise ValueError("catalog completed-public course-role identities are not the v0.49 canonical set")
+        raise ValueError("catalog completed-public course-role identities are not the v0.50 canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
-        raise ValueError("catalog completed-public DOI identities are not the v0.49 canonical set")
+        raise ValueError("catalog completed-public DOI identities are not the v0.50 canonical set")
     published_role_ids = [course["id"] for course in catalog["courses"] if course["state"] == "published"]
     if published_role_ids != expected_completed_role_ids:
         raise ValueError("catalog published course states do not match completed-public role identities")
@@ -375,6 +375,46 @@ def main() -> None:
         or courses_by_id["D20"].get("edition") != "https://zenodo.org/records/22072541/files/analisis-fungsional-dan-aljabar-operator-id-bab-1-12.pdf?download=1"
     ):
         raise ValueError("D20 does not preserve the verified incomplete Erdman Chapter 12 checkpoint")
+    if (
+        courses_by_id["D30"].get("state") != "production"
+        or courses_by_id["D30"].get("zenodo") != "https://doi.org/10.5281/zenodo.22074332"
+        or courses_by_id["D30"].get("edition") != "https://zenodo.org/api/records/22074332/files/00_PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_20.pdf/content"
+        or courses_by_id["D30"].get("repository") != "https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id"
+        or "223 halaman" not in courses_by_id["D30"].get("note", "")
+    ):
+        raise ValueError("D30 does not preserve the verified incomplete checkpoint-20 boundary")
+    if (
+        courses_by_id["D40"].get("state") != "production"
+        or courses_by_id["D40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22074306"
+        or courses_by_id["D40"].get("edition") != "https://zenodo.org/api/records/22074306/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_07.pdf/content"
+        or "8 simpul FEniCSx (7 wajib + 1 pengayaan)" not in courses_by_id["D40"].get("corpus", "")
+        or "46 halaman" not in courses_by_id["D40"].get("note", "")
+    ):
+        raise ValueError("D40 does not preserve the verified Unit-07 boundary and eight-node FEniCSx architecture")
+    if (
+        courses_by_id["D50"].get("state") != "production"
+        or courses_by_id["D50"].get("zenodo") != "https://doi.org/10.5281/zenodo.22073928"
+        or courses_by_id["D50"].get("edition") != "https://zenodo.org/api/records/22073928/files/geometri-diferensial-manifold-mulus-hingga-unit-10-id.pdf/content"
+        or "165 halaman" not in courses_by_id["D50"].get("note", "")
+    ):
+        raise ValueError("D50 does not preserve the verified incomplete Unit-10 boundary")
+    if (
+        courses_by_id["D60"].get("state") != "production"
+        or courses_by_id["D60"].get("zenodo") != "https://doi.org/10.5281/zenodo.22074233"
+        or courses_by_id["D60"].get("edition") != "https://kokunoyumeto.github.io/algebraic-topology-id/units-001-025/"
+        or courses_by_id["D60"].get("repository") != "https://github.com/KokunoYumeto/algebraic-topology-id"
+        or "Unit 25 (298 halaman)" not in courses_by_id["D60"].get("note", "")
+        or "Unit 24 (286 halaman)" not in courses_by_id["D60"].get("note", "")
+    ):
+        raise ValueError("D60 does not distinguish the verified Pages Unit-25 and Zenodo Unit-24 boundaries")
+    if (
+        courses_by_id["D100"].get("state") != "production"
+        or courses_by_id["D100"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070936"
+        or courses_by_id["D100"].get("edition") != "https://zenodo.org/api/records/22070936/files/kurva-aljabar-id-unit-08.pdf/content"
+        or "161 halaman" not in courses_by_id["D100"].get("note", "")
+        or "bukan rilis publik" not in courses_by_id["D100"].get("note", "")
+    ):
+        raise ValueError("D100 does not preserve the public Unit-08 and internal Unit-09 distinction")
 
     expected_catalog_migrations = []
     for migration_id, metadata in EXPECTED_MIGRATIONS.items():

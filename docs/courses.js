@@ -287,16 +287,20 @@ export const courses = [
     purpose: 'Ruang peluang, modus konvergensi, hukum bilangan besar, limit pusat, harapan bersyarat, martingal, proses Markov/Poisson, dan gerak Brown.',
     outcome: 'Membaca literatur peluang modern dan proses stokastik dengan kefasihan teori ukuran.',
     corpus: '27 halaman semantik Random + QuantEcon — Continuous Time Markov Chains (100 hlm.) + 2 irisan laboratorium Žitković + penutupan asli',
-    note: 'Arsitektur dibekukan tanpa teori renewal sebagai syarat kelulusan. Edisi publik sementara telah memuat 14 unit teori dan satu laboratorium; unit Markov berikutnya sedang menjalani QA. Korpus belum selesai.',
-    repository: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id'
+    note: 'Checkpoint publik 20 memuat pembaca kumulatif 223 halaman dan 26 halaman HTML termanifestasi. Tiga dari delapan bab QuantEcon sudah selesai; lima bab, jembatan Random/Brownian terpilih, dan penutupan asli masih diproduksi.',
+    edition: 'https://zenodo.org/api/records/22074332/files/00_PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_20.pdf/content',
+    repository: 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22074332'
   },
   {
     id: 'D40', ownerLane: 'O010', level: 'D', topic: 'Analisis', state: 'production',
     title: 'Persamaan Diferensial Parsial', prerequisites: ['B70', 'C110', 'D10', 'D20'],
     purpose: 'Persamaan orde satu dan dua klasik, distribusi, ruang Sobolev, solusi lemah, metode energi dan Fourier, serta titik kontak numerik.',
     outcome: 'Mengenali tipe PDP, membuktikan hasil dasar, dan membedakan solusi klasik, lemah, serta numerik.',
-    corpus: 'Dionne — Partial Differential Equations lengkap + 7 simpul laboratorium FEniCSx + penutupan soal, asesmen, dan laboratorium asli',
-    note: 'Arsitektur dibekukan. Dionne menjadi rangka teori wajib; FEniCSx menghubungkan formulasi lemah dengan komputasi. Enam unit Ivrii yang sudah diterima dipertahankan sebagai pembaca klasik opsional yang terpisah. Produksi belum selesai.'
+    corpus: 'Dionne — Partial Differential Equations lengkap + 8 simpul FEniCSx (7 wajib + 1 pengayaan) + penutupan soal, asesmen, dan laboratorium asli',
+    note: 'Unit 07 Dionne telah terbit sebagai pembaca kumulatif 46 halaman. Ekor karakteristik dan bagian klasifikasi berikutnya sudah diterima secara lokal tetapi belum dipublikasikan; Dionne, irisan FEniCSx, dan penutupan asli masih diproduksi.',
+    edition: 'https://zenodo.org/api/records/22074306/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_07.pdf/content',
+    zenodo: 'https://doi.org/10.5281/zenodo.22074306'
   },
   {
     id: 'D50', ownerLane: 'O011', level: 'D', topic: 'Geometri & Topologi', state: 'production',
@@ -304,7 +308,9 @@ export const courses = [
     purpose: 'Lipatan, struktur tangen dan kotangen, bentuk diferensial, integrasi dan Stokes, grup Lie, metrik Riemann, koneksi, dan kelengkungan.',
     outcome: 'Menggunakan bahasa geometri bebas koordinat dan membuktikan hasil dasar tentang lipatan serta kelengkungan.',
     corpus: 'Brenner lengkap — 29 kuliah + 29 lembar kerja; dua jembatan asli grup Lie/de Rham; bank 10 ujian resmi',
-    note: 'Arsitektur dipilih. Unit 7 telah diterbitkan dan terverifikasi; produksi kumulatif berlanjut ke Unit 8–10, lalu dua jembatan CC BY-SA dan penutupan asesmen 38 butir.'
+    note: 'Unit 10 telah terbit dan terverifikasi sebagai pembaca kumulatif 165 halaman. Unit 11–12 sudah selesai terjemahan dan QA berbatas tetapi belum diterbitkan; Unit 13 aktif, lalu dua jembatan dan penutupan asesmen menyusul.',
+    edition: 'https://zenodo.org/api/records/22073928/files/geometri-diferensial-manifold-mulus-hingga-unit-10-id.pdf/content',
+    zenodo: 'https://doi.org/10.5281/zenodo.22073928'
   },
   {
     id: 'D60', ownerLane: 'O012', level: 'D', topic: 'Geometri & Topologi', state: 'production',
@@ -312,7 +318,10 @@ export const courses = [
     purpose: 'Grup fundamental, ruang penutup, homologi simplisial/seluler, kohomologi, barisan eksak, derajat, dan metode homotopi terpilih.',
     outcome: 'Menerjemahkan pertanyaan geometri menjadi invarian aljabar yang dapat dihitung dan merekonstruksi bukti standar.',
     corpus: 'Roberts lengkap (30 kuliah) + jembatan homologi Fomberg §§1.1–1.13 + penutupan bukti, solusi, dan laboratorium asli',
-    note: 'Arsitektur dibekukan. Edisi Roberts lengkap tetap 30 unit; jalur belajar 14 unit memetakannya ke jembatan homologi tanpa menghapus atau menomori ulang unit. Produksi Roberts sedang berjalan; setelah itu masuk jembatan Fomberg terbatas dan penutupan 108 soal tersolusi serta empat laboratorium.'
+    note: 'Pembaca GitHub/Pages publik mencapai Unit 25 (298 halaman); preservasi Zenodo mencapai Unit 24 (286 halaman). Unit 26 sudah diterjemahkan dan ditinjau, dengan perluasan backend masih berlangsung; Roberts Unit 27–30, jembatan Fomberg, dan penutupan asli belum selesai.',
+    edition: 'https://kokunoyumeto.github.io/algebraic-topology-id/units-001-025/',
+    repository: 'https://github.com/KokunoYumeto/algebraic-topology-id',
+    zenodo: 'https://doi.org/10.5281/zenodo.22074233'
   },
   {
     id: 'D70', ownerLane: 'O013', level: 'D', topic: 'Aljabar', state: 'production',
@@ -344,8 +353,9 @@ export const courses = [
     purpose: 'Varietas afin/projektif, gelanggang koordinat, skema, sheaf, morfisme, dimensi, orientasi kohomologis, dan penggunaan terpandu Stacks Project.',
     outcome: 'Berpindah dari aljabar pascasarjana ke geometri aljabar tingkat sumber dan menavigasi korpus rujukan hidup.',
     corpus: 'Brenner Algebraische Kurven lengkap (337 halaman) + Bündel, Garben und Kohomologie lengkap (265 halaman) + penutupan penguasaan dan integrasi asli',
-    note: 'Arsitektur dipilih. Unit 1–5 volume klasik sudah publik dalam pembaca 96 halaman; Unit 10–12 sedang dibekukan dan diterjemahkan sebagai milestone kumulatif berikutnya. Jalur belajar menyorot 19 unit skema/kohomologi, sementara Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.',
-    zenodo: 'https://doi.org/10.5281/zenodo.22059687'
+    note: 'Unit 1–8 volume klasik sudah publik dalam pembaca 161 halaman. Unit 9 adalah checkpoint internal terverifikasi 174 halaman, bukan rilis publik; Unit 10–12 menjadi target kumulatif berikutnya. Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.',
+    edition: 'https://zenodo.org/api/records/22070936/files/kurva-aljabar-id-unit-08.pdf/content',
+    zenodo: 'https://doi.org/10.5281/zenodo.22070936'
   },
   {
     id: 'D110', ownerLane: 'LEAN', level: 'D', topic: 'Praktik Riset', state: 'published',
@@ -386,7 +396,7 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.49.0',
+  version: '0.50.0',
   snapshotDate: '2026-08-24',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
@@ -408,7 +418,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22070653',
     '10.5281/zenodo.22062017'
   ],
-  zenodo: 'https://doi.org/10.5281/zenodo.22074079',
+  zenodo: 'https://doi.org/10.5281/zenodo.22074701',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -470,9 +480,9 @@ export const program = Object.freeze({
         result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22074079/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22074079/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22074079/files/program-matematika-indonesia-backend-v1-v0.49.0.zip?download=1'
+    schema: 'https://zenodo.org/records/22074701/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22074701/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22074701/files/program-matematika-indonesia-backend-v1-v0.50.0.zip?download=1'
   },
   repositories: {
     github: {

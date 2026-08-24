@@ -53,8 +53,8 @@ assert.deepEqual(
 );
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar lima belas peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.49.0', 'Versi snapshot pusat harus 0.49.0.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22074079', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.version, '0.50.0', 'Versi snapshot pusat harus 0.50.0.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22074701', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -116,7 +116,7 @@ assert.deepEqual(
   'Bukti migrasi korpus lengkap berubah tanpa pembaruan kanon.'
 );
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
-assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22074079/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.49.0 yang dicadangkan.');
+assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22074701/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.50.0 yang dicadangkan.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
 assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar empat belas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
@@ -177,16 +177,27 @@ assert.equal(courses.find(({ id }) => id === 'D20')?.edition, 'https://zenodo.or
 assert.match(courses.find(({ id }) => id === 'D20')?.note ?? '', /Bab 1–12.*Bab 13.*belum selesai/, 'D20 harus menyatakan batas publik dan kelanjutan produksinya.');
 assert.equal(courses.find(({ id }) => id === 'D30')?.state, 'production', 'D30 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
 assert.equal(courses.find(({ id }) => id === 'D30')?.repository, 'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id', 'D30 harus menunjuk repositori kerja publik yang tepat tanpa melabelinya sebagai edisi selesai.');
+assert.equal(courses.find(({ id }) => id === 'D30')?.zenodo, 'https://doi.org/10.5281/zenodo.22074332', 'D30 harus menunjuk checkpoint Zenodo 20 yang terverifikasi.');
+assert.match(courses.find(({ id }) => id === 'D30')?.note ?? '', /checkpoint publik 20.*223 halaman.*Tiga dari delapan/i, 'D30 harus menyatakan batas publik dan sisa produksi dengan tepat.');
 assert.equal(courses.find(({ id }) => id === 'D40')?.state, 'production', 'D40 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
-assert.match(courses.find(({ id }) => id === 'D40')?.corpus ?? '', /Dionne.*FEniCSx/, 'D40 harus mencatat arsitektur Dionne/FEniCSx yang dipilih.');
+assert.match(courses.find(({ id }) => id === 'D40')?.corpus ?? '', /Dionne.*8 simpul FEniCSx \(7 wajib \+ 1 pengayaan\)/, 'D40 harus mencatat delapan simpul Dionne/FEniCSx yang dipilih.');
+assert.equal(courses.find(({ id }) => id === 'D40')?.zenodo, 'https://doi.org/10.5281/zenodo.22074306', 'D40 harus menunjuk Unit 07 Zenodo yang terverifikasi.');
+assert.match(courses.find(({ id }) => id === 'D40')?.note ?? '', /Unit 07.*46 halaman.*belum dipublikasikan/, 'D40 harus menyatakan batas publik dan kemajuan lokal tanpa mencampurkannya.');
 assert.equal(courses.find(({ id }) => id === 'D50')?.state, 'production', 'D50 harus terpilih dan tetap ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D50')?.corpus ?? '', /Brenner.*jembatan.*ujian/, 'D50 harus mencatat arsitektur Brenner, jembatan asli, dan bank ujian resmi.');
+assert.equal(courses.find(({ id }) => id === 'D50')?.zenodo, 'https://doi.org/10.5281/zenodo.22073928', 'D50 harus menunjuk Unit 10 Zenodo yang terverifikasi.');
+assert.match(courses.find(({ id }) => id === 'D50')?.note ?? '', /Unit 10.*165 halaman.*Unit 11–12/, 'D50 harus menyatakan batas publik Unit 10 dan kemajuan lokal berikutnya.');
 assert.equal(courses.find(({ id }) => id === 'D60')?.state, 'production', 'D60 harus terpilih dan ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D60')?.corpus ?? '', /Roberts.*Fomberg.*penutupan/, 'D60 harus mencatat arsitektur Roberts/Fomberg/penutupan asli yang dipilih.');
+assert.equal(courses.find(({ id }) => id === 'D60')?.repository, 'https://github.com/KokunoYumeto/algebraic-topology-id', 'D60 harus menunjuk repositori kerja publik yang tepat.');
+assert.equal(courses.find(({ id }) => id === 'D60')?.zenodo, 'https://doi.org/10.5281/zenodo.22074233', 'D60 harus menunjuk batas preservasi Zenodo Unit 24.');
+assert.match(courses.find(({ id }) => id === 'D60')?.note ?? '', /Unit 25 \(298 halaman\).*Unit 24 \(286 halaman\).*Unit 26/, 'D60 harus membedakan batas GitHub/Pages, Zenodo, dan kemajuan lokal.');
 assert.equal(courses.find(({ id }) => id === 'D90')?.state, 'production', 'D90 harus terpilih dan ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D90')?.corpus ?? '', /MIT OCW 6\.253.*Royer.*empat unit/, 'D90 harus mencatat arsitektur MIT/Royer/penutupan asli yang dipilih.');
 assert.equal(courses.find(({ id }) => id === 'D100')?.state, 'production', 'D100 harus terpilih dan ditandai sedang diproduksi sampai korpus selesai.');
 assert.match(courses.find(({ id }) => id === 'D100')?.corpus ?? '', /Brenner Algebraische Kurven.*Bündel, Garben und Kohomologie/, 'D100 harus mencatat dua volume Brenner yang dipilih.');
+assert.equal(courses.find(({ id }) => id === 'D100')?.zenodo, 'https://doi.org/10.5281/zenodo.22070936', 'D100 harus menunjuk batas publik Unit 08.');
+assert.match(courses.find(({ id }) => id === 'D100')?.note ?? '', /Unit 1–8.*161 halaman.*Unit 9.*bukan rilis publik/, 'D100 harus membedakan batas publik Unit 08 dari checkpoint internal Unit 09.');
 assert.equal(courses.find(({ id }) => id === 'C110')?.zenodo, 'https://doi.org/10.5281/zenodo.22054086', 'C110 harus menunjuk DOI edisi lengkap yang terverifikasi.');
 
 const ids = new Set(courses.map(({ id }) => id));
@@ -216,12 +227,12 @@ assert.match(html, /<html lang="id">/, 'Bahasa dokumen harus Bahasa Indonesia.')
 assert.match(html, /href="styles\.css"/, 'Stylesheet statis tidak terhubung.');
 assert.match(html, /src="app\.js"/, 'Aplikasi katalog tidak terhubung.');
 assert.match(html, /class="english-note" lang="en"/, 'Catatan Inggris sekunder di footer tidak ditemukan.');
-assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22074079\/files\/program-matematika-indonesia-og-v0\.49\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
-assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22074079"/, 'URL kanonis Zenodo tidak tepat.');
+assert.match(html, /property="og:image" content="https:\/\/zenodo\.org\/records\/22074701\/files\/program-matematika-indonesia-og-v0\.50\.0\.png"/, 'Kartu sosial Zenodo tidak terhubung.');
+assert.match(html, /rel="canonical" href="https:\/\/doi\.org\/10\.5281\/zenodo\.22074701"/, 'URL kanonis Zenodo tidak tepat.');
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Produksi yang belum selesai tetap dilabeli dengan jelas/, 'Ringkasan batas produksi hilang.');
 assert.match(html, /<strong>15<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan lima belas peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22074079/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22074701/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
 assert.match(html, /https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia/, 'Tautan repositori GitHub pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');
 assert.match(app, /course\.repository/, 'Aplikasi harus menampilkan tautan repositori korpus pada kartu edisi.');
