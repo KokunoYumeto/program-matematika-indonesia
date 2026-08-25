@@ -65,12 +65,19 @@ function nextCourseLinks(course) {
 function actionLinks(course) {
   const links = [];
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
-  const readerIsSuspendedGithub = githubUnavailable && course.reader?.startsWith('https://github.com/KokunoYumeto/');
+  // Keep the learner-facing entry point separate from owner/provenance links.
+  // D20 now has a central semantic HTML index; the owner reader remains a
+  // secondary link so students never land on a machine-facing backend.
+  const learnerEntry = course.id === 'D20'
+    ? 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/'
+    : course.reader;
+  const readerIsSuspendedGithub = githubUnavailable && learnerEntry?.startsWith('https://github.com/KokunoYumeto/');
   const editionIsSuspendedGithub = githubUnavailable && course.edition?.startsWith('https://github.com/KokunoYumeto/');
   const repositoryIsSuspendedGithub = githubUnavailable && course.repository?.startsWith('https://github.com/KokunoYumeto/');
   const editionLabel = course.state === 'published' ? 'Buka edisi' : 'Buka edisi kerja';
-  if (course.reader && !readerIsSuspendedGithub) links.push(`<a class="card-action primary" href="${course.reader}" target="_blank" rel="noreferrer">Mulai belajar — HTML <span aria-hidden="true">↗</span></a>`);
-  if (course.edition && course.edition !== course.reader && !editionIsSuspendedGithub) links.push(`<a class="card-action${course.reader ? '' : ' primary'}" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
+  if (learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action primary" href="${learnerEntry}" target="_blank" rel="noreferrer">Mulai belajar — HTML <span aria-hidden="true">↗</span></a>`);
+  if (course.id === 'D20' && course.reader && course.reader !== learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action" href="${course.reader}" target="_blank" rel="noreferrer">Pembaca pemilik ↗</a>`);
+  if (course.edition && course.edition !== learnerEntry && !editionIsSuspendedGithub) links.push(`<a class="card-action${learnerEntry ? '' : ' primary'}" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
   if (course.zenodo) links.push(`<a class="card-action" href="${course.zenodo}" target="_blank" rel="noreferrer">Arsip DOI <span aria-hidden="true">↗</span></a>`);
   if (course.repository && course.repository !== course.edition && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.repository}" target="_blank" rel="noreferrer">Repositori <span aria-hidden="true">↗</span></a>`);
   if (!links.length) {
