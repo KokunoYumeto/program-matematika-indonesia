@@ -491,13 +491,45 @@ def clean_public_boundary(
     receipt_sha = sha256_file(publication_receipt_path)
     if current_state.get("publication", {}).get("publication_receipt_sha256") != receipt_sha:
         failures.append("CURRENT_STATE publication receipt")
-    if publication_state.get("publication_receipt_sha256") != receipt_sha:
+    publication_state_receipt_sha = (
+        publication_state.get("current_release", {}).get("receipt_sha256")
+        or publication_state.get("publication_receipt_sha256")
+    )
+    if publication_state_receipt_sha != receipt_sha:
         failures.append("PUBLICATION_STATE publication receipt")
     if not current_state.get("publication", {}).get("published") or not publication_state.get("published"):
         failures.append("public completion state")
 
-    zenodo = publication_receipt.get("zenodo", {})
-    github = publication_receipt.get("github", {})
+    zenodo = dict(publication_receipt.get("zenodo", {}))
+    github = dict(publication_receipt.get("github", {}))
+    release = publication_receipt.get("release", {})
+    if publication_receipt.get("schema_id") == "ttna-id-release-publication-receipt-r1-v1":
+        # The integrity-revision receipt records the shared four-file payload once
+        # and then binds both repositories to an anonymous all-file byte/hash
+        # readback.  Normalize that stronger receipt to the older adapter shape
+        # without changing or duplicating any owner-native bytes.
+        artifacts = publication_receipt.get("artifacts", [])
+        if not isinstance(artifacts, list):
+            artifacts = []
+        zenodo["files"] = artifacts
+        zenodo["status"] = (
+            "published_and_anonymously_verified"
+            if zenodo.get("anonymous_all_four_file_byte_and_sha256_readback") == "pass"
+            else "verification_failed"
+        )
+        github["status"] = (
+            "published_and_anonymously_verified"
+            if github.get("anonymous_all_four_file_byte_and_sha256_readback") == "pass"
+            else "verification_failed"
+        )
+        github["repository_url"] = github.get("repository")
+        github["release_commit"] = github.get("commit")
+        github["public_main_commit_at_release"] = github.get("commit")
+        github["github_release"] = {
+            "release_id": github.get("release_id"),
+            "url": github.get("release_url"),
+            "assets": artifacts,
+        }
     zenodo_hashes = {entry.get("sha256") for entry in zenodo.get("files", [])}
     github_hashes = {
         entry.get("sha256") for entry in github.get("github_release", {}).get("assets", [])
@@ -518,8 +550,8 @@ def clean_public_boundary(
     return {
         "recorded_at": publication_receipt.get("last_verified_at")
         or publication_receipt.get("recorded_at"),
-        "version": publication_receipt["release"]["version"],
-        "tag": publication_receipt["release"]["tag"],
+        "version": release["version"],
+        "tag": release.get("tag") or github.get("tag"),
         "release_date": str(zenodo.get("published_at", ""))[:10] or None,
         "zenodo": zenodo,
         "github": github,
@@ -680,7 +712,7 @@ def build_common_dataset(
             locale=native.get("locale", "id-ID"),
             program_key=first_nonempty(native.get("program_local_id"), default="unknown:r015-envelope"),
             rights_id=primary_rights_id,
-            title=first_nonempty(native.get("title"), default=""),
+            title=first_nonempty(native.get("title"), resource.get("title")),
         )
         add(base, native["id"])
         request_rights(base["id"], [primary_rights_id], "program_default")
@@ -701,7 +733,7 @@ def build_common_dataset(
             order_key=native.get("course_local_id", ""),
             program_id=native["program_id"],
             role=first_nonempty(native.get("curriculum_role"), default="unknown_not_present_in_native_evidence"),
-            title=native.get("title"),
+            title=first_nonempty(native.get("title"), resource.get("title")),
             prerequisite_course_keys=[],
             curriculum_source_locator=as_text(native.get("evidence")),
         )
@@ -795,7 +827,19 @@ def build_common_dataset(
 
     # Native units plus one explicit lexical-scope unit required by common terms.
     for native in grouped["unit"]:
-        source_file = source_files[native["source_file_id"]]
+        native_source_file_id = native.get("source_file_id")
+        if native_source_file_id is None and native.get("kind") == "work":
+            master_files = [
+                candidate for candidate in source_files.values() if candidate.get("role") == "master"
+            ]
+            if len(master_files) != 1:
+                raise ValueError(
+                    "root work unit has no source_file_id and the native export does not expose "
+                    "exactly one master source file"
+                )
+            source_file = master_files[0]
+        else:
+            source_file = source_files[native_source_file_id]
         right_ids = native.get("rights_ids") or [native.get("rights_id")]
         base = common_base(
             "unit",
@@ -1474,7 +1518,17 @@ def main() -> int:
     current_state_path = lane_root / "00_control/CURRENT_STATE.json"
     current_cursor_path = lane_root / "00_control/CURRENT_CURSOR.json"
     publication_state_path = lane_root / "00_control/PUBLICATION_STATE.json"
-    publication_receipt_path = lane_root / "publication/PUBLICATION_RECEIPT.json"
+    publication_state_seed = load_json(publication_state_path)
+    publication_receipt_rel = (
+        publication_state_seed.get("current_release", {}).get("receipt")
+        or publication_state_seed.get("publication_receipt")
+        or "publication/PUBLICATION_RECEIPT.json"
+    )
+    publication_receipt_path = (lane_root / publication_receipt_rel).resolve()
+    try:
+        publication_receipt_path.relative_to(lane_root)
+    except ValueError as exc:
+        raise ValueError("publication receipt escapes the owner lane") from exc
 
     records, native_validation = verify_native_export(
         lane_root,

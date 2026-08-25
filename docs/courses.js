@@ -417,8 +417,8 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.51.2',
-  snapshotDate: '2026-08-24',
+  version: '0.52.0',
+  snapshotDate: '2026-08-25',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
   unresolvedRoleIds: [],
@@ -440,7 +440,7 @@ export const program = Object.freeze({
     '10.5281/zenodo.22062017'
   ],
   website: 'https://kokunoyumeto.github.io/program-matematika-indonesia/',
-  zenodo: 'https://doi.org/10.5281/zenodo.22087340',
+  zenodo: 'https://doi.org/10.5281/zenodo.22088577',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -455,6 +455,11 @@ export const program = Object.freeze({
         corpus: 'Discrete Mathematics: An Open Introduction 4 — Bahasa Indonesia',
         recordCount: 163583,
         result: 'lossless-zero-copy-pass'
+      },
+      {
+        corpus: 'Hefferon — Linear Algebra, Bahasa Indonesia v2026.08.22',
+        recordCount: 22131,
+        result: 'lossless-zero-copy-one-to-one-native-backend-adapter-pass'
       },
       {
         corpus: 'Komputasi Matematis dan Eksperimen yang Dapat Direproduksi — Bahasa Indonesia',
@@ -500,17 +505,36 @@ export const program = Object.freeze({
         corpus: 'Open Optimization Book 1 + laboratorium Pyomo/HiGHS O018, Bahasa Indonesia',
         recordCount: 25805,
         result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
+      },
+      {
+        corpus: 'Tea Time Numerical Analysis — Bahasa Indonesia v3.0-id.2-r1',
+        recordCount: 53055,
+        result: 'additive-zero-copy-virtual-adapter-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22087340/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22087340/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22087340/files/program-matematika-indonesia-backend-v1-v0.51.2.zip?download=1'
+    schema: 'https://zenodo.org/records/22088577/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22088577/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22088577/files/program-matematika-indonesia-backend-v1-v0.52.0.zip?download=1',
+    federationV2: {
+      version: '0.1.0',
+      status: 'validated',
+      recordCount: 2439,
+      datasetCount: 34,
+      courseCount: 40,
+      learnerSurfaceCount: 136,
+      webRouteCount: 41,
+      identityCrosswalkCount: 2122,
+      package: 'https://zenodo.org/records/22088577/files/program-matematika-indonesia-backend-v2-v0.52.0.zip?download=1',
+      packageSchema: 'https://zenodo.org/records/22088577/files/federation-package-v2.schema.json?download=1',
+      recordSchema: 'https://zenodo.org/records/22088577/files/federation-record-v2.schema.json?download=1',
+      validationReceipt: 'https://zenodo.org/records/22088577/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.52.0.json?download=1'
+    }
   },
   repositories: {
     github: {
       url: 'https://github.com/KokunoYumeto/program-matematika-indonesia',
       status: 'available',
-      lastConfirmedAt: '2026-08-24'
+      lastConfirmedAt: '2026-08-25'
     }
   },
   status: 'in-progress'

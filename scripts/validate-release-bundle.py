@@ -9,6 +9,7 @@ import json
 import re
 import subprocess
 import sys
+import tempfile
 import zipfile
 from pathlib import Path
 
@@ -19,6 +20,10 @@ EXPECTED_MIGRATIONS = {
     "dmoi4-id-0.1.0-to-interlanguage-v1.0.0": {
         "corpus": "Discrete Mathematics: An Open Introduction 4 — Bahasa Indonesia",
         "result": "lossless-zero-copy-pass",
+    },
+    "hefferon-linear-algebra-id-v2026.08.22-to-interlanguage-v1.0.0": {
+        "corpus": "Hefferon — Linear Algebra, Bahasa Indonesia v2026.08.22",
+        "result": "lossless-zero-copy-one-to-one-native-backend-adapter-pass",
     },
     "o002-b80-id-2026.08.22.1-to-interlanguage-v1.0.0": {
         "corpus": "Komputasi Matematis dan Eksperimen yang Dapat Direproduksi — Bahasa Indonesia",
@@ -56,11 +61,16 @@ EXPECTED_MIGRATIONS = {
         "corpus": "Open Optimization Book 1 + laboratorium Pyomo/HiGHS O018, Bahasa Indonesia",
         "result": "lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass",
     },
+    "tea-time-numerical-analysis-id-v1": {
+        "corpus": "Tea Time Numerical Analysis — Bahasa Indonesia v3.0-id.2-r1",
+        "result": "additive-zero-copy-virtual-adapter-pass",
+    },
 }
 
 MIGRATION_RECEIPT_FILENAMES = {
     "applied-combinatorics-id-v1": "applied-combinatorics-id-backend-v1-migration-receipt.json",
     "dmoi4-id-v1": "dmoi4-id-backend-v1-migration-receipt.json",
+    "hefferon-linear-algebra-id-v1": "hefferon-linear-algebra-id-backend-v1-migration-receipt.json",
     "judson-id-v1": "judson-id-backend-v1-migration-receipt.json",
     "mathematics-in-lean-id-v1": "mathematics-in-lean-id-backend-v1-migration-receipt.json",
     "o002-b80-id-v1": "o002-b80-id-backend-v1-migration-receipt.json",
@@ -68,7 +78,35 @@ MIGRATION_RECEIPT_FILENAMES = {
     "o018-c130-id-v1": "o018-c130-id-backend-v1-migration-receipt.json",
     "openlogic-id-v1": "openlogic-id-backend-v1-migration-receipt.json",
     "prealgebra2e-id-v1": "prealgebra2e-id-backend-v1-migration-receipt.json",
+    "tea-time-id-v1": "tea-time-id-backend-v1-migration-receipt.json",
     "yaintt-id-v1": "yaintt-id-backend-v1-migration-receipt.json",
+}
+
+V2_RELEASE_FILES = {
+    "schemas/v2/backend-migration-receipt-v2.schema.json": "backend-migration-receipt-v2.schema.json",
+    "schemas/v2/federation-package-v2.schema.json": "federation-package-v2.schema.json",
+    "schemas/v2/federation-record-v2.schema.json": "federation-record-v2.schema.json",
+    "schemas/v2/namespace-v2.json": "namespace-v2.json",
+    "schemas/v2/pmi-release-policy-v2.json": "pmi-release-policy-v2.json",
+    "scripts/build-backend-v2-federation.py": "build-backend-v2-federation.py",
+    "scripts/validate-backend-v2-federation.py": "validate-backend-v2-federation.py",
+}
+
+EXPECTED_V1_PACKAGE_PINS = {
+    "manifest.json": "06a4c070ec0bda8c419e67782cabbf960187c775f8e654d95ea9700f6a0e74b6",
+    "records.jsonl": "bbd22f371d7bf58d23e4aadd3466b82a344e545d056b4706fc733a4dcdeaf7dc",
+    "validation_report.json": "cd21f9237618353235b2d060094acb99a6cdc5e576d349e0d2592d064b7989e7",
+}
+
+EXPECTED_V2_COUNTS = {
+    "datasets": 34,
+    "programs": 1,
+    "courses": 40,
+    "reader_surfaces": 136,
+    "web_routes": 41,
+    "publication_events": 50,
+    "qa_events": 15,
+    "identity_crosswalks": 2122,
 }
 
 PRIVATE_BYTE_MARKERS = (
@@ -162,8 +200,7 @@ def verify_source_zip(
     }
 
 
-def verify_backend_zip(path: Path, package: Path) -> dict:
-    prefix = "program-matematika-indonesia-backend-v1/"
+def verify_backend_zip(path: Path, package: Path, prefix: str) -> dict:
     expected = {
         prefix + source.relative_to(package).as_posix(): source
         for source in package.rglob("*")
@@ -183,6 +220,112 @@ def verify_backend_zip(path: Path, package: Path) -> dict:
     return {"entries": len(expected), "privacy_scan": "pass", "result": "pass"}
 
 
+def verify_v1_immutable_package(package: Path) -> dict:
+    for relative, expected_sha256 in EXPECTED_V1_PACKAGE_PINS.items():
+        path = package / relative
+        if not path.is_file() or sha256_file(path) != expected_sha256:
+            raise ValueError(f"immutable backend-v1 identity mismatch: {relative}")
+
+    manifest = json.loads((package / "manifest.json").read_text(encoding="utf-8"))
+    if manifest.get("record_count") != 2122:
+        raise ValueError("immutable backend-v1 manifest record count is not 2,122")
+    declared = {entry["path"]: entry for entry in manifest.get("files", [])}
+    actual = {
+        path.relative_to(package).as_posix()
+        for path in package.rglob("*")
+        if path.is_file()
+    }
+    if actual != set(declared) | {"manifest.json", "validation_report.json"}:
+        raise ValueError("immutable backend-v1 package inventory mismatch")
+    for relative, entry in declared.items():
+        path = package / relative
+        if (
+            not path.is_file()
+            or path.stat().st_size != entry["bytes"]
+            or sha256_file(path) != entry["sha256"]
+        ):
+            raise ValueError(f"immutable backend-v1 manifest member mismatch: {relative}")
+    return {
+        "record_count": 2122,
+        "manifest_members": len(declared),
+        "pinned_identities": EXPECTED_V1_PACKAGE_PINS,
+        "result": "pass",
+    }
+
+
+def verify_v2_receipt(
+    receipt_path: Path,
+    package: Path,
+    root: Path,
+) -> dict:
+    receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if receipt.get("result") != "pass" or receipt.get("credentials_recorded") is not False:
+        raise ValueError("backend-v2 validation receipt is not an admitted credential-free pass")
+
+    canonical = receipt.get("canonical_package", {})
+    manifest_path = package / "manifest.json"
+    records_jsonl_path = package / "records.jsonl"
+    records_csv_path = package / "records.csv"
+    federation_path = package / "federation.json"
+    expected_package_facts = {
+        "record_count": 2439,
+        "table_counts": EXPECTED_V2_COUNTS,
+        "records_jsonl": {
+            "bytes": records_jsonl_path.stat().st_size,
+            "sha256": sha256_file(records_jsonl_path),
+        },
+        "records_csv": {
+            "bytes": records_csv_path.stat().st_size,
+            "sha256": sha256_file(records_csv_path),
+        },
+        "federation_json": {
+            "bytes": federation_path.stat().st_size,
+            "sha256": sha256_file(federation_path),
+        },
+        "manifest_json": {
+            "bytes": manifest_path.stat().st_size,
+            "sha256": sha256_file(manifest_path),
+        },
+    }
+    for key, expected in expected_package_facts.items():
+        if canonical.get(key) != expected:
+            raise ValueError(f"backend-v2 validation receipt canonical-package mismatch: {key}")
+
+    expected_implementation = {
+        "builder": "scripts/build-backend-v2-federation.py",
+        "validator": "scripts/validate-backend-v2-federation.py",
+    }
+    implementation = receipt.get("implementation", {})
+    for role, relative in expected_implementation.items():
+        source = root / relative
+        fact = implementation.get(role, {})
+        if (
+            fact.get("path") != relative
+            or fact.get("bytes") != source.stat().st_size
+            or fact.get("sha256") != sha256_file(source)
+        ):
+            raise ValueError(f"backend-v2 validation receipt implementation mismatch: {role}")
+
+    schemas = {row.get("path"): row for row in receipt.get("schemas", [])}
+    expected_schema_paths = {
+        relative for relative in V2_RELEASE_FILES if relative.startswith("schemas/v2/")
+    }
+    if set(schemas) != expected_schema_paths:
+        raise ValueError("backend-v2 validation receipt schema identity set mismatch")
+    for relative in sorted(expected_schema_paths):
+        source = root / relative
+        fact = schemas[relative]
+        if fact.get("bytes") != source.stat().st_size or fact.get("sha256") != sha256_file(source):
+            raise ValueError(f"backend-v2 validation receipt schema mismatch: {relative}")
+    return {
+        "record_count": canonical["record_count"],
+        "table_counts": canonical["table_counts"],
+        "implementation_bindings": len(expected_implementation),
+        "schema_bindings": len(expected_schema_paths),
+        "result": "pass",
+    }
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True, type=Path)
@@ -191,16 +334,30 @@ def main() -> None:
     parser.add_argument("--source-commit", required=True)
     parser.add_argument("--release-dir", required=True, type=Path)
     parser.add_argument("--backend-package", required=True, type=Path)
+    parser.add_argument("--backend-v2-package", required=True, type=Path)
+    parser.add_argument("--backend-v2-validation-receipt", required=True, type=Path)
+    parser.add_argument("--coordinator-logbook-root", required=True, type=Path)
     parser.add_argument("--output-report", required=True, type=Path)
     args = parser.parse_args()
 
     root = args.root.resolve()
     release = args.release_dir.resolve()
     backend = args.backend_package.resolve()
+    backend_v2 = args.backend_v2_package.resolve()
+    backend_v2_validation_receipt = args.backend_v2_validation_receipt.resolve()
+    coordinator_logbook_root = args.coordinator_logbook_root.resolve()
     version = args.version
 
-    if not release.is_relative_to(root) or not backend.is_relative_to(root):
-        raise ValueError("release and backend package must remain inside the project root")
+    if (
+        not release.is_relative_to(root)
+        or not backend.is_relative_to(root)
+        or not backend_v2.is_relative_to(root)
+    ):
+        raise ValueError("release and backend packages must remain inside the project root")
+    if not coordinator_logbook_root.is_dir():
+        raise ValueError("coordinator logbook root must be an existing directory")
+    if not backend_v2_validation_receipt.is_file():
+        raise ValueError("backend-v2 validation receipt input does not exist")
     output_report = args.output_report.resolve()
     if output_report.parent != release:
         raise ValueError("local validation report must be written directly inside the release directory")
@@ -259,8 +416,8 @@ def main() -> None:
     if set(receipt_documents) != set(EXPECTED_MIGRATIONS):
         raise ValueError("complete-corpus migration receipt identity set mismatch")
     migration_target_records = sum(receipt["target"]["record_count"] for receipt in receipt_documents.values())
-    if len(receipt_documents) != 10 or migration_target_records != 809296:
-        raise ValueError("complete-corpus migration proof boundary must contain ten receipts and 809,296 target records")
+    if len(receipt_documents) != 12 or migration_target_records != 884482:
+        raise ValueError("complete-corpus migration proof boundary must contain twelve receipts and 884,482 target records")
 
     catalog_path = release / f"program-matematika-indonesia-catalog-v{version}.json"
     catalog_schema_path = release / "program-matematika-indonesia-catalog-v1.schema.json"
@@ -476,6 +633,23 @@ def main() -> None:
     if sorted(actual_catalog_migrations, key=lambda row: row["corpus"]) != sorted(expected_catalog_migrations, key=lambda row: row["corpus"]):
         raise ValueError("catalog migration claims do not match the validated receipt identities and counts")
 
+    expected_federation_v2 = {
+        "version": "0.1.0",
+        "status": "validated",
+        "recordCount": 2439,
+        "datasetCount": 34,
+        "courseCount": 40,
+        "learnerSurfaceCount": 136,
+        "webRouteCount": 41,
+        "identityCrosswalkCount": 2122,
+        "package": f"https://zenodo.org/records/{args.record_id}/files/program-matematika-indonesia-backend-v2-v{version}.zip?download=1",
+        "packageSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-package-v2.schema.json?download=1",
+        "recordSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-record-v2.schema.json?download=1",
+        "validationReceipt": f"https://zenodo.org/records/{args.record_id}/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json?download=1",
+    }
+    if catalog["program"]["backend"].get("federationV2") != expected_federation_v2:
+        raise ValueError("catalog federation-v2 claim does not match the exact validated release boundary")
+
     backend_report_path = backend / "validation_report.json"
     backend_report = json.loads(backend_report_path.read_text(encoding="utf-8"))
     if backend_report["result"] != "pass" or backend_report["checks"]["deterministic_replay"]["result"] != "byte-identical":
@@ -484,6 +658,72 @@ def main() -> None:
         raise ValueError("catalog/backend record count mismatch")
     if backend_report["checks"]["record_count"] != 2122:
         raise ValueError("central backend record count must remain exactly 2,122")
+    v1_immutable_result = verify_v1_immutable_package(backend)
+
+    copied_v2_receipt = release / f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json"
+    if (
+        not copied_v2_receipt.is_file()
+        or copied_v2_receipt.read_bytes() != backend_v2_validation_receipt.read_bytes()
+    ):
+        raise ValueError("release backend-v2 validation receipt is absent or changed")
+    for source_name, release_name in V2_RELEASE_FILES.items():
+        source = root / source_name
+        copied = release / release_name
+        if not copied.is_file() or copied.read_bytes() != source.read_bytes():
+            raise ValueError(f"release backend-v2 support file is absent or changed: {release_name}")
+    v2_receipt_result = verify_v2_receipt(backend_v2_validation_receipt, backend_v2, root)
+
+    with tempfile.TemporaryDirectory(prefix="pmi-backend-v2-replay-") as temporary:
+        replay_package = Path(temporary) / "program-matematika-indonesia-federation-v0.1.0"
+        replay_build = subprocess.run(
+            [
+                sys.executable,
+                "-B",
+                str(root / "scripts" / "build-backend-v2-federation.py"),
+                "--output",
+                str(replay_package),
+            ],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        replay_build_result = json.loads(replay_build.stdout)
+        v2_validation = subprocess.run(
+            [
+                sys.executable,
+                "-B",
+                str(root / "scripts" / "validate-backend-v2-federation.py"),
+                "--package",
+                str(backend_v2),
+                "--schema",
+                str(root / "schemas" / "v2" / "federation-package-v2.schema.json"),
+                "--record-schema",
+                str(root / "schemas" / "v2" / "federation-record-v2.schema.json"),
+                "--program-repository-root",
+                str(root),
+                "--coordinator-logbook-root",
+                str(coordinator_logbook_root),
+                "--replay-package",
+                str(replay_package),
+            ],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        )
+        v2_validation_result = json.loads(v2_validation.stdout)
+    if replay_build_result.get("record_count") != 2439:
+        raise ValueError("fresh backend-v2 replay did not build exactly 2,439 records")
+    v2_checks = v2_validation_result.get("checks", {})
+    if (
+        v2_validation_result.get("result") != "pass"
+        or v2_checks.get("record_count") != 2439
+        or v2_checks.get("table_counts") != EXPECTED_V2_COUNTS
+        or v2_checks.get("deterministic_replay")
+        != {"result": "byte-identical", "file_count": 20}
+    ):
+        raise ValueError("backend-v2 independent validation or fresh deterministic replay failed")
 
     html_path = release / f"program-matematika-indonesia-v{version}.html"
     html = html_path.read_text(encoding="utf-8")
@@ -512,6 +752,7 @@ def main() -> None:
 
     source_zip = release / f"program-matematika-indonesia-source-v{version}.zip"
     backend_zip = release / f"program-matematika-indonesia-backend-v1-v{version}.zip"
+    backend_v2_zip = release / f"program-matematika-indonesia-backend-v2-v{version}.zip"
     generated_catalog_source_path = (
         f"releases/v{version}/program-matematika-indonesia-catalog-v{version}.json"
     )
@@ -522,7 +763,16 @@ def main() -> None:
             args.source_commit,
             {generated_catalog_source_path},
         ),
-        "backend": verify_backend_zip(backend_zip, backend),
+        "backend_v1": verify_backend_zip(
+            backend_zip,
+            backend,
+            "program-matematika-indonesia-backend-v1/",
+        ),
+        "backend_v2": verify_backend_zip(
+            backend_v2_zip,
+            backend_v2,
+            "program-matematika-indonesia-backend-v2/",
+        ),
     }
     if zip_results["source"]["source_commit"] != args.source_commit:
         raise ValueError("source ZIP manifest is not bound to the validated repository commit")
@@ -533,8 +783,14 @@ def main() -> None:
         "MIGRATION_HANDOFF_V1.md",
         f"RELEASE_NOTES_v{version}.md",
         "interlanguage-backend-migration-receipt-v1.schema.json",
+        "backend-migration-receipt-v2.schema.json",
+        "build-backend-v2-federation.py",
+        "federation-package-v2.schema.json",
+        "federation-record-v2.schema.json",
         "interlanguage-math-backend-v1.schema.json",
         "interlanguage-source-format-profile-v1.schema.json",
+        "namespace-v2.json",
+        "pmi-release-policy-v2.json",
         "program-matematika-indonesia-catalog-v1.schema.json",
         f"program-matematika-indonesia-catalog-v{version}.json",
         f"program-matematika-indonesia-og-v{version}.png",
@@ -543,9 +799,16 @@ def main() -> None:
         f"program-matematika-indonesia-v{version}.html",
         f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
         f"program-matematika-indonesia-backend-v1-v{version}.zip",
+        f"program-matematika-indonesia-backend-v2-v{version}.zip",
         f"program-matematika-indonesia-source-v{version}.zip",
+        f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
+        "validate-backend-v2-federation.py",
         *receipt_release_names,
     }
+    if len(expected_release_names) != 36:
+        raise ValueError(
+            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 36"
+        )
     actual_release_names = {
         path.name
         for path in release.iterdir()
@@ -555,6 +818,12 @@ def main() -> None:
         missing = sorted(expected_release_names - actual_release_names)
         extra = sorted(actual_release_names - expected_release_names)
         raise ValueError(f"release inventory mismatch; missing={missing}; extra={extra}")
+    expected_learner_first = [
+        f"00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_v{version}.pdf",
+        f"01_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_v{version}.html",
+    ]
+    if sorted(actual_release_names)[:2] != expected_learner_first:
+        raise ValueError("release inventory is not lexically learner-first (00 PDF, then 01 HTML)")
 
     files = []
     for path in sorted(candidate for candidate in release.iterdir() if candidate.is_file() and candidate.name in expected_release_names):
@@ -576,6 +845,13 @@ def main() -> None:
             "catalog_schema_identity_and_bytes": "pass",
             "source_commit_binding": args.source_commit,
             "backend": backend_report["checks"],
+            "backend_v1_immutable_package": v1_immutable_result,
+            "backend_v2_validation_receipt": v2_receipt_result,
+            "backend_v2_independent_validation": v2_validation_result,
+            "backend_v2_fresh_replay_build": {
+                "record_count": replay_build_result["record_count"],
+                "record_counts": replay_build_result["record_counts"],
+            },
             "complete_corpus_migrations": migration_result,
             "complete_corpus_migration_target_records": migration_target_records,
             "migration_claim_cross_check": "pass",

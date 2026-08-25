@@ -11,6 +11,8 @@ from pathlib import Path
 
 CHECKSUM_NAME = "CHECKSUMS.sha256"
 CHECKSUM_LINE = re.compile(r"^(?P<sha256>[0-9a-f]{64})  (?P<name>[^\\/\r\n]+)$")
+LEARNER_PDF = re.compile(r"^00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_v(?P<version>[^/]+)\.pdf$")
+LEARNER_HTML = re.compile(r"^01_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_v(?P<version>[^/]+)\.html$")
 
 
 def sha256_file(path: Path) -> str:
@@ -41,11 +43,21 @@ def canonical_payload(files: list[Path]) -> bytes:
     return ("\n".join(lines) + "\n").encode("ascii")
 
 
+def assert_learner_first(files: list[Path]) -> None:
+    if len(files) < 2:
+        raise ValueError("release inventory cannot establish learner-first ordering")
+    pdf_match = LEARNER_PDF.fullmatch(files[0].name)
+    html_match = LEARNER_HTML.fullmatch(files[1].name)
+    if not pdf_match or not html_match or pdf_match.group("version") != html_match.group("version"):
+        raise ValueError("release inventory must sort first as the 00 learner PDF and 01 learner HTML")
+
+
 def verify(output: Path, files: list[Path], expected_count: int) -> None:
     if len(files) != expected_count:
         raise ValueError(
             f"release inventory contains {len(files)} files; expected {expected_count}"
         )
+    assert_learner_first(files)
     payload = output.read_bytes()
     expected_payload = canonical_payload(files)
     if payload != expected_payload:
@@ -76,6 +88,7 @@ def main() -> None:
         raise ValueError(f"release directory does not exist: {release_dir}")
     output = release_dir / CHECKSUM_NAME
     files = release_files(release_dir, output)
+    assert_learner_first(files)
     if not args.verify_only:
         if len(files) != args.expected_count:
             raise ValueError(

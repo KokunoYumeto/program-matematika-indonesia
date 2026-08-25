@@ -54,9 +54,9 @@ assert.deepEqual(
 );
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar lima belas peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.51.2', 'Versi snapshot pusat harus 0.51.2.');
+assert.equal(program.version, '0.52.0', 'Versi snapshot pusat harus 0.52.0.');
 assert.equal(program.website, 'https://kokunoyumeto.github.io/program-matematika-indonesia/', 'Situs belajar publik tidak tepat.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22087340', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22088577', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -68,6 +68,11 @@ assert.deepEqual(
       corpus: 'Discrete Mathematics: An Open Introduction 4 — Bahasa Indonesia',
       recordCount: 163583,
       result: 'lossless-zero-copy-pass'
+    },
+    {
+      corpus: 'Hefferon — Linear Algebra, Bahasa Indonesia v2026.08.22',
+      recordCount: 22131,
+      result: 'lossless-zero-copy-one-to-one-native-backend-adapter-pass'
     },
     {
       corpus: 'Komputasi Matematis dan Eksperimen yang Dapat Direproduksi — Bahasa Indonesia',
@@ -113,12 +118,41 @@ assert.deepEqual(
       corpus: 'Open Optimization Book 1 + laboratorium Pyomo/HiGHS O018, Bahasa Indonesia',
       recordCount: 25805,
       result: 'lossless-zero-copy-one-to-one-plus-segment-variant-projection-pass'
+    },
+    {
+      corpus: 'Tea Time Numerical Analysis — Bahasa Indonesia v3.0-id.2-r1',
+      recordCount: 53055,
+      result: 'additive-zero-copy-virtual-adapter-pass'
     }
   ],
   'Bukti migrasi korpus lengkap berubah tanpa pembaruan kanon.'
 );
+assert.equal(program.backend.completeCorpusMigrations.length, 12, 'Harus ada tepat 12 bukti migrasi korpus lengkap.');
+assert.equal(
+  program.backend.completeCorpusMigrations.reduce((sum, row) => sum + row.recordCount, 0),
+  884482,
+  'Jumlah rekaman target pada 12 migrasi korpus lengkap harus tepat 884.482.'
+);
+assert.deepEqual(
+  program.backend.federationV2,
+  {
+    version: '0.1.0',
+    status: 'validated',
+    recordCount: 2439,
+    datasetCount: 34,
+    courseCount: 40,
+    learnerSurfaceCount: 136,
+    webRouteCount: 41,
+    identityCrosswalkCount: 2122,
+    package: 'https://zenodo.org/records/22088577/files/program-matematika-indonesia-backend-v2-v0.52.0.zip?download=1',
+    packageSchema: 'https://zenodo.org/records/22088577/files/federation-package-v2.schema.json?download=1',
+    recordSchema: 'https://zenodo.org/records/22088577/files/federation-record-v2.schema.json?download=1',
+    validationReceipt: 'https://zenodo.org/records/22088577/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.52.0.json?download=1'
+  },
+  'Backend federasi v2 harus cocok dengan batas validasi publik v0.52.0.'
+);
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
-assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22087340/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.51.2 yang dicadangkan.');
+assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22088577/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.52.0 yang dicadangkan.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
 assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar empat belas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
@@ -255,7 +289,7 @@ assert.match(html, /rel="canonical" href="https:\/\/kokunoyumeto\.github\.io\/pr
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Produksi yang belum selesai tetap dilabeli dengan jelas/, 'Ringkasan batas produksi hilang.');
 assert.match(html, /<strong>15<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan lima belas peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22087340/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22088577/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
 assert.match(html, /Mulai belajar — buka 40 mata kuliah/, 'Aksi utama untuk pelajar tidak terlihat.');
 assert.match(html, /https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia/, 'Tautan repositori GitHub pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');
