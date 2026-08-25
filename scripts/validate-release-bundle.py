@@ -21,6 +21,10 @@ EXPECTED_MIGRATIONS = {
         "corpus": "Discrete Mathematics: An Open Introduction 4 — Bahasa Indonesia",
         "result": "lossless-zero-copy-pass",
     },
+    "erdman-functional-analysis-id-2026.08.25-to-interlanguage-v1.0.0": {
+        "corpus": "Erdman — Functional Analysis and Operator Algebras, Bahasa Indonesia",
+        "result": "lossless-zero-copy-virtual-adapter-pass",
+    },
     "hefferon-linear-algebra-id-v2026.08.22-to-interlanguage-v1.0.0": {
         "corpus": "Hefferon — Linear Algebra, Bahasa Indonesia v2026.08.22",
         "result": "lossless-zero-copy-one-to-one-native-backend-adapter-pass",
@@ -70,6 +74,7 @@ EXPECTED_MIGRATIONS = {
 MIGRATION_RECEIPT_FILENAMES = {
     "applied-combinatorics-id-v1": "applied-combinatorics-id-backend-v1-migration-receipt.json",
     "dmoi4-id-v1": "dmoi4-id-backend-v1-migration-receipt.json",
+    "erdman-functional-analysis-id-v1": "erdman-functional-analysis-id-backend-v1-migration-receipt.json",
     "hefferon-linear-algebra-id-v1": "hefferon-linear-algebra-id-backend-v1-migration-receipt.json",
     "judson-id-v1": "judson-id-backend-v1-migration-receipt.json",
     "mathematics-in-lean-id-v1": "mathematics-in-lean-id-backend-v1-migration-receipt.json",
@@ -89,6 +94,7 @@ V2_RELEASE_FILES = {
     "schemas/v2/namespace-v2.json": "namespace-v2.json",
     "schemas/v2/pmi-release-policy-v2.json": "pmi-release-policy-v2.json",
     "scripts/build-backend-v2-federation.py": "build-backend-v2-federation.py",
+    "scripts/build-backend-v2-validation-receipt.py": "build-backend-v2-validation-receipt.py",
     "scripts/validate-backend-v2-federation.py": "validate-backend-v2-federation.py",
 }
 
@@ -102,12 +108,15 @@ EXPECTED_V2_COUNTS = {
     "datasets": 34,
     "programs": 1,
     "courses": 40,
-    "reader_surfaces": 136,
+    "reader_surfaces": 126,
     "web_routes": 41,
     "publication_events": 50,
-    "qa_events": 15,
+    "qa_events": 16,
     "identity_crosswalks": 2122,
 }
+EXPECTED_V2_RECORD_COUNT = sum(EXPECTED_V2_COUNTS.values())
+EXPECTED_FEDERATION_VERSION = "0.2.0"
+EXPECTED_FEDERATION_DATASET_VERSION = "program-matematika-indonesia-federation-v0.2.0"
 
 PRIVATE_BYTE_MARKERS = (
     bytes([70, 108, 111, 114, 105, 115]).lower(),
@@ -268,7 +277,14 @@ def verify_v2_receipt(
     records_csv_path = package / "records.csv"
     federation_path = package / "federation.json"
     expected_package_facts = {
-        "record_count": 2439,
+        "path": package.relative_to(root).as_posix(),
+        "file_count": 20,
+        "total_bytes": sum(
+            path.stat().st_size
+            for path in package.rglob("*")
+            if path.is_file() and path.name != "validation_report.json"
+        ),
+        "record_count": EXPECTED_V2_RECORD_COUNT,
         "table_counts": EXPECTED_V2_COUNTS,
         "records_jsonl": {
             "bytes": records_jsonl_path.stat().st_size,
@@ -294,6 +310,7 @@ def verify_v2_receipt(
     expected_implementation = {
         "builder": "scripts/build-backend-v2-federation.py",
         "validator": "scripts/validate-backend-v2-federation.py",
+        "receipt_builder": "scripts/build-backend-v2-validation-receipt.py",
     }
     implementation = receipt.get("implementation", {})
     for role, relative in expected_implementation.items():
@@ -305,6 +322,34 @@ def verify_v2_receipt(
             or fact.get("sha256") != sha256_file(source)
         ):
             raise ValueError(f"backend-v2 validation receipt implementation mismatch: {role}")
+
+    negative_suite = receipt.get("negative_fixture_suite", {})
+    if negative_suite != {
+        "command": "python -B -m unittest discover -s tests/backend-v2 -p test_*.py -v",
+        "tests_run": 23,
+        "tests_passed": 23,
+        "tests_failed": 0,
+        "result": "pass",
+    }:
+        raise ValueError("backend-v2 validation receipt negative-fixture suite is stale")
+
+    d20_path = root / "backend" / "migrations" / "erdman-functional-analysis-id-v1" / "MIGRATION_RECEIPT.json"
+    d20_receipt = json.loads(d20_path.read_text(encoding="utf-8"))
+    d20_admission = receipt.get("d20_admission", {})
+    if (
+        d20_admission.get("receipt_path")
+        != "backend/migrations/erdman-functional-analysis-id-v1/MIGRATION_RECEIPT.json"
+        or d20_admission.get("receipt_bytes") != d20_path.stat().st_size
+        or d20_admission.get("receipt_sha256") != sha256_file(d20_path)
+        or d20_admission.get("native_records") != 32383
+        or d20_admission.get("auxiliary_index_rows") != 2104
+        or d20_admission.get("target_records") != 41689
+        or d20_admission.get("html_reader_url")
+        != "https://kokunoyumeto.github.io/functional-analysis-erdman-id/"
+        or d20_admission.get("html_reader_public_readback_sha256")
+        != d20_receipt["source"]["public_evidence"]["html_reader"]["readback"]["sha256"]
+    ):
+        raise ValueError("backend-v2 validation receipt D20 admission is stale")
 
     schemas = {row.get("path"): row for row in receipt.get("schemas", [])}
     expected_schema_paths = {
@@ -382,6 +427,28 @@ def main() -> None:
     )
     static_result = json.loads(static.stdout)
 
+    backend_v2_tests = subprocess.run(
+        [
+            sys.executable,
+            "-B",
+            "-m",
+            "unittest",
+            "discover",
+            "-s",
+            "tests/backend-v2",
+            "-p",
+            "test_*.py",
+            "-v",
+        ],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    backend_v2_test_output = backend_v2_tests.stdout + backend_v2_tests.stderr
+    if not re.search(r"Ran 23 tests? in ", backend_v2_test_output) or "OK" not in backend_v2_test_output:
+        raise ValueError("backend-v2 executable test suite did not prove exactly 23 passing tests")
+
     migration_receipts = sorted((root / "backend" / "migrations").glob("*/MIGRATION_RECEIPT.json"))
     receipt_directories = {path.parent.name for path in migration_receipts}
     if receipt_directories != set(MIGRATION_RECEIPT_FILENAMES):
@@ -416,8 +483,8 @@ def main() -> None:
     if set(receipt_documents) != set(EXPECTED_MIGRATIONS):
         raise ValueError("complete-corpus migration receipt identity set mismatch")
     migration_target_records = sum(receipt["target"]["record_count"] for receipt in receipt_documents.values())
-    if len(receipt_documents) != 12 or migration_target_records != 884482:
-        raise ValueError("complete-corpus migration proof boundary must contain twelve receipts and 884,482 target records")
+    if len(receipt_documents) != 13 or migration_target_records != 926171:
+        raise ValueError("complete-corpus migration proof boundary must contain thirteen receipts and 926,171 target records")
 
     catalog_path = release / f"program-matematika-indonesia-catalog-v{version}.json"
     catalog_schema_path = release / "program-matematika-indonesia-catalog-v1.schema.json"
@@ -436,7 +503,7 @@ def main() -> None:
     if catalog["counts"]["courseRoles"] != 40 or catalog["counts"]["unresolvedRoles"] != 0:
         raise ValueError("catalog course/source closure mismatch")
     expected_completed_role_ids = [
-        "A00", "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "C120", "C130", "D110"
+        "A00", "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "C120", "C130", "D20", "D110"
     ]
     expected_completed_record_dois = [
         "10.5281/zenodo.22070683",
@@ -452,12 +519,13 @@ def main() -> None:
         "10.5281/zenodo.22054086",
         "10.5281/zenodo.22070943",
         "10.5281/zenodo.22070653",
+        "10.5281/zenodo.22088947",
         "10.5281/zenodo.22062017",
     ]
-    if catalog["counts"].get("completedPublicCourseRoles") != 15:
-        raise ValueError("catalog completed-public course-role count is not 15")
-    if catalog["counts"].get("completedPublicRecords") != 14:
-        raise ValueError("catalog completed-public record count is not 14")
+    if catalog["counts"].get("completedPublicCourseRoles") != 16:
+        raise ValueError("catalog completed-public course-role count is not 16")
+    if catalog["counts"].get("completedPublicRecords") != 15:
+        raise ValueError("catalog completed-public record count is not 15")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
         raise ValueError("catalog completed-public course-role identities are not the current canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
@@ -552,12 +620,14 @@ def main() -> None:
     ):
         raise ValueError("C140 does not preserve the verified incomplete Random checkpoint 16")
     if (
-        courses_by_id["D20"].get("state") != "production"
-        or courses_by_id["D20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22072541"
+        courses_by_id["D20"].get("state") != "published"
+        or courses_by_id["D20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22088947"
         or courses_by_id["D20"].get("repository") != "https://github.com/KokunoYumeto/functional-analysis-erdman-id"
-        or courses_by_id["D20"].get("edition") != "https://zenodo.org/records/22072541/files/analisis-fungsional-dan-aljabar-operator-id-bab-1-12.pdf?download=1"
+        or courses_by_id["D20"].get("reader") != "https://kokunoyumeto.github.io/functional-analysis-erdman-id/"
+        or courses_by_id["D20"].get("edition") != "https://zenodo.org/records/22088947/files/analisis-fungsional-dan-aljabar-operator-id-edisi-lengkap-dengan-pendamping.pdf?download=1"
+        or not all(token in courses_by_id["D20"].get("note", "") for token in ("298 halaman", "17 bab", "52 solusi", "10 solusi", "13 unit"))
     ):
-        raise ValueError("D20 does not preserve the verified incomplete Erdman Chapter 12 checkpoint")
+        raise ValueError("D20 does not preserve the verified complete Erdman edition and public HTML reader")
     if (
         courses_by_id["D30"].get("state") != "production"
         or courses_by_id["D30"].get("zenodo") != "https://doi.org/10.5281/zenodo.22074332"
@@ -634,12 +704,12 @@ def main() -> None:
         raise ValueError("catalog migration claims do not match the validated receipt identities and counts")
 
     expected_federation_v2 = {
-        "version": "0.1.0",
+        "version": EXPECTED_FEDERATION_VERSION,
         "status": "validated",
-        "recordCount": 2439,
+        "recordCount": EXPECTED_V2_RECORD_COUNT,
         "datasetCount": 34,
         "courseCount": 40,
-        "learnerSurfaceCount": 136,
+        "learnerSurfaceCount": EXPECTED_V2_COUNTS["reader_surfaces"],
         "webRouteCount": 41,
         "identityCrosswalkCount": 2122,
         "package": f"https://zenodo.org/records/{args.record_id}/files/program-matematika-indonesia-backend-v2-v{version}.zip?download=1",
@@ -674,15 +744,25 @@ def main() -> None:
     v2_receipt_result = verify_v2_receipt(backend_v2_validation_receipt, backend_v2, root)
 
     with tempfile.TemporaryDirectory(prefix="pmi-backend-v2-replay-") as temporary:
-        replay_package = Path(temporary) / "program-matematika-indonesia-federation-v0.1.0"
+        replay_package = Path(temporary) / EXPECTED_FEDERATION_DATASET_VERSION
+        federation_document = json.loads((backend_v2 / "federation.json").read_text(encoding="utf-8"))
+        recorded_command = federation_document.get("build", {}).get("command")
+        expected_prefix = ["python", "-B", "scripts/build-backend-v2-federation.py"]
+        if not isinstance(recorded_command, list) or recorded_command[:3] != expected_prefix:
+            raise ValueError("backend-v2 does not record the expected portable replay command")
+        if recorded_command.count("<PROGRAM_REPOSITORY_ROOT>") != 1 or recorded_command.count("<COORDINATOR_LOGBOOK_ROOT>") != 1 or recorded_command.count("<OUTPUT>") != 1:
+            raise ValueError("backend-v2 replay command placeholders are missing or duplicated")
+        replay_command = [
+            str(root / "scripts" / "build-backend-v2-federation.py") if value == expected_prefix[2]
+            else str(root) if value == "<PROGRAM_REPOSITORY_ROOT>"
+            else str(coordinator_logbook_root) if value == "<COORDINATOR_LOGBOOK_ROOT>"
+            else str(replay_package) if value == "<OUTPUT>"
+            else value
+            for value in recorded_command
+        ]
+        replay_command[0] = sys.executable
         replay_build = subprocess.run(
-            [
-                sys.executable,
-                "-B",
-                str(root / "scripts" / "build-backend-v2-federation.py"),
-                "--output",
-                str(replay_package),
-            ],
+            replay_command,
             cwd=root,
             check=True,
             capture_output=True,
@@ -713,12 +793,12 @@ def main() -> None:
             text=True,
         )
         v2_validation_result = json.loads(v2_validation.stdout)
-    if replay_build_result.get("record_count") != 2439:
-        raise ValueError("fresh backend-v2 replay did not build exactly 2,439 records")
+    if replay_build_result.get("record_count") != EXPECTED_V2_RECORD_COUNT:
+        raise ValueError(f"fresh backend-v2 replay did not build exactly {EXPECTED_V2_RECORD_COUNT:,} records")
     v2_checks = v2_validation_result.get("checks", {})
     if (
         v2_validation_result.get("result") != "pass"
-        or v2_checks.get("record_count") != 2439
+        or v2_checks.get("record_count") != EXPECTED_V2_RECORD_COUNT
         or v2_checks.get("table_counts") != EXPECTED_V2_COUNTS
         or v2_checks.get("deterministic_replay")
         != {"result": "byte-identical", "file_count": 20}
@@ -785,6 +865,7 @@ def main() -> None:
         "interlanguage-backend-migration-receipt-v1.schema.json",
         "backend-migration-receipt-v2.schema.json",
         "build-backend-v2-federation.py",
+        "build-backend-v2-validation-receipt.py",
         "federation-package-v2.schema.json",
         "federation-record-v2.schema.json",
         "interlanguage-math-backend-v1.schema.json",
@@ -805,9 +886,9 @@ def main() -> None:
         "validate-backend-v2-federation.py",
         *receipt_release_names,
     }
-    if len(expected_release_names) != 36:
+    if len(expected_release_names) != 38:
         raise ValueError(
-            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 36"
+            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 38"
         )
     actual_release_names = {
         path.name
@@ -847,6 +928,7 @@ def main() -> None:
             "backend": backend_report["checks"],
             "backend_v1_immutable_package": v1_immutable_result,
             "backend_v2_validation_receipt": v2_receipt_result,
+            "backend_v2_executable_tests": {"tests_run": 23, "tests_passed": 23, "result": "pass"},
             "backend_v2_independent_validation": v2_validation_result,
             "backend_v2_fresh_replay_build": {
                 "record_count": replay_build_result["record_count"],

@@ -533,6 +533,14 @@ class ValidatorFixtureTests(unittest.TestCase):
 
         self.assert_fault("duplicate web route URL", lambda _: self.mutate_and_seal(mutate))
 
+    def test_duplicate_reader_surface_url_rejected(self) -> None:
+        def mutate(envelope: dict[str, Any]) -> None:
+            first = find_row(envelope, "reader_surfaces", "A00:learn")
+            second = find_row(envelope, "reader_surfaces", "A10:learn")
+            second["payload"]["url"] = first["payload"]["url"]
+
+        self.assert_fault("duplicate reader surface URL", lambda _: self.mutate_and_seal(mutate))
+
     def test_prerequisite_cycle_rejected(self) -> None:
         def mutate(envelope: dict[str, Any]) -> None:
             a = find_row(envelope, "courses", "A00")

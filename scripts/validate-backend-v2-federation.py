@@ -699,6 +699,7 @@ def _validate_learner_routes(tables: dict[str, list[dict[str, Any]]]) -> dict[st
                 raise ValidationFailure([f"duplicate course key:{course_key}"])
             courses_by_key[course_key] = row
     surfaces_by_course: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    surfaces_by_url: dict[str, str] = {}
 
     for surface in surfaces:
         payload = surface["payload"]
@@ -718,7 +719,18 @@ def _validate_learner_routes(tables: dict[str, list[dict[str, Any]]]) -> dict[st
         if bool(_field(payload, "primary", "is_primary", default=False)) and "learn" not in actions:
             raise ValidationFailure([f"non-learn reader surface cannot be primary:{surface['semantic_key']}"])
         url = _field(payload, "url", "href", "learner_url")
-        normalize_url(url, label=f"reader_surface:{surface['semantic_key']}")
+        normalized_surface_url = normalize_url(
+            url, label=f"reader_surface:{surface['semantic_key']}"
+        )
+        if normalized_surface_url in surfaces_by_url:
+            raise ValidationFailure(
+                [
+                    "duplicate reader surface URL:"
+                    f"{normalized_surface_url}:{surfaces_by_url[normalized_surface_url]}:"
+                    f"{surface['semantic_key']}"
+                ]
+            )
+        surfaces_by_url[normalized_surface_url] = surface["semantic_key"]
         for reference in course_references:
             course = _resolve_course(reference, courses_by_id, courses_by_key)
             if course is None:

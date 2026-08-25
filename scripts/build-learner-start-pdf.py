@@ -66,7 +66,7 @@ def build(output: Path, version: str) -> None:
     drawing.drawOn(canvas, width - 142, height - 259)
 
     stats_y = height - 326
-    stats = [("40", "mata kuliah"), ("4", "tingkat belajar"), ("12", "pembaca HTML"), ("15", "peran selesai")]
+    stats = [("40", "mata kuliah"), ("4", "tingkat belajar"), ("13", "pembaca HTML"), ("16", "peran selesai")]
     cell_w = (width - 88) / len(stats)
     for index, (number, label) in enumerate(stats):
         x = 44 + index * cell_w

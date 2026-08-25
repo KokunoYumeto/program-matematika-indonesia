@@ -16,52 +16,31 @@ import json
 import sys
 import uuid
 from collections import Counter, defaultdict
-from pathlib import Path
+from dataclasses import dataclass
+from pathlib import Path, PurePosixPath
 from typing import Any, Iterable
 
 
-SITE_ROOT = Path(__file__).resolve().parents[1]
-WORKSPACE_ROOT = SITE_ROOT.parents[2]
-LOGBOOK_ROOT = (
-    WORKSPACE_ROOT
+DEFAULT_PROGRAM_REPOSITORY_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_WORKSPACE_ROOT = DEFAULT_PROGRAM_REPOSITORY_ROOT.parents[2]
+DEFAULT_COORDINATOR_LOGBOOK_ROOT = (
+    DEFAULT_WORKSPACE_ROOT
     / "outputs"
     / "01a01ec1-e685-70d0-b022-211396334723"
-    / "curriculum_logbook"
 )
-
-CONTRACT_PATH = LOGBOOK_ROOT / "81_GLOBAL_MODULAR_BACKEND_V2_CONTRACT_20260825.json"
-ROLE_MAP_PATH = LOGBOOK_ROOT / "49_SEMANTIC_ROLE_MAPPING_CORRECTION_20260823.json"
-SITE_READBACK_PATH = LOGBOOK_ROOT / "83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json"
-CATALOG_PATH = (
-    SITE_ROOT
-    / "releases"
-    / "v0.51.2"
-    / "program-matematika-indonesia-catalog-v0.51.2.json"
-)
-V1_ROOT = SITE_ROOT / "backend" / "v1" / "program-matematika-indonesia-v0.51.2"
-V1_RECORDS_PATH = V1_ROOT / "records.jsonl"
-V1_MANIFEST_PATH = V1_ROOT / "manifest.json"
-V1_VALIDATION_PATH = V1_ROOT / "validation_report.json"
-MIGRATIONS_ROOT = SITE_ROOT / "backend" / "migrations"
-EDUCATIONAL_ACCESS_ROOT = SITE_ROOT / "backend" / "research" / "educational-access-v0.1.0"
-EDUCATIONAL_ACCESS_MANIFEST_PATH = EDUCATIONAL_ACCESS_ROOT / "manifest.json"
-EDUCATIONAL_ACCESS_VALIDATION_PATH = EDUCATIONAL_ACCESS_ROOT / "validation_report.json"
-EDUCATIONAL_ACCESS_RECORDS_PATH = EDUCATIONAL_ACCESS_ROOT / "records.jsonl"
-NAMESPACE_DOCUMENT_PATH = SITE_ROOT / "schemas" / "v2" / "namespace-v2.json"
-RELEASE_POLICY_PATH = SITE_ROOT / "schemas" / "v2" / "pmi-release-policy-v2.json"
 DEFAULT_OUTPUT = (
-    SITE_ROOT
+    DEFAULT_PROGRAM_REPOSITORY_ROOT
     / "backend"
     / "v2"
     / "program-matematika-indonesia-federation-v0.1.0"
 )
 
 NAMESPACE = uuid.UUID("7790e70a-ae6d-5cf3-b7f5-c53d7d4c0fbd")
-RECORDED_AT = "2026-08-25T00:00:00Z"
-DATASET_VERSION = "program-matematika-indonesia-federation-v0.1.0"
+DEFAULT_RECORDED_AT = "2026-08-25T00:00:00Z"
+DEFAULT_DATASET_VERSION = "program-matematika-indonesia-federation-v0.1.0"
 SCHEMA_VERSION = "2.0.0"
 PROGRAM_KEY = "program-matematika-indonesia"
-PUBLIC_SITE = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
+DEFAULT_PUBLIC_SITE = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
 ACTION_ORDER = {
     "learn": 0,
     "html": 1,
@@ -88,6 +67,7 @@ TABLE_NAMES = {
 MIGRATION_ROLE_MAP = {
     "applied-combinatorics-id-v1": ["C70"],
     "dmoi4-id-v1": ["B10"],
+    "erdman-functional-analysis-id-v1": ["D20"],
     "hefferon-linear-algebra-id-v1": ["B40"],
     "judson-id-v1": ["C30", "C40"],
     "mathematics-in-lean-id-v1": ["D110"],
@@ -112,8 +92,116 @@ V1_TOPIC_CROSSWALK_KEYS = {
 }
 
 
+def normalized_relative(value: str, option: str) -> PurePosixPath:
+    candidate = PurePosixPath(value.replace("\\", "/"))
+    windows_drive = bool(candidate.parts and len(candidate.parts[0]) >= 2 and candidate.parts[0][1] == ":")
+    if candidate.is_absolute() or windows_drive or not candidate.parts or any(part in {"", ".", ".."} for part in candidate.parts):
+        raise ValueError(f"{option} must be a nonempty portable relative path without '.' or '..': {value!r}")
+    return candidate
+
+
+def resolve_under(root: Path, relative: PurePosixPath, option: str) -> Path:
+    resolved_root = root.resolve()
+    resolved = resolved_root.joinpath(*relative.parts).resolve()
+    if resolved != resolved_root and resolved_root not in resolved.parents:
+        raise ValueError(f"{option} escapes its declared root: {relative.as_posix()}")
+    return resolved
+
+
+@dataclass(frozen=True)
+class BuildInputs:
+    program_repository_root: Path
+    coordinator_logbook_root: Path
+    catalog_relative: PurePosixPath
+    v1_package_relative: PurePosixPath
+    site_readback_relative: PurePosixPath
+    contract_relative: PurePosixPath
+    role_map_relative: PurePosixPath
+    migrations_relative: PurePosixPath
+    educational_access_relative: PurePosixPath
+    dataset_version: str
+    recorded_at: str
+    public_site: str
+
+    def __post_init__(self) -> None:
+        object.__setattr__(self, "program_repository_root", self.program_repository_root.resolve())
+        object.__setattr__(self, "coordinator_logbook_root", self.coordinator_logbook_root.resolve())
+        if not self.dataset_version.strip():
+            raise ValueError("--dataset-version must not be blank")
+        if not self.recorded_at.endswith("Z"):
+            raise ValueError("--recorded-at must be an explicit UTC timestamp ending in 'Z'")
+        if not self.public_site.startswith("https://") or not self.public_site.endswith("/"):
+            raise ValueError("--public-site must be an HTTPS URL ending in '/'")
+
+    @property
+    def contract_path(self) -> Path:
+        return resolve_under(self.coordinator_logbook_root, self.contract_relative, "--contract-relative")
+
+    @property
+    def role_map_path(self) -> Path:
+        return resolve_under(self.coordinator_logbook_root, self.role_map_relative, "--role-map-relative")
+
+    @property
+    def site_readback_path(self) -> Path:
+        return resolve_under(self.coordinator_logbook_root, self.site_readback_relative, "--site-readback-relative")
+
+    @property
+    def catalog_path(self) -> Path:
+        return resolve_under(self.program_repository_root, self.catalog_relative, "--catalog-relative")
+
+    @property
+    def v1_root(self) -> Path:
+        return resolve_under(self.program_repository_root, self.v1_package_relative, "--v1-package-relative")
+
+    @property
+    def migrations_root(self) -> Path:
+        return resolve_under(self.program_repository_root, self.migrations_relative, "--migrations-relative")
+
+    @property
+    def educational_access_root(self) -> Path:
+        return resolve_under(self.program_repository_root, self.educational_access_relative, "--educational-access-relative")
+
+    @property
+    def namespace_document_path(self) -> Path:
+        return self.program_repository_root / "schemas" / "v2" / "namespace-v2.json"
+
+    @property
+    def release_policy_path(self) -> Path:
+        return self.program_repository_root / "schemas" / "v2" / "pmi-release-policy-v2.json"
+
+    def replay_command(self) -> list[str]:
+        return [
+            "python", "-B", "scripts/build-backend-v2-federation.py",
+            "--program-repository-root", "<PROGRAM_REPOSITORY_ROOT>",
+            "--coordinator-logbook-root", "<COORDINATOR_LOGBOOK_ROOT>",
+            "--catalog-relative", self.catalog_relative.as_posix(),
+            "--v1-package-relative", self.v1_package_relative.as_posix(),
+            "--site-readback-relative", self.site_readback_relative.as_posix(),
+            "--contract-relative", self.contract_relative.as_posix(),
+            "--role-map-relative", self.role_map_relative.as_posix(),
+            "--migrations-relative", self.migrations_relative.as_posix(),
+            "--educational-access-relative", self.educational_access_relative.as_posix(),
+            "--dataset-version", self.dataset_version,
+            "--recorded-at", self.recorded_at,
+            "--public-site", self.public_site,
+            "--output", "<OUTPUT>",
+        ]
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument("--program-repository-root", type=Path, default=DEFAULT_PROGRAM_REPOSITORY_ROOT)
+    parser.add_argument("--coordinator-logbook-root", type=Path, default=DEFAULT_COORDINATOR_LOGBOOK_ROOT)
+    parser.add_argument("--catalog-relative", default="releases/v0.51.2/program-matematika-indonesia-catalog-v0.51.2.json")
+    parser.add_argument("--v1-package-relative", default="backend/v1/program-matematika-indonesia-v0.51.2")
+    parser.add_argument("--site-readback-relative", default="curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json")
+    parser.add_argument("--contract-relative", default="curriculum_logbook/81_GLOBAL_MODULAR_BACKEND_V2_CONTRACT_20260825.json")
+    parser.add_argument("--role-map-relative", default="curriculum_logbook/49_SEMANTIC_ROLE_MAPPING_CORRECTION_20260823.json")
+    parser.add_argument("--migrations-relative", default="backend/migrations")
+    parser.add_argument("--educational-access-relative", default="backend/research/educational-access-v0.1.0")
+    parser.add_argument("--dataset-version", default=DEFAULT_DATASET_VERSION)
+    parser.add_argument("--recorded-at", default=DEFAULT_RECORDED_AT)
+    parser.add_argument("--public-site", default=DEFAULT_PUBLIC_SITE)
     parser.add_argument(
         "--output",
         type=Path,
@@ -121,6 +209,23 @@ def parse_args() -> argparse.Namespace:
         help="Output package directory (default: the canonical v0.1.0 package path).",
     )
     return parser.parse_args()
+
+
+def build_inputs_from_args(args: argparse.Namespace) -> BuildInputs:
+    return BuildInputs(
+        program_repository_root=args.program_repository_root,
+        coordinator_logbook_root=args.coordinator_logbook_root,
+        catalog_relative=normalized_relative(args.catalog_relative, "--catalog-relative"),
+        v1_package_relative=normalized_relative(args.v1_package_relative, "--v1-package-relative"),
+        site_readback_relative=normalized_relative(args.site_readback_relative, "--site-readback-relative"),
+        contract_relative=normalized_relative(args.contract_relative, "--contract-relative"),
+        role_map_relative=normalized_relative(args.role_map_relative, "--role-map-relative"),
+        migrations_relative=normalized_relative(args.migrations_relative, "--migrations-relative"),
+        educational_access_relative=normalized_relative(args.educational_access_relative, "--educational-access-relative"),
+        dataset_version=args.dataset_version,
+        recorded_at=args.recorded_at,
+        public_site=args.public_site,
+    )
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -244,13 +349,13 @@ def direct_pdf_url(url: Any) -> bool:
     return ".pdf" in lower or ("/files/" in lower and ("download=" in lower or lower.endswith("/content")))
 
 
-def course_card_url(course_id: str) -> str:
-    return f"{PUBLIC_SITE}#course-{course_id}"
+def course_card_url(course_id: str, public_site: str) -> str:
+    return f"{public_site}#course-{course_id}"
 
 
-def v1_records() -> list[dict[str, Any]]:
+def v1_records(path: Path) -> list[dict[str, Any]]:
     rows: list[dict[str, Any]] = []
-    with V1_RECORDS_PATH.open("r", encoding="utf-8") as handle:
+    with path.open("r", encoding="utf-8") as handle:
         for line_number, line in enumerate(handle, start=1):
             if not line.strip():
                 continue
@@ -265,10 +370,10 @@ def v1_records() -> list[dict[str, Any]]:
     return rows
 
 
-def migration_receipts() -> dict[str, dict[str, Any]]:
+def migration_receipts(inputs: BuildInputs) -> dict[str, dict[str, Any]]:
     receipts: dict[str, dict[str, Any]] = {}
     for directory, roles in sorted(MIGRATION_ROLE_MAP.items()):
-        path = MIGRATIONS_ROOT / directory / "MIGRATION_RECEIPT.json"
+        path = inputs.migrations_root / directory / "MIGRATION_RECEIPT.json"
         receipt = load_json(path)
         if nested(receipt, "validation", "result") != "pass":
             raise ValueError(f"Migration receipt is not passing: {path}")
@@ -276,7 +381,7 @@ def migration_receipts() -> dict[str, dict[str, Any]]:
             "directory": directory,
             "roles": roles,
             "path": path,
-            "locator": f"backend/migrations/{directory}/MIGRATION_RECEIPT.json",
+            "locator": f"{inputs.migrations_relative.as_posix()}/{directory}/MIGRATION_RECEIPT.json",
             "sha256": sha256_file(path),
             "bytes": path.stat().st_size,
             "receipt": receipt,
@@ -417,17 +522,28 @@ def receipt_content_shards(receipt: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(shards, key=lambda item: item["locator"])
 
 
-def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]:
-    contract = load_json(CONTRACT_PATH)
-    role_map_doc = load_json(ROLE_MAP_PATH)
-    site_readback = load_json(SITE_READBACK_PATH)
-    catalog = load_json(CATALOG_PATH)
-    v1_manifest = load_json(V1_MANIFEST_PATH)
-    v1_validation = load_json(V1_VALIDATION_PATH)
-    educational_manifest = load_json(EDUCATIONAL_ACCESS_MANIFEST_PATH)
-    educational_validation = load_json(EDUCATIONAL_ACCESS_VALIDATION_PATH)
-    legacy_records = v1_records()
-    receipts = migration_receipts()
+def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]:
+    contract_path = inputs.contract_path
+    role_map_path = inputs.role_map_path
+    site_readback_path = inputs.site_readback_path
+    catalog_path = inputs.catalog_path
+    v1_records_path = inputs.v1_root / "records.jsonl"
+    v1_manifest_path = inputs.v1_root / "manifest.json"
+    v1_validation_path = inputs.v1_root / "validation_report.json"
+    educational_manifest_path = inputs.educational_access_root / "manifest.json"
+    educational_validation_path = inputs.educational_access_root / "validation_report.json"
+    educational_records_path = inputs.educational_access_root / "records.jsonl"
+
+    contract = load_json(contract_path)
+    role_map_doc = load_json(role_map_path)
+    site_readback = load_json(site_readback_path)
+    catalog = load_json(catalog_path)
+    v1_manifest = load_json(v1_manifest_path)
+    v1_validation = load_json(v1_validation_path)
+    educational_manifest = load_json(educational_manifest_path)
+    educational_validation = load_json(educational_validation_path)
+    legacy_records = v1_records(v1_records_path)
+    receipts = migration_receipts(inputs)
 
     if contract.get("schema_id") != "interlanguage/global-modular-mathematics-backend-v2-decision/0.1":
         raise ValueError("Unexpected v2 contract")
@@ -488,17 +604,51 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
         (row["record_type"], row["stable_key"]): row["id"] for row in legacy_records
     }
 
-    catalog_sha = sha256_file(CATALOG_PATH)
-    site_readback_sha = sha256_file(SITE_READBACK_PATH)
-    v1_records_sha = sha256_file(V1_RECORDS_PATH)
+    catalog_sha = sha256_file(catalog_path)
+    site_readback_sha = sha256_file(site_readback_path)
+    v1_records_sha = sha256_file(v1_records_path)
 
     # One surface is shared whenever action-compatible courses point at the same URL and format.
     surface_drafts: dict[tuple[str, str], dict[str, Any]] = {}
     course_surface_keys: dict[str, set[tuple[str, str]]] = defaultdict(set)
-    verified_reader_urls = {
-        row["url"] for row in site_readback.get("public_html_readers", []) if isinstance(row, dict)
+    verified_reader_evidence: dict[str, dict[str, str]] = {
+        inputs.public_site: {
+            "locator": inputs.site_readback_relative.as_posix(),
+            "sha256": site_readback_sha,
+        }
     }
-    verified_reader_urls.add(PUBLIC_SITE)
+    for row in site_readback.get("public_html_readers", []):
+        if isinstance(row, dict) and isinstance(row.get("url"), str):
+            verified_reader_evidence[row["url"]] = {
+                "locator": inputs.site_readback_relative.as_posix(),
+                "sha256": site_readback_sha,
+            }
+    for receipt_info in receipts.values():
+        html_reader = nested(
+            receipt_info["receipt"], "source", "public_evidence", "html_reader"
+        )
+        if not isinstance(html_reader, dict) or html_reader.get("result") != "pass":
+            continue
+        url = html_reader.get("url")
+        readback = html_reader.get("readback")
+        if (
+            not isinstance(url, str)
+            or not url.startswith("https://")
+            or not isinstance(readback, dict)
+            or readback.get("http_status") != 200
+            or not isinstance(readback.get("sha256"), str)
+        ):
+            raise ValueError(
+                f"Migration receipt has malformed HTML-reader evidence: {receipt_info['directory']}"
+            )
+        evidence = {
+            "locator": receipt_info["locator"],
+            "sha256": receipt_info["sha256"],
+        }
+        if url in verified_reader_evidence and verified_reader_evidence[url] != evidence:
+            raise ValueError(f"Conflicting public-readback evidence for HTML reader: {url}")
+        verified_reader_evidence[url] = evidence
+    verified_reader_urls = set(verified_reader_evidence)
 
     def add_surface(course_id_value: str, url: str, format_value: str, action: str) -> None:
         key = (format_value, url)
@@ -518,7 +668,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
         elif edition and direct_pdf_url(edition):
             learner_start = edition
         else:
-            learner_start = course_card_url(role_id)
+            learner_start = course_card_url(role_id, inputs.public_site)
         pdf_url = edition if edition and direct_pdf_url(edition) else None
         return learner_start, {
             "learn": learner_start,
@@ -536,7 +686,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
         if action == "learn":
             if direct_pdf_url(url):
                 return "pdf"
-            if url == PUBLIC_SITE or url.startswith(PUBLIC_SITE) or url.lower().endswith((".html", ".htm")):
+            if url == inputs.public_site or url.startswith(inputs.public_site) or url.lower().endswith((".html", ".htm")):
                 return "html"
             return "download"
         if action == "offline":
@@ -545,7 +695,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
 
     for role_id in sorted(catalog_by_id):
         course = catalog_by_id[role_id]
-        card = course_card_url(role_id)
+        card = course_card_url(role_id, inputs.public_site)
         add_surface(role_id, card, "html", "learn")
         _, artifact_matrix = course_artifacts(role_id, course)
         for action in ACTION_ORDER:
@@ -554,9 +704,14 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 continue
             if action == "html" and url not in verified_reader_urls:
                 raise ValueError(f"Catalog HTML reader lacks public-readback evidence: {role_id}")
-            add_surface(role_id, url, surface_format(action, url), action)
+            format_value = (
+                "html"
+                if action == "learn" and isinstance(course.get("reader"), str) and url == course["reader"]
+                else surface_format(action, url)
+            )
+            add_surface(role_id, url, format_value, action)
     for role_id in sorted(catalog_by_id):
-        add_surface(role_id, PUBLIC_SITE, "html", "learn")
+        add_surface(role_id, inputs.public_site, "html", "learn")
 
     surface_id_by_key: dict[tuple[str, str], str] = {}
     reader_records: list[dict[str, Any]] = []
@@ -565,7 +720,11 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
         semantic_key = f"surface:{format_value}:{url_token}"
         surface_id = record_id("reader_surface", semantic_key)
         surface_id_by_key[(format_value, url)] = surface_id
-        is_verified = url in verified_reader_urls or url.startswith(f"{PUBLIC_SITE}#course-")
+        fragment_uses_program_readback = url.startswith(f"{inputs.public_site}#course-")
+        is_verified = url in verified_reader_urls or fragment_uses_program_readback
+        evidence = verified_reader_evidence.get(url)
+        if evidence is None and fragment_uses_program_readback:
+            evidence = verified_reader_evidence[inputs.public_site]
         course_roles = sorted(role for role in draft["course_ids"] if role != "__program__")
         reader_records.append(
             make_record(
@@ -580,11 +739,9 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                     "publication_state": "public" if is_verified else "catalog_declared",
                     "evidence_kind": "public_readback" if is_verified else "catalog_declared",
                     "evidence_locator": (
-                        "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json"
-                        if is_verified
-                        else "releases/v0.51.2/program-matematika-indonesia-catalog-v0.51.2.json"
+                        evidence["locator"] if evidence is not None else inputs.catalog_relative.as_posix()
                     ),
-                    "evidence_sha256": site_readback_sha if is_verified else catalog_sha,
+                    "evidence_sha256": evidence["sha256"] if evidence is not None else catalog_sha,
                 },
             )
         )
@@ -598,7 +755,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
     # QA IDs are precomputed so dataset records can reference them.
     qa_v1_key = f"curriculum-backend-v1-builder:{catalog_sha}"
     qa_site_key = f"student-html-public-readback:{site_readback_sha}"
-    qa_edu_key = f"educational-access-validation:{sha256_file(EDUCATIONAL_ACCESS_VALIDATION_PATH)}"
+    qa_edu_key = f"educational-access-validation:{sha256_file(educational_validation_path)}"
     qa_id_by_migration = {
         name: record_id("qa_event", f"migration:{info['receipt']['migration_id']}")
         for name, info in receipts.items()
@@ -731,7 +888,8 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
             )
         )
 
-    edu_manifest_sha = sha256_file(EDUCATIONAL_ACCESS_MANIFEST_PATH)
+    edu_manifest_sha = sha256_file(educational_manifest_path)
+    educational_locator = inputs.educational_access_relative.as_posix()
     edu_records_manifest_row = next(
         row for row in educational_manifest["files"] if row.get("path") == "records.jsonl"
     )
@@ -743,7 +901,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
             {
                 "dataset_kind": "research_support",
                 "corpus_id": "educational-access-v0.1.0",
-                "canonical_owner_locator": "backend/research/educational-access-v0.1.0/manifest.json",
+                "canonical_owner_locator": f"{educational_locator}/manifest.json",
                 "canonical_owner_state": "project_authority",
                 "course_ids": sorted(catalog_by_id),
                 "corpus_titles": ["Educational access research-support federation"],
@@ -758,7 +916,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "migration_receipt_locator": None,
                 "migration_receipt_sha256": None,
                 "migration_validation_result": "pass",
-                "package_manifest_locator": "backend/research/educational-access-v0.1.0/manifest.json",
+                "package_manifest_locator": f"{educational_locator}/manifest.json",
                 "package_manifest_url": None,
                 "package_manifest_sha256": edu_manifest_sha,
                 "package_manifest_evidence_state": "verified_local",
@@ -768,7 +926,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "content_shards": [
                     {
                         "kind": "content",
-                        "locator": "backend/research/educational-access-v0.1.0/records.jsonl",
+                        "locator": f"{educational_locator}/records.jsonl",
                         "bytes": edu_records_manifest_row["bytes"],
                         "sha256": edu_records_manifest_row["sha256"],
                         "media_type": "application/x-ndjson",
@@ -796,7 +954,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
             "status": program_info["status"].replace("-", "_"),
             "course_ids": sorted(course_ids.values()),
             "learner_start_url": program_info["website"],
-            "catalog_locator": "releases/v0.51.2/program-matematika-indonesia-catalog-v0.51.2.json",
+            "catalog_locator": inputs.catalog_relative.as_posix(),
             "catalog_sha256": catalog_sha,
             "v1_program_id": legacy_index.get(("program", PROGRAM_KEY)),
         },
@@ -835,7 +993,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                     "learner_start_url": learner_start,
                     "artifact_matrix": artifact_matrix,
                     "web_route_id": route_ids[role_id],
-                    "web_route_root": course_card_url(role_id),
+                    "web_route_root": course_card_url(role_id, inputs.public_site),
                     "planned_unit_route_pattern": f"/id-ID/courses/{role_id}/units/{{stable_unit_slug}}/",
                     "unit_route_state": "planned_not_published",
                     "source_catalog_sha256": catalog_sha,
@@ -852,14 +1010,14 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "route_kind": "program_root_current",
                 "locale": "id-ID",
                 "path": "/",
-                "public_url": PUBLIC_SITE,
+                "public_url": inputs.public_site,
                 "course_ids": sorted(catalog_by_id),
                 "publication_state": "public",
-                "learner_fallback_url": PUBLIC_SITE,
+                "learner_fallback_url": inputs.public_site,
                 "planned_clean_root": None,
                 "planned_unit_route_pattern": None,
                 "unit_route_state": "not_applicable",
-                "evidence_locator": "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json",
+                "evidence_locator": inputs.site_readback_relative.as_posix(),
                 "evidence_sha256": site_readback_sha,
             },
         )
@@ -873,14 +1031,14 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                     "route_kind": "learner_card_current",
                     "locale": "id-ID",
                     "path": f"/#course-{role_id}",
-                    "public_url": course_card_url(role_id),
+                    "public_url": course_card_url(role_id, inputs.public_site),
                     "course_ids": [role_id],
                     "publication_state": "public",
                     "learner_fallback_url": course_artifacts(role_id, catalog_by_id[role_id])[0],
                     "planned_clean_root": f"/id-ID/courses/{role_id}/",
                     "planned_unit_route_pattern": f"/id-ID/courses/{role_id}/units/{{stable_unit_slug}}/",
                     "unit_route_state": "planned_not_published",
-                    "evidence_locator": "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json",
+                    "evidence_locator": inputs.site_readback_relative.as_posix(),
                     "evidence_sha256": site_readback_sha,
                 },
             )
@@ -900,13 +1058,13 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "publication_kind": "github_pages",
                 "course_ids": sorted(catalog_by_id),
                 "dataset_ids": curriculum_dataset_ids,
-                "url": PUBLIC_SITE,
+                "url": inputs.public_site,
                 "doi": None,
                 "published_at": None,
                 "version": program_info["version"],
                 "state": "readback_verified",
                 "evidence_kind": "anonymous_public_readback",
-                "evidence_locator": "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json",
+                "evidence_locator": inputs.site_readback_relative.as_posix(),
                 "evidence_sha256": site_readback_sha,
                 "artifact_count": len(site_readback["public_byte_identity"]),
                 "total_bytes": sum(row["bytes"] for row in site_readback["public_byte_identity"]),
@@ -928,7 +1086,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "version": program_info["version"],
                 "state": "readback_verified",
                 "evidence_kind": "anonymous_public_readback",
-                "evidence_locator": "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json",
+                "evidence_locator": inputs.site_readback_relative.as_posix(),
                 "evidence_sha256": site_readback_sha,
                 "artifact_count": zenodo["file_count"],
                 "total_bytes": zenodo["total_bytes"],
@@ -971,7 +1129,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                     "version": None,
                     "state": "declared",
                     "evidence_kind": "public_metadata",
-                    "evidence_locator": "releases/v0.51.2/program-matematika-indonesia-catalog-v0.51.2.json",
+                    "evidence_locator": inputs.catalog_relative.as_posix(),
                     "evidence_sha256": catalog_sha,
                     "artifact_count": None,
                     "total_bytes": None,
@@ -988,8 +1146,8 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "result": "pass",
                 "subject_ids": [program_id],
                 "method": "strict v1 schema, identity closure, manifest, deterministic replay, and CSV round trip",
-                "evidence_locator": "backend/v1/program-matematika-indonesia-v0.51.2/validation_report.json",
-                "evidence_sha256": sha256_file(V1_VALIDATION_PATH),
+                "evidence_locator": f"{inputs.v1_package_relative.as_posix()}/validation_report.json",
+                "evidence_sha256": sha256_file(v1_validation_path),
                 "record_count": v1_validation["checks"]["record_count"],
                 "details": {"source_records_sha256": v1_records_sha},
             },
@@ -1002,7 +1160,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "result": "pass",
                 "subject_ids": [program_id],
                 "method": "anonymous HTTP readback and local/public byte identity",
-                "evidence_locator": "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json",
+                "evidence_locator": inputs.site_readback_relative.as_posix(),
                 "evidence_sha256": site_readback_sha,
                 "record_count": 40,
                 "details": {
@@ -1019,8 +1177,8 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                 "result": "pass",
                 "subject_ids": [record_id("dataset", research_semantic_key)],
                 "method": "strict schema, UUIDv5, foreign keys, source replay, and JSONL/CSV round trip",
-                "evidence_locator": "backend/research/educational-access-v0.1.0/validation_report.json",
-                "evidence_sha256": sha256_file(EDUCATIONAL_ACCESS_VALIDATION_PATH),
+                "evidence_locator": f"{educational_locator}/validation_report.json",
+                "evidence_sha256": sha256_file(educational_validation_path),
                 "record_count": educational_validation["records"],
                 "details": {
                     "materialized_table_count": len(educational_validation["table_counts"]),
@@ -1094,7 +1252,7 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
                     "v2_semantic_key": v2_key,
                     "v2_id": record_id(v2_type, v2_key),
                     "mapping_state": mapping_state,
-                    "source_records_locator": "backend/v1/program-matematika-indonesia-v0.51.2/records.jsonl",
+                    "source_records_locator": f"{inputs.v1_package_relative.as_posix()}/records.jsonl",
                     "source_records_sha256": v1_records_sha,
                 },
             )
@@ -1109,17 +1267,18 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
     if len({(item["record_type"], item["semantic_key"]) for item in all_records}) != len(all_records):
         raise ValueError("Generated semantic keys are not unique within record type")
 
+    v1_locator = inputs.v1_package_relative.as_posix()
     source_inputs = [
-        source_fact(CONTRACT_PATH, "curriculum_logbook/81_GLOBAL_MODULAR_BACKEND_V2_CONTRACT_20260825.json", "v2_contract"),
-        source_fact(ROLE_MAP_PATH, "curriculum_logbook/49_SEMANTIC_ROLE_MAPPING_CORRECTION_20260823.json", "canonical_owner_role_map"),
-        source_fact(SITE_READBACK_PATH, "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json", "student_site_public_readback"),
-        source_fact(CATALOG_PATH, "releases/v0.51.2/program-matematika-indonesia-catalog-v0.51.2.json", "curriculum_catalog"),
-        source_fact(V1_RECORDS_PATH, "backend/v1/program-matematika-indonesia-v0.51.2/records.jsonl", "v1_identity_source"),
-        source_fact(V1_MANIFEST_PATH, "backend/v1/program-matematika-indonesia-v0.51.2/manifest.json", "v1_package_manifest"),
-        source_fact(V1_VALIDATION_PATH, "backend/v1/program-matematika-indonesia-v0.51.2/validation_report.json", "v1_validation"),
-        source_fact(EDUCATIONAL_ACCESS_MANIFEST_PATH, "backend/research/educational-access-v0.1.0/manifest.json", "research_support_manifest"),
-        source_fact(EDUCATIONAL_ACCESS_VALIDATION_PATH, "backend/research/educational-access-v0.1.0/validation_report.json", "research_support_validation"),
-        source_fact(EDUCATIONAL_ACCESS_RECORDS_PATH, "backend/research/educational-access-v0.1.0/records.jsonl", "research_support_records"),
+        source_fact(contract_path, inputs.contract_relative.as_posix(), "v2_contract"),
+        source_fact(role_map_path, inputs.role_map_relative.as_posix(), "canonical_owner_role_map"),
+        source_fact(site_readback_path, inputs.site_readback_relative.as_posix(), "student_site_public_readback"),
+        source_fact(catalog_path, inputs.catalog_relative.as_posix(), "curriculum_catalog"),
+        source_fact(v1_records_path, f"{v1_locator}/records.jsonl", "v1_identity_source"),
+        source_fact(v1_manifest_path, f"{v1_locator}/manifest.json", "v1_package_manifest"),
+        source_fact(v1_validation_path, f"{v1_locator}/validation_report.json", "v1_validation"),
+        source_fact(educational_manifest_path, f"{educational_locator}/manifest.json", "research_support_manifest"),
+        source_fact(educational_validation_path, f"{educational_locator}/validation_report.json", "research_support_validation"),
+        source_fact(educational_records_path, f"{educational_locator}/records.jsonl", "research_support_records"),
     ]
     for name, info in sorted(receipts.items()):
         source_inputs.append(source_fact(info["path"], info["locator"], f"migration_receipt:{name}"))
@@ -1148,8 +1307,8 @@ def build() -> tuple[list[dict[str, Any]], dict[str, Any], list[dict[str, Any]]]
     return all_records, metadata, legacy_records
 
 
-def materialize(output: Path) -> dict[str, Any]:
-    records, metadata, legacy_records = build()
+def materialize(inputs: BuildInputs, output: Path) -> dict[str, Any]:
+    records, metadata, legacy_records = build(inputs)
     output.mkdir(parents=True, exist_ok=True)
     (output / "data").mkdir(parents=True, exist_ok=True)
     (output / "csv").mkdir(parents=True, exist_ok=True)
@@ -1200,16 +1359,16 @@ def materialize(output: Path) -> dict[str, Any]:
         }
         for record_type in sorted(by_type)
     }
-    namespace_fact = file_fact(NAMESPACE_DOCUMENT_PATH, "schemas/v2/namespace-v2.json")
-    release_policy_fact = file_fact(RELEASE_POLICY_PATH, "schemas/v2/pmi-release-policy-v2.json")
+    namespace_fact = file_fact(inputs.namespace_document_path, "schemas/v2/namespace-v2.json")
+    release_policy_fact = file_fact(inputs.release_policy_path, "schemas/v2/pmi-release-policy-v2.json")
     envelope = {
         "$schema": "../../../schemas/v2/federation-package-v2.schema.json",
         "schema_id": "interlanguage/global-modular-mathematics-federation-package/2.0.0",
         "schema_version": SCHEMA_VERSION,
-        "package_id": record_id("package", DATASET_VERSION),
+        "package_id": record_id("package", inputs.dataset_version),
         "dataset_id": record_id("dataset", "program-matematika-indonesia-federation"),
-        "dataset_version": DATASET_VERSION,
-        "recorded_at": RECORDED_AT,
+        "dataset_version": inputs.dataset_version,
+        "recorded_at": inputs.recorded_at,
         "identity_namespace": str(NAMESPACE),
         "identity_formula": "record_type:semantic_key",
         "namespace_document": namespace_fact,
@@ -1236,13 +1395,19 @@ def materialize(output: Path) -> dict[str, Any]:
         "build": {
             "builder_path": "scripts/build-backend-v2-federation.py",
             "builder_sha256": sha256_file(Path(__file__).resolve()),
-            "command": [
-                "python",
-                "-B",
-                "scripts/build-backend-v2-federation.py",
-                "--output",
-                "<OUTPUT>",
-            ],
+            "inputs": {
+                "catalog_relative": inputs.catalog_relative.as_posix(),
+                "v1_package_relative": inputs.v1_package_relative.as_posix(),
+                "site_readback_relative": inputs.site_readback_relative.as_posix(),
+                "contract_relative": inputs.contract_relative.as_posix(),
+                "role_map_relative": inputs.role_map_relative.as_posix(),
+                "migrations_relative": inputs.migrations_relative.as_posix(),
+                "educational_access_relative": inputs.educational_access_relative.as_posix(),
+                "dataset_version": inputs.dataset_version,
+                "recorded_at": inputs.recorded_at,
+                "public_site": inputs.public_site,
+            },
+            "command": inputs.replay_command(),
             "deterministic_replay": "pass",
             "build_a_records_sha256": sha256_bytes(aggregate_jsonl),
             "build_b_records_sha256": sha256_bytes(aggregate_jsonl),
@@ -1261,8 +1426,8 @@ def materialize(output: Path) -> dict[str, Any]:
         "schema_id": "interlanguage/global-modular-mathematics-federation-manifest/v2",
         "schema_version": SCHEMA_VERSION,
         "dataset_id": envelope["dataset_id"],
-        "dataset_version": DATASET_VERSION,
-        "recorded_at": RECORDED_AT,
+        "dataset_version": inputs.dataset_version,
+        "recorded_at": inputs.recorded_at,
         "record_count": len(records),
         "record_counts": record_counts,
         "files": manifest_facts,
@@ -1286,7 +1451,8 @@ def materialize(output: Path) -> dict[str, Any]:
 
 def main() -> int:
     args = parse_args()
-    result = materialize(args.output.resolve())
+    inputs = build_inputs_from_args(args)
+    result = materialize(inputs, args.output.resolve())
     sys.stdout.write(canonical_json(result) + "\n")
     return 0
 

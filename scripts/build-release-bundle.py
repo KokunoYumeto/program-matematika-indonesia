@@ -16,6 +16,7 @@ FIXED_ZIP_TIME = (2026, 8, 22, 0, 0, 0)
 MIGRATION_RECEIPT_FILENAMES = {
     "applied-combinatorics-id-v1": "applied-combinatorics-id-backend-v1-migration-receipt.json",
     "dmoi4-id-v1": "dmoi4-id-backend-v1-migration-receipt.json",
+    "erdman-functional-analysis-id-v1": "erdman-functional-analysis-id-backend-v1-migration-receipt.json",
     "hefferon-linear-algebra-id-v1": "hefferon-linear-algebra-id-backend-v1-migration-receipt.json",
     "judson-id-v1": "judson-id-backend-v1-migration-receipt.json",
     "mathematics-in-lean-id-v1": "mathematics-in-lean-id-backend-v1-migration-receipt.json",
@@ -35,6 +36,7 @@ V2_RELEASE_FILES = {
     "schemas/v2/namespace-v2.json": "namespace-v2.json",
     "schemas/v2/pmi-release-policy-v2.json": "pmi-release-policy-v2.json",
     "scripts/build-backend-v2-federation.py": "build-backend-v2-federation.py",
+    "scripts/build-backend-v2-validation-receipt.py": "build-backend-v2-validation-receipt.py",
     "scripts/validate-backend-v2-federation.py": "validate-backend-v2-federation.py",
 }
 
@@ -185,7 +187,9 @@ def main() -> None:
         "scripts/validate-release-bundle.py",
         "scripts/write-release-checksums.py",
         "scripts/build-backend-v2-federation.py",
+        "scripts/build-backend-v2-validation-receipt.py",
         "scripts/validate-backend-v2-federation.py",
+        "tests/backend-v2/test_build_backend_v2_federation.py",
         "tests/backend-v2/test_validate_backend_v2_federation.py",
         "backend/BACKEND_CONVERGENCE_V1.md",
         "backend/MIGRATION_HANDOFF_V1.md",

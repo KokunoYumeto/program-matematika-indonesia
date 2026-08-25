@@ -287,15 +287,16 @@ export const courses = [
     repository: 'https://github.com/KokunoYumeto/fremlin-measure-theory-id'
   },
   {
-    id: 'D20', ownerLane: 'O008', level: 'D', topic: 'Analisis', state: 'production',
+    id: 'D20', ownerLane: 'O008', level: 'D', topic: 'Analisis', state: 'published',
     title: 'Analisis Fungsional', prerequisites: ['D10', 'B40'],
     purpose: 'Ruang bernorma, Banach dan Hilbert; operator terbatas; Hahn–Banach; boundedness seragam; pemetaan terbuka; dualitas; teori kompak dan spektral.',
     outcome: 'Bernalar dengan ruang dan operator berdimensi tak hingga pada tingkat pascasarjana awal.',
-    corpus: 'Erdman — Functional Analysis',
-    note: 'Pembaca kumulatif Bab 1–12 sepanjang 179 halaman sudah terverifikasi publik. Produksi berlanjut ke Bab 13; korpus lengkap D20 belum selesai.',
-    edition: 'https://zenodo.org/records/22072541/files/analisis-fungsional-dan-aljabar-operator-id-bab-1-12.pdf?download=1',
+    corpus: 'Erdman — Functional Analysis and Operator Algebras: An Introduction',
+    note: 'Edisi Bahasa Indonesia lengkap dan terverifikasi publik: 298 halaman, prakata, seluruh 17 bab, bibliografi, indeks, 52 solusi latihan sumber, 10 solusi hasil kerja pembaca, dan 13 unit jembatan operator kompak, spektral, dan SVD. PDF, dua pembaca HTML semantik luring, sumber, backend, hak, dan provenance dipertahankan di GitHub dan Zenodo.',
+    reader: 'https://kokunoyumeto.github.io/functional-analysis-erdman-id/',
+    edition: 'https://zenodo.org/records/22088947/files/analisis-fungsional-dan-aljabar-operator-id-edisi-lengkap-dengan-pendamping.pdf?download=1',
     repository: 'https://github.com/KokunoYumeto/functional-analysis-erdman-id',
-    zenodo: 'https://doi.org/10.5281/zenodo.22072541'
+    zenodo: 'https://doi.org/10.5281/zenodo.22088947'
   },
   {
     id: 'D30', ownerLane: 'O009', level: 'D', topic: 'Peluang & Statistika', state: 'production',
@@ -402,6 +403,17 @@ export const courses = [
   }
 ];
 
+export const nextCourseIdsById = Object.freeze(Object.fromEntries(
+  courses.map(({ id }) => [
+    id,
+    Object.freeze(
+      courses
+        .filter(({ prerequisites }) => prerequisites.includes(id))
+        .map(({ id: nextId }) => nextId)
+    )
+  ])
+));
+
 export const topics = [
   'Fondasi & Kalkulus',
   'Analisis',
@@ -417,12 +429,12 @@ export const program = Object.freeze({
   id: 'program-matematika-indonesia',
   title: 'Program Matematika Indonesia — Peta Kurikulum Terbuka',
   language: 'id-ID',
-  version: '0.52.0',
+  version: '0.53.0',
   snapshotDate: '2026-08-25',
   totalCourseRoles: 40,
   selectedCorpusRoles: 40,
   unresolvedRoleIds: [],
-  completedPublicCourseRoleIds: ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D110'],
+  completedPublicCourseRoleIds: ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D20', 'D110'],
   completedPublicRecordDois: [
     '10.5281/zenodo.22070683',
     '10.5281/zenodo.22060439',
@@ -437,10 +449,11 @@ export const program = Object.freeze({
     '10.5281/zenodo.22054086',
     '10.5281/zenodo.22070943',
     '10.5281/zenodo.22070653',
+    '10.5281/zenodo.22088947',
     '10.5281/zenodo.22062017'
   ],
   website: 'https://kokunoyumeto.github.io/program-matematika-indonesia/',
-  zenodo: 'https://doi.org/10.5281/zenodo.22088577',
+  zenodo: 'https://doi.org/10.5281/zenodo.22097431',
   zenodoConcept: 'https://doi.org/10.5281/zenodo.22059707',
   provenance: {
     model: 'OpenAI Codex gpt-5.6-sol, Ultra',
@@ -510,24 +523,29 @@ export const program = Object.freeze({
         corpus: 'Tea Time Numerical Analysis — Bahasa Indonesia v3.0-id.2-r1',
         recordCount: 53055,
         result: 'additive-zero-copy-virtual-adapter-pass'
+      },
+      {
+        corpus: 'Erdman — Functional Analysis and Operator Algebras, Bahasa Indonesia',
+        recordCount: 41689,
+        result: 'lossless-zero-copy-virtual-adapter-pass'
       }
     ],
-    schema: 'https://zenodo.org/records/22088577/files/interlanguage-math-backend-v1.schema.json?download=1',
-    sourceFormatProfile: 'https://zenodo.org/records/22088577/files/interlanguage-source-format-profile-v1.schema.json?download=1',
-    package: 'https://zenodo.org/records/22088577/files/program-matematika-indonesia-backend-v1-v0.52.0.zip?download=1',
+    schema: 'https://zenodo.org/records/22097431/files/interlanguage-math-backend-v1.schema.json?download=1',
+    sourceFormatProfile: 'https://zenodo.org/records/22097431/files/interlanguage-source-format-profile-v1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22097431/files/program-matematika-indonesia-backend-v1-v0.53.0.zip?download=1',
     federationV2: {
-      version: '0.1.0',
+      version: '0.2.0',
       status: 'validated',
-      recordCount: 2439,
+      recordCount: 2430,
       datasetCount: 34,
       courseCount: 40,
-      learnerSurfaceCount: 136,
+      learnerSurfaceCount: 126,
       webRouteCount: 41,
       identityCrosswalkCount: 2122,
-      package: 'https://zenodo.org/records/22088577/files/program-matematika-indonesia-backend-v2-v0.52.0.zip?download=1',
-      packageSchema: 'https://zenodo.org/records/22088577/files/federation-package-v2.schema.json?download=1',
-      recordSchema: 'https://zenodo.org/records/22088577/files/federation-record-v2.schema.json?download=1',
-      validationReceipt: 'https://zenodo.org/records/22088577/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.52.0.json?download=1'
+      package: 'https://zenodo.org/records/22097431/files/program-matematika-indonesia-backend-v2-v0.53.0.zip?download=1',
+      packageSchema: 'https://zenodo.org/records/22097431/files/federation-package-v2.schema.json?download=1',
+      recordSchema: 'https://zenodo.org/records/22097431/files/federation-record-v2.schema.json?download=1',
+      validationReceipt: 'https://zenodo.org/records/22097431/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.53.0.json?download=1'
     }
   },
   repositories: {

@@ -1,4 +1,4 @@
-import { courses, program, topics } from './courses.js';
+import { courses, nextCourseIdsById, program, topics } from './courses.js';
 
 const stateLabels = {
   published: 'Edisi publik selesai',
@@ -48,6 +48,20 @@ function prerequisiteLinks(items) {
   return items.map((id) => `<a class="prereq-link" href="#course-${id}" data-course-link="${id}">${id}</a>`).join('');
 }
 
+function nextCourseLinks(course) {
+  const nextIds = nextCourseIdsById[course.id] ?? [];
+  if (!nextIds.length) return '<span class="no-next-course">Tidak ada lanjutan langsung dalam peta ini.</span>';
+  return nextIds.map((id) => {
+    const nextCourse = courses.find((candidate) => candidate.id === id);
+    if (!nextCourse) return '';
+    const otherPrerequisiteCount = Math.max(0, nextCourse.prerequisites.length - 1);
+    const otherPrerequisites = otherPrerequisiteCount
+      ? `<small>+${otherPrerequisiteCount} prasyarat lain</small>`
+      : '<small>dapat dilanjutkan langsung</small>';
+    return `<a class="next-course-link" href="#course-${id}" data-course-link="${id}"><span>${id}</span><strong>${nextCourse.title}</strong>${otherPrerequisites}</a>`;
+  }).join('');
+}
+
 function actionLinks(course) {
   const links = [];
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
@@ -84,6 +98,10 @@ function courseCard(course) {
       <div class="prerequisites">
         <span>Prasyarat</span>
         <div>${prerequisiteLinks(course.prerequisites)}</div>
+      </div>
+      <div class="next-courses">
+        <span>Lanjut ke</span>
+        <div>${nextCourseLinks(course)}</div>
       </div>
       <details>
         <summary>Detail mata kuliah</summary>
