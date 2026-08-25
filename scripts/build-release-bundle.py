@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import shutil
+import subprocess
 import zipfile
 from pathlib import Path
 
@@ -205,6 +206,22 @@ def main() -> None:
             release / f"RELEASE_NOTES_v{version}.md",
         ]
     )
+    tracked_paths = set(
+        subprocess.run(
+            ["git", "ls-tree", "-r", "--name-only", args.source_commit],
+            cwd=root,
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.splitlines()
+    )
+    generated_catalog = release / f"program-matematika-indonesia-catalog-v{version}.json"
+    source_paths = [
+        path
+        for path in source_paths
+        if path == generated_catalog
+        or path.relative_to(root).as_posix() in tracked_paths
+    ]
     if len(source_paths) != len(set(source_paths)):
         raise ValueError("duplicate source ZIP path")
 
