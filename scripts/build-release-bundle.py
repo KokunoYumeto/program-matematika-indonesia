@@ -144,6 +144,7 @@ def main() -> None:
 
     source_roots = [
         ".openai/hosting.json",
+        ".gitattributes",
         ".gitignore",
         "LICENSE",
         "README.md",
