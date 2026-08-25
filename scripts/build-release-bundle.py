@@ -182,6 +182,7 @@ def main() -> None:
         "scripts/export-release-catalog.mjs",
         "scripts/seed-curriculum-authority.mjs",
         "scripts/advance-curriculum-authority.mjs",
+        "scripts/admit-o004-v055.mjs",
         "scripts/build-learner-read-model.mjs",
         "scripts/validate-learner-read-model.mjs",
         "scripts/sync-public-schemas.mjs",
