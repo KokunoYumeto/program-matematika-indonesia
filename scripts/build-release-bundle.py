@@ -189,6 +189,7 @@ def main() -> None:
         "scripts/export-single-file-site.mjs",
         "scripts/build-learner-start-pdf.py",
         "scripts/sync-sites-public.mjs",
+        "scripts/build-d20-learner-routes.mjs",
         "scripts/validate-static-site.mjs",
         "scripts/verify-http-bytes.mjs",
         "scripts/build-backend-v1-schema.py",
@@ -207,6 +208,7 @@ def main() -> None:
         "backend/MIGRATION_HANDOFF_V1.md",
         "backend/v1/namespace.json",
         "backend/authority",
+        "backend/v2.1",
     ]
     source_paths: list[Path] = []
     for relative in source_roots:
