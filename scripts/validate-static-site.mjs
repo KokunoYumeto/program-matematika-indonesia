@@ -22,8 +22,8 @@ const expectedIds = [
   'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D80', 'D90', 'D100', 'D110', 'D120',
 ];
 const unresolvedIds = [];
-const publishedIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D20', 'D110'];
-const completedPublicEditionIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C110', 'C120', 'C130', 'D20', 'D110'];
+const publishedIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C100', 'C110', 'C120', 'C130', 'D20', 'D110'];
+const completedPublicEditionIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C10', 'C30', 'C40', 'C60', 'C70', 'C80', 'C100', 'C110', 'C120', 'C130', 'D20', 'D110'];
 const publishedHtmlReaderIds = ['A00', 'B10', 'B40', 'B80', 'B90', 'C30', 'C40', 'C60', 'C70', 'C120', 'C130', 'D20', 'D110'];
 const completedPublicRecordDois = [
   '10.5281/zenodo.22070683',
@@ -41,6 +41,7 @@ const completedPublicRecordDois = [
   '10.5281/zenodo.22070653',
   '10.5281/zenodo.22088947',
   '10.5281/zenodo.22062017',
+  '10.5281/zenodo.22102628',
 ];
 const expectedOwnerLanes = {
   A00: 'R001', A10: 'OPENSTAX-ELEMENTARY', A20: 'OPENSTAX-INTERMEDIATE', A30: 'R002',
@@ -60,10 +61,10 @@ assert.deepEqual(
   'Pemetaan semantik peran ke pemilik produksi berubah atau terpermutasi.'
 );
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
-assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar enam belas peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.54.0', 'Versi snapshot pusat harus 0.54.0.');
+assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar tujuh belas peran kanon dengan edisi publik selesai berubah.');
+assert.equal(program.version, '0.55.0', 'Versi snapshot pusat harus 0.55.0.');
 assert.equal(program.website, 'https://kokunoyumeto.github.io/program-matematika-indonesia/', 'Situs belajar publik tidak tepat.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22102369', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22102685', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -145,26 +146,26 @@ assert.equal(
   926171,
   'Jumlah rekaman target pada 13 migrasi korpus lengkap harus tepat 926.171.'
 );
-assert.equal(program.backend.schema, 'https://zenodo.org/records/22102369/files/interlanguage-math-backend-v1.schema.json?download=1', 'URL schema backend v1 harus terikat ke rekaman v0.54.0.');
-assert.equal(program.backend.sourceFormatProfile, 'https://zenodo.org/records/22102369/files/interlanguage-source-format-profile-v1.schema.json?download=1', 'URL profil format sumber harus terikat ke rekaman v0.54.0.');
-assert.equal(program.backend.package, 'https://zenodo.org/records/22102369/files/program-matematika-indonesia-backend-v1-v0.54.0.zip?download=1', 'URL paket backend v1 harus terikat ke rekaman v0.54.0.');
+assert.equal(program.backend.schema, 'https://zenodo.org/records/22102685/files/interlanguage-math-backend-v1.schema.json?download=1', 'URL schema backend v1 harus terikat ke rekaman v0.55.0.');
+assert.equal(program.backend.sourceFormatProfile, 'https://zenodo.org/records/22102685/files/interlanguage-source-format-profile-v1.schema.json?download=1', 'URL profil format sumber harus terikat ke rekaman v0.55.0.');
+assert.equal(program.backend.package, 'https://zenodo.org/records/22102685/files/program-matematika-indonesia-backend-v1-v0.55.0.zip?download=1', 'URL paket backend v1 harus terikat ke rekaman v0.55.0.');
 assert.deepEqual(
   program.backend.federationV2,
   {
-    version: '0.2.0',
+    version: '0.3.0',
     status: 'validated',
-    recordCount: 2430,
+    recordCount: 2434,
     datasetCount: 34,
     courseCount: 40,
-    learnerSurfaceCount: 126,
+    learnerSurfaceCount: 128,
     webRouteCount: 41,
     identityCrosswalkCount: 2122,
-    package: 'https://zenodo.org/records/22102369/files/program-matematika-indonesia-backend-v2-v0.54.0.zip?download=1',
-    packageSchema: 'https://zenodo.org/records/22102369/files/federation-package-v2.schema.json?download=1',
-    recordSchema: 'https://zenodo.org/records/22102369/files/federation-record-v2.schema.json?download=1',
-    validationReceipt: 'https://zenodo.org/records/22102369/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.54.0.json?download=1'
+    package: 'https://zenodo.org/records/22102685/files/program-matematika-indonesia-backend-v2-v0.55.0.zip?download=1',
+    packageSchema: 'https://zenodo.org/records/22102685/files/federation-package-v2.schema.json?download=1',
+    recordSchema: 'https://zenodo.org/records/22102685/files/federation-record-v2.schema.json?download=1',
+    validationReceipt: 'https://zenodo.org/records/22102685/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.55.0.json?download=1'
   },
-  'Backend federasi v2 harus cocok dengan batas validasi publik v0.54.0.'
+  'Backend federasi v2 harus cocok dengan batas validasi publik v0.55.0.'
 );
 assert.deepEqual(
   program.backend.learnerReadModelV1,
@@ -173,28 +174,28 @@ assert.deepEqual(
     status: 'validated',
     courseCount: 40,
     prerequisiteEdgeCount: 82,
-    authority: 'https://zenodo.org/records/22102369/files/curriculum-authority-v1.json?download=1',
-    authoritySchema: 'https://zenodo.org/records/22102369/files/curriculum-authority-v1.schema.json?download=1',
-    readModel: 'https://zenodo.org/records/22102369/files/learner-read-model-v1.json?download=1',
-    readModelSchema: 'https://zenodo.org/records/22102369/files/learner-read-model-v1.schema.json?download=1',
-    validationReceipt: 'https://zenodo.org/records/22102369/files/LOCAL_RELEASE_VALIDATION_v0.54.0.json?download=1',
+    authority: 'https://zenodo.org/records/22102685/files/curriculum-authority-v1.json?download=1',
+    authoritySchema: 'https://zenodo.org/records/22102685/files/curriculum-authority-v1.schema.json?download=1',
+    readModel: 'https://zenodo.org/records/22102685/files/learner-read-model-v1.json?download=1',
+    readModelSchema: 'https://zenodo.org/records/22102685/files/learner-read-model-v1.schema.json?download=1',
+    validationReceipt: 'https://zenodo.org/records/22102685/files/LOCAL_RELEASE_VALIDATION_v0.55.0.json?download=1',
     publicEndpoint: 'https://kokunoyumeto.github.io/program-matematika-indonesia/data/learner-read-model.json'
   },
   'Kontrak backend-ke-pelajar v1 harus terikat ke rilis dan endpoint publik.'
 );
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
-assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22102369/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.54.0 yang dicadangkan.');
+assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22102685/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.55.0 yang dicadangkan.');
 assert.deepEqual(publicAuthorityBytes, authorityBytes, 'Salinan otoritas kurikulum publik harus identik byte demi byte.');
 assert.equal(learnerReadModel.$schema, 'https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-read-model-v1.schema.json');
 assert.equal(learnerReadModel.provenance.authority_sha256, sha256(authorityBytes));
 assert.equal(learnerReadModel.summary.course_count, 40);
-assert.equal(learnerReadModel.summary.published_course_count, 16);
-assert.equal(learnerReadModel.summary.readback_overlay_count, 2);
-assert.equal(learnerReadModel.courses.filter(({ state, federation }) => state === 'published' && federation.primary_effective_publication_state === 'public').length, 16, 'Semua edisi selesai harus memiliki permukaan mulai-belajar efektif publik.');
+assert.equal(learnerReadModel.summary.published_course_count, 17);
+assert.equal(learnerReadModel.summary.readback_overlay_count, 3);
+assert.equal(learnerReadModel.courses.filter(({ state, federation }) => state === 'published' && federation.primary_effective_publication_state === 'public').length, 17, 'Semua edisi selesai harus memiliki permukaan mulai-belajar efektif publik.');
 assert.deepEqual(program.unresolvedRoleIds, unresolvedIds, 'Metadata program harus memakai daftar peran terbuka yang sama.');
 assert.deepEqual(program.completedPublicCourseRoleIds, completedPublicEditionIds, 'Metadata program harus memakai daftar peran edisi selesai yang sama.');
-assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar lima belas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
-assert.equal(new Set(program.completedPublicRecordDois).size, 15, 'Enam belas peran edisi selesai harus memetakan ke lima belas rekaman publik berbeda.');
+assert.deepEqual(program.completedPublicRecordDois, completedPublicRecordDois, 'Daftar enam belas DOI edisi publik selesai berubah atau tidak lagi memakai versi terkini.');
+assert.equal(new Set(program.completedPublicRecordDois).size, 16, 'Tujuh belas peran edisi selesai harus memetakan ke enam belas rekaman publik berbeda.');
 assert.deepEqual(courses.filter(({ reader }) => reader).map(({ id }) => id), publishedHtmlReaderIds, 'Daftar pembaca HTML publik yang diverifikasi berubah.');
 for (const id of completedPublicEditionIds) {
   const course = courses.find((candidate) => candidate.id === id);
@@ -246,9 +247,10 @@ assert.equal(courses.find(({ id }) => id === 'C50')?.edition, 'https://github.co
 assert.equal(courses.find(({ id }) => id === 'C50')?.zenodo, 'https://doi.org/10.5281/zenodo.22082567', 'C50 harus menunjuk checkpoint U336 yang memuat unit R008.');
 assert.equal(courses.find(({ id }) => id === 'C50')?.repository, 'https://github.com/KokunoYumeto/lebl-mathematics-family-id', 'C50 harus menunjuk repositori keluarga Lebl.');
 assert.match(courses.find(({ id }) => id === 'C50')?.note ?? '', /U336.*50 unit.*belum lengkap/s, 'C50 harus menyatakan batas U336 dan ketidaklengkapannya.');
-assert.equal(courses.find(({ id }) => id === 'C100')?.state, 'production', 'C100 harus tetap dalam produksi sampai sintesis dan penutupan asli selesai.');
-assert.match(courses.find(({ id }) => id === 'C100')?.corpus ?? '', /Petrunin.*donor utama.*CC BY-SA.*Clemens\/Snapp.*pendamping terpisah.*CC BY-NC-SA\/GPL/s, 'C100 harus membedakan donor utama Petrunin dan pendamping Clemens/Snapp dengan hak terpisah.');
-assert.match(courses.find(({ id }) => id === 'C100')?.note ?? '', /sintesis asli.*afin.*projektif.*non-Euklides.*rigor.*aset.*solusi.*asesmen.*masih harus diselesaikan/is, 'C100 harus mencatat pekerjaan sintesis dan penutupan yang belum selesai.');
+assert.equal(courses.find(({ id }) => id === 'C100')?.state, 'published', 'C100 harus menandai kursus utama lengkap yang terverifikasi publik.');
+assert.equal(courses.find(({ id }) => id === 'C100')?.zenodo, 'https://doi.org/10.5281/zenodo.22102628', 'C100 harus menunjuk DOI kursus utama lengkap.');
+assert.equal(courses.find(({ id }) => id === 'C100')?.edition, 'https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1', 'C100 harus menunjuk pembaca utama lengkap yang tepat.');
+assert.match(courses.find(({ id }) => id === 'C100')?.note ?? '', /253 solusi.*enam unit.*empat pemeriksaan.*dua capstone.*HTML semantik.*EPUB.*Clemens\/Snapp.*lini terpisah/s, 'C100 harus mencatat cakupan lengkap dan batas workbook berlisensi terpisah.');
 assert.equal(courses.find(({ id }) => id === 'C140')?.state, 'production', 'C140 harus tetap dalam produksi karena spine dan pendampingnya belum lengkap.');
 assert.equal(courses.find(({ id }) => id === 'C140')?.zenodo, 'https://doi.org/10.5281/zenodo.22071140', 'C140 harus menunjuk checkpoint pendukung Random 16/29.');
 assert.equal(courses.find(({ id }) => id === 'C140')?.repository, 'https://github.com/KokunoYumeto/mathematical-statistics-id', 'C140 harus menunjuk repositori Statistika Matematis.');
@@ -358,8 +360,8 @@ assert.match(html, /property="og:image" content="https:\/\/kokunoyumeto\.github\
 assert.match(html, /rel="canonical" href="https:\/\/kokunoyumeto\.github\.io\/program-matematika-indonesia\/"/, 'URL kanonis situs belajar tidak tepat.');
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Produksi yang belum selesai tetap dilabeli dengan jelas/, 'Ringkasan batas produksi hilang.');
-assert.match(html, /<strong>16<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan enam belas peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22102369/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /<strong>17<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan tujuh belas peran dengan edisi selesai hilang.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22102685/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
 assert.match(html, /Mulai belajar — buka 40 mata kuliah/, 'Aksi utama untuk pelajar tidak terlihat.');
 assert.match(html, /https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia/, 'Tautan repositori GitHub pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');

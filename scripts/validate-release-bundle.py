@@ -108,15 +108,15 @@ EXPECTED_V2_COUNTS = {
     "datasets": 34,
     "programs": 1,
     "courses": 40,
-    "reader_surfaces": 126,
+    "reader_surfaces": 128,
     "web_routes": 41,
-    "publication_events": 50,
+    "publication_events": 52,
     "qa_events": 16,
     "identity_crosswalks": 2122,
 }
 EXPECTED_V2_RECORD_COUNT = sum(EXPECTED_V2_COUNTS.values())
-EXPECTED_FEDERATION_VERSION = "0.2.0"
-EXPECTED_FEDERATION_DATASET_VERSION = "program-matematika-indonesia-federation-v0.2.0"
+EXPECTED_FEDERATION_VERSION = "0.3.0"
+EXPECTED_FEDERATION_DATASET_VERSION = "program-matematika-indonesia-federation-v0.3.0"
 
 PRIVATE_BYTE_MARKERS = (
     bytes([70, 108, 111, 114, 105, 115]).lower(),
@@ -438,8 +438,8 @@ def main() -> None:
     if (
         learner_projection_result.get("status") != "pass"
         or learner_projection_result.get("course_count") != 40
-        or learner_projection_result.get("published_course_count") != 16
-        or learner_projection_result.get("public_readback_overlay_count") != 2
+        or learner_projection_result.get("published_course_count") != 17
+        or learner_projection_result.get("public_readback_overlay_count") != 3
         or learner_projection_result.get("deterministic_replay") != "byte-identical"
     ):
         raise ValueError("learner read-model validation or deterministic replay failed")
@@ -544,7 +544,7 @@ def main() -> None:
     if catalog["counts"]["courseRoles"] != 40 or catalog["counts"]["unresolvedRoles"] != 0:
         raise ValueError("catalog course/source closure mismatch")
     expected_completed_role_ids = [
-        "A00", "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C110", "C120", "C130", "D20", "D110"
+        "A00", "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C100", "C110", "C120", "C130", "D20", "D110"
     ]
     expected_completed_record_dois = [
         "10.5281/zenodo.22070683",
@@ -562,11 +562,12 @@ def main() -> None:
         "10.5281/zenodo.22070653",
         "10.5281/zenodo.22088947",
         "10.5281/zenodo.22062017",
+        "10.5281/zenodo.22102628",
     ]
-    if catalog["counts"].get("completedPublicCourseRoles") != 16:
-        raise ValueError("catalog completed-public course-role count is not 16")
-    if catalog["counts"].get("completedPublicRecords") != 15:
-        raise ValueError("catalog completed-public record count is not 15")
+    if catalog["counts"].get("completedPublicCourseRoles") != 17:
+        raise ValueError("catalog completed-public course-role count is not 17")
+    if catalog["counts"].get("completedPublicRecords") != 16:
+        raise ValueError("catalog completed-public record count is not 16")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
         raise ValueError("catalog completed-public course-role identities are not the current canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
@@ -645,14 +646,15 @@ def main() -> None:
             or "belum lengkap" not in course.get("note", "")
         ):
             raise ValueError(f"{role_id} does not preserve its exact partial U336 evidence")
-    c100_corpus = courses_by_id["C100"].get("corpus", "")
-    c100_note = courses_by_id["C100"].get("note", "")
+    c100 = courses_by_id["C100"]
     if (
-        courses_by_id["C100"].get("state") != "production"
-        or not all(token in c100_corpus for token in ("Petrunin", "donor utama", "CC BY-SA", "Clemens/Snapp", "pendamping terpisah", "CC BY-NC-SA/GPL"))
-        or not all(token in c100_note for token in ("Sintesis asli", "afin", "projektif", "non-Euklides", "rigor", "aset", "solusi", "asesmen", "masih harus diselesaikan"))
+        c100.get("state") != "published"
+        or c100.get("zenodo") != "https://doi.org/10.5281/zenodo.22102628"
+        or c100.get("edition") != "https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1"
+        or not all(token in c100.get("corpus", "") for token in ("Bidang Euklides", "kursus utama", "Bahasa Indonesia", "lengkap"))
+        or not all(token in c100.get("note", "") for token in ("253 solusi", "enam unit", "empat pemeriksaan", "dua capstone", "HTML semantik", "EPUB", "Clemens/Snapp", "lini terpisah"))
     ):
-        raise ValueError("C100 does not preserve the selected Petrunin-primary and separate Clemens/Snapp-companion architecture")
+        raise ValueError("C100 does not preserve the verified rights-clean complete main course and separately licensed workbook boundary")
     if (
         courses_by_id["C140"].get("state") != "production"
         or courses_by_id["C140"].get("zenodo") != "https://doi.org/10.5281/zenodo.22071140"
@@ -774,10 +776,10 @@ def main() -> None:
     }
     if catalog["program"]["backend"].get("learnerReadModelV1") != expected_learner_read_model:
         raise ValueError("catalog learner-read-model claim does not match the exact validated release boundary")
-    if read_model.get("summary", {}).get("published_course_count") != 16:
-        raise ValueError("learner read-model published-course count is not 16")
-    if read_model.get("summary", {}).get("readback_overlay_count") != 2:
-        raise ValueError("learner read-model readback overlay count is not 2")
+    if read_model.get("summary", {}).get("published_course_count") != 17:
+        raise ValueError("learner read-model published-course count is not 17")
+    if read_model.get("summary", {}).get("readback_overlay_count") != 3:
+        raise ValueError("learner read-model readback overlay count is not 3")
 
     backend_report_path = backend / "validation_report.json"
     backend_report = json.loads(backend_report_path.read_text(encoding="utf-8"))

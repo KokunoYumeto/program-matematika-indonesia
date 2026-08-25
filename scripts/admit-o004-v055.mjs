@@ -56,10 +56,9 @@ function applyCourseChange(catalog, change, recordId, sourceCommit, snapshotDate
   program.version = version;
   program.snapshotDate = snapshotDate;
   program.zenodo = `https://doi.org/10.5281/zenodo.${recordId}`;
-  program.completedPublicCourseRoleIds = [
-    ...program.completedPublicCourseRoleIds.filter((id) => id !== change.course_id),
-    change.course_id,
-  ].sort();
+  program.completedPublicCourseRoleIds = catalog.courses
+    .filter(({ state }) => state === 'published')
+    .map(({ id }) => id);
   program.completedPublicRecordDois = [
     ...program.completedPublicRecordDois.filter((doi) => doi !== change.public_evidence.doi),
     change.public_evidence.doi,
@@ -174,6 +173,7 @@ async function promote() {
   assert.equal(manifest.dataset_version, `program-matematika-indonesia-federation-v${federationVersion}`);
   assert.equal(manifest.record_count, 2434);
   assert.equal(manifest.record_counts.reader_surfaces, 128);
+  assert.equal(manifest.record_counts.publication_events, 52);
 
   const records = recordsBytes.toString('utf8').trim().split('\n').map(JSON.parse);
   const change = await loadJson(changeRelative);

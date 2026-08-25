@@ -64,7 +64,7 @@ const records = recordsBytes.toString('utf8').trimEnd().split('\n').map((line) =
 const byType = Object.groupBy(records, (record) => record.record_type);
 assert.equal(byType.course.length, 40, 'Expected exactly 40 v2 course records.');
 assert.equal(byType.dataset.length, 34, 'Expected exactly 34 v2 datasets.');
-assert.equal(byType.reader_surface.length, 126, 'Expected exactly 126 reader surfaces.');
+assert.equal(byType.reader_surface.length, 128, 'Expected exactly 128 reader surfaces.');
 
 const coursesByCode = new Map(byType.course.map((record) => [record.payload.course_id, record]));
 const datasetsById = new Map(byType.dataset.map((record) => [record.id, record]));

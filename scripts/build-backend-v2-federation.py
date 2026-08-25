@@ -1061,7 +1061,9 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
                 "url": inputs.public_site,
                 "doi": None,
                 "published_at": None,
-                "version": program_info["version"],
+                # This event describes the independently read-back rolling site,
+                # not the candidate catalog that happens to be consuming it.
+                "version": site_readback.get("program_version"),
                 "state": "readback_verified",
                 "evidence_kind": "anonymous_public_readback",
                 "evidence_locator": inputs.site_readback_relative.as_posix(),
@@ -1083,7 +1085,10 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
                 "url": zenodo["record_url"],
                 "doi": zenodo["doi"],
                 "published_at": f"{zenodo['published']}T00:00:00Z",
-                "version": program_info["version"],
+                # Never stamp a new catalog version onto inherited preservation
+                # evidence. A readback document may state its own version; older
+                # evidence without that field remains honestly unversioned.
+                "version": zenodo.get("version"),
                 "state": "readback_verified",
                 "evidence_kind": "anonymous_public_readback",
                 "evidence_locator": inputs.site_readback_relative.as_posix(),
