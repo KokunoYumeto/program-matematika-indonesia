@@ -2,6 +2,13 @@
 
 Status: selected, implemented, and independently validated on 22 August 2026.
 
+Historical decision record. The current verified implementation state,
+v0.55 counts, admitted owner strengths, educational-access research boundary,
+and phase-two design are maintained in
+[`GLOBAL_BACKEND_STATUS_V055.md`](GLOBAL_BACKEND_STATUS_V055.md). Statements
+below about then-pending corpus adapters describe the selection-time evidence
+and are not current production status.
+
 This is the common machine layer for the Bahasa Indonesia mathematics program. It does not replace any corpus's editable source, reader, release lineage, or source-format authority. It supplies one portable identity, topology, localization, rights, QA, artifact, and selection contract across those corpora.
 
 ## Decision
