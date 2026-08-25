@@ -110,7 +110,7 @@
         "backend": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigrations", "schema", "sourceFormatProfile", "package"],
+          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigrations", "schema", "sourceFormatProfile", "package", "federationV2"],
           "properties": {
             "schemaVersion": { "const": "1.0.0" },
             "status": { "const": "validated" },
@@ -135,7 +135,26 @@
             },
             "schema": { "$ref": "#/$defs/httpsUrl" },
             "sourceFormatProfile": { "$ref": "#/$defs/httpsUrl" },
-            "package": { "$ref": "#/$defs/httpsUrl" }
+            "package": { "$ref": "#/$defs/httpsUrl" },
+            "federationV2": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "recordCount", "datasetCount", "courseCount", "learnerSurfaceCount", "webRouteCount", "identityCrosswalkCount", "package", "packageSchema", "recordSchema", "validationReceipt"],
+              "properties": {
+                "version": { "const": "0.1.0" },
+                "status": { "const": "validated" },
+                "recordCount": { "const": 2439 },
+                "datasetCount": { "const": 34 },
+                "courseCount": { "const": 40 },
+                "learnerSurfaceCount": { "const": 136 },
+                "webRouteCount": { "const": 41 },
+                "identityCrosswalkCount": { "const": 2122 },
+                "package": { "$ref": "#/$defs/httpsUrl" },
+                "packageSchema": { "$ref": "#/$defs/httpsUrl" },
+                "recordSchema": { "$ref": "#/$defs/httpsUrl" },
+                "validationReceipt": { "$ref": "#/$defs/httpsUrl" }
+              }
+            }
           }
         },
         "status": { "const": "in-progress" }
