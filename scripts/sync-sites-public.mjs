@@ -18,7 +18,20 @@ await cp(source, target, {
 });
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
-for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'og.png', 'robots.txt']) {
+for (const name of [
+  'index.html',
+  'styles.css',
+  'app.js',
+  'courses.js',
+  'data/curriculum-authority-v1.json',
+  'data/learner-read-model.json',
+  'schema/v1/curriculum-authority-v1.schema.json',
+  'schema/v1/learner-read-model-v1.schema.json',
+  'schema/v2/federation-package-v2.schema.json',
+  'schema/v2/federation-record-v2.schema.json',
+  'og.png',
+  'robots.txt',
+]) {
   const [left, right] = await Promise.all([
     readFile(resolve(source, name)),
     readFile(resolve(target, name)),

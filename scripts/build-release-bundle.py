@@ -114,6 +114,10 @@ def main() -> None:
         root / "schemas" / "backend-migration-receipt-v1.schema.json": release / "interlanguage-backend-migration-receipt-v1.schema.json",
         root / "backend" / "BACKEND_CONVERGENCE_V1.md": release / "BACKEND_CONVERGENCE_V1.md",
         root / "backend" / "MIGRATION_HANDOFF_V1.md": release / "MIGRATION_HANDOFF_V1.md",
+        root / "backend" / "authority" / "curriculum-authority-v1.json": release / "curriculum-authority-v1.json",
+        root / "docs" / "data" / "learner-read-model.json": release / "learner-read-model-v1.json",
+        root / "schemas" / "v1" / "curriculum-authority-v1.schema.json": release / "curriculum-authority-v1.schema.json",
+        root / "schemas" / "v1" / "learner-read-model-v1.schema.json": release / "learner-read-model-v1.schema.json",
         backend / "validation_report.json": release / f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
         backend_v2_validation_receipt: release / f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
     }
@@ -172,8 +176,15 @@ def main() -> None:
         "schemas/v2/federation-record-v2.schema.json",
         "schemas/v2/namespace-v2.json",
         "schemas/v2/pmi-release-policy-v2.json",
+        "schemas/v1/curriculum-authority-v1.schema.json",
+        "schemas/v1/learner-read-model-v1.schema.json",
         "scripts/check-public-links.mjs",
         "scripts/export-release-catalog.mjs",
+        "scripts/seed-curriculum-authority.mjs",
+        "scripts/advance-curriculum-authority.mjs",
+        "scripts/build-learner-read-model.mjs",
+        "scripts/validate-learner-read-model.mjs",
+        "scripts/sync-public-schemas.mjs",
         "scripts/export-single-file-site.mjs",
         "scripts/build-learner-start-pdf.py",
         "scripts/sync-sites-public.mjs",
@@ -194,6 +205,7 @@ def main() -> None:
         "backend/BACKEND_CONVERGENCE_V1.md",
         "backend/MIGRATION_HANDOFF_V1.md",
         "backend/v1/namespace.json",
+        "backend/authority",
     ]
     source_paths: list[Path] = []
     for relative in source_roots:

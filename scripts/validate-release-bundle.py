@@ -427,6 +427,23 @@ def main() -> None:
     )
     static_result = json.loads(static.stdout)
 
+    learner_projection = subprocess.run(
+        ["node", str(root / "scripts" / "validate-learner-read-model.mjs")],
+        cwd=root,
+        check=True,
+        capture_output=True,
+        text=True,
+    )
+    learner_projection_result = json.loads(learner_projection.stdout)
+    if (
+        learner_projection_result.get("status") != "pass"
+        or learner_projection_result.get("course_count") != 40
+        or learner_projection_result.get("published_course_count") != 16
+        or learner_projection_result.get("public_readback_overlay_count") != 2
+        or learner_projection_result.get("deterministic_replay") != "byte-identical"
+    ):
+        raise ValueError("learner read-model validation or deterministic replay failed")
+
     backend_v2_tests = subprocess.run(
         [
             sys.executable,
@@ -496,6 +513,30 @@ def main() -> None:
     if catalog_schema_path.read_bytes() != (root / "schemas" / "catalog-v1.schema.json").read_bytes():
         raise ValueError("release catalog schema is not byte-identical to the validated root schema")
     Draft202012Validator(catalog_schema, format_checker=FormatChecker()).validate(catalog)
+    authority_path = root / "backend" / "authority" / "curriculum-authority-v1.json"
+    authority_schema_path = root / "schemas" / "v1" / "curriculum-authority-v1.schema.json"
+    read_model_path = root / "docs" / "data" / "learner-read-model.json"
+    read_model_schema_path = root / "schemas" / "v1" / "learner-read-model-v1.schema.json"
+    authority = json.loads(authority_path.read_text(encoding="utf-8"))
+    authority_schema = json.loads(authority_schema_path.read_text(encoding="utf-8"))
+    read_model = json.loads(read_model_path.read_text(encoding="utf-8"))
+    read_model_schema = json.loads(read_model_schema_path.read_text(encoding="utf-8"))
+    Draft202012Validator(authority_schema, format_checker=FormatChecker()).validate(authority)
+    Draft202012Validator(read_model_schema, format_checker=FormatChecker()).validate(read_model)
+    phase_two_release_copies = {
+        "curriculum-authority-v1.json": authority_path,
+        "learner-read-model-v1.json": read_model_path,
+        "curriculum-authority-v1.schema.json": authority_schema_path,
+        "learner-read-model-v1.schema.json": read_model_schema_path,
+    }
+    for release_name, source in phase_two_release_copies.items():
+        copied = release / release_name
+        if not copied.is_file() or copied.read_bytes() != source.read_bytes():
+            raise ValueError(f"phase-two release artifact is absent or changed: {release_name}")
+    if (root / "docs" / "data" / "curriculum-authority-v1.json").read_bytes() != authority_path.read_bytes():
+        raise ValueError("public curriculum authority is not byte-identical to canonical authority")
+    if read_model.get("program") != catalog.get("program"):
+        raise ValueError("learner read-model program metadata differs from release catalog")
     if catalog.get("sourceCommit") != args.source_commit:
         raise ValueError("catalog sourceCommit does not equal the validated repository commit")
     if catalog["program"]["zenodo"] != f"https://doi.org/10.5281/zenodo.{args.record_id}":
@@ -719,6 +760,24 @@ def main() -> None:
     }
     if catalog["program"]["backend"].get("federationV2") != expected_federation_v2:
         raise ValueError("catalog federation-v2 claim does not match the exact validated release boundary")
+    expected_learner_read_model = {
+        "version": "1.0.0",
+        "status": "validated",
+        "courseCount": 40,
+        "prerequisiteEdgeCount": 82,
+        "authority": f"https://zenodo.org/records/{args.record_id}/files/curriculum-authority-v1.json?download=1",
+        "authoritySchema": f"https://zenodo.org/records/{args.record_id}/files/curriculum-authority-v1.schema.json?download=1",
+        "readModel": f"https://zenodo.org/records/{args.record_id}/files/learner-read-model-v1.json?download=1",
+        "readModelSchema": f"https://zenodo.org/records/{args.record_id}/files/learner-read-model-v1.schema.json?download=1",
+        "validationReceipt": f"https://zenodo.org/records/{args.record_id}/files/LOCAL_RELEASE_VALIDATION_v{version}.json?download=1",
+        "publicEndpoint": "https://kokunoyumeto.github.io/program-matematika-indonesia/data/learner-read-model.json",
+    }
+    if catalog["program"]["backend"].get("learnerReadModelV1") != expected_learner_read_model:
+        raise ValueError("catalog learner-read-model claim does not match the exact validated release boundary")
+    if read_model.get("summary", {}).get("published_course_count") != 16:
+        raise ValueError("learner read-model published-course count is not 16")
+    if read_model.get("summary", {}).get("readback_overlay_count") != 2:
+        raise ValueError("learner read-model readback overlay count is not 2")
 
     backend_report_path = backend / "validation_report.json"
     backend_report = json.loads(backend_report_path.read_text(encoding="utf-8"))
@@ -873,6 +932,10 @@ def main() -> None:
         "namespace-v2.json",
         "pmi-release-policy-v2.json",
         "program-matematika-indonesia-catalog-v1.schema.json",
+        "curriculum-authority-v1.json",
+        "curriculum-authority-v1.schema.json",
+        "learner-read-model-v1.json",
+        "learner-read-model-v1.schema.json",
         f"program-matematika-indonesia-catalog-v{version}.json",
         f"program-matematika-indonesia-og-v{version}.png",
         f"00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_v{version}.pdf",
@@ -886,9 +949,9 @@ def main() -> None:
         "validate-backend-v2-federation.py",
         *receipt_release_names,
     }
-    if len(expected_release_names) != 38:
+    if len(expected_release_names) != 42:
         raise ValueError(
-            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 38"
+            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 42"
         )
     actual_release_names = {
         path.name
@@ -924,6 +987,13 @@ def main() -> None:
             "catalog_completed_public_course_roles": catalog["counts"]["completedPublicCourseRoles"],
             "catalog_completed_public_records": catalog["counts"]["completedPublicRecords"],
             "catalog_schema_identity_and_bytes": "pass",
+            "curriculum_authority_schema": "pass",
+            "learner_read_model_schema": "pass",
+            "learner_read_model_projection": learner_projection_result,
+            "phase_two_public_artifacts": {
+                name: {"bytes": source.stat().st_size, "sha256": sha256_file(source)}
+                for name, source in phase_two_release_copies.items()
+            },
             "source_commit_binding": args.source_commit,
             "backend": backend_report["checks"],
             "backend_v1_immutable_package": v1_immutable_result,
