@@ -1,0 +1,1393 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/federation-record-v2.schema.json",
+  "title": "Interlanguage modular mathematics federation record v2",
+  "description": "Strict phase-one federation record. The global package projects evidence from canonical owner backends; it does not replace them. New identifiers are UUIDv5(namespace, record_type + ':' + semantic_key).",
+  "oneOf": [
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "dataset"
+            },
+            "payload": {
+              "$ref": "#/$defs/dataset_payload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "program"
+            },
+            "payload": {
+              "$ref": "#/$defs/program_payload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "course"
+            },
+            "payload": {
+              "$ref": "#/$defs/course_payload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "reader_surface"
+            },
+            "payload": {
+              "$ref": "#/$defs/reader_surface_payload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "web_route"
+            },
+            "payload": {
+              "$ref": "#/$defs/web_route_payload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "publication_event"
+            },
+            "payload": {
+              "$ref": "#/$defs/publication_event_payload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "qa_event"
+            },
+            "payload": {
+              "$ref": "#/$defs/qa_event_payload"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "allOf": [
+        {
+          "$ref": "#/$defs/record_base"
+        },
+        {
+          "properties": {
+            "record_type": {
+              "const": "identity_crosswalk"
+            },
+            "payload": {
+              "$ref": "#/$defs/identity_crosswalk_payload"
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_sha256": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "nullable_uuid5_urn": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "nullable_date_time": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/date_time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "date_or_date_time": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/date_time"
+        },
+        {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        }
+      ]
+    },
+    "uri": {
+      "type": "string",
+      "format": "uri",
+      "minLength": 1
+    },
+    "learner_uri": {
+      "description": "Human-facing learner route. JSON, JSONL, and CSV endpoints are forbidden as learner starts.",
+      "allOf": [
+        {
+          "$ref": "#/$defs/uri"
+        },
+        {
+          "not": {
+            "pattern": "\\.(?:[Jj][Ss][Oo][Nn](?:[Ll])?|[Cc][Ss][Vv])(?:[?#]|$)"
+          }
+        }
+      ]
+    },
+    "nullable_uri": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/uri"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*$"
+    },
+    "course_key": {
+      "type": "string",
+      "pattern": "^[A-D][0-9]{2,3}$"
+    },
+    "record_type_name": {
+      "enum": [
+        "dataset",
+        "program",
+        "course",
+        "reader_surface",
+        "web_route",
+        "publication_event",
+        "qa_event",
+        "identity_crosswalk"
+      ]
+    },
+    "federated_or_legacy_record_type_name": {
+      "enum": [
+        "accessibility",
+        "alias",
+        "alignment",
+        "artifact",
+        "artifact_member",
+        "asset",
+        "asset_revision",
+        "build_recipe",
+        "concept",
+        "correction",
+        "correction_binding",
+        "correction_claim",
+        "course",
+        "dataset",
+        "edition",
+        "experiment",
+        "file",
+        "file_revision",
+        "identity_crosswalk",
+        "interactive",
+        "module",
+        "module_member",
+        "occurrence",
+        "placeholder",
+        "program",
+        "publication_event",
+        "qa_event",
+        "reader_surface",
+        "relation",
+        "release_snapshot",
+        "resource",
+        "rights",
+        "rights_assignment",
+        "rights_rule",
+        "rights_rule_member",
+        "route",
+        "route_member",
+        "segment",
+        "segment_variant",
+        "term",
+        "term_variant",
+        "unit",
+        "web_route"
+      ]
+    },
+    "semantic_key": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 512,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._~:/@+|=-]*$"
+    },
+    "record_base": {
+      "type": "object",
+      "required": [
+        "id",
+        "record_type",
+        "semantic_key",
+        "payload"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "record_type": {
+          "$ref": "#/$defs/record_type_name"
+        },
+        "semantic_key": {
+          "$ref": "#/$defs/semantic_key"
+        },
+        "payload": {
+          "type": "object"
+        }
+      },
+      "additionalProperties": false
+    },
+    "nullable_string": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "nonempty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "uuid_array": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/uuid5_urn"
+      },
+      "uniqueItems": true
+    },
+    "course_key_array": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/course_key"
+      },
+      "uniqueItems": true
+    },
+    "string_array": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "json_value": {
+      "oneOf": [
+        {
+          "type": [
+            "string",
+            "number",
+            "boolean",
+            "null"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/json_value"
+          }
+        },
+        {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/json_value"
+          }
+        }
+      ]
+    },
+    "shard_reference": {
+      "type": "object",
+      "required": [
+        "kind",
+        "locator",
+        "bytes",
+        "sha256",
+        "media_type"
+      ],
+      "properties": {
+        "kind": {
+          "enum": [
+            "content",
+            "search"
+          ]
+        },
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "artifact_matrix": {
+      "description": "All actions are explicit. Null means unavailable, never a reason to promote JSON as a learner action. Display order is fixed by the bound PMI release-policy profile.",
+      "type": "object",
+      "required": [
+        "learn",
+        "html",
+        "pdf",
+        "epub",
+        "offline",
+        "source",
+        "repository",
+        "doi",
+        "backend"
+      ],
+      "properties": {
+        "learn": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/learner_uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "html": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/learner_uri"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pdf": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "epub": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "offline": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "source": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "repository": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "doi": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "backend": {
+          "$ref": "#/$defs/nullable_uri"
+        }
+      },
+      "additionalProperties": false
+    },
+    "dataset_payload": {
+      "type": "object",
+      "required": [
+        "dataset_kind",
+        "corpus_id",
+        "canonical_owner_locator",
+        "canonical_owner_state",
+        "course_ids",
+        "corpus_titles",
+        "workflow_state",
+        "native_schema_name",
+        "native_schema_version",
+        "adapter_id",
+        "adapter_version",
+        "adapter_sha256",
+        "adapter_evidence_kind",
+        "adapter_locator",
+        "migration_receipt_locator",
+        "migration_receipt_sha256",
+        "migration_validation_result",
+        "package_manifest_locator",
+        "package_manifest_url",
+        "package_manifest_sha256",
+        "package_manifest_evidence_state",
+        "record_count_total",
+        "record_counts",
+        "available_locales",
+        "content_shards",
+        "search_shards",
+        "reader_surface_ids",
+        "release_snapshot_id",
+        "qa_receipt_ids",
+        "public_readback_receipt_id",
+        "publication_state"
+      ],
+      "properties": {
+        "dataset_kind": {
+          "enum": [
+            "curriculum_owner",
+            "program_hub",
+            "research_support",
+            "infrastructure",
+            "original_synthesis"
+          ]
+        },
+        "corpus_id": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "canonical_owner_locator": {
+          "description": "May be a task identifier, repository URI, release URI, or durable project authority. It is never an identity input.",
+          "oneOf": [
+            {
+              "$ref": "#/$defs/nonempty_string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "canonical_owner_state": {
+          "enum": [
+            "task_owned",
+            "repository_authority",
+            "release_authority",
+            "project_authority",
+            "coordinator_authority",
+            "not_applicable"
+          ]
+        },
+        "course_ids": {
+          "$ref": "#/$defs/course_key_array"
+        },
+        "corpus_titles": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/nonempty_string"
+          },
+          "uniqueItems": true
+        },
+        "workflow_state": {
+          "enum": [
+            "selected",
+            "source_frozen",
+            "production",
+            "producing",
+            "owner_qa",
+            "completed",
+            "published",
+            "frozen_not_dispatched",
+            "remediation_required",
+            "mixed",
+            "validated_support",
+            "infrastructure"
+          ]
+        },
+        "native_schema_name": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "native_schema_version": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "adapter_id": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "adapter_version": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "adapter_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "adapter_evidence_kind": {
+          "enum": [
+            "local_file",
+            "public_file",
+            "migration_receipt",
+            "migration_receipt_registration",
+            "not_migrated",
+            "not_required_native_support_dataset",
+            "not_available"
+          ]
+        },
+        "adapter_locator": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "migration_receipt_locator": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "migration_receipt_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "migration_validation_result": {
+          "oneOf": [
+            {
+              "enum": [
+                "pass",
+                "fail",
+                "not_run"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "package_manifest_locator": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "package_manifest_url": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "package_manifest_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        },
+        "package_manifest_evidence_state": {
+          "enum": [
+            "verified_public",
+            "verified_local",
+            "declared_unverified",
+            "hash_recorded_in_migration_receipt",
+            "local_manifest_validated",
+            "not_migrated",
+            "not_recorded_in_migration_receipt",
+            "absent"
+          ]
+        },
+        "record_count_total": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "record_counts": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_]*$"
+          },
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "available_locales": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/locale"
+          },
+          "uniqueItems": true
+        },
+        "content_shards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shard_reference"
+          }
+        },
+        "search_shards": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/shard_reference"
+          }
+        },
+        "reader_surface_ids": {
+          "$ref": "#/$defs/uuid_array"
+        },
+        "release_snapshot_id": {
+          "$ref": "#/$defs/nullable_uuid5_urn"
+        },
+        "qa_receipt_ids": {
+          "$ref": "#/$defs/uuid_array"
+        },
+        "public_readback_receipt_id": {
+          "$ref": "#/$defs/nullable_uuid5_urn"
+        },
+        "publication_state": {
+          "enum": [
+            "not_published",
+            "partially_public",
+            "partial_publication",
+            "public",
+            "published",
+            "validated_local_support",
+            "superseded",
+            "withdrawn"
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "canonical_owner_state": {
+                "const": "not_applicable"
+              }
+            },
+            "required": [
+              "canonical_owner_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "canonical_owner_locator": {
+                "type": "null"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "canonical_owner_locator": {
+                "$ref": "#/$defs/nonempty_string"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "program_payload": {
+      "type": "object",
+      "required": [
+        "program_key",
+        "title",
+        "locale",
+        "version",
+        "status",
+        "course_ids",
+        "learner_start_url",
+        "catalog_locator",
+        "catalog_sha256",
+        "v1_program_id"
+      ],
+      "properties": {
+        "program_key": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "title": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "locale": {
+          "$ref": "#/$defs/locale"
+        },
+        "version": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "status": {
+          "enum": [
+            "in_progress",
+            "in-progress",
+            "published",
+            "superseded"
+          ]
+        },
+        "course_ids": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/uuid5_urn"
+          },
+          "uniqueItems": true
+        },
+        "learner_start_url": {
+          "$ref": "#/$defs/learner_uri"
+        },
+        "catalog_locator": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "catalog_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "v1_program_id": {
+          "$ref": "#/$defs/nullable_uuid5_urn"
+        }
+      },
+      "additionalProperties": false
+    },
+    "course_payload": {
+      "type": "object",
+      "required": [
+        "course_id",
+        "program_id",
+        "owner_dataset_id",
+        "canonical_owner_locator",
+        "lane",
+        "level",
+        "topic",
+        "state",
+        "title",
+        "prerequisite_course_ids",
+        "purpose",
+        "outcome",
+        "corpus",
+        "note",
+        "learner_start_url",
+        "artifact_matrix",
+        "web_route_id",
+        "web_route_root",
+        "planned_unit_route_pattern",
+        "unit_route_state",
+        "source_catalog_sha256",
+        "v1_course_id"
+      ],
+      "properties": {
+        "course_id": {
+          "$ref": "#/$defs/course_key"
+        },
+        "program_id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "owner_dataset_id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "canonical_owner_locator": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "lane": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "level": {
+          "enum": [
+            "A",
+            "B",
+            "C",
+            "D"
+          ]
+        },
+        "topic": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "state": {
+          "enum": [
+            "selected",
+            "source_frozen",
+            "production",
+            "owner_qa",
+            "partial_public",
+            "published",
+            "remediation_required",
+            "superseded"
+          ]
+        },
+        "title": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "prerequisite_course_ids": {
+          "$ref": "#/$defs/course_key_array"
+        },
+        "purpose": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "outcome": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "corpus": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "note": {
+          "type": "string"
+        },
+        "learner_start_url": {
+          "$ref": "#/$defs/learner_uri"
+        },
+        "artifact_matrix": {
+          "$ref": "#/$defs/artifact_matrix"
+        },
+        "web_route_id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "web_route_root": {
+          "$ref": "#/$defs/uri"
+        },
+        "planned_unit_route_pattern": {
+          "type": "string",
+          "pattern": "^/[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*/courses/[A-D][0-9]{2,3}/units/\\{stable_unit_slug\\}/$"
+        },
+        "unit_route_state": {
+          "enum": [
+            "planned_not_published",
+            "partially_public",
+            "public",
+            "not_applicable"
+          ]
+        },
+        "source_catalog_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "v1_course_id": {
+          "$ref": "#/$defs/nullable_uuid5_urn"
+        }
+      },
+      "additionalProperties": false
+    },
+    "reader_surface_payload": {
+      "type": "object",
+      "required": [
+        "locale",
+        "format",
+        "actions",
+        "url",
+        "course_ids",
+        "publication_state",
+        "evidence_kind",
+        "evidence_locator",
+        "evidence_sha256"
+      ],
+      "properties": {
+        "locale": {
+          "$ref": "#/$defs/locale"
+        },
+        "format": {
+          "enum": [
+            "html",
+            "pdf",
+            "epub",
+            "offline",
+            "download",
+            "source",
+            "repository",
+            "doi",
+            "backend",
+            "mixed"
+          ]
+        },
+        "actions": {
+          "description": "Unique subset in the relative order fixed by the PMI release-policy profile.",
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "enum": [
+              "learn",
+              "html",
+              "pdf",
+              "epub",
+              "offline",
+              "source",
+              "repository",
+              "doi",
+              "backend"
+            ]
+          },
+          "uniqueItems": true
+        },
+        "url": {
+          "$ref": "#/$defs/uri"
+        },
+        "course_ids": {
+          "$ref": "#/$defs/course_key_array"
+        },
+        "publication_state": {
+          "enum": [
+            "public",
+            "public_readback_verified",
+            "catalog_declared",
+            "local_only",
+            "planned_not_published",
+            "withdrawn"
+          ]
+        },
+        "evidence_kind": {
+          "enum": [
+            "public_readback",
+            "public_readback_verified",
+            "catalog_declared",
+            "local_build",
+            "declared_plan"
+          ]
+        },
+        "evidence_locator": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "actions": {
+                "contains": {
+                  "enum": [
+                    "learn",
+                    "html"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "actions"
+            ]
+          },
+          "then": {
+            "properties": {
+              "url": {
+                "$ref": "#/$defs/learner_uri"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "web_route_payload": {
+      "type": "object",
+      "required": [
+        "route_kind",
+        "locale",
+        "path",
+        "public_url",
+        "course_ids",
+        "publication_state",
+        "learner_fallback_url",
+        "planned_clean_root",
+        "planned_unit_route_pattern",
+        "unit_route_state",
+        "evidence_locator",
+        "evidence_sha256"
+      ],
+      "properties": {
+        "route_kind": {
+          "enum": [
+            "program_root_current",
+            "learner_card_current",
+            "course_clean_planned",
+            "unit_clean_planned",
+            "search_current",
+            "download_current"
+          ]
+        },
+        "locale": {
+          "$ref": "#/$defs/locale"
+        },
+        "path": {
+          "type": "string",
+          "pattern": "^/\\S*$"
+        },
+        "public_url": {
+          "$ref": "#/$defs/nullable_uri"
+        },
+        "course_ids": {
+          "$ref": "#/$defs/course_key_array"
+        },
+        "publication_state": {
+          "enum": [
+            "public",
+            "public_readback_verified",
+            "planned_not_published",
+            "withdrawn"
+          ]
+        },
+        "learner_fallback_url": {
+          "$ref": "#/$defs/learner_uri"
+        },
+        "planned_clean_root": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "planned_unit_route_pattern": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^/[A-Za-z]{2,8}(?:-[A-Za-z0-9]{1,8})*/courses/[A-D][0-9]{2,3}/units/\\{stable_unit_slug\\}/$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_route_state": {
+          "enum": [
+            "planned_not_published",
+            "partially_public",
+            "public",
+            "not_applicable"
+          ]
+        },
+        "evidence_locator": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "evidence_sha256": {
+          "$ref": "#/$defs/nullable_sha256"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "publication_state": {
+                "enum": [
+                  "public",
+                  "public_readback_verified"
+                ]
+              }
+            },
+            "required": [
+              "publication_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "public_url": {
+                "$ref": "#/$defs/uri"
+              },
+              "evidence_locator": {
+                "$ref": "#/$defs/nonempty_string"
+              },
+              "evidence_sha256": {
+                "$ref": "#/$defs/sha256"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "publication_state": {
+                "const": "planned_not_published"
+              }
+            },
+            "required": [
+              "publication_state"
+            ]
+          },
+          "then": {
+            "properties": {
+              "public_url": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "publication_event_payload": {
+      "type": "object",
+      "required": [
+        "publication_kind",
+        "course_ids",
+        "dataset_ids",
+        "url",
+        "doi",
+        "published_at",
+        "version",
+        "state",
+        "evidence_kind",
+        "evidence_locator",
+        "evidence_sha256",
+        "artifact_count",
+        "total_bytes"
+      ],
+      "properties": {
+        "publication_kind": {
+          "enum": [
+            "github_repository",
+            "github_release",
+            "github_pages",
+            "zenodo_version",
+            "central_student_site",
+            "central_zenodo_release",
+            "course_doi_reference",
+            "course_edition_reference",
+            "other_public_archive"
+          ]
+        },
+        "course_ids": {
+          "$ref": "#/$defs/course_key_array"
+        },
+        "dataset_ids": {
+          "$ref": "#/$defs/uuid_array"
+        },
+        "url": {
+          "$ref": "#/$defs/uri"
+        },
+        "doi": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^10\\.\\d{4,9}/\\S+$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "published_at": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/date_or_date_time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "version": {
+          "$ref": "#/$defs/nullable_string"
+        },
+        "state": {
+          "enum": [
+            "declared",
+            "public",
+            "readback_verified",
+            "published_and_readback_verified",
+            "published_catalog_reference",
+            "superseded",
+            "withdrawn"
+          ]
+        },
+        "evidence_kind": {
+          "enum": [
+            "publication_receipt",
+            "anonymous_public_readback",
+            "public_metadata",
+            "curriculum_catalog_declaration"
+          ]
+        },
+        "evidence_locator": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "artifact_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "total_bytes": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "qa_event_payload": {
+      "type": "object",
+      "required": [
+        "qa_kind",
+        "result",
+        "subject_ids",
+        "method",
+        "evidence_locator",
+        "evidence_sha256",
+        "record_count",
+        "details"
+      ],
+      "properties": {
+        "qa_kind": {
+          "enum": [
+            "educational_access_support_validation",
+            "native_backend_migration_receipt",
+            "student_html_public_readback",
+            "v1_backend_package_validation",
+            "schema_validation",
+            "uuid_recomputation",
+            "stable_key_uniqueness",
+            "typed_foreign_key_closure",
+            "hierarchy_dag_and_source_order",
+            "authority_hash_binding",
+            "formula_preservation",
+            "dependency_closure",
+            "deterministic_generation",
+            "jsonl_csv_roundtrip",
+            "reader_build",
+            "learner_route_and_link",
+            "anonymous_public_readback",
+            "aggregate"
+          ]
+        },
+        "result": {
+          "enum": [
+            "pass",
+            "fail",
+            "warning",
+            "not_applicable"
+          ]
+        },
+        "subject_ids": {
+          "$ref": "#/$defs/uuid_array"
+        },
+        "method": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "evidence_locator": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "evidence_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "record_count": {
+          "type": [
+            "integer",
+            "null"
+          ],
+          "minimum": 0
+        },
+        "details": {
+          "description": "Namespaced JSON QA observations; executable proof remains the hash-bound receipt.",
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z][a-z0-9_.-]*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/json_value"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "identity_crosswalk_payload": {
+      "type": "object",
+      "required": [
+        "legacy_schema_name",
+        "legacy_schema_version",
+        "legacy_record_type",
+        "legacy_semantic_key",
+        "legacy_id",
+        "v2_record_type",
+        "v2_semantic_key",
+        "v2_id",
+        "mapping_state",
+        "source_records_locator",
+        "source_records_sha256"
+      ],
+      "properties": {
+        "legacy_schema_name": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "legacy_schema_version": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "legacy_record_type": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "legacy_semantic_key": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "legacy_id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "v2_record_type": {
+          "$ref": "#/$defs/federated_or_legacy_record_type_name"
+        },
+        "v2_semantic_key": {
+          "$ref": "#/$defs/semantic_key"
+        },
+        "v2_id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "mapping_state": {
+          "enum": [
+            "materialized_phase_one",
+            "reserved_not_materialized",
+            "preserved_alias",
+            "one_to_one",
+            "split",
+            "merged",
+            "retired"
+          ]
+        },
+        "source_records_locator": {
+          "$ref": "#/$defs/nonempty_string"
+        },
+        "source_records_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
