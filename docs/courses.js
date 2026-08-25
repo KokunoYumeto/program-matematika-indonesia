@@ -414,7 +414,7 @@ export const courses = Object.freeze([
     "ownerLane": "O004",
     "level": "C",
     "topic": "Geometri & Topologi",
-    "state": "production",
+    "state": "published",
     "title": "Geometri: Euklides, Afin, Projektif, dan Non-Euklides",
     "prerequisites": [
       "B10",
@@ -423,8 +423,10 @@ export const courses = Object.freeze([
     ],
     "purpose": "Geometri aksiomatik dan transformasional, metode afin dan projektif, geometri hiperbolik dan sferis, permukaan, dan konstruksi.",
     "outcome": "Membandingkan geometri melalui aksioma, transformasi, dan invarian, bukan sebagai satu konvensi tunggal.",
-    "corpus": "Petrunin sebagai donor utama yang sah untuk buku kursus asli CC BY-SA + Clemens/Snapp sebagai pendamping terpisah berlisensi CC BY-NC-SA/GPL",
-    "note": "Arsitektur sumber dipilih. Sintesis asli geometri afin, projektif, dan non-Euklides, perbaikan rigor, aset bersih, solusi, dan asesmen masih harus diselesaikan; pendamping Clemens/Snapp tetap dikemas terpisah agar hak komponennya tidak disamarkan."
+    "corpus": "Bidang Euklides dan Kerabatnya: Sebuah Pengantar Minimalis — kursus utama Bahasa Indonesia lengkap",
+    "note": "Kursus utama selesai dan terverifikasi publik: tulang punggung Petrunin yang bersih hak, 253 solusi, pendamping konektif asli enam unit beserta solusi, empat pemeriksaan kumulatif, dua capstone, backend, HTML semantik, dan EPUB. Workbook Clemens/Snapp tetap berada dalam lini terpisah sesuai lisensinya.",
+    "edition": "https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22102628"
   },
   {
     "id": "C110",
@@ -912,7 +914,7 @@ export const program = Object.freeze({
   "id": "program-matematika-indonesia",
   "title": "Program Matematika Indonesia — Peta Kurikulum Terbuka",
   "language": "id-ID",
-  "version": "0.54.0",
+  "version": "0.55.0",
   "snapshotDate": "2026-08-25",
   "totalCourseRoles": 40,
   "selectedCorpusRoles": 40,
@@ -929,6 +931,7 @@ export const program = Object.freeze({
     "C60",
     "C70",
     "C80",
+    "C100",
     "C110",
     "C120",
     "C130",
@@ -950,10 +953,11 @@ export const program = Object.freeze({
     "10.5281/zenodo.22070943",
     "10.5281/zenodo.22070653",
     "10.5281/zenodo.22088947",
-    "10.5281/zenodo.22062017"
+    "10.5281/zenodo.22062017",
+    "10.5281/zenodo.22102628"
   ],
   "website": "https://kokunoyumeto.github.io/program-matematika-indonesia/",
-  "zenodo": "https://doi.org/10.5281/zenodo.22102369",
+  "zenodo": "https://doi.org/10.5281/zenodo.22102685",
   "zenodoConcept": "https://doi.org/10.5281/zenodo.22059707",
   "provenance": {
     "model": "OpenAI Codex gpt-5.6-sol, Ultra",
@@ -1030,33 +1034,33 @@ export const program = Object.freeze({
         "result": "lossless-zero-copy-virtual-adapter-pass"
       }
     ],
-    "schema": "https://zenodo.org/records/22102369/files/interlanguage-math-backend-v1.schema.json?download=1",
-    "sourceFormatProfile": "https://zenodo.org/records/22102369/files/interlanguage-source-format-profile-v1.schema.json?download=1",
-    "package": "https://zenodo.org/records/22102369/files/program-matematika-indonesia-backend-v1-v0.54.0.zip?download=1",
+    "schema": "https://zenodo.org/records/22102685/files/interlanguage-math-backend-v1.schema.json?download=1",
+    "sourceFormatProfile": "https://zenodo.org/records/22102685/files/interlanguage-source-format-profile-v1.schema.json?download=1",
+    "package": "https://zenodo.org/records/22102685/files/program-matematika-indonesia-backend-v1-v0.55.0.zip?download=1",
     "federationV2": {
-      "version": "0.2.0",
+      "version": "0.3.0",
       "status": "validated",
-      "recordCount": 2430,
+      "recordCount": 2434,
       "datasetCount": 34,
       "courseCount": 40,
-      "learnerSurfaceCount": 126,
+      "learnerSurfaceCount": 128,
       "webRouteCount": 41,
       "identityCrosswalkCount": 2122,
-      "package": "https://zenodo.org/records/22102369/files/program-matematika-indonesia-backend-v2-v0.54.0.zip?download=1",
-      "packageSchema": "https://zenodo.org/records/22102369/files/federation-package-v2.schema.json?download=1",
-      "recordSchema": "https://zenodo.org/records/22102369/files/federation-record-v2.schema.json?download=1",
-      "validationReceipt": "https://zenodo.org/records/22102369/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.54.0.json?download=1"
+      "package": "https://zenodo.org/records/22102685/files/program-matematika-indonesia-backend-v2-v0.55.0.zip?download=1",
+      "packageSchema": "https://zenodo.org/records/22102685/files/federation-package-v2.schema.json?download=1",
+      "recordSchema": "https://zenodo.org/records/22102685/files/federation-record-v2.schema.json?download=1",
+      "validationReceipt": "https://zenodo.org/records/22102685/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.55.0.json?download=1"
     },
     "learnerReadModelV1": {
       "version": "1.0.0",
       "status": "validated",
       "courseCount": 40,
       "prerequisiteEdgeCount": 82,
-      "authority": "https://zenodo.org/records/22102369/files/curriculum-authority-v1.json?download=1",
-      "authoritySchema": "https://zenodo.org/records/22102369/files/curriculum-authority-v1.schema.json?download=1",
-      "readModel": "https://zenodo.org/records/22102369/files/learner-read-model-v1.json?download=1",
-      "readModelSchema": "https://zenodo.org/records/22102369/files/learner-read-model-v1.schema.json?download=1",
-      "validationReceipt": "https://zenodo.org/records/22102369/files/LOCAL_RELEASE_VALIDATION_v0.54.0.json?download=1",
+      "authority": "https://zenodo.org/records/22102685/files/curriculum-authority-v1.json?download=1",
+      "authoritySchema": "https://zenodo.org/records/22102685/files/curriculum-authority-v1.schema.json?download=1",
+      "readModel": "https://zenodo.org/records/22102685/files/learner-read-model-v1.json?download=1",
+      "readModelSchema": "https://zenodo.org/records/22102685/files/learner-read-model-v1.schema.json?download=1",
+      "validationReceipt": "https://zenodo.org/records/22102685/files/LOCAL_RELEASE_VALIDATION_v0.55.0.json?download=1",
       "publicEndpoint": "https://kokunoyumeto.github.io/program-matematika-indonesia/data/learner-read-model.json"
     }
   },
