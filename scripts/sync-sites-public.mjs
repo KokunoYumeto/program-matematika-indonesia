@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import { cp, mkdir, readFile, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
-import { dirname, resolve, sep } from 'node:path';
+import { dirname, relative, resolve, sep } from 'node:path';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const source = resolve(project, 'docs');
@@ -12,9 +12,26 @@ assert.ok(target.startsWith(`${publicRoot}${sep}`), 'Target sinkronisasi keluar 
 
 await rm(target, { recursive: true, force: true });
 await mkdir(target, { recursive: true });
+const approvedTopLevelFiles = new Set([
+  'app.js',
+  'courses.js',
+  'index.html',
+  'og.png',
+  'robots.txt',
+  'styles.css',
+]);
+const approvedDataFiles = new Set([
+  'data/curriculum-authority-v1.json',
+  'data/learner-read-model.json',
+]);
 await cp(source, target, {
   recursive: true,
-  filter: (path) => !path.endsWith(`${sep}.nojekyll`),
+  filter: (path) => {
+    if (path === source) return true;
+    const name = relative(source, path).split(sep).join('/');
+    if (name === 'data' || name === 'schema' || name.startsWith('schema/')) return true;
+    return approvedTopLevelFiles.has(name) || approvedDataFiles.has(name);
+  },
 });
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
