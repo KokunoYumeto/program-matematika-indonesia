@@ -25,7 +25,7 @@ const standalone = sourceHtml
 if (/href="styles\.css"|src="app\.js"/.test(standalone)) {
   throw new Error('Ekspor mandiri masih memiliki dependensi lokal yang belum ditanamkan.');
 }
-if (!standalone.includes("const courses = [") || !standalone.includes('const program = Object.freeze({')) {
+if (!standalone.includes('const courses = Object.freeze([') || !standalone.includes('const program = Object.freeze({')) {
   throw new Error('Ekspor mandiri kehilangan katalog atau metadata program.');
 }
 
