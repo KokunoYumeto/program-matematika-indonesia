@@ -1,0 +1,155 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/curriculum-authority-v1.schema.json",
+  "title": "Program Matematika Indonesia curriculum authority v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "authority_state",
+    "authority_policy",
+    "seed_catalog",
+    "federation",
+    "catalog",
+    "lineage",
+    "public_readback_overlays"
+  ],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/curriculum-authority-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/program-matematika-indonesia-curriculum-authority/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "authority_state": { "const": "active_versioned_successor" },
+    "authority_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["docs_courses_js_is_authority", "owner_native_backends_remain_canonical", "federation_is_reversible_projection", "learner_site_is_generated_output"],
+      "properties": {
+        "docs_courses_js_is_authority": { "const": false },
+        "owner_native_backends_remain_canonical": { "const": true },
+        "federation_is_reversible_projection": { "const": true },
+        "learner_site_is_generated_output": { "const": true }
+      }
+    },
+    "seed_catalog": { "$ref": "#/$defs/fileBinding" },
+    "federation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["package_path", "records_path", "records_bytes", "records_sha256", "validation_report_path", "validation_report_bytes", "validation_report_sha256", "validation_result"],
+      "properties": {
+        "package_path": { "$ref": "#/$defs/portablePath" },
+        "records_path": { "$ref": "#/$defs/portablePath" },
+        "records_bytes": { "type": "integer", "minimum": 1 },
+        "records_sha256": { "$ref": "#/$defs/sha256" },
+        "validation_report_path": { "$ref": "#/$defs/portablePath" },
+        "validation_report_bytes": { "type": "integer", "minimum": 1 },
+        "validation_report_sha256": { "$ref": "#/$defs/sha256" },
+        "validation_result": { "const": "pass" }
+      }
+    },
+    "catalog": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["$schema", "schemaVersion", "snapshotDate", "sourceCommit", "program", "topics", "counts", "courses"],
+      "properties": {
+        "$schema": { "type": "string", "format": "uri" },
+        "schemaVersion": { "const": 1 },
+        "snapshotDate": { "type": "string", "format": "date" },
+        "sourceCommit": { "$ref": "#/$defs/gitSha" },
+        "program": {
+          "type": "object",
+          "required": ["id", "version", "snapshotDate", "website", "zenodo", "zenodoConcept", "completedPublicCourseRoleIds", "backend"],
+          "properties": {
+            "id": { "const": "program-matematika-indonesia" },
+            "version": { "$ref": "#/$defs/semver" },
+            "snapshotDate": { "type": "string", "format": "date" },
+            "website": { "type": "string", "format": "uri" },
+            "zenodo": { "type": "string", "format": "uri" },
+            "zenodoConcept": { "const": "https://doi.org/10.5281/zenodo.22059707" },
+            "completedPublicCourseRoleIds": {
+              "type": "array",
+              "uniqueItems": true,
+              "items": { "$ref": "#/$defs/courseId" }
+            },
+            "backend": {
+              "type": "object",
+              "required": ["federationV2", "learnerReadModelV1"]
+            }
+          }
+        },
+        "topics": { "type": "array", "minItems": 8, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+        "counts": { "type": "object" },
+        "courses": {
+          "type": "array",
+          "minItems": 40,
+          "maxItems": 40,
+          "items": {
+            "type": "object",
+            "required": ["id", "ownerLane", "level", "topic", "state", "title", "prerequisites", "purpose", "outcome", "corpus", "note"],
+            "properties": { "id": { "$ref": "#/$defs/courseId" } }
+          }
+        }
+      }
+    },
+    "lineage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["bootstrap_release_version", "predecessor_authority", "transition"],
+      "properties": {
+        "bootstrap_release_version": { "$ref": "#/$defs/semver" },
+        "predecessor_authority": { "$ref": "#/$defs/fileBinding" },
+        "transition": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["from_version", "to_version", "snapshot_date", "zenodo_record_id", "method"],
+          "properties": {
+            "from_version": { "$ref": "#/$defs/semver" },
+            "to_version": { "$ref": "#/$defs/semver" },
+            "snapshot_date": { "type": "string", "format": "date" },
+            "zenodo_record_id": { "type": "integer", "minimum": 1 },
+            "method": { "const": "deterministic_release_overlay_preserving_curriculum_and_native_backend_authority" }
+          }
+        }
+      }
+    },
+    "public_readback_overlays": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["course_id", "surface_id", "url", "source_publication_state", "effective_publication_state", "evidence_kind", "bytes", "sha256", "verified_at"],
+        "properties": {
+          "course_id": { "$ref": "#/$defs/courseId" },
+          "surface_id": { "type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$" },
+          "url": { "type": "string", "format": "uri", "pattern": "^https://" },
+          "source_publication_state": { "const": "catalog_declared" },
+          "effective_publication_state": { "const": "public" },
+          "evidence_kind": { "const": "anonymous_public_byte_readback" },
+          "bytes": { "type": "integer", "minimum": 1 },
+          "sha256": { "$ref": "#/$defs/sha256" },
+          "verified_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "courseId": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" },
+    "gitSha": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "semver": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "portablePath": { "type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$" },
+    "fileBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/portablePath" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    }
+  }
+}
