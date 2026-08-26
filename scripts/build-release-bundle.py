@@ -101,6 +101,16 @@ def files_under(root: Path, relative: str) -> list[Path]:
     return sorted(candidate for candidate in path.rglob("*") if candidate.is_file())
 
 
+def committed_blob_bytes(root: Path, commit: str, relative: str) -> bytes:
+    result = subprocess.run(
+        ["git", "show", f"{commit}:{relative}"],
+        cwd=root,
+        check=True,
+        capture_output=True,
+    )
+    return result.stdout
+
+
 def load_immutable_v1_archive(root: Path) -> tuple[Path, dict[str, bytes]]:
     archive_path = root / IMMUTABLE_V1_ARCHIVE_RELATIVE
     if not archive_path.is_file() or sha256_file(archive_path) != IMMUTABLE_V1_ARCHIVE_SHA256:
@@ -431,7 +441,11 @@ def main() -> None:
         name = source_path
         if path.parent == release:
             name = path.name
-        data = path.read_bytes()
+        data = (
+            path.read_bytes()
+            if path == generated_catalog
+            else committed_blob_bytes(root, args.source_commit, source_path)
+        )
         entries.append((name, data))
         manifest_files.append(
             {
