@@ -7,6 +7,7 @@ import argparse
 import hashlib
 import json
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -99,9 +100,9 @@ V2_RELEASE_FILES = {
 }
 
 EXPECTED_V1_PACKAGE_PINS = {
-    "manifest.json": "06a4c070ec0bda8c419e67782cabbf960187c775f8e654d95ea9700f6a0e74b6",
-    "records.jsonl": "bbd22f371d7bf58d23e4aadd3466b82a344e545d056b4706fc733a4dcdeaf7dc",
-    "validation_report.json": "cd21f9237618353235b2d060094acb99a6cdc5e576d349e0d2592d064b7989e7",
+    "manifest.json": "8fe45cfb07e47e9596a4d3088beadcd8287ec2f089a62db990bd4fd70f079997",
+    "records.jsonl": "e563e13336701e2d3b2110debe4074b168f53f8fd3757e36fe25d36043db7783",
+    "validation_report.json": "b742dbcc65c9511fa3d208a001d1f4a33ca38d04d0178f3e964d043c09534b42",
 }
 
 EXPECTED_V2_COUNTS = {
@@ -528,6 +529,8 @@ def main() -> None:
         "learner-read-model-v1.json": read_model_path,
         "curriculum-authority-v1.schema.json": authority_schema_path,
         "learner-read-model-v1.schema.json": read_model_schema_path,
+        "federation-unit-package-v2.1.schema.json": root / "backend" / "v2.1" / "schema" / "federation-unit-package-v2.1.schema.json",
+        "federation-unit-record-v2.1.schema.json": root / "backend" / "v2.1" / "schema" / "federation-unit-record-v2.1.schema.json",
     }
     for release_name, source in phase_two_release_copies.items():
         copied = release / release_name
@@ -762,6 +765,19 @@ def main() -> None:
     }
     if catalog["program"]["backend"].get("federationV2") != expected_federation_v2:
         raise ValueError("catalog federation-v2 claim does not match the exact validated release boundary")
+    expected_federation_v21 = {
+        "version": "2.1.0",
+        "status": "pilot_validated",
+        "pilot_courses": ["A00", "B10", "D20"],
+        "pilot_units": 255,
+        "pilot_relations": 1171,
+        "route_wrapper_course": "D20",
+        "packageSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-unit-package-v2.1.schema.json?download=1",
+        "recordSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-unit-record-v2.1.schema.json?download=1",
+        "package": f"https://zenodo.org/records/{args.record_id}/files/program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip?download=1",
+    }
+    if catalog["program"]["backend"].get("federationV21") != expected_federation_v21:
+        raise ValueError("catalog federation-v2.1 claim does not match the exact validated pilot boundary")
     expected_learner_read_model = {
         "version": "1.0.0",
         "status": "validated",
@@ -806,6 +822,8 @@ def main() -> None:
 
     with tempfile.TemporaryDirectory(prefix="pmi-backend-v2-replay-") as temporary:
         replay_package = Path(temporary) / EXPECTED_FEDERATION_DATASET_VERSION
+        replay_coordinator_root = Path(temporary) / "coordinator"
+        replay_coordinator_root.mkdir(parents=True, exist_ok=True)
         federation_document = json.loads((backend_v2 / "federation.json").read_text(encoding="utf-8"))
         recorded_command = federation_document.get("build", {}).get("command")
         expected_prefix = ["python", "-B", "scripts/build-backend-v2-federation.py"]
@@ -816,11 +834,32 @@ def main() -> None:
         replay_command = [
             str(root / "scripts" / "build-backend-v2-federation.py") if value == expected_prefix[2]
             else str(root) if value == "<PROGRAM_REPOSITORY_ROOT>"
-            else str(coordinator_logbook_root) if value == "<COORDINATOR_LOGBOOK_ROOT>"
+            else str(replay_coordinator_root) if value == "<COORDINATOR_LOGBOOK_ROOT>"
             else str(replay_package) if value == "<OUTPUT>"
             else value
             for value in recorded_command
         ]
+        # The v0.3.0 receipt was recorded with a redundant
+        # ``curriculum_logbook/`` prefix on coordinator-relative inputs. Keep
+        # those immutable locator strings in the replay metadata, while
+        # staging the three exact files under a temporary root where the
+        # recorded paths resolve.
+        coordinator_relative_flags = {
+            "--site-readback-relative",
+            "--contract-relative",
+            "--role-map-relative",
+        }
+        for index, value in enumerate(recorded_command[:-1]):
+            if value not in coordinator_relative_flags:
+                continue
+            candidate = recorded_command[index + 1]
+            source_relative = candidate.removeprefix("curriculum_logbook/")
+            source = coordinator_logbook_root / source_relative
+            target = replay_coordinator_root / candidate
+            if not source.is_file():
+                raise ValueError(f"recorded coordinator replay input is missing: {source}")
+            target.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(source, target)
         replay_command[0] = sys.executable
         replay_build = subprocess.run(
             replay_command,
@@ -844,7 +883,7 @@ def main() -> None:
                 "--program-repository-root",
                 str(root),
                 "--coordinator-logbook-root",
-                str(coordinator_logbook_root),
+                str(replay_coordinator_root),
                 "--replay-package",
                 str(replay_package),
             ],
@@ -894,6 +933,7 @@ def main() -> None:
     source_zip = release / f"program-matematika-indonesia-source-v{version}.zip"
     backend_zip = release / f"program-matematika-indonesia-backend-v1-v{version}.zip"
     backend_v2_zip = release / f"program-matematika-indonesia-backend-v2-v{version}.zip"
+    backend_v21_zip = release / f"program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip"
     generated_catalog_source_path = (
         f"releases/v{version}/program-matematika-indonesia-catalog-v{version}.json"
     )
@@ -913,6 +953,11 @@ def main() -> None:
             backend_v2_zip,
             backend_v2,
             "program-matematika-indonesia-backend-v2/",
+        ),
+        "backend_v21": verify_backend_zip(
+            backend_v21_zip,
+            root / "backend" / "v2.1",
+            "program-matematika-indonesia-backend-v2.1/",
         ),
     }
     if zip_results["source"]["source_commit"] != args.source_commit:
@@ -946,14 +991,17 @@ def main() -> None:
         f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
         f"program-matematika-indonesia-backend-v1-v{version}.zip",
         f"program-matematika-indonesia-backend-v2-v{version}.zip",
+        f"program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip",
+        "federation-unit-package-v2.1.schema.json",
+        "federation-unit-record-v2.1.schema.json",
         f"program-matematika-indonesia-source-v{version}.zip",
         f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
         "validate-backend-v2-federation.py",
         *receipt_release_names,
     }
-    if len(expected_release_names) != 42:
+    if len(expected_release_names) != 45:
         raise ValueError(
-            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 42"
+            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 45"
         )
     actual_release_names = {
         path.name

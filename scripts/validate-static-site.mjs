@@ -62,9 +62,9 @@ assert.deepEqual(
 );
 assert.deepEqual(courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id), unresolvedIds, 'Daftar peran yang belum dibekukan berubah.');
 assert.deepEqual(courses.filter(({ state }) => state === 'published').map(({ id }) => id), publishedIds, 'Daftar tujuh belas peran kanon dengan edisi publik selesai berubah.');
-assert.equal(program.version, '0.55.0', 'Versi snapshot pusat harus 0.55.0.');
+assert.equal(program.version, '0.56.0', 'Versi snapshot pusat harus 0.56.0.');
 assert.equal(program.website, 'https://kokunoyumeto.github.io/program-matematika-indonesia/', 'Situs belajar publik tidak tepat.');
-assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22102685', 'DOI snapshot Zenodo pusat tidak tepat.');
+assert.equal(program.zenodo, 'https://doi.org/10.5281/zenodo.22103522', 'DOI snapshot Zenodo pusat tidak tepat.');
 assert.equal(program.backend.schemaVersion, '1.0.0', 'Versi backend bersama tidak tepat.');
 assert.equal(program.backend.status, 'validated', 'Backend bersama harus berada pada batas validasi yang sudah terbukti.');
 assert.equal(program.backend.centralRecordCount, 2122, 'Jumlah rekaman paket backend pusat berubah tanpa pembaruan kanon.');
@@ -146,9 +146,9 @@ assert.equal(
   926171,
   'Jumlah rekaman target pada 13 migrasi korpus lengkap harus tepat 926.171.'
 );
-assert.equal(program.backend.schema, 'https://zenodo.org/records/22102685/files/interlanguage-math-backend-v1.schema.json?download=1', 'URL schema backend v1 harus terikat ke rekaman v0.55.0.');
-assert.equal(program.backend.sourceFormatProfile, 'https://zenodo.org/records/22102685/files/interlanguage-source-format-profile-v1.schema.json?download=1', 'URL profil format sumber harus terikat ke rekaman v0.55.0.');
-assert.equal(program.backend.package, 'https://zenodo.org/records/22102685/files/program-matematika-indonesia-backend-v1-v0.55.0.zip?download=1', 'URL paket backend v1 harus terikat ke rekaman v0.55.0.');
+assert.equal(program.backend.schema, 'https://zenodo.org/records/22103522/files/interlanguage-math-backend-v1.schema.json?download=1', 'URL schema backend v1 harus terikat ke rekaman v0.56.0.');
+assert.equal(program.backend.sourceFormatProfile, 'https://zenodo.org/records/22103522/files/interlanguage-source-format-profile-v1.schema.json?download=1', 'URL profil format sumber harus terikat ke rekaman v0.56.0.');
+assert.equal(program.backend.package, 'https://zenodo.org/records/22103522/files/program-matematika-indonesia-backend-v1-v0.56.0.zip?download=1', 'URL paket backend v1 harus terikat ke rekaman v0.56.0.');
 assert.deepEqual(
   program.backend.federationV2,
   {
@@ -160,12 +160,27 @@ assert.deepEqual(
     learnerSurfaceCount: 128,
     webRouteCount: 41,
     identityCrosswalkCount: 2122,
-    package: 'https://zenodo.org/records/22102685/files/program-matematika-indonesia-backend-v2-v0.55.0.zip?download=1',
-    packageSchema: 'https://zenodo.org/records/22102685/files/federation-package-v2.schema.json?download=1',
-    recordSchema: 'https://zenodo.org/records/22102685/files/federation-record-v2.schema.json?download=1',
-    validationReceipt: 'https://zenodo.org/records/22102685/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.55.0.json?download=1'
+    package: 'https://zenodo.org/records/22103522/files/program-matematika-indonesia-backend-v2-v0.56.0.zip?download=1',
+    packageSchema: 'https://zenodo.org/records/22103522/files/federation-package-v2.schema.json?download=1',
+    recordSchema: 'https://zenodo.org/records/22103522/files/federation-record-v2.schema.json?download=1',
+    validationReceipt: 'https://zenodo.org/records/22103522/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.56.0.json?download=1'
   },
-  'Backend federasi v2 harus cocok dengan batas validasi publik v0.55.0.'
+  'Backend federasi v2 harus cocok dengan batas validasi publik v0.56.0.'
+);
+assert.deepEqual(
+  program.backend.federationV21,
+  {
+    version: '2.1.0',
+    status: 'pilot_validated',
+    pilot_courses: ['A00', 'B10', 'D20'],
+    pilot_units: 255,
+    pilot_relations: 1171,
+    route_wrapper_course: 'D20',
+    packageSchema: 'https://zenodo.org/records/22103522/files/federation-unit-package-v2.1.schema.json?download=1',
+    recordSchema: 'https://zenodo.org/records/22103522/files/federation-unit-record-v2.1.schema.json?download=1',
+    package: 'https://zenodo.org/records/22103522/files/program-matematika-indonesia-backend-v2.1-pilots-v0.56.0.zip?download=1'
+  },
+  'Backend federasi v2.1 harus mencatat pilot terverifikasi dan paket rute pelajar.'
 );
 assert.deepEqual(
   program.backend.learnerReadModelV1,
@@ -174,17 +189,17 @@ assert.deepEqual(
     status: 'validated',
     courseCount: 40,
     prerequisiteEdgeCount: 82,
-    authority: 'https://zenodo.org/records/22102685/files/curriculum-authority-v1.json?download=1',
-    authoritySchema: 'https://zenodo.org/records/22102685/files/curriculum-authority-v1.schema.json?download=1',
-    readModel: 'https://zenodo.org/records/22102685/files/learner-read-model-v1.json?download=1',
-    readModelSchema: 'https://zenodo.org/records/22102685/files/learner-read-model-v1.schema.json?download=1',
-    validationReceipt: 'https://zenodo.org/records/22102685/files/LOCAL_RELEASE_VALIDATION_v0.55.0.json?download=1',
+    authority: 'https://zenodo.org/records/22103522/files/curriculum-authority-v1.json?download=1',
+    authoritySchema: 'https://zenodo.org/records/22103522/files/curriculum-authority-v1.schema.json?download=1',
+    readModel: 'https://zenodo.org/records/22103522/files/learner-read-model-v1.json?download=1',
+    readModelSchema: 'https://zenodo.org/records/22103522/files/learner-read-model-v1.schema.json?download=1',
+    validationReceipt: 'https://zenodo.org/records/22103522/files/LOCAL_RELEASE_VALIDATION_v0.56.0.json?download=1',
     publicEndpoint: 'https://kokunoyumeto.github.io/program-matematika-indonesia/data/learner-read-model.json'
   },
   'Kontrak backend-ke-pelajar v1 harus terikat ke rilis dan endpoint publik.'
 );
 assert.equal(program.repositories.github.status, 'available', 'Status transport GitHub harus mencatat pemulihan akses.');
-assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22102685/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.55.0 yang dicadangkan.');
+assert.equal(catalogSchema.$id, 'https://zenodo.org/records/22103522/files/program-matematika-indonesia-catalog-v1.schema.json', 'Identitas schema katalog harus terikat ke rekaman v0.56.0 yang dicadangkan.');
 assert.deepEqual(publicAuthorityBytes, authorityBytes, 'Salinan otoritas kurikulum publik harus identik byte demi byte.');
 assert.equal(learnerReadModel.$schema, 'https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-read-model-v1.schema.json');
 assert.equal(learnerReadModel.provenance.authority_sha256, sha256(authorityBytes));
@@ -361,7 +376,7 @@ assert.match(html, /rel="canonical" href="https:\/\/kokunoyumeto\.github\.io\/pr
 assert.match(html, /40 korpus terpilih/, 'Ringkasan 40 korpus terpilih hilang.');
 assert.match(html, /Produksi yang belum selesai tetap dilabeli dengan jelas/, 'Ringkasan batas produksi hilang.');
 assert.match(html, /<strong>17<\/strong><span>peran dengan edisi selesai<\/span>/, 'Ringkasan tujuh belas peran dengan edisi selesai hilang.');
-assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22102685/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
+assert.match(html, /https:\/\/doi\.org\/10\.5281\/zenodo\.22103522/, 'Tautan snapshot Zenodo pusat hilang dari HTML.');
 assert.match(html, /Mulai belajar — buka 40 mata kuliah/, 'Aksi utama untuk pelajar tidak terlihat.');
 assert.match(html, /https:\/\/github\.com\/KokunoYumeto\/program-matematika-indonesia/, 'Tautan repositori GitHub pusat hilang dari HTML.');
 assert.match(app, /editionIsSuspendedGithub/, 'Aplikasi harus menahan tautan repositori GitHub yang sementara tidak tersedia.');

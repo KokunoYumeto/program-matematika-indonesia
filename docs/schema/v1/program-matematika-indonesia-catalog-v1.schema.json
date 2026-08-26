@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://zenodo.org/records/22102685/files/program-matematika-indonesia-catalog-v1.schema.json",
+  "$id": "https://zenodo.org/records/22103522/files/program-matematika-indonesia-catalog-v1.schema.json",
   "title": "Program Matematika Indonesia — katalog rilis v1",
   "type": "object",
   "additionalProperties": false,
@@ -110,7 +110,7 @@
         "backend": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigrations", "schema", "sourceFormatProfile", "package", "federationV2", "learnerReadModelV1"],
+          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigrations", "schema", "sourceFormatProfile", "package", "federationV2", "federationV21", "learnerReadModelV1"],
           "properties": {
             "schemaVersion": { "const": "1.0.0" },
             "status": { "const": "validated" },
@@ -153,6 +153,25 @@
                 "packageSchema": { "$ref": "#/$defs/httpsUrl" },
                 "recordSchema": { "$ref": "#/$defs/httpsUrl" },
                 "validationReceipt": { "$ref": "#/$defs/httpsUrl" }
+              }
+            },
+            "federationV21": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "pilot_courses", "pilot_units", "pilot_relations", "route_wrapper_course", "packageSchema", "recordSchema", "package"],
+              "properties": {
+                "version": { "const": "2.1.0" },
+                "status": { "const": "pilot_validated" },
+                "pilot_courses": {
+                  "type": "array",
+                  "const": ["A00", "B10", "D20"]
+                },
+                "pilot_units": { "const": 255 },
+                "pilot_relations": { "const": 1171 },
+                "route_wrapper_course": { "const": "D20" },
+                "packageSchema": { "$ref": "#/$defs/httpsUrl" },
+                "recordSchema": { "$ref": "#/$defs/httpsUrl" },
+                "package": { "$ref": "#/$defs/httpsUrl" }
               }
             },
             "learnerReadModelV1": {

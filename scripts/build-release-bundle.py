@@ -123,6 +123,12 @@ def main() -> None:
     }
     for source_name, release_name in V2_RELEASE_FILES.items():
         copies[root / source_name] = release / release_name
+    copies[root / "backend" / "v2.1" / "schema" / "federation-unit-package-v2.1.schema.json"] = (
+        release / "federation-unit-package-v2.1.schema.json"
+    )
+    copies[root / "backend" / "v2.1" / "schema" / "federation-unit-record-v2.1.schema.json"] = (
+        release / "federation-unit-record-v2.1.schema.json"
+    )
     migration_receipts = sorted((root / "backend" / "migrations").glob("*/MIGRATION_RECEIPT.json"))
     receipt_directories = {source.parent.name for source in migration_receipts}
     if receipt_directories != set(MIGRATION_RECEIPT_FILENAMES):
@@ -147,6 +153,18 @@ def main() -> None:
         )
     backend_v2_zip = release / f"program-matematika-indonesia-backend-v2-v{version}.zip"
     backend_v2_result = build_zip(backend_v2_zip, backend_v2_entries)
+
+    backend_v21_entries = []
+    backend_v21 = root / "backend" / "v2.1"
+    for path in sorted(candidate for candidate in backend_v21.rglob("*") if candidate.is_file()):
+        if "__pycache__" in path.parts or path.suffix == ".pyc":
+            continue
+        relative = path.relative_to(backend_v21).as_posix()
+        backend_v21_entries.append(
+            (f"program-matematika-indonesia-backend-v2.1/{relative}", path.read_bytes())
+        )
+    backend_v21_zip = release / f"program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip"
+    backend_v21_result = build_zip(backend_v21_zip, backend_v21_entries)
 
     source_roots = [
         ".openai/hosting.json",
@@ -190,6 +208,8 @@ def main() -> None:
         "scripts/build-learner-start-pdf.py",
         "scripts/sync-sites-public.mjs",
         "scripts/build-d20-learner-routes.mjs",
+        "scripts/advance-curriculum-authority-v056.mjs",
+        "scripts/build-v21-pilot-package.py",
         "scripts/validate-static-site.mjs",
         "scripts/verify-http-bytes.mjs",
         "scripts/build-backend-v1-schema.py",
@@ -279,6 +299,7 @@ def main() -> None:
             {
                 "backend_v1_zip": backend_result,
                 "backend_v2_zip": backend_v2_result,
+                "backend_v21_zip": backend_v21_result,
                 "source_zip": source_result,
             },
             ensure_ascii=False,
