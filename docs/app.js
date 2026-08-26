@@ -83,6 +83,10 @@ function actionLinks(course) {
   if (course.edition && course.edition !== learnerEntry && !editionIsSuspendedGithub) links.push(`<a class="card-action${learnerEntry ? '' : ' primary'}" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
   if (course.zenodo) links.push(`<a class="card-action" href="${course.zenodo}" target="_blank" rel="noreferrer">Arsip DOI <span aria-hidden="true">↗</span></a>`);
   if (course.repository && course.repository !== course.edition && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.repository}" target="_blank" rel="noreferrer">Repositori <span aria-hidden="true">↗</span></a>`);
+  for (const supplement of course.supplements ?? []) {
+    const label = supplement.state === 'complete' ? supplement.title : `${supplement.title} — parsial`;
+    links.push(`<a class="card-action" href="${supplement.url}" target="_blank" rel="noreferrer">${label} <span aria-hidden="true">↗</span></a>`);
+  }
   if (!links.length) {
     const message = course.state === 'unresolved'
       ? 'Keputusan korpus masih terbuka'

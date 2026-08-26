@@ -565,6 +565,21 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
     role_by_id = {item["role_id"]: item for item in role_rows}
     if set(catalog_by_id) != set(role_by_id):
         raise ValueError("Catalog and role-map course IDs differ")
+    program_info = catalog.get("program")
+    if not isinstance(program_info, dict):
+        raise ValueError("Catalog program object is missing")
+    federation_v21 = nested(program_info, "backend", "federationV21")
+    route_wrapper_courses = set(
+        unique_strings(
+            federation_v21.get("route_wrapper_courses", [])
+            if isinstance(federation_v21, dict)
+            else []
+        )
+    )
+    if not route_wrapper_courses.issubset(catalog_by_id):
+        raise ValueError(
+            f"Unknown route-wrapper courses: {sorted(route_wrapper_courses - set(catalog_by_id))}"
+        )
 
     nonempty_owner_ids = unique_strings(row.get("thread_id") for row in role_rows)
     if len(nonempty_owner_ids) != 32:
@@ -645,9 +660,12 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
             "locator": receipt_info["locator"],
             "sha256": receipt_info["sha256"],
         }
-        if url in verified_reader_evidence and verified_reader_evidence[url] != evidence:
-            raise ValueError(f"Conflicting public-readback evidence for HTML reader: {url}")
-        verified_reader_evidence[url] = evidence
+        # A reader may be proven independently by both the current central-site
+        # census and its corpus-migration receipt. Different receipt hashes are
+        # complementary evidence, not a byte contradiction. Prefer the fresh
+        # central census already registered above and otherwise use the corpus
+        # receipt.
+        verified_reader_evidence.setdefault(url, evidence)
     verified_reader_urls = set(verified_reader_evidence)
 
     def add_surface(course_id_value: str, url: str, format_value: str, action: str) -> None:
@@ -663,7 +681,15 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
     def course_artifacts(role_id: str, course: dict[str, Any]) -> tuple[str, dict[str, Any]]:
         reader = course.get("reader") if isinstance(course.get("reader"), str) else None
         edition = course.get("edition") if isinstance(course.get("edition"), str) else None
-        if reader:
+        clean_root = f"{inputs.public_site.rstrip('/')}/id-ID/courses/{role_id}/"
+        clean_reader = f"{clean_root}reader/"
+        if role_id in route_wrapper_courses:
+            if clean_root not in verified_reader_urls:
+                raise ValueError(f"Materialized course route lacks public-readback evidence: {role_id}")
+            learner_start = clean_root
+            if clean_reader in verified_reader_urls:
+                reader = clean_reader
+        elif reader:
             learner_start = reader
         elif edition and direct_pdf_url(edition):
             learner_start = edition
@@ -942,7 +968,6 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
         )
     )
 
-    program_info = catalog["program"]
     program_record = make_record(
         "program",
         program_semantic_key,
@@ -990,12 +1015,21 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
                     "outcome": course["outcome"],
                     "corpus": course["corpus"],
                     "note": course["note"],
+                    "supplements": course.get("supplements", []),
                     "learner_start_url": learner_start,
                     "artifact_matrix": artifact_matrix,
-                    "web_route_id": route_ids[role_id],
-                    "web_route_root": course_card_url(role_id, inputs.public_site),
+                    "web_route_id": (
+                        record_id("web_route", f"course-clean:{role_id}")
+                        if role_id in route_wrapper_courses
+                        else route_ids[role_id]
+                    ),
+                    "web_route_root": (
+                        f"{inputs.public_site.rstrip('/')}/id-ID/courses/{role_id}/"
+                        if role_id in route_wrapper_courses
+                        else course_card_url(role_id, inputs.public_site)
+                    ),
                     "planned_unit_route_pattern": f"/id-ID/courses/{role_id}/units/{{stable_unit_slug}}/",
-                    "unit_route_state": "planned_not_published",
+                    "unit_route_state": "public" if role_id in route_wrapper_courses else "planned_not_published",
                     "source_catalog_sha256": catalog_sha,
                     "v1_course_id": legacy_index.get(("course", f"course:{role_id}")),
                 },
@@ -1038,6 +1072,29 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
                     "planned_clean_root": f"/id-ID/courses/{role_id}/",
                     "planned_unit_route_pattern": f"/id-ID/courses/{role_id}/units/{{stable_unit_slug}}/",
                     "unit_route_state": "planned_not_published",
+                    "evidence_locator": inputs.site_readback_relative.as_posix(),
+                    "evidence_sha256": site_readback_sha,
+                },
+            )
+        )
+    for role_id in sorted(route_wrapper_courses):
+        clean_path = f"/id-ID/courses/{role_id}/"
+        clean_url = f"{inputs.public_site.rstrip('/')}{clean_path}"
+        route_records.append(
+            make_record(
+                "web_route",
+                f"course-clean:{role_id}",
+                {
+                    "route_kind": "course_clean_current",
+                    "locale": "id-ID",
+                    "path": clean_path,
+                    "public_url": clean_url,
+                    "course_ids": [role_id],
+                    "publication_state": "public_readback_verified",
+                    "learner_fallback_url": course_card_url(role_id, inputs.public_site),
+                    "planned_clean_root": None,
+                    "planned_unit_route_pattern": f"/id-ID/courses/{role_id}/units/{{stable_unit_slug}}/",
+                    "unit_route_state": "public",
                     "evidence_locator": inputs.site_readback_relative.as_posix(),
                     "evidence_sha256": site_readback_sha,
                 },

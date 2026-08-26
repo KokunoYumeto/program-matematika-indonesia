@@ -791,6 +791,37 @@
       },
       "additionalProperties": false
     },
+    "supplement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "title",
+        "resourceType",
+        "state",
+        "scope",
+        "license",
+        "pages",
+        "url",
+        "zenodo",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
+        "title": { "$ref": "#/$defs/nonempty_string" },
+        "resourceType": { "enum": ["workbook", "problem-book", "companion", "solutions", "reference"] },
+        "state": { "enum": ["complete", "partial"] },
+        "scope": { "$ref": "#/$defs/nonempty_string" },
+        "license": { "$ref": "#/$defs/nonempty_string" },
+        "pages": { "type": "integer", "minimum": 1 },
+        "url": { "$ref": "#/$defs/learner_uri" },
+        "zenodo": { "$ref": "#/$defs/uri" },
+        "conceptDoi": { "$ref": "#/$defs/uri" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
     "course_payload": {
       "type": "object",
       "required": [
@@ -873,6 +904,11 @@
         },
         "note": {
           "type": "string"
+        },
+        "supplements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/supplement" }
         },
         "learner_start_url": {
           "$ref": "#/$defs/learner_uri"
@@ -1038,6 +1074,7 @@
           "enum": [
             "program_root_current",
             "learner_card_current",
+            "course_clean_current",
             "course_clean_planned",
             "unit_clean_planned",
             "search_current",

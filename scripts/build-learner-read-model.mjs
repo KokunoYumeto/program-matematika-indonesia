@@ -64,7 +64,11 @@ const records = recordsBytes.toString('utf8').trimEnd().split('\n').map((line) =
 const byType = Object.groupBy(records, (record) => record.record_type);
 assert.equal(byType.course.length, 40, 'Expected exactly 40 v2 course records.');
 assert.equal(byType.dataset.length, 34, 'Expected exactly 34 v2 datasets.');
-assert.equal(byType.reader_surface.length, 128, 'Expected exactly 128 reader surfaces.');
+assert.equal(
+  byType.reader_surface.length,
+  validation.checks.table_counts.reader_surfaces,
+  'Reader-surface count differs from the validated federation.',
+);
 
 const coursesByCode = new Map(byType.course.map((record) => [record.payload.course_id, record]));
 const datasetsById = new Map(byType.dataset.map((record) => [record.id, record]));
@@ -137,7 +141,7 @@ const projectedCourses = authority.catalog.courses.map((authorityCourse) => {
   );
   const reader = oneSurface(
     surfaces,
-    (surface) => surface.payload.actions.includes('learn') && surface.payload.actions.includes('html'),
+    (surface) => surface.payload.actions.includes('html'),
     `${authorityCourse.id}: dedicated HTML reader`,
   );
   const edition = oneSurface(
@@ -179,6 +183,7 @@ const projectedCourses = authority.catalog.courses.map((authorityCourse) => {
   if (edition) ui.edition = edition.payload.url;
   if (repository) ui.repository = repository.payload.url;
   if (doi) ui.zenodo = doi.payload.url;
+  if (authorityCourse.supplements?.length) ui.supplements = structuredClone(authorityCourse.supplements);
 
   assert.deepEqual(ui, authorityCourse, `${authorityCourse.id}: v2 projection differs from frozen curriculum authority.`);
 

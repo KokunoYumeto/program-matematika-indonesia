@@ -109,15 +109,17 @@ EXPECTED_V2_COUNTS = {
     "datasets": 34,
     "programs": 1,
     "courses": 40,
-    "reader_surfaces": 128,
-    "web_routes": 41,
-    "publication_events": 52,
+    "reader_surfaces": 144,
+    "web_routes": 43,
+    "publication_events": 63,
     "qa_events": 16,
     "identity_crosswalks": 2122,
 }
 EXPECTED_V2_RECORD_COUNT = sum(EXPECTED_V2_COUNTS.values())
-EXPECTED_FEDERATION_VERSION = "0.3.0"
-EXPECTED_FEDERATION_DATASET_VERSION = "program-matematika-indonesia-federation-v0.3.0"
+EXPECTED_FEDERATION_VERSION = "0.4.0"
+EXPECTED_FEDERATION_DATASET_VERSION = "program-matematika-indonesia-federation-v0.4.0"
+EXPECTED_RELEASE_VERSION = "0.58.0"
+EXPECTED_CENTRAL_RECORD_ID = 22105611
 
 PRIVATE_BYTE_MARKERS = (
     bytes([70, 108, 111, 114, 105, 115]).lower(),
@@ -500,6 +502,11 @@ def main() -> None:
     coordinator_logbook_root = args.coordinator_logbook_root.resolve()
     version = args.version
 
+    if version != EXPECTED_RELEASE_VERSION:
+        raise ValueError(f"release version must be exactly {EXPECTED_RELEASE_VERSION}")
+    if args.record_id != EXPECTED_CENTRAL_RECORD_ID:
+        raise ValueError(f"central Zenodo record must be exactly {EXPECTED_CENTRAL_RECORD_ID}")
+
     if (
         not release.is_relative_to(root)
         or not backend.is_relative_to(root)
@@ -545,8 +552,8 @@ def main() -> None:
     if (
         learner_projection_result.get("status") != "pass"
         or learner_projection_result.get("course_count") != 40
-        or learner_projection_result.get("published_course_count") != 17
-        or learner_projection_result.get("public_readback_overlay_count") != 3
+        or learner_projection_result.get("published_course_count") != 18
+        or learner_projection_result.get("public_readback_overlay_count") != 11
         or learner_projection_result.get("deterministic_replay") != "byte-identical"
     ):
         raise ValueError("learner read-model validation or deterministic replay failed")
@@ -653,7 +660,7 @@ def main() -> None:
     if catalog["counts"]["courseRoles"] != 40 or catalog["counts"]["unresolvedRoles"] != 0:
         raise ValueError("catalog course/source closure mismatch")
     expected_completed_role_ids = [
-        "A00", "B10", "B40", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C100", "C110", "C120", "C130", "D20", "D110"
+        "A00", "B10", "B40", "B60", "B80", "B90", "C10", "C30", "C40", "C60", "C70", "C80", "C100", "C110", "C120", "C130", "D20", "D110"
     ]
     expected_completed_record_dois = [
         "10.5281/zenodo.22070683",
@@ -661,7 +668,7 @@ def main() -> None:
         "10.5281/zenodo.22070458",
         "10.5281/zenodo.22053905",
         "10.5281/zenodo.22062144",
-        "10.5281/zenodo.22082567",
+        "10.5281/zenodo.22105195",
         "10.5281/zenodo.22062449",
         "10.5281/zenodo.22052196",
         "10.5281/zenodo.22062005",
@@ -672,11 +679,12 @@ def main() -> None:
         "10.5281/zenodo.22088947",
         "10.5281/zenodo.22062017",
         "10.5281/zenodo.22102628",
+        "10.5281/zenodo.22105443",
     ]
-    if catalog["counts"].get("completedPublicCourseRoles") != 17:
-        raise ValueError("catalog completed-public course-role count is not 17")
-    if catalog["counts"].get("completedPublicRecords") != 16:
-        raise ValueError("catalog completed-public record count is not 16")
+    if catalog["counts"].get("completedPublicCourseRoles") != 18:
+        raise ValueError("catalog completed-public course-role count is not 18")
+    if catalog["counts"].get("completedPublicRecords") != 17:
+        raise ValueError("catalog completed-public record count is not 17")
     if catalog["program"].get("completedPublicCourseRoleIds") != expected_completed_role_ids:
         raise ValueError("catalog completed-public course-role identities are not the current canonical set")
     if catalog["program"].get("completedPublicRecordDois") != expected_completed_record_dois:
@@ -687,13 +695,29 @@ def main() -> None:
     courses_by_id = {course["id"]: course for course in catalog["courses"]}
     expected_lebl_repository = "https://github.com/KokunoYumeto/lebl-mathematics-family-id"
     expected_b40_repository = "https://github.com/KokunoYumeto/hefferon-linear-algebra-id"
-    expected_lebl_edition = "https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.24.u336"
+    expected_lebl_editions = {
+        "B70": "https://zenodo.org/records/22105195/files/Notes_on_Diffy_Qs_Bab_8_Sistem_Nonlinear_Bahasa_Indonesia_v6.11_PARSIAL.pdf?download=1",
+        "C10": "https://zenodo.org/records/22105195/files/Analisis_Dasar_I_Bahasa_Indonesia_v6.3.pdf?download=1",
+        "C20": "https://zenodo.org/records/22105195/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3_WIP_sampai_11.8.1_Polinom_Trigonometrik.pdf?download=1",
+        "C50": "https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.26.u397",
+    }
+    a10 = courses_by_id["A10"]
+    if (
+        a10.get("state") != "production"
+        or a10.get("zenodo") != "https://doi.org/10.5281/zenodo.22105421"
+        or a10.get("edition") != "https://zenodo.org/records/22105421/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-S0031-reader.pdf?download=1"
+        or a10.get("repository") != "https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-id"
+        or not all(token in a10.get("note", "") for token in ("31 dari 82 modul", "snapshot modular nonkontigu", "984 halaman", "tetap diproduksi"))
+    ):
+        raise ValueError("A10 does not preserve the exact published EA2-S0031 production boundary")
     a30_note = courses_by_id["A30"].get("note", "")
     if (
         courses_by_id["A30"].get("state") != "production"
-        or not all(token in a30_note for token in ("HP-A30-001", "m49369", "m49371", "m49372", "m49374", "m49384", "owner-QA", "belum terintegrasi atau diterbitkan"))
+        or courses_by_id["A30"].get("zenodo") != "https://doi.org/10.5281/zenodo.22105534"
+        or courses_by_id["A30"].get("edition") != "https://zenodo.org/records/22105534/files/OpenStax-Precalculus-2e-id-ID-0.1.0-alpha.32-reader.pdf?download=1"
+        or not all(token in a30_note for token in ("32 dari 87 modul", "m49367", "947 halaman", "dua build identik-byte", "16 media", "dikarantina", "tetap diproduksi"))
     ):
-        raise ValueError("A30 does not preserve the manager-clean, non-integrated HP-A30-001 boundary")
+        raise ValueError("A30 does not preserve the exact public alpha.32 production boundary")
     b30_note = courses_by_id["B30"].get("note", "")
     if (
         courses_by_id["B30"].get("state") != "production"
@@ -702,14 +726,38 @@ def main() -> None:
         or not all(token in b30_note for token in ("WIP.9/CP0047-R1", "674 halaman", "863e9c5709ff961b3ba09f93da973a8188849d81a4e9680900e1d66a58232bd6", "105.047", "HP-CLP2-001/002", "belum lengkap"))
     ):
         raise ValueError("B30 does not preserve the exact verified CLP WIP.9 boundary")
+    b60 = courses_by_id["B60"]
+    expected_b60_supplements = [{
+        "id": "clp4-problem-book-complete",
+        "title": "Buku latihan CLP4 lengkap",
+        "resourceType": "problem-book",
+        "state": "complete",
+        "scope": "Seluruh buku latihan kalkulus vektor, 486 halaman.",
+        "license": "CC BY-NC-SA 4.0",
+        "pages": 486,
+        "url": "https://zenodo.org/records/22105443/files/CLP-4-Latihan-Kalkulus-Vektor-Bahasa-Indonesia.pdf?download=1",
+        "zenodo": "https://doi.org/10.5281/zenodo.22105443",
+        "conceptDoi": "https://doi.org/10.5281/zenodo.22105442",
+        "bytes": 3939483,
+        "sha256": "a6253809eaa4a465d5efcc4372b1321ad828aa4964ec45042aab9130a358835b",
+    }]
     if (
-        courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22082567"
-        or courses_by_id["C10"].get("edition") != expected_lebl_edition
+        b60.get("state") != "published"
+        or b60.get("zenodo") != "https://doi.org/10.5281/zenodo.22105443"
+        or b60.get("edition") != "https://zenodo.org/records/22105443/files/CLP-4-Kalkulus-Vektor-Bahasa-Indonesia.pdf?download=1"
+        or b60.get("repository") != "https://github.com/KokunoYumeto/clp4-vector-calculus-id"
+        or b60.get("supplements") != expected_b60_supplements
+        or not all(token in b60.get("note", "") for token in ("lengkap", "316 halaman", "486 halaman", "PreTeXt/LaTeX", "build deterministik"))
+    ):
+        raise ValueError("B60 does not preserve the exact complete CLP4 textbook and problem-book boundary")
+    if (
+        courses_by_id["C10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22105195"
+        or courses_by_id["C10"].get("edition") != expected_lebl_editions["C10"]
         or courses_by_id["C10"].get("repository") != expected_lebl_repository
         or "334 halaman" not in courses_by_id["C10"].get("note", "")
-        or "336 unit" not in courses_by_id["C10"].get("note", "")
+        or not all(token in courses_by_id["C10"].get("note", "") for token in ("U397", "397 unit", "R006 312", "R007 35", "R008 50"))
     ):
-        raise ValueError("C10 does not point to the exact verified Lebl U336 edition")
+        raise ValueError("C10 does not point to the exact verified Lebl U397 edition")
     if (
         courses_by_id["B40"].get("state") != "published"
         or courses_by_id["B40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22070458"
@@ -736,32 +784,48 @@ def main() -> None:
         raise ValueError("C130 does not point to the exact verified operations-research edition")
     if (
         courses_by_id["C20"].get("state") != "production"
-        or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22082567"
-        or courses_by_id["C20"].get("edition") != expected_lebl_edition
+        or courses_by_id["C20"].get("zenodo") != "https://doi.org/10.5281/zenodo.22105195"
+        or courses_by_id["C20"].get("edition") != expected_lebl_editions["C20"]
         or courses_by_id["C20"].get("repository") != expected_lebl_repository
-        or "198 halaman" not in courses_by_id["C20"].get("note", "")
-        or "semua 11 latihan" not in courses_by_id["C20"].get("note", "")
-        or "78543d4e8087e68589e8f15d0a3a969b3282247c7c9c2cdcb6f658dfa4b68e4f" not in courses_by_id["C20"].get("note", "")
+        or not all(token in courses_by_id["C20"].get("note", "") for token in ("U397", "226 halaman", "11.8.1", "Polinom Trigonometrik", "tetap pekerjaan berjalan"))
     ):
-        raise ValueError("C20 is not preserved as the exact production-state U336 WIP")
-    for role_id, expected_units in (("B70", "15 unit"), ("C50", "50 unit")):
+        raise ValueError("C20 is not preserved as the exact production-state U397 WIP")
+    for role_id, expected_tokens in (
+        ("B70", ("U397", "35 unit R007", "40 halaman", "bukan korpus B70 lengkap")),
+        ("C50", ("U397", "50 unit R008", "bola Riemann", "tetap diproduksi")),
+    ):
         course = courses_by_id[role_id]
         if (
             course.get("state") != "production"
-            or course.get("edition") != expected_lebl_edition
-            or course.get("zenodo") != "https://doi.org/10.5281/zenodo.22082567"
+            or course.get("edition") != expected_lebl_editions[role_id]
+            or course.get("zenodo") != "https://doi.org/10.5281/zenodo.22105195"
             or course.get("repository") != expected_lebl_repository
-            or expected_units not in course.get("note", "")
-            or "belum lengkap" not in course.get("note", "")
+            or not all(token in course.get("note", "") for token in expected_tokens)
         ):
-            raise ValueError(f"{role_id} does not preserve its exact partial U336 evidence")
+            raise ValueError(f"{role_id} does not preserve its exact partial U397 evidence")
     c100 = courses_by_id["C100"]
+    expected_c100_supplements = [{
+        "id": "clemens-snapp-workbook-u010",
+        "title": "Buku kerja geometri dua dimensi, Unit 001–010",
+        "resourceType": "workbook",
+        "state": "partial",
+        "scope": "Unit 001–010, pembaca 110 halaman; lini lisensi terpisah dari kursus utama.",
+        "license": "CC BY-NC-SA 4.0",
+        "pages": 110,
+        "url": "https://zenodo.org/records/22105520/files/buku-kerja-geometri-dua-dimensi-id-unit001-010.pdf?download=1",
+        "zenodo": "https://doi.org/10.5281/zenodo.22105520",
+        "conceptDoi": "https://doi.org/10.5281/zenodo.22105519",
+        "bytes": 595201,
+        "sha256": "5cc3f36cf9b01e6d0bc568f54f7170ae4dde71d16d3b55d26739ed1f8d9201a7",
+    }]
     if (
         c100.get("state") != "published"
         or c100.get("zenodo") != "https://doi.org/10.5281/zenodo.22102628"
         or c100.get("edition") != "https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1"
+        or c100.get("reader") != "https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/reader/"
+        or c100.get("supplements") != expected_c100_supplements
         or not all(token in c100.get("corpus", "") for token in ("Bidang Euklides", "kursus utama", "Bahasa Indonesia", "lengkap"))
-        or not all(token in c100.get("note", "") for token in ("253 solusi", "enam unit", "empat pemeriksaan", "dua capstone", "HTML semantik", "EPUB", "Clemens/Snapp", "lini terpisah"))
+        or not all(token in c100.get("note", "") for token in ("253 solusi", "enam unit", "empat pemeriksaan", "dua capstone", "HTML semantik", "EPUB", "Clemens/Snapp", "lini CC BY-NC-SA terpisah", "Unit 001–010", "tambahan parsial"))
     ):
         raise ValueError("C100 does not preserve the verified rights-clean complete main course and separately licensed workbook boundary")
     if (
@@ -789,13 +853,21 @@ def main() -> None:
     ):
         raise ValueError("D30 does not preserve the verified incomplete checkpoint-20 boundary")
     if (
-        courses_by_id["D40"].get("state") != "production"
-        or courses_by_id["D40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22086227"
-        or courses_by_id["D40"].get("edition") != "https://zenodo.org/records/22086227/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_09.pdf?download=1"
-        or "8 simpul FEniCSx (7 wajib + 1 pengayaan)" not in courses_by_id["D40"].get("corpus", "")
-        or not all(token in courses_by_id["D40"].get("note", "") for token in ("Unit 09", "77 halaman", "4.414.297 byte", "f2869bc0c38153d2223a03e8dccc85c306cefdc4eea15f9fe6a560a6d1f7ce91", "klasifikasi selesai"))
+        courses_by_id["D10"].get("state") != "production"
+        or courses_by_id["D10"].get("zenodo") != "https://doi.org/10.5281/zenodo.22105474"
+        or courses_by_id["D10"].get("edition") != "https://zenodo.org/records/22105474/files/00_READ_FIRST_FONDASI_TEORI_UKURAN_V1_DAN_V2_HINGGA_BAGIAN_252.pdf?download=1"
+        or courses_by_id["D10"].get("repository") != "https://github.com/KokunoYumeto/fremlin-measure-theory-id"
+        or not all(token in courses_by_id["D10"].get("note", "") for token in ("v0.17.0", "338 dari 672 halaman", "Jilid I lengkap", "Jilid II halaman 1–236", "Bagian 252", "tetap diproduksi"))
     ):
-        raise ValueError("D40 does not preserve the verified Unit-09 boundary and eight-node FEniCSx architecture")
+        raise ValueError("D10 does not preserve the exact public v0.17.0 through-section-252 boundary")
+    if (
+        courses_by_id["D40"].get("state") != "production"
+        or courses_by_id["D40"].get("zenodo") != "https://doi.org/10.5281/zenodo.22103731"
+        or courses_by_id["D40"].get("edition") != "https://zenodo.org/records/22103731/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_12.pdf?download=1"
+        or "8 simpul FEniCSx (7 wajib + 1 pengayaan)" not in courses_by_id["D40"].get("corpus", "")
+        or not all(token in courses_by_id["D40"].get("note", "") for token in ("Unit 12", "154 halaman", "8.722.345 byte", "7733f5f4d264ced9fc7a8404f5570522442a2ae5c25a4c6b4188dd2f50c2d735", "fungsi khusus selesai", "tetap diproduksi"))
+    ):
+        raise ValueError("D40 does not preserve the verified Unit-12 boundary and eight-node FEniCSx architecture")
     if (
         courses_by_id["D50"].get("state") != "production"
         or courses_by_id["D50"].get("zenodo") != "https://doi.org/10.5281/zenodo.22073928"
@@ -842,6 +914,67 @@ def main() -> None:
     ):
         raise ValueError("D100 does not preserve the public Unit-15, local Unit-16-18, and frozen-not-dispatched Unit-19 distinction")
 
+    expected_new_overlay_facts = {
+        "A10": {
+            "url": "https://zenodo.org/records/22105421/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-S0031-reader.pdf?download=1",
+            "source_publication_state": "catalog_declared",
+            "effective_publication_state": "public",
+            "evidence_kind": "anonymous_public_byte_readback",
+            "bytes": 41677159,
+            "sha256": "adb18d25ecde88868e58f75c0d3b366121e499d5f1c44df71e048ee4f6482744",
+            "verified_at": "2026-08-26T04:49:37Z",
+        },
+        "A30": {
+            "url": "https://zenodo.org/records/22105534/files/OpenStax-Precalculus-2e-id-ID-0.1.0-alpha.32-reader.pdf?download=1",
+            "source_publication_state": "catalog_declared",
+            "effective_publication_state": "public",
+            "evidence_kind": "anonymous_public_byte_readback",
+            "bytes": 107019966,
+            "sha256": "a50644d6e14bea0a9bc18ce52f4052deb2830397bc78e98dc03a75dacb0dc788",
+            "verified_at": "2026-08-26T04:49:37Z",
+        },
+        "B60": {
+            "url": "https://zenodo.org/records/22105443/files/CLP-4-Kalkulus-Vektor-Bahasa-Indonesia.pdf?download=1",
+            "source_publication_state": "catalog_declared",
+            "effective_publication_state": "public",
+            "evidence_kind": "anonymous_public_byte_readback",
+            "bytes": 3758521,
+            "sha256": "5ecf6047b63afd4a456cc230f69016aea59d80cd0bd2be73ce24b0000df98b87",
+            "verified_at": "2026-08-26T04:49:37Z",
+        },
+        "D10": {
+            "url": "https://zenodo.org/records/22105474/files/00_READ_FIRST_FONDASI_TEORI_UKURAN_V1_DAN_V2_HINGGA_BAGIAN_252.pdf?download=1",
+            "source_publication_state": "catalog_declared",
+            "effective_publication_state": "public",
+            "evidence_kind": "anonymous_public_byte_readback",
+            "bytes": 2500114,
+            "sha256": "6ba03a3dd30f4172cd3f2a4949ac5ef37ac27931f7b302b961ae888c17b875f4",
+            "verified_at": "2026-08-26T04:49:37Z",
+        },
+        "D40": {
+            "url": "https://zenodo.org/records/22103731/files/PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_12.pdf?download=1",
+            "source_publication_state": "catalog_declared",
+            "effective_publication_state": "public",
+            "evidence_kind": "anonymous_public_byte_readback",
+            "bytes": 8722345,
+            "sha256": "7733f5f4d264ced9fc7a8404f5570522442a2ae5c25a4c6b4188dd2f50c2d735",
+            "verified_at": "2026-08-26T04:49:37Z",
+        },
+    }
+    overlay_keys = tuple(next(iter(expected_new_overlay_facts.values())).keys())
+    actual_new_overlay_facts = {}
+    for overlay in authority.get("public_readback_overlays", []):
+        course_id = overlay.get("course_id")
+        if course_id not in expected_new_overlay_facts:
+            continue
+        if course_id in actual_new_overlay_facts:
+            raise ValueError(f"duplicate v0.58 public-readback overlay for {course_id}")
+        if not isinstance(overlay.get("surface_id"), str) or not overlay["surface_id"]:
+            raise ValueError(f"v0.58 public-readback overlay for {course_id} has no surface ID")
+        actual_new_overlay_facts[course_id] = {key: overlay.get(key) for key in overlay_keys}
+    if actual_new_overlay_facts != expected_new_overlay_facts:
+        raise ValueError("v0.58 owner-publication readback overlays do not match exact verified bytes")
+
     expected_catalog_migrations = []
     for migration_id, metadata in EXPECTED_MIGRATIONS.items():
         expected_catalog_migrations.append(
@@ -862,8 +995,10 @@ def main() -> None:
         "datasetCount": 34,
         "courseCount": 40,
         "learnerSurfaceCount": EXPECTED_V2_COUNTS["reader_surfaces"],
-        "webRouteCount": 41,
+        "webRouteCount": EXPECTED_V2_COUNTS["web_routes"],
         "identityCrosswalkCount": 2122,
+        "publicationEventCount": EXPECTED_V2_COUNTS["publication_events"],
+        "qaEventCount": EXPECTED_V2_COUNTS["qa_events"],
         "package": f"https://zenodo.org/records/{args.record_id}/files/program-matematika-indonesia-backend-v2-v{version}.zip?download=1",
         "packageSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-package-v2.schema.json?download=1",
         "recordSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-record-v2.schema.json?download=1",
@@ -923,10 +1058,10 @@ def main() -> None:
     }
     if catalog["program"]["backend"].get("learnerReadModelV1") != expected_learner_read_model:
         raise ValueError("catalog learner-read-model claim does not match the exact validated release boundary")
-    if read_model.get("summary", {}).get("published_course_count") != 17:
-        raise ValueError("learner read-model published-course count is not 17")
-    if read_model.get("summary", {}).get("readback_overlay_count") != 3:
-        raise ValueError("learner read-model readback overlay count is not 3")
+    if read_model.get("summary", {}).get("published_course_count") != 18:
+        raise ValueError("learner read-model published-course count is not 18")
+    if read_model.get("summary", {}).get("readback_overlay_count") != 11:
+        raise ValueError("learner read-model readback overlay count is not 11")
 
     if catalog["program"]["backend"]["centralRecordCount"] != 2122:
         raise ValueError("central backend record count must remain exactly 2,122")
@@ -979,7 +1114,7 @@ def main() -> None:
         f"10.5281/zenodo.{args.record_id}",
         f"v{version}",
         "40 korpus terpilih",
-        "Produksi yang belum selesai tetap dilabeli dengan jelas",
+        "produksi yang belum selesai tetap dilabeli dengan jelas",
         "Mulai belajar — buka 40 mata kuliah",
     ):
         if required not in html:

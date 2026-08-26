@@ -64,6 +64,29 @@
           "edition": { "type": "string", "format": "uri" },
           "repository": { "type": "string", "format": "uri" },
           "zenodo": { "type": "string", "format": "uri" },
+          "supplements": {
+            "type": "array",
+            "uniqueItems": true,
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["id", "title", "resourceType", "state", "scope", "license", "pages", "url", "zenodo", "bytes", "sha256"],
+              "properties": {
+                "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
+                "title": { "type": "string", "minLength": 1 },
+                "resourceType": { "enum": ["workbook", "problem-book", "companion", "solutions", "reference"] },
+                "state": { "enum": ["complete", "partial"] },
+                "scope": { "type": "string", "minLength": 1 },
+                "license": { "type": "string", "minLength": 1 },
+                "pages": { "type": "integer", "minimum": 1 },
+                "url": { "type": "string", "format": "uri" },
+                "zenodo": { "type": "string", "format": "uri" },
+                "conceptDoi": { "type": "string", "format": "uri" },
+                "bytes": { "type": "integer", "minimum": 1 },
+                "sha256": { "$ref": "#/$defs/sha256" }
+              }
+            }
+          },
           "federation": {
             "type": "object",
             "additionalProperties": false,

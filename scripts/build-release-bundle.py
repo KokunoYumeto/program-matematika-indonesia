@@ -371,6 +371,7 @@ def main() -> None:
         "scripts/validate-v21-learner-routes.mjs",
         "scripts/advance-curriculum-authority-v056.mjs",
         "scripts/advance-curriculum-authority-v057.mjs",
+        "scripts/advance-curriculum-authority-v058.mjs",
         "scripts/build-v21-pilot-package.py",
         "scripts/build-educational-access-planning-v21.py",
         "scripts/validate-educational-access-planning-v21.py",
