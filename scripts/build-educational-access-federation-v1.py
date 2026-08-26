@@ -525,7 +525,11 @@ def write_package(package_root: Path, public_json: Path, schema_path: Path) -> N
             for row in rows:
                 handle.write(canonical(row))
         with (package_root / "csv" / f"{table}.csv").open("w", encoding="utf-8", newline="") as handle:
-            writer = csv.DictWriter(handle, fieldnames=["id", "stable_key", "status", "recorded_at", "source_file", "source_sha256", "source_row", "record_json"])
+            writer = csv.DictWriter(
+                handle,
+                fieldnames=["id", "stable_key", "status", "recorded_at", "source_file", "source_sha256", "source_row", "record_json"],
+                lineterminator="\n",
+            )
             writer.writeheader()
             for row in rows:
                 writer.writerow({
@@ -539,7 +543,11 @@ def write_package(package_root: Path, public_json: Path, schema_path: Path) -> N
         for row in all_records:
             handle.write(canonical(row))
     with (package_root / "records.csv").open("w", encoding="utf-8", newline="") as handle:
-        writer = csv.DictWriter(handle, fieldnames=["record_type", "id", "stable_key", "status", "record_json"])
+        writer = csv.DictWriter(
+            handle,
+            fieldnames=["record_type", "id", "stable_key", "status", "record_json"],
+            lineterminator="\n",
+        )
         writer.writeheader()
         for row in all_records:
             writer.writerow({"record_type": row["record_type"], "id": row["id"], "stable_key": row["stable_key"], "status": row["status"], "record_json": json.dumps(row, ensure_ascii=False, sort_keys=True, separators=(",", ":"))})
