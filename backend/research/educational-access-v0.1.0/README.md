@@ -13,12 +13,12 @@ runs, ranking items, and impact snapshots. Their absence means “active researc
 not yet materialized,” never zero evidence or a fabricated result.
 
 The package is a frozen release snapshot. The validator always verifies its
-schema, manifest, hashes, UUIDv5 identities, projections, foreign keys, and
-public catalog. It also reports whether the current mutable workspace still
-matches the captured source facts. Use `--require-live-source-replay`
-immediately after rebuilding when that stronger current-workspace equality is
-required; a later source change does not retroactively invalidate an already
-frozen package.
+schema, manifest, hashes, UUIDv5 identities, projections, foreign keys, public
+catalog, and portable public asset locators. It also reports whether the current
+mutable workspace still matches the captured source facts. Use
+`--require-live-source-replay` immediately after rebuilding when that stronger
+current-workspace equality is required; a later source change does not
+retroactively invalidate an already frozen package.
 
 ```powershell
 python -B scripts/build-educational-access-federation-v1.py

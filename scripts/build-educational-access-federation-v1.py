@@ -53,6 +53,34 @@ PLANNED = {
     "impact_snapshots": "active_research_unmaterialized",
 }
 
+README_TEXT = """# Educational-access research federation
+
+This additive package lets the modular curriculum backend serve the existing
+educational-access and marginal-intelligibility research without pretending
+that research records are mathematics course units. It contains 490 typed,
+stable records across ten materialized tables, with lossless JSONL and CSV
+projections, exact source facts, foreign-key checks, and a public compact JSON
+projection at `docs/data/educational-access.json`.
+
+Seven future tables are deliberately declared but not emitted: population
+cells, curriculum-unit mappings, compute observations, cost scenarios, ranking
+runs, ranking items, and impact snapshots. Their absence means “active research
+not yet materialized,” never zero evidence or a fabricated result.
+
+The package is a frozen release snapshot. The validator always verifies its
+schema, manifest, hashes, UUIDv5 identities, projections, foreign keys, public
+catalog, and portable public asset locators. It also reports whether the current
+mutable workspace still matches the captured source facts. Use
+`--require-live-source-replay` immediately after rebuilding when that stronger
+current-workspace equality is required; a later source change does not
+retroactively invalidate an already frozen package.
+
+```powershell
+python -B scripts/build-educational-access-federation-v1.py
+python -B scripts/validate-educational-access-federation-v1.py --require-live-source-replay
+```
+"""
+
 PAYLOAD_FIELDS: dict[str, dict[str, str]] = {
     "research_projects": {
         "project_key": "str", "title": "str", "research_state": "str",
@@ -152,6 +180,17 @@ def file_fact(path: Path, role: str) -> dict[str, Any]:
 
 def split_ids(value: str) -> list[str]:
     return [item.strip() for item in value.replace(",", ";").split(";") if item.strip()]
+
+
+def public_asset_locator(value: str, digest: str) -> str:
+    normalized = value.strip().replace("\\", "/")
+    workspace_prefix = WORKSPACE.resolve().as_posix().rstrip("/") + "/"
+    if normalized.casefold().startswith(workspace_prefix.casefold()):
+        relative = normalized[len(workspace_prefix):]
+        parts = [part for part in relative.split("/") if part]
+        if parts and all(part not in {".", ".."} for part in parts):
+            return "workspace:///" + "/".join(parts)
+    return f"external-source://sha256/{digest.lower()}"
 
 
 def stable_id(record_type: str, stable_key: str) -> str:
@@ -403,6 +442,7 @@ def build_records() -> tuple[dict[str, list[dict[str, Any]]], list[dict[str, Any
                 continue
             payload = json.loads(line)
             payload["sha256"] = payload["sha256"].lower()
+            payload["path"] = public_asset_locator(payload["path"], payload["sha256"])
             tables["asset_sources"].append(record("asset_sources", payload["asset_id"], "asset_recorded", payload, asset_fact, rownum))
 
     central = json.loads(CENTRAL_V1.read_text(encoding="utf-8"))
@@ -461,6 +501,7 @@ def write_package(package_root: Path, public_json: Path, schema_path: Path) -> N
     (package_root / "data").mkdir()
     (package_root / "csv").mkdir()
     (package_root / "schema").mkdir()
+    (package_root / "README.md").write_text(README_TEXT, encoding="utf-8", newline="\n")
     (package_root / "schema/educational-access-federation-v1.schema.json").write_bytes(canonical(schema))
 
     package = {
@@ -535,7 +576,7 @@ def write_package(package_root: Path, public_json: Path, schema_path: Path) -> N
 
     files = []
     for path in sorted(package_root.rglob("*")):
-        if path.is_file() and path.name != "manifest.json":
+        if path.is_file() and path.name not in {"README.md", "manifest.json"}:
             data = path.read_bytes()
             files.append({"path": path.relative_to(package_root).as_posix(), "bytes": len(data), "sha256": sha_bytes(data)})
     manifest = {

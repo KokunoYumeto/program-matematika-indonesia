@@ -140,6 +140,13 @@ def main() -> int:
                     errors.append(f"evidence FK missing:{table}:{row['stable_key']}:{evidence_id}")
 
     asset_ids = {row["payload"]["asset_id"] for row in package["tables"]["asset_sources"]}
+    for row in package["tables"]["asset_sources"]:
+        locator = row["payload"].get("path", "")
+        if not (
+            locator.startswith("workspace:///")
+            or locator.startswith("external-source://sha256/")
+        ):
+            errors.append(f"asset locator is not public and portable:{row['stable_key']}")
     for table in ["language_profiles", "recommendations", "bridge_surfaces", "accessibility_interventions", "manager_coverage"]:
         for row in package["tables"][table]:
             for asset_id in row["payload"].get("asset_ids", []):
