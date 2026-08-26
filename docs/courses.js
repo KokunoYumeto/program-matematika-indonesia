@@ -914,7 +914,7 @@ export const program = Object.freeze({
   "id": "program-matematika-indonesia",
   "title": "Program Matematika Indonesia — Peta Kurikulum Terbuka",
   "language": "id-ID",
-  "version": "0.56.0",
+  "version": "0.57.0",
   "snapshotDate": "2026-08-26",
   "totalCourseRoles": 40,
   "selectedCorpusRoles": 40,
@@ -957,7 +957,7 @@ export const program = Object.freeze({
     "10.5281/zenodo.22102628"
   ],
   "website": "https://kokunoyumeto.github.io/program-matematika-indonesia/",
-  "zenodo": "https://doi.org/10.5281/zenodo.22103522",
+  "zenodo": "https://doi.org/10.5281/zenodo.22104174",
   "zenodoConcept": "https://doi.org/10.5281/zenodo.22059707",
   "provenance": {
     "model": "OpenAI Codex gpt-5.6-sol, Ultra",
@@ -1034,9 +1034,9 @@ export const program = Object.freeze({
         "result": "lossless-zero-copy-virtual-adapter-pass"
       }
     ],
-    "schema": "https://zenodo.org/records/22103522/files/interlanguage-math-backend-v1.schema.json?download=1",
-    "sourceFormatProfile": "https://zenodo.org/records/22103522/files/interlanguage-source-format-profile-v1.schema.json?download=1",
-    "package": "https://zenodo.org/records/22103522/files/program-matematika-indonesia-backend-v1-v0.56.0.zip?download=1",
+    "schema": "https://zenodo.org/records/22104174/files/interlanguage-math-backend-v1.schema.json?download=1",
+    "sourceFormatProfile": "https://zenodo.org/records/22104174/files/interlanguage-source-format-profile-v1.schema.json?download=1",
+    "package": "https://zenodo.org/records/22104174/files/program-matematika-indonesia-backend-v1-v0.57.0.zip?download=1",
     "federationV2": {
       "version": "0.3.0",
       "status": "validated",
@@ -1046,21 +1046,21 @@ export const program = Object.freeze({
       "learnerSurfaceCount": 128,
       "webRouteCount": 41,
       "identityCrosswalkCount": 2122,
-      "package": "https://zenodo.org/records/22103522/files/program-matematika-indonesia-backend-v2-v0.56.0.zip?download=1",
-      "packageSchema": "https://zenodo.org/records/22103522/files/federation-package-v2.schema.json?download=1",
-      "recordSchema": "https://zenodo.org/records/22103522/files/federation-record-v2.schema.json?download=1",
-      "validationReceipt": "https://zenodo.org/records/22103522/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.56.0.json?download=1"
+      "package": "https://zenodo.org/records/22104174/files/program-matematika-indonesia-backend-v2-v0.57.0.zip?download=1",
+      "packageSchema": "https://zenodo.org/records/22104174/files/federation-package-v2.schema.json?download=1",
+      "recordSchema": "https://zenodo.org/records/22104174/files/federation-record-v2.schema.json?download=1",
+      "validationReceipt": "https://zenodo.org/records/22104174/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.57.0.json?download=1"
     },
     "learnerReadModelV1": {
       "version": "1.0.0",
       "status": "validated",
       "courseCount": 40,
       "prerequisiteEdgeCount": 82,
-      "authority": "https://zenodo.org/records/22103522/files/curriculum-authority-v1.json?download=1",
-      "authoritySchema": "https://zenodo.org/records/22103522/files/curriculum-authority-v1.schema.json?download=1",
-      "readModel": "https://zenodo.org/records/22103522/files/learner-read-model-v1.json?download=1",
-      "readModelSchema": "https://zenodo.org/records/22103522/files/learner-read-model-v1.schema.json?download=1",
-      "validationReceipt": "https://zenodo.org/records/22103522/files/LOCAL_RELEASE_VALIDATION_v0.56.0.json?download=1",
+      "authority": "https://zenodo.org/records/22104174/files/curriculum-authority-v1.json?download=1",
+      "authoritySchema": "https://zenodo.org/records/22104174/files/curriculum-authority-v1.schema.json?download=1",
+      "readModel": "https://zenodo.org/records/22104174/files/learner-read-model-v1.json?download=1",
+      "readModelSchema": "https://zenodo.org/records/22104174/files/learner-read-model-v1.schema.json?download=1",
+      "validationReceipt": "https://zenodo.org/records/22104174/files/LOCAL_RELEASE_VALIDATION_v0.57.0.json?download=1",
       "publicEndpoint": "https://kokunoyumeto.github.io/program-matematika-indonesia/data/learner-read-model.json"
     },
     "federationV21": {
@@ -1069,14 +1069,41 @@ export const program = Object.freeze({
       "pilot_courses": [
         "A00",
         "B10",
+        "C100",
         "D20"
       ],
-      "pilot_units": 255,
-      "pilot_relations": 1171,
+      "pilot_units": 1194,
+      "pilot_relations": 2165,
       "route_wrapper_course": "D20",
-      "packageSchema": "https://zenodo.org/records/22103522/files/federation-unit-package-v2.1.schema.json?download=1",
-      "recordSchema": "https://zenodo.org/records/22103522/files/federation-unit-record-v2.1.schema.json?download=1",
-      "package": "https://zenodo.org/records/22103522/files/program-matematika-indonesia-backend-v2.1-pilots-v0.56.0.zip?download=1"
+      "route_wrapper_courses": [
+        "C100",
+        "D20"
+      ],
+      "educational_access_planning": {
+        "schema_id": "interlanguage/global-backend-v2.1-educational-access-planning/0.1.0",
+        "dataset_id": "planning:educational-access:v2.1:0.1.0",
+        "status": "validated",
+        "curriculum_unit_count": 29,
+        "portfolio_count": 13,
+        "portfolio_relation_count": 10,
+        "adaptation_depth_count": 5,
+        "accessibility_derivative_count": 8,
+        "compute_assumption_count": 12,
+        "compute_scenario_count": 3
+      },
+      "packageSchema": "https://zenodo.org/records/22104174/files/federation-unit-package-v2.1.schema.json?download=1",
+      "recordSchema": "https://zenodo.org/records/22104174/files/federation-unit-record-v2.1.schema.json?download=1",
+      "package": "https://zenodo.org/records/22104174/files/program-matematika-indonesia-backend-v2.1-pilots-v0.57.0.zip?download=1"
+    },
+    "educationalAccessResearch": {
+      "version": "0.1.0",
+      "status": "frozen_validated",
+      "record_count": 490,
+      "materialized_table_count": 10,
+      "declared_unmaterialized_table_count": 7,
+      "publicCatalog": "https://kokunoyumeto.github.io/program-matematika-indonesia/data/educational-access.json",
+      "schema": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/educational-access-federation-v1.schema.json",
+      "sourcePackage": "https://zenodo.org/records/22104174/files/program-matematika-indonesia-source-v0.57.0.zip?download=1"
     }
   },
   "repositories": {
