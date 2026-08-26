@@ -1,0 +1,514 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/backend-migration-receipt-v2.schema.json",
+  "title": "Interlanguage mathematics backend migration receipt v2",
+  "description": "Strict proof envelope for reversible v1-to-v2 or native-to-v2 federation projections. The receipt proves a projection and never transfers canonical corpus ownership.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "receipt_id",
+    "migration_id",
+    "recorded_at",
+    "migration_mode",
+    "source",
+    "target",
+    "identity",
+    "transformation",
+    "coverage",
+    "validation",
+    "materialization",
+    "public_artifacts",
+    "credentials_recorded",
+    "limitations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_id": {
+      "const": "interlanguage/backend-migration-receipt/2.0.0"
+    },
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "receipt_id": {
+      "$ref": "#/$defs/uuid5_urn"
+    },
+    "migration_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recorded_at": {
+      "$ref": "#/$defs/date_time"
+    },
+    "migration_mode": {
+      "enum": [
+        "zero_copy_projection",
+        "lossless_materialization",
+        "identity_crosswalk_only",
+        "additive_projection"
+      ]
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "target": {
+      "$ref": "#/$defs/target"
+    },
+    "identity": {
+      "$ref": "#/$defs/identity"
+    },
+    "transformation": {
+      "$ref": "#/$defs/transformation"
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "validation": {
+      "$ref": "#/$defs/validation"
+    },
+    "materialization": {
+      "$ref": "#/$defs/materialization"
+    },
+    "public_artifacts": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/public_artifact"
+      }
+    },
+    "credentials_recorded": {
+      "const": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_sha256": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/sha256"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "file_binding": {
+      "type": "object",
+      "required": [
+        "locator",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "dataset_id",
+        "dataset_version",
+        "schema_name",
+        "schema_version",
+        "schema_binding",
+        "package_manifest_binding",
+        "records_binding",
+        "record_count",
+        "canonical_owner_locator"
+      ],
+      "properties": {
+        "dataset_id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "dataset_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_binding": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "package_manifest_binding": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/file_binding"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "records_binding": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "canonical_owner_locator": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "target": {
+      "type": "object",
+      "required": [
+        "dataset_id",
+        "dataset_version",
+        "schema_name",
+        "schema_version",
+        "schema_binding",
+        "package_manifest_binding",
+        "records_binding",
+        "record_count"
+      ],
+      "properties": {
+        "dataset_id": {
+          "$ref": "#/$defs/uuid5_urn"
+        },
+        "dataset_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "schema_name": {
+          "const": "interlanguage-global-modular-mathematics-federation"
+        },
+        "schema_version": {
+          "const": "2.0.0"
+        },
+        "schema_binding": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "package_manifest_binding": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "records_binding": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "record_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "namespace_uuid",
+        "target_name_formula",
+        "legacy_id_policy",
+        "semantic_key_policy",
+        "crosswalk_binding",
+        "crosswalk_count"
+      ],
+      "properties": {
+        "namespace_uuid": {
+          "const": "7790e70a-ae6d-5cf3-b7f5-c53d7d4c0fbd"
+        },
+        "target_name_formula": {
+          "const": "record_type:semantic_key"
+        },
+        "legacy_id_policy": {
+          "const": "preserve through explicit identity_crosswalk records; never recompute legacy IDs"
+        },
+        "semantic_key_policy": {
+          "const": "immutable corpus-qualified key excluding translated wording, rendered pages, mutable line numbers, task IDs, and locale"
+        },
+        "crosswalk_binding": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "crosswalk_count": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "transformation": {
+      "type": "object",
+      "required": [
+        "adapter_id",
+        "adapter_version",
+        "adapter_locator",
+        "adapter_sha256",
+        "command",
+        "projection_semantics",
+        "canonical_owner_backend_unchanged",
+        "deterministic"
+      ],
+      "properties": {
+        "adapter_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adapter_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adapter_locator": {
+          "type": "string",
+          "minLength": 1
+        },
+        "adapter_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "command": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "projection_semantics": {
+          "enum": [
+            "one_to_one",
+            "lossless_wrapper",
+            "lossless_normalization",
+            "additive_summary",
+            "crosswalk_only"
+          ]
+        },
+        "canonical_owner_backend_unchanged": {
+          "const": true
+        },
+        "deterministic": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "count_map": {
+      "type": "object",
+      "propertyNames": {
+        "pattern": "^[a-z][a-z0-9_]*$"
+      },
+      "additionalProperties": {
+        "type": "integer",
+        "minimum": 0
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "required": [
+        "source_table_counts",
+        "target_record_counts",
+        "source_records_accounted_for",
+        "dropped_records",
+        "invented_content_records",
+        "coverage_result"
+      ],
+      "properties": {
+        "source_table_counts": {
+          "$ref": "#/$defs/count_map"
+        },
+        "target_record_counts": {
+          "$ref": "#/$defs/count_map"
+        },
+        "source_records_accounted_for": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "dropped_records": {
+          "const": 0
+        },
+        "invented_content_records": {
+          "const": 0
+        },
+        "coverage_result": {
+          "const": "pass"
+        }
+      },
+      "additionalProperties": false
+    },
+    "gate_result": {
+      "enum": [
+        "pass",
+        "not_applicable"
+      ]
+    },
+    "validation": {
+      "type": "object",
+      "required": [
+        "result",
+        "validator_binding",
+        "run_at",
+        "gates",
+        "error_count",
+        "warning_count"
+      ],
+      "properties": {
+        "result": {
+          "const": "pass"
+        },
+        "validator_binding": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "run_at": {
+          "$ref": "#/$defs/date_time"
+        },
+        "gates": {
+          "type": "object",
+          "required": [
+            "strict_schema",
+            "uuid_recomputation",
+            "stable_key_uniqueness",
+            "typed_foreign_key_closure",
+            "authority_hash_binding",
+            "formula_or_declared_delta",
+            "dependency_closure",
+            "ab_byte_identity",
+            "jsonl_csv_jsonl_roundtrip",
+            "learner_route_and_link_validation",
+            "anonymous_public_byte_readback"
+          ],
+          "properties": {
+            "strict_schema": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "uuid_recomputation": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "stable_key_uniqueness": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "typed_foreign_key_closure": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "authority_hash_binding": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "formula_or_declared_delta": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "dependency_closure": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "ab_byte_identity": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "jsonl_csv_jsonl_roundtrip": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "learner_route_and_link_validation": {
+              "$ref": "#/$defs/gate_result"
+            },
+            "anonymous_public_byte_readback": {
+              "$ref": "#/$defs/gate_result"
+            }
+          },
+          "additionalProperties": false
+        },
+        "error_count": {
+          "const": 0
+        },
+        "warning_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "materialization": {
+      "type": "object",
+      "required": [
+        "canonical_records",
+        "lossless_csv",
+        "per_type_files",
+        "empty_tables_omitted"
+      ],
+      "properties": {
+        "canonical_records": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "lossless_csv": {
+          "$ref": "#/$defs/file_binding"
+        },
+        "per_type_files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file_binding"
+          }
+        },
+        "empty_tables_omitted": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "public_artifact": {
+      "type": "object",
+      "required": [
+        "url",
+        "bytes",
+        "sha256",
+        "readback_result"
+      ],
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "readback_result": {
+          "const": "pass"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
