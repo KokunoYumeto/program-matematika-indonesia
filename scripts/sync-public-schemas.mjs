@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const mappings = [
   ['schemas/catalog-v1.schema.json', 'docs/schema/v1/program-matematika-indonesia-catalog-v1.schema.json'],
+  ['schemas/educational-access-federation-v1.schema.json', 'docs/schema/educational-access-federation-v1.schema.json'],
   ['schemas/backend-v1.schema.json', 'docs/schema/v1/interlanguage-math-backend-v1.schema.json'],
   ['schemas/backend-migration-receipt-v1.schema.json', 'docs/schema/v1/interlanguage-backend-migration-receipt-v1.schema.json'],
   ['schemas/profiles/source-format-profile-v1.schema.json', 'docs/schema/v1/interlanguage-source-format-profile-v1.schema.json'],

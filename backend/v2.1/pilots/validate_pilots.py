@@ -49,6 +49,34 @@ ROLE_COUNT_KEYS = {
     "evidence_bound_relations": "relations",
     "rights_accessibility_summary": "rights_accessibility_documents",
     "learner_route_readback_evidence": "route_readback_documents",
+    "learner_route_materialization_evidence": "route_materialization_documents",
+}
+
+EXPECTED_PACKAGES = {
+    "a00-prealgebra": {"course_id": "A00", "units": 75, "search_documents": 75, "relations": 201},
+    "b10-dmoi": {"course_id": "B10", "units": 161, "search_documents": 161, "relations": 284},
+    "c100-geometry": {"course_id": "C100", "units": 939, "search_documents": 939, "relations": 994},
+    "d20-functional-analysis": {"course_id": "D20", "units": 19, "search_documents": 19, "relations": 686},
+}
+EXPECTED_CORE_HASHES = {
+    "a00-prealgebra": {
+        "units.jsonl": "16c5e057f48d460fcbee42853e716e8537d587ba6a09953dc84c11496d943948",
+        "relations.jsonl": "49ea805c2d0f8ce8d1be226a06b7aaedcefaed0de564387ebedd34d2d8075628",
+        "search.jsonl": "71e70bd4d538e5fad3798117b60d81a1bcf04cd8be39f76c9f4ec580b2f43a98",
+        "rights_accessibility.json": "fda5233372c820eb0cc6ab7a5139b015206d031cc19da573286552df95219285",
+    },
+    "b10-dmoi": {
+        "units.jsonl": "80d79c94d7a780d7b8a5b317ca68c07fac25f21abf2f331747f12eed6db4c91d",
+        "relations.jsonl": "0ca7768415609146c554bef2228b6cde52d3df605088b117acfa246c9ca7553d",
+        "search.jsonl": "e08fb76866be2c58827f015caec3d378f053a1eb2f43cf05d990eabdfe5475b9",
+        "rights_accessibility.json": "2e0c51ab3086aafc6cfe26cfd106d0e85469f5d5a95a8a7df605443549ccf2ae",
+    },
+    "d20-functional-analysis": {
+        "units.jsonl": "90bb317d1e083471ac7bea94acd8e25734782a5857c4544a298e98e3ad1f8602",
+        "relations.jsonl": "d96a127e18cda636e67db5fd9a5b1bfa9057ba429ec69836cd0aacb258910a8e",
+        "search.jsonl": "4cefb887eab2cd8bd7656c2778ce25d378d55f25a4859f0c35b0b3b67e9f5879",
+        "rights_accessibility.json": "6b83978ab877d8e2008b0bc40cd6fc2af63df47ea9c76be6495e095104386fa9",
+    },
 }
 
 # These names denote a copied payload rather than a compact structural
@@ -163,6 +191,11 @@ def validate_authorities(manifest: dict[str, Any], errors: list[str], facts: lis
     if not isinstance(authorities, list) or not authorities:
         errors.append("manifest.input_authority must be a non-empty list")
         return
+    standalone_c100_projection = (
+        manifest.get("course_id") == "C100"
+        and manifest.get("standalone_replay_mode") == "committed_hash_bound_projection_validation_when_owner_corpus_is_not_adjacent"
+        and not (OWNER_ROOT / "foundations-of-geometry-id").exists()
+    )
     for index, item in enumerate(authorities):
         prefix = f"input_authority[{index}]"
         if not isinstance(item, dict):
@@ -192,6 +225,14 @@ def validate_authorities(manifest: dict[str, Any], errors: list[str], facts: lis
                 errors.append(f"{prefix}.locator URL is not HTTPS: {locator}")
             continue
         if not local.is_file() or local.is_symlink():
+            if standalone_c100_projection and locator_base == "owner_root" and locator.startswith("foundations-of-geometry-id/"):
+                facts.append({
+                    "bytes": expected_bytes,
+                    "locator": locator,
+                    "sha256": expected_sha,
+                    "validation_state": "declared_owner_authority_identity_retained; owner corpus intentionally absent from standalone central release",
+                })
+                continue
             errors.append(f"{prefix} local authority missing or not a regular file: {locator}")
             continue
         actual_bytes = local.stat().st_size
@@ -442,6 +483,45 @@ def validate_package(package: Path) -> dict[str, Any]:
     for missing in sorted((declared_paths | {"manifest.json"}) - actual_paths):
         errors.append(f"declared/inventory file missing: {missing}")
 
+    if course_id == "C100":
+        rights_path = package / "rights_accessibility.json"
+        try:
+            rights_document = load_json(rights_path)
+            components = rights_document.get("rights", {}).get("components", [])
+            by_id = {row.get("id"): row for row in components if isinstance(row, dict)}
+            expected_statuses = {
+                "rights-petrunin-body-cc-by-sa-4.0": "admitted",
+                "rights-p22-cover-excluded": "blocked",
+                "rights-fiziko-gpl-3.0-or-later": "component-licensed",
+                "rights-mppics-macros-unresolved": "blocked-for-public-source-package",
+                "rights-id-terminology-witness-pdfs-internal-only": "redistribution-unproven-excluded-from-public-packages",
+                "rights-h2checkers-public-domain": "mapped-pending-qa",
+            }
+            expected_ids = set(expected_statuses) | {
+                "rights-c100-independent-solutions-cc-by-sa-4.0",
+                "rights-c100-advanced-workbook-separated",
+            }
+            if set(by_id) != expected_ids:
+                errors.append(f"C100 rights ID set mismatch: {sorted(by_id)}")
+            for rights_id, status in expected_statuses.items():
+                if by_id.get(rights_id, {}).get("status") != status:
+                    errors.append(f"C100 rights status mismatch: {rights_id}")
+                if by_id.get(rights_id, {}).get("materialized_component_bytes_in_backend") is not False:
+                    errors.append(f"C100 rights payload boundary missing: {rights_id}")
+            workbook = by_id.get("rights-c100-advanced-workbook-separated", {})
+            if workbook.get("materialized_in_pilot_or_reader") is not False:
+                errors.append("C100 separately licensed workbook must remain absent from pilot and reader")
+            solutions = by_id.get("rights-c100-independent-solutions-cc-by-sa-4.0", {})
+            if solutions.get("license") != "CC BY-SA 4.0" or solutions.get("materialized_component_bytes_in_backend") is not False:
+                errors.append("C100 independent-solution rights/payload boundary mismatch")
+            materialization = load_json(package / "route_materialization.json")
+            if materialization.get("observation_state") != "local_only":
+                errors.append("C100 prepublication route evidence must be explicitly local_only")
+            if "observations" in materialization or "public_readback" in materialization:
+                errors.append("C100 local materialization must not claim public readback evidence")
+        except (OSError, ValidationError, AttributeError) as exc:
+            errors.append(f"C100 rights/accessibility gate could not run: {exc}")
+
     validate_authorities(manifest, errors, authority_facts)
 
     record_counts: dict[str, int] = {}
@@ -461,6 +541,84 @@ def validate_package(package: Path) -> dict[str, Any]:
         records_checked += stats["records"]
         route_urls += stats["route_urls"]
         prose_fields += stats["fields_checked"]
+
+    unit_ids = {row.get("stable_unit_id") for row in rows_by_file.get("units.jsonl", []) if isinstance(row.get("stable_unit_id"), str)}
+    search_ids = {row.get("stable_unit_id") for row in rows_by_file.get("search.jsonl", []) if isinstance(row.get("stable_unit_id"), str)}
+    if unit_ids != search_ids:
+        errors.append(
+            f"search stable-unit set differs from units: missing={sorted(unit_ids - search_ids)[:10]}, extra={sorted(search_ids - unit_ids)[:10]}"
+        )
+    relation_rows = rows_by_file.get("relations.jsonl", [])
+    if course_id == "C100":
+        c100_units = rows_by_file.get("units.jsonl", [])
+        solution_ids = {
+            row["stable_unit_id"]
+            for row in c100_units
+            if row.get("native_unit_kind") == "independent_solution"
+        }
+        subpart_ids = {
+            row["stable_unit_id"]
+            for row in c100_units
+            if isinstance(row.get("native_unit_kind"), str) and row["native_unit_kind"].endswith("exercise-subpart")
+        }
+        parent_exercise_ids = {
+            row["stable_unit_id"]
+            for row in c100_units
+            if isinstance(row.get("native_unit_kind"), str)
+            and "exercise" in row["native_unit_kind"]
+            and not row["native_unit_kind"].endswith("exercise-subpart")
+        }
+        if (len(solution_ids), len(subpart_ids), len(parent_exercise_ids)) != (253, 32, 253):
+            errors.append(
+                "C100 exercise/solution unit partition mismatch: "
+                f"solutions={len(solution_ids)}, subparts={len(subpart_ids)}, parents={len(parent_exercise_ids)}"
+            )
+        for row in c100_units:
+            route = row.get("learner_route", {})
+            if row.get("stable_unit_id") in solution_ids:
+                if (
+                    row.get("rights_component_id") != "rights-c100-independent-solutions-cc-by-sa-4.0"
+                    or route.get("anchor") is not None
+                    or route.get("route_state") != "central_exact_owner_solution_pdf_materialized_course_level_fallback_no_named_destination"
+                    or not str(route.get("url", "")).endswith("/solutions/SOLUSI_DAN_PENGUASAAN_ID_BAB01_20.pdf")
+                ):
+                    errors.append(f"C100 solution learner-route/rights mismatch: {row.get('stable_unit_id')}")
+            elif route.get("anchor") != row.get("stable_unit_id"):
+                errors.append(f"C100 semantic-reader anchor mismatch: {row.get('stable_unit_id')}")
+        solves = [row for row in relation_rows if row.get("relation_type") == "solves"]
+        part_of_exercise = [row for row in relation_rows if row.get("relation_type") == "part_of_exercise"]
+        has_exercise = [row for row in relation_rows if row.get("relation_type") == "has_exercise"]
+        if (
+            len(solves) != 253
+            or {row.get("from_id") for row in solves} != solution_ids
+            or {row.get("to_id") for row in solves} != parent_exercise_ids
+        ):
+            errors.append("C100 253-solution crosswalk relation closure mismatch")
+        if len(part_of_exercise) != 32 or {row.get("from_id") for row in part_of_exercise} != subpart_ids:
+            errors.append("C100 32-subpart parent relation closure mismatch")
+        if len(has_exercise) != 253 or {row.get("to_id") for row in has_exercise} != parent_exercise_ids:
+            errors.append("C100 253 parent-exercise chapter relation closure mismatch")
+    raw_external_endpoints = (
+        {row.get("from_id") for row in relation_rows} | {row.get("to_id") for row in relation_rows}
+    ) - unit_ids
+    if None in raw_external_endpoints:
+        errors.append("relation row has a missing from_id or to_id")
+        raw_external_endpoints.discard(None)
+    external_endpoints = sorted(raw_external_endpoints)
+    endpoint_policy = manifest.get("relation_endpoint_policy")
+    if not isinstance(endpoint_policy, dict):
+        errors.append("manifest.relation_endpoint_policy must be an object")
+    else:
+        mode = endpoint_policy.get("mode")
+        if mode not in {"internal_only", "exact_external_set"}:
+            errors.append("manifest.relation_endpoint_policy.mode is invalid")
+        if mode == "internal_only" and external_endpoints:
+            errors.append(f"relation graph has {len(external_endpoints)} endpoints outside the stable-unit set")
+        actual_external_sha = sha256_bytes(canonical_json(external_endpoints).encode("utf-8"))
+        if endpoint_policy.get("external_endpoint_count") != len(external_endpoints):
+            errors.append("relation external-endpoint count mismatch")
+        if endpoint_policy.get("external_endpoint_sha256") != actual_external_sha:
+            errors.append("relation external-endpoint SHA-256 mismatch")
     # Count every materialized role from the manifest, including optional
     # evidence shards such as D20's route_gap_report.json.  This prevents an
     # undeclared or silently omitted count from looking valid merely because
@@ -469,7 +627,7 @@ def validate_package(package: Path) -> dict[str, Any]:
         if isinstance(fact, dict):
             count_key = ROLE_COUNT_KEYS.get(fact.get("role"))
             if count_key:
-                if count_key in {"rights_accessibility_documents", "route_readback_documents"}:
+                if count_key in {"rights_accessibility_documents", "route_readback_documents", "route_materialization_documents"}:
                     record_counts[count_key] = record_counts.get(count_key, 0) + 1
                 elif count_key not in record_counts:
                     # JSONL record counts were derived from parsed rows above;
@@ -487,6 +645,20 @@ def validate_package(package: Path) -> dict[str, Any]:
         for key, actual in record_counts.items():
             if key not in expected_counts:
                 errors.append(f"record count {key} is not declared in manifest")
+
+    expected_package = EXPECTED_PACKAGES.get(package.name)
+    if expected_package is None:
+        errors.append(f"unexpected pilot package directory: {package.name}")
+    else:
+        if course_id != expected_package["course_id"]:
+            errors.append(f"package course mismatch: {course_id} != {expected_package['course_id']}")
+        for key in ("units", "search_documents", "relations"):
+            if record_counts.get(key) != expected_package[key]:
+                errors.append(f"fixed pilot regression count mismatch {key}: {record_counts.get(key)} != {expected_package[key]}")
+    for filename, expected_sha in EXPECTED_CORE_HASHES.get(package.name, {}).items():
+        path = package / filename
+        if not path.is_file() or sha256_path(path) != expected_sha:
+            errors.append(f"legacy pilot core SHA-256 regression: {filename}")
 
     result = "pass" if not errors else "fail"
     return {
@@ -519,14 +691,21 @@ def main(argv: list[str] | None = None) -> int:
         result = {"result": "fail", "packages": [], "errors": ["no pilot manifest directories found"]}
         print(canonical_json(result))
         return 1
+    package_names = {path.name for path in package_dirs}
+    global_errors = []
+    if package_names != set(EXPECTED_PACKAGES):
+        global_errors.append(
+            f"pilot package set mismatch: present={sorted(package_names)}, expected={sorted(EXPECTED_PACKAGES)}"
+        )
     reports: list[dict[str, Any]] = []
     for package in package_dirs:
         report = validate_package(package)
         write_report(package, report)
         reports.append(report)
-    overall = "pass" if all(report.get("result") == "pass" for report in reports) else "fail"
+    overall = "pass" if not global_errors and all(report.get("result") == "pass" for report in reports) else "fail"
     summary = {
         "result": overall,
+        "errors": global_errors,
         "packages": [
             {
                 "course_id": report.get("course_id"),

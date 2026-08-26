@@ -22,8 +22,14 @@ const approvedTopLevelFiles = new Set([
 ]);
 const approvedDataFiles = new Set([
   'data/curriculum-authority-v1.json',
+  'data/educational-access.json',
   'data/learner-read-model.json',
+  'data/educational-access.json',
+  'schema/educational-access-federation-v1.schema.json',
+  'data/unit-route-C100-v2.1.json',
+  'data/unit-route-D20-v2.1.json',
   'data/unit-route-v2.1.json',
+  'data/unit-routes-v2.1.json',
 ]);
 await cp(source, target, {
   recursive: true,
@@ -56,7 +62,16 @@ for (const name of [
   'id-ID/courses/D20/index.html',
   'id-ID/courses/D20/units/bab-01/index.html',
   'id-ID/courses/D20/units/bab-17/index.html',
+  'id-ID/courses/C100/index.html',
+  'id-ID/courses/C100/reader/index.html',
+  'id-ID/courses/C100/reader/style.css',
+  'id-ID/courses/C100/solutions/SOLUSI_DAN_PENGUASAAN_ID_BAB01_20.pdf',
+  'id-ID/courses/C100/units/bab-01/index.html',
+  'id-ID/courses/C100/units/bab-20/index.html',
+  'data/unit-route-C100-v2.1.json',
+  'data/unit-route-D20-v2.1.json',
   'data/unit-route-v2.1.json',
+  'data/unit-routes-v2.1.json',
 ]) {
   const [left, right] = await Promise.all([
     readFile(resolve(source, name)),

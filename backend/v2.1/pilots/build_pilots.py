@@ -81,6 +81,18 @@ def canonical_json(value: Any) -> str:
     return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
+def relation_endpoint_policy(units: list[dict[str, Any]], relations: list[dict[str, Any]]) -> dict[str, Any]:
+    unit_ids = {row["stable_unit_id"] for row in units}
+    external = sorted(
+        ({row["from_id"] for row in relations} | {row["to_id"] for row in relations}) - unit_ids
+    )
+    return {
+        "external_endpoint_count": len(external),
+        "external_endpoint_sha256": sha256_text(canonical_json(external)),
+        "mode": "internal_only" if not external else "exact_external_set",
+    }
+
+
 def write_json(path: Path, value: Any) -> None:
     path.write_text(json.dumps(value, ensure_ascii=False, sort_keys=True, indent=2) + "\n", encoding="utf-8", newline="\n")
 
@@ -434,6 +446,7 @@ def build_a00() -> dict[str, Any]:
             "source_target_binding": "source/target witness manifests plus localized-unit hashes",
         },
         "owner_tree_mode": "read_only",
+        "relation_endpoint_policy": relation_endpoint_policy(units, relations),
         "record_counts": {
             "relations": len(relations),
             "rights_accessibility_documents": 1,
@@ -727,6 +740,7 @@ def build_b10() -> dict[str, Any]:
             "source_target_binding": f"{len(unique_file_revisions)} distinct source/target file revisions and 322 source/target subtree hashes verified against live owner bytes",
         },
         "owner_tree_mode": "read_only",
+        "relation_endpoint_policy": relation_endpoint_policy(units, relations),
         "record_counts": {
             "relations": len(relations),
             "rights_accessibility_documents": 1,

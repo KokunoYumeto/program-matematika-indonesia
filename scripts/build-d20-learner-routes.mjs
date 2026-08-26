@@ -4,7 +4,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const proposalPath = resolve(project, '..', '..', '..', 'outputs', '01a01ec1-e685-70d0-b022-211396334723', 'curriculum_logbook', 'D20_LEARNER_ROUTE_WRAPPER_PROPOSAL_20260826.json');
+const proposalPath = resolve(project, 'backend', 'v2.1', 'pilots', 'd20-functional-analysis', 'route_proposal.json');
 const docs = resolve(project, 'docs');
 const routeRoot = resolve(docs, 'id-ID', 'courses', 'D20');
 const proposalBytes = await readFile(proposalPath);
@@ -59,7 +59,7 @@ for (const unit of proposal.units) {
     : '<span class="meta">Pendamping publik tidak tersedia untuk bab ini.</span>';
   const unitHtml = `<!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bab ${String(unit.order).padStart(2, '0')} — ${esc(unit.title)} | Analisis Fungsional</title><meta name="description" content="Indeks pelajar untuk ${esc(unit.title)}."><link rel="canonical" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/units/${esc(unit.slug)}/"><style>${commonStyle}</style></head>
-<body><main><nav aria-label="Jejak navigasi"><a href="../../../../">Program Matematika Indonesia</a> › <a href="../../">D20 — Analisis Fungsional</a> › <span aria-current="page">Bab ${String(unit.order).padStart(2, '0')}</span></nav>
+<body><main><nav aria-label="Jejak navigasi"><a href="../../../../../">Program Matematika Indonesia</a> › <a href="../../">D20 — Analisis Fungsional</a> › <span aria-current="page">Bab ${String(unit.order).padStart(2, '0')}</span></nav>
 <p class="meta">${esc(unit.id)}</p><h1>Bab ${String(unit.order).padStart(2, '0')}: ${esc(unit.title)}</h1>
 <p class="lede">Buka pembaca bab yang dipelihara oleh edisi kanonik. Halaman indeks ini tidak menggantikan pembaca dan tidak menyalin isi buku.</p>
 <div class="actions"><a class="button primary" href="${esc(unit.html_url)}">Buka pembaca HTML bab ↗</a>${companion}<a class="button secondary" href="${esc(owner.pdf_fallback)}">PDF lengkap ↗</a></div>
@@ -88,5 +88,9 @@ const routeManifest = {
     companion_route_state: unit.companion_url ? 'verified_public_http_200' : 'not_published_route_verified_404',
   })),
 };
-await write(resolve(docs, 'data', 'unit-route-v2.1.json'), `${JSON.stringify(routeManifest, null, 2)}\n`);
+const serializedRouteManifest = `${JSON.stringify(routeManifest, null, 2)}\n`;
+await write(resolve(docs, 'data', 'unit-route-D20-v2.1.json'), serializedRouteManifest);
+// Preserve the published v1 URL and shape for existing D20 consumers.  The
+// multi-course aggregate has its own plural filename.
+await write(resolve(docs, 'data', 'unit-route-v2.1.json'), serializedRouteManifest);
 console.log(JSON.stringify({ result: 'pass', proposal_sha256: proposalSha, course: 'D20', units: proposal.units.length, companion_units: proposal.units.filter((unit) => unit.companion_url).length }));

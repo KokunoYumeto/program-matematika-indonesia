@@ -8,6 +8,7 @@ import hashlib
 import json
 import shutil
 import subprocess
+import sys
 import zipfile
 from pathlib import Path
 
@@ -89,6 +90,70 @@ def files_under(root: Path, relative: str) -> list[Path]:
     return sorted(candidate for candidate in path.rglob("*") if candidate.is_file())
 
 
+def run_checked(command: list[str], root: Path) -> None:
+    subprocess.run(command, cwd=root, check=True)
+
+
+def deterministic_snapshot(root: Path) -> dict:
+    explicit_roots = [
+        "backend/v2.1/pilots/a00-prealgebra",
+        "backend/v2.1/pilots/b10-dmoi",
+        "backend/v2.1/pilots/c100-geometry",
+        "backend/v2.1/pilots/d20-functional-analysis",
+        "backend/v2.1/planning/educational-access",
+        "backend/research/educational-access-v0.1.0",
+        "docs/id-ID/courses/C100",
+        "docs/id-ID/courses/D20",
+    ]
+    explicit_files = [
+        "docs/data/unit-route-C100-v2.1.json",
+        "docs/data/unit-route-D20-v2.1.json",
+        "docs/data/unit-route-v2.1.json",
+        "docs/data/unit-routes-v2.1.json",
+        "docs/data/educational-access.json",
+        "schemas/educational-access-federation-v1.schema.json",
+    ]
+    paths: list[Path] = []
+    for relative in explicit_roots:
+        paths.extend(files_under(root, relative))
+    paths.extend(root / relative for relative in explicit_files)
+    facts = []
+    for path in sorted(set(paths)):
+        if "__pycache__" in path.parts or path.suffix == ".pyc":
+            continue
+        if not path.is_file():
+            raise ValueError(f"deterministic v2.1 output missing: {path}")
+        facts.append(
+            {
+                "path": path.relative_to(root).as_posix(),
+                "bytes": path.stat().st_size,
+                "sha256": sha256_file(path),
+            }
+        )
+    encoded = json.dumps(facts, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return {"files": facts, "aggregate_sha256": hashlib.sha256(encoded).hexdigest()}
+
+
+def run_v21_release_gates(root: Path) -> dict:
+    commands = [
+        [sys.executable, "-B", "backend/v2.1/pilots/build_all_pilots.py"],
+        [sys.executable, "-B", "backend/v2.1/pilots/validate_pilots.py"],
+        [sys.executable, "-B", "scripts/build-educational-access-planning-v21.py"],
+        [sys.executable, "-B", "scripts/validate-educational-access-planning-v21.py"],
+        [sys.executable, "-B", "scripts/validate-educational-access-federation-v1.py"],
+        ["node", "scripts/build-v21-learner-routes.mjs"],
+        ["node", "scripts/validate-v21-learner-routes.mjs"],
+    ]
+    snapshots = []
+    for _ in range(2):
+        for command in commands:
+            run_checked(command, root)
+        snapshots.append(deterministic_snapshot(root))
+    if snapshots[0] != snapshots[1]:
+        raise ValueError("v2.1 pilot/route build is not byte-deterministic across two complete replays")
+    return snapshots[1]
+
+
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--root", required=True, type=Path)
@@ -106,6 +171,30 @@ def main() -> None:
     backend_v2 = args.backend_v2_package.resolve()
     backend_v2_validation_receipt = args.backend_v2_validation_receipt.resolve()
     version = args.version
+
+    v21_gate = run_v21_release_gates(root)
+    release.mkdir(parents=True, exist_ok=True)
+    v21_gate_receipt = release / f"GLOBAL_BACKEND_V21_DETERMINISTIC_REPLAY_RECEIPT_v{version}.json"
+    v21_gate_receipt.write_text(
+        json.dumps(
+            {
+                "aggregate_sha256": v21_gate["aggregate_sha256"],
+                "files": v21_gate["files"],
+                "recorded_at": "2026-08-26T00:00:00Z",
+                "replay_count": 2,
+                "result": "pass",
+                "schema_id": "program-matematika-indonesia/backend-v2.1-deterministic-replay-receipt/v1",
+                "source_commit": args.source_commit,
+                "version": version,
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
 
     copies = {
         root / "schemas" / "catalog-v1.schema.json": release / "program-matematika-indonesia-catalog-v1.schema.json",
@@ -186,6 +275,7 @@ def main() -> None:
         "public/favicon.svg",
         "docs",
         "schemas/catalog-v1.schema.json",
+        "schemas/educational-access-federation-v1.schema.json",
         "schemas/backend-v1.schema.json",
         "schemas/backend-migration-receipt-v1.schema.json",
         "schemas/profiles/source-format-profile-v1.schema.json",
@@ -208,8 +298,16 @@ def main() -> None:
         "scripts/build-learner-start-pdf.py",
         "scripts/sync-sites-public.mjs",
         "scripts/build-d20-learner-routes.mjs",
+        "scripts/build-c100-learner-routes.mjs",
+        "scripts/build-v21-learner-routes.mjs",
+        "scripts/validate-v21-learner-routes.mjs",
         "scripts/advance-curriculum-authority-v056.mjs",
+        "scripts/advance-curriculum-authority-v057.mjs",
         "scripts/build-v21-pilot-package.py",
+        "scripts/build-educational-access-planning-v21.py",
+        "scripts/validate-educational-access-planning-v21.py",
+        "scripts/build-educational-access-federation-v1.py",
+        "scripts/validate-educational-access-federation-v1.py",
         "scripts/validate-static-site.mjs",
         "scripts/verify-http-bytes.mjs",
         "scripts/build-backend-v1-schema.py",
@@ -229,6 +327,7 @@ def main() -> None:
         "backend/v1/namespace.json",
         "backend/authority",
         "backend/v2.1",
+        "backend/research/educational-access-v0.1.0",
     ]
     source_paths: list[Path] = []
     for relative in source_roots:
@@ -300,6 +399,7 @@ def main() -> None:
                 "backend_v1_zip": backend_result,
                 "backend_v2_zip": backend_v2_result,
                 "backend_v21_zip": backend_v21_result,
+                "backend_v21_deterministic_gate": v21_gate,
                 "source_zip": source_result,
             },
             ensure_ascii=False,

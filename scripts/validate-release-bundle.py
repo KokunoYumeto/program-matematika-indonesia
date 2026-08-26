@@ -215,6 +215,10 @@ def verify_backend_zip(path: Path, package: Path, prefix: str) -> dict:
         prefix + source.relative_to(package).as_posix(): source
         for source in package.rglob("*")
         if source.is_file()
+        and not (
+            prefix == "program-matematika-indonesia-backend-v2.1/"
+            and ("__pycache__" in source.parts or source.suffix == ".pyc")
+        )
     }
     with zipfile.ZipFile(path) as archive:
         bad = archive.testzip()
@@ -228,6 +232,63 @@ def verify_backend_zip(path: Path, package: Path, prefix: str) -> dict:
                 raise ValueError(f"backend ZIP entry mismatch: {name}")
             assert_public_bytes(f"backend ZIP:{name}", data)
     return {"entries": len(expected), "privacy_scan": "pass", "result": "pass"}
+
+
+def verify_v21_deterministic_receipt(path: Path, root: Path, version: str, source_commit: str) -> dict:
+    receipt = json.loads(path.read_text(encoding="utf-8"))
+    expected_identity = {
+        "schema_id": "program-matematika-indonesia/backend-v2.1-deterministic-replay-receipt/v1",
+        "version": version,
+        "source_commit": source_commit,
+        "replay_count": 2,
+        "result": "pass",
+    }
+    for key, expected in expected_identity.items():
+        if receipt.get(key) != expected:
+            raise ValueError(f"v2.1 deterministic receipt {key} mismatch")
+    roots = [
+        "backend/v2.1/pilots/a00-prealgebra",
+        "backend/v2.1/pilots/b10-dmoi",
+        "backend/v2.1/pilots/c100-geometry",
+        "backend/v2.1/pilots/d20-functional-analysis",
+        "backend/v2.1/planning/educational-access",
+        "backend/research/educational-access-v0.1.0",
+        "docs/id-ID/courses/C100",
+        "docs/id-ID/courses/D20",
+    ]
+    explicit = [
+        "docs/data/unit-route-C100-v2.1.json",
+        "docs/data/unit-route-D20-v2.1.json",
+        "docs/data/unit-route-v2.1.json",
+        "docs/data/unit-routes-v2.1.json",
+        "docs/data/educational-access.json",
+        "schemas/educational-access-federation-v1.schema.json",
+    ]
+    paths: set[Path] = set()
+    for relative in roots:
+        paths.update(candidate for candidate in (root / relative).rglob("*") if candidate.is_file())
+    paths.update(root / relative for relative in explicit)
+    facts = [
+        {
+            "path": item.relative_to(root).as_posix(),
+            "bytes": item.stat().st_size,
+            "sha256": sha256_file(item),
+        }
+        for item in sorted(paths)
+        if "__pycache__" not in item.parts and item.suffix != ".pyc"
+    ]
+    encoded = json.dumps(facts, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    aggregate_sha256 = hashlib.sha256(encoded).hexdigest()
+    if receipt.get("files") != facts or receipt.get("aggregate_sha256") != aggregate_sha256:
+        raise ValueError("v2.1 deterministic receipt no longer matches exact release inputs")
+    return {
+        "aggregate_sha256": aggregate_sha256,
+        "files": len(facts),
+        "receipt_bytes": path.stat().st_size,
+        "receipt_sha256": sha256_file(path),
+        "replays": 2,
+        "result": "pass",
+    }
 
 
 def verify_v1_immutable_package(package: Path) -> dict:
@@ -768,16 +829,41 @@ def main() -> None:
     expected_federation_v21 = {
         "version": "2.1.0",
         "status": "pilot_validated",
-        "pilot_courses": ["A00", "B10", "D20"],
-        "pilot_units": 255,
-        "pilot_relations": 1171,
+        "pilot_courses": ["A00", "B10", "C100", "D20"],
+        "pilot_units": 1194,
+        "pilot_relations": 2165,
         "route_wrapper_course": "D20",
+        "route_wrapper_courses": ["C100", "D20"],
+        "educational_access_planning": {
+            "schema_id": "interlanguage/global-backend-v2.1-educational-access-planning/0.1.0",
+            "dataset_id": "planning:educational-access:v2.1:0.1.0",
+            "status": "validated",
+            "curriculum_unit_count": 29,
+            "portfolio_count": 13,
+            "portfolio_relation_count": 10,
+            "adaptation_depth_count": 5,
+            "accessibility_derivative_count": 8,
+            "compute_assumption_count": 12,
+            "compute_scenario_count": 3,
+        },
         "packageSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-unit-package-v2.1.schema.json?download=1",
         "recordSchema": f"https://zenodo.org/records/{args.record_id}/files/federation-unit-record-v2.1.schema.json?download=1",
         "package": f"https://zenodo.org/records/{args.record_id}/files/program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip?download=1",
     }
     if catalog["program"]["backend"].get("federationV21") != expected_federation_v21:
         raise ValueError("catalog federation-v2.1 claim does not match the exact validated pilot boundary")
+    expected_educational_access_research = {
+        "version": "0.1.0",
+        "status": "frozen_validated",
+        "record_count": 490,
+        "materialized_table_count": 10,
+        "declared_unmaterialized_table_count": 7,
+        "publicCatalog": "https://kokunoyumeto.github.io/program-matematika-indonesia/data/educational-access.json",
+        "schema": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/educational-access-federation-v1.schema.json",
+        "sourcePackage": f"https://zenodo.org/records/{args.record_id}/files/program-matematika-indonesia-source-v{version}.zip?download=1",
+    }
+    if catalog["program"]["backend"].get("educationalAccessResearch") != expected_educational_access_research:
+        raise ValueError("catalog educational-access research federation claim is not the frozen 490-record boundary")
     expected_learner_read_model = {
         "version": "1.0.0",
         "status": "validated",
@@ -962,6 +1048,13 @@ def main() -> None:
     }
     if zip_results["source"]["source_commit"] != args.source_commit:
         raise ValueError("source ZIP manifest is not bound to the validated repository commit")
+    v21_replay_receipt_name = f"GLOBAL_BACKEND_V21_DETERMINISTIC_REPLAY_RECEIPT_v{version}.json"
+    v21_replay_result = verify_v21_deterministic_receipt(
+        release / v21_replay_receipt_name,
+        root,
+        version,
+        args.source_commit,
+    )
 
     receipt_release_names = set(MIGRATION_RECEIPT_FILENAMES.values())
     expected_release_names = {
@@ -996,12 +1089,13 @@ def main() -> None:
         "federation-unit-record-v2.1.schema.json",
         f"program-matematika-indonesia-source-v{version}.zip",
         f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
+        v21_replay_receipt_name,
         "validate-backend-v2-federation.py",
         *receipt_release_names,
     }
-    if len(expected_release_names) != 45:
+    if len(expected_release_names) != 46:
         raise ValueError(
-            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 45"
+            f"release tooling expected-name set contains {len(expected_release_names)} payloads; expected 46"
         )
     actual_release_names = {
         path.name
@@ -1048,6 +1142,7 @@ def main() -> None:
             "backend": backend_report["checks"],
             "backend_v1_immutable_package": v1_immutable_result,
             "backend_v2_validation_receipt": v2_receipt_result,
+            "backend_v21_deterministic_replay_receipt": v21_replay_result,
             "backend_v2_executable_tests": {"tests_run": 23, "tests_passed": 23, "result": "pass"},
             "backend_v2_independent_validation": v2_validation_result,
             "backend_v2_fresh_replay_build": {

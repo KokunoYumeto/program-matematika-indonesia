@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://zenodo.org/records/22103522/files/program-matematika-indonesia-catalog-v1.schema.json",
+  "$id": "https://zenodo.org/records/22104174/files/program-matematika-indonesia-catalog-v1.schema.json",
   "title": "Program Matematika Indonesia — katalog rilis v1",
   "type": "object",
   "additionalProperties": false,
@@ -110,7 +110,7 @@
         "backend": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigrations", "schema", "sourceFormatProfile", "package", "federationV2", "federationV21", "learnerReadModelV1"],
+          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigrations", "schema", "sourceFormatProfile", "package", "federationV2", "federationV21", "educationalAccessResearch", "learnerReadModelV1"],
           "properties": {
             "schemaVersion": { "const": "1.0.0" },
             "status": { "const": "validated" },
@@ -158,20 +158,56 @@
             "federationV21": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["version", "status", "pilot_courses", "pilot_units", "pilot_relations", "route_wrapper_course", "packageSchema", "recordSchema", "package"],
+              "required": ["version", "status", "pilot_courses", "pilot_units", "pilot_relations", "route_wrapper_course", "route_wrapper_courses", "educational_access_planning", "packageSchema", "recordSchema", "package"],
               "properties": {
                 "version": { "const": "2.1.0" },
                 "status": { "const": "pilot_validated" },
                 "pilot_courses": {
                   "type": "array",
-                  "const": ["A00", "B10", "D20"]
+                  "const": ["A00", "B10", "C100", "D20"]
                 },
-                "pilot_units": { "const": 255 },
-                "pilot_relations": { "const": 1171 },
+                "pilot_units": { "const": 1194 },
+                "pilot_relations": { "const": 2165 },
                 "route_wrapper_course": { "const": "D20" },
+                "route_wrapper_courses": {
+                  "type": "array",
+                  "const": ["C100", "D20"]
+                },
+                "educational_access_planning": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["schema_id", "dataset_id", "status", "curriculum_unit_count", "portfolio_count", "portfolio_relation_count", "adaptation_depth_count", "accessibility_derivative_count", "compute_assumption_count", "compute_scenario_count"],
+                  "properties": {
+                    "schema_id": { "const": "interlanguage/global-backend-v2.1-educational-access-planning/0.1.0" },
+                    "dataset_id": { "const": "planning:educational-access:v2.1:0.1.0" },
+                    "status": { "const": "validated" },
+                    "curriculum_unit_count": { "const": 29 },
+                    "portfolio_count": { "const": 13 },
+                    "portfolio_relation_count": { "const": 10 },
+                    "adaptation_depth_count": { "const": 5 },
+                    "accessibility_derivative_count": { "const": 8 },
+                    "compute_assumption_count": { "const": 12 },
+                    "compute_scenario_count": { "const": 3 }
+                  }
+                },
                 "packageSchema": { "$ref": "#/$defs/httpsUrl" },
                 "recordSchema": { "$ref": "#/$defs/httpsUrl" },
                 "package": { "$ref": "#/$defs/httpsUrl" }
+              }
+            },
+            "educationalAccessResearch": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "record_count", "materialized_table_count", "declared_unmaterialized_table_count", "publicCatalog", "schema", "sourcePackage"],
+              "properties": {
+                "version": { "const": "0.1.0" },
+                "status": { "const": "frozen_validated" },
+                "record_count": { "const": 490 },
+                "materialized_table_count": { "const": 10 },
+                "declared_unmaterialized_table_count": { "const": 7 },
+                "publicCatalog": { "$ref": "#/$defs/httpsUrl" },
+                "schema": { "$ref": "#/$defs/httpsUrl" },
+                "sourcePackage": { "$ref": "#/$defs/httpsUrl" }
               }
             },
             "learnerReadModelV1": {

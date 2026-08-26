@@ -260,6 +260,10 @@ def build() -> dict[str, Any]:
             }
         )
     relations.sort(key=lambda item: (item["relation_type"], item["from_id"], item["to_id"], item["evidence"]["native_relation_id"]))
+    unit_ids = {row["stable_unit_id"] for row in units}
+    external_relation_endpoints = sorted(
+        ({row["from_id"] for row in relations} | {row["to_id"] for row in relations}) - unit_ids
+    )
 
     rights_rows = list(jsonl(D20_BACKEND / "rights.jsonl"))
     surface = next(row for row in jsonl(D20_BACKEND / "html_surfaces.jsonl") if row.get("id") == "FAOA-2015-ID-HTML-SOURCE-TEXT")
@@ -317,6 +321,7 @@ def build() -> dict[str, Any]:
         artifact(OUT / "relations.jsonl", OUT, "evidence_bound_relations"),
         artifact(OUT / "rights_accessibility.json", OUT, "rights_accessibility_summary"),
         artifact(OUT / "route_gap_report.json", OUT, "learner_route_readback_evidence"),
+        artifact(OUT / "route_proposal.json", OUT, "frozen_central_route_proposal"),
         artifact(OUT / "search.jsonl", OUT, "compact_search_shard"),
         artifact(OUT / "units.jsonl", OUT, "stable_unit_registry"),
     ]
@@ -352,6 +357,11 @@ def build() -> dict[str, Any]:
             "source_target_binding": "every admitted file unit source/target pair is checked against owner-native bytes and hashes",
         },
         "owner_tree_mode": "read_only",
+        "relation_endpoint_policy": {
+            "external_endpoint_count": len(external_relation_endpoints),
+            "external_endpoint_sha256": sha256_text(canonical_json(external_relation_endpoints)),
+            "mode": "exact_external_set",
+        },
         "record_counts": {
             "relations": len(relations),
             "rights_accessibility_documents": 1,
