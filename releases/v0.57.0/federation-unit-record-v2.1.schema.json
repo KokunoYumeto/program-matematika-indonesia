@@ -1,0 +1,968 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/backend/v2.1/schema/federation-unit-record-v2.1.schema.json",
+  "title": "Program Matematika Indonesia additive unit federation record v2.1",
+  "description": "Strict zero-copy unit, route, rights, release, QA, and research records. Owner-native content remains authoritative and is represented only through typed, hash-bound references.",
+  "oneOf": [
+    { "$ref": "#/$defs/owner_authority_record" },
+    { "$ref": "#/$defs/edition_record" },
+    { "$ref": "#/$defs/release_snapshot_record" },
+    { "$ref": "#/$defs/unit_record" },
+    { "$ref": "#/$defs/course_unit_membership_record" },
+    { "$ref": "#/$defs/occurrence_record" },
+    { "$ref": "#/$defs/segment_record" },
+    { "$ref": "#/$defs/segment_variant_record" },
+    { "$ref": "#/$defs/term_record" },
+    { "$ref": "#/$defs/term_variant_record" },
+    { "$ref": "#/$defs/relation_record" },
+    { "$ref": "#/$defs/asset_record" },
+    { "$ref": "#/$defs/rights_record" },
+    { "$ref": "#/$defs/rights_assignment_record" },
+    { "$ref": "#/$defs/artifact_record" },
+    { "$ref": "#/$defs/route_record" },
+    { "$ref": "#/$defs/route_member_record" },
+    { "$ref": "#/$defs/build_recipe_record" },
+    { "$ref": "#/$defs/qa_binding_record" },
+    { "$ref": "#/$defs/research_profile_record" }
+  ],
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "nullable_sha256": {
+      "oneOf": [
+        { "$ref": "#/$defs/sha256" },
+        { "type": "null" }
+      ]
+    },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "nullable_uuid5_urn": {
+      "oneOf": [
+        { "$ref": "#/$defs/uuid5_urn" },
+        { "type": "null" }
+      ]
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "nullable_date_time": {
+      "oneOf": [
+        { "$ref": "#/$defs/date_time" },
+        { "type": "null" }
+      ]
+    },
+    "locale": {
+      "type": "string",
+      "pattern": "^[a-z]{2,3}(?:-[A-Z][a-z]{3})?(?:-(?:[A-Z]{2}|[0-9]{3}))?(?:-[A-Za-z0-9]{5,8})*$"
+    },
+    "nullable_locale": {
+      "oneOf": [
+        { "$ref": "#/$defs/locale" },
+        { "type": "null" }
+      ]
+    },
+    "semantic_key": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 512,
+      "pattern": "^[a-z][a-z0-9_.-]*:[^\\s]+$"
+    },
+    "nonempty_string": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullable_string": {
+      "oneOf": [
+        { "$ref": "#/$defs/nonempty_string" },
+        { "type": "null" }
+      ]
+    },
+    "public_uri": {
+      "type": "string",
+      "format": "uri",
+      "pattern": "^https://"
+    },
+    "nullable_public_uri": {
+      "oneOf": [
+        { "$ref": "#/$defs/public_uri" },
+        { "type": "null" }
+      ]
+    },
+    "id_array": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/uuid5_urn" },
+      "uniqueItems": true
+    },
+    "nonempty_id_array": {
+      "allOf": [
+        { "$ref": "#/$defs/id_array" },
+        { "minItems": 1 }
+      ]
+    },
+    "string_array": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/nonempty_string" },
+      "uniqueItems": true
+    },
+    "normalized_state": {
+      "type": "string",
+      "enum": [
+        "selected",
+        "source_frozen",
+        "producing",
+        "owner_qa",
+        "accepted",
+        "completed",
+        "partially_published",
+        "published",
+        "remediation_required",
+        "frozen_not_dispatched",
+        "quarantined",
+        "superseded",
+        "withdrawn",
+        "validated_support",
+        "infrastructure",
+        "not_applicable"
+      ]
+    },
+    "hash_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "locator_base",
+        "locator",
+        "evidence_state",
+        "bytes",
+        "sha256",
+        "media_type",
+        "public_uri",
+        "recorded_at"
+      ],
+      "properties": {
+        "locator_base": {
+          "type": "string",
+          "enum": [
+            "program_repository_root",
+            "owner_repository_root",
+            "owner_package_root",
+            "coordinator_logbook_root",
+            "public_web",
+            "doi",
+            "embedded",
+            "not_applicable"
+          ]
+        },
+        "locator": { "$ref": "#/$defs/nonempty_string" },
+        "evidence_state": {
+          "type": "string",
+          "enum": [
+            "verified_local",
+            "verified_public",
+            "declared",
+            "unavailable",
+            "not_applicable"
+          ]
+        },
+        "bytes": {
+          "oneOf": [
+            { "type": "integer", "minimum": 0 },
+            { "type": "null" }
+          ]
+        },
+        "sha256": { "$ref": "#/$defs/nullable_sha256" },
+        "media_type": { "$ref": "#/$defs/nonempty_string" },
+        "public_uri": { "$ref": "#/$defs/nullable_public_uri" },
+        "recorded_at": { "$ref": "#/$defs/date_time" }
+      },
+      "oneOf": [
+        {
+          "properties": {
+            "evidence_state": { "enum": ["verified_local", "verified_public"] },
+            "bytes": { "type": "integer", "minimum": 0 },
+            "sha256": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        {
+          "properties": {
+            "evidence_state": { "const": "declared" },
+            "sha256": { "$ref": "#/$defs/sha256" }
+          }
+        },
+        {
+          "properties": {
+            "evidence_state": { "enum": ["unavailable", "not_applicable"] },
+            "bytes": { "type": "null" },
+            "sha256": { "type": "null" }
+          }
+        }
+      ]
+    },
+    "native_identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_authority_id",
+        "native_schema_name",
+        "native_schema_version",
+        "native_record_type",
+        "native_id",
+        "native_semantic_key",
+        "native_locator",
+        "native_record_binding"
+      ],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "native_schema_name": { "$ref": "#/$defs/nonempty_string" },
+        "native_schema_version": { "$ref": "#/$defs/nonempty_string" },
+        "native_record_type": { "$ref": "#/$defs/nonempty_string" },
+        "native_id": { "$ref": "#/$defs/nullable_string" },
+        "native_semantic_key": { "$ref": "#/$defs/nonempty_string" },
+        "native_locator": { "$ref": "#/$defs/nonempty_string" },
+        "native_record_binding": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "accessibility_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "profile",
+        "semantic_structure",
+        "alt_text",
+        "keyboard",
+        "screen_reader",
+        "math_access",
+        "notes"
+      ],
+      "properties": {
+        "profile": {
+          "type": "string",
+          "enum": ["unknown", "none", "baseline", "enhanced"]
+        },
+        "semantic_structure": { "$ref": "#/$defs/access_feature_state" },
+        "alt_text": { "$ref": "#/$defs/access_feature_state" },
+        "keyboard": { "$ref": "#/$defs/access_feature_state" },
+        "screen_reader": { "$ref": "#/$defs/access_feature_state" },
+        "math_access": { "$ref": "#/$defs/access_feature_state" },
+        "notes": { "$ref": "#/$defs/nullable_string" }
+      }
+    },
+    "access_feature_state": {
+      "type": "string",
+      "enum": ["verified", "available", "partial", "not_available", "not_applicable", "unknown"]
+    },
+    "rights_summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "rights_id",
+        "access_state",
+        "license_expression",
+        "component_exceptions",
+        "redistribution",
+        "adaptation"
+      ],
+      "properties": {
+        "rights_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "access_state": {
+          "type": "string",
+          "enum": ["open", "restricted", "quarantined", "unknown", "not_applicable"]
+        },
+        "license_expression": { "$ref": "#/$defs/nullable_string" },
+        "component_exceptions": { "type": "boolean" },
+        "redistribution": { "$ref": "#/$defs/permission_state" },
+        "adaptation": { "$ref": "#/$defs/permission_state" }
+      }
+    },
+    "permission_state": {
+      "type": "string",
+      "enum": ["permitted", "prohibited", "conditional", "unknown", "not_applicable"]
+    },
+    "learner_access": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_id", "public_url", "reader_anchor", "access_state", "target_kind"],
+      "properties": {
+        "route_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "public_url": { "$ref": "#/$defs/nullable_public_uri" },
+        "reader_anchor": { "$ref": "#/$defs/nullable_string" },
+        "access_state": {
+          "type": "string",
+          "enum": ["public_readback_verified", "public", "local_only", "planned", "withdrawn"]
+        },
+        "target_kind": {
+          "type": "string",
+          "enum": ["readable_html", "reader_anchor", "accessible_wrapper", "pdf_download", "epub_download", "offline_package", "not_available"]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "access_state": { "enum": ["public", "public_readback_verified"] } },
+            "required": ["access_state"]
+          },
+          "then": {
+            "anyOf": [
+              { "properties": { "public_url": { "$ref": "#/$defs/public_uri" } } },
+              { "properties": { "reader_anchor": { "$ref": "#/$defs/nonempty_string" } } }
+            ]
+          }
+        }
+      ]
+    },
+    "content_availability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["exercises", "hints", "answers", "solutions", "theorems", "proofs", "projects", "notebooks"],
+      "properties": {
+        "exercises": { "type": "integer", "minimum": 0 },
+        "hints": { "type": "integer", "minimum": 0 },
+        "answers": { "type": "integer", "minimum": 0 },
+        "solutions": { "type": "integer", "minimum": 0 },
+        "theorems": { "type": "integer", "minimum": 0 },
+        "proofs": { "type": "integer", "minimum": 0 },
+        "projects": { "type": "integer", "minimum": 0 },
+        "notebooks": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "record_type": {
+      "type": "string",
+      "enum": [
+        "owner_authority",
+        "edition",
+        "release_snapshot",
+        "unit",
+        "course_unit_membership",
+        "occurrence",
+        "segment",
+        "segment_variant",
+        "term",
+        "term_variant",
+        "relation",
+        "asset",
+        "rights",
+        "rights_assignment",
+        "artifact",
+        "route",
+        "route_member",
+        "build_recipe",
+        "qa_binding",
+        "research_profile"
+      ]
+    },
+    "record_envelope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "id",
+        "record_type",
+        "semantic_key",
+        "dataset_id",
+        "recorded_at",
+        "normalized_state",
+        "owner_native_state",
+        "state_profile",
+        "provenance",
+        "payload"
+      ],
+      "properties": {
+        "id": { "$ref": "#/$defs/uuid5_urn" },
+        "record_type": { "$ref": "#/$defs/record_type" },
+        "semantic_key": { "$ref": "#/$defs/semantic_key" },
+        "dataset_id": { "$ref": "#/$defs/uuid5_urn" },
+        "recorded_at": { "$ref": "#/$defs/date_time" },
+        "normalized_state": { "$ref": "#/$defs/normalized_state" },
+        "owner_native_state": { "$ref": "#/$defs/nonempty_string" },
+        "state_profile": { "const": "pmi-state-v2.1.0" },
+        "provenance": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/hash_binding" }
+        },
+        "payload": { "type": "object" }
+      }
+    },
+    "owner_authority_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_key",
+        "authority_kind",
+        "authority_locator",
+        "locator_visibility",
+        "corpus_ids",
+        "course_ids",
+        "native_schema_name",
+        "native_schema_version",
+        "native_backend_binding",
+        "authority_scope",
+        "sole_integrator_publisher",
+        "public_repository_url",
+        "release_lineage_url"
+      ],
+      "properties": {
+        "owner_key": { "$ref": "#/$defs/nonempty_string" },
+        "authority_kind": {
+          "type": "string",
+          "enum": ["canonical_corpus_owner", "program_coordinator", "research_dataset_owner", "infrastructure_owner"]
+        },
+        "authority_locator": { "$ref": "#/$defs/nonempty_string" },
+        "locator_visibility": { "type": "string", "enum": ["internal", "public"] },
+        "corpus_ids": { "$ref": "#/$defs/string_array" },
+        "course_ids": { "$ref": "#/$defs/id_array" },
+        "native_schema_name": { "$ref": "#/$defs/nonempty_string" },
+        "native_schema_version": { "$ref": "#/$defs/nonempty_string" },
+        "native_backend_binding": { "$ref": "#/$defs/hash_binding" },
+        "authority_scope": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": ["source_freeze", "translation", "integration", "qa", "release", "publication", "public_readback"]
+          }
+        },
+        "sole_integrator_publisher": { "const": true },
+        "public_repository_url": { "$ref": "#/$defs/nullable_public_uri" },
+        "release_lineage_url": { "$ref": "#/$defs/nullable_public_uri" }
+      }
+    },
+    "edition_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_authority_id",
+        "course_ids",
+        "locale",
+        "title",
+        "version_label",
+        "source_edition_id",
+        "source_format",
+        "source_format_detail",
+        "native_identity",
+        "source_binding",
+        "target_binding",
+        "rights_id",
+        "release_snapshot_ids"
+      ],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "course_ids": { "$ref": "#/$defs/nonempty_id_array" },
+        "locale": { "$ref": "#/$defs/locale" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "version_label": { "$ref": "#/$defs/nonempty_string" },
+        "source_edition_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "source_format": {
+          "type": "string",
+          "enum": ["cnxml", "pretext", "latex", "lyx", "mediawiki", "pressbooks_html", "html", "notebook", "mixed", "other"]
+        },
+        "source_format_detail": { "$ref": "#/$defs/nullable_string" },
+        "native_identity": { "$ref": "#/$defs/native_identity" },
+        "source_binding": { "$ref": "#/$defs/hash_binding" },
+        "target_binding": { "$ref": "#/$defs/hash_binding" },
+        "rights_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "release_snapshot_ids": { "$ref": "#/$defs/id_array" }
+      }
+    },
+    "release_snapshot_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_authority_id",
+        "edition_id",
+        "release_version",
+        "release_date",
+        "snapshot_kind",
+        "immutable",
+        "commit_sha",
+        "tree_sha",
+        "archive_sha256",
+        "artifact_ids",
+        "publication_uri",
+        "publication_state",
+        "snapshot_binding",
+        "public_readback_qa_id"
+      ],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "release_version": { "$ref": "#/$defs/nonempty_string" },
+        "release_date": { "$ref": "#/$defs/date_time" },
+        "snapshot_kind": { "type": "string", "enum": ["git_tag", "git_commit", "zenodo_version", "archive", "owner_checkpoint", "composite"] },
+        "immutable": { "type": "boolean" },
+        "commit_sha": {
+          "oneOf": [
+            { "type": "string", "pattern": "^[0-9a-f]{40,64}$" },
+            { "type": "null" }
+          ]
+        },
+        "tree_sha": {
+          "oneOf": [
+            { "type": "string", "pattern": "^[0-9a-f]{40,64}$" },
+            { "type": "null" }
+          ]
+        },
+        "archive_sha256": { "$ref": "#/$defs/nullable_sha256" },
+        "artifact_ids": { "$ref": "#/$defs/id_array" },
+        "publication_uri": { "$ref": "#/$defs/nullable_public_uri" },
+        "publication_state": { "type": "string", "enum": ["not_published", "partially_public", "published", "readback_verified", "superseded", "withdrawn"] },
+        "snapshot_binding": { "$ref": "#/$defs/hash_binding" },
+        "public_readback_qa_id": { "$ref": "#/$defs/nullable_uuid5_urn" }
+      }
+    },
+    "unit_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_authority_id",
+        "edition_id",
+        "locale",
+        "native_identity",
+        "unit_kind",
+        "title",
+        "learning_objectives",
+        "source_binding",
+        "target_binding",
+        "learner_access",
+        "content_availability",
+        "rights",
+        "accessibility"
+      ],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "locale": { "$ref": "#/$defs/locale" },
+        "native_identity": { "$ref": "#/$defs/native_identity" },
+        "unit_kind": { "type": "string", "enum": ["frontmatter", "part", "chapter", "section", "subsection", "lesson", "topic", "exercise_set", "appendix", "project", "reference", "other"] },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "learning_objectives": {
+          "type": "array",
+          "maxItems": 20,
+          "items": { "type": "string", "minLength": 1, "maxLength": 500 }
+        },
+        "source_binding": { "$ref": "#/$defs/hash_binding" },
+        "target_binding": { "$ref": "#/$defs/hash_binding" },
+        "learner_access": { "$ref": "#/$defs/learner_access" },
+        "content_availability": { "$ref": "#/$defs/content_availability" },
+        "rights": { "$ref": "#/$defs/rights_summary" },
+        "accessibility": { "$ref": "#/$defs/accessibility_summary" }
+      }
+    },
+    "course_unit_membership_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["course_id", "edition_id", "unit_id", "parent_unit_id", "ordinal", "order_path", "depth", "required", "membership_role", "source_order_key", "visible"],
+      "properties": {
+        "course_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "parent_unit_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "ordinal": { "type": "integer", "minimum": 0 },
+        "order_path": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "depth": { "type": "integer", "minimum": 0 },
+        "required": { "type": "boolean" },
+        "membership_role": { "type": "string", "enum": ["primary", "supplement", "prerequisite_review", "optional", "reference"] },
+        "source_order_key": { "$ref": "#/$defs/nonempty_string" },
+        "visible": { "type": "boolean" }
+      }
+    },
+    "occurrence_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit_id", "entity_id", "entity_type", "ordinal", "role", "source_locator", "source_binding", "target_binding"],
+      "properties": {
+        "unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "entity_id": { "$ref": "#/$defs/uuid5_urn" },
+        "entity_type": { "type": "string", "enum": ["segment", "asset", "term", "relation", "artifact", "interactive", "formula", "other"] },
+        "ordinal": { "type": "integer", "minimum": 0 },
+        "role": { "$ref": "#/$defs/nonempty_string" },
+        "source_locator": { "$ref": "#/$defs/nonempty_string" },
+        "source_binding": { "$ref": "#/$defs/hash_binding" },
+        "target_binding": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "segment_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["unit_id", "owner_authority_id", "native_identity", "segment_kind", "ordinal", "segmentation_profile", "source_binding"],
+      "properties": {
+        "unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "native_identity": { "$ref": "#/$defs/native_identity" },
+        "segment_kind": { "type": "string", "enum": ["heading", "paragraph", "definition", "theorem", "proof", "example", "exercise", "hint", "answer", "solution", "formula", "figure", "table", "code", "note", "other"] },
+        "ordinal": { "type": "integer", "minimum": 0 },
+        "segmentation_profile": { "$ref": "#/$defs/nonempty_string" },
+        "source_binding": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "segment_variant_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["segment_id", "edition_id", "locale", "role", "format", "source_variant_id", "translation_state", "rights_id", "source_binding", "target_binding"],
+      "properties": {
+        "segment_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "locale": { "$ref": "#/$defs/locale" },
+        "role": { "type": "string", "enum": ["source", "translation", "revision", "accessible_derivative", "search_projection"] },
+        "format": { "type": "string", "enum": ["plain_text", "cnxml", "pretext", "latex", "html", "markdown", "mathml", "notebook", "other"] },
+        "source_variant_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "translation_state": { "type": "string", "enum": ["not_started", "draft", "reviewed", "accepted", "published", "not_applicable"] },
+        "rights_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "source_binding": { "$ref": "#/$defs/hash_binding" },
+        "target_binding": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "term_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["concept_key", "source_locale", "source_form", "target_locale", "preferred_form", "term_status", "register", "scope_unit_id", "evidence"],
+      "properties": {
+        "concept_key": { "$ref": "#/$defs/nonempty_string" },
+        "source_locale": { "$ref": "#/$defs/locale" },
+        "source_form": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "target_locale": { "$ref": "#/$defs/locale" },
+        "preferred_form": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "term_status": { "type": "string", "enum": ["preferred", "accepted", "provisional", "deprecated", "rejected"] },
+        "register": { "type": "string", "enum": ["standard", "formal", "pedagogical", "colloquial", "historical", "other"] },
+        "scope_unit_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "evidence": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "term_variant_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["term_id", "locale", "form", "variant_kind", "rationale", "evidence"],
+      "properties": {
+        "term_id": { "$ref": "#/$defs/uuid5_urn" },
+        "locale": { "$ref": "#/$defs/locale" },
+        "form": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "variant_kind": { "type": "string", "enum": ["alias", "abbreviation", "orthographic", "regional", "deprecated", "search_only"] },
+        "rationale": { "$ref": "#/$defs/nullable_string" },
+        "evidence": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "relation_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edition_id", "from_id", "to_id", "relation_type", "ordinal", "strength", "confidence", "assertion_method", "source_binding"],
+      "properties": {
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "from_id": { "$ref": "#/$defs/uuid5_urn" },
+        "to_id": { "$ref": "#/$defs/uuid5_urn" },
+        "relation_type": { "type": "string", "enum": ["contains", "prerequisite", "supports", "follows", "exercise_hint", "exercise_answer", "exercise_solution", "theorem_proof", "definition_usage", "formula_alignment", "translation_of", "revision_of", "asset_used_by", "related"] },
+        "ordinal": { "type": "integer", "minimum": 0 },
+        "strength": { "type": "string", "enum": ["required", "recommended", "optional", "informational"] },
+        "confidence": { "type": "string", "enum": ["exact", "high", "medium", "low"] },
+        "assertion_method": { "$ref": "#/$defs/nonempty_string" },
+        "source_binding": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "asset_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_authority_id", "unit_ids", "native_identity", "asset_kind", "media_type", "source_binding", "target_binding", "rights_id", "accessibility", "quarantine_state"],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "unit_ids": { "$ref": "#/$defs/id_array" },
+        "native_identity": { "$ref": "#/$defs/native_identity" },
+        "asset_kind": { "type": "string", "enum": ["image", "diagram", "audio", "video", "data", "notebook", "interactive", "font", "stylesheet", "script", "archive", "other"] },
+        "media_type": { "$ref": "#/$defs/nonempty_string" },
+        "source_binding": { "$ref": "#/$defs/hash_binding" },
+        "target_binding": { "$ref": "#/$defs/hash_binding" },
+        "rights_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "accessibility": { "$ref": "#/$defs/accessibility_summary" },
+        "quarantine_state": { "type": "string", "enum": ["clear", "quarantined", "excluded", "unresolved"] }
+      }
+    },
+    "rights_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["license_expression", "attribution", "authority", "notice_binding", "third_party_status", "change_notice", "nonendorsement", "permissions"],
+      "properties": {
+        "license_expression": { "$ref": "#/$defs/nonempty_string" },
+        "attribution": { "$ref": "#/$defs/nonempty_string" },
+        "authority": { "$ref": "#/$defs/nonempty_string" },
+        "notice_binding": { "$ref": "#/$defs/hash_binding" },
+        "third_party_status": { "type": "string", "enum": ["none", "declared", "component_specific", "unresolved"] },
+        "change_notice": { "$ref": "#/$defs/nullable_string" },
+        "nonendorsement": { "$ref": "#/$defs/nullable_string" },
+        "permissions": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["redistribution", "adaptation", "commercial_use"],
+          "properties": {
+            "redistribution": { "$ref": "#/$defs/permission_state" },
+            "adaptation": { "$ref": "#/$defs/permission_state" },
+            "commercial_use": { "$ref": "#/$defs/permission_state" }
+          }
+        }
+      }
+    },
+    "rights_assignment_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rights_id", "target_id", "scope_role", "precedence", "inheritance", "assignment_state", "evidence"],
+      "properties": {
+        "rights_id": { "$ref": "#/$defs/uuid5_urn" },
+        "target_id": { "$ref": "#/$defs/uuid5_urn" },
+        "scope_role": { "type": "string", "enum": ["default", "override", "component", "surface", "release"] },
+        "precedence": { "type": "integer", "minimum": 0 },
+        "inheritance": { "type": "string", "enum": ["inherit", "replace", "supplement", "not_applicable"] },
+        "assignment_state": { "type": "string", "enum": ["verified", "declared", "unresolved", "quarantined"] },
+        "evidence": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "artifact_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_authority_id", "edition_id", "course_ids", "artifact_kind", "locale", "artifact_binding", "public_url", "rights_id", "accessibility", "build_recipe_id", "route_ids", "publication_state", "anonymous_readback_state"],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "course_ids": { "$ref": "#/$defs/nonempty_id_array" },
+        "artifact_kind": { "type": "string", "enum": ["html_reader", "pdf_reader", "epub_reader", "offline_package", "source_archive", "notebook", "backend_package", "search_shard", "rights_manifest", "qa_receipt", "other"] },
+        "locale": { "$ref": "#/$defs/locale" },
+        "artifact_binding": { "$ref": "#/$defs/hash_binding" },
+        "public_url": { "$ref": "#/$defs/nullable_public_uri" },
+        "rights_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "accessibility": { "$ref": "#/$defs/accessibility_summary" },
+        "build_recipe_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "route_ids": { "$ref": "#/$defs/id_array" },
+        "publication_state": { "type": "string", "enum": ["local_only", "declared", "public", "readback_verified", "superseded", "withdrawn"] },
+        "anonymous_readback_state": { "type": "string", "enum": ["not_run", "pass", "fail", "not_applicable"] }
+      }
+    },
+    "route_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["course_id", "unit_id", "artifact_id", "locale", "route_kind", "path", "public_url", "reader_anchor", "access_state", "target_kind", "fallback_artifact_id", "evidence", "machine_data_only"],
+      "properties": {
+        "course_id": { "$ref": "#/$defs/uuid5_urn" },
+        "unit_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "artifact_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "locale": { "$ref": "#/$defs/locale" },
+        "route_kind": { "type": "string", "enum": ["course_root", "unit_root", "reader_anchor", "accessible_wrapper", "download", "search", "research_strategy"] },
+        "path": { "type": "string", "pattern": "^/(?!.*\\.(?:json|jsonl|csv)$)[A-Za-z0-9._~!$&'()*+,;=:@%/-]*$" },
+        "public_url": { "$ref": "#/$defs/nullable_public_uri" },
+        "reader_anchor": { "$ref": "#/$defs/nullable_string" },
+        "access_state": { "type": "string", "enum": ["public_readback_verified", "public", "local_only", "planned", "withdrawn"] },
+        "target_kind": { "type": "string", "enum": ["readable_html", "reader_anchor", "accessible_wrapper", "pdf_download", "epub_download", "offline_package", "search_interface", "research_summary"] },
+        "fallback_artifact_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "evidence": { "$ref": "#/$defs/hash_binding" },
+        "machine_data_only": { "const": false }
+      }
+    },
+    "route_member_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["route_id", "entity_id", "entity_type", "ordinal", "order_path", "role", "required"],
+      "properties": {
+        "route_id": { "$ref": "#/$defs/uuid5_urn" },
+        "entity_id": { "$ref": "#/$defs/uuid5_urn" },
+        "entity_type": { "type": "string", "enum": ["course", "unit", "artifact", "segment", "research_profile"] },
+        "ordinal": { "type": "integer", "minimum": 0 },
+        "order_path": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "integer", "minimum": 0 }
+        },
+        "role": { "type": "string", "enum": ["primary", "fallback", "download", "support", "search", "navigation"] },
+        "required": { "type": "boolean" }
+      }
+    },
+    "build_recipe_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_authority_id", "edition_id", "recipe_kind", "toolchain_binding", "command_template", "input_ids", "output_artifact_ids", "deterministic", "replay_evidence"],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "recipe_kind": { "type": "string", "enum": ["adapter", "reader", "backend", "search_shard", "route_wrapper", "validation", "other"] },
+        "toolchain_binding": { "$ref": "#/$defs/hash_binding" },
+        "command_template": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 64,
+          "items": { "type": "string", "minLength": 1, "maxLength": 500 }
+        },
+        "input_ids": { "$ref": "#/$defs/id_array" },
+        "output_artifact_ids": { "$ref": "#/$defs/id_array" },
+        "deterministic": { "type": "boolean" },
+        "replay_evidence": { "$ref": "#/$defs/hash_binding" }
+      }
+    },
+    "qa_binding_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["subject_ids", "qa_kind", "result", "method", "input_bindings", "output_binding", "evidence", "severity_p1", "severity_p2", "severity_p3", "anonymous_readback_state", "checked_url"],
+      "properties": {
+        "subject_ids": { "$ref": "#/$defs/nonempty_id_array" },
+        "qa_kind": { "type": "string", "enum": ["schema_validation", "source_hash_binding", "target_hash_binding", "formula_preservation", "structure_preservation", "terminology", "rights", "accessibility", "deterministic_replay", "reader_build", "learner_route", "anonymous_public_readback", "aggregate"] },
+        "result": { "type": "string", "enum": ["pass", "fail", "warning", "not_applicable"] },
+        "method": { "$ref": "#/$defs/nonempty_string" },
+        "input_bindings": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/hash_binding" }
+        },
+        "output_binding": { "$ref": "#/$defs/hash_binding" },
+        "evidence": { "$ref": "#/$defs/hash_binding" },
+        "severity_p1": { "type": "integer", "minimum": 0 },
+        "severity_p2": { "type": "integer", "minimum": 0 },
+        "severity_p3": { "type": "integer", "minimum": 0 },
+        "anonymous_readback_state": { "type": "string", "enum": ["not_run", "pass", "fail", "not_applicable"] },
+        "checked_url": { "$ref": "#/$defs/nullable_public_uri" }
+      }
+    },
+    "research_profile_payload": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["research_dataset_id", "profile_kind", "locale", "course_ids", "unit_ids", "title", "summary", "evidence_bindings", "learner_route_id", "graph_exclusion"],
+      "properties": {
+        "research_dataset_id": { "$ref": "#/$defs/uuid5_urn" },
+        "profile_kind": { "type": "string", "enum": ["language", "workload", "portfolio", "evidence", "recommendation", "accessibility", "compute", "funding"] },
+        "locale": { "$ref": "#/$defs/nullable_locale" },
+        "course_ids": { "$ref": "#/$defs/id_array" },
+        "unit_ids": { "$ref": "#/$defs/id_array" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 500 },
+        "summary": { "type": "string", "minLength": 1, "maxLength": 2000 },
+        "evidence_bindings": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/hash_binding" }
+        },
+        "learner_route_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "graph_exclusion": { "const": "not_course_prerequisite_or_unit_content" }
+      }
+    },
+    "owner_authority_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "owner_authority" }, "payload": { "$ref": "#/$defs/owner_authority_payload" } } }
+      ]
+    },
+    "edition_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "edition" }, "payload": { "$ref": "#/$defs/edition_payload" } } }
+      ]
+    },
+    "release_snapshot_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "release_snapshot" }, "payload": { "$ref": "#/$defs/release_snapshot_payload" } } }
+      ]
+    },
+    "unit_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "unit" }, "payload": { "$ref": "#/$defs/unit_payload" } } }
+      ]
+    },
+    "course_unit_membership_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "course_unit_membership" }, "payload": { "$ref": "#/$defs/course_unit_membership_payload" } } }
+      ]
+    },
+    "occurrence_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "occurrence" }, "payload": { "$ref": "#/$defs/occurrence_payload" } } }
+      ]
+    },
+    "segment_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "segment" }, "payload": { "$ref": "#/$defs/segment_payload" } } }
+      ]
+    },
+    "segment_variant_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "segment_variant" }, "payload": { "$ref": "#/$defs/segment_variant_payload" } } }
+      ]
+    },
+    "term_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "term" }, "payload": { "$ref": "#/$defs/term_payload" } } }
+      ]
+    },
+    "term_variant_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "term_variant" }, "payload": { "$ref": "#/$defs/term_variant_payload" } } }
+      ]
+    },
+    "relation_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "relation" }, "payload": { "$ref": "#/$defs/relation_payload" } } }
+      ]
+    },
+    "asset_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "asset" }, "payload": { "$ref": "#/$defs/asset_payload" } } }
+      ]
+    },
+    "rights_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "rights" }, "payload": { "$ref": "#/$defs/rights_payload" } } }
+      ]
+    },
+    "rights_assignment_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "rights_assignment" }, "payload": { "$ref": "#/$defs/rights_assignment_payload" } } }
+      ]
+    },
+    "artifact_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "artifact" }, "payload": { "$ref": "#/$defs/artifact_payload" } } }
+      ]
+    },
+    "route_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "route" }, "payload": { "$ref": "#/$defs/route_payload" } } }
+      ]
+    },
+    "route_member_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "route_member" }, "payload": { "$ref": "#/$defs/route_member_payload" } } }
+      ]
+    },
+    "build_recipe_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "build_recipe" }, "payload": { "$ref": "#/$defs/build_recipe_payload" } } }
+      ]
+    },
+    "qa_binding_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "qa_binding" }, "payload": { "$ref": "#/$defs/qa_binding_payload" } } }
+      ]
+    },
+    "research_profile_record": {
+      "allOf": [
+        { "$ref": "#/$defs/record_envelope" },
+        { "properties": { "record_type": { "const": "research_profile" }, "payload": { "$ref": "#/$defs/research_profile_payload" } } }
+      ]
+    }
+  }
+}

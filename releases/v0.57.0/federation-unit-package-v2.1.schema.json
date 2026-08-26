@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/backend/v2.1/schema/federation-unit-package-v2.1.schema.json",
+  "title": "Program Matematika Indonesia additive unit federation package v2.1",
+  "description": "Strict manifest contract for a deterministic, additive, zero-copy v2.1 package layered on federation v2.0.0.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "dataset_id",
+    "dataset_version",
+    "recorded_at",
+    "identity_namespace",
+    "identity_formula",
+    "base_federation",
+    "record_schema",
+    "state_vocabulary",
+    "records_file",
+    "record_count",
+    "record_counts",
+    "record_order",
+    "shards",
+    "files",
+    "build",
+    "validation",
+    "zero_copy_policy",
+    "seal_policy",
+    "limitations"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "schema/federation-unit-package-v2.1.schema.json"
+    },
+    "schema_id": {
+      "const": "interlanguage/global-modular-mathematics-federation-package/2.1.0"
+    },
+    "schema_version": {
+      "const": "2.1.0"
+    },
+    "package_id": { "$ref": "#/$defs/uuid5_urn" },
+    "dataset_id": { "$ref": "#/$defs/uuid5_urn" },
+    "dataset_version": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9._-]*-v[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "recorded_at": { "$ref": "#/$defs/date_time" },
+    "identity_namespace": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "identity_formula": {
+      "const": "uuid5(identity_namespace, record_type + ':' + semantic_key)"
+    },
+    "base_federation": { "$ref": "#/$defs/base_federation" },
+    "record_schema": { "$ref": "#/$defs/bound_file" },
+    "state_vocabulary": { "$ref": "#/$defs/bound_file" },
+    "records_file": { "$ref": "#/$defs/bound_file" },
+    "record_count": { "type": "integer", "minimum": 0 },
+    "record_counts": { "$ref": "#/$defs/record_counts" },
+    "record_order": { "$ref": "#/$defs/record_type_order" },
+    "shards": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/shard" }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "$ref": "#/$defs/bound_file" }
+    },
+    "build": { "$ref": "#/$defs/build" },
+    "validation": { "$ref": "#/$defs/validation" },
+    "zero_copy_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_native_authoritative", "full_prose_centralized", "central_payload_limit", "reversible_adapters"],
+      "properties": {
+        "owner_native_authoritative": { "const": true },
+        "full_prose_centralized": { "const": false },
+        "central_payload_limit": { "const": "identity_order_titles_objectives_hashes_routes_relations_rights_accessibility_release_qa_and_search_terms" },
+        "reversible_adapters": { "const": true }
+      }
+    },
+    "seal_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["non_circular", "seal_filename", "binds"],
+      "properties": {
+        "non_circular": { "const": true },
+        "seal_filename": { "const": "SEAL.json" },
+        "binds": {
+          "type": "array",
+          "prefixItems": [
+            { "const": "schemas" },
+            { "const": "builder" },
+            { "const": "records" },
+            { "const": "manifest" },
+            { "const": "validation_report" },
+            { "const": "release_receipt" }
+          ],
+          "minItems": 6,
+          "maxItems": 6
+        }
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "record_type_name": {
+      "type": "string",
+      "enum": [
+        "owner_authority",
+        "edition",
+        "release_snapshot",
+        "unit",
+        "course_unit_membership",
+        "occurrence",
+        "segment",
+        "segment_variant",
+        "term",
+        "term_variant",
+        "relation",
+        "asset",
+        "rights",
+        "rights_assignment",
+        "artifact",
+        "route",
+        "route_member",
+        "build_recipe",
+        "qa_binding",
+        "research_profile"
+      ]
+    },
+    "bound_file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256", "media_type"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^(?![A-Za-z]:|/|.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "media_type": { "type": "string", "minLength": 1 }
+      }
+    },
+    "base_federation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dataset_id", "dataset_version", "schema_version", "manifest", "federation"],
+      "properties": {
+        "dataset_id": { "$ref": "#/$defs/uuid5_urn" },
+        "dataset_version": { "const": "program-matematika-indonesia-federation-v0.3.0" },
+        "schema_version": { "const": "2.0.0" },
+        "manifest": { "$ref": "#/$defs/bound_file" },
+        "federation": { "$ref": "#/$defs/bound_file" }
+      }
+    },
+    "record_counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_authorities",
+        "editions",
+        "release_snapshots",
+        "units",
+        "course_unit_memberships",
+        "occurrences",
+        "segments",
+        "segment_variants",
+        "terms",
+        "term_variants",
+        "relations",
+        "assets",
+        "rights",
+        "rights_assignments",
+        "artifacts",
+        "routes",
+        "route_members",
+        "build_recipes",
+        "qa_bindings",
+        "research_profiles"
+      ],
+      "properties": {
+        "owner_authorities": { "type": "integer", "minimum": 0 },
+        "editions": { "type": "integer", "minimum": 0 },
+        "release_snapshots": { "type": "integer", "minimum": 0 },
+        "units": { "type": "integer", "minimum": 0 },
+        "course_unit_memberships": { "type": "integer", "minimum": 0 },
+        "occurrences": { "type": "integer", "minimum": 0 },
+        "segments": { "type": "integer", "minimum": 0 },
+        "segment_variants": { "type": "integer", "minimum": 0 },
+        "terms": { "type": "integer", "minimum": 0 },
+        "term_variants": { "type": "integer", "minimum": 0 },
+        "relations": { "type": "integer", "minimum": 0 },
+        "assets": { "type": "integer", "minimum": 0 },
+        "rights": { "type": "integer", "minimum": 0 },
+        "rights_assignments": { "type": "integer", "minimum": 0 },
+        "artifacts": { "type": "integer", "minimum": 0 },
+        "routes": { "type": "integer", "minimum": 0 },
+        "route_members": { "type": "integer", "minimum": 0 },
+        "build_recipes": { "type": "integer", "minimum": 0 },
+        "qa_bindings": { "type": "integer", "minimum": 0 },
+        "research_profiles": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "record_type_order": {
+      "type": "array",
+      "prefixItems": [
+        { "const": "owner_authority" },
+        { "const": "edition" },
+        { "const": "release_snapshot" },
+        { "const": "unit" },
+        { "const": "course_unit_membership" },
+        { "const": "occurrence" },
+        { "const": "segment" },
+        { "const": "segment_variant" },
+        { "const": "term" },
+        { "const": "term_variant" },
+        { "const": "relation" },
+        { "const": "asset" },
+        { "const": "rights" },
+        { "const": "rights_assignment" },
+        { "const": "artifact" },
+        { "const": "route" },
+        { "const": "route_member" },
+        { "const": "build_recipe" },
+        { "const": "qa_binding" },
+        { "const": "research_profile" }
+      ],
+      "minItems": 20,
+      "maxItems": 20
+    },
+    "shard": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["shard_id", "shard_kind", "locale", "course_ids", "record_types", "file"],
+      "properties": {
+        "shard_id": { "$ref": "#/$defs/uuid5_urn" },
+        "shard_kind": { "type": "string", "enum": ["content", "search", "research"] },
+        "locale": {
+          "oneOf": [
+            { "type": "string", "pattern": "^[a-z]{2,3}(?:-[A-Z]{2})?$" },
+            { "type": "null" }
+          ]
+        },
+        "course_ids": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/uuid5_urn" },
+          "uniqueItems": true
+        },
+        "record_types": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/record_type_name" },
+          "uniqueItems": true
+        },
+        "file": { "$ref": "#/$defs/bound_file" }
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["builder", "commands", "inputs", "deterministic_replay", "build_a_sha256", "build_b_sha256"],
+      "properties": {
+        "builder": { "$ref": "#/$defs/bound_file" },
+        "commands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "type": "string", "minLength": 1 }
+          }
+        },
+        "inputs": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/bound_file" }
+        },
+        "deterministic_replay": { "type": "string", "enum": ["pass", "fail", "not_run"] },
+        "build_a_sha256": { "$ref": "#/$defs/sha256" },
+        "build_b_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema", "uuid5_identity", "semantic_key_uniqueness", "typed_foreign_keys", "state_normalization", "owner_native_bindings", "learner_route_policy", "rights_and_accessibility", "anonymous_readback_claims", "zero_copy"],
+      "properties": {
+        "schema": { "$ref": "#/$defs/check_result" },
+        "uuid5_identity": { "$ref": "#/$defs/check_result" },
+        "semantic_key_uniqueness": { "$ref": "#/$defs/check_result" },
+        "typed_foreign_keys": { "$ref": "#/$defs/check_result" },
+        "state_normalization": { "$ref": "#/$defs/check_result" },
+        "owner_native_bindings": { "$ref": "#/$defs/check_result" },
+        "learner_route_policy": { "$ref": "#/$defs/check_result" },
+        "rights_and_accessibility": { "$ref": "#/$defs/check_result" },
+        "anonymous_readback_claims": { "$ref": "#/$defs/check_result" },
+        "zero_copy": { "$ref": "#/$defs/check_result" }
+      }
+    },
+    "check_result": {
+      "type": "string",
+      "enum": ["pass", "fail", "warning", "not_run", "not_applicable"]
+    }
+  }
+}
