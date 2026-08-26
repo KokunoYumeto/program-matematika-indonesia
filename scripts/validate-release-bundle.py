@@ -104,6 +104,8 @@ EXPECTED_V1_PACKAGE_PINS = {
     "records.jsonl": "e563e13336701e2d3b2110debe4074b168f53f8fd3757e36fe25d36043db7783",
     "validation_report.json": "b742dbcc65c9511fa3d208a001d1f4a33ca38d04d0178f3e964d043c09534b42",
 }
+EXPECTED_V1_ARCHIVE_SHA256 = "a6451613d0e1960f614314da2c5361ddfb749cd09bf147539ccc5d172abd6866"
+EXPECTED_V1_ARCHIVE_PREFIX = "program-matematika-indonesia-backend-v1/"
 
 EXPECTED_V2_COUNTS = {
     "datasets": 34,
@@ -291,35 +293,57 @@ def verify_v21_deterministic_receipt(path: Path, root: Path, version: str, sourc
     }
 
 
-def verify_v1_immutable_package(package: Path) -> dict:
+def verify_v1_immutable_archive(path: Path, copied_validation_report: Path) -> dict:
+    if not path.is_file() or sha256_file(path) != EXPECTED_V1_ARCHIVE_SHA256:
+        raise ValueError("immutable backend-v1 archive identity mismatch")
+    with zipfile.ZipFile(path) as archive:
+        bad = archive.testzip()
+        if bad:
+            raise ValueError(f"immutable backend-v1 archive CRC failure: {bad}")
+        names = archive.namelist()
+        if len(names) != len(set(names)) or any(
+            not name.startswith(EXPECTED_V1_ARCHIVE_PREFIX) or name.endswith("/")
+            for name in names
+        ):
+            raise ValueError("immutable backend-v1 archive inventory is unsafe")
+        members = {
+            name.removeprefix(EXPECTED_V1_ARCHIVE_PREFIX): archive.read(name)
+            for name in names
+        }
+    if len(members) != 84:
+        raise ValueError("immutable backend-v1 archive must contain exactly 84 files")
     for relative, expected_sha256 in EXPECTED_V1_PACKAGE_PINS.items():
-        path = package / relative
-        if not path.is_file() or sha256_file(path) != expected_sha256:
+        data = members.get(relative)
+        if data is None or hashlib.sha256(data).hexdigest() != expected_sha256:
             raise ValueError(f"immutable backend-v1 identity mismatch: {relative}")
 
-    manifest = json.loads((package / "manifest.json").read_text(encoding="utf-8"))
+    manifest = json.loads(members["manifest.json"].decode("utf-8"))
     if manifest.get("record_count") != 2122:
         raise ValueError("immutable backend-v1 manifest record count is not 2,122")
     declared = {entry["path"]: entry for entry in manifest.get("files", [])}
-    actual = {
-        path.relative_to(package).as_posix()
-        for path in package.rglob("*")
-        if path.is_file()
-    }
-    if actual != set(declared) | {"manifest.json", "validation_report.json"}:
+    if set(members) != set(declared) | {"manifest.json", "validation_report.json"}:
         raise ValueError("immutable backend-v1 package inventory mismatch")
     for relative, entry in declared.items():
-        path = package / relative
-        if (
-            not path.is_file()
-            or path.stat().st_size != entry["bytes"]
-            or sha256_file(path) != entry["sha256"]
-        ):
+        data = members[relative]
+        if len(data) != entry["bytes"] or hashlib.sha256(data).hexdigest() != entry["sha256"]:
             raise ValueError(f"immutable backend-v1 manifest member mismatch: {relative}")
+        assert_public_bytes(f"immutable backend-v1:{relative}", data)
+    report_bytes = members["validation_report.json"]
+    if not copied_validation_report.is_file() or copied_validation_report.read_bytes() != report_bytes:
+        raise ValueError("release backend-v1 validation report differs from immutable archive")
+    report = json.loads(report_bytes.decode("utf-8"))
+    if report.get("result") != "pass" or report.get("checks", {}).get("deterministic_replay", {}).get("result") != "byte-identical":
+        raise ValueError("immutable backend-v1 validation report is not admitted")
+    if report.get("checks", {}).get("record_count") != 2122:
+        raise ValueError("immutable backend-v1 validation report record count is not 2,122")
     return {
         "record_count": 2122,
         "manifest_members": len(declared),
         "pinned_identities": EXPECTED_V1_PACKAGE_PINS,
+        "archive_bytes": path.stat().st_size,
+        "archive_sha256": sha256_file(path),
+        "entries": len(members),
+        "privacy_scan": "pass",
         "result": "pass",
     }
 
@@ -883,15 +907,13 @@ def main() -> None:
     if read_model.get("summary", {}).get("readback_overlay_count") != 3:
         raise ValueError("learner read-model readback overlay count is not 3")
 
-    backend_report_path = backend / "validation_report.json"
-    backend_report = json.loads(backend_report_path.read_text(encoding="utf-8"))
-    if backend_report["result"] != "pass" or backend_report["checks"]["deterministic_replay"]["result"] != "byte-identical":
-        raise ValueError("backend validation report is not admitted")
-    if backend_report["checks"]["record_count"] != catalog["program"]["backend"]["centralRecordCount"]:
-        raise ValueError("catalog/backend record count mismatch")
-    if backend_report["checks"]["record_count"] != 2122:
+    if catalog["program"]["backend"]["centralRecordCount"] != 2122:
         raise ValueError("central backend record count must remain exactly 2,122")
-    v1_immutable_result = verify_v1_immutable_package(backend)
+    backend_zip = release / f"program-matematika-indonesia-backend-v1-v{version}.zip"
+    v1_immutable_result = verify_v1_immutable_archive(
+        backend_zip,
+        release / f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
+    )
 
     copied_v2_receipt = release / f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json"
     if (
@@ -1030,11 +1052,7 @@ def main() -> None:
             args.source_commit,
             {generated_catalog_source_path},
         ),
-        "backend_v1": verify_backend_zip(
-            backend_zip,
-            backend,
-            "program-matematika-indonesia-backend-v1/",
-        ),
+        "backend_v1": v1_immutable_result,
         "backend_v2": verify_backend_zip(
             backend_v2_zip,
             backend_v2,

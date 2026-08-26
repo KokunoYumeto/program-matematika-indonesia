@@ -41,6 +41,17 @@ V2_RELEASE_FILES = {
     "scripts/validate-backend-v2-federation.py": "validate-backend-v2-federation.py",
 }
 
+IMMUTABLE_V1_ARCHIVE_RELATIVE = Path(
+    "releases/v0.56.0/program-matematika-indonesia-backend-v1-v0.56.0.zip"
+)
+IMMUTABLE_V1_ARCHIVE_SHA256 = "a6451613d0e1960f614314da2c5361ddfb749cd09bf147539ccc5d172abd6866"
+IMMUTABLE_V1_PREFIX = "program-matematika-indonesia-backend-v1/"
+IMMUTABLE_V1_MEMBER_PINS = {
+    "manifest.json": "8fe45cfb07e47e9596a4d3088beadcd8287ec2f089a62db990bd4fd70f079997",
+    "records.jsonl": "e563e13336701e2d3b2110debe4074b168f53f8fd3757e36fe25d36043db7783",
+    "validation_report.json": "b742dbcc65c9511fa3d208a001d1f4a33ca38d04d0178f3e964d043c09534b42",
+}
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -88,6 +99,42 @@ def files_under(root: Path, relative: str) -> list[Path]:
     if path.is_file():
         return [path]
     return sorted(candidate for candidate in path.rglob("*") if candidate.is_file())
+
+
+def load_immutable_v1_archive(root: Path) -> tuple[Path, dict[str, bytes]]:
+    archive_path = root / IMMUTABLE_V1_ARCHIVE_RELATIVE
+    if not archive_path.is_file() or sha256_file(archive_path) != IMMUTABLE_V1_ARCHIVE_SHA256:
+        raise ValueError("published immutable backend-v1 archive identity mismatch")
+    with zipfile.ZipFile(archive_path) as archive:
+        bad = archive.testzip()
+        if bad:
+            raise ValueError(f"published immutable backend-v1 archive CRC failure: {bad}")
+        names = archive.namelist()
+        if len(names) != len(set(names)) or any(
+            not name.startswith(IMMUTABLE_V1_PREFIX) or name.endswith("/") for name in names
+        ):
+            raise ValueError("published immutable backend-v1 archive inventory is unsafe")
+        members = {
+            name.removeprefix(IMMUTABLE_V1_PREFIX): archive.read(name)
+            for name in names
+        }
+    if len(members) != 84:
+        raise ValueError("published immutable backend-v1 archive must contain exactly 84 files")
+    for relative, expected_sha256 in IMMUTABLE_V1_MEMBER_PINS.items():
+        data = members.get(relative)
+        if data is None or hashlib.sha256(data).hexdigest() != expected_sha256:
+            raise ValueError(f"published immutable backend-v1 member mismatch: {relative}")
+    manifest = json.loads(members["manifest.json"].decode("utf-8"))
+    if manifest.get("record_count") != 2122:
+        raise ValueError("published immutable backend-v1 record count is not 2,122")
+    declared = {entry["path"]: entry for entry in manifest.get("files", [])}
+    if set(members) != set(declared) | {"manifest.json", "validation_report.json"}:
+        raise ValueError("published immutable backend-v1 manifest inventory mismatch")
+    for relative, entry in declared.items():
+        data = members[relative]
+        if len(data) != entry["bytes"] or hashlib.sha256(data).hexdigest() != entry["sha256"]:
+            raise ValueError(f"published immutable backend-v1 manifest member mismatch: {relative}")
+    return archive_path, members
 
 
 def run_checked(command: list[str], root: Path) -> None:
@@ -172,6 +219,8 @@ def main() -> None:
     backend_v2_validation_receipt = args.backend_v2_validation_receipt.resolve()
     version = args.version
 
+    immutable_v1_archive, immutable_v1_members = load_immutable_v1_archive(root)
+
     v21_gate = run_v21_release_gates(root)
     release.mkdir(parents=True, exist_ok=True)
     v21_gate_receipt = release / f"GLOBAL_BACKEND_V21_DETERMINISTIC_REPLAY_RECEIPT_v{version}.json"
@@ -207,7 +256,6 @@ def main() -> None:
         root / "docs" / "data" / "learner-read-model.json": release / "learner-read-model-v1.json",
         root / "schemas" / "v1" / "curriculum-authority-v1.schema.json": release / "curriculum-authority-v1.schema.json",
         root / "schemas" / "v1" / "learner-read-model-v1.schema.json": release / "learner-read-model-v1.schema.json",
-        backend / "validation_report.json": release / f"program-matematika-indonesia-backend-v1-validation-v{version}.json",
         backend_v2_validation_receipt: release / f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
     }
     for source_name, release_name in V2_RELEASE_FILES.items():
@@ -227,12 +275,22 @@ def main() -> None:
     for source, target in copies.items():
         shutil.copyfile(source, target)
 
-    backend_entries = []
-    for path in sorted(candidate for candidate in backend.rglob("*") if candidate.is_file()):
-        relative = path.relative_to(backend).as_posix()
-        backend_entries.append((f"program-matematika-indonesia-backend-v1/{relative}", path.read_bytes()))
+    (release / f"program-matematika-indonesia-backend-v1-validation-v{version}.json").write_bytes(
+        immutable_v1_members["validation_report.json"]
+    )
+
     backend_zip = release / f"program-matematika-indonesia-backend-v1-v{version}.zip"
-    backend_result = build_zip(backend_zip, backend_entries)
+    shutil.copyfile(immutable_v1_archive, backend_zip)
+    if sha256_file(backend_zip) != IMMUTABLE_V1_ARCHIVE_SHA256:
+        raise ValueError("copied immutable backend-v1 archive identity mismatch")
+    backend_result = {
+        "path": backend_zip.as_posix(),
+        "entries": len(immutable_v1_members),
+        "uncompressed_bytes": sum(len(data) for data in immutable_v1_members.values()),
+        "bytes": backend_zip.stat().st_size,
+        "sha256": sha256_file(backend_zip),
+        "verification": "pass-published-immutable-reuse",
+    }
 
     backend_v2_entries = []
     for path in sorted(candidate for candidate in backend_v2.rglob("*") if candidate.is_file()):
