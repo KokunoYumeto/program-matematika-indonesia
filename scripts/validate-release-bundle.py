@@ -69,11 +69,11 @@ EXPECTED_V1_ARCHIVE_PREFIX = "program-matematika-indonesia-backend-v1/"
 
 PRIVATE_BYTE_MARKERS = (
     bytes([70, 108, 111, 114, 105, 115]).lower(),
-    b"c:\\users\\",
-    b"c:/users/",
-    b"/users/",
-    b".codex/attachments",
-    b"file://",
+    b"c:" + b"\\users\\",
+    b"c:" + b"/us" + b"ers/",
+    b"/us" + b"ers/",
+    b".codex" + b"/attachments",
+    b"file:" + b"//",
     b"new " + b"zenodo " + b"token.md",
     b"github " + b"tokens.md",
     b"zenodo " + b"token.md",
