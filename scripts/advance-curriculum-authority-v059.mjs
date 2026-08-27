@@ -21,14 +21,14 @@ const predecessorIdentity = Object.freeze({
 
 const admissionIdentity = Object.freeze({
   relativeToWorkspace: 'outputs/01a01ec1-e685-70d0-b022-211396334723/curriculum_logbook/113_CENTRAL_V059_ADMISSION_MANIFEST_20260827.json',
-  bytes: 11284,
-  sha256: 'e32049ef5fdeac98d784e5813b58cd1ff1826acd83a1a41d17db63f397b56a8c',
+  bytes: 11236,
+  sha256: 'c114616275fcdffbc32f91db36924443754f993eafffbe86c72979c2ea9b2f61',
 });
 
 const ownerReaderIdentity = Object.freeze({
   relativeToWorkspace: 'outputs/01a01ec1-e685-70d0-b022-211396334723/curriculum_logbook/114_PUBLIC_OWNER_HTML_ROUTE_READBACK_20260827.json',
-  bytes: 3369,
-  sha256: 'e16d1a28ad973593edf44dfbce081f636cd3df4febdd097c0b29cd8eed5ed04e',
+  bytes: 3371,
+  sha256: 'e6166a56dcc8476b79543143f1e19773d9e52706b3c8e0f0e8f4c9a842162424',
 });
 
 const v22Identity = Object.freeze({
