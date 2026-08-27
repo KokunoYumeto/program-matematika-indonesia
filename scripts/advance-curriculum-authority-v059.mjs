@@ -28,7 +28,7 @@ const admissionIdentity = Object.freeze({
 const ownerReaderIdentity = Object.freeze({
   relativeToWorkspace: 'outputs/01a01ec1-e685-70d0-b022-211396334723/curriculum_logbook/114_PUBLIC_OWNER_HTML_ROUTE_READBACK_20260827.json',
   bytes: 3371,
-  sha256: 'e6166a56dcc8476b79543143f1e19773d9e52706b3c8e0f0e8f4c9a842162424',
+  sha256: 'f58ed1ca85938d0d966085c13da57a945d008920861ea9b503e94b352a7d7f9a',
 });
 
 const v22Identity = Object.freeze({
