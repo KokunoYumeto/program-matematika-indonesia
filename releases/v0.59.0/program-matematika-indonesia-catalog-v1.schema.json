@@ -1,0 +1,387 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://zenodo.org/records/22133203/files/program-matematika-indonesia-catalog-v1.schema.json",
+  "title": "Program Matematika Indonesia — katalog rilis v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schemaVersion",
+    "snapshotDate",
+    "sourceCommit",
+    "program",
+    "topics",
+    "counts",
+    "courses"
+  ],
+  "properties": {
+    "$schema": { "type": "string", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/program-matematika-indonesia-catalog-v1\\.schema\\.json$" },
+    "schemaVersion": { "const": 1 },
+    "snapshotDate": { "type": "string", "format": "date" },
+    "sourceCommit": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "program": { "$ref": "#/$defs/program" },
+    "topics": {
+      "type": "array",
+      "minItems": 8,
+      "maxItems": 8,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["courseRoles", "selectedCorpusRoles", "unresolvedRoles", "completedPublicCourseRoles", "completedPublicRecords"],
+      "properties": {
+        "courseRoles": { "const": 40 },
+        "selectedCorpusRoles": { "const": 40 },
+        "unresolvedRoles": { "const": 0 },
+        "completedPublicCourseRoles": { "type": "integer", "minimum": 0, "maximum": 40 },
+        "completedPublicRecords": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "courses": {
+      "type": "array",
+      "minItems": 40,
+      "maxItems": 40,
+      "items": { "$ref": "#/$defs/course" }
+    }
+  },
+  "$defs": {
+    "httpsUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "federationV22": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "status", "pilotCourseId", "packageId", "canonicalPackage", "zeroCopy", "projection", "deterministicReplay", "package", "validationReceipt", "archiveReceipt", "githubPackage", "githubValidationReceipt", "githubArchiveReceipt"],
+      "properties": {
+        "version": { "const": "2.2.0" },
+        "status": { "const": "pilot_validated_zero_copy" },
+        "pilotCourseId": { "const": "A00" },
+        "packageId": { "const": "urn:uuid:023b0035-f385-5188-920b-2130aa61f815" },
+        "canonicalPackage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "fileCount", "bytes", "manifest", "validationReport", "seal"],
+          "properties": {
+            "path": { "const": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0" },
+            "fileCount": { "const": 36 },
+            "bytes": { "const": 1720752 },
+            "manifest": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "bytes", "sha256"],
+              "properties": {
+                "path": { "const": "manifest.json" },
+                "bytes": { "const": 27131 },
+                "sha256": { "const": "b196d0b851fa0f6b3b7972ab33b762898f3d577fbc26b6214542d6a5b10009af" }
+              }
+            },
+            "validationReport": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "bytes", "sha256", "result", "errors"],
+              "properties": {
+                "path": { "const": "validation-report.json" },
+                "bytes": { "const": 3515 },
+                "sha256": { "const": "13a82463853bc8fc6705cd9fb95a23647679bd5bc945a3f2358e243a7bd9c918" },
+                "result": { "const": "pass" },
+                "errors": { "const": 0 }
+              }
+            },
+            "seal": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "bytes", "sha256", "sealedFileCount", "sealedBytes", "sealedDigestSha256"],
+              "properties": {
+                "path": { "const": "seal.json" },
+                "bytes": { "const": 6805 },
+                "sha256": { "const": "fb0696a3f38509468076c4fff374106127e092f3b70b4c1536f7c611009dc855" },
+                "sealedFileCount": { "const": 35 },
+                "sealedBytes": { "const": 1713947 },
+                "sealedDigestSha256": { "const": "49c4272f2b48f311429575814bf23acef02bcd9f5e96033b2d618be88678a9e8" }
+              }
+            }
+          }
+        },
+        "zeroCopy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nativeRecordsReferenced", "nativeRecordsCopied", "nativeViews"],
+          "properties": {
+            "nativeRecordsReferenced": { "const": 519678 },
+            "nativeRecordsCopied": { "const": 0 },
+            "nativeViews": { "const": 17 }
+          }
+        },
+        "projection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["records", "recordTables", "visibleUnits", "learnerRoutes", "identityMapRows"],
+          "properties": {
+            "records": { "const": 1313 },
+            "recordTables": { "const": 19 },
+            "visibleUnits": { "const": 75 },
+            "learnerRoutes": { "const": 75 },
+            "identityMapRows": { "const": 92 }
+          }
+        },
+        "deterministicReplay": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["runs", "sha256"],
+          "properties": {
+            "runs": { "const": 2 },
+            "sha256": { "const": "8a2bf0eb8cc68f538867695d5d7d88cbf5874751576ee304e1328f3e4b163861" }
+          }
+        },
+        "package": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "pattern": "^https://zenodo\\.org/records/[0-9]+/files/program-matematika-indonesia-backend-v2\\.2-pilot-v0\\.59\\.0\\.zip\\?download=1$" }] },
+        "validationReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0\\.59\\.0\\.json\\?download=1$" }] },
+        "archiveReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0\\.59\\.0\\.json\\?download=1$" }] },
+        "githubPackage": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/program-matematika-indonesia-backend-v2.2-pilot-v0.59.0.zip" }] },
+        "githubValidationReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0.59.0.json" }] },
+        "githubArchiveReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0.59.0.json" }] }
+      }
+    },
+    "program": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "language", "version", "snapshotDate", "totalCourseRoles", "selectedCorpusRoles", "unresolvedRoleIds", "completedPublicCourseRoleIds", "completedPublicRecordDois", "website", "zenodo", "zenodoConcept", "provenance", "repositories", "backend", "status"],
+      "properties": {
+        "id": { "const": "program-matematika-indonesia" },
+        "title": { "type": "string", "minLength": 1 },
+        "language": { "const": "id-ID" },
+        "version": {
+          "type": "string",
+          "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        },
+        "snapshotDate": { "type": "string", "format": "date" },
+        "totalCourseRoles": { "const": 40 },
+        "selectedCorpusRoles": { "const": 40 },
+        "unresolvedRoleIds": {
+          "type": "array",
+          "maxItems": 0
+        },
+        "completedPublicCourseRoleIds": {
+          "type": "array",
+          "maxItems": 40,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" }
+        },
+        "completedPublicRecordDois": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^10\\.5281/zenodo\\.[0-9]+$" }
+        },
+        "website": { "$ref": "#/$defs/httpsUrl" },
+        "zenodo": { "$ref": "#/$defs/httpsUrl" },
+        "zenodoConcept": { "$ref": "#/$defs/httpsUrl" },
+        "provenance": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["model", "role"],
+          "properties": {
+            "model": { "const": "OpenAI Codex gpt-5.6-sol, Ultra" },
+            "role": { "type": "string", "minLength": 1 }
+          }
+        },
+        "repositories": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["github"],
+          "properties": {
+            "github": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["url", "status", "lastConfirmedAt"],
+              "properties": {
+                "url": { "$ref": "#/$defs/httpsUrl" },
+                "status": { "enum": ["available", "temporarily-unavailable"] },
+                "lastConfirmedAt": { "type": "string", "format": "date" }
+              }
+            }
+          }
+        },
+        "backend": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schemaVersion", "status", "centralRecordCount", "completeCorpusMigrations", "schema", "sourceFormatProfile", "package", "federationV2", "federationV21", "educationalAccessResearch", "learnerReadModelV1"],
+          "properties": {
+            "schemaVersion": { "const": "1.0.0" },
+            "status": { "const": "validated" },
+            "centralRecordCount": { "type": "integer", "minimum": 1 },
+            "completeCorpusMigrations": {
+              "type": "array",
+              "minItems": 1,
+              "maxItems": 40,
+              "items": {
+                "type": "object",
+                "additionalProperties": false,
+                "required": ["corpus", "recordCount", "result"],
+                "properties": {
+                  "corpus": { "type": "string", "minLength": 1 },
+                  "recordCount": { "type": "integer", "minimum": 1 },
+                  "result": {
+                    "type": "string",
+                    "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*-pass$"
+                  }
+                }
+              }
+            },
+            "schema": { "$ref": "#/$defs/httpsUrl" },
+            "sourceFormatProfile": { "$ref": "#/$defs/httpsUrl" },
+            "package": { "$ref": "#/$defs/httpsUrl" },
+            "federationV2": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "recordCount", "datasetCount", "courseCount", "learnerSurfaceCount", "webRouteCount", "identityCrosswalkCount", "publicationEventCount", "qaEventCount", "package", "packageSchema", "recordSchema", "validationReceipt"],
+              "properties": {
+                "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+                "status": { "const": "validated" },
+                "recordCount": { "type": "integer", "minimum": 2434 },
+                "datasetCount": { "const": 34 },
+                "courseCount": { "const": 40 },
+                "learnerSurfaceCount": { "type": "integer", "minimum": 128 },
+                "webRouteCount": { "type": "integer", "minimum": 41 },
+                "identityCrosswalkCount": { "const": 2122 },
+                "publicationEventCount": { "type": "integer", "minimum": 52 },
+                "qaEventCount": { "type": "integer", "minimum": 16 },
+                "package": { "$ref": "#/$defs/httpsUrl" },
+                "packageSchema": { "$ref": "#/$defs/httpsUrl" },
+                "recordSchema": { "$ref": "#/$defs/httpsUrl" },
+                "validationReceipt": { "$ref": "#/$defs/httpsUrl" }
+              }
+            },
+            "federationV21": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "pilot_courses", "pilot_units", "pilot_relations", "route_wrapper_course", "route_wrapper_courses", "educational_access_planning", "packageSchema", "recordSchema", "package"],
+              "properties": {
+                "version": { "const": "2.1.0" },
+                "status": { "const": "pilot_validated" },
+                "pilot_courses": {
+                  "type": "array",
+                  "const": ["A00", "B10", "C100", "D20"]
+                },
+                "pilot_units": { "const": 1194 },
+                "pilot_relations": { "const": 2165 },
+                "route_wrapper_course": { "const": "D20" },
+                "route_wrapper_courses": {
+                  "type": "array",
+                  "const": ["C100", "D20"]
+                },
+                "educational_access_planning": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["schema_id", "dataset_id", "status", "curriculum_unit_count", "portfolio_count", "portfolio_relation_count", "adaptation_depth_count", "accessibility_derivative_count", "compute_assumption_count", "compute_scenario_count"],
+                  "properties": {
+                    "schema_id": { "const": "interlanguage/global-backend-v2.1-educational-access-planning/0.1.0" },
+                    "dataset_id": { "const": "planning:educational-access:v2.1:0.1.0" },
+                    "status": { "const": "validated" },
+                    "curriculum_unit_count": { "const": 29 },
+                    "portfolio_count": { "const": 13 },
+                    "portfolio_relation_count": { "const": 10 },
+                    "adaptation_depth_count": { "const": 5 },
+                    "accessibility_derivative_count": { "const": 8 },
+                    "compute_assumption_count": { "const": 12 },
+                    "compute_scenario_count": { "const": 3 }
+                  }
+                },
+                "packageSchema": { "$ref": "#/$defs/httpsUrl" },
+                "recordSchema": { "$ref": "#/$defs/httpsUrl" },
+                "package": { "$ref": "#/$defs/httpsUrl" }
+              }
+            },
+            "federationV22": { "$ref": "#/$defs/federationV22" },
+            "educationalAccessResearch": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "record_count", "materialized_table_count", "declared_unmaterialized_table_count", "publicCatalog", "schema", "sourcePackage"],
+              "properties": {
+                "version": { "const": "0.1.0" },
+                "status": { "const": "frozen_validated" },
+                "record_count": { "const": 490 },
+                "materialized_table_count": { "const": 10 },
+                "declared_unmaterialized_table_count": { "const": 7 },
+                "publicCatalog": { "$ref": "#/$defs/httpsUrl" },
+                "schema": { "$ref": "#/$defs/httpsUrl" },
+                "sourcePackage": { "$ref": "#/$defs/httpsUrl" }
+              }
+            },
+            "learnerReadModelV1": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "courseCount", "prerequisiteEdgeCount", "authority", "authoritySchema", "readModel", "readModelSchema", "validationReceipt", "publicEndpoint"],
+              "properties": {
+                "version": { "const": "1.0.0" },
+                "status": { "const": "validated" },
+                "courseCount": { "const": 40 },
+                "prerequisiteEdgeCount": { "const": 82 },
+                "authority": { "$ref": "#/$defs/httpsUrl" },
+                "authoritySchema": { "$ref": "#/$defs/httpsUrl" },
+                "readModel": { "$ref": "#/$defs/httpsUrl" },
+                "readModelSchema": { "$ref": "#/$defs/httpsUrl" },
+                "validationReceipt": { "$ref": "#/$defs/httpsUrl" },
+                "publicEndpoint": { "$ref": "#/$defs/httpsUrl" }
+              }
+            }
+          }
+        },
+        "status": { "const": "in-progress" }
+      },
+      "allOf": [{
+        "if": { "properties": { "version": { "const": "0.59.0" } }, "required": ["version"] },
+        "then": { "properties": { "backend": { "required": ["federationV22"] } } }
+      }]
+    },
+    "supplement": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "resourceType", "state", "scope", "license", "pages", "url", "zenodo", "bytes", "sha256"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z0-9][a-z0-9-]{2,63}$" },
+        "title": { "type": "string", "minLength": 1 },
+        "resourceType": { "enum": ["workbook", "problem-book", "companion", "solutions", "reference"] },
+        "state": { "enum": ["complete", "partial"] },
+        "scope": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 },
+        "pages": { "type": "integer", "minimum": 1 },
+        "url": { "$ref": "#/$defs/httpsUrl" },
+        "zenodo": { "$ref": "#/$defs/httpsUrl" },
+        "conceptDoi": { "$ref": "#/$defs/httpsUrl" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "course": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "ownerLane", "level", "topic", "state", "title", "prerequisites", "purpose", "outcome", "corpus", "note"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" },
+        "ownerLane": { "type": "string", "pattern": "^(?:R[0-9]{3}(?:-R[0-9]{3})?|O[0-9]{3}|LEAN|OPENSTAX-(?:ELEMENTARY|INTERMEDIATE))$" },
+        "level": { "enum": ["A", "B", "C", "D"] },
+        "topic": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["published", "near", "production", "unresolved"] },
+        "title": { "type": "string", "minLength": 1 },
+        "prerequisites": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" }
+        },
+        "purpose": { "type": "string", "minLength": 1 },
+        "outcome": { "type": "string", "minLength": 1 },
+        "corpus": { "type": "string", "minLength": 1 },
+        "note": { "type": "string", "minLength": 1 },
+        "reader": { "$ref": "#/$defs/httpsUrl" },
+        "edition": { "$ref": "#/$defs/httpsUrl" },
+        "repository": { "$ref": "#/$defs/httpsUrl" },
+        "zenodo": { "$ref": "#/$defs/httpsUrl" },
+        "supplements": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/supplement" }
+        }
+      }
+    }
+  }
+}
