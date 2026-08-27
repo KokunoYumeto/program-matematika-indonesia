@@ -1,0 +1,681 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Deret Fourier Klasik</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.functional-analysis.seg.003">Deret Fourier
+Klasik</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>funct_anal.tex</code> baris 624-1008 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.section.04.03"></span></p>
+<h1 id="deret-fourier-klasik-untuk-fungsi-bernilai-real">Deret Fourier
+Klasik untuk Fungsi Bernilai Real</h1>
+<p>Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L&gt;0</annotation></semantics></math>,
+kita meninjau ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[-L,L] = L^2([-L,L],m)</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+ukuran Lebesgue pada interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[-L,L]</annotation></semantics></math>.
+Suatu himpunan ortogonal lengkap untuk ruang ini diberikan oleh
+fungsi-fungsi trigonometrik</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.030"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">{</mo><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>:</mo><mi>n</mi><mo>≥</mo><mn>0</mn><mo stretchy="true" form="postfix">}</mo></mrow><mo>∪</mo><mrow><mo stretchy="true" form="prefix">{</mo><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>:</mo><mi>n</mi><mo>≥</mo><mn>1</mn><mo stretchy="true" form="postfix">}</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\left\{ \cos\left(\frac{n\pi x}{L}\right) : n \geq 0 \right\}
+\cup \left\{ \sin\left(\frac{n\pi x}{L}\right) : n \geq 1 \right\} \ .</annotation></semantics></math>
+Lebih tepatnya, kita mempunyai</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.009"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.003"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.004"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>i</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>j</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> jika </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>≠</mo><mi>j</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> dan </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>L</mi></mtd><mtd columnalign="left" style="text-align: left"><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> jika </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>=</mo><mi>j</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>i</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>j</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> jika </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>≠</mo><mi>j</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> dan </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>≥</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>L</mi></mtd><mtd columnalign="left" style="text-align: left"><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> jika </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>=</mo><mi>j</mi><mo>&gt;</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>2</mn><mi>L</mi></mtd><mtd columnalign="left" style="text-align: left"><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> jika </mtext><mspace width="0.333em"></mspace></mrow><mi>i</mi><mo>=</mo><mi>j</mi><mo>=</mo><mn>0</mn></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>i</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>j</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="1.0em"></mspace><mi>i</mi><mo>,</mo><mi>j</mi><mo>≥</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\int_{-L}^L \sin\left(\frac{i \pi x}{L}\right)
+\sin\left(\frac{j \pi x}{L}\right)\,\mathrm{d}{x} &amp; =
+\begin{cases}
+0 &amp; \mbox{ jika } i \neq j \mbox{ dan } i,j &gt; 0\\
+L &amp; \mbox{ jika } i = j &gt; 0
+\end{cases} \\
+\int_{-L}^L \cos\left(\frac{i \pi x}{L}\right)
+\cos\left(\frac{j \pi x}{L}\right)\,\mathrm{d}{x} &amp; =
+\begin{cases}
+0 &amp; \mbox{ jika } i \neq j \mbox{ dan } i,j \geq 0 \\
+L &amp; \mbox{ jika } i = j &gt; 0 \\
+2L &amp; \mbox{ jika } i = j = 0
+\end{cases}
+\\ &amp;\text{dan}\\
+\int_{-L}^L \sin\left(\frac{i \pi x}{L}\right)
+\cos\left(\frac{j \pi x}{L}\right)\,\mathrm{d}{x} &amp; =
+ 0 \quad \text{jika} \quad i,j \geq 0 \ .
+\end{aligned}</annotation></semantics></math></p>
+<p>Dari (<a
+href="functional-general-l2.html#o010.dionne.functional-analysis.equation.007">4.2.5</a>),
+kita memperoleh <strong>ekspansi Fourier klasik</strong><span
+id="o010.dionne.functional-analysis.index.026"></span> suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2[-L,L]</annotation></semantics></math>,</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.031"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mi>n</mi></msub><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>b</mi><mi>n</mi></msub><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">a_0 + \sum_{n=1}^{\infty} \left( a_n
+\cos\left(\frac{n\pi x}{L}\right) + b_n
+\sin\left( \frac{n\pi x}{L}\right) \right) \ ,</annotation></semantics></math>
+dengan jumlah-jumlah parsialnya konvergen ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">L^2[-L,L]</annotation></semantics></math>,
+dan dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_0 = \frac{1}{2L} \int_{-L}^{L} f(x) \,\mathrm{d}{x}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_n = \frac{1}{L} \int_{-L}^{L} f(x)
+\cos\left(\frac{n\pi x}{L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>,
+serta<br />
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle b_n = \frac{1}{L} \int_{-L}^{L} f(x)
+\sin\left( \frac{n\pi x}{L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>.</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:\mathbb{R}\rightarrow \mathbb{R}</annotation></semantics></math>
+periodik dengan periode
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><mn>2</mn><mi>L</mi></mrow><annotation encoding="application/x-tex">T = 2L</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><msub><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow></msub><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f\big|_{[-L,L]} \in L^2[-L,L]</annotation></semantics></math>,
+koefisien-koefisien ekspansi Fourier juga diberikan oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><msubsup><mo>∫</mo><mi>α</mi><mrow><mi>α</mi><mo>+</mo><mn>2</mn><mi>L</mi></mrow></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_0 = \frac{1}{2L} \int_{\alpha}^{\alpha+2L} f(x) \,\mathrm{d}{x}</annotation></semantics></math>,<br />
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mi>α</mi><mrow><mi>α</mi><mo>+</mo><mn>2</mn><mi>L</mi></mrow></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_n = \frac{1}{L} \int_{\alpha}^{\alpha+2L} f(x)
+\cos\left(\frac{n\pi x}{L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mi>α</mi><mrow><mi>α</mi><mo>+</mo><mn>2</mn><mi>L</mi></mrow></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle b_n = \frac{1}{L} \int_{\alpha}^{\alpha+2L} f(x)
+\sin \left(\frac{n\pi x}{L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>,
+di mana
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+dapat berupa sembarang bilangan real.</p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.005"></span></p>
+<div id="o010.dionne.functional-analysis.worked_example.001"
+class="worked_example">
+<p><strong>Contoh.</strong> Carilah deret Fourier fungsi periodik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dengan periode
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>
+yang didefinisikan oleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.032"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mi>π</mi><mo>≤</mo><mi>x</mi><mo>≤</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>π</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">f(x) = \begin{cases}
+0 &amp; \quad \text{jika} \ -\pi \leq x \leq 0 \\
+1 &amp; \quad \text{jika} \ 0 &lt; x &lt; \pi
+\end{cases}</annotation></semantics></math></p>
+<p>Kita mempunyai</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.010"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.006"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mn>0</mn></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>π</mi></msubsup><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>b</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mi>−</mi><mfrac><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>π</mi></msubsup><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>2</mn><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> ganjil</mtext></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> genap</mtext></mrow></mrow></mtd></mtr></mtable></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+a_0 &amp;= \frac{1}{2\pi} \int_{-\pi}^\pi f(x) \,\mathrm{d}{x} =
+\frac{1}{2\pi} \int_0^\pi \,\mathrm{d}{x} = \frac{1}{2} \ , \\
+a_n &amp;= \frac{1}{\pi} \int_{-\pi}^\pi f(x) \cos(nx) \,\mathrm{d}{x}
+= \frac{1}{\pi} \int_0^\pi \cos(nx) \,\mathrm{d}{x}
+= \frac{\sin(nx)}{n\pi}\bigg|_0^\pi = 0
+\\ &amp;\text{dan}\\
+b_n &amp;= \frac{1}{\pi} \int_{-\pi}^\pi f(x) \sin(nx) \,\mathrm{d}{x}
+= \frac{1}{\pi} \int_0^\pi \sin(nx) \,\mathrm{d}{x}
+= -\frac{\cos(nx)}{n\pi}\bigg|_0^\pi
+= \begin{cases}
+2/(n\pi) &amp; \quad \text{jika $n$ ganjil} \\
+0 &amp; \quad \text{jika $n$ genap}
+\end{cases}
+\end{aligned}</annotation></semantics></math> Jadi, dengan kesamaan
+dipahami dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>π</mi><mo>,</mo><mi>π</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">L^2[-\pi,\pi]</annotation></semantics></math>,</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.033"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>+</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mn>2</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">f = \frac{1}{2} + \sum_{m=1}^\infty
+  \frac{2}{(2m-1)\pi}\sin((2m-1)x) \ .</annotation></semantics></math>
+Sebagaimana diprediksi oleh Teorema <a
+href="functional-general-l2.html#o010.dionne.functional-analysis.theorem.007">4.2.3</a>,
+nilai deretnya adalah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">1/2</annotation></semantics></math>
+apabila
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>n</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">x=n\pi</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">n\in \mathbb{Z}</annotation></semantics></math>.</p>
+</div>
+<p><span
+id="o010.dionne.functional-analysis.math_component.007"></span></p>
+<div id="o010.dionne.functional-analysis.worked_example.002"
+class="worked_example">
+<p><strong>Contoh.</strong> Carilah deret Fourier fungsi periodik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dengan periode
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>6</mn><annotation encoding="application/x-tex">6</annotation></semantics></math>
+yang didefinisikan oleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.034"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mn>3</mn><mo>≤</mo><mi>x</mi><mo>≤</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>3</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">f(x) = \begin{cases}
+1 &amp; \quad \text{jika} \ -3 \leq x \leq 0 \\
+x &amp; \quad \text{jika} \ 0 &lt; x &lt; 3
+\end{cases}</annotation></semantics></math></p>
+<p>Kita mempunyai</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.011"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.008"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.009"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mn>0</mn></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>3</mn></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>0</mn></msubsup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>+</mo><mfrac><mn>1</mn><mn>6</mn></mfrac><msubsup><mo>∫</mo><mn>0</mn><mn>3</mn></msubsup><mi>x</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>5</mn><mn>4</mn></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>3</mn></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>0</mn></msubsup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msubsup><mo>∫</mo><mn>0</mn><mn>3</mn></msubsup><mi>x</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>0</mn></msubsup><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>x</mi><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mn>3</mn><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mn>3</mn></msubsup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>3</mn><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> genap</mtext></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mn>6</mn><mi>/</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> ganjil</mtext></mrow></mrow></mtd></mtr></mtable></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>b</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>3</mn></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>0</mn></msubsup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>+</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msubsup><mo>∫</mo><mn>0</mn><mn>3</mn></msubsup><mi>x</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mfrac><mn>1</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mrow><mi>−</mi><mn>3</mn></mrow><mn>0</mn></msubsup><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mi>x</mi><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mn>3</mn><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mn>3</mn></msubsup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mn>1</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mo>+</mo><mfrac><mn>1</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mfrac><mn>3</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> ganjil</mtext></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mn>3</mn><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> genap</mtext></mrow></mrow></mtd></mtr></mtable></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+a_0 &amp;= \frac{1}{6} \int_{-3}^3 f(x) \,\mathrm{d}{x} =
+\frac{1}{6} \int_{-3}^0 \,\mathrm{d}{x} + \frac{1}{6} \int_0^3 x \,\mathrm{d}{x}
+= \frac{5}{4} \ , \\
+a_n &amp;= \frac{1}{3} \int_{-3}^3 f(x) \cos\left(\frac{n\pi x}{3}\right) \,\mathrm{d}{x}
+= \frac{1}{3} \int_{-3}^0 \cos\left(\frac{n\pi x}{3}\right) \,\mathrm{d}{x}
++ \frac{1}{3} \int_0^3 x\cos\left(\frac{n\pi x}{3}\right) \,\mathrm{d}{x} \\
+&amp;= \frac{1}{n\pi}\sin\left(\frac{n\pi x}{3}\right)\bigg|_{-3}^0
++ \left( \frac{x}{n\pi} \sin\left(\frac{n\pi x}{3}\right)
++ \frac{3}{n^2\pi^2} \cos\left(\frac{n\pi x}{3}\right) \right)\bigg|_0^3 \\
+&amp;= \frac{3}{n^2\pi^2} (\cos(n\pi)-1)
+= \begin{cases}
+0 &amp; \quad \text{jika $n$ genap} \\
+-6/(n^2 \pi^2) &amp; \quad \text{jika $n$ ganjil}
+\end{cases}
+\\ &amp;\text{dan}\\
+b_n &amp;= \frac{1}{3} \int_{-3}^3 f(x) \sin\left(\frac{n\pi x}{3}\right) \,\mathrm{d}{x}
+= \frac{1}{3} \int_{-3}^0 \sin\left(\frac{n\pi x}{3}\right) \,\mathrm{d}{x}
++ \frac{1}{3} \int_0^3 x \sin\left(\frac{n\pi x}{3}\right) \,\mathrm{d}{x} \\
+&amp;= -\frac{1}{n\pi} \cos\left(\frac{n\pi x}{3}\right)\bigg|_{-3}^0
++ \left( -\frac{x}{n\pi} \cos\left(\frac{n\pi x}{3}\right)
++ \frac{3}{n^2\pi^2} \sin\left(\frac{n\pi x}{3}\right) \right)\bigg|_0^3 \\
+&amp;= \left( -\frac{1}{n\pi} + \frac{1}{n\pi} \cos(n\pi)\right)
+- \frac{3}{n\pi}\cos(n\pi)
+= \begin{cases}
+1/(n\pi) &amp; \quad \text{jika $n$ ganjil} \\
+-3/(n\pi) &amp; \quad \text{jika $n$ genap}
+\end{cases}
+\end{aligned}</annotation></semantics></math> Jadi, dengan kesamaan
+dipahami dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>3</mn><mo>,</mo><mn>3</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">L^2[-3,3]</annotation></semantics></math>,</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.012"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>f</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>5</mn><mn>4</mn></mfrac><mo>−</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mn>6</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mn>3</mn><mrow><mn>2</mn><mi>m</mi><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="1.0em"></mspace><mo>+</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi></mrow><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+f &amp;= \frac{5}{4} - \sum_{m=1}^\infty
+  \frac{6}{(2m-1)^2\pi^2}\cos\left(\frac{(2m-1)\pi x}{3}\right)
+- \sum_{m=1}^\infty \frac{3}{2m\pi} \sin\left(\frac{2m\pi x}{3}\right) \\
+&amp;\quad + \sum_{m=1}^\infty \frac{1}{(2m-1)\pi}
+\sin\left(\frac{(2m-1)\pi x}{3}\right) \ .
+\end{aligned}</annotation></semantics></math> Dari Teorema <a
+href="functional-general-l2.html#o010.dionne.functional-analysis.theorem.007">4.2.3</a>,
+kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.035"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>5</mn><mn>4</mn></mfrac><mo>−</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mn>6</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{1}{2} = \frac{5}{4} - \sum_{m=1}^\infty \frac{6}{(2m-1)^2\pi^2} \ .</annotation></semantics></math>
+Ini adalah nilai deret pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>6</mn><mi>n</mi></mrow><annotation encoding="application/x-tex">x = 6n</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">n \in \mathbb{Z}</annotation></semantics></math>.
+Selain itu,</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.036"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>=</mo><mfrac><mn>5</mn><mn>4</mn></mfrac><mo>+</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mn>6</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">2 = \frac{5}{4} + \sum_{m=1}^\infty \frac{6}{(2m-1)^2\pi^2} \ .</annotation></semantics></math>
+Ini adalah nilai deret pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>3</mn><mo>+</mo><mn>6</mn><mi>n</mi></mrow><annotation encoding="application/x-tex">x = 3+ 6n</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">n \in \mathbb{Z}</annotation></semantics></math>.</p>
+</div>
+<p><span id="o010.dionne.subsection.04.03.01"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.010"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.011"></span></p>
+<h2 id="fungsi-ganjil-dan-genap">Fungsi Ganjil dan Genap</h2>
+<p>Kita dapat menggunakan sifat bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\int_{-L}^L g(t) \,\mathrm{d}{t} = 0</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+merupakan fungsi ganjil, dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>L</mi></mrow><mi>L</mi></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>=</mo><mn>2</mn><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\displaystyle\int_{-L}^L g(t) \,\mathrm{d}{t} = 2 \int_0^L g(t) \,\mathrm{d}{t}</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+merupakan fungsi genap, untuk memperoleh rumus-rumus yang lebih
+sederhana bagi deret Fourier fungsi ganjil dan genap.</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2[-L,L]</annotation></semantics></math>
+merupakan fungsi genap, ekspansi Fouriernya adalah</p>
+<p><span id="o010.dionne.functional-analysis.equation.009"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.3.1)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mspace width="0.167em"></mspace><msub><mi>a</mi><mi>n</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">a_0 + \sum_{n=1}^{\infty} \,  a_n \cos\left(\frac{n\pi x}{L}\right)  \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.3.1)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_0 = \frac{1}{L} \int_{0}^{L} f(x) \,\mathrm{d}{x}</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>2</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mspace width="0.167em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_n = \frac{2}{L} \int_{0}^{L} \, f(x)
+\cos\left( \frac{n\pi x}{L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>.</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f\in L^2[-L,L]</annotation></semantics></math>
+merupakan fungsi ganjil, ekspansi Fouriernya adalah</p>
+<p><span id="o010.dionne.functional-analysis.equation.010"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.3.2)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mspace width="0.167em"></mspace><msub><mi>b</mi><mi>n</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\sum_{n=1}^{\infty} \, b_n \sin \left( \frac{n\pi x}{L}\right) \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.3.2)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>2</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mspace width="0.167em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle b_n = \frac{2}{L} \int_{0}^{L} \, f(x)
+\sin \left( \frac{n\pi x}{L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>.</p>
+<p><strong>Deret Fourier sinus</strong><span
+id="o010.dionne.functional-analysis.index.027"></span> suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:[0,L] \rightarrow \mathbb{R}</annotation></semantics></math>
+adalah deret Fourier dari perluasan ganjil formal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">F:[-L,L]\rightarrow \mathbb{R}</annotation></semantics></math>
+berikut. Nilai pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>L</mi></mrow><annotation encoding="application/x-tex">-L</annotation></semantics></math>
+ditetapkan secara eksplisit agar
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(-x)=-F(x)</annotation></semantics></math>
+pada seluruh interval; perubahan nilai di titik-titik tunggal ini tidak
+mengubah kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">L^2</annotation></semantics></math>:</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.037"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≤</mo><mi>L</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>x</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mi>L</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>x</mi><mo>=</mo><mi>−</mi><mi>L</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">F(x) =
+\begin{cases}
+f(x) &amp; \quad \text{jika} \ 0 &lt; x \leq L \\
+0 &amp; \quad \text{jika} \ x=0 \\
+-f(-x) &amp; \quad \text{jika} \ -L &lt; x &lt; 0 \\
+-f(L) &amp; \quad \text{jika} \ x=-L
+\end{cases}</annotation></semantics></math> jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle F \in L^2[-L,L]</annotation></semantics></math>;
+pembatasan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>
+sama dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+hampir di mana-mana, yakni sebagai kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">L^2</annotation></semantics></math>.
+<strong>Deret Fourier kosinus</strong><span
+id="o010.dionne.functional-analysis.index.028"></span> suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:[0,L] \rightarrow \mathbb{R}</annotation></semantics></math>
+adalah deret Fourier dari fungsi genap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">F:[-L,L]\rightarrow \mathbb{R}</annotation></semantics></math>
+yang didefinisikan oleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.038"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>≤</mo><mi>x</mi><mo>≤</mo><mi>L</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mi>L</mi><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">F(x) =
+\begin{cases}
+f(x) &amp; \quad \text{jika} \ 0 \leq x \leq L \\
+f(-x) &amp; \quad \text{jika} \ -L \leq x &lt; 0
+\end{cases}</annotation></semantics></math> jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle F\in L^2[-L,L]</annotation></semantics></math>.</p>
+<p>Deret Fourier dalam (<a
+href="functional-fourier-series.html#o010.dionne.functional-analysis.equation.009">4.3.1</a>)
+dan (<a
+href="functional-fourier-series.html#o010.dionne.functional-analysis.equation.010">4.3.2</a>)
+masing-masing konvergen dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[0,L]</annotation></semantics></math>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>,
+yakni ke pembatasan hampir di mana-mana dari perluasan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+yang bersesuaian, karena setiap deret konvergen ke perluasan tersebut
+dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>L</mi><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[-L,L]</annotation></semantics></math>.</p>
+<div id="o010.dionne.functional-analysis.worked_example.003"
+class="worked_example">
+<p><strong>Contoh.</strong> Carilah deret Fourier fungsi periodik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dengan periode
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>
+yang didefinisikan oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">f(x) = |\sin(x)|</annotation></semantics></math>,
+yang grafiknya diberikan pada Gambar 4.1 <em>(rujukan ke bab
+mendatang)</em>.</p>
+<figure id="o010.dionne.functional-analysis.figure.funct-anal-abssin">
+<img src="assets/abssin.png" style="width:88.0%"
+alt="Grafik fungsi periodik berperiode pi yang didefinisikan oleh f(x)=|sin(x)|." />
+<figcaption aria-hidden="true">Grafik fungsi periodik berperiode pi yang
+didefinisikan oleh f(x)=|sin(x)|.</figcaption>
+</figure>
+<p>Kita perhatikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+merupakan fungsi genap. Oleh karena itu, semua koefisien
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>n</mi></msub><annotation encoding="application/x-tex">b_n</annotation></semantics></math>
+dalam deret Fourier bernilai nol. Dalam rumus untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>n</mi></msub><annotation encoding="application/x-tex">a_n</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mi>π</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">L = \pi/2</annotation></semantics></math>.
+Jadi,</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.013"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mn>0</mn></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>2</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mi>π</mi><mi>/</mi><mn>2</mn></mrow></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>2</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mi>π</mi><mi>/</mi><mn>2</mn></mrow></msubsup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mi>−</mi><mfrac><mn>2</mn><mi>π</mi></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mrow><mi>π</mi><mi>/</mi><mn>2</mn></mrow></msubsup><mo>=</mo><mfrac><mn>2</mn><mi>π</mi></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>4</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mi>π</mi><mi>/</mi><mn>2</mn></mrow></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>4</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mi>π</mi><mi>/</mi><mn>2</mn></mrow></msubsup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>2</mn><mi>π</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mi>π</mi><mi>/</mi><mn>2</mn></mrow></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>2</mn><mi>π</mi></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn></mrow></mfrac><mo>+</mo><mfrac><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mrow><mi>π</mi><mi>/</mi><mn>2</mn></mrow></msubsup><mo>=</mo><mfrac><mn>4</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mn>4</mn><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo><mi>π</mi></mrow></mfrac><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+a_0 &amp;= \frac{2}{\pi} \int_0^{\pi/2} f(x) \,\mathrm{d}{x} =
+\frac{2}{\pi} \int_0^{\pi/2} \sin(x) \,\mathrm{d}{x} =
+-\frac{2}{\pi} \cos(x) \bigg|_0^{\pi/2} = \frac{2}{\pi}
+\\ &amp;\text{dan}\\
+a_n &amp;= \frac{4}{\pi} \int_0^{\pi/2} f(x) \cos(2n x) \,\mathrm{d}{x}
+= \frac{4}{\pi} \int_0^{\pi/2} \sin(x) \cos(2n x) \,\mathrm{d}{x} \\
+&amp;= \frac{2}{\pi} \int_0^{\pi/2} \left(
+\sin( (2n+1)x) - \sin((2n-1)x) \right) \,\mathrm{d}{x} \\
+&amp;= \frac{2}{\pi} \left( -\frac{\cos( (2n+1)x)}{2n+1}
+ + \frac{\cos((2n-1)x)}{2n-1} \right)\bigg|_0^{\pi/2}
+= \frac{4}{(1-4n^2)\pi} \ .
+\end{aligned}</annotation></semantics></math> Dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>π</mi><mi>/</mi><mn>2</mn><mo>,</mo><mi>π</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">L^2[-\pi/2,\pi/2]</annotation></semantics></math>,
+kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.039"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><mfrac><mn>2</mn><mi>π</mi></mfrac><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mn>4</mn><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mn>4</mn><msup><mi>n</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">)</mo><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">f = \frac{2}{\pi} +
+\sum_{n=1}^\infty \frac{4}{(1-4n^2)\pi} \cos(2n x) \ .</annotation></semantics></math></p>
+</div>
+<p><span
+id="o010.dionne.functional-analysis.math_component.012"></span></p>
+<div id="o010.dionne.functional-analysis.worked_example.004"
+class="worked_example">
+<p><strong>Contoh.</strong> Carilah deret Fourier kosinus dari fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>e</mi><mi>x</mi></msup></mrow><annotation encoding="application/x-tex">\displaystyle f(x) = e^x</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0 \leq x &lt;1</annotation></semantics></math>.</p>
+<p>Dengan kata lain, kita mencari deret Fourier fungsi genap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+berperiode
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+yang didefinisikan oleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.040"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msup><mi>e</mi><mi>x</mi></msup></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>≤</mo><mi>x</mi><mo>≤</mo><mn>1</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><msup><mi>e</mi><mrow><mi>−</mi><mi>x</mi></mrow></msup></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mn>1</mn><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">F(x) = \begin{cases}
+e^x &amp; \quad \text{jika} \ 0\leq x \leq 1 \\
+e^{-x} &amp; \quad \text{jika} \ -1\leq x &lt; 0
+\end{cases}</annotation></semantics></math> Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+merupakan fungsi genap, semua koefisien
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>n</mi></msub><annotation encoding="application/x-tex">b_n</annotation></semantics></math>
+dalam deret Fourier bernilai nol. Dalam rumus untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi>n</mi></msub><annotation encoding="application/x-tex">a_n</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">L = 1</annotation></semantics></math>.
+Jadi,</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.014"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.013"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mn>0</mn></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup><msup><mi>e</mi><mi>x</mi></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mi>e</mi><mo>−</mo><mn>1</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mn>2</mn><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>2</mn><msubsup><mo>∫</mo><mn>0</mn><mn>1</mn></msubsup><msup><mi>e</mi><mi>x</mi></msup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mi>x</mi></msup><mfrac><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mo>+</mo><msup><mi>e</mi><mi>x</mi></msup><mfrac><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mn>1</mn></msubsup><mo>=</mo><mfrac><mn>2</mn><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>e</mi><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mfrac><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> genap</mtext></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mfrac><mrow><mi>−</mi><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>n</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> ganjil</mtext></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"></mtd></mtr></mtable></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+a_0 &amp;= \int_0^1 f(x) \,\mathrm{d}{x} = \int_0^1 e^x \,\mathrm{d}{x} = e - 1
+\\ &amp;\text{dan}\\
+a_n &amp;= 2 \int_0^1 f(x) \cos(n \pi x) \,\mathrm{d}{x}
+= 2 \int_0^1 e^x \cos(n\pi x) \,\mathrm{d}{x} \\
+&amp;= \frac{2 (n\pi)^2}{(n\pi)^2+1}
+\left( e^x \frac{\sin(n\pi x)}{n\pi}
++ e^x \frac{\cos(n\pi x)}{(n\pi)^2}\right)\bigg|_0^1
+= \frac{2}{(n\pi)^2+1} \left( e \cos(n\pi) - 1\right) \\
+&amp;= \begin{cases}
+\displaystyle\frac{2(e-1)}{(n\pi)^2+1} &amp;\quad \text{jika $n$ genap}\\
+\displaystyle\frac{-2(e+1)}{(n\pi)^2+1} &amp;\quad \text{jika $n$ ganjil}\\
+\end{cases}
+\end{aligned}</annotation></semantics></math> Dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">L^2[0,1]</annotation></semantics></math>,
+kita memperoleh deret berikut; karena perluasan genap tersebut kontinu
+dan terdiferensialkan sepotong-sepotong, kesamaan yang ditampilkan juga
+berlaku titik demi titik untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0\leq x&lt;1</annotation></semantics></math>:</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.041"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>e</mi><mi>x</mi></msup><mo>=</mo><mi>e</mi><mo>−</mo><mn>1</mn><mo>+</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mi>π</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mrow><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo>+</mo><mn>1</mn></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>m</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">e^x = e - 1 + \sum_{m=1}^\infty \frac{2(e-1)}{(2m\pi)^2+1} \cos(2m \pi x)
+- \sum_{m=1}^\infty \frac{2(e+1)}{((2m-1)\pi)^2+1} \cos((2m-1) \pi x) \ .</annotation></semantics></math></p>
+</div>
+<p><span id="o010.dionne.subsection.04.03.02"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.014"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.015"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.016"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.017"></span></p>
+<h2 id="kasus-khusus-lainnya">Kasus Khusus Lainnya</h2>
+<p>Dengan memperluas definisi suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:[0,L] \to \mathbb{R}</annotation></semantics></math>
+ke interval yang lebih besar daripada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>,
+kita dapat memperoleh deret Fourier yang berbeda bagi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>
+dalam bentuk fungsi-fungsi sinus dan kosinus.</p>
+<p>Sebagai contoh, jika kita memperluas fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2[0,L]</annotation></semantics></math>
+menjadi fungsi genap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>2</mn><mi>L</mi><mo>,</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">F:[-2L,2L]\rightarrow \mathbb{R}</annotation></semantics></math>
+sebagai berikut,</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.042"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>L</mi><mo>&lt;</mo><mi>x</mi><mo>≤</mo><mn>2</mn><mi>L</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>≤</mo><mi>x</mi><mo>≤</mo><mi>L</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mi>L</mi><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mn>2</mn><mi>L</mi><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mi>−</mi><mi>L</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">F(x) = \begin{cases}
+-f(2L-x) &amp; \quad \text{jika} \ L&lt;x\leq 2L \\
+f(x) &amp;  \quad \text{jika} \ 0 \leq x\leq L \\
+f(-x) &amp; \quad \text{jika} \ -L\leq x &lt; 0 \\
+-f(2L+x) &amp; \quad \text{jika} \ -2L\leq x &lt; -L
+\end{cases}</annotation></semantics></math> maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>2</mn><mi>L</mi><mo>,</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle F\in L^2[-2L,2L]</annotation></semantics></math>,
+dan deret Fourier kosinus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,2L]</annotation></semantics></math>
+yang dibatasi ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>
+memberikan representasi deret berikut bagi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>,
+dengan kekonvergenan dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">L^2[0,L]</annotation></semantics></math>:</p>
+<p><span id="o010.dionne.functional-analysis.equation.011"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.3.3)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mspace width="0.167em"></mspace><msub><mi>a</mi><mi>n</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sum_{n=1}^{\infty} \, a_n \cos\left(\frac{(2n-1)\pi x}{2L}\right)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.3.3)</span></span>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>
+dalam pengertian
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">L^2</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>2</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mspace width="0.167em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_n = \frac{2}{L} \int_{0}^{L} \, f(x)
+\cos\left(\frac{(2n-1) \pi x}{2L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>.
+Untuk memperoleh rumus ini, kita perlu memperhatikan bahwa</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.043"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>m</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> genap</mtext></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>m</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> ganjil</mtext></mrow></mrow></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\cos\left(\frac{m \pi x}{2L}\right)
+= \begin{cases}
+\displaystyle
+\cos\left(\frac{m \pi (2L-x)}{2L}\right) &amp; \quad \text{jika $m$ genap} \\
+\displaystyle
+-\cos\left(\frac{m \pi (2L-x)}{2L}\right) &amp; \quad \text{jika $m$ ganjil}
+\end{cases}</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>≤</mo><mi>x</mi><mo>≤</mo><mn>2</mn><mi>L</mi></mrow><annotation encoding="application/x-tex">L \leq x \leq 2L</annotation></semantics></math>.
+Jadi,</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.044"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>−</mi><mi>F</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">F(x) \cos\left(\frac{m \pi x}{2L}\right)
+= F(x) \cos\left(\frac{m \pi (2L-x)}{2L}\right)
+= -F\left( 2L-x\right) \cos\left(\frac{m \pi (2L-x)}{2L}\right)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+genap dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>&lt;</mo><mi>x</mi><mo>≤</mo><mn>2</mn><mi>L</mi></mrow><annotation encoding="application/x-tex">L &lt; x \leq 2L</annotation></semantics></math>,
+sedangkan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.045"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>−</mi><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>F</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">F(x) \cos\left(\frac{m \pi x}{2L}\right)
+= -F(x) \cos\left(\frac{m \pi (2L-x)}{2L}\right)
+= F\left( 2L-x\right) \cos\left(\frac{m \pi (2L-x)}{2L}\right)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+ganjil dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo>&lt;</mo><mi>x</mi><mo>≤</mo><mn>2</mn><mi>L</mi></mrow><annotation encoding="application/x-tex">L &lt; x \leq 2L</annotation></semantics></math>.
+Selanjutnya, kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.046"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>m</mi></msub><mo>=</mo><mfrac><mn>2</mn><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>L</mi></mrow></msubsup><mspace width="0.167em"></mspace><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mfrac><mn>2</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mspace width="0.167em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>m</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> ganjil</mtext></mrow></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mrow><mrow><mtext mathvariant="normal">jika </mtext><mspace width="0.333em"></mspace></mrow><mi>m</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> genap</mtext></mrow></mrow></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">a_m = \frac{2}{2L} \int_{0}^{2L} \, F(x)
+\cos\left(\frac{m \pi x}{2L}\right) \,\mathrm{d}{x}
+= \begin{cases}
+\displaystyle\frac{2}{L} \int_{0}^{L} \, f(x)
+\cos\left(\frac{m \pi x}{2L}\right) \,\mathrm{d}{x}
+&amp; \quad \text{jika $m$ ganjil} \\
+0 &amp; \quad \text{jika $m$ genap}
+\end{cases}</annotation></semantics></math></p>
+<p>Jika kita memperluas fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2[0,L]</annotation></semantics></math>
+menjadi fungsi ganjil
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>2</mn><mi>L</mi><mo>,</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">F:[-2L,2L]\rightarrow \mathbb{R}</annotation></semantics></math>
+sebagai berikut,</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.047"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>L</mi><mo>&lt;</mo><mi>x</mi><mo>≤</mo><mn>2</mn><mi>L</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>≤</mo><mi>L</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>x</mi><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mi>L</mi><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mo>−</mo><mn>2</mn><mi>L</mi><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mi>−</mi><mi>L</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">F(x) = \begin{cases}
+f(2L-x) &amp; \quad \text{jika} \ L&lt;x\leq 2L \\
+f(x) &amp;  \quad \text{jika} \ 0 &lt; x\leq L \\
+0 &amp; \quad \text{jika} \ x=0 \\
+-f(-x) &amp; \quad \text{jika} \ -L\leq x &lt; 0 \\
+-f(2L+x) &amp; \quad \text{jika} \ -2L\leq x &lt; -L
+\end{cases}</annotation></semantics></math> maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>2</mn><mi>L</mi><mo>,</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle F\in L^2[-2L,2L]</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><msub><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow></msub><mo>=</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">F\big|_{[0,L]}=f</annotation></semantics></math>
+hampir di mana-mana (yakni sebagai kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">L^2</annotation></semantics></math>),
+dan deret Fourier sinus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,2L]</annotation></semantics></math>
+yang dibatasi ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>
+memberikan representasi deret berikut bagi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>,
+dengan kekonvergenan dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">L^2[0,L]</annotation></semantics></math>:</p>
+<p><span id="o010.dionne.functional-analysis.equation.012"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.3.4)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mspace width="0.167em"></mspace><msub><mi>b</mi><mi>n</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sum_{n=1}^{\infty} \, b_n \sin\left(\frac{(2n-1)\pi x}{2L}\right)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.3.4)</span></span>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,L]</annotation></semantics></math>
+dalam pengertian
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">L^2</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>2</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mspace width="0.167em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi></mrow><mrow><mn>2</mn><mi>L</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle b_n = \frac{2}{L} \int_{0}^{L} \, f(x)
+\sin\left(\frac{(2n-1)\pi x}{2L}\right) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>.
+Kita dapat meneruskan seperti di atas untuk memperoleh hasil ini.</p>
+<p>Deret Fourier dalam (<a
+href="functional-fourier-series.html#o010.dionne.functional-analysis.equation.011">4.3.3</a>)
+dan (<a
+href="functional-fourier-series.html#o010.dionne.functional-analysis.equation.012">4.3.4</a>)
+masing-masing konvergen dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[0,L]</annotation></semantics></math>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>,
+yakni ke pembatasan hampir di mana-mana dari perluasan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+yang bersesuaian, karena setiap deret konvergen ke perluasan tersebut
+dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mn>2</mn><mi>L</mi><mo>,</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[-2L,2L]</annotation></semantics></math>.</p>
+<p><span id="o010.dionne.subsection.04.03.03"></span></p>
+<h2 id="deret-fourier-fungsi-dua-variabel">Deret Fourier Fungsi Dua
+Variabel</h2>
+<p>Jika, dalam definisi umum ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>,
+kita mengambil
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>&lt;</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a&lt;b</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>&lt;</mo><mi>d</mi></mrow><annotation encoding="application/x-tex">c&lt;d</annotation></semantics></math>,
+serta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\Omega =[a,b]\times[c,d]</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+sebagai ukuran Lebesgue pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>,
+maka kita memperoleh ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2([a,b]\times[c,d]) = L^2([a,b]\times[c,d],\mu)</annotation></semantics></math>
+yang terdiri atas kelas-kelas ekuivalensi, modulo kesamaan hampir di
+mana-mana, dari fungsi-fungsi terukur yang kuadratnya terintegralkan
+pada persegi panjang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]\times[c,d]</annotation></semantics></math>.
+Pembaca dipersilakan menuliskan definisi hasil kali skalar, norma,
+himpunan ortogonal, himpunan lengkap, … dalam kasus khusus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2([a,b]\times[c,d])</annotation></semantics></math>.</p>
+<p>Kita dapat memperluas konsep deret Fourier klasik secara alami kepada
+fungsi-fungsi dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2([a,b]\times[c,d])</annotation></semantics></math>.
+Sebagai contoh, untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a,b&gt;0</annotation></semantics></math>,
+deret Fourier sinus suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2([0,a]\times[0,b])</annotation></semantics></math>
+adalah</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.048"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mspace width="0.167em"></mspace><msub><mi>c</mi><mrow><mi>m</mi><mo>,</mo><mi>n</mi></mrow></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mi>a</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>y</mi></mrow><mi>b</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\sum_{m=1}^{\infty} \sum_{n=1}^{\infty} \, c_{m,n}
+\sin\left(\frac{m \pi x}{a} \right)\sin\left(\frac{n \pi y}{b} \right)
+\ ,</annotation></semantics></math> dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mrow><mi>m</mi><mo>,</mo><mi>n</mi></mrow></msub><mo>=</mo><mfrac><mn>4</mn><mrow><mi>a</mi><mi>b</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>b</mi></msubsup><msubsup><mo>∫</mo><mn>0</mn><mi>a</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mi>a</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>y</mi></mrow><mi>b</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">\displaystyle c_{m,n} = \frac{4}{ab} \int_{0}^{b} \int_{0}^{a} f(x,y)
+\sin \left(\frac{m \pi x}{a}\right) \sin\left(\frac{n \pi y}{b}\right)
+\,\mathrm{d}{x}\,\mathrm{d}{y}</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>,</mo><mi>m</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n,m \geq 1</annotation></semantics></math>.
+Notasi jumlah ganda ini berarti bahwa jumlah parsial persegi panjang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mrow><mi>M</mi><mo>,</mo><mi>N</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>m</mi><mo>=</mo><mn>1</mn></mrow><mi>M</mi></msubsup><msubsup><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mi>N</mi></msubsup><msub><mi>c</mi><mrow><mi>m</mi><mo>,</mo><mi>n</mi></mrow></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>m</mi><mi>π</mi><mi>x</mi></mrow><mi>a</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>y</mi></mrow><mi>b</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle S_{M,N}(x,y)=\sum_{m=1}^{M}\sum_{n=1}^{N}c_{m,n}
+\sin\left(\frac{m\pi x}{a}\right)\sin\left(\frac{n\pi y}{b}\right)</annotation></semantics></math>
+memenuhi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>f</mi><mo>−</mo><msub><mi>S</mi><mrow><mi>M</mi><mo>,</mo><mi>N</mi></mrow></msub><msub><mo stretchy="false" form="postfix">∥</mo><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>a</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow></msub><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\|f-S_{M,N}\|_{L^2([0,a]\times[0,b])}\to0</annotation></semantics></math>
+saat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>,</mo><mi>N</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">M,N\to\infty</annotation></semantics></math>.</p>
+<p>Contoh-contoh lain deret Fourier klasik dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mo>,</mo><mi>d</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2([a,b]\times[c,d])</annotation></semantics></math>
+diserahkan kepada pembaca.</p>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="functional-general-l2.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="functional-operator-theory.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

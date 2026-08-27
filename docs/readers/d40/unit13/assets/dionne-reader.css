@@ -1,0 +1,243 @@
+:root {
+  color-scheme: light dark;
+  font-family: "Noto Serif", "Source Serif 4", Georgia, serif;
+  line-height: 1.66;
+  --page: #f6f3ec;
+  --ink: #20262b;
+  --heading: #17375e;
+  --link: #24518c;
+  --rule: #77629a;
+  --definition: #eee8f5;
+  --definition-border: #8b6ba8;
+  --note: #e9f0f7;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 2.25rem clamp(1rem, 4vw, 4rem) 4rem;
+  background: var(--page);
+  color: var(--ink);
+}
+
+main,
+body > header,
+body > nav {
+  width: min(100%, 66rem);
+  margin-inline: auto;
+}
+
+.skip-link {
+  position: absolute;
+  top: -6rem;
+  left: 1rem;
+  z-index: 20;
+  padding: 0.7rem 0.95rem;
+  background: #fff;
+  color: #111;
+  border: 0.15rem solid #111;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  color: var(--heading);
+  line-height: 1.22;
+  text-wrap: balance;
+}
+
+h1 {
+  margin-top: 0.5rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 0.16rem solid var(--rule);
+}
+
+h2,
+h3 {
+  margin-top: 2.2em;
+}
+
+p,
+li {
+  text-wrap: pretty;
+}
+
+a {
+  color: var(--link);
+  text-underline-offset: 0.16em;
+}
+
+a:focus-visible {
+  outline: 0.18rem solid #d27d00;
+  outline-offset: 0.16rem;
+}
+
+.edition-note,
+.attribution {
+  margin-block: 1.4rem;
+  padding: 0.9rem 1.05rem;
+  background: var(--note);
+  border-left: 0.32rem solid #547ca2;
+}
+
+.definition {
+  margin-block: 1.5rem;
+  padding: 0.95rem 1.1rem;
+  background: var(--definition);
+  border: 0.12rem solid var(--definition-border);
+  border-radius: 0.45rem;
+}
+
+.definition > :first-child {
+  margin-top: 0;
+}
+
+.definition > :last-child {
+  margin-bottom: 0;
+}
+
+figure {
+  margin: 1.6rem auto;
+  width: min(100%, 56rem);
+}
+
+figure img {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  margin-inline: auto;
+}
+
+.numbered-equation {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.75rem;
+  margin-block: 1rem;
+  max-width: 100%;
+}
+
+.numbered-equation > math {
+  display: block;
+  margin-inline: auto;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.equation-number {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+figcaption {
+  margin-top: 0.55rem;
+  font-size: 0.94rem;
+  text-align: center;
+}
+
+.equation,
+math[display="block"] {
+  max-width: 100%;
+  overflow-x: auto;
+  padding-block: 0.25rem;
+}
+
+.unit-navigation {
+  margin-top: 2.5rem;
+  padding-top: 0.9rem;
+  border-top: 0.1rem solid var(--rule);
+}
+
+.rights-boundary {
+  margin-top: 2.5rem;
+  font-size: 0.94rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --page: #171a1d;
+    --ink: #edf0f2;
+    --heading: #bdd7ff;
+    --link: #afd0ff;
+    --rule: #a38ac7;
+    --definition: #2b2535;
+    --definition-border: #a88bc2;
+    --note: #202c38;
+  }
+}
+
+@media (max-width: 42rem) {
+  body {
+    padding: 1rem 1rem 2.5rem;
+  }
+
+  h1 {
+    font-size: 1.7rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media print {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    padding: 0;
+    background: #fff;
+    color: #000;
+  }
+
+  .skip-link,
+  .unit-navigation {
+    display: none;
+  }
+}
+
+/* Unit 02 semantic blocks extend the verified Unit 01 visual system. */
+.theorem,
+.remark,
+.example {
+  margin-block: 1.5rem;
+  padding: 0.95rem 1.1rem;
+  border-left: 0.32rem solid var(--definition-border);
+  background: color-mix(in srgb, var(--definition) 62%, transparent);
+}
+
+.proof {
+  margin-block: 1.5rem;
+  padding-left: 1rem;
+  border-left: 0.16rem solid var(--rule);
+}
+
+.theorem > :first-child,
+.remark > :first-child,
+.example > :first-child,
+.proof > :first-child {
+  margin-top: 0;
+}
+
+.theorem > :last-child,
+.remark > :last-child,
+.example > :last-child,
+.proof > :last-child {
+  margin-bottom: 0;
+}
+

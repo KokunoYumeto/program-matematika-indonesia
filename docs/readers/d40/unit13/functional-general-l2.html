@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Ruang L² Umum</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.functional-analysis.seg.002">Ruang L² Umum</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>funct_anal.tex</code> baris 246-623 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.section.04.02"></span></p>
+<h1 id="ruang-displaystyle-l2-umum">Ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+Umum</h1>
+<p>Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+adalah suatu ukuran pada ruang terukur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>.
+Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo>,</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(\Omega) \equiv L^2(\Omega, \mu)</annotation></semantics></math>
+adalah ruang kelas ekuivalensi fungsi terukur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="normal">Ω</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">f:\Omega \rightarrow \mathbb{C}</annotation></semantics></math>
+terhadap kesamaan hampir di mana-mana, sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∫</mo><mi mathvariant="normal">Ω</mi></msub><mo stretchy="false" form="prefix">|</mo><mi>f</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi></mrow><annotation encoding="application/x-tex">\displaystyle\int_\Omega |f|^2 \,\mathrm{d}{\mu}</annotation></semantics></math>
+berhingga. Kita dapat mendefinisikan hasil kali skalar pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(\Omega)</annotation></semantics></math>
+dengan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.005"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><mi>g</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><msub><mo>∫</mo><mi mathvariant="normal">Ω</mi></msub><mi>f</mi><mspace width="0.167em"></mspace><mover><mi>g</mi><mo accent="true">¯</mo></mover><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>f</mi><mo>,</mo><mi>g</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\left\langle{f},{g}\right\rangle = \int_\Omega f\, \overline{g} \,\mathrm{d}{\mu} \quad , \quad
+f, g \in L^2(\Omega) \ .</annotation></semantics></math> Norma
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+terkait adalah</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.006"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>f</mi><msub><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msub><mo>=</mo><msqrt><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><mi>f</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></msqrt><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>∫</mo><mi mathvariant="normal">Ω</mi></msub><mo stretchy="false" form="prefix">|</mo><mi>f</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\| f \|_2 = \sqrt{\left\langle{f},{f}\right\rangle} = \left(\int_\Omega |f|^2 \,\mathrm{d}{\mu}\right)^{1/2}
+\quad , \quad  f \in L^2(\Omega) \ .</annotation></semantics></math>
+Dengan norma ini,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(\Omega)</annotation></semantics></math>
+merupakan ruang Hilbert.</p>
+<div id="o010.dionne.functional-analysis.remark.001" class="remark">
+<p><strong>Catatan.</strong> Kami menggunakan istilah “fungsi” untuk
+suatu unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2(\Omega)</annotation></semantics></math>.
+Pembaca perlu mengingat bahwa sebenarnya
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+merepresentasikan kelas ekuivalensi fungsi-fungsi yang sama dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+hampir di mana-mana.</p>
+</div>
+<p>Berdasarkan Teorema <a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.theorem.006">4.1.13</a>,
+suatu himpunan ortonormal fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>v</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle\{ v_\alpha \}_{\alpha \in A}</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, lengkap jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><msub><mi>v</mi><mi>α</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\left\langle{f},{v_\alpha}\right\rangle = 0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">\alpha \in A</annotation></semantics></math>
+mengakibatkan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">f = 0</annotation></semantics></math>
+hampir di mana-mana pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>.</p>
+<p>Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>v</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle S= \{ v_\alpha \}_{\alpha \in A}</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, adalah basis ortonormal dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(\Omega)</annotation></semantics></math>.
+<strong>Deret Fourier (tergeneralisasi)</strong> <span
+id="o010.dionne.functional-analysis.index.021"></span> suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="normal">Ω</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2(\Omega)</annotation></semantics></math>
+terhadap basis ortonormal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+adalah</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.007"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>∑</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></munder><msub><mi>a</mi><mi>α</mi></msub><msub><mi>v</mi><mi>α</mi></msub><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\sum_{\alpha \in A} a_\alpha v_\alpha \ ,</annotation></semantics></math>
+dengan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.008"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>α</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><msub><mi>v</mi><mi>α</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><msub><mo>∫</mo><mi mathvariant="normal">Ω</mi></msub><mi>f</mi><mspace width="0.167em"></mspace><msub><mover><mi>v</mi><mo accent="true">¯</mo></mover><mi>α</mi></msub><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>α</mi><mo>∈</mo><mi>A</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">a_\alpha = \left\langle{f},{v_\alpha}\right\rangle
+= \int_\Omega f\, \overline{v}_\alpha \,\mathrm{d}{\mu} \quad, \quad \alpha \in A \ .</annotation></semantics></math>
+Ingatlah bahwa himpunan semua
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>α</mi></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a_\alpha \neq 0</annotation></semantics></math>
+paling banyak terhitung. Jika himpunan itu berhingga atau kosong,
+deretnya berhingga atau nol; jika tak berhingga, ambil sebarang
+pengurutan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{ \alpha_j\}_{j=0}^\infty</annotation></semantics></math>
+dari himpunan indeks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">\alpha \in A</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>α</mi></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a_\alpha \neq 0</annotation></semantics></math>.
+Berdasarkan isometri yang didefinisikan dalam (<a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.equation.002">4.1.2</a>),
+kita memperoleh</p>
+<p><span id="o010.dionne.functional-analysis.equation.003"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.2.1)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mo stretchy="true" form="prefix">∥</mo><mi>f</mi><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mi>J</mi></munderover><msub><mi>a</mi><msub><mi>α</mi><mi>j</mi></msub></msub><msub><mi>v</mi><msub><mi>α</mi><mi>j</mi></msub></msub><mo stretchy="true" form="postfix">∥</mo></mrow><mn>2</mn></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>∫</mo><mrow><mi>j</mi><mo>∈</mo><msub><mi>B</mi><mi>J</mi></msub></mrow></msub><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>F</mi><mi>f</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>ν</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo>→</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">saat</mtext><mspace width="1.0em"></mspace><mi>J</mi><mo>→</mo><mi>∞</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\left\| f - \sum_{j=0}^{J} a_{\alpha_j} v_{\alpha_j} \right\|_2
+= \left( \int_{j \in B_J} \left| F_f(j)\right|^2 \,\mathrm{d}{\nu} \right)^{1/2}
+\rightarrow 0 \quad \text{saat} \quad J \rightarrow \infty \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.2.1)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>f</mi></msub><mo>:</mo><mi mathvariant="double-struck">ℕ</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">F_f:\mathbb{N}\rightarrow \mathbb{C}</annotation></semantics></math>
+didefinisikan oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>f</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>j</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><msub><mi>v</mi><msub><mi>α</mi><mi>j</mi></msub></msub><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">F_f(j) = \left\langle{f},{v_{\alpha_j}}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>∈</mo><mi mathvariant="double-struck">ℕ</mi></mrow><annotation encoding="application/x-tex">j\in \mathbb{N}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mi>J</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>J</mi><mo>+</mo><mn>1</mn><mo>,</mo><mi>J</mi><mo>+</mo><mn>2</mn><mo>,</mo><mi>…</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">B_J = \{J+1, J+2, \ldots\}</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>
+adalah ukuran pencacahan pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℕ</mi><annotation encoding="application/x-tex">\mathbb{N}</annotation></semantics></math>.
+Kekonvergenan integral di atas ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+disebabkan oleh fakta bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>f</mi></msub><mo>∈</mo><msup><mi>ℓ</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℕ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle F_f \in \ell^2(\mathbb{N})</annotation></semantics></math>.
+Dengan kata lain, (<a
+href="functional-general-l2.html#o010.dionne.functional-analysis.equation.003">4.2.1</a>)
+menyatakan bahwa</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.009"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>∫</mo><mi mathvariant="normal">Ω</mi></msub><msup><mrow><mo stretchy="true" form="prefix">|</mo><mi>f</mi><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mi>J</mi></munderover><mspace width="0.222em"></mspace><msub><mi>a</mi><msub><mi>α</mi><mi>j</mi></msub></msub><msub><mi>v</mi><msub><mi>α</mi><mi>j</mi></msub></msub><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mi>J</mi><mo>+</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mo stretchy="false" form="prefix">|</mo><msub><mi>a</mi><msub><mi>α</mi><mi>j</mi></msub></msub><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo>→</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">saat</mtext><mspace width="1.0em"></mspace><mi>J</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">\left( \int_\Omega
+\left|f - \sum_{j=0}^{J} \: a_{\alpha_j} v_{\alpha_j} \right|^2
+\,\mathrm{d}{\mu} \right)^{1/2}
+= \left( \sum_{j=J+1}^\infty |a_{\alpha_j}|^2 \right)^{1/2}
+\rightarrow 0 \quad \text{saat} \quad
+J \rightarrow \infty</annotation></semantics></math> untuk setiap
+pengurutan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>α</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{ \alpha_j\}_{j=0}^\infty</annotation></semantics></math>
+dalam kasus himpunan indeks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">\alpha \in A</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>α</mi></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a_\alpha \neq 0</annotation></semantics></math>
+tak berhingga; kasus berhingga atau kosong berlaku langsung. Kita
+menulis</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.010"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><munder><mo>∑</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></munder><msub><mi>a</mi><mi>α</mi></msub><msub><mi>v</mi><mi>α</mi></msub></mrow><annotation encoding="application/x-tex">f = \sum_{\alpha \in A} a_\alpha v_\alpha</annotation></semantics></math>
+apabila (<a
+href="functional-general-l2.html#o010.dionne.functional-analysis.equation.003">4.2.1</a>)
+dipenuhi. Ini tidak berarti bahwa kita memiliki kekonvergenan titik demi
+titik. Persoalan ini dibahas dalam Bagian <a
+href="functional-general-l2.html#o010.dionne.subsection.04.02.03">4.2.3</a>
+di bawah.</p>
+<p><span id="o010.dionne.subsection.04.02.01"></span></p>
+<h2 id="ruang-displaystyle-l2-pada-garis-real">Ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+pada Garis Real</h2>
+<p>Salah satu kasus khusus yang penting dalam teori umum ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+diperoleh dengan mengambil
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\Omega=[a,b]</annotation></semantics></math>
+yang dilengkapi dengan ukuran
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+yang didefinisikan pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>
+oleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.011"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mo>∫</mo><mi>I</mi></msub><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\mu(I) = \int_I p(x) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk setiap himpunan bagian terukur Lebesgue
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math>
+dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">p:[a,b]\rightarrow \mathbb{R}</annotation></semantics></math>
+suatu fungsi kontinu sepotong-sepotong pada interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p(x) &gt; 0</annotation></semantics></math>
+untuk hampir setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">x \in [a,b]</annotation></semantics></math>.
+Kita juga dapat menggunakan interval terbuka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">]</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">]a,b[</annotation></semantics></math>,
+baik terbatas maupun tak terbatas. Hasilnya sama.</p>
+<p>Ingatlah bahwa suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+disebut <strong>kontinu sepotong-sepotong</strong><span
+id="o010.dionne.functional-analysis.index.022"></span> pada suatu
+interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+kontinu pada interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math>,
+kecuali di sejumlah berhingga titik, dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>c</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mi mathvariant="normal">lim</mi><mo>&#8289;</mo></mrow><mrow><mi>x</mi><mo>→</mo><msup><mi>c</mi><mo>+</mo></msup></mrow></msub><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f(c^+) = \lim_{x\to c^+} f(x)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>∈</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">c \in I</annotation></semantics></math>
+yang bukan ujung kanan serta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>c</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mi mathvariant="normal">lim</mi><mo>&#8289;</mo></mrow><mrow><mi>x</mi><mo>→</mo><msup><mi>c</mi><mo>−</mo></msup></mrow></msub><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f(c^-) = \lim_{x\to c^-} f(x)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>∈</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">c \in I</annotation></semantics></math>
+yang bukan ujung kiri; khususnya pada titik-titik tempat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+tidak kontinu.</p>
+<p>Dalam subbagian ini,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>≡</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>,</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[a,b] \equiv L^2([a,b],\mu)</annotation></semantics></math>
+secara khusus menyatakan ruang real yang terdiri atas fungsi terukur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:[a,b]\rightarrow \mathbb{R}</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><msup><mi>f</mi><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mo>=</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><msup><mi>f</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\displaystyle\int_a^b f^2 \,\mathrm{d}{\mu} = \int_a^b f^2(x) p(x) \,\mathrm{d}{x}</annotation></semantics></math>
+berhingga. Hasil kali skalar pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[a,b]</annotation></semantics></math>
+adalah</p>
+<p><span id="o010.dionne.functional-analysis.equation.004"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.2.2)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><mi>g</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>f</mi><mo>,</mo><mi>g</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\left\langle{f},{g}\right\rangle = \int_a^b f(x) g(x) p(x) \,\mathrm{d}{x} \quad , \quad f, g \in L^2[a,b] \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.2.2)</span></span>
+Norma
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+terkait adalah</p>
+<p><span id="o010.dionne.functional-analysis.equation.005"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.2.3)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>f</mi><msub><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msub><mo>=</mo><msqrt><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><mi>f</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></msqrt><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><msup><mi>f</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\| f \|_2 = \sqrt{\left\langle{f},{f}\right\rangle} = \left(\int_a^b f^2(x) p(x) \,\mathrm{d}{x}\right)^{1/2}
+\quad , \quad f \in L^2[a,b] \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.2.3)</span></span></p>
+<p>Ruang-ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[a,b]</annotation></semantics></math>
+memiliki basis ortonormal terhitung. Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>v</mi><mi>n</mi></msub><mo>:</mo><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℕ</mi><mo stretchy="false" form="postfix">}</mo><mo>⊂</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle\{v_n : n \in \mathbb{N}\} \subset L^2[a,b]</annotation></semantics></math>
+adalah basis ortonormal untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[a,b]</annotation></semantics></math>.
+Deret Fourier suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2[a,b]</annotation></semantics></math>
+terhadap basis ini adalah</p>
+<p><span id="o010.dionne.functional-analysis.equation.006"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.2.4)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo accent="false">∞</mo></munderover><msub><mi>a</mi><mi>n</mi></msub><msub><mi>v</mi><mi>n</mi></msub><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\sum_{n=0}^{\infty} a_{n} v_n \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.2.4)</span></span>
+dengan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.012"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℕ</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">a_n = \left\langle{f},{v_n}\right\rangle = \int_a^b f(x) v_n(x) p(x) \,\mathrm{d}{x}
+\quad, \quad n \in \mathbb{N}\ .</annotation></semantics></math></p>
+<p>Kadang-kadang, kita hanya memiliki suatu himpunan ortogonal lengkap
+fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>v</mi><mi>n</mi></msub><mo>:</mo><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℕ</mi><mo stretchy="false" form="postfix">}</mo><mo>⊂</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle\{v_n : n \in \mathbb{N}\} \subset L^2[a,b]</annotation></semantics></math>.
+Dalam hal ini, deret Fourier
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2[a,b]</annotation></semantics></math>
+terhadap himpunan fungsi tersebut adalah</p>
+<p><span id="o010.dionne.functional-analysis.equation.007"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.2.5)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo accent="false">∞</mo></munderover><msub><mi>a</mi><mi>n</mi></msub><msub><mi>v</mi><mi>n</mi></msub><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\sum_{n=0}^{\infty} a_{n} v_n \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.2.5)</span></span>
+dengan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.013"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mrow><mo stretchy="false" form="postfix">∥</mo><msub><mi>v</mi><mi>n</mi></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow></mfrac><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℕ</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">a_n = \frac{\left\langle{f},{v_n}\right\rangle}{\| v_n \|^2}
+= \left( \int_a^b (v_n(x))^2 p(x) \,\mathrm{d}{x} \right)^{-1}
+\int_a^b f(x) v_n(x) p(x) \,\mathrm{d}{x}
+\quad, \quad n \in \mathbb{N}\ .</annotation></semantics></math></p>
+<p>Kelengkapan basis ortonormal atau himpunan ortogonal yang digunakan
+dalam (<a
+href="functional-general-l2.html#o010.dionne.functional-analysis.equation.006">4.2.4</a>)
+dan (<a
+href="functional-general-l2.html#o010.dionne.functional-analysis.equation.007">4.2.5</a>)
+mengakibatkan bahwa</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.014"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mo stretchy="true" form="prefix">∥</mo><mi>f</mi><mo>−</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>N</mi></munderover><msub><mi>a</mi><mi>n</mi></msub><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="true" form="postfix">∥</mo></mrow><mn>2</mn></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>N</mi></munderover><mspace width="0.222em"></mspace><msub><mi>a</mi><mi>n</mi></msub><msub><mi>v</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo>→</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">saat</mtext><mspace width="1.0em"></mspace><mi>N</mi><mo>→</mo><mi>∞</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\left\| f - \sum_{n=0}^{N} a_n v_n \right\|_2
+= \left( \int_a^b \left( f(x) - \sum_{n=0}^{N} \: a_n v_n(x) \right)^2
+p(x) \,\mathrm{d}{x} \right)^{1/2} \rightarrow 0 \quad \text{saat} \quad
+N \rightarrow \infty \ .</annotation></semantics></math> Kita mengatakan
+bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>N</mi></msubsup><mspace width="0.222em"></mspace><msub><mi>a</mi><mi>n</mi></msub><msub><mi>v</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\displaystyle\sum_{n=0}^{N} \: a_n v_n</annotation></semantics></math>
+konvergen dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+saat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">N\rightarrow \infty</annotation></semantics></math>,
+dan kita menulis</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.015"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mo accent="false">∞</mo></munderover><msub><mi>a</mi><mi>n</mi></msub><msub><mi>v</mi><mi>n</mi></msub><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">f = \sum_{n=0}^\infty a_n v_n \ .</annotation></semantics></math>
+Ingatlah bahwa kesamaan ini bukan kesamaan titik demi titik, melainkan
+kesamaan dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[a,b]</annotation></semantics></math>.</p>
+<p><span id="o010.dionne.subsection.04.02.02"></span></p>
+<h2 id="ruang-displaystyle-l2-pada-lingkaran-satuan">Ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+pada Lingkaran Satuan</h2>
+<p>Salah satu kelas penting ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>
+adalah ruang fungsi terukur bernilai kompleks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(T) \equiv L^2(T,\nu)</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+lingkaran satuan di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb{C}</annotation></semantics></math>
+dan ukuran Lebesgue
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+diperoleh dari panjang busur dibagi dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>.
+Secara khusus,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ν</mi><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\nu(T) =1</annotation></semantics></math>.</p>
+<p>Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+adalah ruang kelas ekuivalensi terhadap kesamaan hampir di mana-mana
+dari fungsi terukur bernilai kompleks yang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>-periodik
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb{R}</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.016"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mo stretchy="false" form="prefix">|</mo><mi>f</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo>&lt;</mo><mi>∞</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\left(\int_{-\pi}^\pi |f|^2 \,\mathrm{d}{\mu}\right)^{1/2} &lt; \infty \ ,</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>
+ukuran Lebesgue pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>π</mi><mo>,</mo><mi>π</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[-\pi,\pi]</annotation></semantics></math>
+yang dibagi dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>.
+Jika norma pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+didefinisikan oleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.017"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>f</mi><msub><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mo stretchy="false" form="prefix">|</mo><mi>f</mi><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\|f\|_2 = \left(\int_{-\pi}^\pi |f|^2 \,\mathrm{d}{\mu}\right)^{1/2} \ ,</annotation></semantics></math>
+maka terdapat suatu isometri antara
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(T,\nu)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+yang didefinisikan oleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.002"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>Q</mi><mo>:</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>→</mo><mi>P</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>f</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>↦</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+Q: L^2(T,\nu) &amp; \rightarrow P \\
+  f &amp; \mapsto f(e^{x\,i})
+\end{aligned}</annotation></semantics></math> Kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.018"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mo>∫</mo><mi>T</mi></msub><mo stretchy="false" form="prefix">|</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>ν</mi><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mo stretchy="false" form="prefix">|</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>μ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mn>1</mn><mi>/</mi><mn>2</mn></mrow></msup><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\left(\int_T |f(z)|^2\,\mathrm{d}{\nu}(z) \right)^{1/2}
+= \left(\int_{-\pi}^\pi |f(e^{x\,i})|^2\,\mathrm{d}{\mu}(x) \right)^{1/2}  \ ,</annotation></semantics></math>
+Setiap himpunan terukur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>⊂</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">B \subset T</annotation></semantics></math>
+berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><msup><mi>e</mi><mrow><mi>A</mi><mi>i</mi></mrow></msup><mo>≡</mo><mo stretchy="false" form="prefix">{</mo><msup><mi>e</mi><mrow><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>:</mo><mi>x</mi><mo>∈</mo><mi>A</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle B = e^{Ai} \equiv \{e^{x\,i} : x\in A\}</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>⊂</mo><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>π</mi><mo>,</mo><mi>π</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">A \subset [-\pi,\pi]</annotation></semantics></math>
+suatu himpunan terukur, dan sebaliknya. Kita juga memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ν</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>A</mi><mi>i</mi></mrow></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>μ</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\nu(e^{Ai}) = \mu(A)</annotation></semantics></math>.</p>
+<p>Definisi berikut dibenarkan oleh isometri di atas.</p>
+<div id="o010.dionne.functional-analysis.definition.007"
+class="definition">
+<p><strong>Definisi.</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+dinotasikan dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>,</mo><mi>ν</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(T) = L^2(T,\nu)</annotation></semantics></math>.</p>
+</div>
+<p>Konteks akan menentukan ruang mana di antara keduanya yang sedang
+kita gunakan.</p>
+<p>Himpunan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><msup><mi>e</mi><mrow><mi>n</mi><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>:</mo><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi><mo stretchy="true" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\left\{ e^{n x\, i} : n \in \mathbb{Z}\right\}</annotation></semantics></math>
+adalah suatu himpunan ortonormal lengkap dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2(T)</annotation></semantics></math>.
+<strong>Ekspansi Fourier klasik</strong><span
+id="o010.dionne.functional-analysis.index.023"></span> suatu fungsi
+bernilai kompleks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in L^2(T)</annotation></semantics></math>
+adalah</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.019"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>∑</mo><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow></munder><msub><mi>c</mi><mi>n</mi></msub><msup><mi>e</mi><mrow><mi>n</mi><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\sum_{n\in \mathbb{Z}} c_n e^{n x\, i} \ ,</annotation></semantics></math>
+dengan</p>
+<p><span id="o010.dionne.functional-analysis.equation.008"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.2.6)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>n</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mspace width="0.167em"></mspace><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>n</mi><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">c_n = \frac{1}{2\pi} \int_{-\pi}^{\pi} \, f(x) e^{-n x\, i} \,\mathrm{d}{x} \quad
+, \quad n \in \mathbb{Z}\ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.2.6)</span></span></p>
+<p><span id="o010.dionne.subsection.04.02.03"></span></p>
+<h2
+id="kekonvergenan-titik-demi-titik-deret-fourier-klasik">Kekonvergenan
+Titik demi Titik Deret Fourier Klasik</h2>
+<p>Dalam bagian ini, kita membuktikan teorema berikut.</p>
+<div id="o010.dionne.functional-analysis.theorem.007" class="theorem">
+<p><strong>Teorema 4.2.3.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">f:\mathbb{R}\to \mathbb{C}</annotation></semantics></math>
+adalah fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>-periodik
+yang <span id="faFsPwc" data-label="faFsPwc"></span> terdiferensialkan
+sepotong-sepotong. Maka</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.020"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><mo>=</mo><munder><mi mathvariant="normal">lim</mi><mrow><mi>N</mi><mo>→</mo><mi>∞</mi></mrow></munder><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>N</mi></mrow><mi>N</mi></munderover><msub><mi>c</mi><mi>n</mi></msub><msup><mi>e</mi><mrow><mi>n</mi><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{f(x^+) + f(x^-)}{2} = \lim_{N\to \infty} \sum_{n=-N}^N c_n e^{n x\, i} \ ,</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>c</mi><mi>n</mi></msub><annotation encoding="application/x-tex">c_n</annotation></semantics></math>
+didefinisikan dalam (<a
+href="functional-general-l2.html#o010.dionne.functional-analysis.equation.008">4.2.6</a>),
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mi mathvariant="normal">lim</mi><mo>&#8289;</mo></mrow><mrow><mi>s</mi><mo>→</mo><msup><mi>x</mi><mo>+</mo></msup></mrow></msub><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f(x^+) = \lim_{s\to x^+} f(s)</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mi mathvariant="normal">lim</mi><mo>&#8289;</mo></mrow><mrow><mi>s</mi><mo>→</mo><msup><mi>x</mi><mo>−</mo></msup></mrow></msub><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f(x^-) = \lim_{s\to x^-} f(s)</annotation></semantics></math>.</p>
+</div>
+<p>Syarat yang lebih longgar untuk kekonvergenan titik demi titik deret
+Fourier diberikan dalam <span id="o010.citation.rupma"></span><a
+href="#o010.citation.rupma">RuPMA</a>. Ingatlah bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+disebut <strong>terdiferensialkan sepotong-sepotong</strong><span
+id="o010.dionne.functional-analysis.index.024"></span> pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>f</mi><mo>′</mo></msup><annotation encoding="application/x-tex">f&#39;</annotation></semantics></math>
+kontinu sepotong-sepotong pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>.</p>
+<p>Sebelum membuktikan teorema ini, kita memerlukan sebuah lemma yang
+sangat terkenal.</p>
+<div id="o010.dionne.functional-analysis.lemma.001" class="lemma">
+<p><strong>Lema.</strong> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">f:[a,b] \to \mathbb{C}</annotation></semantics></math>
+terdiferensialkan sepotong-sepotong, maka</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.021"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi mathvariant="normal">lim</mi><mrow><mi>R</mi><mo>→</mo><mi>∞</mi></mrow></munder><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\lim_{R\to \infty} \int_a^b f(y) \sin(Ry) \,\mathrm{d}{y} = 0 \ .</annotation></semantics></math></p>
+</div>
+<div id="o010.dionne.functional-analysis.proof.001" class="proof">
+<p><strong>Bukti.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>&lt;</mo><msub><mi>y</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>y</mi><mn>2</mn></msub><mo>&lt;</mo><mi>…</mi><mo>&lt;</mo><msub><mi>y</mi><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>&lt;</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a &lt; y_1 &lt; y_2 &lt; \ldots &lt; y_{m-1} &lt; b</annotation></semantics></math>
+adalah titik-titik tempat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+tidak terdiferensialkan. Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">y_0 = a</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>m</mi></msub><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">y_m = b</annotation></semantics></math>.
+Dengan menggunakan integrasi parsial, kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.003"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></munderover><msubsup><mo>∫</mo><msub><mi>y</mi><mi>j</mi></msub><msub><mi>y</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="1.0em"></mspace><mo>=</mo><mfrac><mn>1</mn><mi>R</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow><mo>−</mo></msubsup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>R</mi><msub><mi>y</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mo>+</mo></msubsup><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>R</mi><msub><mi>y</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msubsup><mo>∫</mo><msub><mi>y</mi><mi>j</mi></msub><msub><mi>y</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub></msubsup><msup><mi>f</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+&amp;\int_a^b  f(y) \sin(Ry) \,\mathrm{d}{y}
+= \sum_{j=0}^{m-1} \int_{y_j}^{y_{j+1}} f(y) \sin(Ry) \,\mathrm{d}{y} \\
+&amp; \quad = \frac{1}{R} \sum_{j=0}^{m-1} \left( -f(y_{j+1}^-)\cos(Ry_{j+1})
++ f(y_j^+)\cos(Ry_j) + \int_{y_j}^{y_{j+1}} f&#39;(y) \cos(Ry) \,\mathrm{d}{y} \right) \ .
+\end{aligned}</annotation></semantics></math> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>1</mn></msub><mo>=</mo><msub><mrow><mi mathvariant="normal">sup</mi><mo>&#8289;</mo></mrow><mrow><mi>y</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow></msub><mo stretchy="false" form="prefix">|</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">M_1 = \sup_{y\in[a,b]} |f(y)|</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>2</mn></msub><mo>=</mo><msub><mrow><mi mathvariant="normal">sup</mi><mo>&#8289;</mo></mrow><mrow><mi>y</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow></msub><mo stretchy="false" form="prefix">|</mo><msup><mi>f</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">M_2 = \sup_{y\in[a,b]}|f&#39;(y)|</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>1</mn></msub><annotation encoding="application/x-tex">M_1</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>2</mn></msub><annotation encoding="application/x-tex">M_2</annotation></semantics></math>
+berhingga karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+terdiferensialkan sepotong-sepotong dan dengan demikian juga kontinu
+sepotong-sepotong. Kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.004"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mrow><mo stretchy="true" form="prefix">|</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi><mo stretchy="true" form="postfix">|</mo></mrow></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>≤</mo><mfrac><mn>1</mn><mi>R</mi></mfrac><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mrow><mi>m</mi><mo>−</mo><mn>1</mn></mrow></munderover><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">|</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>y</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow><mo>−</mo></msubsup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mi>+</mi><mo stretchy="false" form="prefix">|</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msubsup><mi>y</mi><mi>j</mi><mo>+</mo></msubsup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mi>+</mi><msubsup><mo>∫</mo><msub><mi>y</mi><mi>j</mi></msub><msub><mi>y</mi><mrow><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub></msubsup><mo stretchy="false" form="prefix">|</mo><msup><mi>f</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>≤</mo><mfrac><mn>1</mn><mi>R</mi></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mi>m</mi><msub><mi>M</mi><mn>1</mn></msub><mo>+</mo><msub><mi>M</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo>−</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>→</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">saat</mtext><mspace width="1.0em"></mspace><mi>R</mi><mo>→</mo><mi>∞</mi><mspace width="0.222em"></mspace><mi>.</mi><mi>▫</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\left| \int_a^b  f(y) \sin(Ry) \,\mathrm{d}{y} \right|
+&amp; \leq \frac{1}{R} \sum_{j=0}^{m-1} \left( |f(y_{j+1}^-)| + |f(y_j^+)|
++ \int_{y_j}^{y_{j+1}} |f&#39;(y)| \,\mathrm{d}{y} \right) \\
+&amp; \leq \frac{1}{R} \left( 2m M_1 + M_2 (b-a) \right) \to 0 \quad \text{saat}
+\quad R \to \infty \ .  \square
+\end{aligned}</annotation></semantics></math></p>
+</div>
+<p>Misalkan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.022"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>N</mi></mrow><mi>N</mi></munderover><msub><mi>c</mi><mi>n</mi></msub><msup><mi>e</mi><mrow><mi>n</mi><mi>x</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup></mrow><annotation encoding="application/x-tex">S_N(x) = \sum_{n=-N}^N c_n e^{n x\, i}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>
+suatu bilangan bulat positif dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \in \mathbb{R}</annotation></semantics></math>.
+Dari (<a
+href="functional-general-l2.html#o010.dionne.functional-analysis.equation.008">4.2.6</a>)
+kita memperoleh bahwa</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.023"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>N</mi></mrow><mi>N</mi></munderover><msup><mi>e</mi><mrow><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">S_N(x) = \frac{1}{2\pi} \int_{-\pi}^{\pi} f(t) \sum_{n=-N}^N
+e^{n(x-t)\, i} \,\mathrm{d}{t}
+= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(t) D_N(x-t) \,\mathrm{d}{t} \ ,</annotation></semantics></math>
+dengan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.024"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>N</mi></mrow><mi>N</mi></munderover><msup><mi>e</mi><mrow><mi>n</mi><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">D_N(y) = \sum_{n=-N}^N e^{n y \, i} \ .</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mi>N</mi></msub><annotation encoding="application/x-tex">D_N</annotation></semantics></math>
+disebut <strong>kernel Dirichlet</strong><span
+id="o010.dionne.functional-analysis.index.025"></span>. Dari</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.025"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msup><mi>e</mi><mrow><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo stretchy="false" form="postfix">)</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>N</mi></mrow><mi>N</mi></munderover><msup><mi>e</mi><mrow><mi>n</mi><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>=</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>N</mi></mrow><mi>N</mi></munderover><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mi>n</mi><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>N</mi><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">(1-e^{y\, i}) \sum_{n=-N}^N e^{n y \, i} =
+\sum_{n=-N}^N \left( e^{n y \, i} - e^{(n+1) y \, i} \right)
+= e^{-N y \, i} - e^{(N+1) y \, i} \ ,</annotation></semantics></math>
+kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.026"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>−</mi><mi>N</mi><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup></mrow><mrow><mn>1</mn><mo>−</mo><msup><mi>e</mi><mrow><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>e</mi><mrow><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>+</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>+</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup></mrow><mrow><msup><mi>e</mi><mrow><mi>−</mi><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>i</mi></mrow></msup></mrow></mfrac><mo>=</mo><mfrac><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>+</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">D_N(y) = \frac{e^{-N y \, i} - e^{(N+1) y \, i}}{1-e^{y\, i}}
+= \frac{e^{-(N+1/2) y \, i} - e^{(N+1/2) y \, i}}{e^{-(y/2)\,i}-e^{(y/2)\, i}}
+= \frac{ \sin( (N+1/2)y)}{\sin(y/2)}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>≠</mo><mn>2</mn><mi>n</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">y \neq 2 n \pi</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>∈</mo><mi mathvariant="double-struck">ℤ</mi></mrow><annotation encoding="application/x-tex">n \in \mathbb{Z}</annotation></semantics></math>.</p>
+<p>Fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">D_N(y)</annotation></semantics></math>
+genap dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>y</mi><mo>=</mo><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">\displaystyle\int_{-\pi}^{\pi} D_N(y) \,\mathrm{d}{y} = 2\pi</annotation></semantics></math>.</p>
+<div id="o010.dionne.functional-analysis.proof.002" class="proof">
+<p><strong>Bukti.</strong> <em>Bukti Teorema <a
+href="functional-general-l2.html#o010.dionne.functional-analysis.theorem.007">4.2.3</a>.</em>
+Tetapkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>−</mi><mi>π</mi><mo>,</mo><mi>π</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">x \in [-\pi,\pi]</annotation></semantics></math>.</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.005"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>S</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+S_N(x) - \frac{f(x^+)+f(x^-)}{2}
+&amp;= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(t) D_N(x-t)\,\mathrm{d}{t}
+- \frac{1}{2\pi} \int_{-\pi}^{\pi} \frac{f(x^+)+f(x^-)}{2} D_N(t)\,\mathrm{d}{t} \\
+&amp;= \frac{1}{2\pi} \int_{-\pi}^{\pi} f(x-t) D_N(t)\,\mathrm{d}{t}
+- \frac{1}{2\pi} \int_0^{\pi} (f(x^+)+f(x^-)) D_N(t)\,\mathrm{d}{t} \ ,
+\end{aligned}</annotation></semantics></math> dengan substitusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>→</mo><mi>x</mi><mo>−</mo><mi>t</mi></mrow><annotation encoding="application/x-tex">t \to x-t</annotation></semantics></math>
+telah digunakan dalam integral pertama serta fakta bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mi>N</mi></msub><annotation encoding="application/x-tex">D_N</annotation></semantics></math>
+bersifat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>-periodik.
+Untuk integral kedua, telah digunakan fakta bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mi>N</mi></msub><annotation encoding="application/x-tex">D_N</annotation></semantics></math>
+adalah fungsi genap. Dengan demikian,</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.006"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><msub><mi>S</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><mn>2</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>−</mi><mi>π</mi></mrow><mn>0</mn></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="1.0em"></mspace><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="1.0em"></mspace><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+&amp;S_N(x) - \frac{f(x^+)+f(x^-)}{2}
+= \frac{1}{2\pi} \int_0^{\pi} f(x-t) D_N(t)\,\mathrm{d}{t}
+- \frac{1}{2\pi} \int_0^{\pi} f(x^-) D_N(t)\,\mathrm{d}{t} \\
+&amp;\qquad + \frac{1}{2\pi} \int_{-\pi}^0 f(x-t) D_N(t)\,\mathrm{d}{t}
+- \frac{1}{2\pi} \int_0^{\pi} f(x^+) D_N(t)\,\mathrm{d}{t} \\
+&amp;\quad = \frac{1}{2\pi} \int_0^{\pi} f(x-t) D_N(t)\,\mathrm{d}{t}
+- \frac{1}{2\pi} \int_0^{\pi} f(x^-) D_N(t)\,\mathrm{d}{t} \\
+&amp;\qquad + \frac{1}{2\pi} \int_0^{\pi} f(x+t) D_N(t)\,\mathrm{d}{t}
+- \frac{1}{2\pi} \int_0^{\pi} f(x^+) D_N(t)\,\mathrm{d}{t} \\
+&amp;\quad = \frac{1}{2\pi} \int_0^{\pi} \left(f(x-t) - f(x^-) \right) D_N(t)\,\mathrm{d}{t}
++ \frac{1}{2\pi} \int_0^{\pi} \left( f(x+t)- f(x^+)\right) D_N(t)\,\mathrm{d}{t} \ .
+\end{aligned}</annotation></semantics></math> Misalkan</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.007"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>−</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>I</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>π</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+I_1(N) &amp;= \frac{1}{2\pi} \int_0^{\pi} \left(f(x-t) - f(x^-) \right) D_N(t)\,\mathrm{d}{t}
+\\ &amp;\text{dan}\\
+I_2(N) &amp;= \frac{1}{2\pi} \int_0^{\pi} \left( f(x+t)- f(x^+)\right) D_N(t)\,\mathrm{d}{t} \ .
+\end{aligned}</annotation></semantics></math></p>
+<p><strong>(i)</strong> Kita membuktikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_2(N) \to 0</annotation></semantics></math>
+saat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">N \to \infty</annotation></semantics></math>.
+Tepatnya, untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϵ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\epsilon &gt; 0</annotation></semantics></math>
+yang diberikan, kita mencari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mn>0</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N_0&gt;0</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>I</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">|I_2(N)| &lt; \epsilon</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>&gt;</mo><msub><mi>N</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">N &gt; N_0</annotation></semantics></math>.</p>
+<p>Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>δ</mi><mo>&lt;</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">0 &lt; \delta &lt; \pi</annotation></semantics></math>
+yang diberikan, berlaku</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.027"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>I</mi><mrow><mn>2</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>,</mo><mi>δ</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>I</mi><mrow><mn>2</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>,</mo><mi>δ</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">I_2(N) = I_{2,1}(N,\delta) + I_{2,2}(N,\delta) \ ,</annotation></semantics></math>
+dengan</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.008"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>I</mi><mrow><mn>2</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>,</mo><mi>δ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>δ</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>I</mi><mrow><mn>2</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>,</mo><mi>δ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mi>δ</mi><mi>π</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+I_{2,1}(N, \delta)
+&amp;= \frac{1}{2\pi} \int_0^{\delta} \left( f(x+t)- f(x^+)\right) D_N(t)\,\mathrm{d}{t}
+\\ &amp;\text{dan}\\
+I_{2,2}(N,\delta)
+&amp;= \frac{1}{2\pi} \int_{\delta}^{\pi} \left( f(x+t)- f(x^+)\right) D_N(t)\,\mathrm{d}{t} \ .
+\end{aligned}</annotation></semantics></math> Pilih
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>δ</mi><mn>0</mn></msub><mo>∈</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">\delta_0 \in ]0,\pi[</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>f</mi><mo>′</mo></msup><annotation encoding="application/x-tex">f&#39;</annotation></semantics></math>
+kontinu pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">]</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo>+</mo><msub><mi>δ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">]x,x+\delta_0[</annotation></semantics></math>.
+Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><msub><mrow><mi mathvariant="normal">sup</mi><mo>&#8289;</mo></mrow><mrow><mi>t</mi><mo>∈</mo><mo stretchy="false" form="postfix">]</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo>+</mo><msub><mi>δ</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">[</mo></mrow></msub><mo stretchy="false" form="prefix">|</mo><msup><mi>f</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">M = \sup_{t\in]x,x+\delta_0[}|f&#39;(t)|</annotation></semantics></math>.
+Berdasarkan Teorema Dasar Kalkulus, kita memperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>M</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\displaystyle|f(x+t) - f(x^+)| \leq M t</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>t</mi><mo>&lt;</mo><msub><mi>δ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">0 &lt; t &lt; \delta_0</annotation></semantics></math>.
+Kita juga memiliki
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>π</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">0 \leq t \leq \pi \sin(t/2)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">0 \leq t \leq \pi</annotation></semantics></math>.
+Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M=0</annotation></semantics></math>,
+maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mn>2</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>,</mo><mi>δ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_{2,1}(N,\delta)=0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>δ</mi><mo>&lt;</mo><msub><mi>δ</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">0&lt;\delta&lt;\delta_0</annotation></semantics></math>;
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">M&gt;0</annotation></semantics></math>,
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>δ</mi><mo>&lt;</mo><mrow><mi mathvariant="normal">min</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>δ</mi><mn>0</mn></msub><mo>,</mo><mi>ϵ</mi><mi>/</mi><mi>M</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">0 &lt; \delta &lt; \min( \delta_0, \epsilon/M)</annotation></semantics></math>,
+kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.028"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>I</mi><mrow><mn>2</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>,</mo><mi>δ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>δ</mi></msubsup><mi>M</mi><mi>t</mi><mo stretchy="false" form="prefix">|</mo><msub><mi>D</mi><mi>N</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>≤</mo><mfrac><mi>M</mi><mn>2</mn></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>δ</mi></msubsup><mfrac><mi>t</mi><mrow><mi>π</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>≤</mo><mfrac><mrow><mi>M</mi><mi>δ</mi></mrow><mn>2</mn></mfrac><mo>&lt;</mo><mfrac><mi>ϵ</mi><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">|I_{2,1}(N,\delta)|
+\leq \frac{1}{2\pi} \int_0^{\delta} M t | D_N(t) | \,\mathrm{d}{t}
+\leq \frac{M}{2} \int_0^{\delta} \frac{t}{\pi \sin(t/2)} \,\mathrm{d}{t}
+\leq \frac{M\delta}{2} &lt; \frac{\epsilon}{2}</annotation></semantics></math>
+Kita tetapkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>δ</mi><annotation encoding="application/x-tex">\delta</annotation></semantics></math>
+sesuai salah satu pilihan di atas. Berdasarkan Lemma Riemann–Lebesgue,
+kita dapat mencari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>N</mi><mn>0</mn></msub><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N_0&gt;0</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.029"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>I</mi><mrow><mn>2</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>,</mo><mi>δ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mi>δ</mi><mi>π</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo>+</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo stretchy="true" form="postfix">|</mo></mrow><mo>&lt;</mo><mfrac><mi>ϵ</mi><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">|I_{2,2}(N,\delta)|
+= \left|
+\frac{1}{2\pi} \int_{\delta}^{\pi}
+\left( \frac{f(x+t)- f(x^+)}{\sin(t/2)} \right)
+\sin((N+1/2)t) \,\mathrm{d}{t} \right| &lt; \frac{\epsilon}{2}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>&gt;</mo><msub><mi>N</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">N &gt; N_0</annotation></semantics></math>.
+Dengan demikian,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>I</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mi>ϵ</mi></mrow><annotation encoding="application/x-tex">|I_2(N)| &lt; \epsilon</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>&gt;</mo><msub><mi>N</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">N&gt; N_0</annotation></semantics></math>.</p>
+<p>Integral
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I_2(N)</annotation></semantics></math>
+perlu dipecah karena turunan dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle(f(x+t) - f(x^+))/\sin(t/2)</annotation></semantics></math>
+mungkin tidak terbatas di titik asal. Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>x</mi><mo>+</mo></msup><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle(f(x+t) - f(x^+))/\sin(t/2)</annotation></semantics></math>
+mungkin tidak terdiferensialkan sepotong-sepotong pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>π</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[0,\pi]</annotation></semantics></math>.</p>
+<p><strong>(ii)</strong> Bukti yang serupa dengan bukti dalam (i)
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>N</mi><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">I_1(N) \to 0</annotation></semantics></math>
+saat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>→</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">N\to \infty</annotation></semantics></math>.
+◻</p>
+</div>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="functional-hilbert-spaces.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="functional-fourier-series.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

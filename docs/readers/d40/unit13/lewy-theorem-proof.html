@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Teorema Lewy dan Buktinya</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.cauchy-problem.seg.003">Teorema Lewy dan
+Buktinya</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>cauchy_problem.tex</code> baris 214-304 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.section.03.02"></span></p>
+<h1 id="contoh-lewy">Contoh Lewy</h1>
+<p>Teorema berikut memberikan contoh persamaan diferensial parsial yang
+tidak dapat memiliki solusi klasik jika asumsi analitik pada persamaan
+diferensial parsial tersebut dihilangkan. Teorema ini berasal dari Hans
+Lewy. Untuk teorema ini, kita meninjau fungsi-fungsi bernilai
+kompleks.</p>
+<div id="o010.dionne.cauchy-problem.theorem.lewy" class="theorem">
+<p><strong>Teorema 3.2.1 (Lewy).</strong> <span id="Lewy"
+data-label="Lewy"></span> Misalkan</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.012"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>∂</mi><mrow></mrow></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mi>i</mi><mfrac><mrow><mi>∂</mi><mrow></mrow></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>−</mo><mn>2</mn><mi>i</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>i</mi><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><mi>∂</mi><mrow></mrow></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D}) = \frac{\partial{}}{\partial x} + i \frac{\partial{}}{\partial y} - 2i(x+iy)\frac{\partial{}}{\partial t}</annotation></semantics></math>
+dan misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:\mathbb{R}\to \mathbb{R}</annotation></semantics></math>
+suatu fungsi kontinu. Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\displaystyle u:\mathbb{R}^3\to \mathbb{C}</annotation></semantics></math>
+merupakan solusi dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})u = f(t)</annotation></semantics></math>
+kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mn>1</mn></msup><annotation encoding="application/x-tex">\displaystyle C^1</annotation></semantics></math>
+di suatu lingkungan titik asal, maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+analitik pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.cauchy-problem.proof.lewy" class="proof">
+<p><strong>Bukti.</strong> Misalkan</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.013"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup><msqrt><mi>r</mi></msqrt><mspace width="0.167em"></mspace><mi>u</mi><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><msqrt><mi>r</mi></msqrt><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v(r,\theta,t) = - e^{i\theta} \sqrt{r}
+\, u(\sqrt{r}\cos(\theta) , \sqrt{r}\sin(\theta), t)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><msub><mi mathvariant="normal">Ω</mi><mn>1</mn></msub><mo>=</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo><mi>×</mi><mi mathvariant="double-struck">ℝ</mi><mi>×</mi><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">(r,\theta,t) \in \Omega_1 = ]0,k[\times \mathbb{R}\times ]-k,k[</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+cukup kecil sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})u = f(t)</annotation></semantics></math>
+berlaku pada citra koordinat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\Omega_1</annotation></semantics></math>
+di bawah substitusi yang digunakan berikut. Maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="normal">Ω</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle v \in C^1(\Omega_1)</annotation></semantics></math>
+dan</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.014"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><mi>−</mi><mn>2</mn><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>r</mi></mrow></mfrac><mo>−</mo><mfrac><mi>i</mi><mi>r</mi></mfrac><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo>+</mo><mn>2</mn><mi>i</mi><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})u = -2 \frac{\partial{v}}{\partial r} - \frac{i}{r} \frac{\partial{v}}{\partial \theta}
++ 2i \frac{\partial{v}}{\partial t}
+= f(t)</annotation></semantics></math> Identitas ini berlaku pada domain
+koordinat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\Omega_1</annotation></semantics></math>
+setelah substitusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><msqrt><mi>r</mi></msqrt><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y) = (\sqrt{r} \cos(\theta), \sqrt{r} \sin(\theta))</annotation></semantics></math>.
+Perhatikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})</annotation></semantics></math>
+dalam koordinat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>,</mo><mi>θ</mi></mrow><annotation encoding="application/x-tex">r,\theta</annotation></semantics></math>
+yang diberikan oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msqrt><mi>r</mi></msqrt><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><msqrt><mi>r</mi></msqrt><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y) = (\sqrt{r} \cos(\theta), \sqrt{r} \sin(\theta))</annotation></semantics></math>
+adalah</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.015"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>2</mn><msqrt><mi>r</mi></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup><mfrac><mrow><mi>∂</mi><mrow></mrow></mrow><mrow><mi>∂</mi><mi>r</mi></mrow></mfrac><mo>+</mo><mfrac><mi>i</mi><msqrt><mi>r</mi></msqrt></mfrac><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup><mfrac><mrow><mi>∂</mi><mrow></mrow></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo>−</mo><mn>2</mn><mi>i</mi><msqrt><mi>r</mi></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>i</mi><mi>θ</mi></mrow></msup><mfrac><mrow><mi>∂</mi><mrow></mrow></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">L(r,\theta,\mathrm{D}) = 2 \sqrt{r}\, e^{i\theta} \frac{\partial{}}{\partial r}
+  + \frac{i}{\sqrt{r}} \, e^{i\theta} \frac{\partial{}}{\partial \theta}
+  - 2 i \sqrt{r} \, e^{i\theta} \frac{\partial{}}{\partial t} \ .</annotation></semantics></math></p>
+<p>Misalkan</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.016"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>θ</mi></mrow><annotation encoding="application/x-tex">V(t,r) = \int_0^{2\pi} v(r,\theta, t) \,\mathrm{d}{\theta}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><msub><mi mathvariant="normal">Ω</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo><mi>×</mi><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">(t,r) \in \Omega_2 = ]-k,k[\times ]0,k[</annotation></semantics></math>.
+Maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="normal">Ω</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle V\in C^1(\Omega_2)</annotation></semantics></math>
+dan</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.017"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mfrac><mrow><mi>∂</mi><mi>V</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>i</mi><mfrac><mrow><mi>∂</mi><mi>V</mi></mrow><mrow><mi>∂</mi><mi>r</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>i</mi><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>r</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>r</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>θ</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>i</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>θ</mi><mo>=</mo><mi>−</mi><mi>π</mi><mi>i</mi><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\frac{\partial{V}}{\partial t}(t,r) + i \frac{\partial{V}}{\partial r}(t,r)
+&amp;= \int_0^{2\pi} \left( i\frac{\partial{v}}{\partial r}(r,\theta,t)
+- \frac{1}{2r} \frac{\partial{v}}{\partial \theta}(r,\theta, t)
++ \frac{\partial{v}}{\partial t}(r,\theta,t)  \right) \,\mathrm{d}{\theta} \\
+&amp;= \frac{1}{2i} \int_0^{2\pi} f(t) \,\mathrm{d}{\theta} = -\pi i f(t) \ ,
+\end{aligned}</annotation></semantics></math> di sini kita telah
+menggunakan fakta bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mfrac><mrow><mi>∂</mi><mi>v</mi></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>θ</mi><mo>=</mo><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">|</mo><mn>0</mn><mrow><mn>2</mn><mi>π</mi></mrow></msubsup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\int_0^{2\pi} \frac{\partial{v}}{\partial \theta}(r,\theta,t) \,\mathrm{d}{\theta}
+= v(r,\theta,t) \Big|_0^{2\pi} = 0</annotation></semantics></math>
+karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+periodik dengan periode
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>π</mi></mrow><annotation encoding="application/x-tex">2\pi</annotation></semantics></math>.</p>
+<p>Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∫</mo><mn>0</mn><mi>t</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">\displaystyle F(t) = \int_0^t f(s)\,\mathrm{d}{s}</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>π</mi><mspace width="0.167em"></mspace><mi>i</mi><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">W(t,r) = V(t,r) + \pi\, i F(t)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><msub><mi mathvariant="normal">Ω</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">(t,r) \in \Omega_2</annotation></semantics></math>.
+Fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+memenuhi persamaan Cauchy–Riemann</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.018"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>W</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo>+</mo><mi>i</mi><mfrac><mrow><mi>∂</mi><mi>W</mi></mrow><mrow><mi>∂</mi><mi>r</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial{W}}{\partial t} + i \frac{\partial{W}}{\partial r} = 0</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\Omega_2</annotation></semantics></math>.
+Dengan demikian,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+merupakan fungsi holomorfik sebagai fungsi dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mi>t</mi><mo>+</mo><mi>r</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">w = t+ r i</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><msub><mi mathvariant="normal">Ω</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">(t,r) \in \Omega_2</annotation></semantics></math>.</p>
+<p>Kekontinuan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+di dekat titik asal menyiratkan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+meluas secara kontinu dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\Omega_1</annotation></semantics></math>
+ke batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r=0</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">v(0,\theta,t)=0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mi>×</mi><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">(\theta,t) \in \mathbb{R}\times ]-k,k[</annotation></semantics></math>.
+Oleh karena itu,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+meluas secara kontinu dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\Omega_2</annotation></semantics></math>
+ke batas tersebut, dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">V(t,0) = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">t \in ]-k,k[</annotation></semantics></math>.
+Dengan demikian,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math>
+kontinu pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\Omega_2</annotation></semantics></math>,
+meluas secara kontinu ke batasnya, dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>W</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>π</mi><mspace width="0.167em"></mspace><mi>i</mi><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">W(t,0) = \pi\, i F(t)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">t\in]-k,k[</annotation></semantics></math>;
+yakni,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>W</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Re}W(t,0) = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">t\in]-k,k[</annotation></semantics></math>.</p>
+<p>Dengan menerapkan prinsip refleksi Schwarz pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>W</mi></mrow><annotation encoding="application/x-tex">iW</annotation></semantics></math>,
+fungsi</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.019"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>W</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>i</mi><mi>W</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>r</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>r</mi><mo>≥</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>i</mi><mover><mrow><mi>W</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>−</mi><mi>r</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo accent="true">¯</mo></mover></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>r</mi><mo>&lt;</mo><mn>0</mn></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\tilde{W}(t,r) = \begin{cases}
+i W(t,r) &amp; \quad \text{jika} \ r \geq 0 \\[0.5em]
+- i \overline{W(t,-r)} &amp; \quad \text{jika} \ r &lt; 0
+\end{cases}</annotation></semantics></math> mendefinisikan perluasan
+holomorfik pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo><mi>×</mi><mo stretchy="false" form="postfix">]</mo><mo>−</mo><mi>k</mi><mo>,</mo><mi>k</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">]-k,k[\times ]-k,k[</annotation></semantics></math>
+dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mi>W</mi></mrow><annotation encoding="application/x-tex">i W</annotation></semantics></math>.
+Dengan demikian,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>W</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>π</mi><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\tilde{W}(t,0) = - \pi F(t)</annotation></semantics></math>
+analitik real pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t = 0</annotation></semantics></math>.
+Akibatnya,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>=</mo><mfrac><mrow><mi mathvariant="normal">d</mi><mi>F</mi></mrow><mrow><mi mathvariant="normal">d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\displaystyle f = \frac{\mathrm{d}F}{\mathrm{d}{t}}</annotation></semantics></math>
+analitik real pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t=0</annotation></semantics></math>.
+◻</p>
+</div>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="cauchy-kovalevski-holmgren.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="lewy-translation-remark.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

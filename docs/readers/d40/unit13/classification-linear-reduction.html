@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Klasifikasi - Reduksi PDP Linear Orde Dua</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<p><span id="o010.dionne.classification.through-parabolic"></span></p>
+<h1
+id="o010.dionne.classification.through-parabolic.seg.001">Klasifikasi -
+Reduksi PDP Linear Orde Dua</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>classification.tex</code> baris 1-167 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.chapter.02"></span></p>
+<h1 id="klasifikasi-persamaan-diferensial-parsial">Klasifikasi Persamaan
+Diferensial Parsial</h1>
+<p><span id="o010.dionne.section.02.01"></span></p>
+<h2
+id="persamaan-diferensial-parsial-linear-orde-dua-pada-bidang">Persamaan
+Diferensial Parsial Linear Orde Dua pada Bidang</h2>
+<p>Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math>
+suatu kurva di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^2</annotation></semantics></math>,
+dan misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="normal">Γ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:\Gamma\rightarrow \mathbb{R}</annotation></semantics></math>
+serta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>:</mo><mi mathvariant="normal">Γ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">g:\Gamma\rightarrow \mathbb{R}</annotation></semantics></math>
+dua fungsi analitik. Kita meninjau Masalah Cauchy berbentuk</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.equation.classif-pde1"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.1.1)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>y</mi><mrow></mrow></msup></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mo>+</mo><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>0</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>0</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>b</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{split}
+&amp; L(x,y,\mathrm{D}) = a_{2,0}(x,y) \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}}(x,y) + 2a_{1,1}(x,y)
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{} \partial y^{}}(x,y) + a_{0,2}(x,y) \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial y^{2}}(x,y) \\
+&amp;\qquad + a_{1,0}(x,y) \frac{\partial{u}}{\partial x}(x,y)
++ a_{0,1}(x,y) \frac{\partial{u}}{\partial y}(x,y) + a_{0,0}(x,y)u(x,y) + b(x,y) = 0
+\end{split}</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.1.1)</span></span> dengan syarat</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.equation.classif-pde1-cond"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.1.2)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><msub><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">|</mo><mi mathvariant="normal">Γ</mi></msub><mo>=</mo><mi>f</mi><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ν</mi></mrow></mfrac><msub><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mi mathvariant="normal">Γ</mi></msub><mo>=</mo><mi>g</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">u\big|_\Gamma = f \quad \text{dan} \quad
+\frac{\partial{u}}{\partial \nu}\bigg|_\Gamma = g \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.1.2)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ν</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\nu\left(\boldsymbol{p}\right)</annotation></semantics></math>,
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒑</mi><mo>∈</mo><mi mathvariant="normal">Γ</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{p} \in \Gamma</annotation></semantics></math>,
+merupakan vektor normal satuan terhadap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>.
+Persamaan (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde1">2.1.1</a>)
+merupakan <strong>persamaan diferensial parsial linear orde
+dua</strong></p>
+<p><span
+id="o010.dionne.classification.through-parabolic.index.001"></span></p>
+<p>.</p>
+<p>Mula-mula kita mereduksi Masalah Cauchy (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde1">2.1.1</a>)
+dan (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde1-cond">2.1.2</a>)
+menjadi masalah dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math>
+sebagai sumbu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.
+Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>
+suatu titik pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math>.
+Di suatu lingkungan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>,
+kita dapat mendefinisikan dua keluarga kurva ortogonal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>h</mi></mrow><annotation encoding="application/x-tex">\eta(x,y)=h</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">\xi(x,y)=k</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math>
+merupakan kurva
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\xi(x,y)=0</annotation></semantics></math>
+(Gambar <a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.figure.coordinate-change">2.1</a>).
+Kita juga dapat mengasumsikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>
+merupakan titik perpotongan kurva
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\xi(x,y)=0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\eta(x,y)=0</annotation></semantics></math>.</p>
+<figure
+id="o010.dionne.classification.through-parabolic.figure.coordinate-change">
+<img src="assets/class_fig1.png" style="width:88.0%"
+alt="Keluarga kurva ortogonal eta(x,y)=h dan xi(x,y)=k memberikan perubahan koordinat untuk mereduksi persamaan diferensial parsial linear orde dua ke bentuk baku." />
+<figcaption aria-hidden="true">Keluarga kurva ortogonal eta(x,y)=h dan
+xi(x,y)=k memberikan perubahan koordinat untuk mereduksi persamaan
+diferensial parsial linear orde dua ke bentuk baku.</figcaption>
+</figure>
+<p>Syarat agar dua keluarga kurva bersifat transversal di suatu
+lingkungan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>
+adalah</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.equation.classif-pde2"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.1.3)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>∂</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial (\eta, \xi)}{\partial (x,y)} =
+\det\begin{pmatrix}
+\displaystyle\frac{\partial{\eta}}{\partial x} &amp; \displaystyle\frac{\partial{\eta}}{\partial y} \\[0.7em]
+\displaystyle\frac{\partial{\xi}}{\partial x} &amp; \displaystyle\frac{\partial{\xi}}{\partial y}
+\end{pmatrix} \neq 0</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.1.3)</span></span> di
+lingkungan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>.
+Memang, untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒒</mi><annotation encoding="application/x-tex">\boldsymbol{q}</annotation></semantics></math>
+di dekat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>,</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.display-math.004"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mfrac><mrow><mi>∂</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>∂</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><msub><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mi mathvariant="bold-italic">𝒒</mi></msub><mo>=</mo><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>⇔</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>⋅</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>⇔</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mtext mathvariant="normal">ortogonal terhadap</mtext><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>⇔</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mtext mathvariant="normal">sejajar dengan</mtext><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\frac{\partial (\eta, \xi)}{\partial (x,y)}\bigg|_{\boldsymbol{q}} = 0
+&amp; \Leftrightarrow
+\left(\frac{\partial{\eta}}{\partial x}(\boldsymbol{q}),\frac{\partial{\eta}}{\partial y}(\boldsymbol{q})\right)
+\cdot \left(-\frac{\partial{\xi}}{\partial y}(\boldsymbol{q}), \frac{\partial{\xi}}{\partial x}(\boldsymbol{q})\right) = 0 \\
+&amp; \Leftrightarrow
+\left(-\frac{\partial{\xi}}{\partial y}(\boldsymbol{q}), \frac{\partial{\xi}}{\partial x}(\boldsymbol{q})\right) \
+\text{ortogonal terhadap} \
+\left(\frac{\partial{\eta}}{\partial x}(\boldsymbol{q}),\frac{\partial{\eta}}{\partial y}(\boldsymbol{q})\right) \\
+&amp; \Leftrightarrow
+\left(\frac{\partial{\eta}}{\partial x}(\boldsymbol{q}),\frac{\partial{\eta}}{\partial y}(\boldsymbol{q})\right) \
+\text{sejajar dengan} \
+\left(\frac{\partial{\xi}}{\partial x}(\boldsymbol{q}),\frac{\partial{\xi}}{\partial y}(\boldsymbol{q})\right)
+\end{aligned}</annotation></semantics></math> karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\left(-\frac{\partial{\xi}}{\partial y}(\boldsymbol{q}), \frac{\partial{\xi}}{\partial x}(\boldsymbol{q})\right)</annotation></semantics></math>
+juga ortogonal terhadap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒒</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\left(\frac{\partial{\xi}}{\partial x}(\boldsymbol{q}),\frac{\partial{\xi}}{\partial y}(\boldsymbol{q})\right)</annotation></semantics></math>.
+Hal ini menunjukkan bahwa kurva
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">\xi(x,y)=k</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>h</mi></mrow><annotation encoding="application/x-tex">\eta(x,y)=h</annotation></semantics></math>
+memiliki garis normal yang sama di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒒</mi><annotation encoding="application/x-tex">\boldsymbol{q}</annotation></semantics></math>,
+sehingga kedua kurva tersebut bersinggungan di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒒</mi><annotation encoding="application/x-tex">\boldsymbol{q}</annotation></semantics></math>.</p>
+<p>Berdasarkan (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde2">2.1.3</a>),
+kita dapat menggunakan Teorema Fungsi Invers untuk menyatakan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+di suatu lingkungan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>
+sebagai fungsi dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ξ</mi><annotation encoding="application/x-tex">\xi</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math>
+di suatu lingkungan titik asal. Kita akan menggunakan perubahan variabel
+ini untuk mereduksi (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde1">2.1.1</a>).</p>
+<p>Jika kita substitusikan</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.display-math.005"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mspace width="0.222em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mspace width="0.222em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>ξ</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>η</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>ξ</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>η</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mtext mathvariant="normal">dan</mtext></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>y</mi><mrow></mrow></msup></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>ξ</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>x</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>η</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>x</mi><mrow></mrow></msup></mrow></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+u(\eta,\xi) &amp; = u(x,y) \ , \quad
+\ \frac{\partial{u}}{\partial x} = \frac{\partial{u}}{\partial \xi}\frac{\partial{\xi}}{\partial x} +
+\frac{\partial{u}}{\partial \eta}\frac{\partial{\eta}}{\partial x} \ , \quad
+\ \frac{\partial{u}}{\partial y} = \frac{\partial{u}}{\partial \xi}\frac{\partial{\xi}}{\partial y} +
+\frac{\partial{u}}{\partial \eta}\frac{\partial{\eta}}{\partial y} \ ,\\
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} &amp;= \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}} \left(\frac{\partial{\xi}}{\partial x}\right)^2 +
+2\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}\frac{\partial{\eta}}{\partial x}\frac{\partial{\xi}}{\partial x}
++ \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}}\left(\frac{\partial{\eta}}{\partial x}\right)^2 +
+\frac{\partial{u}}{\partial \xi} \frac{\displaystyle \partial^{2}{\xi}}{\displaystyle \partial x^{2}} + \frac{\partial{u}}{\partial \eta}\frac{\displaystyle \partial^{2}{\eta}}{\displaystyle \partial x^{2}} \ ,\\
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial y^{2}} &amp;= \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}} \left(\frac{\partial{\xi}}{\partial y}\right)^2 +
+2\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}\frac{\partial{\eta}}{\partial y}\frac{\partial{\xi}}{\partial y}
++ \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}}\left(\frac{\partial{\eta}}{\partial y}\right)^2 +
+\frac{\partial{u}}{\partial \xi} \frac{\displaystyle \partial^{2}{\xi}}{\displaystyle \partial y^{2}} + \frac{\partial{u}}{\partial \eta}\frac{\displaystyle \partial^{2}{\eta}}{\displaystyle \partial y^{2}}
+\\ &amp;\text{dan}\\
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{} \partial y^{}} &amp;= \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}}
+\frac{\partial{\xi}}{\partial x}\frac{\partial{\xi}}{\partial y} +
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}\frac{\partial{\eta}}{\partial y}\frac{\partial{\xi}}{\partial x}
++\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}\frac{\partial{\eta}}{\partial x}\frac{\partial{\xi}}{\partial y}
++\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}}\frac{\partial{\eta}}{\partial x}\frac{\partial{\eta}}{\partial y} +
+\frac{\partial{u}}{\partial \xi} \frac{\displaystyle \partial^{2}{\xi}}{\displaystyle \partial y^{} \partial x^{}}
++ \frac{\partial{u}}{\partial \eta}\frac{\displaystyle \partial^{2}{\eta}}{\displaystyle \partial y^{} \partial x^{}}
+\end{aligned}</annotation></semantics></math> ke dalam (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde1">2.1.1</a>),
+maka diperoleh</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.equation.classif-pde3"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.1.4)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mn>2</mn><msub><mi>A</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><msub><mi>A</mi><mrow><mn>1</mn><mo>,</mo><mn>0</mn></mrow></msub><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>+</mo><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>1</mn></mrow></msub><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mo>+</mo><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>0</mn></mrow></msub><mi>u</mi><mo>+</mo><mi>B</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">A_{2,0} \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}}
++ 2A_{1,1}\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}
++ A_{0,2}\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}}
++ A_{1,0} \frac{\partial{u}}{\partial \eta}
++ A_{0,1} \frac{\partial{u}}{\partial \xi} + A_{0,0} u + B = 0 \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.1.4)</span></span>
+dengan</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.display-math.007"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>A</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>A</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>A</mi><mrow><mn>1</mn><mo>,</mo><mn>0</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>η</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>η</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>y</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>η</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>ξ</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>ξ</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>y</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>ξ</mi></mrow><mrow><mi>∂</mi><msup><mi>y</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>1</mn></mrow></msub><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>0</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>b</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+A_{2,0}(\eta,\xi) &amp;= a_{2,0}\, \left(\frac{\partial{\eta}}{\partial x}\right)^2
++2a_{1,1}\,\frac{\partial{\eta}}{\partial x}\frac{\partial{\eta}}{\partial y}
++ a_{0,2}\, \left(\frac{\partial{\eta}}{\partial y}\right)^2 \ , \\
+A_{1,1}(\eta,\xi) &amp;= a_{2,0}\, \frac{\partial{\eta}}{\partial x}\frac{\partial{\xi}}{\partial x} + a_{1,1}\,
+\left(\frac{\partial{\eta}}{\partial y}\frac{\partial{\xi}}{\partial x}+\frac{\partial{\eta}}{\partial x}\frac{\partial{\xi}}{\partial y}\right)
++ a_{0,2}\, \frac{\partial{\eta}}{\partial y}\frac{\partial{\xi}}{\partial y} \ , \\
+A_{0,2}(\eta,\xi) &amp;= a_{2,0}\,\left(\frac{\partial{\xi}}{\partial x}\right)^2
++ 2a_{1,1}\, \frac{\partial{\xi}}{\partial x}\frac{\partial{\xi}}{\partial y}
++ a_{0,2}\,\left(\frac{\partial{\xi}}{\partial y}\right)^2 \ , \\
+A_{1,0}(\eta,\xi) &amp;= a_{2,0}\,\frac{\displaystyle \partial^{2}{\eta}}{\displaystyle \partial x^{2}} +
+2a_{1,1}\,\frac{\displaystyle \partial^{2}{\eta}}{\displaystyle \partial x^{} \partial y^{}} + a_{0,2}\, \frac{\displaystyle \partial^{2}{\eta}}{\displaystyle \partial y^{2}}
++a_{1,0} \, \frac{\partial{\eta}}{\partial x} + a_{0,1}\,\frac{\partial{\eta}}{\partial y} \ , \\
+A_{0,1}(\eta,\xi) &amp;= a_{2,0}\,\frac{\displaystyle \partial^{2}{\xi}}{\displaystyle \partial x^{2}} +
+2a_{1,1}\,\frac{\displaystyle \partial^{2}{\xi}}{\displaystyle \partial x^{} \partial y^{}} + a_{0,2}\, \frac{\displaystyle \partial^{2}{\xi}}{\displaystyle \partial y^{2}}
++a_{1,0} \, \frac{\partial{\xi}}{\partial x} + a_{0,1}\,\frac{\partial{\xi}}{\partial y} \ , \\
+A_{0,0}(\eta,\xi) &amp;= a_{0,0} \quad \text{dan} \quad
+B(\eta,\xi) = b(x,y)
+\end{aligned}</annotation></semantics></math> dengan ruas kanan setiap
+bentuk dievaluasi pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(x,y) = \left(x(\eta,\xi),y(\eta,\xi)\right)</annotation></semantics></math>.</p>
+<p>Kita memilih orientasi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ξ</mi><annotation encoding="application/x-tex">\xi</annotation></semantics></math>
+sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ν</mi><mo>=</mo><mi>∇</mi><mi>ξ</mi><mi>/</mi><mrow><mo stretchy="true" form="prefix">‖</mo><mi>∇</mi><mi>ξ</mi><mo stretchy="true" form="postfix">‖</mo></mrow></mrow><annotation encoding="application/x-tex">\nu=\nabla\xi/\lVert\nabla\xi\rVert</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Γ</mi><annotation encoding="application/x-tex">\Gamma</annotation></semantics></math>.
+Dengan pilihan ini, syarat-syarat awal dalam (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde1-cond">2.1.2</a>)
+menjadi</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.equation.classif-pde3-cond"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.1.5)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mo stretchy="true" form="prefix">∥</mo><mi>∇</mi><mi>ξ</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">∥</mo></mrow></mfrac><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(\eta,0) = f\left(x(\eta,0),y(\eta,0)\right) \quad \text{dan} \quad
+\frac{\partial{u}}{\partial \xi}(\eta,0) =
+\frac{g\left(x(\eta,0),y(\eta,0)\right)}
+{\left\lVert\nabla\xi\left(x(\eta,0),y(\eta,0)\right)\right\rVert} \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.1.5)</span></span></p>
+<p>Sebagaimana akan kita lihat dalam Bab <a href="index.html">3</a>,
+untuk menentukan ekspansi deret solusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+dari (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde3">2.1.4</a>)
+dan (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde3-cond">2.1.5</a>)
+di suatu lingkungan titik asal pada bidang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math>,<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ξ</mi><annotation encoding="application/x-tex">\xi</annotation></semantics></math>
+(jadi, di dekat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒑</mi><annotation encoding="application/x-tex">\boldsymbol{p}</annotation></semantics></math>
+pada bidang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>,<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>),
+kita perlu menghitung
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><msup><mi>∂</mi><mi>j</mi></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mi>j</mi></msup></mrow></mfrac><annotation encoding="application/x-tex">\displaystyle\frac{\displaystyle \partial^{j}{u}}{\displaystyle \partial \xi^{j}}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>≥</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">j\geq 2</annotation></semantics></math>
+di titik asal. Untuk itu, kita mengasumsikan bahwa (<a
+href="classification-linear-reduction.html#o010.dionne.classification.through-parabolic.equation.classif-pde3">2.1.4</a>)
+dapat diselesaikan terhadap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><annotation encoding="application/x-tex">\displaystyle\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}}</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\eta,\xi)=(0,0)</annotation></semantics></math>.
+Hal ini hanya mungkin jika</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.equation.classif-pde9"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.1.6)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒑</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>≠</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">A_{0,2}(0,0) = a_{2,0}(\boldsymbol{p})\, \left(\frac{\partial{\xi}}{\partial x}(\boldsymbol{p})\right)^2
++2a_{1,1}(\boldsymbol{p})\,\frac{\partial{\xi}}{\partial x}(\boldsymbol{p})\,\frac{\partial{\xi}}{\partial y}(\boldsymbol{p})
++ a_{0,2}(\boldsymbol{p})\, \left(\frac{\partial{\xi}}{\partial y}(\boldsymbol{p})\right)^2
+\neq 0 \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.1.6)</span></span> Syarat ini
+bersifat mendasar dan menjadi pokok bahasan bagian berikutnya.</p>
+<p>Sebelum beralih ke bagian berikutnya, kita mencatat bahwa</p>
+<p><span
+id="o010.dionne.classification.through-parabolic.equation.classif-pde8"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.1.7)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>A</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>−</mo><msub><mi>A</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mspace width="0.167em"></mspace><msub><mi>A</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>−</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mo>−</mo><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>y</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">A_{1,1}^2 - A_{2,0}\,A_{0,2} = \left(a_{1,1}^2 - a_{2,0}a_{0,2}\right)
+\left( \frac{\partial{\eta}}{\partial x}\frac{\partial{\xi}}{\partial y} - \frac{\partial{\eta}}{\partial y}\frac{\partial{\xi}}{\partial x}
+\right)^2</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.1.7)</span></span> dengan ruas kiri
+dievaluasi pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\eta,\xi)</annotation></semantics></math>
+dan ruas kanan dievaluasi pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(x,y) = \left(x(\eta,\xi),y(\eta,\xi)\right)</annotation></semantics></math>.
+Identitas ini akan digunakan kemudian untuk mengklasifikasikan persamaan
+diferensial parsial linear orde dua. Pembaca diminta memverifikasi
+identitas ini.</p>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="characteristics-tail.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="classification-characteristic-curves.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

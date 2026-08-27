@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Ruang Hilbert</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<p><span id="o010.dionne.functional-analysis"></span></p>
+<h1 id="o010.dionne.functional-analysis.seg.001">Ruang Hilbert</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>funct_anal.tex</code> baris 1-245 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.chapter.04"></span></p>
+<h1 id="tinjauan-analisis-fungsional">Tinjauan Analisis Fungsional</h1>
+<p>Materi berikut biasanya disajikan dalam mata kuliah analisis
+fungsional. Kami mengasumsikan bahwa pembaca telah mengikuti mata kuliah
+pengantar topologi dan mata kuliah teori ukuran. Rujukan yang baik untuk
+materi bagian ini adalah <span id="o010.citation.br"></span><a
+href="#o010.citation.br">Br</a>; <span
+id="o010.citation.reesim"></span><a
+href="#o010.citation.reesim">ReeSim</a>; <span
+id="o010.citation.ru"></span><a href="#o010.citation.ru">Ru</a>; <span
+id="o010.citation.rufa"></span><a href="#o010.citation.rufa">RuFA</a>.
+Kami secara khusus menyarankan <a href="#o010.citation.br">Br</a>.
+Rujukan tersebut memuat banyak latihan, dan banyak di antaranya disertai
+penyelesaian terperinci.</p>
+<p>Kami mengasumsikan bahwa pembaca telah mempelajari konsep dasar ruang
+topologis, metrik, linear, dan bernorma. Secara khusus, kami
+mengasumsikan bahwa pembaca memahami apa yang dimaksud dengan
+<strong>ruang Banach</strong><span
+id="o010.dionne.functional-analysis.index.001"></span>, yaitu ruang
+bernorma lengkap. Inilah titik awal bab ini.</p>
+<p><span id="o010.dionne.section.04.01"></span></p>
+<h2 id="ruang-hilbert">Ruang Hilbert</h2>
+<div id="o010.dionne.functional-analysis.definition.001"
+class="definition">
+<p><strong>Definisi.</strong> Suatu <strong>ruang hasil kali
+dalam</strong><span
+id="o010.dionne.functional-analysis.index.002"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+atas bilangan kompleks adalah ruang vektor atas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb{C}</annotation></semantics></math>
+yang dilengkapi dengan suatu pemetaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>:</mo><mi>H</mi><mo>×</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\left\langle{\cdot},{\cdot}\right\rangle:H\times H \rightarrow \mathbb{C}</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.enumerate.001"></span></p>
+<ol type="1">
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.001"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\left\langle{x},{x}\right\rangle \geq 0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x \in H</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.002"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\left\langle{x},{x}\right\rangle = 0</annotation></semantics></math>
+jika dan hanya jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x=0 \in H</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.003"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mover><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>y</mi><mo>,</mo><mi>x</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\left\langle{x},{y}\right\rangle = \overline{\left\langle{y},{x}\right\rangle}</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x,y \in H</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.004"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>x</mi><mo>+</mo><mi>y</mi></mrow><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\left\langle{x+y},{z}\right\rangle = \left\langle{x},{z}\right\rangle + \left\langle{y},{z}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x,y,z \in H</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.005"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>α</mi><mi>x</mi></mrow><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mi>α</mi><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\left\langle{\alpha x},{y}\right\rangle = \alpha \left\langle{x},{y}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x,y \in H</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>∈</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\alpha \in \mathbb{C}</annotation></semantics></math>.</p></li>
+</ol>
+<p>Pemetaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>:</mo><mi>H</mi><mo>×</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\left\langle{\cdot},{\cdot}\right\rangle:H\times H \rightarrow \mathbb{C}</annotation></semantics></math>
+disebut <strong>hasil kali skalar</strong><span
+id="o010.dionne.functional-analysis.index.003"></span> atau
+<strong>hasil kali dalam</strong><span
+id="o010.dionne.functional-analysis.index.004"></span> pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.</p>
+</div>
+<p>Ruang Hilbert merupakan ruang metrik. Kita dapat mendefinisikan norma
+dan jarak secara alami.</p>
+<div id="o010.dionne.functional-analysis.theorem.001" class="theorem">
+<p><strong>Teorema.</strong> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang hasil kali dalam atas bilangan kompleks, maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><msqrt><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">\displaystyle\| x \| = \sqrt{\left\langle{x},{x}\right\rangle}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x \in H</annotation></semantics></math>
+mendefinisikan suatu norma pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Norma ini disebut <strong>norma yang diinduksi</strong><span
+id="o010.dionne.functional-analysis.index.005"></span> oleh hasil kali
+skalar.</p>
+</div>
+<p>Sebagaimana diharapkan dari suatu norma, norma yang diinduksi oleh
+hasil kali skalar mempunyai sifat-sifat berikut.</p>
+<div id="o010.dionne.functional-analysis.theorem.002" class="theorem">
+<p><strong>Teorema.</strong> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang hasil kali dalam atas bilangan kompleks, maka</p>
+<p><span id="o010.dionne.functional-analysis.enumerate.002"></span></p>
+<ol type="1">
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.006"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">∥</mo><mi>y</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">|\left\langle{x},{y}\right\rangle| \leq \|x\|\,\|y\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x,y\in H</annotation></semantics></math>.
+Ini disebut <strong>ketaksamaan Schwarz</strong><span
+id="o010.dionne.functional-analysis.index.006"></span>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.007"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo>+</mo><mi>y</mi><mo stretchy="false" form="postfix">∥</mo><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo><mi>+</mi><mo stretchy="false" form="postfix">∥</mo><mi>y</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|x+y\| \leq \|x\| + \|y\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x,y\in H</annotation></semantics></math>.
+Ini disebut <strong>ketaksamaan segitiga</strong><span
+id="o010.dionne.functional-analysis.index.007"></span>.</p></li>
+</ol>
+</div>
+<p>Karena ruang hasil kali dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang metrik dengan metrik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi mathvariant="bold-italic">𝒙</mi><mo>−</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">d(\boldsymbol{x},\boldsymbol{y}) = \|\boldsymbol{x} - \boldsymbol{y}\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝒚</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{x},\boldsymbol{y} \in H</annotation></semantics></math>,
+kita dapat mendefinisikan kekonvergenan barisan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi mathvariant="bold-italic">𝒙</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{ \boldsymbol{x}_j \}_{j=0}^\infty</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+tepat seperti yang dilakukan pada sebarang ruang metrik. Metrik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math>
+mendefinisikan suatu topologi pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.</p>
+<div id="o010.dionne.functional-analysis.definition.002"
+class="definition">
+<p><strong>Definisi.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang hasil kali dalam atas bilangan kompleks dengan hasil kali
+skalar
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>:</mo><mi>H</mi><mo>×</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\left\langle{\cdot},{\cdot}\right\rangle:H\times H \rightarrow \mathbb{C}</annotation></semantics></math>.
+Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+lengkap terhadap norma yang diinduksi oleh hasil kali skalar ini (yakni,
+setiap barisan Cauchy di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+konvergen ke suatu unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>),
+maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+disebut <strong>ruang Hilbert</strong><span
+id="o010.dionne.functional-analysis.index.008"></span> atas bilangan
+kompleks.</p>
+</div>
+<p>Karena hasil kali dalam mendefinisikan suatu metrik pada ruang hasil
+kali dalam, kita dapat mendefinisikan kekontinuan fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><msub><mi>H</mi><mn>1</mn></msub><mo>→</mo><msub><mi>H</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">f:H_1 \to H_2</annotation></semantics></math>
+dari ruang hasil kali dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>1</mn></msub><annotation encoding="application/x-tex">H_1</annotation></semantics></math>
+ke ruang hasil kali dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mn>2</mn></msub><annotation encoding="application/x-tex">H_2</annotation></semantics></math>
+sebagaimana lazimnya dilakukan untuk fungsi di antara dua ruang
+metrik.</p>
+<div id="o010.dionne.functional-analysis.proposition.001"
+class="proposition">
+<p><strong>Proposisi.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang Hilbert atas bilangan kompleks dan misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y\in H</annotation></semantics></math>.
+Maka</p>
+<p><span id="o010.dionne.functional-analysis.enumerate.003"></span></p>
+<ol type="1">
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.008"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>↦</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle x \mapsto \left\langle{x},{y}\right\rangle</annotation></semantics></math>
+adalah pemetaan linear kontinu.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.009"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>↦</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>y</mi><mo>,</mo><mi>x</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle x \mapsto \left\langle{y},{x}\right\rangle</annotation></semantics></math>
+adalah pemetaan konjugat-linear kontinu.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.010"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>↦</mo><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\displaystyle x \mapsto \|x\|</annotation></semantics></math>
+adalah pemetaan kontinu.</p></li>
+</ol>
+</div>
+<p>Selain himpunan bagian terbuka atau tertutup dari ruang Hilbert,
+terdapat jenis lain himpunan bagian ruang Hilbert yang akan berperan
+penting kelak ketika menyelesaikan persamaan diferensial parsial.</p>
+<div id="o010.dionne.functional-analysis.definition.003"
+class="definition">
+<p><strong>Definisi.</strong> Suatu himpunan bagian
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+dari ruang vektor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+disebut <strong>konveks</strong><span
+id="o010.dionne.functional-analysis.index.009"></span> jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mi>x</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>λ</mi><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">\lambda x + (1-\lambda) y \in V</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\lambda \in [0,1]</annotation></semantics></math>
+dan setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">x,y \in V</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.functional-analysis.theorem.003" class="theorem">
+<p><strong>Teorema 4.1.7.</strong> <span id="fu_an_ccnes"
+data-label="fu_an_ccnes"></span> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+adalah himpunan bagian tertutup, konveks, dan tak kosong dari ruang
+Hilbert
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>,
+maka terdapat tepat satu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">y \in V</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>y</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><msub><mrow><mi mathvariant="normal">inf</mi><mo>&#8289;</mo></mrow><mrow><mi>x</mi><mo>∈</mo><mi>V</mi></mrow></msub><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\displaystyle\|y\| = \inf_{x\in V} \|x\|</annotation></semantics></math>.</p>
+</div>
+<p>Dalam teorema sebelumnya,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+belum tentu kompak.</p>
+<div id="o010.dionne.functional-analysis.definition.004"
+class="definition">
+<p><strong>Definisi 4.1.8.</strong> <span id="defnCLFunctHilbert"
+data-label="defnCLFunctHilbert"></span> Suatu fungsi linear kontinu dari
+ruang Hilbert
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb{C}</annotation></semantics></math>
+disebut <strong>fungsional linear kontinu</strong><span
+id="o010.dionne.functional-analysis.index.010"></span> pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Ruang semua fungsional linear kontinu pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+dinotasikan dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>H</mi><mo>*</mo></msup><annotation encoding="application/x-tex">\displaystyle H^\ast</annotation></semantics></math>.
+Ruang ini disebut <strong>ruang dual</strong><span
+id="o010.dionne.functional-analysis.index.011"></span> dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.functional-analysis.theorem.004" class="theorem">
+<p><strong>Teorema 4.1.9.</strong> <span id="fu_an_RieszRT"
+data-label="fu_an_RieszRT"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang Hilbert dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>:</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">g:H\rightarrow \mathbb{C}</annotation></semantics></math>
+adalah fungsional linear kontinu. Maka terdapat tepat satu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">y\in H</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">g(x) = \left\langle{x},{y}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x\in H</annotation></semantics></math>.
+<span id="o010.dionne.functional-analysis.index.012"></span></p>
+</div>
+<p>Karena suatu hasil kali dalam didefinisikan pada ruang Hilbert, kita
+dapat mendefinisikan sudut di antara unsur-unsur ruang Hilbert; secara
+khusus, kita dapat mendefinisikan kapan dua unsur saling ortogonal.</p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.001"></span></p>
+<div id="o010.dionne.functional-analysis.definition.005"
+class="definition">
+<p><strong>Definisi.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang Hilbert. Dua unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x_1, x_2 \in H</annotation></semantics></math>
+disebut <strong>ortogonal</strong><span
+id="o010.dionne.functional-analysis.index.013"></span> atau
+<strong>tegak lurus</strong><span
+id="o010.dionne.functional-analysis.index.014"></span> jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\left\langle{x_1},{x_2}\right\rangle = 0</annotation></semantics></math>.
+Suatu himpunan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub><mo>⊂</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\displaystyle S = \{ x_\alpha \}_{\alpha \in A} \subset H</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, disebut <strong>ortogonal</strong><span
+id="o010.dionne.functional-analysis.index.015"></span> jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><msub><mi>x</mi><mi>α</mi></msub><mo>,</mo><msub><mi>x</mi><mi>β</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\left\langle{x_\alpha},{x_\beta}\right\rangle = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>≠</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha\neq\beta</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><msub><mi>x</mi><mi>α</mi></msub><mo>,</mo><msub><mi>x</mi><mi>β</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\left\langle{x_\alpha},{x_\beta}\right\rangle \neq 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>=</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\alpha=\beta</annotation></semantics></math>.
+Himpunan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+disebut <strong>ortonormal</strong><span
+id="o010.dionne.functional-analysis.index.016"></span> jika</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.001"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><msub><mi>x</mi><mi>α</mi></msub><mo>,</mo><msub><mi>x</mi><mi>β</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>α</mi><mo>≠</mo><mi>β</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>1</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>α</mi><mo>=</mo><mi>β</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">\left\langle{x_\alpha},{x_\beta}\right\rangle =
+\begin{cases}
+0 &amp; \quad \text{jika} \ \alpha \neq \beta \\
+1 &amp; \quad \text{jika} \ \alpha = \beta \\
+\end{cases}</annotation></semantics></math></p>
+</div>
+<div id="o010.dionne.functional-analysis.theorem.005" class="theorem">
+<p><strong>Teorema.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang Hilbert dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>J</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{x_j\}_{j=1}^J</annotation></semantics></math>
+adalah himpunan bagian ortonormal berhingga dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x\in H</annotation></semantics></math>,
+berlaku</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.002"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">∥</mo><mi>x</mi><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>J</mi></munderover><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">∥</mo></mrow><mo>≤</mo><mrow><mo stretchy="true" form="prefix">∥</mo><mi>x</mi><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>J</mi></munderover><msub><mi>λ</mi><mi>j</mi></msub><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">∥</mo></mrow></mrow><annotation encoding="application/x-tex">\left\| x - \sum_{j=1}^J \left\langle{x},{x_j}\right\rangle x_j \right\|
+\leq \left\| x - \sum_{j=1}^J \lambda_j x_j \right\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>j</mi></msub><mo>∈</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\lambda_j \in \mathbb{C}</annotation></semantics></math>,
+dan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.003"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">∥</mo><mi>x</mi><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>J</mi></munderover><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">∥</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">∥</mo><mi>x</mi><mo>−</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>J</mi></munderover><msub><mi>λ</mi><mi>j</mi></msub><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">∥</mo></mrow></mrow><annotation encoding="application/x-tex">\left\| x - \sum_{j=1}^J \left\langle{x},{x_j}\right\rangle x_j \right\|
+= \left\| x - \sum_{j=1}^J \lambda_j x_j \right\|</annotation></semantics></math>
+mengakibatkan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>j</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\lambda_j = \left\langle{x},{x_j}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.functional-analysis.corollary.001"
+class="corollary">
+<p><strong>Korolari.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang Hilbert dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle S = \{ x_\alpha \}_{\alpha \in A}</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, adalah himpunan bagian ortonormal dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Maka</p>
+<p><span id="o010.dionne.functional-analysis.equation.001"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.1.1)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mo>∑</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></munder><mo stretchy="false" form="prefix">|</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>α</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\sum_{\alpha \in A} |\left\langle{x},{x_\alpha}\right\rangle|^2 \leq \|x\|^2</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.1.1)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x \in H</annotation></semantics></math>.</p>
+</div>
+<p>Jumlah dalam (<a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.equation.001">4.1.1</a>)
+sebenarnya merupakan kuadrat norma fungsi</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.001"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>F</mi><mi>x</mi></msub><mo>:</mo><mi>A</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>α</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>↦</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>α</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+F_x:A &amp; \rightarrow \mathbb{C}\\
+\alpha &amp;\mapsto \left\langle{x},{x_\alpha}\right\rangle
+\end{aligned}</annotation></semantics></math> di ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℓ</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\ell^2(A)</annotation></semantics></math>
+yang terdiri atas fungsi-fungsi yang kuadratnya terintegralkan terhadap
+ukuran pencacahan pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>.
+Dengan kata lain, (<a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.equation.001">4.1.1</a>)
+adalah</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.004"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∫</mo><mi>A</mi></msub><msup><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>F</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">|</mo></mrow><mn>2</mn></msup><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mrow><mi>ν</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\int_A \left| F_x(\alpha)\right|^2\,\mathrm{d}{\nu(\alpha)} \leq \|x\|^2 \ ,</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>
+ukuran pencacahan pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>.
+Korolari sebelumnya menyatakan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>x</mi></msub><mo>∈</mo><msup><mi>ℓ</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle F_x \in \ell^2(A)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x\in H</annotation></semantics></math>.</p>
+<p>Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>x</mi></msub><mo>∈</mo><msup><mi>ℓ</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle F_x \in \ell^2(A)</annotation></semantics></math>,
+himpunan semua
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+yang memenuhi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">F_x(\alpha) \neq 0</annotation></semantics></math>
+paling banyak terhitung. Secara lebih tepat, untuk setiap bilangan bulat
+positif
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>,
+himpunan semua
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
+yang memenuhi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>F</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>&gt;</mo><mn>1</mn><mi>/</mi><mi>n</mi></mrow><annotation encoding="application/x-tex">|F_x(\alpha)| &gt; 1/n</annotation></semantics></math>
+berhingga atau kosong.</p>
+<div id="o010.dionne.functional-analysis.theorem.006" class="theorem">
+<p><strong>Teorema 4.1.13.</strong> <span id="fu_an_complset"
+data-label="fu_an_complset"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang Hilbert dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle S = \{ x_\alpha \}_{\alpha \in A}</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, adalah himpunan bagian ortonormal dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Pernyataan-pernyataan berikut ekuivalen:</p>
+<p><span id="o010.dionne.functional-analysis.enumerate.004"></span></p>
+<ol type="1">
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.011"></span>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+adalah himpunan bagian ortonormal maksimal dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.012"></span> Himpunan
+semua kombinasi linear berhingga dari unsur-unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+rapat di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.013"></span> Untuk
+setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x\in H</annotation></semantics></math>,
+berlaku
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>=</mo><msub><mo>∑</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub><mo stretchy="false" form="prefix">|</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>α</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><msup><mo stretchy="false" form="prefix">|</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle\|x\|^2 = \sum_{\alpha \in A} |\left\langle{x},{x_\alpha}\right\rangle|^2</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.014"></span> Untuk
+setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mi>y</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">x, y \in H</annotation></semantics></math>,
+berlaku
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><msub><mo>∑</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><msub><mi>x</mi><mi>α</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mspace width="0.167em"></mspace><mover><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>y</mi><mo>,</mo><msub><mi>x</mi><mi>α</mi></msub><mo stretchy="true" form="postfix">⟩</mo></mrow><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\displaystyle
+\left\langle{x},{y}\right\rangle = \sum_{\alpha \in A} \left\langle{x},{x_\alpha}\right\rangle\, \overline{\left\langle{y},{x_\alpha}\right\rangle}</annotation></semantics></math>.</p></li>
+</ol>
+</div>
+<div id="o010.dionne.functional-analysis.definition.006"
+class="definition">
+<p><strong>Definisi.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah ruang Hilbert. Suatu <strong>himpunan ortonormal
+lengkap</strong><span
+id="o010.dionne.functional-analysis.index.017"></span> atau
+<strong>basis ortonormal</strong><span
+id="o010.dionne.functional-analysis.index.018"></span> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah himpunan ortonormal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub><mo>⊂</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\displaystyle S = \{ x_\alpha \}_{\alpha \in A} \subset H</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+memenuhi salah satu pernyataan ekuivalen dalam Teorema <a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.theorem.006">4.1.13</a>.</p>
+<p>Suatu <strong>himpunan ortogonal lengkap</strong><span
+id="o010.dionne.functional-analysis.index.019"></span> atau
+<strong>basis ortogonal</strong><span
+id="o010.dionne.functional-analysis.index.020"></span> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah himpunan ortogonal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub></mrow><annotation encoding="application/x-tex">S = \{ x_\alpha \}_{\alpha \in A}</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mo stretchy="false" form="postfix">∥</mo><msub><mi>x</mi><mi>α</mi></msub><msup><mo stretchy="false" form="postfix">∥</mo><mrow><mi>−</mi><mn>1</mn></mrow></msup><msub><mi>x</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle\{ \|x_\alpha\|^{-1} x_\alpha \}_{\alpha \in A}</annotation></semantics></math>
+merupakan basis ortonormal.</p>
+</div>
+<p>Definisi sebelumnya mengakibatkan bahwa suatu himpunan ortogonal
+lengkap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+adalah himpunan ortogonal sedemikian sehingga semua kombinasi linear
+berhingga dari unsur-unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+rapat di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><msub><mi>x</mi><mi>α</mi></msub><msub><mo stretchy="false" form="postfix">}</mo><mrow><mi>α</mi><mo>∈</mo><mi>A</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle S = \{ x_\alpha \}_{\alpha \in A}</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+suatu himpunan indeks, adalah basis ortonormal dari ruang Hilbert
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>,
+maka dari Teorema <a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.theorem.006">4.1.13</a>
+diperoleh bahwa</p>
+<p><span id="o010.dionne.functional-analysis.equation.002"></span></p>
+<p><span
+id="o010.dionne.functional-analysis.math_component.002"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.1.2)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>T</mi><mo>:</mo><mi>H</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>→</mo><msup><mi>ℓ</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>↦</mo><msub><mi>F</mi><mi>x</mi></msub></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+T: H &amp; \rightarrow \ell^2(A) \\
+ x &amp;\mapsto F_x
+\end{aligned}</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.1.2)</span></span> merupakan
+isometri bijektif, dan lebih lanjut
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><msub><mo>∫</mo><mi>A</mi></msub><msub><mi>F</mi><mi>x</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mover><mrow><msub><mi>F</mi><mi>y</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo accent="true">¯</mo></mover><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mrow><mi>ν</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\left\langle{x},{y}\right\rangle = \int_A F_x(\alpha)\overline{F_y(\alpha)} \,\mathrm{d}{\nu(\alpha)}</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>
+ukuran pencacahan pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>.
+Salah satu akibat isomorfisme ini adalah bahwa basis-basis ortonormal di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+saling isomorfik (yakni, memiliki kardinalitas yang sama).</p>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="cauchy-exercises.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="functional-general-l2.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Masalah Sturm–Liouville</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.special-functions.seg.002">Masalah
+Sturm–Liouville</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>special_functions.tex</code> baris 674-1062 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.section.05.02"></span></p>
+<h1 id="masalah-sturm-liouville">Masalah Sturm-Liouville</h1>
+<p>Seperti akan kita lihat kemudian, hasil-hasil dari teori masalah
+Sturm-Liouville digunakan untuk menunjukkan bahwa polinom Legendre dan
+fungsi Bessel membentuk dua himpunan fungsi ortogonal lengkap dalam
+beberapa ruang fungsi.</p>
+<p>Setiap persamaan diferensial biasa linear orde dua dapat ditulis
+sebagai</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.025"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msup><mi>y</mi><mo>′</mo></msup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>q</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>λ</mi><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">(r(x) y&#39;)&#39; + (q(x) + \lambda p(x)) y = 0 \ .</annotation></semantics></math>
+Jika kita meninjau persamaan diferensial biasa ini pada interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">]</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">]a,b[</annotation></semantics></math>
+dan menambahkan beberapa syarat pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>y</mi><annotation encoding="application/x-tex">y</annotation></semantics></math>
+atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>y</mi><mo>′</mo></msup><annotation encoding="application/x-tex">y&#39;</annotation></semantics></math>
+di titik-titik ujung
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+kita memperoleh suatu <strong>masalah Sturm-Liouville</strong><span
+id="o010.dionne.special-functions.index.004"></span>.</p>
+<p><strong>Masalah Sturm-Liouville reguler</strong><span
+id="o010.dionne.special-functions.index.005"></span> adalah mencari
+solusi bagi</p>
+<p><span id="o010.dionne.special-functions.equation.006"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (5.2.1)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msup><mi>y</mi><mo>′</mo></msup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>q</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>λ</mi><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">(r(x) y&#39;)&#39; + (q(x) + \lambda p(x)) y = 0</annotation></semantics></math><span class="equation-number" aria-hidden="true">(5.2.1)</span></span>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>∞</mi><mo>&lt;</mo><mi>a</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>b</mi><mo>&lt;</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">-\infty &lt; a &lt; x &lt; b &lt; \infty</annotation></semantics></math>
+dengan syarat batas</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.026"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><msub><mi>β</mi><mn>1</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\alpha_1 y(a) + \alpha_2 y&#39;(a) = 0 \quad \text{dan} \quad
+\beta_1 y&#39;(b) + \beta_2 y(b) = 0 \ ,</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\alpha_1,\alpha_2)\neq (0,0)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\beta_2) \neq (0,0)</annotation></semantics></math>;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>q</mi><annotation encoding="application/x-tex">q</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>r</mi><mo>′</mo></msup><annotation encoding="application/x-tex">r&#39;</annotation></semantics></math>
+merupakan fungsi real kontinu pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>;
+serta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(x)&gt;0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p(x)&gt;0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">x \in [a,b]</annotation></semantics></math>.</p>
+<p>Terdapat tiga jenis syarat batas lain yang sering digunakan.</p>
+<p><span id="o010.dionne.special-functions.enumerate.001"></span></p>
+<ol type="1">
+<li><p><span
+id="o010.dionne.special-functions.enumerate-item.001"></span> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(a)=0</annotation></semantics></math>,
+kita mensyaratkan agar solusi dan turunannya terbatas pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">x=a</annotation></semantics></math>
+dan agar
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\beta_1 y&#39;(b) + \beta_2 y(b) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\beta_2) \neq (0,0)</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.special-functions.enumerate-item.002"></span> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(b)=0</annotation></semantics></math>,
+kita mensyaratkan agar solusi dan turunannya terbatas pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">x=b</annotation></semantics></math>
+dan agar
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha_1 y&#39;(a) + \alpha_2 y(a) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\alpha_1,\alpha_2) \neq (0,0)</annotation></semantics></math>.</p></li>
+<li><p><span
+id="o010.dionne.special-functions.enumerate-item.003"></span> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">r(a) = r(b)</annotation></semantics></math>,
+kita mensyaratkan syarat batas periodik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y(a) = y(b)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y&#39;(a) = y&#39;(b)</annotation></semantics></math>.</p></li>
+</ol>
+<p>Masalah Sturm-Liouville disebut <strong>singular</strong><span
+id="o010.dionne.special-functions.index.006"></span> jika salah satu
+dari syarat berikut dipenuhi: (1)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mi>−</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">a=-\infty</annotation></semantics></math>
+atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">b=\infty</annotation></semantics></math>,
+(2)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>
+atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+bernilai nol di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>,
+atau (3)
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>r</mi><mo>′</mo></msup><annotation encoding="application/x-tex">r&#39;</annotation></semantics></math>
+tidak ada di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>.</p>
+<p>Masalah Sturm-Liouville yang <strong>singular</strong> hanya karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(a) = 0</annotation></semantics></math>
+(atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(b)=0</annotation></semantics></math>)
+mempunyai banyak sifat yang juga dimiliki masalah Sturm-Liouville
+reguler jika kita mengasumsikan bahwa solusinya terbatas pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>
+(atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>).
+Masalah tersebut disebut <strong>masalah Sturm-Liouville singular
+reguler</strong> <span
+id="o010.dionne.special-functions.index.007"></span>.</p>
+<p>Suatu nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+yang membuat masalah Sturm-Liouville mempunyai solusi taktrivial disebut
+<strong>nilai eigen</strong> <span
+id="o010.dionne.special-functions.index.008"></span>, sedangkan
+solusi-solusi taktrivial tersebut disebut <strong>fungsi eigen</strong>
+<span id="o010.dionne.special-functions.index.009"></span> yang
+berkaitan dengan nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>.
+Hasil berikut mempunyai pembuktian sederhana.</p>
+<div id="o010.dionne.special-functions.proposition.001"
+class="proposition">
+<p><strong>Proposisi 5.2.1.</strong> <span id="SL_orthog"
+data-label="SL_orthog"></span> Fungsi-fungsi eigen yang berkaitan dengan
+nilai-nilai eigen berbeda bersifat ortogonal terhadap fungsi bobot
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>;
+lebih tepatnya, jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>
+adalah fungsi eigen yang berkaitan dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\lambda_n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>
+adalah fungsi eigen yang berkaitan dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>m</mi></msub><annotation encoding="application/x-tex">\lambda_m</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≠</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n \neq m</annotation></semantics></math>,
+maka</p>
+<p><span id="o010.dionne.special-functions.equation.007"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (5.2.2)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} = 0 \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(5.2.2)</span></span></p>
+</div>
+<div id="o010.dionne.special-functions.proof.001" class="proof">
+<p><strong>Bukti.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>
+adalah solusi dari (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.006">5.2.1</a>)
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><msub><mi>λ</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\lambda=\lambda_n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>
+adalah solusi dari (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.006">5.2.1</a>)
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><msub><mi>λ</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\lambda=\lambda_m</annotation></semantics></math>.
+Kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo>+</mo><mi>q</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo>=</mo><mi>−</mi><msub><mi>λ</mi><mi>n</mi></msub><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\displaystyle(r(x) y_n&#39;)&#39; + q(x)y_n = - \lambda_n p(x) y_n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><mo>+</mo><mi>q</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo>=</mo><mi>−</mi><msub><mi>λ</mi><mi>m</mi></msub><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub></mrow><annotation encoding="application/x-tex">\displaystyle(r(x) y_m&#39;)&#39; + q(x)y_m = - \lambda_m p(x) y_m</annotation></semantics></math>.
+Jika persamaan pertama kita kalikan dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>
+dan persamaan kedua dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>,
+lalu ruas-ruas persamaan kedua kita kurangkan dari ruas-ruas persamaan
+pertama, kita memperoleh</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.027"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><msub><mi>y</mi><mi>m</mi></msub><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><msub><mi>y</mi><mi>n</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mi>m</mi></msub><mo>−</mo><msub><mi>λ</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><msub><mi>y</mi><mi>m</mi></msub><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">(r(x) y_n&#39;)&#39;y_m - (r(x) y_m&#39;)&#39;y_n = (\lambda_m - \lambda_n)p(x) y_n y_m \ .</annotation></semantics></math>
+Karena</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.028"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi mathvariant="normal">d</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><msub><mi>y</mi><mi>m</mi></msub><mo>−</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><msub><mi>y</mi><mi>n</mi></msub><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">d</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><msub><mi>y</mi><mi>m</mi></msub><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><msup><mo stretchy="false" form="postfix">)</mo><mo>′</mo></msup><msub><mi>y</mi><mi>n</mi></msub><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{\mathrm{d}\big(r(x) y_n&#39;y_m - r(x) y_m&#39;y_n\big)}{\mathrm{d}{x}} =
+(r(x) y_n&#39;)&#39;y_m - (r(x) y_m&#39;)&#39;y_n \ ,</annotation></semantics></math>
+kita memperoleh</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.029"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi mathvariant="normal">d</mi><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><msub><mi>y</mi><mi>m</mi></msub><mo>−</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><msub><mi>y</mi><mi>n</mi></msub><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">d</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mi>m</mi></msub><mo>−</mo><msub><mi>λ</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><msub><mi>y</mi><mi>m</mi></msub><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{\mathrm{d}\big(r(x) y_n&#39;y_m - r(x) y_m&#39;y_n\big)}{\mathrm{d}{x}}
+= (\lambda_m - \lambda_n)p(x) y_n y_m \ .</annotation></semantics></math>
+Jika kita integralkan kedua ruas terhadap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+pada interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">a&lt; x &lt; b</annotation></semantics></math>,
+kita memperoleh</p>
+<p><span id="o010.dionne.special-functions.equation.008"></span></p>
+<p><span
+id="o010.dionne.special-functions.math_component.002"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.001"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (5.2.3)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mi>m</mi></msub><mo>−</mo><msub><mi>λ</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><msubsup><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">|</mo><mi>a</mi><mi>b</mi></msubsup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">det</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mi>a</mi><mi>b</mi></msubsup><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+(\lambda_m - \lambda_n) \int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} &amp;=
+\big(r(x) y_n&#39;(x)y_m(x) - r(x) y_m&#39;(x)y_n(x)\big)\Big|_a^b \\
+&amp;= \left( r(x)
+\det \begin{pmatrix} y_m(x) &amp; y_m&#39;(x) \\ y_n(x) &amp; y_n&#39;(x) \end{pmatrix}
+\right)\bigg|_a^b \ .
+\end{aligned}</annotation></semantics></math><span class="equation-number" aria-hidden="true">(5.2.3)</span></span></p>
+<p><strong>(i)</strong> Andaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>
+memenuhi syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\alpha_1 y(a) + \alpha_2 y&#39;(a) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\alpha_1,\alpha_2)\neq (0,0)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\beta_1 y&#39;(b) + \beta_2 y(b) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\beta_2) \neq (0,0)</annotation></semantics></math>.</p>
+<p>Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha_1 y_n(a) + \alpha_2 y_n&#39;(a) = 0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha_1 y_m(a) + \alpha_2 y_m&#39;(a) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\alpha_1,\alpha_2)\neq (0,0)</annotation></semantics></math>
+menunjukkan bahwa</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.030"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.002"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.003"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.004"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>u</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>v</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix} y_m(a) &amp; y_m&#39;(a) \\ y_n(a) &amp; y_n&#39;(a) \end{pmatrix}
+\begin{pmatrix} u \\ v \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \end{pmatrix}</annotation></semantics></math>
+mempunyai solusi taktrivial, yaitu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u,v) = (\alpha_1, \alpha_2)</annotation></semantics></math>.
+Hal ini mungkin jika dan hanya jika<br />
+<span
+id="o010.dionne.special-functions.latex_environment.005"></span></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle
+\det \begin{pmatrix} y_m(a) &amp; y_m&#39;(a) \\ y_n(a) &amp; y_n&#39;(a) \end{pmatrix} = 0</annotation></semantics></math>.
+Demikian pula,</p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.006"></span></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle
+\det \begin{pmatrix} y_m(b) &amp; y_m&#39;(b) \\ y_n(b) &amp; y_n&#39;(b) \end{pmatrix} = 0</annotation></semantics></math>.</p>
+<p>Dari (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.008">5.2.3</a>)
+diperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mi>m</mi></msub><mo>−</mo><msub><mi>λ</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle(\lambda_m - \lambda_n) \int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} = 0</annotation></semantics></math>.
+Dengan demikian,<br />
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>m</mi></msub><mo>≠</mo><msub><mi>λ</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\lambda_m \neq \lambda_n</annotation></semantics></math>.</p>
+<p><strong>(ii)</strong> Andaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(a)=0</annotation></semantics></math>;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><annotation encoding="application/x-tex">y_n&#39;</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><annotation encoding="application/x-tex">y_m&#39;</annotation></semantics></math>
+terbatas di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">x=a</annotation></semantics></math>;
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>
+serta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>
+memenuhi syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\beta_1 y&#39;(b) + \beta_2 y(b) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\beta_2) \neq (0,0)</annotation></semantics></math>.</p>
+<p>Ruas kanan (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.008">5.2.3</a>)
+bernilai nol di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">x=a</annotation></semantics></math>
+karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(a)=0</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><annotation encoding="application/x-tex">y_n&#39;</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><annotation encoding="application/x-tex">y_m&#39;</annotation></semantics></math>
+terbatas di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>a</mi></mrow><annotation encoding="application/x-tex">x=a</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\beta_1 y_n&#39;(b) + \beta_2 y_n(b) = 0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>β</mi><mn>1</mn></msub><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>β</mi><mn>2</mn></msub><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\beta_1 y_m&#39;(b) + \beta_2 y_m(b) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>1</mn></msub><mo>,</mo><msub><mi>β</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\beta_1,\beta_2)\neq (0,0)</annotation></semantics></math>
+menunjukkan bahwa</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.031"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.007"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.008"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.009"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>u</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>v</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix} y_m(b) &amp; y_m&#39;(b) \\ y_n(b) &amp; y_n&#39;(b) \end{pmatrix}
+\begin{pmatrix} u \\ v \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \end{pmatrix}</annotation></semantics></math>
+mempunyai solusi taktrivial, yaitu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>β</mi><mn>2</mn></msub><mo>,</mo><msub><mi>β</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u,v) = (\beta_2,\beta_1)</annotation></semantics></math>.
+Hal ini mungkin jika dan hanya jika<br />
+<span
+id="o010.dionne.special-functions.latex_environment.010"></span></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle
+\det \begin{pmatrix} y_m(b) &amp; y_m&#39;(b) \\ y_n(b) &amp; y_n&#39;(b) \end{pmatrix} = 0</annotation></semantics></math>.
+Oleh karena itu, ruas kanan dari (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.008">5.2.3</a>)
+juga bernilai nol di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">x=b</annotation></semantics></math>.</p>
+<p>Dari (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.008">5.2.3</a>)
+diperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>λ</mi><mi>m</mi></msub><mo>−</mo><msub><mi>λ</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle(\lambda_m - \lambda_n) \int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} = 0</annotation></semantics></math>.
+Dengan demikian,<br />
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>m</mi></msub><mo>≠</mo><msub><mi>λ</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\lambda_m \neq \lambda_n</annotation></semantics></math>.</p>
+<p><strong>(iii)</strong> Andaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">r(b)=0</annotation></semantics></math>;
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><annotation encoding="application/x-tex">y_n&#39;</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><annotation encoding="application/x-tex">y_m&#39;</annotation></semantics></math>
+terbatas di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>b</mi></mrow><annotation encoding="application/x-tex">x=b</annotation></semantics></math>;
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>
+serta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>
+memenuhi syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mn>1</mn></msub><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>α</mi><mn>2</mn></msub><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\alpha_1 y&#39;(a) + \alpha_2 y(a) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>α</mi><mn>1</mn></msub><mo>,</mo><msub><mi>α</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\alpha_1,\alpha_2) \neq (0,0)</annotation></semantics></math>.</p>
+<p>Pembuktian bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>m</mi></msub><mo>≠</mo><msub><mi>λ</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\lambda_m \neq \lambda_n</annotation></semantics></math>
+serupa dengan pembuktian yang diberikan dalam (ii).</p>
+<p><strong>(iv)</strong> Andaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">r(a) = r(b)</annotation></semantics></math>
+dan syarat batas periodik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y(a) = y(b)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>b</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y&#39;(a) = y&#39;(b)</annotation></semantics></math>
+dipenuhi oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>n</mi></msub><annotation encoding="application/x-tex">y_n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mi>m</mi></msub><annotation encoding="application/x-tex">y_m</annotation></semantics></math>.</p>
+<p>Dengan demikian,</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.032"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>n</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>y</mi><mi>m</mi><mo>′</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><msubsup><mo minsize="180%" maxsize="180%" stretchy="true" form="prefix">|</mo><mi>a</mi><mi>b</mi></msubsup><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\big(r(x) y_n&#39;(x)y_m(x) - r(x) y_m&#39;(x)y_n(x)\big)\Big|_a^b = 0 \ .</annotation></semantics></math>
+Oleh karena itu, (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.008">5.2.3</a>)
+kembali memberikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\int_a^b p(x) y_n(x) y_m(x) \,\mathrm{d}{x} = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mi>m</mi></msub><mo>≠</mo><msub><mi>λ</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">\lambda_m \neq \lambda_n</annotation></semantics></math>.
+◻</p>
+</div>
+<p>Untuk masalah Sturm-Liouville reguler, terdapat tak hingga banyaknya
+nilai eigen berbeda
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>λ</mi><mn>0</mn></msub><mo>&lt;</mo><msub><mi>λ</mi><mn>1</mn></msub><mo>&lt;</mo><msub><mi>λ</mi><mn>2</mn></msub><mo>&lt;</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">\lambda_0 &lt; \lambda_1 &lt; \lambda_2 &lt; \ldots</annotation></semantics></math>
+yang konvergen ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>+</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">+\infty</annotation></semantics></math>.
+Subruang semua fungsi eigen yang berkaitan dengan suatu nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\lambda_n</annotation></semantics></math>
+berdimensi satu. Jika kita memilih suatu fungsi eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ϕ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\phi_n</annotation></semantics></math>
+yang berkaitan dengan nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\lambda_n</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>,
+kita memperoleh suatu himpunan ortogonal lengkap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mrow><mo stretchy="true" form="prefix">{</mo><msub><mi>ϕ</mi><mi>n</mi></msub><mo stretchy="true" form="postfix">}</mo></mrow><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></msubsup><annotation encoding="application/x-tex">\displaystyle\left\{\phi_n\right\}_{n=0}^\infty</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[a,b]</annotation></semantics></math>
+terhadap hasil kali skalar yang didefinisikan oleh</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.033"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>f</mi><mo>,</mo><mi>g</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\left\langle{f},{g}\right\rangle = \int_a^b f(x) g(x) p(x) \,\mathrm{d}{x}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>,</mo><mi>g</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle f, g \in L^2[a,b]</annotation></semantics></math>.
+Semua hasil ini dibuktikan dengan terlebih dahulu menuliskan masalah
+Sturm-Liouville sebagai persamaan integral, jika perlu setelah
+pergeseran spektral. Dalam kasus taktergeser ketika nol bukan nilai
+eigen, bentuknya</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.034"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>T</mi><mi>K</mi></msub><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msubsup><mo>∫</mo><mi>a</mi><mi>b</mi></msubsup><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>t</mi><mo>=</mo><mfrac><mn>1</mn><mi>λ</mi></mfrac><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(T_K y)(x) = \int_a^b K(x,t) y(t) \,\mathrm{d}{t} = \frac{1}{\lambda} y(x)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle y \in L^2[a,b]</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>∈</mo><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle K \in L^2([a,b]\times[a,b])</annotation></semantics></math>
+merupakan suatu kernel Hilbert-Schmidt yang memenuhi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>K</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">K(x,t) = K(t,x)</annotation></semantics></math>
+untuk hampir setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.
+Fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+diberikan oleh suatu “fungsi Green”. Rincian pembuktian ini dapat
+ditemukan dalam <span id="o010.citation.renrog"></span><a
+href="#o010.citation.renrog">RenRog</a>. Karena kesimetrian ini, dari
+Teorema <a
+href="functional-operator-theory.html#o010.dionne.functional-analysis.theorem.022">4.4.46</a>
+kita memperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>K</mi></msub><annotation encoding="application/x-tex">T_K</annotation></semantics></math>
+merupakan operator kompak self-adjoint pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[a,b]</annotation></semantics></math>.
+Hasil tentang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>ϕ</mi><mi>n</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{\phi_n\}_{n=0}^\infty</annotation></semantics></math>
+yang dinyatakan di atas merupakan akibat Teorema Hilbert-Schmidt,
+Teorema <a
+href="functional-operator-theory.html#o010.dionne.functional-analysis.theorem.020">4.4.44</a>.
+Perhatikan bahwa nilai-nilai eigen dari operator
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>K</mi></msub><annotation encoding="application/x-tex">T_K</annotation></semantics></math>
+berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mi>/</mi><mi>λ</mi></mrow><annotation encoding="application/x-tex">1/\lambda</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
+merupakan nilai yang telah kita definisikan sebagai nilai eigen taknol
+untuk masalah Sturm-Liouville. Korespondensi taktergeser ini hanya
+berlaku untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda\neq0</annotation></semantics></math>.
+Jika nol merupakan nilai eigen—seperti pada contoh Neumann berikut—moda
+nol harus ditangani secara terpisah atau operatornya digeser sebelum
+fungsi Green dibentuk. Matematika sarat dengan inkonsistensi historis
+seperti ini.</p>
+<div id="o010.dionne.special-functions.worked_example.008"
+class="worked_example">
+<p><strong>Contoh.</strong> Tentukan nilai eigen dan fungsi eigen dari
+masalah Sturm-Liouville berikut.</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.035"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>″</mo></msup><mo>+</mo><mi>λ</mi><mi>y</mi><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">dengan</mtext><mspace width="1.0em"></mspace><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">y&#39;&#39;+ \lambda y = 0 \quad \text{dengan} \quad y&#39;(0)= y&#39;(5) = 0 \  .</annotation></semantics></math></p>
+<p>Ada tiga kasus yang perlu ditinjau.</p>
+<p><strong>(i)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt; 0</annotation></semantics></math>,
+solusinya berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup><mo>+</mo><mi>B</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\displaystyle y = A\, e^{\sqrt{-\lambda}\,x}+
+B\, e^{-\sqrt{-\lambda}\,x}</annotation></semantics></math>.</p>
+<p><strong>(ii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda = 0</annotation></semantics></math>,
+solusinya berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi>x</mi><mo>+</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">\displaystyle y = A\,x + B</annotation></semantics></math>.</p>
+<p><strong>(iii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &gt; 0</annotation></semantics></math>,
+solusinya berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>B</mi><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle y = A\, \cos\left(\sqrt{\lambda}\,x\right)+
+B\, \sin\left(\sqrt{\lambda}\,x\right)</annotation></semantics></math>.</p>
+<p><strong>(i)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt; 0</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup><mo>−</mo><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\displaystyle y&#39; = A\,\sqrt{-\lambda}\, e^{\sqrt{-\lambda}\,x} -
+B\, \sqrt{-\lambda}\, e^{-\sqrt{-\lambda}\,x}</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(0)=0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mo>−</mo><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A\,\sqrt{-\lambda} - B\, \sqrt{-\lambda} = 0</annotation></semantics></math>
+dan, setelah membagi dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{-\lambda}</annotation></semantics></math>,
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A-B=0</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(5) = 0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>−</mo><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle A\,\sqrt{-\lambda}\, e^{5\sqrt{-\lambda}} -
+B\, \sqrt{-\lambda}\, e^{-5\sqrt{-\lambda}} =0</annotation></semantics></math>
+dan, setelah membagi dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{-\lambda}</annotation></semantics></math>,
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>−</mo><mi>B</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle A\, e^{5\sqrt{-\lambda}} - B\, e^{-5\sqrt{-\lambda}} =0</annotation></semantics></math>.
+Kita mencari solusi sistem linear</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.036"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.011"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.012"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.013"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>e</mi><mrow><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msup><mi>e</mi><mrow><mi>−</mi><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>A</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>B</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}
+1 &amp; -1 \\
+e^{5\sqrt{-\lambda}} &amp; -e^{-5\sqrt{-\lambda}}
+\end{pmatrix}
+\begin{pmatrix} A\\ B \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \end{pmatrix} \ .</annotation></semantics></math>
+Karena</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.037"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.014"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>e</mi><mrow><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msup><mi>e</mi><mrow><mi>−</mi><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>e</mi><mrow><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>−</mo><msup><mi>e</mi><mrow><mi>−</mi><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>e</mi><mrow><mn>10</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><msup><mi>e</mi><mrow><mi>−</mi><mn>5</mn><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\det 
+\begin{pmatrix}
+1 &amp; -1 \\
+e^{5\sqrt{-\lambda}} &amp; -e^{-5\sqrt{-\lambda}}
+\end{pmatrix}
+= e^{5\sqrt{-\lambda}} - e^{-5\sqrt{-\lambda}} 
+= \left(e^{10\sqrt{-\lambda}} -1\right) e^{-5\sqrt{-\lambda}}
+\neq 0</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt; 0</annotation></semantics></math>,
+satu-satunya solusi sistem linear tersebut ialah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A=B=0</annotation></semantics></math>;
+yakni, kita memperoleh solusi trivial. Oleh karena itu, tidak ada nilai
+eigen maupun fungsi eigen untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt;0</annotation></semantics></math>.</p>
+<p><strong>(ii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda = 0</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">\displaystyle y&#39; = A</annotation></semantics></math>.
+Syarat-syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(0)=0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(5) = 0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A=0</annotation></semantics></math>.
+Tidak ada kendala pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>.
+Kita memperoleh sebuah keluarga solusi taktrivial.</p>
+<p>Kita memperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><msub><mi>λ</mi><mn>0</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda = \lambda_0 = 0</annotation></semantics></math>
+merupakan nilai eigen dan salah satu fungsi eigen yang terkait dengan
+nilai eigen ini ialah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">y_0(x)=1</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+jika kita mengambil
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">B=1</annotation></semantics></math>.</p>
+<p><strong>(iii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &gt; 0</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>=</mo><mi>−</mi><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle y&#39; = -A\,\sqrt{\lambda}\, \sin\left(\sqrt{\lambda}\,x\right) +
+B\, \sqrt{\lambda}\, \cos\left(\sqrt{\lambda}\,x\right)</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(0)=0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mi>λ</mi></msqrt><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B\, \sqrt{\lambda} = 0</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B=0</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(5) = 0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>5</mn><msqrt><mi>λ</mi></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle-A\,\sqrt{\lambda}\,\sin\left(5\sqrt{\lambda}\right)=0</annotation></semantics></math>,
+dan kita telah menggunakan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B=0</annotation></semantics></math>.
+Setelah membagi dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><msqrt><mi>λ</mi></msqrt></mrow><annotation encoding="application/x-tex">-\sqrt{\lambda}</annotation></semantics></math>,
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>5</mn><msqrt><mi>λ</mi></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle A\, \sin\left( 5\sqrt{\lambda}\right) =0</annotation></semantics></math>.
+Karena kita mencari solusi taktrivial, kita harus mengasumsikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A\neq 0</annotation></semantics></math>.
+Kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>5</mn><msqrt><mi>λ</mi></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\sin\left( 5\sqrt{\lambda}\right) = 0</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><msqrt><mi>λ</mi></msqrt><mo>=</mo><mi>n</mi><mi>π</mi></mrow><annotation encoding="application/x-tex">\displaystyle 5\sqrt{\lambda} = n\pi</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>.</p>
+<p>Kita telah menemukan nilai-nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><msub><mi>λ</mi><mi>n</mi></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mi>π</mi><mi>/</mi><mn>5</mn><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle\lambda = \lambda_n = \left(n\pi / 5\right)^2</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n \geq 1</annotation></semantics></math>.
+Fungsi-fungsi eigen yang terkait dengan nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\lambda_n</annotation></semantics></math>
+merupakan kelipatan real dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>n</mi></msub><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mi>π</mi><mi>x</mi><mi>/</mi><mn>5</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle y_n = \cos\left( n\pi x / 5 \right)</annotation></semantics></math>.</p>
+<p>Kita memperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>″</mo></msup><mo>+</mo><mi>λ</mi><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;&#39;+ \lambda y = 0</annotation></semantics></math>
+berbentuk (<a
+href="special-sturm-liouville.html#o010.dionne.special-functions.equation.006">5.2.1</a>)
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">r(x) = p(x) = 1</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>q</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">q(x)=0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.
+Dengan demikian, dari Proposisi <a
+href="special-sturm-liouville.html#o010.dionne.special-functions.proposition.001">5.2.1</a>,
+kita memperoleh</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.038"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mn>0</mn><mn>5</mn></msubsup><msub><mi>y</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>y</mi><mi>m</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\int_0^5 y_n(x) y_m(x) \,\mathrm{d}{x} = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≠</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n \neq m</annotation></semantics></math>,
+sebagaimana dapat dengan mudah diverifikasi secara langsung. Selain itu,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mrow><mo stretchy="true" form="prefix">{</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mi>π</mi><mi>x</mi><mi>/</mi><mn>5</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">}</mo></mrow><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><mi>∞</mi></msubsup><annotation encoding="application/x-tex">\displaystyle\left\{ \cos(n\pi x/5)\right\}_{n=0}^\infty</annotation></semantics></math>
+merupakan himpunan ortogonal lengkap dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>L</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>5</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\displaystyle L^2[0,5]</annotation></semantics></math>.
+Hal ini telah kita gunakan ketika mempelajari deret Fourier kosinus.</p>
+</div>
+<div id="o010.dionne.special-functions.worked_example.009"
+class="worked_example">
+<p><strong>Contoh.</strong> Tentukan nilai eigen dan fungsi eigen dari
+masalah Sturm-Liouville berikut.</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.039"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>″</mo></msup><mo>+</mo><mi>λ</mi><mi>y</mi><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">dengan</mtext><mspace width="1.0em"></mspace><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">y&#39;&#39;+ \lambda y = 0 \quad \text{dengan} \quad y&#39;(0)=0 \quad \text{dan}
+\quad y(L) = 0 \ .</annotation></semantics></math></p>
+<p>Seperti dalam contoh sebelumnya, ada tiga kasus yang perlu
+ditinjau.</p>
+<p><strong>(i)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt; 0</annotation></semantics></math>,
+solusinya berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup><mo>+</mo><mi>B</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\displaystyle y = A\, e^{\sqrt{-\lambda}\,x}+
+B\, e^{-\sqrt{-\lambda}\,x}</annotation></semantics></math>.</p>
+<p><strong>(ii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda = 0</annotation></semantics></math>,
+solusinya berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mi>x</mi><mo>+</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">\displaystyle y = A\,x + B</annotation></semantics></math>.</p>
+<p><strong>(iii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &gt; 0</annotation></semantics></math>,
+solusinya berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>B</mi><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle y = A\, \cos\left(\sqrt{\lambda}\,x\right)+
+B\, \sin\left(\sqrt{\lambda}\,x\right)</annotation></semantics></math>.</p>
+<p><strong>(i)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt; 0</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup><mo>−</mo><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mspace width="0.167em"></mspace><mi>x</mi></mrow></msup></mrow><annotation encoding="application/x-tex">\displaystyle y&#39; = A\,\sqrt{-\lambda}\, e^{\sqrt{-\lambda}\,x} -
+B\, \sqrt{-\lambda}\, e^{-\sqrt{-\lambda}\,x}</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(0)=0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mo>−</mo><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A\,\sqrt{-\lambda} - B\, \sqrt{-\lambda} = 0</annotation></semantics></math>
+dan, setelah membagi dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt><annotation encoding="application/x-tex">\sqrt{-\lambda}</annotation></semantics></math>,
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>−</mo><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A-B=0</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y(L) = 0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>+</mo><mi>B</mi><mspace width="0.167em"></mspace><msup><mi>e</mi><mrow><mi>−</mi><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle A\, e^{L\sqrt{-\lambda}} + B\, e^{-L\sqrt{-\lambda}} =0</annotation></semantics></math>.</p>
+<p>Kita mencari solusi sistem linear</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.040"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.015"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.016"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.017"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>e</mi><mrow><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>e</mi><mrow><mi>−</mi><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>A</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>B</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{pmatrix}
+1 &amp; -1 \\
+e^{L\sqrt{-\lambda}} &amp; e^{-L\sqrt{-\lambda}}
+\end{pmatrix}
+\begin{pmatrix} A\\ B \end{pmatrix}
+= \begin{pmatrix} 0 \\ 0 \end{pmatrix} \  .</annotation></semantics></math>
+Karena</p>
+<p><span
+id="o010.dionne.special-functions.display-math.bracket.041"></span></p>
+<p><span
+id="o010.dionne.special-functions.latex_environment.018"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mi>e</mi><mrow><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd><mtd columnalign="center" style="text-align: center"><msup><mi>e</mi><mrow><mi>−</mi><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>e</mi><mrow><mi>−</mi><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>+</mo><msup><mi>e</mi><mrow><mi>L</mi><msqrt><mrow><mi>−</mi><mi>λ</mi></mrow></msqrt></mrow></msup><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\det 
+\begin{pmatrix}
+1 &amp; -1 \\
+e^{L\sqrt{-\lambda}} &amp; e^{-L\sqrt{-\lambda}}
+\end{pmatrix}
+= e^{-L\sqrt{-\lambda}} + e^{L\sqrt{-\lambda}} 
+&gt; 0</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt; 0</annotation></semantics></math>,
+satu-satunya solusi sistem linear tersebut ialah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A=B=0</annotation></semantics></math>;
+yakni, kita memperoleh solusi trivial. Tidak ada nilai eigen maupun
+fungsi eigen untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &lt;0</annotation></semantics></math>.</p>
+<p><strong>(ii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda = 0</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>=</mo><mi>A</mi></mrow><annotation encoding="application/x-tex">\displaystyle y&#39; = A</annotation></semantics></math>.
+Syarat-syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>A</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(0)= A= 0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>A</mi><mi>L</mi><mo>+</mo><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y(L) = AL +B = 0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A=B=0</annotation></semantics></math>.
+Sekali lagi, tidak ada solusi taktrivial. Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+bukan nilai eigen.</p>
+<p><strong>(iii)</strong> Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\lambda &gt; 0</annotation></semantics></math>,
+kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo>=</mo><mi>−</mi><mi>A</mi><mspace width="0.167em"></mspace><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msqrt><mi>λ</mi></msqrt><mspace width="0.167em"></mspace><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle y&#39; = -A\,\sqrt{\lambda}\, \sin\left(\sqrt{\lambda}\,x\right) +
+B\, \sqrt{\lambda}\, \cos\left(\sqrt{\lambda}\,x\right)</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>y</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y&#39;(0)=0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mspace width="0.167em"></mspace><msqrt><mi>λ</mi></msqrt><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B\, \sqrt{\lambda} = 0</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B=0</annotation></semantics></math>.
+Syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">y(L) = 0</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><msqrt><mi>λ</mi></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle A\,\cos\left(L\sqrt{\lambda}\right)=0</annotation></semantics></math>,
+dan kita telah menggunakan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">B=0</annotation></semantics></math>.
+Karena kita mencari solusi taktrivial, kita harus mengasumsikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">A\neq 0</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><msqrt><mi>λ</mi></msqrt><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\cos\left( L\sqrt{\lambda}\right) = 0</annotation></semantics></math>.
+Dengan demikian,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><msqrt><mi>λ</mi></msqrt><mo>=</mo><mi>n</mi><mi>π</mi><mo>+</mo><mi>π</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\displaystyle L\sqrt{\lambda} = n\pi + \pi/2</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n \geq 0</annotation></semantics></math>.</p>
+<p>Kita telah menemukan nilai-nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>λ</mi><mo>=</mo><msub><mi>λ</mi><mi>n</mi></msub><mo>=</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">)</mo><msup><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle\lambda = \lambda_n = \big( (2n+1)\pi/(2L) \big)^2</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n \geq 0</annotation></semantics></math>.
+Fungsi-fungsi eigen yang terkait dengan nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>λ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\lambda_n</annotation></semantics></math>
+berbentuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo>=</mo><mi>A</mi><mspace width="0.167em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo minsize="120%" maxsize="120%" stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>n</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mi>π</mi><mi>x</mi><mi>/</mi><mo stretchy="false" form="prefix">(</mo><mn>2</mn><mi>L</mi><mo stretchy="false" form="postfix">)</mo><mo minsize="120%" maxsize="120%" stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle y = A \, \cos\big((2n+1)\pi x/ (2L) \big)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n \geq 0</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+merupakan konstanta taknol.</p>
+</div>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="special-frobenius.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="special-legendre-gamma.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>
