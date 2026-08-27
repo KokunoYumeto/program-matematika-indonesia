@@ -143,9 +143,9 @@ assert.equal(gh.tagName, `v${version}`);
 assert.equal(gh.isDraft, false);
 assert.equal(gh.isPrerelease, false);
 
-const authoritySourceCommit = execFileSync('git', ['rev-parse', 'HEAD~1'], { cwd: project, encoding: 'utf8' }).trim();
 const taggedCommit = execFileSync('git', ['rev-parse', 'v0.58.0^{}'], { cwd: project, encoding: 'utf8' }).trim();
 const tagObject = execFileSync('git', ['rev-parse', 'v0.58.0'], { cwd: project, encoding: 'utf8' }).trim();
+const authoritySourceCommit = execFileSync('git', ['rev-parse', `${taggedCommit}~1`], { cwd: project, encoding: 'utf8' }).trim();
 assert.equal(taggedCommit, '135ca36d87885ee5eba1ee7f4e8f62d934925c0f');
 assert.equal(authoritySourceCommit, '0c99da627df49e73a919b2383fcd75bd40f5af8b');
 
