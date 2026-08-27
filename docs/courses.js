@@ -50,7 +50,9 @@ export const courses = Object.freeze([
     "purpose": "Fungsi, model kuadrat dan rasional, akar, bilangan kompleks, eksponensial, logaritma, irisan kerucut, dan barisan.",
     "outcome": "Memasuki prakalkulus dengan kefasihan simbolik dan pemahaman fungsi yang stabil.",
     "corpus": "OpenStax Intermediate Algebra 2e — 83 modul",
-    "note": "Korpus terpilih; produksi berada pada batas 39/83 modul dan QA terminologi untuk m81389 sedang ditutup."
+    "note": "Checkpoint publik v0.2.0-wip memuat 41 dari 83 modul berurutan sampai akhir Bab 6 dalam pembaca 1.732 halaman. Buku tetap diproduksi.",
+    "edition": "https://zenodo.org/records/22074778/files/openstax-intermediate-algebra-2e-id-ID-0.2.0-wip-reader.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22074778"
   },
   {
     "id": "A30",
@@ -117,9 +119,9 @@ export const courses = Object.freeze([
     "purpose": "Integral, teorema dasar kalkulus, teknik integrasi, penerapan, barisan, deret, dan persamaan diferensial awal.",
     "outcome": "Memilih dan membenarkan metode integral atau deret serta menghubungkan akumulasi dengan laju lokal.",
     "corpus": "CLP Calculus — kalkulus integral",
-    "note": "Checkpoint publik CLP-2 WIP.9/CP0047-R1 memuat pembaca 674 halaman, SHA-256 863e9c5709ff961b3ba09f93da973a8188849d81a4e9680900e1d66a58232bd6. Backend 105.047 rekaman dapat direproduksi persis dan paket HP-CLP2-001/002 telah diterima; R003 tetap belum lengkap.",
-    "edition": "https://zenodo.org/records/22077325/files/CLP-2_Kalkulus_Integral_Bahasa_Indonesia_checkpoint_2026-08-24_s2.1.pdf?download=1",
-    "zenodo": "https://doi.org/10.5281/zenodo.22077325"
+    "note": "Checkpoint publik WIP.16 mencapai akhir Bagian 3.5 dalam pembaca 1.102 halaman dengan 165.925 rekaman backend. CLP Kalkulus 2 tetap diproduksi.",
+    "edition": "https://zenodo.org/records/22105615/files/CLP-2_Kalkulus_Integral_Bahasa_Indonesia_checkpoint_2026-08-26_s3.5.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22105615"
   },
   {
     "id": "B40",
@@ -448,24 +450,24 @@ export const courses = Object.freeze([
     "purpose": "Geometri aksiomatik dan transformasional, metode afin dan projektif, geometri hiperbolik dan sferis, permukaan, dan konstruksi.",
     "outcome": "Membandingkan geometri melalui aksioma, transformasi, dan invarian, bukan sebagai satu konvensi tunggal.",
     "corpus": "Bidang Euklides dan Kerabatnya: Sebuah Pengantar Minimalis — kursus utama Bahasa Indonesia lengkap",
-    "note": "Kursus utama selesai dan terverifikasi publik: tulang punggung Petrunin yang bersih hak, 253 solusi, pendamping konektif asli enam unit beserta solusi, empat pemeriksaan kumulatif, dua capstone, backend, HTML semantik, dan EPUB. Workbook Clemens/Snapp tetap pada lini CC BY-NC-SA terpisah; checkpoint Unit 001–010 tersedia sebagai sumber tambahan parsial.",
+    "note": "Kursus utama tetap lengkap dan tidak berubah: tulang punggung Petrunin yang bersih hak, 253 solusi, pendamping konektif asli enam unit beserta solusi, empat pemeriksaan kumulatif, dua capstone, backend, HTML semantik, dan EPUB. Workbook Clemens/Snapp berada pada lini CC BY-NC-SA terpisah; checkpoint Unit 001–011 tersedia sebagai sumber tambahan parsial.",
     "reader": "https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/reader/",
     "edition": "https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1",
     "zenodo": "https://doi.org/10.5281/zenodo.22102628",
     "supplements": [
       {
-        "id": "clemens-snapp-workbook-u010",
-        "title": "Buku kerja geometri dua dimensi, Unit 001–010",
+        "id": "clemens-snapp-workbook-u011",
+        "title": "Buku kerja geometri dua dimensi, Unit 001–011",
         "resourceType": "workbook",
         "state": "partial",
-        "scope": "Unit 001–010, pembaca 110 halaman; lini lisensi terpisah dari kursus utama.",
+        "scope": "Unit 001–011, pembaca 123 halaman; lini lisensi terpisah dari kursus utama.",
         "license": "CC BY-NC-SA 4.0",
-        "pages": 110,
-        "url": "https://zenodo.org/records/22105520/files/buku-kerja-geometri-dua-dimensi-id-unit001-010.pdf?download=1",
-        "zenodo": "https://doi.org/10.5281/zenodo.22105520",
+        "pages": 123,
+        "url": "https://zenodo.org/records/22106155/files/buku-kerja-geometri-dua-dimensi-id-unit001-011.pdf?download=1",
+        "zenodo": "https://doi.org/10.5281/zenodo.22106155",
         "conceptDoi": "https://doi.org/10.5281/zenodo.22105519",
-        "bytes": 595201,
-        "sha256": "5cc3f36cf9b01e6d0bc568f54f7170ae4dde71d16d3b55d26739ed1f8d9201a7"
+        "bytes": 632602,
+        "sha256": "4edd3f3bd428ccdd7539c75a17b8ebf480756bdc2ef7944f2cec8d8b95b797df"
       }
     ]
   },
@@ -548,10 +550,11 @@ export const courses = Object.freeze([
     "purpose": "Distribusi sampling, kecukupan, estimasi, likelihood, interval kepercayaan, uji hipotesis, perbandingan Bayes, regresi, dan asimtotik.",
     "outcome": "Menurunkan dan menilai prosedur statistik, bukan sekadar menerapkannya sebagai kotak hitam.",
     "corpus": "Penn State STAT 415 lengkap + satu unit Random tentang kecukupan/kelengkapan + pendamping rigor dan penguasaan asli",
-    "note": "Checkpoint pendukung Random 16 dari 29 unit sudah publik. Edisi Random penuh, spine Penn State, dan pendamping rigor/penguasaan asli tetap belum selesai; C140 tidak diklaim sebagai edisi lengkap.",
-    "edition": "https://zenodo.org/records/22071140/files/00_statistika-matematis-id-reader-2026.08.23.16.pdf?download=1",
+    "note": "Komponen Penn State STAT 415 lengkap pada 14 dari 14 dokumen publik dan tersedia sebagai pembaca HTML. Korpus gabungan C140, termasuk komponen Random dan pendamping rigor, tetap diproduksi dan tidak dinyatakan lengkap.",
+    "reader": "https://kokunoyumeto.github.io/penn-state-stat-415-id/",
+    "edition": "https://zenodo.org/records/22105616/files/00_stat415-id-through-lesson12-offline-reader.zip?download=1",
     "repository": "https://github.com/KokunoYumeto/mathematical-statistics-id",
-    "zenodo": "https://doi.org/10.5281/zenodo.22071140"
+    "zenodo": "https://doi.org/10.5281/zenodo.22105616"
   },
   {
     "id": "D10",
@@ -607,10 +610,11 @@ export const courses = Object.freeze([
     "purpose": "Ruang peluang, modus konvergensi, hukum bilangan besar, limit pusat, harapan bersyarat, martingal, proses Markov/Poisson, dan gerak Brown.",
     "outcome": "Membaca literatur peluang modern dan proses stokastik dengan kefasihan teori ukuran.",
     "corpus": "27 halaman semantik Random + QuantEcon — Continuous Time Markov Chains (100 hlm.) + 2 irisan laboratorium Žitković + penutupan asli",
-    "note": "Checkpoint publik 20 memuat pembaca kumulatif 223 halaman dan 26 halaman HTML termanifestasi. Tiga dari delapan bab QuantEcon sudah selesai; lima bab, jembatan Random/Brownian terpilih, dan penutupan asli masih diproduksi.",
-    "edition": "https://zenodo.org/api/records/22074332/files/00_PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_20.pdf/content",
+    "note": "Checkpoint publik 32 memuat QuantEcon 8 dari 8 bab, 27 halaman Random terpilih, dua laboratorium, dan jembatan asli dalam pembaca PDF 313 halaman serta rute HTML. Kursus tetap diproduksi.",
+    "reader": "https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/",
+    "edition": "https://zenodo.org/records/22106121/files/PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_32.zip?download=1",
     "repository": "https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id",
-    "zenodo": "https://doi.org/10.5281/zenodo.22074332"
+    "zenodo": "https://doi.org/10.5281/zenodo.22106121"
   },
   {
     "id": "D40",
@@ -647,9 +651,9 @@ export const courses = Object.freeze([
     "purpose": "Lipatan, struktur tangen dan kotangen, bentuk diferensial, integrasi dan Stokes, grup Lie, metrik Riemann, koneksi, dan kelengkungan.",
     "outcome": "Menggunakan bahasa geometri bebas koordinat dan membuktikan hasil dasar tentang lipatan serta kelengkungan.",
     "corpus": "Brenner lengkap — 29 kuliah + 29 lembar kerja; dua jembatan asli grup Lie/de Rham; bank 10 ujian resmi",
-    "note": "Unit 10 telah terbit dan terverifikasi sebagai pembaca kumulatif 165 halaman. Unit 11–13 sudah selesai terjemahan dan QA berbatas tetapi belum diterbitkan; dua jembatan dan penutupan asesmen menyusul.",
-    "edition": "https://zenodo.org/api/records/22073928/files/geometri-diferensial-manifold-mulus-hingga-unit-10-id.pdf/content",
-    "zenodo": "https://doi.org/10.5281/zenodo.22073928"
+    "note": "Checkpoint publik memuat Kuliah dan Lembar Kerja 1–16: 261 halaman, 342 latihan, dan tepat 48 solusi yang tersedia pada sumber. Kursus tetap diproduksi.",
+    "edition": "https://zenodo.org/records/22104426/files/geometri-diferensial-manifold-mulus-hingga-unit-16-id.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22104426"
   },
   {
     "id": "D60",
@@ -665,10 +669,11 @@ export const courses = Object.freeze([
     "purpose": "Grup fundamental, ruang penutup, homologi simplisial/seluler, kohomologi, barisan eksak, derajat, dan metode homotopi terpilih.",
     "outcome": "Menerjemahkan pertanyaan geometri menjadi invarian aljabar yang dapat dihitung dan merekonstruksi bukti standar.",
     "corpus": "Roberts lengkap (30 kuliah) + jembatan homologi Fomberg §§1.1–1.13 + penutupan bukti, solusi, dan laboratorium asli",
-    "note": "Batas publik mencakup Roberts Kuliah 1–30 lengkap dan jembatan Fomberg §§1.1–1.2 dalam pembaca 362 halaman, 2.322.978 byte, SHA-256 fb81f2b2c0f73c17c4e3be4eaae164eaeaeb0c4ff0661580acfc7aa9b6d5f749. Sisa jembatan Fomberg dan penutupan bukti, solusi, serta laboratorium asli masih diproduksi.",
-    "edition": "https://zenodo.org/api/records/22084021/files/00_TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_READER.pdf/content",
+    "note": "Checkpoint publik v0.31.1 memuat Roberts 30 dari 30, Fomberg §§1.1–1.13, dan penguasaan biasa 84 dari 84; total 92 dari 108 butir wajib. Kursus tetap diproduksi.",
+    "reader": "https://kokunoyumeto.github.io/algebraic-topology-id/",
+    "edition": "https://zenodo.org/records/22106133/files/TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_007_CA01_HINTS_R01_R06_READER.html?download=1",
     "repository": "https://github.com/KokunoYumeto/algebraic-topology-id",
-    "zenodo": "https://doi.org/10.5281/zenodo.22084021"
+    "zenodo": "https://doi.org/10.5281/zenodo.22106133"
   },
   {
     "id": "D70",
@@ -701,7 +706,9 @@ export const courses = Object.freeze([
     "purpose": "Kategori, funktor, transformasi natural, limit/kolimit, adjungsi, representabilitas, kategori abelian, kompleks rantai, funktor turunan, dan orientasi barisan spektral.",
     "outcome": "Menggunakan bahasa kategoris sebagai matematika kerja, bukan hiasan abstrak.",
     "corpus": "Li — Methods of Algebra Volume 2 lengkap",
-    "note": "Korpus terpilih dan diakui; produksi unit sedang berjalan."
+    "note": "Checkpoint publik memuat Unit 001–047; pendahuluan dan Bab 1–3 lengkap dalam pembaca 308 halaman. Korpus tetap diproduksi.",
+    "edition": "https://zenodo.org/records/22105841/files/00_METODE_DALAM_ALJABAR_JILID_2_ID_UNIT_047.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22105841"
   },
   {
     "id": "D90",
@@ -718,10 +725,11 @@ export const courses = Object.freeze([
     "purpose": "Himpunan dan fungsi konveks, separasi, dualitas, KKT, algoritma, metode nonsmooth, optimisasi stokastik, dan sudut pandang variasional.",
     "outcome": "Menganalisis masalah optimisasi kontinu dan algoritma modern melampaui program linear/integer.",
     "corpus": "Habring arXiv 2607.11664v1 berlisensi CC BY 4.0 sebagai spine TeX kanonik + modul TeX Becker berlisensi MIT + penutupan KKT, stokastik, variasional, dan solusi asli",
-    "note": "Arsitektur sumber editabel dipilih. Materi MIT 6.253 dan Royer dipertahankan sebagai pendamping berlisensi terpisah, bukan spine kanonik. Checkpoint pendamping publik terbaru adalah MIT L10, Kuliah 6 halaman 64–85, 10 halaman, SHA-256 3b01d57e8e8a7d7887f36cfdc205d1b68d1d007a152bd8e0cd75479628e1abc0; L11 masih lokal.",
-    "edition": "https://zenodo.org/records/22077419/files/D90-MIT-10-kuliah-6-irisan-tertutup-dan-hiperbidang-id.pdf?download=1",
+    "note": "Checkpoint publik Original Tranche 02 memuat delapan segmen, enam latihan, petunjuk bertahap, dan solusi lengkap; MIT L11 juga telah terbit. Kursus tetap diproduksi.",
+    "reader": "https://kokunoyumeto.github.io/program-matematika-indonesia/readers/d90/original-02/",
+    "edition": "https://zenodo.org/records/22104724/files/D90-ORIG-02-ketaksamaan-variasional-operator-monoton-resolven-pemisahan-id.html?download=1",
     "repository": "https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id",
-    "zenodo": "https://doi.org/10.5281/zenodo.22077419"
+    "zenodo": "https://doi.org/10.5281/zenodo.22104724"
   },
   {
     "id": "D100",
@@ -739,10 +747,11 @@ export const courses = Object.freeze([
     "purpose": "Varietas afin/projektif, gelanggang koordinat, skema, sheaf, morfisme, dimensi, orientasi kohomologis, dan penggunaan terpandu Stacks Project.",
     "outcome": "Berpindah dari aljabar pascasarjana ke geometri aljabar tingkat sumber dan menavigasi korpus rujukan hidup.",
     "corpus": "Brenner Algebraische Kurven lengkap (337 halaman) + Bündel, Garben und Kohomologie lengkap (265 halaman) + penutupan penguasaan dan integrasi asli",
-    "note": "Unit 1–15 volume klasik sudah publik dalam pembaca 267 halaman, 6.502.255 byte, SHA-256 e56aae414a9d7e252485d06e7da790fae9bf972514c8fe47fc31d26eddd3699c. Unit 16–18 adalah checkpoint internal, bukan rilis publik; Unit 19 dibekukan tetapi belum didispatch. Stacks tetap rujukan hilir terpandu dan Napkin hanya donor penjelasan opsional.",
-    "edition": "https://zenodo.org/records/22077441/files/kurva-aljabar-id-unit-15.pdf?download=1",
+    "note": "Checkpoint publik memuat Unit 1–28 dari 30: 476 halaman, 671 latihan, 118 solusi sumber publik yang dibekukan, dan 21.358 rekaman backend asli. Kursus tetap diproduksi.",
+    "reader": "https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/",
+    "edition": "https://zenodo.org/records/22105836/files/kurva-aljabar-id-unit-28.html?download=1",
     "repository": "https://github.com/KokunoYumeto/algebraic-geometry-bridge-id",
-    "zenodo": "https://doi.org/10.5281/zenodo.22077441"
+    "zenodo": "https://doi.org/10.5281/zenodo.22105836"
   },
   {
     "id": "D110",
@@ -771,7 +780,7 @@ export const courses = Object.freeze([
     "ownerLane": "O017",
     "level": "D",
     "topic": "Praktik Riset",
-    "state": "production",
+    "state": "published",
     "title": "Membaca Riset, Eksposisi, dan Kerja Matematis Reprodusibel",
     "prerequisites": [
       "C20",
@@ -781,10 +790,11 @@ export const courses = Object.freeze([
     "purpose": "Membaca artikel dan monograf, rekonstruksi sumber, sitasi, tulisan ekspositoris, catatan seminar, errata, komputasi reprodusibel, kritik sejawat, dan proyek kontribusi.",
     "outcome": "Berpartisipasi secara konstruktif dalam komunitas matematika sambil menyatakan dependensi, bukti, dan ketidakpastian secara tepat.",
     "corpus": "Kerja Matematika yang Dapat Ditelusuri — rangka asli sembilan unit + donor metodologis Turing Way/PyRSE yang dibekukan",
-    "note": "Edisi mandiri 128 halaman sudah publik; handoff penyelesaian akhir masih menunggu pemeriksaan status koleksi Figshare yang sudah ada.",
-    "edition": "https://zenodo.org/records/22051978/files/kerja-matematika-yang-dapat-ditelusuri-id-2026.08.22.pdf?download=1",
+    "note": "Edisi sembilan unit O017/D120 lengkap, terbuka, dan terverifikasi publik dalam PDF, HTML, serta paket luring. Kursus dinyatakan selesai.",
+    "reader": "https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/",
+    "edition": "https://zenodo.org/records/22073823/files/o017-d120-id-2026.08.24-reader-html.zip?download=1",
     "repository": "https://github.com/KokunoYumeto/kerja-matematika-yang-dapat-ditelusuri-id",
-    "zenodo": "https://doi.org/10.5281/zenodo.22051978"
+    "zenodo": "https://doi.org/10.5281/zenodo.22073823"
   }
 ]);
 
@@ -957,8 +967,8 @@ export const program = Object.freeze({
   "id": "program-matematika-indonesia",
   "title": "Program Matematika Indonesia — Peta Kurikulum Terbuka",
   "language": "id-ID",
-  "version": "0.58.0",
-  "snapshotDate": "2026-08-26",
+  "version": "0.59.0",
+  "snapshotDate": "2026-08-27",
   "totalCourseRoles": 40,
   "selectedCorpusRoles": 40,
   "unresolvedRoleIds": [],
@@ -980,7 +990,8 @@ export const program = Object.freeze({
     "C120",
     "C130",
     "D20",
-    "D110"
+    "D110",
+    "D120"
   ],
   "completedPublicRecordDois": [
     "10.5281/zenodo.22070683",
@@ -999,10 +1010,11 @@ export const program = Object.freeze({
     "10.5281/zenodo.22088947",
     "10.5281/zenodo.22062017",
     "10.5281/zenodo.22102628",
-    "10.5281/zenodo.22105443"
+    "10.5281/zenodo.22105443",
+    "10.5281/zenodo.22073823"
   ],
   "website": "https://kokunoyumeto.github.io/program-matematika-indonesia/",
-  "zenodo": "https://doi.org/10.5281/zenodo.22105611",
+  "zenodo": "https://doi.org/10.5281/zenodo.22133203",
   "zenodoConcept": "https://doi.org/10.5281/zenodo.22059707",
   "provenance": {
     "model": "OpenAI Codex gpt-5.6-sol, Ultra",
@@ -1079,35 +1091,35 @@ export const program = Object.freeze({
         "result": "lossless-zero-copy-virtual-adapter-pass"
       }
     ],
-    "schema": "https://zenodo.org/records/22105611/files/interlanguage-math-backend-v1.schema.json?download=1",
-    "sourceFormatProfile": "https://zenodo.org/records/22105611/files/interlanguage-source-format-profile-v1.schema.json?download=1",
-    "package": "https://zenodo.org/records/22105611/files/program-matematika-indonesia-backend-v1-v0.58.0.zip?download=1",
+    "schema": "https://zenodo.org/records/22133203/files/interlanguage-math-backend-v1.schema.json?download=1",
+    "sourceFormatProfile": "https://zenodo.org/records/22133203/files/interlanguage-source-format-profile-v1.schema.json?download=1",
+    "package": "https://zenodo.org/records/22133203/files/program-matematika-indonesia-backend-v1-v0.59.0.zip?download=1",
     "federationV2": {
-      "version": "0.4.0",
+      "version": "0.4.1",
       "status": "validated",
-      "recordCount": 2463,
+      "recordCount": 2478,
       "datasetCount": 34,
       "courseCount": 40,
-      "learnerSurfaceCount": 144,
+      "learnerSurfaceCount": 154,
       "webRouteCount": 43,
       "identityCrosswalkCount": 2122,
-      "package": "https://zenodo.org/records/22105611/files/program-matematika-indonesia-backend-v2-v0.58.0.zip?download=1",
-      "packageSchema": "https://zenodo.org/records/22105611/files/federation-package-v2.schema.json?download=1",
-      "recordSchema": "https://zenodo.org/records/22105611/files/federation-record-v2.schema.json?download=1",
-      "validationReceipt": "https://zenodo.org/records/22105611/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.58.0.json?download=1",
-      "publicationEventCount": 63,
-      "qaEventCount": 16
+      "package": "https://zenodo.org/records/22133203/files/program-matematika-indonesia-backend-v2-v0.59.0.zip?download=1",
+      "packageSchema": "https://zenodo.org/records/22133203/files/federation-package-v2.schema.json?download=1",
+      "recordSchema": "https://zenodo.org/records/22133203/files/federation-record-v2.schema.json?download=1",
+      "validationReceipt": "https://zenodo.org/records/22133203/files/GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v0.59.0.json?download=1",
+      "publicationEventCount": 67,
+      "qaEventCount": 17
     },
     "learnerReadModelV1": {
       "version": "1.0.0",
       "status": "validated",
       "courseCount": 40,
       "prerequisiteEdgeCount": 82,
-      "authority": "https://zenodo.org/records/22105611/files/curriculum-authority-v1.json?download=1",
-      "authoritySchema": "https://zenodo.org/records/22105611/files/curriculum-authority-v1.schema.json?download=1",
-      "readModel": "https://zenodo.org/records/22105611/files/learner-read-model-v1.json?download=1",
-      "readModelSchema": "https://zenodo.org/records/22105611/files/learner-read-model-v1.schema.json?download=1",
-      "validationReceipt": "https://zenodo.org/records/22105611/files/LOCAL_RELEASE_VALIDATION_v0.58.0.json?download=1",
+      "authority": "https://zenodo.org/records/22133203/files/curriculum-authority-v1.json?download=1",
+      "authoritySchema": "https://zenodo.org/records/22133203/files/curriculum-authority-v1.schema.json?download=1",
+      "readModel": "https://zenodo.org/records/22133203/files/learner-read-model-v1.json?download=1",
+      "readModelSchema": "https://zenodo.org/records/22133203/files/learner-read-model-v1.schema.json?download=1",
+      "validationReceipt": "https://zenodo.org/records/22133203/files/LOCAL_RELEASE_VALIDATION_v0.59.0.json?download=1",
       "publicEndpoint": "https://kokunoyumeto.github.io/program-matematika-indonesia/data/learner-read-model.json"
     },
     "federationV21": {
@@ -1138,9 +1150,9 @@ export const program = Object.freeze({
         "compute_assumption_count": 12,
         "compute_scenario_count": 3
       },
-      "packageSchema": "https://zenodo.org/records/22105611/files/federation-unit-package-v2.1.schema.json?download=1",
-      "recordSchema": "https://zenodo.org/records/22105611/files/federation-unit-record-v2.1.schema.json?download=1",
-      "package": "https://zenodo.org/records/22105611/files/program-matematika-indonesia-backend-v2.1-pilots-v0.58.0.zip?download=1"
+      "packageSchema": "https://zenodo.org/records/22133203/files/federation-unit-package-v2.1.schema.json?download=1",
+      "recordSchema": "https://zenodo.org/records/22133203/files/federation-unit-record-v2.1.schema.json?download=1",
+      "package": "https://zenodo.org/records/22133203/files/program-matematika-indonesia-backend-v2.1-pilots-v0.59.0.zip?download=1"
     },
     "educationalAccessResearch": {
       "version": "0.1.0",
@@ -1150,14 +1162,67 @@ export const program = Object.freeze({
       "declared_unmaterialized_table_count": 7,
       "publicCatalog": "https://kokunoyumeto.github.io/program-matematika-indonesia/data/educational-access.json",
       "schema": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/educational-access-federation-v1.schema.json",
-      "sourcePackage": "https://zenodo.org/records/22105611/files/program-matematika-indonesia-source-v0.58.0.zip?download=1"
+      "sourcePackage": "https://zenodo.org/records/22133203/files/program-matematika-indonesia-source-v0.59.0.zip?download=1"
+    },
+    "federationV22": {
+      "version": "2.2.0",
+      "status": "pilot_validated_zero_copy",
+      "pilotCourseId": "A00",
+      "packageId": "urn:uuid:023b0035-f385-5188-920b-2130aa61f815",
+      "canonicalPackage": {
+        "path": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0",
+        "fileCount": 36,
+        "bytes": 1720752,
+        "manifest": {
+          "path": "manifest.json",
+          "bytes": 27131,
+          "sha256": "b196d0b851fa0f6b3b7972ab33b762898f3d577fbc26b6214542d6a5b10009af"
+        },
+        "validationReport": {
+          "path": "validation-report.json",
+          "bytes": 3515,
+          "sha256": "13a82463853bc8fc6705cd9fb95a23647679bd5bc945a3f2358e243a7bd9c918",
+          "result": "pass",
+          "errors": 0
+        },
+        "seal": {
+          "path": "seal.json",
+          "bytes": 6805,
+          "sha256": "fb0696a3f38509468076c4fff374106127e092f3b70b4c1536f7c611009dc855",
+          "sealedFileCount": 35,
+          "sealedBytes": 1713947,
+          "sealedDigestSha256": "49c4272f2b48f311429575814bf23acef02bcd9f5e96033b2d618be88678a9e8"
+        }
+      },
+      "zeroCopy": {
+        "nativeRecordsReferenced": 519678,
+        "nativeRecordsCopied": 0,
+        "nativeViews": 17
+      },
+      "projection": {
+        "records": 1313,
+        "recordTables": 19,
+        "visibleUnits": 75,
+        "learnerRoutes": 75,
+        "identityMapRows": 92
+      },
+      "deterministicReplay": {
+        "runs": 2,
+        "sha256": "8a2bf0eb8cc68f538867695d5d7d88cbf5874751576ee304e1328f3e4b163861"
+      },
+      "package": "https://zenodo.org/records/22133203/files/program-matematika-indonesia-backend-v2.2-pilot-v0.59.0.zip?download=1",
+      "validationReceipt": "https://zenodo.org/records/22133203/files/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0.59.0.json?download=1",
+      "archiveReceipt": "https://zenodo.org/records/22133203/files/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0.59.0.json?download=1",
+      "githubPackage": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/program-matematika-indonesia-backend-v2.2-pilot-v0.59.0.zip",
+      "githubValidationReceipt": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0.59.0.json",
+      "githubArchiveReceipt": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0.59.0.json"
     }
   },
   "repositories": {
     "github": {
       "url": "https://github.com/KokunoYumeto/program-matematika-indonesia",
       "status": "available",
-      "lastConfirmedAt": "2026-08-26"
+      "lastConfirmedAt": "2026-08-27"
     }
   },
   "status": "in-progress"
