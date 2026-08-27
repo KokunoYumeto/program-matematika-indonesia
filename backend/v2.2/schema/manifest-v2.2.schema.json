@@ -1,0 +1,213 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.2/manifest-v2.2.schema.json",
+  "title": "Global modular mathematics backend v2.2 manifest",
+  "type": "object",
+  "required": [
+    "$schema", "schema_id", "schema_version", "profile", "package_id", "dataset_id",
+    "dataset_version", "recorded_at", "identity_namespace", "identity_formula",
+    "base_federation", "record_schema", "state_vocabulary", "capabilities", "record_order",
+    "record_count", "record_counts", "table_inventory", "shards", "files", "input_authorities",
+    "adapter_profile", "adapter_run", "build", "validation", "zero_copy_policy", "seal_policy",
+    "limitations"
+  ],
+  "properties": {
+    "$schema": { "const": "schema/manifest-v2.2.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-backend-manifest/2.2.0" },
+    "schema_version": { "const": "2.2.0" },
+    "profile": { "enum": ["registry", "lane", "aggregate"] },
+    "package_id": { "$ref": "#/$defs/uuid5_urn" },
+    "dataset_id": { "$ref": "#/$defs/uuid5_urn" },
+    "dataset_version": { "type": "string", "minLength": 1 },
+    "recorded_at": { "$ref": "#/$defs/date_time" },
+    "identity_namespace": { "const": "0e4d7b37-6108-5065-b08f-d1098697cc02" },
+    "identity_formula": { "const": "UUIDv5(identity_namespace, record_type + ':' + semantic_key)" },
+    "base_federation": { "$ref": "#/$defs/external_bound_file" },
+    "record_schema": { "$ref": "#/$defs/bound_file" },
+    "state_vocabulary": { "$ref": "#/$defs/bound_file" },
+    "capabilities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["name", "state", "record_count", "record_types"],
+        "properties": {
+          "name": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "state": { "enum": ["materialized", "referenced_native_shards", "absent", "not_projected"] },
+          "record_count": { "type": ["integer", "null"], "minimum": 0 },
+          "record_types": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "loss_reason": { "type": "string", "minLength": 1, "maxLength": 256 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "record_order": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "uniqueItems": true },
+    "record_count": { "type": "integer", "minimum": 1 },
+    "record_counts": { "type": "object", "minProperties": 1, "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" }, "additionalProperties": { "type": "integer", "minimum": 0 } },
+    "table_inventory": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["table", "record_type", "path", "records", "bytes", "sha256"],
+        "properties": {
+          "table": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "record_type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+          "path": { "$ref": "#/$defs/relative_path" },
+          "records": { "type": "integer", "minimum": 0 },
+          "bytes": { "type": "integer", "minimum": 0 },
+          "sha256": { "$ref": "#/$defs/sha256" }
+        },
+        "additionalProperties": false
+      }
+    },
+    "shards": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["shard_id", "shard_kind", "record_types", "course_ids", "locale", "file", "record_count"],
+        "properties": {
+          "shard_id": { "$ref": "#/$defs/uuid5_urn" },
+          "shard_kind": { "enum": ["native_semantic", "learner_navigation", "identity_map"] },
+          "record_types": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "course_ids": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+          "locale": { "type": ["string", "null"] },
+          "file": { "$ref": "#/$defs/bound_file" },
+          "record_count": { "type": "integer", "minimum": 0 }
+        },
+        "additionalProperties": false
+      }
+    },
+    "files": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/bound_file" } },
+    "input_authorities": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/external_bound_file" } },
+    "adapter_profile": {
+      "type": "object",
+      "required": ["record_id", "profile_file", "executable"],
+      "properties": {
+        "record_id": { "$ref": "#/$defs/uuid5_urn" },
+        "profile_file": { "$ref": "#/$defs/bound_file" },
+        "executable": { "$ref": "#/$defs/bound_file" }
+      },
+      "additionalProperties": false
+    },
+    "adapter_run": {
+      "type": "object",
+      "required": ["record_id", "identity_map", "native_shard_index"],
+      "properties": {
+        "record_id": { "$ref": "#/$defs/uuid5_urn" },
+        "identity_map": { "$ref": "#/$defs/bound_file" },
+        "native_shard_index": { "$ref": "#/$defs/bound_file" }
+      },
+      "additionalProperties": false
+    },
+    "build": {
+      "type": "object",
+      "required": ["builder", "commands", "input_binding_ids", "output_binding_ids", "canonical_serialization", "deterministic_replay", "build_a_sha256", "build_b_sha256"],
+      "properties": {
+        "builder": { "$ref": "#/$defs/bound_file" },
+        "commands": { "type": "array", "minItems": 3, "items": { "type": "array", "minItems": 1, "items": { "type": "string" } } },
+        "input_binding_ids": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/uuid5_urn" }, "uniqueItems": true },
+        "output_binding_ids": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/uuid5_urn" }, "uniqueItems": true },
+        "canonical_serialization": {
+          "type": "object",
+          "required": ["encoding", "newline", "json_keys", "jsonl_order", "trailing_newline"],
+          "properties": {
+            "encoding": { "const": "UTF-8" },
+            "newline": { "const": "LF" },
+            "json_keys": { "const": "lexicographically_sorted" },
+            "jsonl_order": { "const": "record_type_then_semantic_key" },
+            "trailing_newline": { "const": true }
+          },
+          "additionalProperties": false
+        },
+        "deterministic_replay": { "const": "byte_identical" },
+        "build_a_sha256": { "$ref": "#/$defs/sha256" },
+        "build_b_sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "object",
+      "required": ["schema", "canonical_serialization", "uuid5_identity", "semantic_key_uniqueness", "typed_foreign_keys", "state_normalization", "native_binding_closure", "relation_endpoint_policy", "source_target_binding", "zero_prose", "rights_closure", "accessibility_truthfulness", "capability_closure", "learner_route_policy", "adapter_reverse_extraction", "deterministic_replay", "aggregate_differential", "anonymous_public_readback"],
+      "properties": {
+        "schema": { "$ref": "#/$defs/gate_result" },
+        "canonical_serialization": { "$ref": "#/$defs/gate_result" },
+        "uuid5_identity": { "$ref": "#/$defs/gate_result" },
+        "semantic_key_uniqueness": { "$ref": "#/$defs/gate_result" },
+        "typed_foreign_keys": { "$ref": "#/$defs/gate_result" },
+        "state_normalization": { "$ref": "#/$defs/gate_result" },
+        "native_binding_closure": { "$ref": "#/$defs/gate_result" },
+        "relation_endpoint_policy": { "$ref": "#/$defs/gate_result" },
+        "source_target_binding": { "$ref": "#/$defs/gate_result" },
+        "zero_prose": { "$ref": "#/$defs/gate_result" },
+        "rights_closure": { "$ref": "#/$defs/gate_result" },
+        "accessibility_truthfulness": { "$ref": "#/$defs/gate_result" },
+        "capability_closure": { "$ref": "#/$defs/gate_result" },
+        "learner_route_policy": { "$ref": "#/$defs/gate_result" },
+        "adapter_reverse_extraction": { "$ref": "#/$defs/gate_result" },
+        "deterministic_replay": { "$ref": "#/$defs/gate_result" },
+        "aggregate_differential": { "$ref": "#/$defs/gate_result" },
+        "anonymous_public_readback": { "$ref": "#/$defs/gate_result" }
+      },
+      "additionalProperties": false
+    },
+    "zero_copy_policy": {
+      "type": "object",
+      "required": ["owner_native_authoritative", "full_prose_centralized", "reversible_adapters", "learner_metadata_only", "allowed_central_fields"],
+      "properties": {
+        "owner_native_authoritative": { "const": true },
+        "full_prose_centralized": { "const": false },
+        "reversible_adapters": { "const": true },
+        "learner_metadata_only": { "const": true },
+        "allowed_central_fields": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "seal_policy": {
+      "type": "object",
+      "required": ["algorithm", "seal_file", "seal_excluded_from_own_digest", "binds"],
+      "properties": {
+        "algorithm": { "const": "sha256-sorted-path-bytes-v1" },
+        "seal_file": { "const": "seal.json" },
+        "seal_excluded_from_own_digest": { "const": true },
+        "binds": { "type": "array", "minItems": 1, "items": { "enum": ["schemas", "state_vocabulary", "adapter", "builder", "input_authorities", "records", "shards", "identity_map", "manifest", "validation_report"] }, "uniqueItems": true }
+      },
+      "additionalProperties": false
+    },
+    "limitations": { "type": "array", "items": { "type": "string", "maxLength": 512 }, "uniqueItems": true }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "uuid5_urn": { "type": "string", "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "date_time": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$" },
+    "relative_path": { "type": "string", "minLength": 1, "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$" },
+    "bound_file": {
+      "type": "object",
+      "required": ["path", "role", "media_type", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relative_path" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "media_type": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "external_bound_file": {
+      "type": "object",
+      "required": ["locator_base", "path", "role", "media_type", "bytes", "sha256"],
+      "properties": {
+        "locator_base": { "enum": ["program_repository_root", "owner_repository_root", "owner_backend_root"] },
+        "path": { "$ref": "#/$defs/relative_path" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "media_type": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "gate_result": { "enum": ["pass", "fail", "not_run", "not_applicable", "inherited"] }
+  }
+}

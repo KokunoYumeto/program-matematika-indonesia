@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://zenodo.org/records/22105611/files/program-matematika-indonesia-catalog-v1.schema.json",
+  "$id": "https://zenodo.org/records/22133203/files/program-matematika-indonesia-catalog-v1.schema.json",
   "title": "Program Matematika Indonesia — katalog rilis v1",
   "type": "object",
   "additionalProperties": false,
@@ -49,6 +49,99 @@
   "$defs": {
     "httpsUrl": { "type": "string", "format": "uri", "pattern": "^https://" },
     "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "federationV22": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "status", "pilotCourseId", "packageId", "canonicalPackage", "zeroCopy", "projection", "deterministicReplay", "package", "validationReceipt", "archiveReceipt", "githubPackage", "githubValidationReceipt", "githubArchiveReceipt"],
+      "properties": {
+        "version": { "const": "2.2.0" },
+        "status": { "const": "pilot_validated_zero_copy" },
+        "pilotCourseId": { "const": "A00" },
+        "packageId": { "const": "urn:uuid:023b0035-f385-5188-920b-2130aa61f815" },
+        "canonicalPackage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "fileCount", "bytes", "manifest", "validationReport", "seal"],
+          "properties": {
+            "path": { "const": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0" },
+            "fileCount": { "const": 36 },
+            "bytes": { "const": 1720752 },
+            "manifest": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "bytes", "sha256"],
+              "properties": {
+                "path": { "const": "manifest.json" },
+                "bytes": { "const": 27131 },
+                "sha256": { "const": "b196d0b851fa0f6b3b7972ab33b762898f3d577fbc26b6214542d6a5b10009af" }
+              }
+            },
+            "validationReport": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "bytes", "sha256", "result", "errors"],
+              "properties": {
+                "path": { "const": "validation-report.json" },
+                "bytes": { "const": 3515 },
+                "sha256": { "const": "13a82463853bc8fc6705cd9fb95a23647679bd5bc945a3f2358e243a7bd9c918" },
+                "result": { "const": "pass" },
+                "errors": { "const": 0 }
+              }
+            },
+            "seal": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["path", "bytes", "sha256", "sealedFileCount", "sealedBytes", "sealedDigestSha256"],
+              "properties": {
+                "path": { "const": "seal.json" },
+                "bytes": { "const": 6805 },
+                "sha256": { "const": "fb0696a3f38509468076c4fff374106127e092f3b70b4c1536f7c611009dc855" },
+                "sealedFileCount": { "const": 35 },
+                "sealedBytes": { "const": 1713947 },
+                "sealedDigestSha256": { "const": "49c4272f2b48f311429575814bf23acef02bcd9f5e96033b2d618be88678a9e8" }
+              }
+            }
+          }
+        },
+        "zeroCopy": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["nativeRecordsReferenced", "nativeRecordsCopied", "nativeViews"],
+          "properties": {
+            "nativeRecordsReferenced": { "const": 519678 },
+            "nativeRecordsCopied": { "const": 0 },
+            "nativeViews": { "const": 17 }
+          }
+        },
+        "projection": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["records", "recordTables", "visibleUnits", "learnerRoutes", "identityMapRows"],
+          "properties": {
+            "records": { "const": 1313 },
+            "recordTables": { "const": 19 },
+            "visibleUnits": { "const": 75 },
+            "learnerRoutes": { "const": 75 },
+            "identityMapRows": { "const": 92 }
+          }
+        },
+        "deterministicReplay": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["runs", "sha256"],
+          "properties": {
+            "runs": { "const": 2 },
+            "sha256": { "const": "8a2bf0eb8cc68f538867695d5d7d88cbf5874751576ee304e1328f3e4b163861" }
+          }
+        },
+        "package": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "pattern": "^https://zenodo\\.org/records/[0-9]+/files/program-matematika-indonesia-backend-v2\\.2-pilot-v0\\.59\\.0\\.zip\\?download=1$" }] },
+        "validationReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0\\.59\\.0\\.json\\?download=1$" }] },
+        "archiveReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0\\.59\\.0\\.json\\?download=1$" }] },
+        "githubPackage": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/program-matematika-indonesia-backend-v2.2-pilot-v0.59.0.zip" }] },
+        "githubValidationReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0.59.0.json" }] },
+        "githubArchiveReceipt": { "allOf": [{ "$ref": "#/$defs/httpsUrl" }, { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0.59.0.json" }] }
+      }
+    },
     "program": {
       "type": "object",
       "additionalProperties": false,
@@ -198,6 +291,7 @@
                 "package": { "$ref": "#/$defs/httpsUrl" }
               }
             },
+            "federationV22": { "$ref": "#/$defs/federationV22" },
             "educationalAccessResearch": {
               "type": "object",
               "additionalProperties": false,
@@ -233,7 +327,11 @@
           }
         },
         "status": { "const": "in-progress" }
-      }
+      },
+      "allOf": [{
+        "if": { "properties": { "version": { "const": "0.59.0" } }, "required": ["version"] },
+        "then": { "properties": { "backend": { "required": ["federationV22"] } } }
+      }]
     },
     "supplement": {
       "type": "object",

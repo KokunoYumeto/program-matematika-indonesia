@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.2/aggregate-profile-v2.2.schema.json",
+  "title": "Global modular mathematics backend v2.2 aggregate profile",
+  "type": "object",
+  "required": ["schema_id", "schema_version", "profile_id", "required_tables", "forbidden_central_payloads", "package_ref_policy", "shard_ref_policy"],
+  "properties": {
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-aggregate-profile/2.2.0" },
+    "schema_version": { "const": "2.2.0" },
+    "profile_id": { "type": "string", "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "required_tables": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "uniqueItems": true },
+    "forbidden_central_payloads": { "type": "array", "minItems": 1, "items": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" }, "uniqueItems": true },
+    "package_ref_policy": { "type": "object", "required": ["bind_manifest", "bind_validation", "bind_seal", "require_adapter_run"], "properties": { "bind_manifest": { "const": true }, "bind_validation": { "const": true }, "bind_seal": { "const": true }, "require_adapter_run": { "const": true } }, "additionalProperties": false },
+    "shard_ref_policy": { "type": "object", "required": ["resolve_without_copy", "require_record_count", "require_file_binding"], "properties": { "resolve_without_copy": { "const": true }, "require_record_count": { "const": true }, "require_file_binding": { "const": true } }, "additionalProperties": false }
+  },
+  "additionalProperties": false
+}

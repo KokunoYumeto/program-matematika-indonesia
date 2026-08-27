@@ -94,6 +94,152 @@ def build_zip(output: Path, entries: list[tuple[str, bytes]]) -> dict:
     }
 
 
+def package_entries(package: Path, prefix: str) -> list[tuple[str, bytes]]:
+    if not package.is_dir():
+        raise ValueError(f"backend package is not a directory: {package}")
+    entries = []
+    for path in sorted(candidate for candidate in package.rglob("*") if candidate.is_file()):
+        if "__pycache__" in path.parts or path.suffix == ".pyc":
+            continue
+        relative = path.relative_to(package).as_posix()
+        entries.append((f"{prefix}{relative}", path.read_bytes()))
+    if not entries:
+        raise ValueError(f"backend package is empty: {package}")
+    return entries
+
+
+def validate_v22_package_shape(package: Path, canonical_package: Path, validation_receipt: Path) -> dict:
+    """Fail closed on the release-critical v2.2 layers without pinning one pilot's counts."""
+    entries = package_entries(package, "program-matematika-indonesia-backend-v2.2/")
+    relative_names = [name.split("/", 1)[1] for name, _ in entries]
+    lowered = [name.lower() for name in relative_names]
+    required_layers = {
+        "schema": any("schema/" in name and name.endswith(".schema.json") for name in lowered),
+        "state_vocabulary": any("state-vocabulary" in name and name.endswith(".json") for name in lowered),
+        "profile": any("profile" in name and name.endswith(".json") for name in lowered),
+        "adapter": any("adapter" in name for name in lowered),
+        "builder": any("build" in name for name in lowered),
+        "validator": any("validat" in name for name in lowered),
+        "sealed_pilot": any("pilot" in name for name in lowered),
+        "manifest": any("manifest" in name and name.endswith(".json") for name in lowered),
+    }
+    missing = sorted(layer for layer, present in required_layers.items() if not present)
+    if missing:
+        raise ValueError(f"backend-v2.2 package is missing required layers: {missing}")
+    receipt = json.loads(validation_receipt.read_text(encoding="utf-8"))
+    if receipt.get("result") != "pass" or receipt.get("credentials_recorded") is True:
+        raise ValueError("backend-v2.2 validation receipt is not a credential-free pass")
+    declared = receipt.get("canonical_package") or receipt.get("package") or {}
+    canonical_files = [path for path in canonical_package.rglob("*") if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"]
+    if "file_count" in declared and declared["file_count"] != len(canonical_files):
+        raise ValueError("backend-v2.2 validation receipt file_count mismatch")
+    if "total_bytes" in declared and declared["total_bytes"] != sum(path.stat().st_size for path in canonical_files):
+        raise ValueError("backend-v2.2 validation receipt total_bytes mismatch")
+    return {
+        "entries": entries,
+        "layers": required_layers,
+        "validation_receipt": {
+            "bytes": validation_receipt.stat().st_size,
+            "sha256": sha256_file(validation_receipt),
+        },
+    }
+
+
+def validate_central_evidence(
+    admission: Path,
+    owner_readback: Path,
+    reservation: Path | None,
+    version: str,
+    project_root: Path,
+) -> dict:
+    admission_doc = json.loads(admission.read_text(encoding="utf-8"))
+    readback_doc = json.loads(owner_readback.read_text(encoding="utf-8"))
+    if admission_doc.get("schema_id") != "program-matematika-indonesia/central-release-admission-manifest/v1":
+        raise ValueError("central admission manifest schema mismatch")
+    if admission_doc.get("target_release") != version:
+        raise ValueError("central admission manifest release mismatch")
+    workspace_root = project_root.parents[2]
+    for fact in admission_doc.get("inputs", []):
+        relative = Path(fact.get("path", ""))
+        source = (
+            admission.parent / relative
+            if len(relative.parts) == 1
+            else workspace_root / relative
+        )
+        if (
+            not source.is_file()
+            or fact.get("bytes") != source.stat().st_size
+            or fact.get("sha256") != sha256_file(source)
+        ):
+            raise ValueError(f"central admission input binding mismatch: {fact.get('path')}")
+    admissions = admission_doc.get("admissions", [])
+    supplements = admission_doc.get("supplements", [])
+    summary = admission_doc.get("summary", {})
+    if (
+        len({row.get("course_id") for row in admissions}) != len(admissions)
+        or summary.get("admitted_primary_course_routes") != len(admissions)
+        or summary.get("admitted_partial_courses")
+        != sum(row.get("state_after") != "published" for row in admissions)
+        or summary.get("admitted_newly_complete_courses")
+        != sum(row.get("state_after") == "published" for row in admissions)
+        or summary.get("admitted_separate_supplements") != len(supplements)
+        or summary.get("admitted_primary_selected_route_bytes")
+        != sum(row.get("bytes", -1) for row in admissions)
+        or summary.get("supplement_selected_route_bytes")
+        != sum(row.get("bytes", -1) for row in supplements)
+    ):
+        raise ValueError("central admission summary is not derivable from its rows")
+    if readback_doc.get("schema_id") != "program-matematika-indonesia/owner-reader-public-readback/v1" or readback_doc.get("result") != "pass":
+        raise ValueError("owner-reader readback is not an admitted pass")
+    binding = readback_doc.get("source_admission_manifest", {})
+    if binding.get("bytes") != admission.stat().st_size or binding.get("sha256") != sha256_file(admission):
+        raise ValueError("owner-reader readback does not bind the supplied admission manifest")
+    routes = readback_doc.get("routes", [])
+    if readback_doc.get("route_count") != len(routes) or readback_doc.get("total_bytes") != sum(row.get("bytes", -1) for row in routes):
+        raise ValueError("owner-reader readback aggregate counts mismatch")
+    for row in routes:
+        if (
+            row.get("http_status") != 200
+            or row.get("content_type") != "text/html"
+            or not isinstance(row.get("bytes"), int)
+            or row["bytes"] <= 0
+            or not isinstance(row.get("sha256"), str)
+            or len(row["sha256"]) != 64
+            or not str(row.get("url", "")).startswith("https://")
+            or ".json" in str(row.get("url", "")).lower()
+        ):
+            raise ValueError(f"invalid owner-reader evidence row: {row.get('course_id')}")
+    if not {row.get("course_id") for row in routes}.issubset({row.get("course_id") for row in admissions}):
+        raise ValueError("owner-reader evidence references a course outside the admission manifest")
+    result = {
+        "admission": {"bytes": admission.stat().st_size, "sha256": sha256_file(admission)},
+        "owner_readback": {"bytes": owner_readback.stat().st_size, "sha256": sha256_file(owner_readback)},
+        "owner_html_routes": len(routes),
+    }
+    if reservation is not None:
+        reservation_doc = json.loads(reservation.read_text(encoding="utf-8"))
+        authority = json.loads(
+            (project_root / "backend" / "authority" / "curriculum-authority-v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        reserved_record_id = reservation_doc.get("reserved_version", {}).get("draft_record_id")
+        authority_program = authority.get("catalog", {}).get("program", {})
+        if (
+            reservation_doc.get("schema_id") != "program-matematika-indonesia/zenodo-version-reservation/v1"
+            or reservation_doc.get("program_version") != version
+            or reservation_doc.get("result") != "pass"
+            or reservation_doc.get("authorization_route", {}).get("credential_material_recorded") is not False
+            or reservation_doc.get("reserved_version", {}).get("visibility_intent") != "public_open"
+            or authority_program.get("version") != version
+            or authority_program.get("zenodo")
+            != f"https://doi.org/10.5281/zenodo.{reserved_record_id}"
+        ):
+            raise ValueError("Zenodo reservation receipt is not a credential-free public-open reservation")
+        result["reservation"] = {"bytes": reservation.stat().st_size, "sha256": sha256_file(reservation)}
+    return result
+
+
 def files_under(root: Path, relative: str) -> list[Path]:
     path = root / relative
     if path.is_file():
@@ -219,6 +365,11 @@ def main() -> None:
     parser.add_argument("--backend-package", required=True, type=Path)
     parser.add_argument("--backend-v2-package", required=True, type=Path)
     parser.add_argument("--backend-v2-validation-receipt", required=True, type=Path)
+    parser.add_argument("--backend-v22-package", required=True, type=Path)
+    parser.add_argument("--backend-v22-validation-receipt", required=True, type=Path)
+    parser.add_argument("--admission-manifest", required=True, type=Path)
+    parser.add_argument("--owner-reader-readback", required=True, type=Path)
+    parser.add_argument("--reservation-receipt", type=Path)
     parser.add_argument("--release-dir", required=True, type=Path)
     args = parser.parse_args()
 
@@ -227,7 +378,35 @@ def main() -> None:
     backend = args.backend_package.resolve()
     backend_v2 = args.backend_v2_package.resolve()
     backend_v2_validation_receipt = args.backend_v2_validation_receipt.resolve()
+    backend_v22 = args.backend_v22_package.resolve()
+    backend_v22_validation_receipt = args.backend_v22_validation_receipt.resolve()
+    canonical_backend_v22 = (
+        backend_v22
+        if backend_v22.parent.name == "packages"
+        else backend_v22_validation_receipt.parent
+    )
+    backend_v22_release_root = (
+        backend_v22.parent.parent
+        if backend_v22.parent.name == "packages" and backend_v22.parent.parent.name == "v2.2"
+        else backend_v22
+    )
+    admission_manifest = args.admission_manifest.resolve()
+    owner_reader_readback = args.owner_reader_readback.resolve()
+    reservation_receipt = args.reservation_receipt.resolve() if args.reservation_receipt else None
     version = args.version
+
+    v22_shape = validate_v22_package_shape(
+        backend_v22_release_root,
+        canonical_backend_v22,
+        backend_v22_validation_receipt,
+    )
+    central_evidence = validate_central_evidence(
+        admission_manifest,
+        owner_reader_readback,
+        reservation_receipt,
+        version,
+        root,
+    )
 
     immutable_v1_archive, immutable_v1_members = load_immutable_v1_archive(root)
 
@@ -267,7 +446,12 @@ def main() -> None:
         root / "schemas" / "v1" / "curriculum-authority-v1.schema.json": release / "curriculum-authority-v1.schema.json",
         root / "schemas" / "v1" / "learner-read-model-v1.schema.json": release / "learner-read-model-v1.schema.json",
         backend_v2_validation_receipt: release / f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
+        backend_v22_validation_receipt: release / f"GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v{version}.json",
+        admission_manifest: release / admission_manifest.name,
+        owner_reader_readback: release / owner_reader_readback.name,
     }
+    if reservation_receipt is not None:
+        copies[reservation_receipt] = release / reservation_receipt.name
     for source_name, release_name in V2_RELEASE_FILES.items():
         copies[root / source_name] = release / release_name
     copies[root / "backend" / "v2.1" / "schema" / "federation-unit-package-v2.1.schema.json"] = (
@@ -302,26 +486,62 @@ def main() -> None:
         "verification": "pass-published-immutable-reuse",
     }
 
-    backend_v2_entries = []
-    for path in sorted(candidate for candidate in backend_v2.rglob("*") if candidate.is_file()):
-        relative = path.relative_to(backend_v2).as_posix()
-        backend_v2_entries.append(
-            (f"program-matematika-indonesia-backend-v2/{relative}", path.read_bytes())
-        )
+    backend_v2_entries = package_entries(
+        backend_v2,
+        "program-matematika-indonesia-backend-v2/",
+    )
     backend_v2_zip = release / f"program-matematika-indonesia-backend-v2-v{version}.zip"
     backend_v2_result = build_zip(backend_v2_zip, backend_v2_entries)
 
-    backend_v21_entries = []
     backend_v21 = root / "backend" / "v2.1"
-    for path in sorted(candidate for candidate in backend_v21.rglob("*") if candidate.is_file()):
-        if "__pycache__" in path.parts or path.suffix == ".pyc":
-            continue
-        relative = path.relative_to(backend_v21).as_posix()
-        backend_v21_entries.append(
-            (f"program-matematika-indonesia-backend-v2.1/{relative}", path.read_bytes())
-        )
+    backend_v21_entries = package_entries(
+        backend_v21,
+        "program-matematika-indonesia-backend-v2.1/",
+    )
     backend_v21_zip = release / f"program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip"
     backend_v21_result = build_zip(backend_v21_zip, backend_v21_entries)
+
+    backend_v22_zip = release / f"program-matematika-indonesia-backend-v2.2-pilot-v{version}.zip"
+    backend_v22_first = build_zip(backend_v22_zip, v22_shape["entries"])
+    backend_v22_result = build_zip(backend_v22_zip, v22_shape["entries"])
+    for key in ("entries", "uncompressed_bytes", "bytes", "sha256", "verification"):
+        if backend_v22_first[key] != backend_v22_result[key]:
+            raise ValueError(f"backend-v2.2 ZIP is not byte-deterministic: {key}")
+    v22_archive_receipt = release / f"GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v{version}.json"
+    v22_archive_receipt.write_text(
+        json.dumps(
+            {
+                "schema_id": "program-matematika-indonesia/backend-v2.2-archive-receipt/v1",
+                "version": version,
+                "source_commit": args.source_commit,
+                "recorded_at": "2026-08-27T00:00:00Z",
+                "result": "pass",
+                "replay_count": 2,
+                "credentials_recorded": False,
+                "required_layers": v22_shape["layers"],
+                "validation_receipt": v22_shape["validation_receipt"],
+                "archive": {
+                    key: value
+                    for key, value in backend_v22_result.items()
+                    if key != "path"
+                },
+                "members": [
+                    {
+                        "path": name,
+                        "bytes": len(data),
+                        "sha256": hashlib.sha256(data).hexdigest(),
+                    }
+                    for name, data in sorted(v22_shape["entries"])
+                ],
+            },
+            ensure_ascii=False,
+            sort_keys=True,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+        newline="\n",
+    )
 
     source_roots = [
         ".openai/hosting.json",
@@ -372,6 +592,7 @@ def main() -> None:
         "scripts/advance-curriculum-authority-v056.mjs",
         "scripts/advance-curriculum-authority-v057.mjs",
         "scripts/advance-curriculum-authority-v058.mjs",
+        "scripts/advance-curriculum-authority-v059.mjs",
         "scripts/build-v21-pilot-package.py",
         "scripts/build-educational-access-planning-v21.py",
         "scripts/validate-educational-access-planning-v21.py",
@@ -396,7 +617,10 @@ def main() -> None:
         "backend/v1/namespace.json",
         "backend/authority",
         "backend/v2.1",
+        "backend/v2.2",
         "backend/research/educational-access-v0.1.0",
+        "tests/backend-v2.2",
+        "tests/backend-v22",
     ]
     source_paths: list[Path] = []
     for relative in source_roots:
@@ -412,8 +636,12 @@ def main() -> None:
         [
             release / f"program-matematika-indonesia-catalog-v{version}.json",
             release / f"RELEASE_NOTES_v{version}.md",
+            release / admission_manifest.name,
+            release / owner_reader_readback.name,
         ]
     )
+    if reservation_receipt is not None:
+        source_paths.append(release / reservation_receipt.name)
     tracked_paths = set(
         subprocess.run(
             ["git", "ls-tree", "-r", "--name-only", args.source_commit],
@@ -423,11 +651,29 @@ def main() -> None:
             text=True,
         ).stdout.splitlines()
     )
+    required_v22_sources = {
+        path.relative_to(root).as_posix()
+        for path in files_under(root, "backend/v2.2")
+        if "__pycache__" not in path.parts and path.suffix != ".pyc"
+    }
+    required_v22_sources.add("scripts/advance-curriculum-authority-v059.mjs")
+    missing_v22_sources = sorted(required_v22_sources - tracked_paths)
+    if missing_v22_sources:
+        raise ValueError(
+            f"backend-v2.2/transition source is not bound to source commit: {missing_v22_sources}"
+        )
     generated_catalog = release / f"program-matematika-indonesia-catalog-v{version}.json"
+    generated_release_inputs = {
+        generated_catalog,
+        release / admission_manifest.name,
+        release / owner_reader_readback.name,
+    }
+    if reservation_receipt is not None:
+        generated_release_inputs.add(release / reservation_receipt.name)
     source_paths = [
         path
         for path in source_paths
-        if path == generated_catalog
+        if path in generated_release_inputs
         or path.relative_to(root).as_posix() in tracked_paths
     ]
     if len(source_paths) != len(set(source_paths)):
@@ -442,11 +688,7 @@ def main() -> None:
         name = source_path
         if path.parent == release:
             name = path.name
-        data = (
-            path.read_bytes()
-            if path == generated_catalog
-            else committed_blob_bytes(root, args.source_commit, source_path)
-        )
+        data = path.read_bytes() if path in generated_release_inputs else committed_blob_bytes(root, args.source_commit, source_path)
         entries.append((name, data))
         manifest_files.append(
             {
@@ -473,6 +715,13 @@ def main() -> None:
                 "backend_v2_zip": backend_v2_result,
                 "backend_v21_zip": backend_v21_result,
                 "backend_v21_deterministic_gate": v21_gate,
+                "backend_v22_zip": backend_v22_result,
+                "backend_v22_archive_receipt": {
+                    "path": v22_archive_receipt.as_posix(),
+                    "bytes": v22_archive_receipt.stat().st_size,
+                    "sha256": sha256_file(v22_archive_receipt),
+                },
+                "central_evidence": central_evidence,
                 "source_zip": source_result,
             },
             ensure_ascii=False,

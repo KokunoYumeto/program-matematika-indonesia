@@ -115,6 +115,7 @@ class BuildInputs:
     catalog_relative: PurePosixPath
     v1_package_relative: PurePosixPath
     site_readback_relative: PurePosixPath
+    owner_reader_readback_relative: PurePosixPath
     contract_relative: PurePosixPath
     role_map_relative: PurePosixPath
     migrations_relative: PurePosixPath
@@ -144,6 +145,14 @@ class BuildInputs:
     @property
     def site_readback_path(self) -> Path:
         return resolve_under(self.coordinator_logbook_root, self.site_readback_relative, "--site-readback-relative")
+
+    @property
+    def owner_reader_readback_path(self) -> Path:
+        return resolve_under(
+            self.coordinator_logbook_root,
+            self.owner_reader_readback_relative,
+            "--owner-reader-readback-relative",
+        )
 
     @property
     def catalog_path(self) -> Path:
@@ -177,6 +186,7 @@ class BuildInputs:
             "--catalog-relative", self.catalog_relative.as_posix(),
             "--v1-package-relative", self.v1_package_relative.as_posix(),
             "--site-readback-relative", self.site_readback_relative.as_posix(),
+            "--owner-reader-readback-relative", self.owner_reader_readback_relative.as_posix(),
             "--contract-relative", self.contract_relative.as_posix(),
             "--role-map-relative", self.role_map_relative.as_posix(),
             "--migrations-relative", self.migrations_relative.as_posix(),
@@ -195,6 +205,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--catalog-relative", default="releases/v0.51.2/program-matematika-indonesia-catalog-v0.51.2.json")
     parser.add_argument("--v1-package-relative", default="backend/v1/program-matematika-indonesia-v0.51.2")
     parser.add_argument("--site-readback-relative", default="curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json")
+    parser.add_argument(
+        "--owner-reader-readback-relative",
+        default="curriculum_logbook/114_PUBLIC_OWNER_HTML_ROUTE_READBACK_20260827.json",
+    )
     parser.add_argument("--contract-relative", default="curriculum_logbook/81_GLOBAL_MODULAR_BACKEND_V2_CONTRACT_20260825.json")
     parser.add_argument("--role-map-relative", default="curriculum_logbook/49_SEMANTIC_ROLE_MAPPING_CORRECTION_20260823.json")
     parser.add_argument("--migrations-relative", default="backend/migrations")
@@ -218,6 +232,10 @@ def build_inputs_from_args(args: argparse.Namespace) -> BuildInputs:
         catalog_relative=normalized_relative(args.catalog_relative, "--catalog-relative"),
         v1_package_relative=normalized_relative(args.v1_package_relative, "--v1-package-relative"),
         site_readback_relative=normalized_relative(args.site_readback_relative, "--site-readback-relative"),
+        owner_reader_readback_relative=normalized_relative(
+            args.owner_reader_readback_relative,
+            "--owner-reader-readback-relative",
+        ),
         contract_relative=normalized_relative(args.contract_relative, "--contract-relative"),
         role_map_relative=normalized_relative(args.role_map_relative, "--role-map-relative"),
         migrations_relative=normalized_relative(args.migrations_relative, "--migrations-relative"),
@@ -526,6 +544,7 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
     contract_path = inputs.contract_path
     role_map_path = inputs.role_map_path
     site_readback_path = inputs.site_readback_path
+    owner_reader_readback_path = inputs.owner_reader_readback_path
     catalog_path = inputs.catalog_path
     v1_records_path = inputs.v1_root / "records.jsonl"
     v1_manifest_path = inputs.v1_root / "manifest.json"
@@ -537,6 +556,7 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
     contract = load_json(contract_path)
     role_map_doc = load_json(role_map_path)
     site_readback = load_json(site_readback_path)
+    owner_reader_readback = load_json(owner_reader_readback_path)
     catalog = load_json(catalog_path)
     v1_manifest = load_json(v1_manifest_path)
     v1_validation = load_json(v1_validation_path)
@@ -549,6 +569,12 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
         raise ValueError("Unexpected v2 contract")
     if site_readback.get("result") != "pass":
         raise ValueError("Student-site public readback is not passing")
+    if (
+        owner_reader_readback.get("schema_id")
+        != "program-matematika-indonesia/owner-reader-public-readback/v1"
+        or owner_reader_readback.get("result") != "pass"
+    ):
+        raise ValueError("Owner-reader public readback is not passing")
     if v1_validation.get("result") != "pass" or educational_validation.get("result") != "pass":
         raise ValueError("Required predecessor validation is not passing")
     if v1_manifest.get("record_count") != len(legacy_records):
@@ -565,6 +591,60 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
     role_by_id = {item["role_id"]: item for item in role_rows}
     if set(catalog_by_id) != set(role_by_id):
         raise ValueError("Catalog and role-map course IDs differ")
+
+    owner_reader_rows = owner_reader_readback.get("routes")
+    if not isinstance(owner_reader_rows, list) or not owner_reader_rows:
+        raise ValueError("Owner-reader public readback has no routes")
+    owner_reader_course_ids: set[str] = set()
+    for row in owner_reader_rows:
+        if not isinstance(row, dict):
+            raise ValueError("Owner-reader public readback route is not an object")
+        course_id = row.get("course_id")
+        url = row.get("url")
+        digest = row.get("sha256")
+        if not isinstance(course_id, str) or course_id not in catalog_by_id:
+            raise ValueError(f"Owner-reader route has unknown course_id: {course_id!r}")
+        if course_id in owner_reader_course_ids:
+            raise ValueError(f"Owner-reader route repeats course_id: {course_id}")
+        owner_reader_course_ids.add(course_id)
+        if (
+            not isinstance(url, str)
+            or not url.startswith("https://")
+            or url.lower().endswith(".json")
+            or "/backend/" in url.lower()
+            or row.get("http_status") != 200
+            or not isinstance(row.get("bytes"), int)
+            or row["bytes"] <= 0
+            or row.get("content_type") != "text/html"
+            or not isinstance(digest, str)
+            or len(digest) != 64
+            or digest != digest.lower()
+            or any(character not in "0123456789abcdef" for character in digest)
+        ):
+            raise ValueError(f"Owner-reader route is not verified learner HTML: {course_id}")
+    if owner_reader_readback.get("route_count") != len(owner_reader_rows):
+        raise ValueError("Owner-reader route_count does not match routes")
+    if owner_reader_readback.get("total_bytes") != sum(row["bytes"] for row in owner_reader_rows):
+        raise ValueError("Owner-reader total_bytes does not match routes")
+
+    admission_reference = owner_reader_readback.get("source_admission_manifest")
+    if not isinstance(admission_reference, dict):
+        raise ValueError("Owner-reader source-admission binding is missing")
+    admission_relative = normalized_relative(
+        admission_reference.get("path", ""),
+        "owner-reader source_admission_manifest.path",
+    )
+    owner_reader_admission_path = resolve_under(
+        owner_reader_readback_path.parent,
+        admission_relative,
+        "owner-reader source_admission_manifest.path",
+    )
+    if (
+        not owner_reader_admission_path.is_file()
+        or admission_reference.get("bytes") != owner_reader_admission_path.stat().st_size
+        or admission_reference.get("sha256") != sha256_file(owner_reader_admission_path)
+    ):
+        raise ValueError("Owner-reader source-admission byte binding does not replay")
     program_info = catalog.get("program")
     if not isinstance(program_info, dict):
         raise ValueError("Catalog program object is missing")
@@ -621,6 +701,7 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
 
     catalog_sha = sha256_file(catalog_path)
     site_readback_sha = sha256_file(site_readback_path)
+    owner_reader_readback_sha = sha256_file(owner_reader_readback_path)
     v1_records_sha = sha256_file(v1_records_path)
 
     # One surface is shared whenever action-compatible courses point at the same URL and format.
@@ -638,6 +719,11 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
                 "locator": inputs.site_readback_relative.as_posix(),
                 "sha256": site_readback_sha,
             }
+    for row in owner_reader_rows:
+        verified_reader_evidence[row["url"]] = {
+            "locator": inputs.owner_reader_readback_relative.as_posix(),
+            "sha256": owner_reader_readback_sha,
+        }
     for receipt_info in receipts.values():
         html_reader = nested(
             receipt_info["receipt"], "source", "public_evidence", "html_reader"
@@ -781,12 +867,14 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
     # QA IDs are precomputed so dataset records can reference them.
     qa_v1_key = f"curriculum-backend-v1-builder:{catalog_sha}"
     qa_site_key = f"student-html-public-readback:{site_readback_sha}"
+    qa_owner_readers_key = f"owner-html-public-readback:{owner_reader_readback_sha}"
     qa_edu_key = f"educational-access-validation:{sha256_file(educational_validation_path)}"
     qa_id_by_migration = {
         name: record_id("qa_event", f"migration:{info['receipt']['migration_id']}")
         for name, info in receipts.items()
     }
     qa_site_id = record_id("qa_event", qa_site_key)
+    qa_owner_readers_id = record_id("qa_event", qa_owner_readers_key)
     qa_edu_id = record_id("qa_event", qa_edu_key)
 
     receipt_by_role: dict[str, dict[str, Any]] = {}
@@ -855,7 +943,12 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
         for row in site_readback.get("public_html_readers", []):
             if isinstance(row, dict) and isinstance(row.get("role"), str):
                 verified_roles.update(row["role"].split("/"))
-        public_readback_receipt_id = qa_site_id if verified_roles.intersection(role_ids) else None
+        owner_verified_roles = {row["course_id"] for row in owner_reader_rows}
+        public_readback_receipt_id = (
+            qa_owner_readers_id
+            if owner_verified_roles.intersection(role_ids)
+            else qa_site_id if verified_roles.intersection(role_ids) else None
+        )
         owner_locator = (
             f"codex://threads/{group_key}"
             if group_key != "release-authority:C80"
@@ -1233,6 +1326,24 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
         ),
         make_record(
             "qa_event",
+            qa_owner_readers_key,
+            {
+                "qa_kind": "anonymous_public_readback",
+                "result": "pass",
+                "subject_ids": [program_id],
+                "method": "anonymous HTTP readback of owner learner HTML with exact byte and SHA-256 identity",
+                "evidence_locator": inputs.owner_reader_readback_relative.as_posix(),
+                "evidence_sha256": owner_reader_readback_sha,
+                "record_count": len(owner_reader_rows),
+                "details": {
+                    "verified_public_html_readers": len(owner_reader_rows),
+                    "verified_total_bytes": sum(row["bytes"] for row in owner_reader_rows),
+                    "course_ids": sorted(owner_reader_course_ids),
+                },
+            },
+        ),
+        make_record(
+            "qa_event",
             qa_edu_key,
             {
                 "qa_kind": "aggregate",
@@ -1334,6 +1445,16 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
         source_fact(contract_path, inputs.contract_relative.as_posix(), "v2_contract"),
         source_fact(role_map_path, inputs.role_map_relative.as_posix(), "canonical_owner_role_map"),
         source_fact(site_readback_path, inputs.site_readback_relative.as_posix(), "student_site_public_readback"),
+        source_fact(
+            owner_reader_readback_path,
+            inputs.owner_reader_readback_relative.as_posix(),
+            "owner_reader_public_readback",
+        ),
+        source_fact(
+            owner_reader_admission_path,
+            (inputs.owner_reader_readback_relative.parent / admission_relative).as_posix(),
+            "central_v059_admission_manifest",
+        ),
         source_fact(catalog_path, inputs.catalog_relative.as_posix(), "curriculum_catalog"),
         source_fact(v1_records_path, f"{v1_locator}/records.jsonl", "v1_identity_source"),
         source_fact(v1_manifest_path, f"{v1_locator}/manifest.json", "v1_package_manifest"),
@@ -1461,6 +1582,7 @@ def materialize(inputs: BuildInputs, output: Path) -> dict[str, Any]:
                 "catalog_relative": inputs.catalog_relative.as_posix(),
                 "v1_package_relative": inputs.v1_package_relative.as_posix(),
                 "site_readback_relative": inputs.site_readback_relative.as_posix(),
+                "owner_reader_readback_relative": inputs.owner_reader_readback_relative.as_posix(),
                 "contract_relative": inputs.contract_relative.as_posix(),
                 "role_map_relative": inputs.role_map_relative.as_posix(),
                 "migrations_relative": inputs.migrations_relative.as_posix(),

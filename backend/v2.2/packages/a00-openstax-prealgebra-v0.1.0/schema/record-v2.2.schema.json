@@ -1,0 +1,505 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.2/record-v2.2.schema.json",
+  "title": "Global modular mathematics backend v2.2 record",
+  "type": "object",
+  "required": [
+    "id",
+    "record_type",
+    "semantic_key",
+    "dataset_id",
+    "owner_authority_id",
+    "recorded_at",
+    "normalized_state",
+    "owner_native_state",
+    "state_profile",
+    "provenance_binding_ids",
+    "payload"
+  ],
+  "properties": {
+    "id": { "$ref": "#/$defs/uuid5_urn" },
+    "record_type": { "$ref": "#/$defs/record_type" },
+    "semantic_key": { "$ref": "#/$defs/semantic_key" },
+    "dataset_id": { "$ref": "#/$defs/uuid5_urn" },
+    "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+    "recorded_at": { "$ref": "#/$defs/date_time" },
+    "normalized_state": { "$ref": "#/$defs/state" },
+    "owner_native_state": { "type": ["string", "null"], "maxLength": 128 },
+    "state_profile": { "$ref": "#/$defs/uuid5_urn" },
+    "provenance_binding_ids": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/uuid5_urn" },
+      "uniqueItems": true
+    },
+    "payload": { "type": "object" },
+    "supersedes_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+    "extensions": {
+      "type": "object",
+      "propertyNames": { "pattern": "^(?:urn:|[a-z0-9]+(?:[.-][a-z0-9]+)+:)" }
+    }
+  },
+  "additionalProperties": false,
+  "allOf": [
+    { "if": { "properties": { "record_type": { "const": "owner_authority" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/owner_authority_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "dataset" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/dataset_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "edition" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/edition_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "unit" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/unit_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "course_unit_membership" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/course_unit_membership_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "native_binding" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/native_binding_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "content_binding" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/content_binding_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "relation" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/relation_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "rights" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/rights_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "rights_assignment" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/rights_assignment_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "artifact" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/artifact_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "build_recipe" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/build_recipe_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "reader_surface" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/reader_surface_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "route" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/route_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "search_document" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/search_document_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "adapter_profile" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/adapter_profile_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "adapter_run" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/adapter_run_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "qa_event" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/qa_event_payload" } } } },
+    { "if": { "properties": { "record_type": { "const": "identity_crosswalk" } } }, "then": { "properties": { "payload": { "$ref": "#/$defs/identity_crosswalk_payload" } } } }
+  ],
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "nullable_sha256": { "oneOf": [{ "$ref": "#/$defs/sha256" }, { "type": "null" }] },
+    "uuid5_urn": { "type": "string", "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "nullable_uuid5_urn": { "oneOf": [{ "$ref": "#/$defs/uuid5_urn" }, { "type": "null" }] },
+    "date_time": { "type": "string", "format": "date-time", "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$" },
+    "semantic_key": { "type": "string", "minLength": 1, "maxLength": 512, "pattern": "^[A-Za-z0-9][A-Za-z0-9._~:/@+|=-]*$" },
+    "state": { "enum": ["declared", "validated", "available", "published", "planned", "unavailable", "withdrawn", "quarantined"] },
+    "record_type": {
+      "enum": [
+        "owner_authority", "dataset", "edition", "unit", "course_unit_membership",
+        "native_binding", "content_binding", "relation", "rights", "rights_assignment",
+        "artifact", "build_recipe", "reader_surface", "route", "search_document",
+        "adapter_profile", "adapter_run", "qa_event", "identity_crosswalk"
+      ]
+    },
+    "uuid_array": { "type": "array", "items": { "$ref": "#/$defs/uuid5_urn" }, "uniqueItems": true },
+    "string_array": { "type": "array", "items": { "type": "string" }, "uniqueItems": true },
+    "nonempty_string": { "type": "string", "minLength": 1 },
+    "nullable_string": { "type": ["string", "null"] },
+    "uri": { "type": "string", "format": "uri", "minLength": 1 },
+    "learner_uri": {
+      "allOf": [
+        { "$ref": "#/$defs/uri" },
+        { "pattern": "^https://" },
+        { "not": { "pattern": "(?:localhost|127\\.0\\.0\\.1|\\.(?:jsonl?|csv)(?:[?#]|$)|/api(?:/|$))" } }
+      ]
+    },
+    "endpoint": {
+      "type": "object",
+      "oneOf": [
+        { "required": ["record_id"], "properties": { "record_id": { "$ref": "#/$defs/uuid5_urn" } }, "additionalProperties": false },
+        { "required": ["external_native_binding_id"], "properties": { "external_native_binding_id": { "$ref": "#/$defs/uuid5_urn" } }, "additionalProperties": false }
+      ]
+    },
+    "owner_authority_payload": {
+      "type": "object",
+      "required": ["owner_key", "authority_kind", "authority_locator", "corpus_ids", "course_ids", "native_schema_name", "native_schema_version", "native_manifest_binding_id", "authority_scope", "responsible_workflow"],
+      "properties": {
+        "owner_key": { "$ref": "#/$defs/nonempty_string" },
+        "authority_kind": { "enum": ["repository_authority", "release_authority", "project_authority"] },
+        "authority_locator": { "$ref": "#/$defs/nonempty_string" },
+        "corpus_ids": { "$ref": "#/$defs/string_array" },
+        "course_ids": { "$ref": "#/$defs/string_array" },
+        "native_schema_name": { "$ref": "#/$defs/nonempty_string" },
+        "native_schema_version": { "$ref": "#/$defs/nonempty_string" },
+        "native_manifest_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "authority_scope": { "$ref": "#/$defs/nonempty_string" },
+        "responsible_workflow": { "$ref": "#/$defs/nonempty_string" },
+        "public_repository_url": { "$ref": "#/$defs/uri" },
+        "release_lineage_url": { "$ref": "#/$defs/uri" },
+        "sole_integrator_publisher": { "type": "boolean" },
+        "contact_role": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "dataset_payload": {
+      "type": "object",
+      "required": ["corpus_id", "course_ids", "dataset_kind", "native_schema_name", "native_schema_version", "manifest_binding_id", "adapter_profile_id", "workflow_state", "publication_state", "capabilities", "record_counts"],
+      "properties": {
+        "corpus_id": { "$ref": "#/$defs/nonempty_string" },
+        "course_ids": { "$ref": "#/$defs/string_array" },
+        "dataset_kind": { "enum": ["curriculum_owner", "program_hub", "research_support", "infrastructure", "original_synthesis"] },
+        "native_schema_name": { "$ref": "#/$defs/nonempty_string" },
+        "native_schema_version": { "$ref": "#/$defs/nonempty_string" },
+        "manifest_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "adapter_profile_id": { "$ref": "#/$defs/uuid5_urn" },
+        "workflow_state": { "$ref": "#/$defs/nonempty_string" },
+        "publication_state": { "$ref": "#/$defs/nonempty_string" },
+        "capabilities": { "$ref": "#/$defs/string_array" },
+        "record_counts": { "type": "object", "propertyNames": { "pattern": "^[a-z][a-z0-9_]*$" }, "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "content_shard_refs": { "$ref": "#/$defs/string_array" },
+        "search_shard_refs": { "$ref": "#/$defs/string_array" },
+        "release_snapshot_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "reader_surface_ids": { "$ref": "#/$defs/uuid_array" },
+        "limitations": { "$ref": "#/$defs/string_array" }
+      },
+      "additionalProperties": false
+    },
+    "edition_payload": {
+      "type": "object",
+      "required": ["owner_authority_id", "locale", "title", "version_label", "source_format", "rights_id", "source_binding_ids", "target_binding_ids"],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "locale": { "$ref": "#/$defs/nonempty_string" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "version_label": { "$ref": "#/$defs/nonempty_string" },
+        "source_format": { "$ref": "#/$defs/nonempty_string" },
+        "rights_id": { "$ref": "#/$defs/uuid5_urn" },
+        "source_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "target_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "source_edition_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "subtitle": { "type": "string", "maxLength": 160 },
+        "publication_date": { "type": "string", "format": "date" },
+        "upstream_commit": { "type": "string", "pattern": "^[0-9a-f]{40,64}$" },
+        "edition_notes": { "type": "string", "maxLength": 256 }
+      },
+      "additionalProperties": false
+    },
+    "unit_payload": {
+      "type": "object",
+      "required": ["edition_id", "native_binding_id", "identity_scope", "unit_kind", "title", "title_locale", "source_binding_ids", "target_binding_ids", "content_availability", "rights_id", "learner_visibility"],
+      "properties": {
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "native_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "identity_scope": { "enum": ["locale_neutral", "source_edition", "target_edition", "release_snapshot"] },
+        "unit_kind": { "$ref": "#/$defs/nonempty_string" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "title_locale": { "$ref": "#/$defs/nonempty_string" },
+        "source_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "target_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "content_availability": { "enum": ["native_hash_bound", "metadata_only", "unavailable"] },
+        "rights_id": { "$ref": "#/$defs/uuid5_urn" },
+        "learner_visibility": { "enum": ["visible", "support", "hidden", "quarantined", "excluded"] },
+        "parent_native_unit_id": { "$ref": "#/$defs/nullable_string" },
+        "objectives": { "type": "array", "items": { "type": "string", "maxLength": 160 } },
+        "accessibility_profile_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "correction_ids": { "$ref": "#/$defs/uuid_array" },
+        "artifact_ids": { "$ref": "#/$defs/uuid_array" }
+      },
+      "additionalProperties": false
+    },
+    "course_unit_membership_payload": {
+      "type": "object",
+      "required": ["course_id", "edition_id", "unit_id", "ordinal", "order_path", "depth", "membership_role", "required", "visible"],
+      "properties": {
+        "course_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "ordinal": { "type": "integer", "minimum": 1 },
+        "order_path": { "type": "string", "pattern": "^[0-9]+(?:\\.[0-9]+)*$" },
+        "depth": { "type": "integer", "minimum": 0 },
+        "membership_role": { "$ref": "#/$defs/nonempty_string" },
+        "required": { "type": "boolean" },
+        "visible": { "type": "boolean" },
+        "parent_unit_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "start_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "end_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" }
+      },
+      "additionalProperties": false
+    },
+    "native_binding_payload": {
+      "type": "object",
+      "required": ["subject_id", "native_schema_name", "native_schema_version", "native_record_type", "native_semantic_key", "native_locator", "record_binding_id", "mapping_cardinality", "reverse_recipe"],
+      "properties": {
+        "subject_id": { "$ref": "#/$defs/uuid5_urn" },
+        "native_schema_name": { "$ref": "#/$defs/nonempty_string" },
+        "native_schema_version": { "$ref": "#/$defs/nonempty_string" },
+        "native_record_type": { "$ref": "#/$defs/nonempty_string" },
+        "native_semantic_key": { "$ref": "#/$defs/nonempty_string" },
+        "native_locator": { "$ref": "#/$defs/nonempty_string" },
+        "record_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "mapping_cardinality": { "enum": ["one_to_one", "one_to_many", "many_to_one", "many_to_many"] },
+        "reverse_recipe": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "native_id": { "$ref": "#/$defs/nullable_string" },
+        "owner_authority_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "native_parent_id": { "$ref": "#/$defs/nullable_string" },
+        "native_state": { "$ref": "#/$defs/nullable_string" }
+      },
+      "additionalProperties": false
+    },
+    "selector": {
+      "type": "object",
+      "properties": {
+        "native_id": { "type": "string" },
+        "json_pointer": { "type": "string" },
+        "xpath": { "type": "string" },
+        "css": { "type": "string" },
+        "structural_path": { "type": "string" },
+        "html_anchor": { "type": "string" },
+        "line_start": { "type": "integer", "minimum": 1 },
+        "line_end": { "type": "integer", "minimum": 1 },
+        "byte_start": { "type": "integer", "minimum": 0 },
+        "byte_end": { "type": "integer", "minimum": 0 },
+        "start_marker_sha256": { "$ref": "#/$defs/sha256" },
+        "end_marker_sha256": { "$ref": "#/$defs/sha256" },
+        "subtree_sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "content_binding_payload": {
+      "type": "object",
+      "required": ["subject_id", "role", "locator_base", "locator", "evidence_state", "media_type", "bytes", "sha256", "selector_kind", "locale", "recorded_at"],
+      "properties": {
+        "subject_id": { "$ref": "#/$defs/uuid5_urn" },
+        "role": { "enum": ["native_record", "source", "target", "manifest", "schema", "adapter_executable", "build_input", "build_output", "route_surface", "rights_evidence", "qa_evidence", "publication_receipt", "readback_bytes"] },
+        "locator_base": { "$ref": "#/$defs/nonempty_string" },
+        "locator": { "$ref": "#/$defs/nonempty_string" },
+        "evidence_state": { "enum": ["verified_local", "verified_public", "declared", "unavailable", "not_applicable"] },
+        "media_type": { "$ref": "#/$defs/nonempty_string" },
+        "bytes": { "type": ["integer", "null"], "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/nullable_sha256" },
+        "selector_kind": { "enum": ["none", "native_id", "json_pointer", "xpath", "css", "html_anchor", "line_range", "byte_range", "marker_pair", "structural_path"] },
+        "locale": { "type": ["string", "null"] },
+        "recorded_at": { "$ref": "#/$defs/date_time" },
+        "public_uri": { "$ref": "#/$defs/uri" },
+        "selector": { "$ref": "#/$defs/selector" },
+        "upstream_commit": { "type": "string", "pattern": "^[0-9a-f]{40,64}$" },
+        "declared_sha256": { "$ref": "#/$defs/sha256" },
+        "limitation": { "type": "string", "minLength": 1, "maxLength": 256 }
+      },
+      "additionalProperties": false
+    },
+    "relation_payload": {
+      "type": "object",
+      "required": ["edition_id", "relation_type", "from_endpoint", "to_endpoint", "assertion_method", "evidence_binding_ids", "endpoint_state"],
+      "properties": {
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "relation_type": { "$ref": "#/$defs/nonempty_string" },
+        "from_endpoint": { "$ref": "#/$defs/endpoint" },
+        "to_endpoint": { "$ref": "#/$defs/endpoint" },
+        "assertion_method": { "enum": ["owner_native", "adapter_structural", "curated_authority", "deterministic_derived"] },
+        "evidence_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "endpoint_state": { "enum": ["internal_closed", "exact_external_set", "unresolved_declared", "quarantined"] },
+        "ordinal": { "type": "integer", "minimum": 1 },
+        "strength": { "type": "number", "minimum": 0, "maximum": 1 },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+        "relation_scope": { "type": "string" },
+        "inverse_relation_id": { "$ref": "#/$defs/nullable_uuid5_urn" }
+      },
+      "additionalProperties": false
+    },
+    "rights_payload": {
+      "type": "object",
+      "required": ["license_expression", "access_state", "redistribution", "adaptation", "attribution", "authority", "third_party_status"],
+      "properties": {
+        "license_expression": { "$ref": "#/$defs/nonempty_string" },
+        "access_state": { "$ref": "#/$defs/nonempty_string" },
+        "redistribution": { "$ref": "#/$defs/nonempty_string" },
+        "adaptation": { "$ref": "#/$defs/nonempty_string" },
+        "attribution": { "type": "boolean" },
+        "authority": { "$ref": "#/$defs/nonempty_string" },
+        "third_party_status": { "$ref": "#/$defs/nonempty_string" },
+        "change_notice": { "type": "boolean" },
+        "nonendorsement": { "type": "boolean" },
+        "source_url": { "$ref": "#/$defs/uri" },
+        "component_exceptions": { "type": "integer", "minimum": 0 },
+        "notes_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" }
+      },
+      "additionalProperties": false
+    },
+    "rights_assignment_payload": {
+      "type": "object",
+      "required": ["rights_id", "target_id", "scope_role", "precedence", "inheritance", "assignment_state", "evidence_binding_ids"],
+      "properties": {
+        "rights_id": { "$ref": "#/$defs/uuid5_urn" },
+        "target_id": { "$ref": "#/$defs/uuid5_urn" },
+        "scope_role": { "$ref": "#/$defs/nonempty_string" },
+        "precedence": { "type": "integer", "minimum": 0 },
+        "inheritance": { "enum": ["direct", "inherited"] },
+        "assignment_state": { "enum": ["effective", "superseded", "excluded"] },
+        "evidence_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "starts_at": { "$ref": "#/$defs/date_time" },
+        "ends_at": { "$ref": "#/$defs/date_time" },
+        "exception_reason_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" }
+      },
+      "additionalProperties": false
+    },
+    "artifact_payload": {
+      "type": "object",
+      "required": ["owner_authority_id", "edition_id", "course_ids", "artifact_kind", "locale", "artifact_binding_id", "rights_id", "accessibility_profile", "build_recipe_id", "publication_state"],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "course_ids": { "$ref": "#/$defs/uuid_array" },
+        "artifact_kind": { "$ref": "#/$defs/nonempty_string" },
+        "locale": { "$ref": "#/$defs/nonempty_string" },
+        "artifact_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "rights_id": { "$ref": "#/$defs/uuid5_urn" },
+        "accessibility_profile": { "$ref": "#/$defs/nonempty_string" },
+        "build_recipe_id": { "$ref": "#/$defs/uuid5_urn" },
+        "publication_state": { "$ref": "#/$defs/nonempty_string" },
+        "public_url": { "$ref": "#/$defs/learner_uri" },
+        "route_ids": { "$ref": "#/$defs/uuid_array" },
+        "public_readback_qa_id": { "$ref": "#/$defs/nullable_uuid5_urn" }
+      },
+      "additionalProperties": false
+    },
+    "build_recipe_payload": {
+      "type": "object",
+      "required": ["owner_authority_id", "edition_id", "recipe_kind", "toolchain_binding_id", "command_template", "input_ids", "output_artifact_ids", "deterministic", "replay_evidence_binding_id"],
+      "properties": {
+        "owner_authority_id": { "$ref": "#/$defs/uuid5_urn" },
+        "edition_id": { "$ref": "#/$defs/uuid5_urn" },
+        "recipe_kind": { "$ref": "#/$defs/nonempty_string" },
+        "toolchain_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "command_template": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "input_ids": { "$ref": "#/$defs/uuid_array" },
+        "output_artifact_ids": { "$ref": "#/$defs/uuid_array" },
+        "deterministic": { "type": "boolean" },
+        "replay_evidence_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "environment_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "network_policy": { "enum": ["offline", "read_only", "declared"] }
+      },
+      "additionalProperties": false
+    },
+    "reader_surface_payload": {
+      "type": "object",
+      "required": ["locale", "format", "action", "artifact_id", "course_ids", "publication_state", "accessibility_profile", "primary", "evidence_binding_ids"],
+      "properties": {
+        "locale": { "$ref": "#/$defs/nonempty_string" },
+        "format": { "enum": ["semantic_html", "html", "pdf", "epub", "offline", "notebook", "interactive"] },
+        "action": { "enum": ["learn", "html", "pdf", "epub", "offline"] },
+        "artifact_id": { "$ref": "#/$defs/uuid5_urn" },
+        "course_ids": { "$ref": "#/$defs/uuid_array" },
+        "publication_state": { "$ref": "#/$defs/nonempty_string" },
+        "accessibility_profile": { "$ref": "#/$defs/nonempty_string" },
+        "primary": { "type": "boolean" },
+        "evidence_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "public_url": { "$ref": "#/$defs/learner_uri" },
+        "local_path_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "fallback_surface_id": { "$ref": "#/$defs/nullable_uuid5_urn" }
+      },
+      "additionalProperties": false
+    },
+    "route_payload": {
+      "type": "object",
+      "required": ["course_id", "surface_id", "route_kind", "path", "access_state", "target_kind", "machine_data_only", "evidence_binding_ids"],
+      "properties": {
+        "course_id": { "$ref": "#/$defs/uuid5_urn" },
+        "surface_id": { "$ref": "#/$defs/uuid5_urn" },
+        "route_kind": { "$ref": "#/$defs/nonempty_string" },
+        "path": { "$ref": "#/$defs/nonempty_string" },
+        "access_state": { "enum": ["public_readback_verified", "public", "local_only", "planned", "withdrawn", "unavailable"] },
+        "target_kind": { "enum": ["readable_html", "reader_anchor", "accessible_wrapper", "course_fallback", "pdf_download", "epub_download", "offline_package", "interactive", "not_available"] },
+        "machine_data_only": { "type": "boolean" },
+        "evidence_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "unit_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "public_url": { "$ref": "#/$defs/learner_uri" },
+        "anchor": { "type": "string" },
+        "fallback_route_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "checked_at": { "$ref": "#/$defs/date_time" },
+        "limitation": { "type": "string", "minLength": 1, "maxLength": 256 }
+      },
+      "additionalProperties": false
+    },
+    "search_document_payload": {
+      "type": "object",
+      "required": ["course_id", "unit_id", "locale", "title", "bounded_search_text", "order_key", "learner_route_id", "source_record_ids"],
+      "properties": {
+        "course_id": { "$ref": "#/$defs/uuid5_urn" },
+        "unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "locale": { "$ref": "#/$defs/nonempty_string" },
+        "title": { "type": "string", "minLength": 1, "maxLength": 96 },
+        "bounded_search_text": { "type": "string", "minLength": 1, "maxLength": 160 },
+        "order_key": { "$ref": "#/$defs/nonempty_string" },
+        "learner_route_id": { "$ref": "#/$defs/uuid5_urn" },
+        "source_record_ids": { "$ref": "#/$defs/string_array" },
+        "alternate_terms": { "type": "array", "items": { "type": "string", "maxLength": 96 } },
+        "concept_ids": { "$ref": "#/$defs/uuid_array" },
+        "assessment_kind": { "type": "string" },
+        "breadcrumb_titles": { "type": "array", "items": { "type": "string", "maxLength": 96 } }
+      },
+      "additionalProperties": false
+    },
+    "adapter_profile_payload": {
+      "type": "object",
+      "required": ["adapter_id", "adapter_version", "native_schema_name", "native_schema_version", "executable_binding_id", "input_view_mappings", "identity_rules", "state_map", "cardinality_rules", "loss_policy", "zero_copy"],
+      "properties": {
+        "adapter_id": { "$ref": "#/$defs/nonempty_string" },
+        "adapter_version": { "$ref": "#/$defs/nonempty_string" },
+        "native_schema_name": { "$ref": "#/$defs/nonempty_string" },
+        "native_schema_version": { "$ref": "#/$defs/nonempty_string" },
+        "executable_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "input_view_mappings": { "type": "array", "minItems": 1, "items": { "type": "object", "required": ["native_view", "projection"], "properties": { "native_view": { "type": "string" }, "projection": { "type": "string" } }, "additionalProperties": false } },
+        "identity_rules": { "type": "array", "minItems": 1, "items": { "type": "string", "maxLength": 256 } },
+        "state_map": { "type": "object", "additionalProperties": { "$ref": "#/$defs/state" } },
+        "cardinality_rules": { "type": "array", "minItems": 1, "items": { "type": "string", "maxLength": 256 } },
+        "loss_policy": { "type": "array", "items": { "type": "string", "maxLength": 256 } },
+        "zero_copy": { "const": true },
+        "source_profile_schema_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "native_schema_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "capability_map": { "type": "object", "additionalProperties": { "type": "string" } },
+        "known_limitations": { "type": "array", "items": { "type": "string", "maxLength": 256 } }
+      },
+      "additionalProperties": false
+    },
+    "adapter_run_payload": {
+      "type": "object",
+      "required": ["adapter_profile_id", "input_manifest_binding_id", "output_manifest_binding_id", "identity_map_binding_id", "build_a_sha256", "build_b_sha256", "deterministic_replay_result", "reverse_extraction_result", "native_input_counts", "projected_output_counts"],
+      "properties": {
+        "adapter_profile_id": { "$ref": "#/$defs/uuid5_urn" },
+        "input_manifest_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "output_manifest_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "identity_map_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "build_a_sha256": { "$ref": "#/$defs/sha256" },
+        "build_b_sha256": { "$ref": "#/$defs/sha256" },
+        "deterministic_replay_result": { "const": "byte_identical" },
+        "reverse_extraction_result": { "const": "pass" },
+        "native_input_counts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "projected_output_counts": { "type": "object", "additionalProperties": { "type": "integer", "minimum": 0 } },
+        "run_environment_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "loss_report_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "differential_report_binding_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "duration_seconds": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
+    "qa_event_payload": {
+      "type": "object",
+      "required": ["subject_ids", "qa_kind", "result", "method", "input_binding_ids", "output_binding_id", "evidence_binding_ids", "severity_p1", "severity_p2", "severity_p3", "anonymous_readback_state"],
+      "properties": {
+        "subject_ids": { "$ref": "#/$defs/uuid_array" },
+        "qa_kind": { "$ref": "#/$defs/nonempty_string" },
+        "result": { "enum": ["pass", "fail", "not_run", "not_applicable"] },
+        "method": { "$ref": "#/$defs/nonempty_string" },
+        "input_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "output_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "evidence_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "severity_p1": { "type": "integer", "minimum": 0 },
+        "severity_p2": { "type": "integer", "minimum": 0 },
+        "severity_p3": { "type": "integer", "minimum": 0 },
+        "anonymous_readback_state": { "enum": ["pass", "fail", "not_run", "not_applicable", "inherited"] },
+        "checked_url": { "$ref": "#/$defs/learner_uri" },
+        "checked_at": { "$ref": "#/$defs/date_time" },
+        "warnings": { "type": "array", "items": { "type": "string", "maxLength": 256 } },
+        "limitation": { "type": "string", "maxLength": 256 }
+      },
+      "additionalProperties": false
+    },
+    "identity_crosswalk_payload": {
+      "type": "object",
+      "required": ["source_schema_name", "source_schema_version", "source_record_type", "source_id", "target_record_type", "target_id", "mapping_state", "mapping_cardinality", "adapter_run_id", "reverse_recipe", "evidence_binding_ids"],
+      "properties": {
+        "source_schema_name": { "$ref": "#/$defs/nonempty_string" },
+        "source_schema_version": { "$ref": "#/$defs/nonempty_string" },
+        "source_record_type": { "$ref": "#/$defs/nonempty_string" },
+        "source_id": { "$ref": "#/$defs/nonempty_string" },
+        "target_record_type": { "$ref": "#/$defs/record_type" },
+        "target_id": { "$ref": "#/$defs/uuid5_urn" },
+        "mapping_state": { "enum": ["mapped", "reserved", "superseded", "ambiguous"] },
+        "mapping_cardinality": { "enum": ["one_to_one", "one_to_many", "many_to_one", "many_to_many"] },
+        "adapter_run_id": { "$ref": "#/$defs/uuid5_urn" },
+        "reverse_recipe": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "evidence_binding_ids": { "$ref": "#/$defs/uuid_array" },
+        "superseded_by_id": { "$ref": "#/$defs/nullable_uuid5_urn" },
+        "ambiguity_reason": { "type": "string", "maxLength": 256 }
+      },
+      "additionalProperties": false
+    }
+  }
+}

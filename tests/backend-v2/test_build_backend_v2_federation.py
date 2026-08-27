@@ -45,6 +45,9 @@ class ExplicitBuildInputTests(unittest.TestCase):
             site_readback_relative=PurePosixPath(
                 "curriculum_logbook/83_STUDENT_HTML_HUB_PUBLIC_READBACK_20260825.json"
             ),
+            owner_reader_readback_relative=PurePosixPath(
+                "curriculum_logbook/114_PUBLIC_OWNER_HTML_ROUTE_READBACK_20260827.json"
+            ),
             contract_relative=PurePosixPath(
                 "curriculum_logbook/81_GLOBAL_MODULAR_BACKEND_V2_CONTRACT_20260825.json"
             ),
@@ -86,6 +89,10 @@ class ExplicitBuildInputTests(unittest.TestCase):
             self.assertEqual(
                 federation["build"]["inputs"]["v1_package_relative"],
                 "backend/v1/program-matematika-indonesia-v0.51.2",
+            )
+            self.assertEqual(
+                federation["build"]["inputs"]["owner_reader_readback_relative"],
+                "curriculum_logbook/114_PUBLIC_OWNER_HTML_ROUTE_READBACK_20260827.json",
             )
             self.assertNotIn(str(REPOSITORY_ROOT), json.dumps(federation["build"], ensure_ascii=False))
 

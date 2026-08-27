@@ -4,7 +4,9 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
+from typing import Any
 
 from reportlab.graphics.barcode import qr
 from reportlab.graphics.shapes import Drawing
@@ -14,8 +16,12 @@ from reportlab.pdfbase.pdfmetrics import stringWidth
 from reportlab.pdfgen.canvas import Canvas
 
 
-SITE_URL = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
-CONCEPT_URL = "https://doi.org/10.5281/zenodo.22059707"
+DEFAULT_AUTHORITY = (
+    Path(__file__).resolve().parent.parent
+    / "backend"
+    / "authority"
+    / "curriculum-authority-v1.json"
+)
 
 
 def centered(canvas: Canvas, text: str, y: float, font: str, size: float, color) -> None:
@@ -24,7 +30,64 @@ def centered(canvas: Canvas, text: str, y: float, font: str, size: float, color)
     canvas.drawString((A4[0] - stringWidth(text, font, size)) / 2, y, text)
 
 
-def build(output: Path, version: str) -> None:
+def load_catalog(authority_path: Path | None, catalog_path: Path | None) -> dict[str, Any]:
+    if authority_path is not None and catalog_path is not None:
+        raise ValueError("use either --authority or --catalog, not both")
+    source = (catalog_path or authority_path or DEFAULT_AUTHORITY).resolve()
+    document = json.loads(source.read_text(encoding="utf-8"))
+    catalog = document.get("catalog", document)
+    if not isinstance(catalog, dict) or not isinstance(catalog.get("program"), dict):
+        raise ValueError(f"catalog metadata is absent from {source}")
+    if not isinstance(catalog.get("courses"), list) or not catalog["courses"]:
+        raise ValueError(f"course catalog is absent or empty in {source}")
+    return catalog
+
+
+def catalog_stats(catalog: dict[str, Any]) -> dict[str, Any]:
+    courses = catalog["courses"]
+    program = catalog["program"]
+    ids = [course.get("id") for course in courses]
+    if any(not isinstance(course_id, str) or not course_id for course_id in ids):
+        raise ValueError("every course must have a non-empty ID")
+    if len(ids) != len(set(ids)):
+        raise ValueError("course IDs must be unique")
+    completed = [course for course in courses if course.get("state") == "published"]
+    readers = [course for course in courses if course.get("reader")]
+    levels = sorted({course.get("level") for course in courses})
+    if any(not isinstance(level, str) or not level for level in levels):
+        raise ValueError("every course must have a non-empty level")
+    declared_counts = catalog.get("counts", {})
+    checks = {
+        "courseRoles": len(courses),
+        "completedPublicCourseRoles": len(completed),
+    }
+    for key, actual in checks.items():
+        declared = declared_counts.get(key)
+        if declared is not None and declared != actual:
+            raise ValueError(f"catalog count {key}={declared!r} does not match {actual}")
+    completed_ids = program.get("completedPublicCourseRoleIds")
+    if completed_ids is not None and completed_ids != [course["id"] for course in completed]:
+        raise ValueError("completed course IDs do not match published course states")
+    site_url = program.get("website")
+    concept_url = program.get("zenodoConcept")
+    if not isinstance(site_url, str) or not site_url.startswith("https://"):
+        raise ValueError("program.website must be an HTTPS learner route")
+    if not isinstance(concept_url, str) or not concept_url.startswith("https://doi.org/"):
+        raise ValueError("program.zenodoConcept must be a DOI URL")
+    return {
+        "courses": len(courses),
+        "levels": len(levels),
+        "html_readers": len(readers),
+        "completed": len(completed),
+        "site_url": site_url,
+        "concept_url": concept_url,
+    }
+
+
+def build(output: Path, version: str, catalog: dict[str, Any]) -> None:
+    stats = catalog_stats(catalog)
+    site_url = stats["site_url"]
+    concept_url = stats["concept_url"]
     output.parent.mkdir(parents=True, exist_ok=True)
     canvas = Canvas(str(output), pagesize=A4, pageCompression=1)
     canvas.setTitle("Mulai belajar - Program Matematika Indonesia")
@@ -51,13 +114,13 @@ def build(output: Path, version: str) -> None:
     canvas.setFont("Helvetica-Bold", 15)
     canvas.drawString(64, height - 192, "Buka situs pembelajaran")
     canvas.setFont("Helvetica-Bold", 10.4)
-    canvas.drawString(64, height - 220, SITE_URL)
+    canvas.drawString(64, height - 220, site_url)
     canvas.setFont("Helvetica", 10.5)
     canvas.setFillColor(ink)
     canvas.drawString(64, height - 247, "Pilih titik mulai, ikuti prasyarat, lalu buka pembaca HTML atau PDF.")
-    canvas.linkURL(SITE_URL, (44, height - 276, width - 44, height - 160), relative=0, thickness=0)
+    canvas.linkURL(site_url, (44, height - 276, width - 44, height - 160), relative=0, thickness=0)
 
-    qr_widget = qr.QrCodeWidget(SITE_URL)
+    qr_widget = qr.QrCodeWidget(site_url)
     bounds = qr_widget.getBounds()
     qr_size = 82
     scale = qr_size / max(bounds[2] - bounds[0], bounds[3] - bounds[1])
@@ -66,9 +129,14 @@ def build(output: Path, version: str) -> None:
     drawing.drawOn(canvas, width - 142, height - 259)
 
     stats_y = height - 326
-    stats = [("40", "mata kuliah"), ("4", "tingkat belajar"), ("13", "pembaca HTML"), ("17", "peran selesai")]
-    cell_w = (width - 88) / len(stats)
-    for index, (number, label) in enumerate(stats):
+    stat_cells = [
+        (str(stats["courses"]), "mata kuliah"),
+        (str(stats["levels"]), "tingkat belajar"),
+        (str(stats["html_readers"]), "pembaca HTML"),
+        (str(stats["completed"]), "peran selesai"),
+    ]
+    cell_w = (width - 88) / len(stat_cells)
+    for index, (number, label) in enumerate(stat_cells):
         x = 44 + index * cell_w
         canvas.setFillColor(green if index % 2 == 0 else blue)
         canvas.setFont("Helvetica-Bold", 22)
@@ -114,9 +182,9 @@ def build(output: Path, version: str) -> None:
     canvas.line(44, 86, width - 44, 86)
     canvas.setFillColor(muted)
     canvas.setFont("Helvetica", 8.5)
-    canvas.drawString(44, 68, f"Snapshot {version} - arsip konsep: {CONCEPT_URL}")
+    canvas.drawString(44, 68, f"Snapshot {version} - arsip konsep: {concept_url}")
     canvas.drawRightString(width - 44, 68, "Bahasa Indonesia - akses terbuka")
-    canvas.linkURL(CONCEPT_URL, (44, 56, 340, 82), relative=0, thickness=0)
+    canvas.linkURL(concept_url, (44, 56, 340, 82), relative=0, thickness=0)
 
     canvas.showPage()
     canvas.save()
@@ -126,8 +194,20 @@ def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True, type=Path)
     parser.add_argument("--version", required=True)
+    parser.add_argument(
+        "--authority",
+        type=Path,
+        help=f"curriculum authority JSON (default: {DEFAULT_AUTHORITY})",
+    )
+    parser.add_argument("--catalog", type=Path, help="standalone catalog JSON")
     args = parser.parse_args()
-    build(args.output, args.version)
+    catalog = load_catalog(args.authority, args.catalog)
+    catalog_version = catalog["program"].get("version")
+    if catalog_version != args.version:
+        raise ValueError(
+            f"requested PDF version {args.version!r} does not match catalog version {catalog_version!r}"
+        )
+    build(args.output, args.version, catalog)
 
 
 if __name__ == "__main__":

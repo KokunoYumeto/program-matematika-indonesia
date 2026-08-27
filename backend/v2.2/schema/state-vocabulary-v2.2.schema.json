@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.2/state-vocabulary-v2.2.schema.json",
+  "title": "Global modular mathematics backend v2.2 state vocabulary",
+  "type": "object",
+  "required": ["schema_id", "schema_version", "normalized_states", "profiles"],
+  "properties": {
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-state-vocabulary/2.2.0" },
+    "schema_version": { "const": "2.2.0" },
+    "normalized_states": {
+      "type": "array",
+      "items": { "enum": ["declared", "validated", "available", "published", "planned", "unavailable", "withdrawn", "quarantined"] },
+      "uniqueItems": true,
+      "minItems": 8,
+      "maxItems": 8
+    },
+    "profiles": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["id", "profile_key", "native_schema_name", "native_schema_version", "mappings", "null_native_state"],
+        "properties": {
+          "id": { "type": "string", "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+          "profile_key": { "type": "string", "pattern": "^[a-z0-9][a-z0-9._:-]+$" },
+          "native_schema_name": { "type": "string", "minLength": 1 },
+          "native_schema_version": { "type": "string", "minLength": 1 },
+          "mappings": { "type": "object", "minProperties": 1, "additionalProperties": { "enum": ["declared", "validated", "available", "published", "planned", "unavailable", "withdrawn", "quarantined"] } },
+          "null_native_state": { "enum": ["declared", "validated", "available", "published", "planned", "unavailable", "withdrawn", "quarantined"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}
