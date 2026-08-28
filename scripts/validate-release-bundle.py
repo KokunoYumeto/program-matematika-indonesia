@@ -5,6 +5,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import io
 import json
 import re
 import subprocess
@@ -66,6 +67,7 @@ EXPECTED_V1_PACKAGE_PINS = {
 }
 EXPECTED_V1_ARCHIVE_SHA256 = "a6451613d0e1960f614314da2c5361ddfb749cd09bf147539ccc5d172abd6866"
 EXPECTED_V1_ARCHIVE_PREFIX = "program-matematika-indonesia-backend-v1/"
+FIXED_ZIP_TIME = (2026, 8, 22, 0, 0, 0)
 
 PRIVATE_BYTE_MARKERS = (
     bytes([70, 108, 111, 114, 105, 115]).lower(),
@@ -86,6 +88,14 @@ def sha256_file(path: Path) -> str:
         for chunk in iter(lambda: handle.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def v22_archive_filename(version: str) -> str:
+    return (
+        f"program-matematika-indonesia-backend-v2.2-pilot-v{version}.zip"
+        if version == "0.59.0"
+        else f"program-matematika-indonesia-backend-v2.2-v{version}.zip"
+    )
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -380,6 +390,7 @@ def verify_v22_package(
     release: Path,
     root: Path,
     version: str,
+    source_commit: str,
 ) -> tuple[Path, dict[str, Any]]:
     canonical = input_package if input_package.parent.name == "packages" else validation_receipt.parent
     release_root = input_package.parent.parent if input_package.parent.name == "packages" and input_package.parent.parent.name == "v2.2" else input_package
@@ -392,10 +403,77 @@ def verify_v22_package(
         raise ValueError("backend-v2.2 manifest schema mismatch")
     if seal.get("schema_id") != "interlanguage/global-modular-mathematics-package-seal/2.2.0":
         raise ValueError("backend-v2.2 seal schema mismatch")
-    if receipt.get("schema_id") != "interlanguage/global-modular-mathematics-validation-report/2.2.0" or receipt.get("result") != "pass":
+    receipt_schema = receipt.get("schema_id")
+    if receipt.get("result") != "pass":
         raise ValueError("backend-v2.2 validation report is not a pass")
-    if receipt.get("package_id") != manifest.get("package_id") or receipt.get("dataset_id") != manifest.get("dataset_id"):
-        raise ValueError("backend-v2.2 package identities disagree")
+    if receipt.get("source_commit") != source_commit:
+        raise ValueError("backend-v2.2 validation report source commit mismatch")
+    if receipt_schema == "interlanguage/global-modular-mathematics-validation-report/2.2.0":
+        if receipt.get("package_id") != manifest.get("package_id") or receipt.get("dataset_id") != manifest.get("dataset_id"):
+            raise ValueError("backend-v2.2 package identities disagree")
+    elif receipt_schema == "program-matematika-indonesia/backend-v2.2-global-validation-receipt/v1":
+        if receipt.get("credentials_recorded") is not False:
+            raise ValueError("backend-v2.2 global validation receipt is not credential-free")
+        declared = receipt.get("canonical_package", {})
+        canonical_files = package_files(canonical)
+        facts = [
+            {
+                "path": path.relative_to(canonical).as_posix(),
+                "bytes": path.stat().st_size,
+                "sha256": sha256_file(path),
+            }
+            for path in canonical_files
+        ]
+        facts.sort(key=lambda row: (row["path"].casefold(), row["path"]))
+        aggregate = hashlib.sha256(
+            "".join(
+                f'{row["sha256"]}  {row["bytes"]}  {row["path"]}\n'
+                for row in facts
+            ).encode("utf-8")
+        ).hexdigest()
+        if (
+            receipt.get("version") != version
+            or declared.get("path") != canonical.relative_to(root).as_posix()
+            or declared.get("package_id") != manifest.get("package_id")
+            or declared.get("file_count") != len(facts)
+            or declared.get("total_bytes") != sum(row["bytes"] for row in facts)
+            or declared.get("aggregate_sha256") != aggregate
+        ):
+            raise ValueError("backend-v2.2 global validation receipt package identity mismatch")
+    else:
+        raise ValueError("backend-v2.2 validation report schema is not admitted")
+    if tuple(int(part) for part in version.split(".")) >= (0, 60, 0):
+        if receipt_schema != "program-matematika-indonesia/backend-v2.2-global-validation-receipt/v1":
+            raise ValueError("v0.60+ requires the global backend-v2.2 validation receipt")
+        required_gates = {
+            "sealed_a00_package",
+            "owner_native_assessment_authority_replay",
+            "assessment_json_schema",
+            "assessment_solution_gap_exact_set",
+            "assessment_stable_id_uniqueness",
+            "assessment_uuid5_identity",
+            "assessment_zero_prose",
+            "global_capability_contract_schema",
+            "two_run_validator_replay",
+        }
+        gates = {
+            row.get("gate"): row.get("result")
+            for row in receipt.get("checks", [])
+            if isinstance(row, dict)
+        }
+        missing_or_failing = sorted(
+            gate for gate in required_gates if gates.get(gate) != "pass"
+        )
+        assessment_receipt = receipt.get("owner_native_assessment_inventory", {})
+        contract_receipt = receipt.get("global_capability_contract", {})
+        if missing_or_failing:
+            raise ValueError(
+                f"backend-v2.2 global receipt gates are missing or failing: {missing_or_failing}"
+            )
+        if assessment_receipt.get("uuid5_ids_checked") != 40525:
+            raise ValueError("backend-v2.2 assessment UUIDv5 check count mismatch")
+        if contract_receipt.get("schema_validation") != "pass":
+            raise ValueError("backend-v2.2 capability contract schema gate is not a pass")
     check_results = {row.get("result") for row in receipt.get("checks", [])}
     if not receipt.get("checks") or not check_results.issubset({"pass", "inherited", "not_applicable"}):
         raise ValueError("backend-v2.2 validation report contains a non-admitted gate")
@@ -453,7 +531,7 @@ def verify_v22_package(
     copied_receipt = release / f"GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v{version}.json"
     if copied_receipt.read_bytes() != validation_receipt.read_bytes():
         raise ValueError("release backend-v2.2 validation receipt differs from canonical receipt")
-    zip_path = release / f"program-matematika-indonesia-backend-v2.2-pilot-v{version}.zip"
+    zip_path = release / v22_archive_filename(version)
     zip_result = verify_backend_zip(zip_path, release_root, "program-matematika-indonesia-backend-v2.2/")
     archive_receipt_path = release / f"GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v{version}.json"
     archive_receipt = load_json(archive_receipt_path)
@@ -484,6 +562,135 @@ def verify_v22_package(
         "layers": layers,
         "counts": receipt.get("counts"),
         "result": "pass",
+    }
+
+
+def verify_assessment_inventory_archive(
+    release: Path,
+    claim: dict[str, Any],
+    record_id: int,
+    version: str,
+) -> dict[str, Any]:
+    filename = "o001-a00-assessments-v0.1.0.zip"
+    expected_counts = {
+        "assessment_components": 13345,
+        "assessments": 8105,
+        "modules": 75,
+        "problems": 8105,
+        "solution_gaps": 2865,
+        "solutions": 5240,
+    }
+    expected_claim = {
+        "version": "0.1.0",
+        "status": "owner_native_validated_zero_prose",
+        "roleId": "O001",
+        "courseId": "A00",
+        "packageId": "urn:uuid:0b253fa5-067e-55b5-8248-cc528b0b4bd1",
+        "counts": expected_counts,
+        "projectionState": "owner_native_shard_ready_adapter_not_materialized",
+    }
+    for key, expected in expected_claim.items():
+        if claim.get(key) != expected:
+            raise ValueError(f"O001/A00 assessment claim differs: {key}")
+    assert_central_url(claim.get("package"), record_id, filename)
+    expected_github = (
+        f"https://github.com/KokunoYumeto/program-matematika-indonesia/"
+        f"releases/download/v{version}/{filename}"
+    )
+    if claim.get("githubPackage") != expected_github:
+        raise ValueError("O001/A00 assessment GitHub package URL differs")
+    archive_path = release / filename
+    prefix = "o001-a00-assessments-v0.1.0/"
+    package_manifest = None
+    archive_entries: list[tuple[str, bytes]] = []
+    with zipfile.ZipFile(archive_path) as archive:
+        bad = archive.testzip()
+        if bad:
+            raise ValueError(f"O001/A00 assessment ZIP CRC failure: {bad}")
+        names = archive.namelist()
+        if len(names) != len(set(names)) or any(
+            name.endswith("/")
+            or not name.startswith(prefix)
+            or "\\" in name
+            or ".." in Path(name).parts
+            for name in names
+        ):
+            raise ValueError("O001/A00 assessment ZIP inventory is unsafe")
+        facts = []
+        # The sealed shard identity was produced from Windows Path ordering,
+        # which is case-insensitive. Reproduce that order when hashing ZIP
+        # members so README.md remains after manifest.json, as in the seal.
+        for name in sorted(names, key=lambda value: (value.casefold(), value)):
+            data = archive.read(name)
+            archive_entries.append((name, data))
+            if name == f"{prefix}manifest.json":
+                package_manifest = json.loads(data.decode("utf-8"))
+            facts.append(
+                {
+                    "path": name.removeprefix(prefix),
+                    "bytes": len(data),
+                    "sha256": hashlib.sha256(data).hexdigest(),
+                }
+            )
+    aggregate = hashlib.sha256(
+        "".join(
+            f"{row['sha256']}  {row['bytes']}  {row['path']}\n" for row in facts
+        ).encode("utf-8")
+    ).hexdigest()
+    canonical = claim.get("canonicalPackage", {})
+    if (
+        canonical.get("path")
+        != "backend/v2.2/owner-native-shards/o001-a00-assessments-v0.1.0"
+        or canonical.get("fileCount") != 12
+        or canonical.get("bytes") != 19057785
+        or canonical.get("aggregateSha256")
+        != "5d7c3da1a1b3c33b4f79306fec08a31ebc8f557188f1ec0c088e267e0d9ce222"
+        or len(facts) != canonical["fileCount"]
+        or sum(row["bytes"] for row in facts) != canonical["bytes"]
+        or aggregate != canonical["aggregateSha256"]
+    ):
+        raise ValueError("O001/A00 assessment archive aggregate differs")
+    if (
+        not isinstance(package_manifest, dict)
+        or package_manifest.get("package_id") != expected_claim["packageId"]
+        or package_manifest.get("counts") != expected_counts
+        or package_manifest.get("zero_prose_policy", {}).get("copied_formula_bodies") is not False
+        or package_manifest.get("zero_prose_policy", {}).get("copied_mathematical_prose") is not False
+    ):
+        raise ValueError("O001/A00 assessment package manifest differs")
+    by_path = {row["path"]: row for row in facts}
+    for key in ("manifest", "checksum", "seal"):
+        binding = canonical.get(key, {})
+        actual = by_path.get(binding.get("path"))
+        if not actual or actual["bytes"] != binding.get("bytes") or actual["sha256"] != binding.get("sha256"):
+            raise ValueError(f"O001/A00 assessment archive binding differs: {key}")
+    def replay_zip() -> bytes:
+        output = io.BytesIO()
+        with zipfile.ZipFile(output, "w") as archive:
+            for name, data in sorted(archive_entries):
+                info = zipfile.ZipInfo(name, FIXED_ZIP_TIME)
+                info.compress_type = zipfile.ZIP_DEFLATED
+                info.external_attr = 0o100644 << 16
+                archive.writestr(
+                    info,
+                    data,
+                    compress_type=zipfile.ZIP_DEFLATED,
+                    compresslevel=9,
+                )
+        return output.getvalue()
+
+    replay_a = replay_zip()
+    replay_b = replay_zip()
+    if replay_a != replay_b or replay_a != archive_path.read_bytes():
+        raise ValueError("O001/A00 assessment ZIP bytes are not deterministic")
+    return {
+        "path": filename,
+        "entries": len(facts),
+        "uncompressed_bytes": sum(row["bytes"] for row in facts),
+        "aggregate_sha256": aggregate,
+        "bytes": archive_path.stat().st_size,
+        "sha256": sha256_file(archive_path),
+        "verification": "pass-byte-deterministic",
     }
 
 
@@ -799,16 +1006,72 @@ def main() -> None:
     }.items():
         assert_central_url(v21_claim.get(key), args.record_id, filename)
 
-    v22_root, v22_result = verify_v22_package(backend_v22, backend_v22_receipt, release, root, version)
+    v22_root, v22_result = verify_v22_package(
+        backend_v22,
+        backend_v22_receipt,
+        release,
+        root,
+        version,
+        args.source_commit,
+    )
     v22_claim = program["backend"].get("federationV22")
     if not isinstance(v22_claim, dict) or "validated" not in str(v22_claim.get("status", "")):
         raise ValueError("catalog has no validated backend-v2.2 claim")
     if "package" in v22_claim:
-        assert_central_url(v22_claim["package"], args.record_id, f"program-matematika-indonesia-backend-v2.2-pilot-v{version}.zip")
+        assert_central_url(v22_claim["package"], args.record_id, v22_archive_filename(version))
     if "validationReceipt" in v22_claim:
         assert_central_url(v22_claim["validationReceipt"], args.record_id, f"GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v{version}.json")
     if "archiveReceipt" in v22_claim:
         assert_central_url(v22_claim["archiveReceipt"], args.record_id, f"GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v{version}.json")
+    assessment_result = None
+    if tuple(int(part) for part in version.split(".")) >= (0, 60, 0):
+        contract_claim = program["backend"].get("capabilityContractV1")
+        if not isinstance(contract_claim, dict):
+            raise ValueError("catalog has no global capability-contract claim")
+        contract_paths = {
+            "contract": root / "backend/v2.2/global-capability-contract-v0.1.0.json",
+            "schema": root / "backend/v2.2/schema/global-capability-contract-v0.1.schema.json",
+        }
+        for key, filename in {
+            "contract": "global-capability-contract-v0.1.0.json",
+            "schema": "global-capability-contract-v0.1.schema.json",
+        }.items():
+            assert_central_url(contract_claim.get(key), args.record_id, filename)
+            if (release / filename).read_bytes() != contract_paths[key].read_bytes():
+                raise ValueError(f"global capability-contract release file differs: {filename}")
+        contract = load_json(contract_paths["contract"])
+        contract_schema = load_json(contract_paths["schema"])
+        Draft202012Validator.check_schema(contract_schema)
+        contract_errors = sorted(
+            Draft202012Validator(
+                contract_schema,
+                format_checker=FormatChecker(),
+            ).iter_errors(contract),
+            key=lambda error: list(error.absolute_path),
+        )
+        if contract_errors:
+            raise ValueError(
+                f"global capability-contract schema failure: {contract_errors[0].message}"
+            )
+        for key, filename in {
+            "githubContract": "global-capability-contract-v0.1.0.json",
+            "githubSchema": "global-capability-contract-v0.1.schema.json",
+        }.items():
+            expected = (
+                f"https://github.com/KokunoYumeto/program-matematika-indonesia/"
+                f"releases/download/v{version}/{filename}"
+            )
+            if contract_claim.get(key) != expected:
+                raise ValueError(f"global capability-contract GitHub URL differs: {key}")
+        assessment_claim = program["backend"].get("assessmentInventoryV1")
+        if not isinstance(assessment_claim, dict):
+            raise ValueError("catalog has no O001/A00 assessment-inventory claim")
+        assessment_result = verify_assessment_inventory_archive(
+            release,
+            assessment_claim,
+            args.record_id,
+            version,
+        )
 
     learner_claim = program["backend"]["learnerReadModelV1"]
     if learner_claim.get("courseCount") != len(courses) or learner_claim.get("prerequisiteEdgeCount") != sum(len(course.get("prerequisites", [])) for course in courses):
@@ -893,6 +1156,8 @@ def main() -> None:
         ),
         "backend_v22": v22_result["zip"],
     }
+    if assessment_result is not None:
+        zip_results["assessment_inventory"] = assessment_result
     if zip_results["source"]["source_commit"] != args.source_commit:
         raise ValueError("source ZIP is not bound to validated HEAD")
 
@@ -909,6 +1174,8 @@ def main() -> None:
         "curriculum-authority-v1.schema.json",
         "learner-read-model-v1.json",
         "learner-read-model-v1.schema.json",
+        "global-capability-contract-v0.1.0.json",
+        "global-capability-contract-v0.1.schema.json",
         "federation-unit-package-v2.1.schema.json",
         "federation-unit-record-v2.1.schema.json",
         f"program-matematika-indonesia-catalog-v{version}.json",
@@ -920,7 +1187,7 @@ def main() -> None:
         f"program-matematika-indonesia-backend-v1-v{version}.zip",
         f"program-matematika-indonesia-backend-v2-v{version}.zip",
         f"program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip",
-        f"program-matematika-indonesia-backend-v2.2-pilot-v{version}.zip",
+        v22_archive_filename(version),
         f"program-matematika-indonesia-source-v{version}.zip",
         f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
         v21_receipt_name,
@@ -930,6 +1197,8 @@ def main() -> None:
         admission.name,
         owner_readback.name,
     }
+    if assessment_result is not None:
+        expected_release_names.add("o001-a00-assessments-v0.1.0.zip")
     if reservation:
         expected_release_names.add(reservation.name)
     actual_release_names = {
@@ -971,6 +1240,7 @@ def main() -> None:
             "backend_v2_validation_receipt": v2_receipt_result,
             "backend_v21_deterministic_replay_receipt": v21_result,
             "backend_v22": v22_result,
+            "assessment_inventory": assessment_result,
             "complete_corpus_migrations": migration_result,
             "complete_corpus_migration_target_records": migration_target_records,
             "central_evidence": central_evidence,

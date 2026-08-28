@@ -28,3 +28,30 @@ zero-prose policy, route truthfulness, the package manifest, and the
 non-circular seal.
 
 No owner file is edited by either command.
+
+## Global federation contract
+
+The A00 package is a proof of strict zero-copy reversibility, not a mandate that
+every corpus imitate its module graph. The machine-readable global contract is
+`global-capability-contract-v0.1.0.json`, validated by
+`schema/global-capability-contract-v0.1.schema.json`. It separates:
+
+1. owner-native authority;
+2. the lane authority capsule;
+3. optional semantic capability shards;
+4. the compact learner-navigation shard;
+5. the zero-copy global registry; and
+6. the generated student site.
+
+Semantic granularity, translation granularity, and learner-navigation
+granularity are explicitly distinct. Capability absence or non-projection must
+be recorded rather than hidden. JSON and repository artifacts are secondary
+machine surfaces; the student-facing site and readable editions remain the
+primary learner entry points.
+
+The first additional owner-native capability shard is
+`owner-native-shards/o001-a00-assessments-v0.1.0`. It inventories 8,105
+explicit exercises, 13,345 statement/solution components, and 2,865 exact
+source solution gaps without copying prose or formula bodies. It remains a
+separate sealed shard until an aggregate adapter resolves its stable module IDs
+to the sealed A00 lane units and rights records.

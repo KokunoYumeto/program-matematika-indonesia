@@ -18,6 +18,7 @@ const mappings = [
   ['schemas/v2/federation-record-v2.schema.json', 'docs/schema/v2/federation-record-v2.schema.json'],
   ['schemas/v2/namespace-v2.json', 'docs/schema/v2/namespace-v2.json'],
   ['schemas/v2/pmi-release-policy-v2.json', 'docs/schema/v2/pmi-release-policy-v2.json'],
+  ['backend/v2.2/schema/global-capability-contract-v0.1.schema.json', 'docs/schema/v2.2/global-capability-contract-v0.1.schema.json'],
 ];
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');

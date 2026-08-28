@@ -52,6 +52,18 @@ IMMUTABLE_V1_MEMBER_PINS = {
     "validation_report.json": "b742dbcc65c9511fa3d208a001d1f4a33ca38d04d0178f3e964d043c09534b42",
 }
 
+ASSESSMENT_SHARD_RELATIVE = Path(
+    "backend/v2.2/owner-native-shards/o001-a00-assessments-v0.1.0"
+)
+ASSESSMENT_SHARD_IDENTITY = {
+    "files": 12,
+    "bytes": 19057785,
+    "aggregate_sha256": "5d7c3da1a1b3c33b4f79306fec08a31ebc8f557188f1ec0c088e267e0d9ce222",
+    "manifest_sha256": "5ed7b558ae1f621bef52b59be64df90dbf52c967c7e12e2fc9fc296309e2b19e",
+    "checksums_sha256": "7d313ed06023a90a28882c25e8942bf9feda270b1c75cbaced38674a1ae9cd57",
+    "seal_sha256": "a97c1cad9cfbd72fe7bbc44cf59050dc1adbf238d07afdd6337fd0d3c8f74b49",
+}
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -98,17 +110,56 @@ def package_entries(package: Path, prefix: str) -> list[tuple[str, bytes]]:
     if not package.is_dir():
         raise ValueError(f"backend package is not a directory: {package}")
     entries = []
-    for path in sorted(candidate for candidate in package.rglob("*") if candidate.is_file()):
+    for path in (candidate for candidate in package.rglob("*") if candidate.is_file()):
         if "__pycache__" in path.parts or path.suffix == ".pyc":
             continue
         relative = path.relative_to(package).as_posix()
         entries.append((f"{prefix}{relative}", path.read_bytes()))
     if not entries:
         raise ValueError(f"backend package is empty: {package}")
-    return entries
+    return sorted(entries, key=lambda item: (item[0].casefold(), item[0]))
 
 
-def validate_v22_package_shape(package: Path, canonical_package: Path, validation_receipt: Path) -> dict:
+def validate_assessment_shard(root: Path) -> tuple[Path, list[tuple[str, bytes]], dict]:
+    shard = root / ASSESSMENT_SHARD_RELATIVE
+    entries = package_entries(shard, "o001-a00-assessments-v0.1.0/")
+    facts = []
+    for name, data in entries:
+        relative = name.split("/", 1)[1]
+        facts.append((relative, len(data), hashlib.sha256(data).hexdigest()))
+    aggregate = hashlib.sha256(
+        "".join(f"{digest}  {size}  {path}\n" for path, size, digest in facts).encode("utf-8")
+    ).hexdigest()
+    if len(entries) != ASSESSMENT_SHARD_IDENTITY["files"]:
+        raise ValueError("O001/A00 assessment shard file count mismatch")
+    if sum(len(data) for _, data in entries) != ASSESSMENT_SHARD_IDENTITY["bytes"]:
+        raise ValueError("O001/A00 assessment shard byte count mismatch")
+    if aggregate != ASSESSMENT_SHARD_IDENTITY["aggregate_sha256"]:
+        raise ValueError("O001/A00 assessment shard aggregate mismatch")
+    for relative, expected in {
+        "manifest.json": ASSESSMENT_SHARD_IDENTITY["manifest_sha256"],
+        "CHECKSUMS.sha256": ASSESSMENT_SHARD_IDENTITY["checksums_sha256"],
+        "seal.json": ASSESSMENT_SHARD_IDENTITY["seal_sha256"],
+    }.items():
+        actual = next(
+            (digest for path, _, digest in facts if path == relative),
+            None,
+        )
+        if actual != expected:
+            raise ValueError(f"O001/A00 assessment shard identity mismatch: {relative}")
+    return shard, entries, {
+        "files": len(entries),
+        "uncompressed_bytes": sum(len(data) for _, data in entries),
+        "aggregate_sha256": aggregate,
+    }
+
+
+def validate_v22_package_shape(
+    package: Path,
+    canonical_package: Path,
+    validation_receipt: Path,
+    source_commit: str,
+) -> dict:
     """Fail closed on the release-critical v2.2 layers without pinning one pilot's counts."""
     entries = package_entries(package, "program-matematika-indonesia-backend-v2.2/")
     relative_names = [name.split("/", 1)[1] for name, _ in entries]
@@ -127,8 +178,10 @@ def validate_v22_package_shape(package: Path, canonical_package: Path, validatio
     if missing:
         raise ValueError(f"backend-v2.2 package is missing required layers: {missing}")
     receipt = json.loads(validation_receipt.read_text(encoding="utf-8"))
-    if receipt.get("result") != "pass" or receipt.get("credentials_recorded") is True:
+    if receipt.get("result") != "pass" or receipt.get("credentials_recorded") is not False:
         raise ValueError("backend-v2.2 validation receipt is not a credential-free pass")
+    if receipt.get("source_commit") != source_commit:
+        raise ValueError("backend-v2.2 validation receipt source commit mismatch")
     declared = receipt.get("canonical_package") or receipt.get("package") or {}
     canonical_files = [path for path in canonical_package.rglob("*") if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"]
     if "file_count" in declared and declared["file_count"] != len(canonical_files):
@@ -255,6 +308,34 @@ def committed_blob_bytes(root: Path, commit: str, relative: str) -> bytes:
         capture_output=True,
     )
     return result.stdout
+
+
+def assert_live_matches_commit(
+    root: Path,
+    commit: str,
+    paths: set[Path],
+    tracked_paths: set[str],
+) -> dict:
+    facts = []
+    for path in sorted(paths):
+        if not path.is_file() or not path.is_relative_to(root):
+            raise ValueError(f"release-critical input is not a project file: {path}")
+        relative = path.relative_to(root).as_posix()
+        if relative not in tracked_paths:
+            raise ValueError(f"release-critical input is not bound to source commit: {relative}")
+        live = path.read_bytes()
+        committed = committed_blob_bytes(root, commit, relative)
+        if live != committed:
+            raise ValueError(f"release-critical live bytes differ from source commit: {relative}")
+        facts.append((relative, len(live), hashlib.sha256(live).hexdigest()))
+    aggregate = hashlib.sha256(
+        "".join(f"{digest}  {size}  {path}\n" for path, size, digest in facts).encode("utf-8")
+    ).hexdigest()
+    return {
+        "file_count": len(facts),
+        "total_bytes": sum(size for _, size, _ in facts),
+        "aggregate_sha256": aggregate,
+    }
 
 
 def load_immutable_v1_archive(root: Path) -> tuple[Path, dict[str, bytes]]:
@@ -399,6 +480,7 @@ def main() -> None:
         backend_v22_release_root,
         canonical_backend_v22,
         backend_v22_validation_receipt,
+        args.source_commit,
     )
     central_evidence = validate_central_evidence(
         admission_manifest,
@@ -407,6 +489,7 @@ def main() -> None:
         version,
         root,
     )
+    assessment_shard, assessment_entries, assessment_identity = validate_assessment_shard(root)
 
     immutable_v1_archive, immutable_v1_members = load_immutable_v1_archive(root)
 
@@ -445,6 +528,8 @@ def main() -> None:
         root / "docs" / "data" / "learner-read-model.json": release / "learner-read-model-v1.json",
         root / "schemas" / "v1" / "curriculum-authority-v1.schema.json": release / "curriculum-authority-v1.schema.json",
         root / "schemas" / "v1" / "learner-read-model-v1.schema.json": release / "learner-read-model-v1.schema.json",
+        root / "backend" / "v2.2" / "global-capability-contract-v0.1.0.json": release / "global-capability-contract-v0.1.0.json",
+        root / "backend" / "v2.2" / "schema" / "global-capability-contract-v0.1.schema.json": release / "global-capability-contract-v0.1.schema.json",
         backend_v2_validation_receipt: release / f"GLOBAL_BACKEND_V2_PHASE1_VALIDATION_RECEIPT_v{version}.json",
         backend_v22_validation_receipt: release / f"GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v{version}.json",
         admission_manifest: release / admission_manifest.name,
@@ -501,7 +586,7 @@ def main() -> None:
     backend_v21_zip = release / f"program-matematika-indonesia-backend-v2.1-pilots-v{version}.zip"
     backend_v21_result = build_zip(backend_v21_zip, backend_v21_entries)
 
-    backend_v22_zip = release / f"program-matematika-indonesia-backend-v2.2-pilot-v{version}.zip"
+    backend_v22_zip = release / f"program-matematika-indonesia-backend-v2.2-v{version}.zip"
     backend_v22_first = build_zip(backend_v22_zip, v22_shape["entries"])
     backend_v22_result = build_zip(backend_v22_zip, v22_shape["entries"])
     for key in ("entries", "uncompressed_bytes", "bytes", "sha256", "verification"):
@@ -542,6 +627,17 @@ def main() -> None:
         encoding="utf-8",
         newline="\n",
     )
+
+    assessment_zip = release / "o001-a00-assessments-v0.1.0.zip"
+    assessment_first = build_zip(assessment_zip, assessment_entries)
+    assessment_result = build_zip(assessment_zip, assessment_entries)
+    for key in ("entries", "uncompressed_bytes", "bytes", "sha256", "verification"):
+        if assessment_first[key] != assessment_result[key]:
+            raise ValueError(f"O001/A00 assessment ZIP is not byte-deterministic: {key}")
+    if assessment_result["entries"] != assessment_identity["files"]:
+        raise ValueError("O001/A00 assessment ZIP file count mismatch")
+    if assessment_result["uncompressed_bytes"] != assessment_identity["uncompressed_bytes"]:
+        raise ValueError("O001/A00 assessment ZIP uncompressed byte mismatch")
 
     source_roots = [
         ".openai/hosting.json",
@@ -593,6 +689,11 @@ def main() -> None:
         "scripts/advance-curriculum-authority-v057.mjs",
         "scripts/advance-curriculum-authority-v058.mjs",
         "scripts/advance-curriculum-authority-v059.mjs",
+        "scripts/advance-curriculum-authority-v060.mjs",
+        "scripts/build-v060-admission-evidence.mjs",
+        "scripts/write-directory-public-readback.mjs",
+        "scripts/write-current-central-route-readback.mjs",
+        "scripts/build-v22-v060-validation-receipt.py",
         "scripts/build-v21-pilot-package.py",
         "scripts/build-educational-access-planning-v21.py",
         "scripts/validate-educational-access-planning-v21.py",
@@ -657,11 +758,41 @@ def main() -> None:
         if "__pycache__" not in path.parts and path.suffix != ".pyc"
     }
     required_v22_sources.add("scripts/advance-curriculum-authority-v059.mjs")
+    required_v22_sources.add("scripts/advance-curriculum-authority-v060.mjs")
+    required_v22_sources.add("scripts/build-v22-v060-validation-receipt.py")
     missing_v22_sources = sorted(required_v22_sources - tracked_paths)
     if missing_v22_sources:
         raise ValueError(
             f"backend-v2.2/transition source is not bound to source commit: {missing_v22_sources}"
         )
+    generated_prefixes = ("docs/", "backend/authority/", "backend/v2/")
+    critical_live_paths = {
+        path
+        for path in source_paths
+        if path.is_relative_to(root)
+        and not path.is_relative_to(release)
+        and not path.relative_to(root).as_posix().startswith(generated_prefixes)
+    }
+    for package_root in (backend_v21, backend_v22_release_root, assessment_shard):
+        critical_live_paths.update(
+            path
+            for path in package_root.rglob("*")
+            if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"
+        )
+    critical_live_paths.update(
+        source
+        for source in copies
+        if source.is_relative_to(root)
+        and not source.is_relative_to(release)
+        and source.is_file()
+        and not source.relative_to(root).as_posix().startswith(generated_prefixes)
+    )
+    source_commit_binding = assert_live_matches_commit(
+        root,
+        args.source_commit,
+        critical_live_paths,
+        tracked_paths,
+    )
     generated_catalog = release / f"program-matematika-indonesia-catalog-v{version}.json"
     generated_release_inputs = {
         generated_catalog,
@@ -721,7 +852,9 @@ def main() -> None:
                     "bytes": v22_archive_receipt.stat().st_size,
                     "sha256": sha256_file(v22_archive_receipt),
                 },
+                "assessment_inventory_zip": assessment_result,
                 "central_evidence": central_evidence,
+                "source_commit_binding": source_commit_binding,
                 "source_zip": source_result,
             },
             ensure_ascii=False,

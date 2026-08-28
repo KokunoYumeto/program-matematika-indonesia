@@ -76,13 +76,18 @@
               "type": "object",
               "required": ["federationV2", "learnerReadModelV1"],
               "properties": {
-                "federationV22": { "$ref": "#/$defs/federationV22" }
+                "federationV22": { "$ref": "#/$defs/federationV22" },
+                "capabilityContractV1": { "$ref": "#/$defs/capabilityContractV1" },
+                "assessmentInventoryV1": { "$ref": "#/$defs/assessmentInventoryV1" }
               }
             }
           },
           "allOf": [{
             "if": { "properties": { "version": { "const": "0.59.0" } }, "required": ["version"] },
             "then": { "properties": { "backend": { "required": ["federationV22"] } } }
+          }, {
+            "if": { "properties": { "version": { "const": "0.60.0" } }, "required": ["version"] },
+            "then": { "properties": { "backend": { "required": ["federationV22", "capabilityContractV1", "assessmentInventoryV1"] } } }
           }]
         },
         "topics": { "type": "array", "minItems": 8, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
@@ -122,7 +127,8 @@
                 "additive_v2.1_pilot_and_d20_learner_route_successor",
                 "additive_c100_dense_unit_pilot_and_exact_semantic_reader_successor",
                 "owner_publication_refresh_clean_routes_and_student_supplements",
-                "owner_publication_refresh_hash_bound_learner_routes_and_complete_course_admission"
+                "owner_publication_refresh_hash_bound_learner_routes_and_complete_course_admission",
+                "verified_owner_successor_admission_d40_html_reader_and_o001_assessment_inventory"
               ]
             }
           }
@@ -146,7 +152,8 @@
           "evidence_kind": { "const": "anonymous_public_byte_readback" },
           "bytes": { "type": "integer", "minimum": 1 },
           "sha256": { "$ref": "#/$defs/sha256" },
-          "verified_at": { "type": "string", "format": "date-time" }
+          "verified_at": { "type": "string", "format": "date-time" },
+          "evidence_sha256": { "$ref": "#/$defs/sha256" }
         }
       }
     }
@@ -241,12 +248,92 @@
             "sha256": { "const": "8a2bf0eb8cc68f538867695d5d7d88cbf5874751576ee304e1328f3e4b163861" }
           }
         },
-        "package": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/program-matematika-indonesia-backend-v2\\.2-pilot-v0\\.59\\.0\\.zip\\?download=1$" },
-        "validationReceipt": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0\\.59\\.0\\.json\\?download=1$" },
-        "archiveReceipt": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0\\.59\\.0\\.json\\?download=1$" },
-        "githubPackage": { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/program-matematika-indonesia-backend-v2.2-pilot-v0.59.0.zip" },
-        "githubValidationReceipt": { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v0.59.0.json" },
-        "githubArchiveReceipt": { "const": "https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.59.0/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v0.59.0.json" }
+        "package": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/program-matematika-indonesia-backend-v2\\.2-(?:pilot-)?v[0-9]+\\.[0-9]+\\.[0-9]+\\.zip\\?download=1$" },
+        "validationReceipt": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v[0-9]+\\.[0-9]+\\.[0-9]+\\.json\\?download=1$" },
+        "archiveReceipt": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v[0-9]+\\.[0-9]+\\.[0-9]+\\.json\\?download=1$" },
+        "githubPackage": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/KokunoYumeto/program-matematika-indonesia/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/program-matematika-indonesia-backend-v2\\.2-(?:pilot-)?v[0-9]+\\.[0-9]+\\.[0-9]+\\.zip$" },
+        "githubValidationReceipt": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/KokunoYumeto/program-matematika-indonesia/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/GLOBAL_BACKEND_V22_VALIDATION_RECEIPT_v[0-9]+\\.[0-9]+\\.[0-9]+\\.json$" },
+        "githubArchiveReceipt": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/KokunoYumeto/program-matematika-indonesia/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/GLOBAL_BACKEND_V22_ARCHIVE_RECEIPT_v[0-9]+\\.[0-9]+\\.[0-9]+\\.json$" }
+      }
+    },
+    "assessmentInventoryV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "status", "roleId", "courseId", "packageId", "canonicalPackage", "counts", "projectionState", "package", "githubPackage"],
+      "properties": {
+        "version": { "const": "0.1.0" },
+        "status": { "const": "owner_native_validated_zero_prose" },
+        "roleId": { "const": "O001" },
+        "courseId": { "const": "A00" },
+        "packageId": { "const": "urn:uuid:0b253fa5-067e-55b5-8248-cc528b0b4bd1" },
+        "canonicalPackage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["path", "fileCount", "bytes", "aggregateSha256", "manifest", "checksum", "seal"],
+          "properties": {
+            "path": { "const": "backend/v2.2/owner-native-shards/o001-a00-assessments-v0.1.0" },
+            "fileCount": { "const": 12 },
+            "bytes": { "const": 19057785 },
+            "aggregateSha256": { "const": "5d7c3da1a1b3c33b4f79306fec08a31ebc8f557188f1ec0c088e267e0d9ce222" },
+            "manifest": {
+              "allOf": [
+                { "$ref": "#/$defs/assessmentFileBinding" },
+                { "properties": { "path": { "const": "manifest.json" }, "bytes": { "const": 3995 }, "sha256": { "const": "5ed7b558ae1f621bef52b59be64df90dbf52c967c7e12e2fc9fc296309e2b19e" } } }
+              ]
+            },
+            "checksum": {
+              "allOf": [
+                { "$ref": "#/$defs/assessmentFileBinding" },
+                { "properties": { "path": { "const": "CHECKSUMS.sha256" }, "bytes": { "const": 930 }, "sha256": { "const": "7d313ed06023a90a28882c25e8942bf9feda270b1c75cbaced38674a1ae9cd57" } } }
+              ]
+            },
+            "seal": {
+              "allOf": [
+                { "$ref": "#/$defs/assessmentFileBinding" },
+                { "properties": { "path": { "const": "seal.json" }, "bytes": { "const": 743 }, "sha256": { "const": "a97c1cad9cfbd72fe7bbc44cf59050dc1adbf238d07afdd6337fd0d3c8f74b49" } } }
+              ]
+            }
+          }
+        },
+        "counts": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["assessment_components", "assessments", "modules", "problems", "solution_gaps", "solutions"],
+          "properties": {
+            "assessment_components": { "const": 13345 },
+            "assessments": { "const": 8105 },
+            "modules": { "const": 75 },
+            "problems": { "const": 8105 },
+            "solution_gaps": { "const": 2865 },
+            "solutions": { "const": 5240 }
+          }
+        },
+        "projectionState": { "const": "owner_native_shard_ready_adapter_not_materialized" },
+        "package": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/o001-a00-assessments-v0\\.1\\.0\\.zip\\?download=1$" },
+        "githubPackage": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/KokunoYumeto/program-matematika-indonesia/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/o001-a00-assessments-v0\\.1\\.0\\.zip$" }
+      }
+    },
+    "capabilityContractV1": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "status", "contract", "schema", "githubContract", "githubSchema"],
+      "properties": {
+        "version": { "const": "0.1.0" },
+        "status": { "const": "schema_validated_federated_zero_copy" },
+        "contract": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/global-capability-contract-v0\\.1\\.0\\.json\\?download=1$" },
+        "schema": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/global-capability-contract-v0\\.1\\.schema\\.json\\?download=1$" },
+        "githubContract": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/KokunoYumeto/program-matematika-indonesia/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/global-capability-contract-v0\\.1\\.0\\.json$" },
+        "githubSchema": { "type": "string", "format": "uri", "pattern": "^https://github\\.com/KokunoYumeto/program-matematika-indonesia/releases/download/v[0-9]+\\.[0-9]+\\.[0-9]+/global-capability-contract-v0\\.1\\.schema\\.json$" }
+      }
+    },
+    "assessmentFileBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/portablePath" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
       }
     },
     "portablePath": { "type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))(?!.*\\\\).+$" },
