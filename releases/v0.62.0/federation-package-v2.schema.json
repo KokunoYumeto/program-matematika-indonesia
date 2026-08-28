@@ -1,0 +1,684 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/federation-package-v2.schema.json",
+  "title": "Interlanguage modular mathematics federation package v2",
+  "description": "Strict manifest envelope for the compact phase-one global federation. Canonical records live in sorted JSONL; empty per-type tables are omitted.",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "dataset_id",
+    "dataset_version",
+    "recorded_at",
+    "identity_namespace",
+    "identity_formula",
+    "namespace_document",
+    "release_policy_profile",
+    "canonical_serialization",
+    "records_file",
+    "records_bytes",
+    "records_sha256",
+    "lossless_csv_file",
+    "lossless_csv_bytes",
+    "lossless_csv_sha256",
+    "record_count",
+    "record_counts",
+    "materialized_tables",
+    "table_statuses",
+    "build",
+    "file_inventory_scope",
+    "files",
+    "source_evidence",
+    "limitations"
+  ],
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "minLength": 1
+    },
+    "schema_id": {
+      "const": "interlanguage/global-modular-mathematics-federation-package/2.0.0"
+    },
+    "schema_version": {
+      "const": "2.0.0"
+    },
+    "package_id": {
+      "$ref": "#/$defs/uuid5_urn"
+    },
+    "dataset_id": {
+      "$ref": "#/$defs/uuid5_urn"
+    },
+    "dataset_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "recorded_at": {
+      "$ref": "#/$defs/date_time"
+    },
+    "identity_namespace": {
+      "const": "7790e70a-ae6d-5cf3-b7f5-c53d7d4c0fbd"
+    },
+    "identity_formula": {
+      "const": "record_type:semantic_key"
+    },
+    "namespace_document": {
+      "$ref": "#/$defs/bound_file"
+    },
+    "release_policy_profile": {
+      "$ref": "#/$defs/bound_file"
+    },
+    "canonical_serialization": {
+      "type": "object",
+      "required": [
+        "authority",
+        "encoding",
+        "newline",
+        "record_order",
+        "json_object_encoding",
+        "trailing_newline"
+      ],
+      "properties": {
+        "authority": {
+          "const": "records.jsonl"
+        },
+        "encoding": {
+          "const": "UTF-8"
+        },
+        "newline": {
+          "const": "LF"
+        },
+        "record_order": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "const": "record_type"
+            },
+            {
+              "const": "semantic_key"
+            }
+          ],
+          "items": false,
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "json_object_encoding": {
+          "const": "UTF-8 compact JSON with lexicographically sorted object keys"
+        },
+        "trailing_newline": {
+          "const": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "records_file": {
+      "const": "records.jsonl"
+    },
+    "records_bytes": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "records_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "lossless_csv_file": {
+      "const": "records.csv"
+    },
+    "lossless_csv_bytes": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "lossless_csv_sha256": {
+      "$ref": "#/$defs/sha256"
+    },
+    "record_count": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "record_counts": {
+      "$ref": "#/$defs/record_counts"
+    },
+    "materialized_tables": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/table_name"
+      },
+      "uniqueItems": true
+    },
+    "table_statuses": {
+      "$ref": "#/$defs/table_statuses"
+    },
+    "file_inventory_scope": {
+      "const": "materialized data files only; excludes federation.json and manifest.json"
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/file_fact"
+      }
+    },
+    "source_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/source_fact"
+      }
+    },
+    "build": {
+      "$ref": "#/$defs/build_binding"
+    },
+    "validation_bindings": {
+      "$ref": "#/$defs/validation_bindings"
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(?:\\.\\d+)?(?:Z|[+-]\\d{2}:\\d{2})$"
+    },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "bound_file": {
+      "type": "object",
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_name": {
+      "enum": [
+        "datasets",
+        "programs",
+        "courses",
+        "reader_surfaces",
+        "web_routes",
+        "publication_events",
+        "qa_events",
+        "identity_crosswalks"
+      ]
+    },
+    "record_type_name": {
+      "enum": [
+        "dataset",
+        "program",
+        "course",
+        "reader_surface",
+        "web_route",
+        "publication_event",
+        "qa_event",
+        "identity_crosswalk"
+      ]
+    },
+    "record_counts": {
+      "type": "object",
+      "minProperties": 1,
+      "properties": {
+        "datasets": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "programs": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "courses": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "reader_surfaces": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "web_routes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "publication_events": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "qa_events": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "identity_crosswalks": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "table_status": {
+      "type": "object",
+      "required": [
+        "record_type",
+        "materialized",
+        "count",
+        "jsonl_file",
+        "csv_file"
+      ],
+      "properties": {
+        "record_type": {
+          "$ref": "#/$defs/record_type_name"
+        },
+        "materialized": {
+          "type": "boolean"
+        },
+        "count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "jsonl_file": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/relative_path"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "csv_file": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/relative_path"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "materialized": {
+                "const": true
+              }
+            },
+            "required": [
+              "materialized"
+            ]
+          },
+          "then": {
+            "properties": {
+              "count": {
+                "type": "integer",
+                "minimum": 1
+              },
+              "jsonl_file": {
+                "$ref": "#/$defs/relative_path"
+              },
+              "csv_file": {
+                "$ref": "#/$defs/relative_path"
+              }
+            }
+          },
+          "else": {
+            "properties": {
+              "count": {
+                "const": 0
+              },
+              "jsonl_file": {
+                "type": "null"
+              },
+              "csv_file": {
+                "type": "null"
+              }
+            }
+          }
+        }
+      ],
+      "additionalProperties": false
+    },
+    "table_statuses": {
+      "type": "object",
+      "required": [
+        "datasets",
+        "programs",
+        "courses",
+        "reader_surfaces",
+        "web_routes",
+        "publication_events",
+        "qa_events",
+        "identity_crosswalks"
+      ],
+      "properties": {
+        "datasets": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "dataset"
+                }
+              }
+            }
+          ]
+        },
+        "programs": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "program"
+                }
+              }
+            }
+          ]
+        },
+        "courses": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "course"
+                }
+              }
+            }
+          ]
+        },
+        "reader_surfaces": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "reader_surface"
+                }
+              }
+            }
+          ]
+        },
+        "web_routes": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "web_route"
+                }
+              }
+            }
+          ]
+        },
+        "publication_events": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "publication_event"
+                }
+              }
+            }
+          ]
+        },
+        "qa_events": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "qa_event"
+                }
+              }
+            }
+          ]
+        },
+        "identity_crosswalks": {
+          "allOf": [
+            {
+              "$ref": "#/$defs/table_status"
+            },
+            {
+              "properties": {
+                "record_type": {
+                  "const": "identity_crosswalk"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "file_fact": {
+      "type": "object",
+      "required": [
+        "path",
+        "bytes",
+        "sha256",
+        "role"
+      ],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "role": {
+          "enum": [
+            "records_authority",
+            "lossless_exchange",
+            "table_jsonl",
+            "table_csv",
+            "schema",
+            "namespace",
+            "release_policy",
+            "migration_receipt",
+            "validation_report",
+            "build_receipt",
+            "other"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "source_fact": {
+      "type": "object",
+      "required": [
+        "role",
+        "locator_base",
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "properties": {
+        "role": {
+          "type": "string",
+          "pattern": "^(?:migration_receipt:[a-z0-9][a-z0-9._-]*|research_support_(?:manifest|records|validation)|v1_(?:package_manifest|identity_source|validation)|canonical_owner_role_map|v2_contract|student_site_public_readback|owner_reader_public_readback|central_v059_admission_manifest|curriculum_catalog|other:[a-z0-9][a-z0-9._-]*)$"
+        },
+        "locator_base": {
+          "enum": [
+            "program_repository_root",
+            "coordinator_logbook_root"
+          ]
+        },
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "url": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "uri"
+        },
+        "observed_at": {
+          "$ref": "#/$defs/date_time"
+        }
+      },
+      "additionalProperties": false
+    },
+    "build_binding": {
+      "type": "object",
+      "required": [
+        "builder_path",
+        "builder_sha256",
+        "command",
+        "deterministic_replay",
+        "build_a_records_sha256",
+        "build_b_records_sha256"
+      ],
+      "properties": {
+        "builder_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "builder_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "command": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "inputs": {
+          "type": "object",
+          "required": [
+            "catalog_relative",
+            "v1_package_relative",
+            "site_readback_relative",
+            "owner_reader_readback_relative",
+            "contract_relative",
+            "role_map_relative",
+            "migrations_relative",
+            "educational_access_relative",
+            "dataset_version",
+            "recorded_at",
+            "public_site"
+          ],
+          "properties": {
+            "catalog_relative": { "$ref": "#/$defs/relative_path" },
+            "v1_package_relative": { "$ref": "#/$defs/relative_path" },
+            "site_readback_relative": { "$ref": "#/$defs/relative_path" },
+            "owner_reader_readback_relative": { "$ref": "#/$defs/relative_path" },
+            "contract_relative": { "$ref": "#/$defs/relative_path" },
+            "role_map_relative": { "$ref": "#/$defs/relative_path" },
+            "migrations_relative": { "$ref": "#/$defs/relative_path" },
+            "educational_access_relative": { "$ref": "#/$defs/relative_path" },
+            "dataset_version": { "type": "string", "minLength": 1 },
+            "recorded_at": { "$ref": "#/$defs/date_time" },
+            "public_site": { "type": "string", "format": "uri", "pattern": "^https://.*/$" }
+          },
+          "additionalProperties": false
+        },
+        "deterministic_replay": {
+          "const": "pass"
+        },
+        "build_a_records_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "build_b_records_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "additionalProperties": false
+    },
+    "validation_bindings": {
+      "type": "object",
+      "required": [
+        "package_schema_path",
+        "package_schema_sha256",
+        "record_schema_path",
+        "record_schema_sha256",
+        "validation_report_path",
+        "validation_report_sha256",
+        "result"
+      ],
+      "properties": {
+        "package_schema_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "package_schema_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "record_schema_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "record_schema_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "validation_report_path": {
+          "$ref": "#/$defs/relative_path"
+        },
+        "validation_report_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "result": {
+          "const": "pass"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
