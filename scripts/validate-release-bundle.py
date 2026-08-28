@@ -782,7 +782,7 @@ def verify_central_evidence(
         if row.get("http_status") != 200 or row.get("content_type") != "text/html" or row.get("bytes", 0) <= 0 or not re.fullmatch(r"[0-9a-f]{64}", row.get("sha256", "")):
             raise ValueError(f"owner-reader row is not a complete HTTP/hash proof: {row.get('course_id')}")
     allowed_route_courses = {row.get("course_id") for row in admissions}
-    if version == "0.60.0":
+    if version in {"0.60.0", "0.61.0"}:
         live_authority = load_json(root / "backend/authority/curriculum-authority-v1.json")
         allowed_route_courses = {
             row.get("id") for row in live_authority.get("catalog", {}).get("courses", [])

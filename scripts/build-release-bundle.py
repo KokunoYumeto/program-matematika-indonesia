@@ -298,7 +298,7 @@ def validate_central_evidence(
         ):
             raise ValueError(f"invalid owner-reader evidence row: {row.get('course_id')}")
     allowed_route_courses = {row.get("course_id") for row in admissions}
-    if version == "0.60.0":
+    if version in {"0.60.0", "0.61.0"}:
         live_authority = json.loads(
             (project_root / "backend" / "authority" / "curriculum-authority-v1.json").read_text(
                 encoding="utf-8"
@@ -702,6 +702,7 @@ def main() -> None:
         # Git. Include only the tracked public input; npm run prebuild recreates
         # the mirror byte-for-byte from the committed docs source.
         "public/favicon.svg",
+        "public/og.png",
         "docs",
         "schemas/catalog-v1.schema.json",
         "schemas/educational-access-federation-v1.schema.json",
@@ -736,6 +737,9 @@ def main() -> None:
         "scripts/advance-curriculum-authority-v059.mjs",
         "scripts/advance-curriculum-authority-v060.mjs",
         "scripts/build-v060-admission-evidence.mjs",
+        "scripts/advance-curriculum-authority-v061.mjs",
+        "scripts/build-v061-admission-evidence.mjs",
+        "scripts/reserve-v061-zenodo.py",
         "scripts/write-directory-public-readback.mjs",
         "scripts/write-current-central-route-readback.mjs",
         "scripts/build-v22-v060-validation-receipt.py",
@@ -804,6 +808,8 @@ def main() -> None:
     }
     required_v22_sources.add("scripts/advance-curriculum-authority-v059.mjs")
     required_v22_sources.add("scripts/advance-curriculum-authority-v060.mjs")
+    required_v22_sources.add("scripts/advance-curriculum-authority-v061.mjs")
+    required_v22_sources.add("scripts/build-v061-admission-evidence.mjs")
     required_v22_sources.add("scripts/build-v22-v060-validation-receipt.py")
     missing_v22_sources = sorted(required_v22_sources - tracked_paths)
     if missing_v22_sources:
