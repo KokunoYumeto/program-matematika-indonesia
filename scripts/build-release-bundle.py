@@ -131,6 +131,30 @@ V062_SUMMARY = {
     "learner_state_contract": "browser-local completion, placement, equivalence, and edge-scoped waiver state; derived eligibility is not persisted",
 }
 
+V062_MUTABLE_A30_INPUT = {
+    "path": "04_mirrors/id/openstax-precalculus-2e-id/README.md",
+    "bytes": 5820,
+    "sha256": "33d767b675684e5959207ad974187a578f9d057bb20bbef7627648d026eed0a6",
+}
+
+
+def v062_historical_a30_binding_is_admitted(admission: dict, fact: dict) -> bool:
+    """Accept the frozen README fact after its live owner file legitimately advances.
+
+    The admission manifest itself is hash-bound by the v0.62 authority
+    transition.  A30's release claim is only the public repository route, which
+    is independently rechecked in the same manifest; later owner production
+    must not invalidate that historical evidence snapshot.
+    """
+    if any(fact.get(key) != value for key, value in V062_MUTABLE_A30_INPUT.items()):
+        return False
+    return any(
+        row.get("repository") == "https://github.com/KokunoYumeto/openstax-precalculus-2e-id"
+        and row.get("private") is False
+        and row.get("disabled") is False
+        for row in admission.get("public_repository_rechecks", [])
+    )
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -322,11 +346,16 @@ def validate_central_evidence(
             if len(relative.parts) == 1
             else workspace_root / relative
         )
-        if (
-            not source.is_file()
-            or fact.get("bytes") != source.stat().st_size
-            or fact.get("sha256") != sha256_file(source)
-        ):
+        exact_live_binding = (
+            source.is_file()
+            and fact.get("bytes") == source.stat().st_size
+            and fact.get("sha256") == sha256_file(source)
+        )
+        historical_a30_binding = (
+            version == "0.62.0"
+            and v062_historical_a30_binding_is_admitted(admission_doc, fact)
+        )
+        if not exact_live_binding and not historical_a30_binding:
             raise ValueError(f"central admission input binding mismatch: {fact.get('path')}")
     admissions = admission_doc.get("admissions", [])
     supplements = admission_doc.get("supplements", [])

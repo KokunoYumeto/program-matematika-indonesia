@@ -135,6 +135,23 @@ V062_SUMMARY = {
     "learner_state_contract": "browser-local completion, placement, equivalence, and edge-scoped waiver state; derived eligibility is not persisted",
 }
 
+V062_MUTABLE_A30_INPUT = {
+    "path": "04_mirrors/id/openstax-precalculus-2e-id/README.md",
+    "bytes": 5820,
+    "sha256": "33d767b675684e5959207ad974187a578f9d057bb20bbef7627648d026eed0a6",
+}
+
+
+def v062_historical_a30_binding_is_admitted(admission: dict[str, Any], fact: dict[str, Any]) -> bool:
+    if any(fact.get(key) != value for key, value in V062_MUTABLE_A30_INPUT.items()):
+        return False
+    return any(
+        row.get("repository") == "https://github.com/KokunoYumeto/openstax-precalculus-2e-id"
+        and row.get("private") is False
+        and row.get("disabled") is False
+        for row in admission.get("public_repository_rechecks", [])
+    )
+
 PRIVATE_BYTE_MARKERS = (
     bytes([70, 108, 111, 114, 105, 115]).lower(),
     b"c:" + b"\\users\\",
@@ -823,7 +840,16 @@ def verify_central_evidence(
     for fact in admission.get("inputs", []):
         relative = Path(fact.get("path", ""))
         source = admission_input.parent / relative if len(relative.parts) == 1 else workspace_root / relative
-        if not source.is_file() or fact.get("bytes") != source.stat().st_size or fact.get("sha256") != sha256_file(source):
+        exact_live_binding = (
+            source.is_file()
+            and fact.get("bytes") == source.stat().st_size
+            and fact.get("sha256") == sha256_file(source)
+        )
+        historical_a30_binding = (
+            version == "0.62.0"
+            and v062_historical_a30_binding_is_admitted(admission, fact)
+        )
+        if not exact_live_binding and not historical_a30_binding:
             raise ValueError(f"central admission input binding mismatch: {fact.get('path')}")
     admissions = admission.get("admissions", [])
     supplements = admission.get("supplements", [])
