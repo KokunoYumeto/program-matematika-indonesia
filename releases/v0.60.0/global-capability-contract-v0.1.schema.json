@@ -1,0 +1,178 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.2/global-capability-contract-v0.1.schema.json",
+  "title": "Global modular mathematics capability contract v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "contract_version",
+    "identity",
+    "layers",
+    "lane_required_records",
+    "human_course_required_records",
+    "global_registry_records",
+    "capability_profiles",
+    "learner_route_policy",
+    "validation_gates",
+    "policies"
+  ],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.2/global-capability-contract-v0.1.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-capability-contract/0.1.0" },
+    "contract_version": { "const": "0.1.0" },
+    "identity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["namespace", "formula", "locale_independent", "priority", "forbidden_inputs"],
+      "properties": {
+        "namespace": { "$ref": "#/$defs/uuid5" },
+        "formula": { "const": "UUIDv5(namespace, record_type + ':' + corpus_qualified_semantic_key)" },
+        "locale_independent": { "const": true },
+        "priority": {
+          "type": "array",
+          "minItems": 3,
+          "uniqueItems": true,
+          "items": { "enum": ["stable_native_id", "authority_qualified_source_id", "pinned_file_and_structural_selector"] }
+        },
+        "forbidden_inputs": {
+          "type": "array",
+          "minItems": 8,
+          "maxItems": 8,
+          "uniqueItems": true,
+          "items": { "enum": ["translated_title", "translated_prose", "url", "page_number", "line_number", "locale", "build_time", "mutable_order"] }
+        }
+      }
+    },
+    "layers": {
+      "type": "array",
+      "minItems": 6,
+      "maxItems": 6,
+      "uniqueItems": true,
+      "allOf": [
+        { "contains": { "type": "object", "required": ["id"], "properties": { "id": { "const": "owner_native_authority" } } } },
+        { "contains": { "type": "object", "required": ["id"], "properties": { "id": { "const": "lane_authority_capsule" } } } },
+        { "contains": { "type": "object", "required": ["id"], "properties": { "id": { "const": "semantic_capability_shards" } } } },
+        { "contains": { "type": "object", "required": ["id"], "properties": { "id": { "const": "learner_navigation_shard" } } } },
+        { "contains": { "type": "object", "required": ["id"], "properties": { "id": { "const": "global_registry" } } } },
+        { "contains": { "type": "object", "required": ["id"], "properties": { "id": { "const": "student_site" } } } }
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "authority", "centralizes_full_prose", "purpose"],
+        "properties": {
+          "id": { "enum": ["owner_native_authority", "lane_authority_capsule", "semantic_capability_shards", "learner_navigation_shard", "global_registry", "student_site"] },
+          "authority": { "enum": ["owner", "lane", "program", "generated"] },
+          "centralizes_full_prose": { "type": "boolean" },
+          "purpose": { "type": "string", "minLength": 1, "maxLength": 320 }
+        }
+      }
+    },
+    "lane_required_records": { "$ref": "#/$defs/recordTypeSet" },
+    "human_course_required_records": { "$ref": "#/$defs/recordTypeSet" },
+    "global_registry_records": { "$ref": "#/$defs/recordTypeSet" },
+    "capability_profiles": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "allOf": [
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "structure_localization" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "terminology" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "mathematical_preservation" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "assessment_support" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "assets" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "accessibility" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "corrections" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "computational_interactives" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "publication" } } } },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "research_support" } } } }
+      ],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "version", "states", "required_declaration_fields"],
+        "properties": {
+          "name": { "enum": ["structure_localization", "terminology", "mathematical_preservation", "assessment_support", "assets", "accessibility", "corrections", "computational_interactives", "publication", "research_support"] },
+          "version": { "const": "0.1.0" },
+          "states": {
+            "type": "array",
+            "minItems": 4,
+            "uniqueItems": true,
+            "items": { "enum": ["materialized", "referenced_native_shards", "not_projected", "absent"] }
+          },
+          "required_declaration_fields": {
+            "type": "array",
+            "minItems": 10,
+            "maxItems": 10,
+            "uniqueItems": true,
+            "items": { "enum": ["name", "version", "state", "schema_binding", "shard_refs", "native_count", "projected_count", "identity_set_sha256", "closure_rules", "loss_gap_report"] }
+          },
+          "component_kinds": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "enum": ["statement", "subpart", "hint", "answer", "solution", "worked_solution", "rubric", "dataset", "notebook"] }
+          }
+        }
+      }
+    },
+    "learner_route_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["action_order", "allowed_results", "machine_data_is_learner_destination", "fresh_public_readback_required_for_public_claim"],
+      "properties": {
+        "action_order": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": { "enum": ["learn", "html", "pdf", "epub", "offline", "source"] }
+        },
+        "allowed_results": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "enum": ["exact_anchor", "truthful_fallback", "explicit_unavailable"] }
+        },
+        "machine_data_is_learner_destination": { "const": false },
+        "fresh_public_readback_required_for_public_claim": { "const": true }
+      }
+    },
+    "validation_gates": {
+      "type": "array",
+      "minItems": 12,
+      "maxItems": 12,
+      "uniqueItems": true,
+      "items": { "enum": ["G0_schema_inventory", "G1_authority_bytes", "G2_identity_native_mapping", "G3_relation_closure", "G4_source_target_preservation", "G5_capability_closure", "G6_rights_accessibility", "G7_reverse_extraction", "G8_deterministic_replay", "G9_learner_route_qa", "G10_publication_readback", "G11_aggregate_differential"] }
+    },
+    "policies": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_native_authoritative", "zero_copy_global_registry", "semantic_translation_navigation_are_distinct", "capabilities_are_conditional", "missing_capability_is_explicit", "student_site_is_primary_entry", "json_is_secondary_machine_surface"],
+      "properties": {
+        "owner_native_authoritative": { "const": true },
+        "zero_copy_global_registry": { "const": true },
+        "semantic_translation_navigation_are_distinct": { "const": true },
+        "capabilities_are_conditional": { "const": true },
+        "missing_capability_is_explicit": { "const": true },
+        "student_site_is_primary_entry": { "const": true },
+        "json_is_secondary_machine_surface": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "uuid5": { "type": "string", "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "recordTypeSet": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": ["owner_authority", "dataset", "edition", "native_binding", "content_binding", "adapter_profile", "adapter_run", "identity_crosswalk", "rights", "rights_assignment", "qa_event", "unit", "course_unit_membership", "search_document", "reader_surface", "route", "program", "course", "package_ref", "shard_ref", "release_snapshot", "publication_event"]
+      }
+    }
+  }
+}
