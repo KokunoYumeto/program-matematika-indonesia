@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Build the deterministic v0.60 global backend-v2.2 validation receipt."""
+"""Build a deterministic version-bound global backend-v2.2 validation receipt."""
 
 from __future__ import annotations
 
@@ -14,8 +14,6 @@ from pathlib import Path
 from jsonschema import Draft202012Validator
 
 
-VERSION = "0.60.0"
-RECORDED_AT = "2026-08-28T00:00:00Z"
 A00_RELATIVE = Path("backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0")
 ASSESSMENT_RELATIVE = Path(
     "backend/v2.2/owner-native-shards/o001-a00-assessments-v0.1.0"
@@ -124,6 +122,8 @@ def main() -> int:
     parser.add_argument("--root", required=True, type=Path)
     parser.add_argument("--owner-root", required=True, type=Path)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--version", required=True)
+    parser.add_argument("--recorded-at", required=True)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
 
@@ -132,6 +132,10 @@ def main() -> int:
     output = args.output.resolve()
     if not re.fullmatch(r"[0-9a-f]{40}", args.source_commit):
         raise ValueError("--source-commit must be a lowercase 40-hex Git object ID")
+    if not re.fullmatch(r"\d+\.\d+\.\d+", args.version):
+        raise ValueError("--version must be a semantic version")
+    if not args.recorded_at.endswith("Z") or "T" not in args.recorded_at:
+        raise ValueError("--recorded-at must be an explicit UTC timestamp")
 
     a00 = (root / A00_RELATIVE).resolve()
     assessment = (root / ASSESSMENT_RELATIVE).resolve()
@@ -184,9 +188,9 @@ def main() -> int:
 
     receipt = {
         "schema_id": "program-matematika-indonesia/backend-v2.2-global-validation-receipt/v1",
-        "version": VERSION,
+        "version": args.version,
         "source_commit": args.source_commit,
-        "recorded_at": RECORDED_AT,
+        "recorded_at": args.recorded_at,
         "result": "pass",
         "credentials_recorded": False,
         "canonical_package": {
