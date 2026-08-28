@@ -6,6 +6,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -228,7 +229,41 @@ def validate_central_evidence(
     admissions = admission_doc.get("admissions", [])
     supplements = admission_doc.get("supplements", [])
     summary = admission_doc.get("summary", {})
-    if (
+    if version == "0.60.0":
+        infrastructure = admission_doc.get("infrastructure_admissions", [])
+        valid_primary = all(
+            isinstance(row.get("record"), int)
+            and row.get("doi") == f"10.5281/zenodo.{row['record']}"
+            and str(row.get("learner_route", "")).startswith("https://")
+            and isinstance(row.get("primary_artifact", {}).get("bytes"), int)
+            and row["primary_artifact"]["bytes"] > 0
+            and re.fullmatch(r"[0-9a-f]{64}", row["primary_artifact"].get("sha256", ""))
+            for row in admissions
+        )
+        valid_infrastructure = all(
+            row.get("zero_prose") is True
+            and isinstance(row.get("files"), int)
+            and row["files"] > 0
+            and isinstance(row.get("bytes"), int)
+            and row["bytes"] > 0
+            and re.fullmatch(r"[0-9a-f]{64}", row.get("aggregate_sha256", ""))
+            for row in infrastructure
+        )
+        if (
+            len({row.get("course_id") for row in admissions}) != len(admissions)
+            or summary.get("refreshed_course_routes") != len(admissions)
+            or summary.get("new_html_readers")
+            != sum(isinstance(row.get("central_html_reader"), dict) for row in admissions)
+            or summary.get("new_owner_native_backend_shards") != len(infrastructure)
+            or summary.get("completed_public_course_roles_before")
+            != summary.get("completed_public_course_roles_after")
+            or summary.get("honest_global_backend_state")
+            != "phase_release_not_global_migration_complete"
+            or not valid_primary
+            or not valid_infrastructure
+        ):
+            raise ValueError("v0.60 central admission summary is not derivable from its rows")
+    elif (
         len({row.get("course_id") for row in admissions}) != len(admissions)
         or summary.get("admitted_primary_course_routes") != len(admissions)
         or summary.get("admitted_partial_courses")
@@ -262,8 +297,18 @@ def validate_central_evidence(
             or ".json" in str(row.get("url", "")).lower()
         ):
             raise ValueError(f"invalid owner-reader evidence row: {row.get('course_id')}")
-    if not {row.get("course_id") for row in routes}.issubset({row.get("course_id") for row in admissions}):
-        raise ValueError("owner-reader evidence references a course outside the admission manifest")
+    allowed_route_courses = {row.get("course_id") for row in admissions}
+    if version == "0.60.0":
+        live_authority = json.loads(
+            (project_root / "backend" / "authority" / "curriculum-authority-v1.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        allowed_route_courses = {
+            row.get("id") for row in live_authority.get("catalog", {}).get("courses", [])
+        }
+    if not {row.get("course_id") for row in routes}.issubset(allowed_route_courses):
+        raise ValueError("owner-reader evidence references a course outside the admitted curriculum")
     result = {
         "admission": {"bytes": admission.stat().st_size, "sha256": sha256_file(admission)},
         "owner_readback": {"bytes": owner_readback.stat().st_size, "sha256": sha256_file(owner_readback)},
