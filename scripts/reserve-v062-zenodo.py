@@ -6,6 +6,7 @@ The credential is read in process and is never written to stdout or receipts.
 
 from __future__ import annotations
 
+import argparse
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -17,7 +18,6 @@ import requests
 
 PROJECT = Path(__file__).resolve().parents[1]
 WORKSPACE = PROJECT.parents[2]
-TOKEN_FILE = Path.home() / "Documents" / "Obsidian notes" / "New zenodo token.md"
 LOGBOOK = WORKSPACE / "outputs" / "01a01ec1-e685-70d0-b022-211396334723" / "curriculum_logbook"
 OUTPUT = LOGBOOK / "140_CENTRAL_V062_ZENODO_DRAFT_RESERVATION_20260828.json"
 
@@ -32,8 +32,9 @@ def require(condition: bool, message: str) -> None:
         raise RuntimeError(message)
 
 
-def load_token() -> str:
-    text = TOKEN_FILE.read_text(encoding="utf-8")
+def load_token(token_file: Path) -> str:
+    require(token_file.is_file(), "Zenodo credential file is unavailable")
+    text = token_file.read_text(encoding="utf-8")
     candidates = re.findall(
         r"(?<![A-Za-z0-9._~-])([A-Za-z0-9._~-]{40,})(?![A-Za-z0-9._~-])",
         text,
@@ -58,8 +59,12 @@ def concept_id_of(record: dict[str, object]) -> int:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--token-file", required=True, type=Path)
+    args = parser.parse_args()
+
     session = requests.Session()
-    session.headers.update({"Authorization": f"Bearer {load_token()}"})
+    session.headers.update({"Authorization": f"Bearer {load_token(args.token_file.resolve())}"})
 
     predecessor_response = session.get(f"{API}/{PREDECESSOR_ID}", timeout=120)
     predecessor_response.raise_for_status()
