@@ -24,7 +24,6 @@ CONCEPT_ID = 22059707
 PREDECESSOR_ID = 22148050
 AUTHORITY_SOURCE_COMMIT = ""
 RELEASE_COMMIT = ""
-TOKEN_FILE = Path.home() / "Documents" / "Obsidian notes" / "New zenodo token.md"
 LOGBOOK = (
     PROJECT.parents[2]
     / "outputs"
@@ -107,8 +106,9 @@ def require_credit_anchors(creators: object, contributors: object, label: str) -
     return creator_hash, contributor_hash
 
 
-def load_token() -> str:
-    text = TOKEN_FILE.read_text(encoding="utf-8")
+def load_token(token_file: Path) -> str:
+    require(token_file.is_file(), "Zenodo credential file is unavailable")
+    text = token_file.read_text(encoding="utf-8")
     candidates = re.findall(
         r"(?<![A-Za-z0-9._~-])([A-Za-z0-9._~-]{40,})(?![A-Za-z0-9._~-])",
         text,
@@ -375,6 +375,7 @@ def verify_zenodo_lineage() -> None:
 def publish_zenodo(
     local: list[dict[str, object]],
     related: list[dict[str, str]],
+    token_file: Path,
 ) -> tuple[dict[str, object], list[dict[str, object]], str, str]:
     public_existing = requests.get(ZENODO_PUBLIC, timeout=30)
     if public_existing.status_code == 200:
@@ -389,7 +390,7 @@ def publish_zenodo(
     require(public_existing.status_code == 404, f"unexpected public-record preflight HTTP {public_existing.status_code}")
 
     session = requests.Session()
-    session.headers.update({"Authorization": f"Bearer {load_token()}"})
+    session.headers.update({"Authorization": f"Bearer {load_token(token_file)}"})
     draft_response = request(session, "GET", ZENODO_DEPOSIT, timeout=60)
     draft_response.raise_for_status()
     draft = draft_response.json()
@@ -639,6 +640,7 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--authority-source-commit", required=True)
     parser.add_argument("--release-commit", required=True)
+    parser.add_argument("--token-file", required=True, type=Path)
     args = parser.parse_args()
     require(re.fullmatch(r"[0-9a-f]{40}", args.authority_source_commit) is not None, "authority source commit is invalid")
     require(re.fullmatch(r"[0-9a-f]{40}", args.release_commit) is not None, "release commit is invalid")
@@ -650,7 +652,11 @@ def main() -> int:
     catalog, related = catalog_and_related_identifiers()
     github_release, github_inventory = verify_github(local)
     student_site = verify_student_site()
-    zenodo_record, zenodo_inventory, creator_hash, contributor_hash = publish_zenodo(local, related)
+    zenodo_record, zenodo_inventory, creator_hash, contributor_hash = publish_zenodo(
+        local,
+        related,
+        args.token_file.resolve(),
+    )
     receipt_bytes, receipt_sha256 = write_receipt(
         local,
         github_release,
