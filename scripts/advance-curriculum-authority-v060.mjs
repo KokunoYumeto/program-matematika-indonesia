@@ -260,7 +260,17 @@ function updateCourses(catalog, admission, ownerReaders) {
 }
 
 async function loadInputs(project) {
-  const predecessorBytes = await readFile(resolve(project, authorityRelative));
+  let predecessorBytes = await readFile(resolve(project, authorityRelative));
+  if (predecessorBytes.length !== predecessorIdentity.bytes
+      || sha256(predecessorBytes) !== predecessorIdentity.sha256) {
+    const liveAuthority = JSON.parse(predecessorBytes.toString('utf8'));
+    assert.equal(
+      liveAuthority.catalog?.program?.version,
+      version,
+      'Live authority is neither the bound predecessor nor this transition output.',
+    );
+    predecessorBytes = await readFile(resolve(project, historyRelative));
+  }
   assert.equal(predecessorBytes.length, predecessorIdentity.bytes, 'Predecessor authority byte count changed.');
   assert.equal(sha256(predecessorBytes), predecessorIdentity.sha256, 'Predecessor authority SHA-256 changed.');
   const predecessor = JSON.parse(predecessorBytes.toString('utf8'));
