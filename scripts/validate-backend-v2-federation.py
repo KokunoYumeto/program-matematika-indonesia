@@ -842,9 +842,17 @@ def _validate_learner_routes(tables: dict[str, list[dict[str, Any]]]) -> dict[st
         ):
             raise ValidationFailure([f"course web_route_root mismatch:{course['semantic_key']}"])
         fallback = route["payload"].get("learner_fallback_url")
-        if fallback is not None and normalize_url(fallback, label=f"web_route:{route['semantic_key']}:fallback") != normalize_url(
+        learner_start = normalize_url(
             payload.get("learner_start_url"), label=f"course:{course_key}:learner_start_url"
-        ):
+        )
+        if route["payload"].get("route_kind") == "course_clean_current":
+            if learner_start != normalize_url(public_url, label=f"web_route:{route['semantic_key']}:public_url"):
+                raise ValidationFailure([f"course clean route is not learner start:{course['semantic_key']}"])
+            if fallback is None:
+                raise ValidationFailure([f"course clean route lacks learner fallback:{course['semantic_key']}"])
+        elif fallback is not None and normalize_url(
+            fallback, label=f"web_route:{route['semantic_key']}:fallback"
+        ) != learner_start:
             raise ValidationFailure([f"course learner fallback mismatch:{course['semantic_key']}"])
         if payload.get("unit_route_state") in {"not_published", "planned_not_published"}:
             if route["payload"].get("unit_route_state") not in {"not_published", "planned_not_published"}:
