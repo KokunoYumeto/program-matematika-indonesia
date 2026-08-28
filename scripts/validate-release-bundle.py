@@ -165,7 +165,12 @@ def verify_source_zip(
             source_path = entry.get("source_path")
             if not isinstance(source_path, str) or not source_path or source_path.startswith("/") or ".." in Path(source_path).parts:
                 raise ValueError(f"source ZIP entry has no portable source_path: {name}")
-            if source_path in tracked_paths:
+            if source_path in allowed_generated_source_paths:
+                live_path = root / source_path
+                if not live_path.is_file() or live_path.read_bytes() != data:
+                    raise ValueError(f"source ZIP admitted generated entry differs from live release input: {source_path}")
+                generated_entries += 1
+            elif source_path in tracked_paths:
                 committed = subprocess.run(
                     ["git", "show", f"{source_commit}:{source_path}"],
                     cwd=root,
@@ -175,8 +180,6 @@ def verify_source_zip(
                 if committed != data:
                     raise ValueError(f"source ZIP entry differs from source commit: {source_path}")
                 commit_bound_entries += 1
-            elif source_path in allowed_generated_source_paths:
-                generated_entries += 1
             else:
                 raise ValueError(f"source ZIP entry is neither commit-bound nor admitted generated output: {source_path}")
     return {
@@ -1176,6 +1179,13 @@ def main() -> None:
 
     generated_catalog = f"releases/v{version}/program-matematika-indonesia-catalog-v{version}.json"
     allowed_generated = {generated_catalog, *generated_evidence_paths}
+    for generated_root in (root / "docs", root / "backend" / "authority", backend_v2):
+        allowed_generated.update(
+            path.relative_to(root).as_posix()
+            for path in generated_root.rglob("*")
+            if path.is_file() and "__pycache__" not in path.parts and path.suffix != ".pyc"
+        )
+    allowed_generated.add(backend_v2_receipt.relative_to(root).as_posix())
     zip_results = {
         "source": verify_source_zip(
             release / f"program-matematika-indonesia-source-v{version}.zip",

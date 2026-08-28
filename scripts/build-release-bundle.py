@@ -739,7 +739,6 @@ def main() -> None:
         "scripts/build-v060-admission-evidence.mjs",
         "scripts/advance-curriculum-authority-v061.mjs",
         "scripts/build-v061-admission-evidence.mjs",
-        "scripts/reserve-v061-zenodo.py",
         "scripts/write-directory-public-readback.mjs",
         "scripts/write-current-central-route-readback.mjs",
         "scripts/build-v22-v060-validation-receipt.py",
@@ -766,6 +765,8 @@ def main() -> None:
         "backend/MIGRATION_HANDOFF_V1.md",
         "backend/v1/namespace.json",
         "backend/authority",
+        backend_v2.relative_to(root).as_posix(),
+        backend_v2_validation_receipt.relative_to(root).as_posix(),
         "backend/v2.1",
         "backend/v2.2",
         "backend/research/educational-access-v0.1.0",
@@ -852,10 +853,17 @@ def main() -> None:
     }
     if reservation_receipt is not None:
         generated_release_inputs.add(release / reservation_receipt.name)
+    admitted_live_inputs = set(generated_release_inputs)
+    admitted_live_inputs.update(
+        path
+        for path in source_paths
+        if path.is_relative_to(root)
+        and path.relative_to(root).as_posix().startswith(generated_prefixes)
+    )
     source_paths = [
         path
         for path in source_paths
-        if path in generated_release_inputs
+        if path in admitted_live_inputs
         or path.relative_to(root).as_posix() in tracked_paths
     ]
     if len(source_paths) != len(set(source_paths)):
@@ -870,7 +878,7 @@ def main() -> None:
         name = source_path
         if path.parent == release:
             name = path.name
-        data = path.read_bytes() if path in generated_release_inputs else committed_blob_bytes(root, args.source_commit, source_path)
+        data = path.read_bytes() if path in admitted_live_inputs else committed_blob_bytes(root, args.source_commit, source_path)
         entries.append((name, data))
         manifest_files.append(
             {
