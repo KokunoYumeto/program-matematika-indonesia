@@ -69,6 +69,72 @@ EXPECTED_V1_ARCHIVE_SHA256 = "a6451613d0e1960f614314da2c5361ddfb749cd09bf147539c
 EXPECTED_V1_ARCHIVE_PREFIX = "program-matematika-indonesia-backend-v1/"
 FIXED_ZIP_TIME = (2026, 8, 22, 0, 0, 0)
 
+LEARNER_STATE_RELEASE_FILES = {
+    "schemas/v1/learner-state-v1.schema.json": "learner-state-v1.schema.json",
+    "docs/learner-state.js": "learner-state.js",
+}
+
+V062_ADMISSION_ROWS = {
+    "A10": {
+        "decision": "advance_public_partial_checkpoint_without_completion_promotion",
+        "state_after": "production",
+        "record": 22143518,
+        "doi": "10.5281/zenodo.22143518",
+        "modules": "32/82",
+        "pages": 1011,
+        "edition": "https://zenodo.org/records/22143518/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-S0032-reader.pdf?download=1",
+    },
+    "A30": {
+        "decision": "add_verified_public_repository_route_without_completion_promotion",
+        "state_after": "production",
+        "repository": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id",
+    },
+    "B20": {
+        "decision": "admit_complete_public_two-reader_course",
+        "state_after": "published",
+        "record": 21938930,
+        "doi": "10.5281/zenodo.21938930",
+        "textbook_pages": 442,
+        "problem_book_pages": 646,
+    },
+    "B40": {
+        "decision": "decompose_complete_textbook_worked_answers_and_sage_lab_into_distinct_learner_materials",
+        "state_after": "published",
+        "record": 22070458,
+        "textbook_pages": 580,
+        "worked_answers_pages": 435,
+        "sage_lab_pages": 109,
+    },
+    "D80": {
+        "decision": "refresh_public_checkpoint_and_add_d70_canonical_prerequisite_with_learner_equivalence_support",
+        "state_after": "production",
+        "record": 22143171,
+        "public_unit": 50,
+        "pages": 320,
+        "repository": "https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id",
+    },
+    "D90": {
+        "decision": "admit_integrated_terminal_complete_course_and_replace_obsolete_partial_route",
+        "state_after": "published",
+        "record": 22142120,
+        "doi": "10.5281/zenodo.22142120",
+        "pages": 141,
+        "backend_records": 4877,
+    },
+}
+
+V062_SUMMARY = {
+    "selected_course_roles": 40,
+    "completed_public_course_roles_before": 19,
+    "completed_public_course_roles_after": 21,
+    "distinct_completed_public_records_before": 18,
+    "distinct_completed_public_records_after": 20,
+    "newly_completed_course_roles": ["B20", "D90"],
+    "still_production": ["A10", "A30", "D80"],
+    "prerequisite_edges_after": 83,
+    "learner_state_contract": "browser-local completion, placement, equivalence, and edge-scoped waiver state; derived eligibility is not persisted",
+}
+
 PRIVATE_BYTE_MARKERS = (
     bytes([70, 108, 111, 114, 105, 115]).lower(),
     b"c:" + b"\\users\\",
@@ -697,6 +763,42 @@ def verify_assessment_inventory_archive(
     }
 
 
+def verify_v062_evidence_semantics(admission: dict[str, Any], readback: dict[str, Any]) -> None:
+    rows = admission.get("admissions", [])
+    by_course = {
+        row.get("course_id"): row
+        for row in rows
+        if isinstance(row, dict) and isinstance(row.get("course_id"), str)
+    }
+    if len(rows) != len(V062_ADMISSION_ROWS) or set(by_course) != set(V062_ADMISSION_ROWS):
+        raise ValueError("v0.62 admission course set differs from the six authorized corrections")
+    for course_id, expected in V062_ADMISSION_ROWS.items():
+        row = by_course[course_id]
+        for key, value in expected.items():
+            if row.get(key) != value:
+                raise ValueError(f"v0.62 admission semantic mismatch: {course_id}.{key}")
+    summary = admission.get("summary", {})
+    for key, value in V062_SUMMARY.items():
+        if summary.get(key) != value:
+            raise ValueError(f"v0.62 admission summary mismatch: {key}")
+    if admission.get("target_record_id") != 22150264:
+        raise ValueError("v0.62 admission is not bound to reserved record 22150264")
+
+    routes = [row for row in readback.get("routes", []) if row.get("course_id") == "D90"]
+    if len(routes) != 1:
+        raise ValueError("v0.62 owner readback must contain exactly one D90 route")
+    d90 = routes[0]
+    if (
+        d90.get("url")
+        != "https://zenodo.org/records/22142120/files/D90-O015-optimisasi-lanjut-analisis-konveks-id.html?download=1"
+        or d90.get("bytes") != 2485595
+        or d90.get("sha256")
+        != "028e026033bc60bba1aff282f34b2e550a9f9358a3bdecd16b74e3442f743c89"
+        or "22104724" in json.dumps(readback, ensure_ascii=False)
+    ):
+        raise ValueError("v0.62 D90 readback is not the terminal integrated learner edition")
+
+
 def verify_central_evidence(
     admission_input: Path,
     readback_input: Path,
@@ -726,7 +828,9 @@ def verify_central_evidence(
     admissions = admission.get("admissions", [])
     supplements = admission.get("supplements", [])
     summary = admission.get("summary", {})
-    if version == "0.60.0":
+    if version == "0.62.0":
+        verify_v062_evidence_semantics(admission, readback)
+    elif version == "0.60.0":
         infrastructure = admission.get("infrastructure_admissions", [])
         valid_primary = all(
             isinstance(row.get("record"), int)
@@ -785,7 +889,7 @@ def verify_central_evidence(
         if row.get("http_status") != 200 or row.get("content_type") != "text/html" or row.get("bytes", 0) <= 0 or not re.fullmatch(r"[0-9a-f]{64}", row.get("sha256", "")):
             raise ValueError(f"owner-reader row is not a complete HTTP/hash proof: {row.get('course_id')}")
     allowed_route_courses = {row.get("course_id") for row in admissions}
-    if version in {"0.60.0", "0.61.0"}:
+    if version in {"0.60.0", "0.61.0", "0.62.0"}:
         live_authority = load_json(root / "backend/authority/curriculum-authority-v1.json")
         allowed_route_courses = {
             row.get("id") for row in live_authority.get("catalog", {}).get("courses", [])
@@ -816,6 +920,134 @@ def assert_central_url(url: str, record_id: int, filename: str) -> None:
     expected = f"https://zenodo.org/records/{record_id}/files/{filename}"
     if not isinstance(url, str) or not url.startswith(expected):
         raise ValueError(f"central release URL is not bound to record {record_id}: {filename}")
+
+
+def verify_v062_catalog_semantics(catalog: dict[str, Any], record_id: int) -> None:
+    if record_id != 22150264:
+        raise ValueError("v0.62 release must use the existing reserved record 22150264")
+    counts = catalog.get("counts", {})
+    expected_counts = {
+        "courseRoles": 40,
+        "selectedCorpusRoles": 40,
+        "unresolvedRoles": 0,
+        "completedPublicCourseRoles": 21,
+        "completedPublicRecords": 20,
+    }
+    if counts != expected_counts:
+        raise ValueError("v0.62 completion counts must be exactly 21 roles and 20 records")
+    program = catalog.get("program", {})
+    completed_roles = program.get("completedPublicCourseRoleIds", [])
+    completed_dois = program.get("completedPublicRecordDois", [])
+    if (
+        len(completed_roles) != 21
+        or len(set(completed_roles)) != 21
+        or not {"B20", "D90"}.issubset(completed_roles)
+        or len(completed_dois) != 20
+        or len(set(completed_dois)) != 20
+        or not {
+            "10.5281/zenodo.21938930",
+            "10.5281/zenodo.22142120",
+        }.issubset(completed_dois)
+        or "10.5281/zenodo.22104724" in completed_dois
+    ):
+        raise ValueError("v0.62 completed-role/DOI lineage is not the exact 21/20 correction")
+
+    courses = {row.get("id"): row for row in catalog.get("courses", [])}
+    if len(courses) != 40:
+        raise ValueError("v0.62 catalog must contain 40 unique courses")
+
+    a10 = courses.get("A10", {})
+    if (
+        a10.get("state") != "production"
+        or a10.get("edition")
+        != "https://zenodo.org/records/22143518/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-S0032-reader.pdf?download=1"
+        or a10.get("zenodo") != "https://doi.org/10.5281/zenodo.22143518"
+        or "32 dari 82" not in a10.get("note", "")
+        or "31 dari 82" in a10.get("note", "")
+    ):
+        raise ValueError("A10 must remain production at the exact public 32/82 checkpoint")
+
+    b20 = courses.get("B20", {})
+    b20_serialized = json.dumps(b20, ensure_ascii=False)
+    if (
+        b20.get("state") != "published"
+        or b20.get("repository") != "https://github.com/KokunoYumeto/clp1-differential-calculus-id"
+        or b20.get("zenodo") != "https://doi.org/10.5281/zenodo.21938930"
+        or "21938930" not in b20_serialized
+        or "442" not in b20.get("note", "")
+        or "646" not in b20.get("note", "")
+    ):
+        raise ValueError("B20 must be the complete public two-reader CLP1 course")
+
+    b40 = courses.get("B40", {})
+    supplements = b40.get("supplements", [])
+    expected_supplements = {
+        ("solutions", 435, 2672266, "61f8a344cade529249d4f165bb62bce17579b6a4408b11634999e9f73ec9c01b", "02_HEFFERON_LINEAR_ALGEBRA_ID_WORKED_ANSWERS_2026.08.22.pdf"),
+        ("workbook", 109, 13164259, "adb78966020355a90442c7ae68c734f1fd6b44b5d935a3f75e531ea666eeee4a", "03_HEFFERON_LINEAR_ALGEBRA_ID_SAGE_LAB_2026.08.22.pdf"),
+    }
+    observed_supplements = {
+        (
+            row.get("resourceType"),
+            row.get("pages"),
+            row.get("bytes"),
+            row.get("sha256"),
+            next(
+                (name for *_, name in expected_supplements if name in str(row.get("url", ""))),
+                None,
+            ),
+        )
+        for row in supplements
+        if isinstance(row, dict)
+    }
+    if (
+        b40.get("state") != "published"
+        or b40.get("zenodo") != "https://doi.org/10.5281/zenodo.22070458"
+        or "22070458" not in str(b40.get("edition", ""))
+        or not expected_supplements.issubset(observed_supplements)
+        or len({b40.get("edition"), *(row.get("url") for row in supplements)})
+        < 3
+    ):
+        raise ValueError("B40 must expose textbook, worked answers, and Sage lab as distinct learner materials")
+
+    d80 = courses.get("D80", {})
+    d80_serialized = json.dumps(d80, ensure_ascii=False)
+    if (
+        d80.get("state") != "production"
+        or set(d80.get("prerequisites", [])) != {"C30", "C80", "D70"}
+        or len(d80.get("prerequisites", [])) != 3
+        or d80.get("repository") != "https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id"
+        or d80.get("zenodo") != "https://doi.org/10.5281/zenodo.22143171"
+        or "22143171" not in d80_serialized
+        or "050" not in d80.get("note", "")
+        or "320" not in d80.get("note", "")
+    ):
+        raise ValueError("D80 must remain production at Unit 050 with D70 as a canonical prerequisite")
+
+    d90 = courses.get("D90", {})
+    d90_serialized = json.dumps(d90, ensure_ascii=False)
+    if (
+        d90.get("state") != "published"
+        or d90.get("repository")
+        != "https://github.com/KokunoYumeto/advanced-optimization-convex-analysis-id"
+        or d90.get("zenodo") != "https://doi.org/10.5281/zenodo.22142120"
+        or "22142120" not in d90_serialized
+        or "22104724" in d90_serialized
+        or "141" not in d90.get("note", "")
+        or not any(value in d90.get("note", "") for value in ("4.877", "4877"))
+    ):
+        raise ValueError("D90 must be the terminal integrated complete course, not the obsolete partial route")
+
+    learner_state = program.get("backend", {}).get("learnerStateV1", {})
+    expected_learner_state = {
+        "version": "1.0.0",
+        "status": "validated",
+        "schema": f"https://zenodo.org/records/{record_id}/files/learner-state-v1.schema.json",
+        "storage": "browser-local",
+        "privacy": "not-transmitted",
+        "derivedEligibilityPersisted": False,
+    }
+    if learner_state != expected_learner_state:
+        raise ValueError("v0.62 learner-state contract is absent or differs")
 
 
 def main() -> None:
@@ -946,6 +1178,8 @@ def main() -> None:
         raise ValueError("catalog DOI differs from reserved release record")
     if authority.get("lineage", {}).get("transition", {}).get("to_version") != version or authority.get("lineage", {}).get("transition", {}).get("zenodo_record_id") != args.record_id:
         raise ValueError("authority transition is not bound to this release")
+    if version == "0.62.0":
+        verify_v062_catalog_semantics(catalog, args.record_id)
 
     course_ids = [course.get("id") for course in courses]
     if len(course_ids) != len(set(course_ids)):
@@ -979,6 +1213,15 @@ def main() -> None:
         "federation-unit-package-v2.1.schema.json": root / "backend/v2.1/schema/federation-unit-package-v2.1.schema.json",
         "federation-unit-record-v2.1.schema.json": root / "backend/v2.1/schema/federation-unit-record-v2.1.schema.json",
     }
+    if tuple(int(part) for part in version.split(".")) >= (0, 62, 0):
+        release_copies.update(
+            {
+                release_name: root / source_name
+                for source_name, release_name in LEARNER_STATE_RELEASE_FILES.items()
+            }
+        )
+        learner_state_schema = load_json(root / "schemas/v1/learner-state-v1.schema.json")
+        Draft202012Validator.check_schema(learner_state_schema)
     for release_name, source in release_copies.items():
         if (release / release_name).read_bytes() != source.read_bytes():
             raise ValueError(f"release authority/model copy differs: {release_name}")
@@ -1249,6 +1492,8 @@ def main() -> None:
     }
     if assessment_result is not None:
         expected_release_names.add("o001-a00-assessments-v0.1.0.zip")
+    if tuple(int(part) for part in version.split(".")) >= (0, 62, 0):
+        expected_release_names.update(LEARNER_STATE_RELEASE_FILES.values())
     if reservation:
         expected_release_names.add(reservation.name)
     actual_release_names = {

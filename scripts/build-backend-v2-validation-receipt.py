@@ -83,27 +83,37 @@ def main() -> int:
 
     validation = load_json(validation_report_path)
     checks = validation.get("checks", {})
-    if (
-        validation.get("result") != "pass"
-        or checks.get("deterministic_replay") != {"result": "byte-identical", "file_count": 20}
-    ):
-        raise ValueError("v2 validation report is not an admitted deterministic pass")
     federation = load_json(package / "federation.json")
     manifest = load_json(package / "manifest.json")
-    if federation.get("record_count") != checks.get("record_count"):
-        raise ValueError("federation and validation record counts differ")
-    if federation.get("record_counts") != checks.get("table_counts"):
-        raise ValueError("federation and validation table counts differ")
+    manifest_files = manifest.get("files", [])
+    if not isinstance(manifest_files, list) or not all(
+        isinstance(row, dict) and isinstance(row.get("path"), str)
+        for row in manifest_files
+    ):
+        raise ValueError("manifest data-file inventory is malformed")
+    declared_paths = [row["path"] for row in manifest_files]
+    if len(declared_paths) != len(set(declared_paths)):
+        raise ValueError("manifest data-file inventory contains duplicates")
 
     package_files = sorted(
         path
         for path in package.rglob("*")
         if path.is_file() and path != validation_report_path
     )
-    if len(package_files) != 20:
-        raise ValueError(f"canonical package must contain 20 payload files, found {len(package_files)}")
-    if len(manifest.get("files", [])) != 19:
-        raise ValueError("manifest data-file inventory changed")
+    actual_paths = {path.relative_to(package).as_posix() for path in package_files}
+    if actual_paths != set(declared_paths) | {"manifest.json"}:
+        raise ValueError("canonical package inventory differs from its manifest")
+    replay = checks.get("deterministic_replay", {})
+    if (
+        validation.get("result") != "pass"
+        or replay.get("result") != "byte-identical"
+        or replay.get("file_count") != len(package_files)
+    ):
+        raise ValueError("v2 validation report is not an admitted deterministic pass")
+    if federation.get("record_count") != checks.get("record_count"):
+        raise ValueError("federation and validation record counts differ")
+    if federation.get("record_counts") != checks.get("table_counts"):
+        raise ValueError("federation and validation table counts differ")
 
     d20_path = root / D20_RECEIPT
     d20 = load_json(d20_path)
@@ -213,7 +223,7 @@ def main() -> int:
         },
         "schema_meta_validation": {
             "draft": "https://json-schema.org/draft/2020-12/schema",
-            "schema_count": 3,
+            "schema_count": sum(path.endswith(".schema.json") for path in SCHEMA_PATHS),
             "result": "pass",
         },
         "deliberate_limits": [

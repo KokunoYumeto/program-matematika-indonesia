@@ -13,12 +13,15 @@ const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const [
   html,
   app,
+  learnerStateModule,
   catalogSchema,
   authorityBytes,
   publicAuthorityBytes,
   learnerReadModelBytes,
   educationalAccess,
   educationalAccessSchemaBytes,
+  learnerStateSchemaBytes,
+  publicLearnerStateSchemaBytes,
   c100Landing,
   c100ReaderBytes,
   c100ReaderStyleBytes,
@@ -31,12 +34,15 @@ const [
 ] = await Promise.all([
   readFile(resolve(root, 'docs/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/app.js'), 'utf8'),
+  readFile(resolve(root, 'docs/learner-state.js'), 'utf8'),
   readJson('schemas/catalog-v1.schema.json'),
   readFile(resolve(root, 'backend/authority/curriculum-authority-v1.json')),
   readFile(resolve(root, 'docs/data/curriculum-authority-v1.json')),
   readFile(resolve(root, 'docs/data/learner-read-model.json')),
   readJson('docs/data/educational-access.json'),
   readFile(resolve(root, 'docs/schema/educational-access-federation-v1.schema.json')),
+  readFile(resolve(root, 'schemas/v1/learner-state-v1.schema.json')),
+  readFile(resolve(root, 'docs/schema/v1/learner-state-v1.schema.json')),
   readFile(resolve(root, 'docs/id-ID/courses/C100/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/id-ID/courses/C100/reader/index.html')),
   readFile(resolve(root, 'docs/id-ID/courses/C100/reader/style.css')),
@@ -73,6 +79,18 @@ assert.equal(program.totalCourseRoles, courses.length, 'Jumlah peran program tid
 const selectedIds = courses.filter(({ state }) => state !== 'unresolved').map(({ id }) => id);
 const unresolvedIds = courses.filter(({ state }) => state === 'unresolved').map(({ id }) => id);
 const publishedIds = courses.filter(({ state }) => state === 'published').map(({ id }) => id);
+if (program.version === '0.62.0') {
+  assert.equal(publishedIds.length, 21, 'v0.62 must expose exactly 21 completed roles.');
+  assert.equal(program.completedPublicRecordDois.length, 20, 'v0.62 must expose exactly 20 distinct completed records.');
+  assert.ok(publishedIds.includes('B20') && publishedIds.includes('D90'));
+  assert.match(courses.find(({ id }) => id === 'A10').zenodo, /22143518$/);
+  assert.equal(courses.find(({ id }) => id === 'A30').repository, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
+  assert.equal(courses.find(({ id }) => id === 'B20').supplements.length, 1);
+  assert.equal(courses.find(({ id }) => id === 'B40').supplements.length, 2);
+  assert.match(courses.find(({ id }) => id === 'D90').zenodo, /22142120$/);
+  assert.equal(program.backend.learnerStateV1.storage, 'browser-local');
+  assert.equal(program.backend.learnerStateV1.derivedEligibilityPersisted, false);
+}
 const publishedHtmlReaderIds = courses.filter(({ reader }) => reader).map(({ id }) => id);
 assert.equal(catalog.counts.selectedCorpusRoles, selectedIds.length);
 assert.equal(catalog.counts.unresolvedRoles, unresolvedIds.length);
@@ -120,6 +138,10 @@ const expectedNextCourseIdsById = Object.fromEntries(
 assert.deepEqual(nextCourseIdsById, expectedNextCourseIdsById, 'Peta “Lanjut ke” bukan pembalikan deterministik prasyarat.');
 assert.deepEqual(learnerReadModel.nextCourseIdsById, expectedNextCourseIdsById);
 const prerequisiteEdgeCount = Object.values(expectedNextCourseIdsById).flat().length;
+if (program.version === '0.62.0') {
+  assert.equal(prerequisiteEdgeCount, 83);
+  assert.deepEqual([...courses.find(({ id }) => id === 'D80').prerequisites].sort(), ['C30', 'C80', 'D70']);
+}
 assert.equal(learnerReadModel.summary.course_count, courses.length);
 assert.equal(learnerReadModel.summary.published_course_count, publishedIds.length);
 assert.equal(learnerReadModel.summary.readback_overlay_count, authority.public_readback_overlays.length);
@@ -188,6 +210,10 @@ assert.equal(
 assert.match(html, /<html lang="id">/);
 assert.match(html, /href="styles\.css"/);
 assert.match(html, /src="app\.js"/);
+assert.match(html, /id="progres"/);
+assert.match(html, /id="learner-summary"/);
+assert.match(html, /id="learner-storage-status"/);
+assert.match(html, /Data ini tetap di browser ini dan tidak dikirim\./);
 assert.match(html, /class="english-note" lang="en"/);
 assert.match(html, new RegExp(escapeRegex(program.website)));
 assert.match(html, new RegExp(escapeRegex(program.zenodo)));
@@ -204,6 +230,10 @@ assert.match(app, /course\.supplements/);
 assert.match(app, /nextCourseIdsById/);
 assert.match(app, /Lanjut ke/);
 assert.match(app, /data-course-link/);
+assert.match(app, /from '\.\/learner-state\.js'/);
+assert.deepEqual(publicLearnerStateSchemaBytes, learnerStateSchemaBytes, 'Salinan schema keadaan pelajar harus identik byte demi byte.');
+assert.match(learnerStateModule, /program-matematika-indonesia\/learner-state\/v1/);
+assert.doesNotMatch(learnerStateModule, /\bfetch\s*\(/);
 
 assert.equal(c100ReaderBytes.length, c100RouteManifest.reader.source_html.bytes);
 assert.equal(sha256(c100ReaderBytes), c100RouteManifest.reader.source_html.sha256);

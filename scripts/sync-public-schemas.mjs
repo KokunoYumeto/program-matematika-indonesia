@@ -13,6 +13,7 @@ const mappings = [
   ['schemas/profiles/source-format-profile-v1.schema.json', 'docs/schema/v1/interlanguage-source-format-profile-v1.schema.json'],
   ['schemas/v1/curriculum-authority-v1.schema.json', 'docs/schema/v1/curriculum-authority-v1.schema.json'],
   ['schemas/v1/learner-read-model-v1.schema.json', 'docs/schema/v1/learner-read-model-v1.schema.json'],
+  ['schemas/v1/learner-state-v1.schema.json', 'docs/schema/v1/learner-state-v1.schema.json'],
   ['schemas/v2/backend-migration-receipt-v2.schema.json', 'docs/schema/v2/backend-migration-receipt-v2.schema.json'],
   ['schemas/v2/federation-package-v2.schema.json', 'docs/schema/v2/federation-package-v2.schema.json'],
   ['schemas/v2/federation-record-v2.schema.json', 'docs/schema/v2/federation-record-v2.schema.json'],

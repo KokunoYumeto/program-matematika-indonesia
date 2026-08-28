@@ -65,6 +65,72 @@ ASSESSMENT_SHARD_IDENTITY = {
     "seal_sha256": "a97c1cad9cfbd72fe7bbc44cf59050dc1adbf238d07afdd6337fd0d3c8f74b49",
 }
 
+LEARNER_STATE_RELEASE_FILES = {
+    "schemas/v1/learner-state-v1.schema.json": "learner-state-v1.schema.json",
+    "docs/learner-state.js": "learner-state.js",
+}
+
+V062_ADMISSION_ROWS = {
+    "A10": {
+        "decision": "advance_public_partial_checkpoint_without_completion_promotion",
+        "state_after": "production",
+        "record": 22143518,
+        "doi": "10.5281/zenodo.22143518",
+        "modules": "32/82",
+        "pages": 1011,
+        "edition": "https://zenodo.org/records/22143518/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-S0032-reader.pdf?download=1",
+    },
+    "A30": {
+        "decision": "add_verified_public_repository_route_without_completion_promotion",
+        "state_after": "production",
+        "repository": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id",
+    },
+    "B20": {
+        "decision": "admit_complete_public_two-reader_course",
+        "state_after": "published",
+        "record": 21938930,
+        "doi": "10.5281/zenodo.21938930",
+        "textbook_pages": 442,
+        "problem_book_pages": 646,
+    },
+    "B40": {
+        "decision": "decompose_complete_textbook_worked_answers_and_sage_lab_into_distinct_learner_materials",
+        "state_after": "published",
+        "record": 22070458,
+        "textbook_pages": 580,
+        "worked_answers_pages": 435,
+        "sage_lab_pages": 109,
+    },
+    "D80": {
+        "decision": "refresh_public_checkpoint_and_add_d70_canonical_prerequisite_with_learner_equivalence_support",
+        "state_after": "production",
+        "record": 22143171,
+        "public_unit": 50,
+        "pages": 320,
+        "repository": "https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id",
+    },
+    "D90": {
+        "decision": "admit_integrated_terminal_complete_course_and_replace_obsolete_partial_route",
+        "state_after": "published",
+        "record": 22142120,
+        "doi": "10.5281/zenodo.22142120",
+        "pages": 141,
+        "backend_records": 4877,
+    },
+}
+
+V062_SUMMARY = {
+    "selected_course_roles": 40,
+    "completed_public_course_roles_before": 19,
+    "completed_public_course_roles_after": 21,
+    "distinct_completed_public_records_before": 18,
+    "distinct_completed_public_records_after": 20,
+    "newly_completed_course_roles": ["B20", "D90"],
+    "still_production": ["A10", "A30", "D80"],
+    "prerequisite_edges_after": 83,
+    "learner_state_contract": "browser-local completion, placement, equivalence, and edge-scoped waiver state; derived eligibility is not persisted",
+}
+
 
 def sha256_file(path: Path) -> str:
     digest = hashlib.sha256()
@@ -199,6 +265,42 @@ def validate_v22_package_shape(
     }
 
 
+def validate_v062_evidence(admission: dict, readback: dict) -> None:
+    rows = admission.get("admissions", [])
+    by_course = {
+        row.get("course_id"): row
+        for row in rows
+        if isinstance(row, dict) and isinstance(row.get("course_id"), str)
+    }
+    if len(rows) != len(V062_ADMISSION_ROWS) or set(by_course) != set(V062_ADMISSION_ROWS):
+        raise ValueError("v0.62 admission course set differs from the six authorized corrections")
+    for course_id, expected in V062_ADMISSION_ROWS.items():
+        row = by_course[course_id]
+        for key, value in expected.items():
+            if row.get(key) != value:
+                raise ValueError(f"v0.62 admission semantic mismatch: {course_id}.{key}")
+    summary = admission.get("summary", {})
+    for key, value in V062_SUMMARY.items():
+        if summary.get(key) != value:
+            raise ValueError(f"v0.62 admission summary mismatch: {key}")
+    if admission.get("target_record_id") != 22150264:
+        raise ValueError("v0.62 admission is not bound to reserved record 22150264")
+
+    routes = [row for row in readback.get("routes", []) if row.get("course_id") == "D90"]
+    if len(routes) != 1:
+        raise ValueError("v0.62 owner readback must contain exactly one D90 route")
+    d90 = routes[0]
+    if (
+        d90.get("url")
+        != "https://zenodo.org/records/22142120/files/D90-O015-optimisasi-lanjut-analisis-konveks-id.html?download=1"
+        or d90.get("bytes") != 2485595
+        or d90.get("sha256")
+        != "028e026033bc60bba1aff282f34b2e550a9f9358a3bdecd16b74e3442f743c89"
+        or "22104724" in json.dumps(readback, ensure_ascii=False)
+    ):
+        raise ValueError("v0.62 D90 readback is not the terminal integrated learner edition")
+
+
 def validate_central_evidence(
     admission: Path,
     owner_readback: Path,
@@ -229,7 +331,9 @@ def validate_central_evidence(
     admissions = admission_doc.get("admissions", [])
     supplements = admission_doc.get("supplements", [])
     summary = admission_doc.get("summary", {})
-    if version == "0.60.0":
+    if version == "0.62.0":
+        validate_v062_evidence(admission_doc, readback_doc)
+    elif version == "0.60.0":
         infrastructure = admission_doc.get("infrastructure_admissions", [])
         valid_primary = all(
             isinstance(row.get("record"), int)
@@ -298,7 +402,7 @@ def validate_central_evidence(
         ):
             raise ValueError(f"invalid owner-reader evidence row: {row.get('course_id')}")
     allowed_route_courses = {row.get("course_id") for row in admissions}
-    if version in {"0.60.0", "0.61.0"}:
+    if version in {"0.60.0", "0.61.0", "0.62.0"}:
         live_authority = json.loads(
             (project_root / "backend" / "authority" / "curriculum-authority-v1.json").read_text(
                 encoding="utf-8"
@@ -488,6 +592,7 @@ def main() -> None:
     parser.add_argument("--root", required=True, type=Path)
     parser.add_argument("--version", required=True)
     parser.add_argument("--source-commit", required=True)
+    parser.add_argument("--recorded-at", required=True)
     parser.add_argument("--backend-package", required=True, type=Path)
     parser.add_argument("--backend-v2-package", required=True, type=Path)
     parser.add_argument("--backend-v2-validation-receipt", required=True, type=Path)
@@ -520,6 +625,8 @@ def main() -> None:
     owner_reader_readback = args.owner_reader_readback.resolve()
     reservation_receipt = args.reservation_receipt.resolve() if args.reservation_receipt else None
     version = args.version
+    if not re.fullmatch(r"\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d+)?Z", args.recorded_at):
+        raise ValueError("--recorded-at must be an explicit UTC timestamp")
 
     v22_shape = validate_v22_package_shape(
         backend_v22_release_root,
@@ -546,7 +653,7 @@ def main() -> None:
             {
                 "aggregate_sha256": v21_gate["aggregate_sha256"],
                 "files": v21_gate["files"],
-                "recorded_at": "2026-08-26T00:00:00Z",
+                "recorded_at": args.recorded_at,
                 "replay_count": 2,
                 "result": "pass",
                 "schema_id": "program-matematika-indonesia/backend-v2.1-deterministic-replay-receipt/v1",
@@ -584,6 +691,9 @@ def main() -> None:
         copies[reservation_receipt] = release / reservation_receipt.name
     for source_name, release_name in V2_RELEASE_FILES.items():
         copies[root / source_name] = release / release_name
+    if tuple(int(part) for part in version.split(".")) >= (0, 62, 0):
+        for source_name, release_name in LEARNER_STATE_RELEASE_FILES.items():
+            copies[root / source_name] = release / release_name
     copies[root / "backend" / "v2.1" / "schema" / "federation-unit-package-v2.1.schema.json"] = (
         release / "federation-unit-package-v2.1.schema.json"
     )
@@ -644,7 +754,7 @@ def main() -> None:
                 "schema_id": "program-matematika-indonesia/backend-v2.2-archive-receipt/v1",
                 "version": version,
                 "source_commit": args.source_commit,
-                "recorded_at": "2026-08-27T00:00:00Z",
+                "recorded_at": args.recorded_at,
                 "result": "pass",
                 "replay_count": 2,
                 "credentials_recorded": False,
@@ -773,6 +883,18 @@ def main() -> None:
         "tests/backend-v2.2",
         "tests/backend-v22",
     ]
+    if tuple(int(part) for part in version.split(".")) >= (0, 62, 0):
+        source_roots.extend(
+            [
+                "schemas/v1/learner-state-v1.schema.json",
+                "scripts/advance-curriculum-authority-v062.mjs",
+                "scripts/build-v062-admission-evidence.mjs",
+                "scripts/publish-v062-zenodo.py",
+                "scripts/reserve-v062-zenodo.py",
+                "scripts/test-advance-curriculum-authority-v062.mjs",
+                "tests/learner-state",
+            ]
+        )
     source_paths: list[Path] = []
     for relative in source_roots:
         source_paths.extend(files_under(root, relative))
@@ -811,6 +933,19 @@ def main() -> None:
     required_v22_sources.add("scripts/advance-curriculum-authority-v060.mjs")
     required_v22_sources.add("scripts/advance-curriculum-authority-v061.mjs")
     required_v22_sources.add("scripts/build-v061-admission-evidence.mjs")
+    if tuple(int(part) for part in version.split(".")) >= (0, 62, 0):
+        required_v22_sources.update(
+            {
+                "scripts/advance-curriculum-authority-v062.mjs",
+                "scripts/build-v062-admission-evidence.mjs",
+                "scripts/publish-v062-zenodo.py",
+                "scripts/reserve-v062-zenodo.py",
+                "scripts/test-advance-curriculum-authority-v062.mjs",
+                "schemas/v1/learner-state-v1.schema.json",
+                "docs/learner-state.js",
+                "tests/learner-state/test-eligibility.mjs",
+            }
+        )
     required_v22_sources.add("scripts/build-v22-v060-validation-receipt.py")
     missing_v22_sources = sorted(required_v22_sources - tracked_paths)
     if missing_v22_sources:

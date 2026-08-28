@@ -397,13 +397,26 @@
                 "version": { "const": "1.0.0" },
                 "status": { "const": "validated" },
                 "courseCount": { "const": 40 },
-                "prerequisiteEdgeCount": { "const": 82 },
+                "prerequisiteEdgeCount": { "enum": [82, 83] },
                 "authority": { "$ref": "#/$defs/httpsUrl" },
                 "authoritySchema": { "$ref": "#/$defs/httpsUrl" },
                 "readModel": { "$ref": "#/$defs/httpsUrl" },
                 "readModelSchema": { "$ref": "#/$defs/httpsUrl" },
                 "validationReceipt": { "$ref": "#/$defs/httpsUrl" },
                 "publicEndpoint": { "$ref": "#/$defs/httpsUrl" }
+              }
+            },
+            "learnerStateV1": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["version", "status", "schema", "storage", "privacy", "derivedEligibilityPersisted"],
+              "properties": {
+                "version": { "const": "1.0.0" },
+                "status": { "const": "validated" },
+                "schema": { "$ref": "#/$defs/httpsUrl" },
+                "storage": { "const": "browser-local" },
+                "privacy": { "const": "not-transmitted" },
+                "derivedEligibilityPersisted": { "const": false }
               }
             }
           }
@@ -416,6 +429,20 @@
       }, {
         "if": { "properties": { "version": { "const": "0.60.0" } }, "required": ["version"] },
         "then": { "properties": { "backend": { "required": ["federationV22", "capabilityContractV1", "assessmentInventoryV1"] } } }
+      }, {
+        "if": { "properties": { "version": { "const": "0.62.0" } }, "required": ["version"] },
+        "then": {
+          "properties": {
+            "backend": {
+              "required": ["federationV22", "capabilityContractV1", "assessmentInventoryV1", "learnerStateV1"],
+              "properties": {
+                "learnerReadModelV1": {
+                  "properties": { "prerequisiteEdgeCount": { "const": 83 } }
+                }
+              }
+            }
+          }
+        }
       }]
     },
     "supplement": {

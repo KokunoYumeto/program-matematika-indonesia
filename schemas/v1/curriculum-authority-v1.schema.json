@@ -78,7 +78,20 @@
               "properties": {
                 "federationV22": { "$ref": "#/$defs/federationV22" },
                 "capabilityContractV1": { "$ref": "#/$defs/capabilityContractV1" },
-                "assessmentInventoryV1": { "$ref": "#/$defs/assessmentInventoryV1" }
+                "assessmentInventoryV1": { "$ref": "#/$defs/assessmentInventoryV1" },
+                "learnerStateV1": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "required": ["version", "status", "schema", "storage", "privacy", "derivedEligibilityPersisted"],
+                  "properties": {
+                    "version": { "const": "1.0.0" },
+                    "status": { "const": "validated" },
+                    "schema": { "type": "string", "format": "uri", "pattern": "^https://zenodo\\.org/records/[0-9]+/files/learner-state-v1\\.schema\\.json$" },
+                    "storage": { "const": "browser-local" },
+                    "privacy": { "const": "not-transmitted" },
+                    "derivedEligibilityPersisted": { "const": false }
+                  }
+                }
               }
             }
           },
@@ -88,6 +101,9 @@
           }, {
             "if": { "properties": { "version": { "const": "0.60.0" } }, "required": ["version"] },
             "then": { "properties": { "backend": { "required": ["federationV22", "capabilityContractV1", "assessmentInventoryV1"] } } }
+          }, {
+            "if": { "properties": { "version": { "const": "0.62.0" } }, "required": ["version"] },
+            "then": { "properties": { "backend": { "required": ["federationV22", "capabilityContractV1", "assessmentInventoryV1", "learnerStateV1"] } } }
           }]
         },
         "topics": { "type": "array", "minItems": 8, "maxItems": 8, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
@@ -129,7 +145,8 @@
                 "owner_publication_refresh_clean_routes_and_student_supplements",
                 "owner_publication_refresh_hash_bound_learner_routes_and_complete_course_admission",
                 "verified_owner_successor_admission_d40_html_reader_and_o001_assessment_inventory",
-                "verified_d60_mastery_complete_two_lab_checkpoint_and_student_reader_admission"
+                "verified_d60_mastery_complete_two_lab_checkpoint_and_student_reader_admission",
+                "verified_v062_semantic_currency_complete_course_routes_and_learner_state_admission"
               ]
             }
           }

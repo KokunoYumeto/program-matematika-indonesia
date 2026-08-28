@@ -822,6 +822,17 @@ def build(inputs: BuildInputs) -> tuple[list[dict[str, Any]], dict[str, Any], li
                 else surface_format(action, url)
             )
             add_surface(role_id, url, format_value, action)
+        # Supplements are first-class learner surfaces in the federation while
+        # the canonical course edition remains the sole `offline` surface.
+        # Every current supplement is a direct learner PDF, so `pdf` preserves
+        # multiplicity without confusing the main-edition projection.
+        for supplement in course.get("supplements", []):
+            supplement_url = supplement.get("url")
+            if not isinstance(supplement_url, str) or not supplement_url:
+                raise ValueError(f"Catalog supplement lacks a URL: {role_id}")
+            if not direct_pdf_url(supplement_url):
+                raise ValueError(f"Catalog supplement is not a direct PDF learner surface: {role_id}/{supplement.get('id')}")
+            add_surface(role_id, supplement_url, "pdf", "pdf")
     for role_id in sorted(catalog_by_id):
         add_surface(role_id, inputs.public_site, "html", "learn")
 

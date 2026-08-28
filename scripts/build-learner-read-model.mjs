@@ -219,6 +219,12 @@ for (const course of projectedCourses) {
     nextCourseIdsById[prerequisite].push(course.id);
   }
 }
+const prerequisiteEdgeCount = Object.values(nextCourseIdsById).reduce((sum, values) => sum + values.length, 0);
+assert.equal(
+  prerequisiteEdgeCount,
+  authority.catalog.program.backend.learnerReadModelV1.prerequisiteEdgeCount,
+  'Computed prerequisite-edge count differs from program metadata.',
+);
 
 const publishedCourseIds = projectedCourses.filter((course) => course.state === 'published').map((course) => course.id);
 assert.deepEqual(publishedCourseIds, authority.catalog.program.completedPublicCourseRoleIds, 'Published course IDs differ from the completed-public authority set.');

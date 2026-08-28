@@ -1,10 +1,35 @@
 import { courses, nextCourseIdsById, program, topics } from './courses.js';
+import {
+  clearLearnerState,
+  createEmptyLearnerState,
+  evaluateLearnerState,
+  loadLearnerState,
+  saveLearnerState,
+  setCourseClaim,
+  setCourseCompletion,
+  setPrerequisiteWaiver,
+} from './learner-state.js';
 
 const stateLabels = {
   published: 'Edisi publik selesai',
   near: 'Hampir dirilis',
   production: 'Korpus terpilih',
-  unresolved: 'Belum dibekukan'
+  unresolved: 'Belum dibekukan',
+};
+
+const learnerStatusLabels = {
+  completed: 'Selesai menurut catatan Anda',
+  eligible: 'Prasyarat langsung terpenuhi',
+  eligible_with_waiver: 'Prasyarat terpenuhi dengan waiver',
+  blocked: 'Prasyarat belum lengkap',
+};
+
+const satisfactionLabels = {
+  completed: 'selesai',
+  placement: 'penempatan',
+  equivalence: 'kesetaraan',
+  waived: 'waiver',
+  missing: 'belum',
 };
 
 const searchInput = document.querySelector('#course-search');
@@ -15,10 +40,31 @@ const topicLinks = document.querySelector('#topic-links');
 const grid = document.querySelector('#course-grid');
 const resultCount = document.querySelector('#result-count');
 const resetButton = document.querySelector('#reset-filters');
+const learnerSummary = document.querySelector('#learner-summary');
+const learnerStorageStatus = document.querySelector('#learner-storage-status');
+const placementCourse = document.querySelector('#placement-course');
+const equivalenceCourse = document.querySelector('#equivalence-course');
+const waiverTarget = document.querySelector('#waiver-target');
+const waiverPrerequisite = document.querySelector('#waiver-prerequisite');
+const learnerClaims = document.querySelector('#learner-claims');
 let activeLevel = 'all';
+
+let browserStorage = null;
+try {
+  browserStorage = window.localStorage;
+} catch {
+  browserStorage = null;
+}
+const loadedLearnerState = loadLearnerState(browserStorage, courses);
+let learnerState = loadedLearnerState.state;
+let learnerEvaluation = evaluateLearnerState(courses, learnerState);
 
 function normalize(value) {
   return value.toLocaleLowerCase('id-ID').normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+}
+
+function courseLabel(course) {
+  return `${course.id} — ${course.title}`;
 }
 
 function renderTopicControls() {
@@ -43,9 +89,13 @@ function renderTopicControls() {
   });
 }
 
-function prerequisiteLinks(items) {
-  if (!items.length) return '<span class="no-prereq">Tidak ada — mulai di sini atau gunakan diagnosis awal.</span>';
-  return items.map((id) => `<a class="prereq-link" href="#course-${id}" data-course-link="${id}">${id}</a>`).join('');
+function prerequisiteLinks(course) {
+  if (!course.prerequisites.length) return '<span class="no-prereq">Tidak ada — mulai di sini atau gunakan diagnosis awal.</span>';
+  const satisfaction = new Map(learnerEvaluation[course.id].prerequisites.map((row) => [row.courseId, row.satisfaction]));
+  return course.prerequisites.map((id) => {
+    const kind = satisfaction.get(id) ?? 'missing';
+    return `<a class="prereq-link prereq-${kind}" href="#course-${id}" data-course-link="${id}"><span>${id}</span><small>${satisfactionLabels[kind]}</small></a>`;
+  }).join('');
 }
 
 function nextCourseLinks(course) {
@@ -65,10 +115,6 @@ function nextCourseLinks(course) {
 function actionLinks(course) {
   const links = [];
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
-  // Keep the learner-facing entry point separate from owner/provenance links.
-  // Central wrappers guarantee that a student lands on readable mathematics,
-  // never on a JSON/backend artifact. C100 additionally hosts the complete
-  // validated semantic reader byte-for-byte inside the central site.
   const centralLearnerEntries = {
     C100: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/',
     D20: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/',
@@ -98,10 +144,23 @@ function actionLinks(course) {
   return links.join('');
 }
 
+function learnerStatusBlock(course) {
+  const evaluation = learnerEvaluation[course.id];
+  const missing = evaluation.missingPrerequisiteIds.length
+    ? `<small>Kurang: ${evaluation.missingPrerequisiteIds.join(', ')}</small>`
+    : '<small>Semua prasyarat langsung terpenuhi.</small>';
+  const checked = evaluation.status === 'completed' ? ' checked' : '';
+  return `<div class="learner-course-state learner-${evaluation.status}">
+    <div><strong>${learnerStatusLabels[evaluation.status]}</strong>${missing}</div>
+    <label><input type="checkbox" data-completion="${course.id}"${checked}> Tandai selesai</label>
+  </div>`;
+}
+
 function courseCard(course) {
   const selected = course.state !== 'unresolved';
+  const learnerStatus = learnerEvaluation[course.id].status;
   return `
-    <article class="course-card state-${course.state}" id="course-${course.id}" data-course="${course.id}">
+    <article class="course-card state-${course.state} learner-card-${learnerStatus}" id="course-${course.id}" data-course="${course.id}">
       <div class="card-topline">
         <span class="course-code">${course.id}</span>
         <span class="status status-${course.state}">${stateLabels[course.state]}</span>
@@ -109,14 +168,9 @@ function courseCard(course) {
       <p class="course-topic">${course.topic}</p>
       <h3>${course.title}</h3>
       <p class="course-purpose">${course.purpose}</p>
-      <div class="prerequisites">
-        <span>Prasyarat</span>
-        <div>${prerequisiteLinks(course.prerequisites)}</div>
-      </div>
-      <div class="next-courses">
-        <span>Lanjut ke</span>
-        <div>${nextCourseLinks(course)}</div>
-      </div>
+      ${learnerStatusBlock(course)}
+      <div class="prerequisites"><span>Prasyarat</span><div>${prerequisiteLinks(course)}</div></div>
+      <div class="next-courses"><span>Lanjut ke</span><div>${nextCourseLinks(course)}</div></div>
       <details>
         <summary>Detail mata kuliah</summary>
         <div class="detail-body">
@@ -136,8 +190,27 @@ function filteredCourses() {
     if (topicSelect.value !== 'all' && course.topic !== topicSelect.value) return false;
     if (statusSelect.value === 'selected' && course.state === 'unresolved') return false;
     if (statusSelect.value === 'unresolved' && course.state !== 'unresolved') return false;
+    if (statusSelect.value === 'published' && course.state !== 'published') return false;
+    if (statusSelect.value === 'production' && course.state !== 'production') return false;
+    if (statusSelect.value === 'eligible' && !['eligible', 'eligible_with_waiver'].includes(learnerEvaluation[course.id].status)) return false;
+    if (statusSelect.value === 'completed' && learnerEvaluation[course.id].status !== 'completed') return false;
     if (!query) return true;
     return normalize([course.id, course.title, course.topic, course.purpose, course.corpus].join(' ')).includes(query);
+  });
+}
+
+function bindCourseLinks() {
+  document.querySelectorAll('[data-course-link]').forEach((link) => {
+    link.addEventListener('click', (event) => {
+      const id = event.currentTarget.dataset.courseLink;
+      if (!courses.some((course) => course.id === id)) return;
+      event.preventDefault();
+      resetFilters(false);
+      requestAnimationFrame(() => {
+        document.querySelector(`#course-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        history.replaceState(null, '', `#course-${id}`);
+      });
+    });
   });
 }
 
@@ -146,17 +219,10 @@ function renderCourses() {
   grid.innerHTML = visible.map(courseCard).join('');
   resultCount.textContent = `${visible.length} dari ${courses.length} mata kuliah ditampilkan`;
   document.querySelector('#empty-state').hidden = visible.length !== 0;
-  document.querySelectorAll('[data-course-link]').forEach((link) => {
-    link.addEventListener('click', (event) => {
-      const id = event.currentTarget.dataset.courseLink;
-      const target = courses.find((course) => course.id === id);
-      if (!target) return;
-      event.preventDefault();
-      resetFilters(false);
-      requestAnimationFrame(() => {
-        document.querySelector(`#course-${id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        history.replaceState(null, '', `#course-${id}`);
-      });
+  bindCourseLinks();
+  document.querySelectorAll('[data-completion]').forEach((control) => {
+    control.addEventListener('change', () => {
+      updateLearnerState(setCourseCompletion(learnerState, courses, control.dataset.completion, control.checked));
     });
   });
 }
@@ -175,16 +241,106 @@ function resetFilters(scroll = true) {
   if (scroll) document.querySelector('#katalog').scrollIntoView({ behavior: 'smooth' });
 }
 
+function populateCourseSelect(select) {
+  for (const course of courses) {
+    const option = document.createElement('option');
+    option.value = course.id;
+    option.textContent = courseLabel(course);
+    select.append(option);
+  }
+}
+
+function updateWaiverPrerequisites() {
+  const course = courses.find(({ id }) => id === waiverTarget.value);
+  waiverPrerequisite.replaceChildren();
+  for (const id of course?.prerequisites ?? []) {
+    const prerequisite = courses.find((candidate) => candidate.id === id);
+    const option = document.createElement('option');
+    option.value = id;
+    option.textContent = prerequisite ? courseLabel(prerequisite) : id;
+    waiverPrerequisite.append(option);
+  }
+  document.querySelector('#add-waiver').disabled = waiverPrerequisite.options.length === 0;
+}
+
+function renderLearnerPanel() {
+  const counts = Object.values(learnerEvaluation).reduce((result, { status }) => {
+    result[status] = (result[status] ?? 0) + 1;
+    return result;
+  }, {});
+  learnerSummary.textContent = `${counts.completed ?? 0} selesai • ${(counts.eligible ?? 0) + (counts.eligible_with_waiver ?? 0)} prasyarat terpenuhi • ${counts.blocked ?? 0} masih terhalang prasyarat`;
+
+  const chips = [];
+  for (const claim of learnerState.placementClaims) chips.push(`<span class="claim-chip">Penempatan: ${claim.courseId}<button type="button" data-remove-claim="placement" data-course-id="${claim.courseId}" aria-label="Hapus penempatan ${claim.courseId}">×</button></span>`);
+  for (const claim of learnerState.equivalenceClaims) chips.push(`<span class="claim-chip">Kesetaraan: ${claim.courseId}<button type="button" data-remove-claim="equivalence" data-course-id="${claim.courseId}" aria-label="Hapus kesetaraan ${claim.courseId}">×</button></span>`);
+  for (const waiver of learnerState.waivers) chips.push(`<span class="claim-chip">Waiver: ${waiver.targetCourseId} ← ${waiver.prerequisiteCourseId}<button type="button" data-remove-waiver="${waiver.targetCourseId}" data-prerequisite-id="${waiver.prerequisiteCourseId}" aria-label="Hapus waiver ${waiver.targetCourseId} dari ${waiver.prerequisiteCourseId}">×</button></span>`);
+  learnerClaims.innerHTML = chips.length ? chips.join('') : '<span class="no-claims">Belum ada klaim penempatan, kesetaraan, atau waiver.</span>';
+}
+
+function updateLearnerState(nextState, statusMessage = null) {
+  const saved = saveLearnerState(browserStorage, nextState, courses);
+  learnerState = saved.state;
+  learnerEvaluation = evaluateLearnerState(courses, learnerState);
+  learnerStorageStatus.textContent = statusMessage ?? (saved.persisted
+    ? 'Perubahan disimpan hanya di browser ini.'
+    : 'Penyimpanan browser tidak tersedia; perubahan berlaku sampai halaman ditutup.');
+  renderLearnerPanel();
+  renderCourses();
+}
+
+for (const select of [placementCourse, equivalenceCourse, waiverTarget]) populateCourseSelect(select);
+waiverTarget.value = 'D80';
+updateWaiverPrerequisites();
+
+document.querySelector('#add-placement').addEventListener('click', () => {
+  updateLearnerState(setCourseClaim(learnerState, courses, 'placement', placementCourse.value, true));
+});
+document.querySelector('#add-equivalence').addEventListener('click', () => {
+  updateLearnerState(setCourseClaim(learnerState, courses, 'equivalence', equivalenceCourse.value, true));
+});
+waiverTarget.addEventListener('change', updateWaiverPrerequisites);
+document.querySelector('#add-waiver').addEventListener('click', () => {
+  updateLearnerState(setPrerequisiteWaiver(learnerState, courses, waiverTarget.value, waiverPrerequisite.value, true));
+});
+document.querySelector('#reset-learner-state').addEventListener('click', () => {
+  const cleared = clearLearnerState(browserStorage);
+  learnerState = createEmptyLearnerState();
+  learnerEvaluation = evaluateLearnerState(courses, learnerState);
+  learnerStorageStatus.textContent = cleared
+    ? 'Catatan kemajuan di browser ini telah dihapus.'
+    : 'Tampilan telah direset, tetapi penyimpanan browser tidak dapat dihapus.';
+  renderLearnerPanel();
+  renderCourses();
+});
+learnerClaims.addEventListener('click', (event) => {
+  const button = event.target.closest('button');
+  if (!button) return;
+  if (button.dataset.removeClaim) {
+    updateLearnerState(setCourseClaim(learnerState, courses, button.dataset.removeClaim, button.dataset.courseId, false));
+  } else if (button.dataset.removeWaiver) {
+    updateLearnerState(setPrerequisiteWaiver(learnerState, courses, button.dataset.removeWaiver, button.dataset.prerequisiteId, false));
+  }
+});
+
 levelButtons.forEach((button) => button.addEventListener('click', () => setLevel(button.dataset.level)));
 searchInput.addEventListener('input', renderCourses);
 topicSelect.addEventListener('change', renderCourses);
 statusSelect.addEventListener('change', renderCourses);
 resetButton.addEventListener('click', () => resetFilters());
 
+learnerStorageStatus.textContent = loadedLearnerState.status === 'loaded'
+  ? 'Catatan kemajuan dimuat dari browser ini.'
+  : loadedLearnerState.status === 'recovered_invalid'
+    ? 'Data lama tidak valid dan diabaikan; catatan dimulai kosong.'
+    : loadedLearnerState.status === 'unavailable'
+      ? 'Penyimpanan browser tidak tersedia; perubahan berlaku sampai halaman ditutup.'
+      : 'Belum ada catatan kemajuan di browser ini.';
+
 renderTopicControls();
+renderLearnerPanel();
 renderCourses();
 
-const hashId = location.hash.match(/^#course-([A-D]\d+)$/)?.[1];
+const hashId = location.hash.match(/^#course-([A-D]\d{2,3})$/)?.[1];
 if (hashId && courses.some((course) => course.id === hashId)) {
   requestAnimationFrame(() => document.querySelector(`#course-${hashId}`)?.scrollIntoView({ block: 'center' }));
 }

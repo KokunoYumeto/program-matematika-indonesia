@@ -57,6 +57,12 @@ for (const course of uiCourses) {
   }
 }
 assert.deepEqual(model.nextCourseIdsById, expectedNext, 'Prerequisite reverse graph is not exact.');
+const prerequisiteEdgeCount = Object.values(expectedNext).reduce((sum, values) => sum + values.length, 0);
+assert.equal(prerequisiteEdgeCount, authority.catalog.program.backend.learnerReadModelV1.prerequisiteEdgeCount);
+if (authority.catalog.program.version === '0.62.0') {
+  assert.equal(prerequisiteEdgeCount, 83);
+  assert.deepEqual([...byId.get('D80').prerequisites].sort(), ['C30', 'C80', 'D70']);
+}
 const publishedIds = uiCourses.filter((course) => course.state === 'published').map((course) => course.id);
 assert.deepEqual(publishedIds, authority.catalog.program.completedPublicCourseRoleIds, 'Published course set differs from authority.');
 
@@ -155,7 +161,7 @@ try {
 console.log(JSON.stringify({
   status: 'pass',
   course_count: uiCourses.length,
-  prerequisite_edges: Object.values(expectedNext).reduce((sum, values) => sum + values.length, 0),
+  prerequisite_edges: prerequisiteEdgeCount,
   learner_read_model: { bytes: modelBytes.length, sha256: sha256(modelBytes) },
   generated_courses_js: { bytes: coursesBytes.length, sha256: sha256(coursesBytes) },
   public_curriculum_authority: { bytes: publicAuthorityBytes.length, sha256: sha256(publicAuthorityBytes) },
