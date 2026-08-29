@@ -143,8 +143,8 @@ for (const course of courses) {
   }
 }
 
-const staleLearnerRoleIds = ['A20', 'A30', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D30', 'D50', 'D70', 'D100'];
-for (const id of staleLearnerRoleIds) {
+const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D30', 'D50', 'D70', 'D100'];
+for (const id of liveOverlayRequiredRoleIds) {
   assert.ok(liveCoursePublications[id], `${id}: baris lama belum memiliki overlay publikasi langsung.`);
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
@@ -203,17 +203,26 @@ assert.deepEqual(syntheticEffective[1].supplements.map(({ title }) => title), ['
 assert.deepEqual(deriveNextCourseIdsById(syntheticEffective), { A00: [], A10: [] }, 'Prasyarat efektif tidak mengubah peta lanjut.');
 assert.equal(JSON.stringify(syntheticAuthority), syntheticBefore, 'Materialisasi memutasi otoritas masukan.');
 
-assert.equal(effectiveCoursesById.get('A20').progress.canonicalUnits, 50);
+assert.equal(effectiveCoursesById.get('A10').progress.translationBearingUnits, 82);
+assert.equal(effectiveCoursesById.get('A10').progress.canonicalUnits, 82);
+assert.equal(effectiveCoursesById.get('A10').progress.publicUnits, 32);
+assert.equal(effectiveCoursesById.get('A20').progress.canonicalUnits, 51);
 assert.equal(effectiveCoursesById.get('A20').progress.publicUnits, 48);
 assert.equal(effectiveCoursesById.get('A30').progress.translationBearingUnits, 87);
-assert.equal(effectiveCoursesById.get('A30').progress.publicUnits, 33);
+assert.equal(effectiveCoursesById.get('A30').progress.canonicalUnits, 49);
+assert.equal(effectiveCoursesById.get('A30').progress.publicUnits, 38);
+assert.match(effectiveCoursesById.get('A30').zenodo, /22160769$/);
 assert.match(effectiveCoursesById.get('B30').zenodo, /22151145$/);
 assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 0);
 assert.equal(effectiveCoursesById.get('C90').progress.publicUnits, 17);
 assert.equal(effectiveCoursesById.get('C100').supplements.length, 1);
 assert.equal(effectiveCoursesById.get('C100').supplements[0].id, 'clemens-snapp-workbook-u022');
 assert.match(effectiveCoursesById.get('C140').zenodo, /22151570$/);
-assert.match(effectiveCoursesById.get('D10').zenodo, /22149439$/);
+assert.equal(effectiveCoursesById.get('D10').progress.translationBearingUnits, 509);
+assert.equal(effectiveCoursesById.get('D10').progress.canonicalUnits, 444);
+assert.equal(effectiveCoursesById.get('D10').progress.publicUnits, 444);
+assert.equal(effectiveCoursesById.get('D10').progress.publicPages, 477);
+assert.match(effectiveCoursesById.get('D10').zenodo, /22161046$/);
 assert.equal(effectiveCoursesById.get('D50').state, 'published');
 assert.match(effectiveCoursesById.get('D50').zenodo, /22160677$/);
 assert.match(effectiveCoursesById.get('D60').zenodo, /22151513$/);
