@@ -143,7 +143,7 @@ for (const course of courses) {
   }
 }
 
-const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D30', 'D50', 'D70', 'D100'];
+const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B20', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D20', 'D30', 'D50', 'D60', 'D70', 'D100'];
 for (const id of liveOverlayRequiredRoleIds) {
   assert.ok(liveCoursePublications[id], `${id}: baris lama belum memiliki overlay publikasi langsung.`);
 }
@@ -205,29 +205,64 @@ assert.equal(JSON.stringify(syntheticAuthority), syntheticBefore, 'Materialisasi
 
 assert.equal(effectiveCoursesById.get('A10').progress.translationBearingUnits, 82);
 assert.equal(effectiveCoursesById.get('A10').progress.canonicalUnits, 82);
-assert.equal(effectiveCoursesById.get('A10').progress.publicUnits, 32);
+assert.equal(effectiveCoursesById.get('A10').progress.publicUnits, 82);
+assert.equal(effectiveCoursesById.get('A10').progress.publicPages, 2154);
+assert.equal(effectiveCoursesById.get('A10').state, 'published');
+assert.match(effectiveCoursesById.get('A10').zenodo, /22163663$/);
+assert.equal(effectiveCoursesById.get('A20').progress.translationBearingUnits, 66);
 assert.equal(effectiveCoursesById.get('A20').progress.canonicalUnits, 51);
 assert.equal(effectiveCoursesById.get('A20').progress.publicUnits, 48);
 assert.equal(effectiveCoursesById.get('A30').progress.translationBearingUnits, 87);
+assert.ok(!Object.hasOwn(effectiveCoursesById.get('A30').progress, 'integrationReadyUnits'));
 assert.equal(effectiveCoursesById.get('A30').progress.canonicalUnits, 49);
-assert.equal(effectiveCoursesById.get('A30').progress.publicUnits, 38);
-assert.match(effectiveCoursesById.get('A30').zenodo, /22160769$/);
+assert.equal(effectiveCoursesById.get('A30').progress.publicUnits, 49);
+assert.equal(effectiveCoursesById.get('A30').progress.publicPages, 1501);
+assert.match(effectiveCoursesById.get('A30').zenodo, /22163371$/);
+assert.equal(effectiveCoursesById.get('B20').progress.publicUnits, 5178);
+assert.equal(effectiveCoursesById.get('B20').supplements.length, 2);
+assert.match(effectiveCoursesById.get('B20').zenodo, /22164136$/);
 assert.match(effectiveCoursesById.get('B30').zenodo, /22151145$/);
-assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 0);
-assert.equal(effectiveCoursesById.get('C90').progress.publicUnits, 17);
+assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 138);
+assert.equal(effectiveCoursesById.get('B50').supplements.length, 2);
+assert.match(effectiveCoursesById.get('B50').zenodo, /22163372$/);
+assert.match(effectiveCoursesById.get('B95').zenodo, /22164353$/);
+assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 241);
+assert.equal(effectiveCoursesById.get('C90').state, 'published');
+assert.equal(effectiveCoursesById.get('C90').progress.publicUnits, 20);
+assert.equal(effectiveCoursesById.get('C90').progress.publicPages, 645);
+assert.match(effectiveCoursesById.get('C90').zenodo, /22164668$/);
 assert.equal(effectiveCoursesById.get('C100').supplements.length, 1);
 assert.equal(effectiveCoursesById.get('C100').supplements[0].id, 'clemens-snapp-workbook-u022');
-assert.match(effectiveCoursesById.get('C140').zenodo, /22151570$/);
-assert.equal(effectiveCoursesById.get('D10').progress.translationBearingUnits, 509);
-assert.equal(effectiveCoursesById.get('D10').progress.canonicalUnits, 444);
-assert.equal(effectiveCoursesById.get('D10').progress.publicUnits, 444);
-assert.equal(effectiveCoursesById.get('D10').progress.publicPages, 477);
-assert.match(effectiveCoursesById.get('D10').zenodo, /22161046$/);
+assert.match(effectiveCoursesById.get('C140').zenodo, /22164344$/);
+assert.equal(effectiveCoursesById.get('C140').supplements[0].id, 'c140-companion-reader');
+assert.equal(effectiveCoursesById.get('D10').progress.translationBearingUnits, 520);
+assert.equal(effectiveCoursesById.get('D10').progress.integrationReadyUnits, 520);
+assert.equal(effectiveCoursesById.get('D10').progress.canonicalUnits, 509);
+assert.equal(effectiveCoursesById.get('D10').progress.publicUnits, 509);
+assert.equal(effectiveCoursesById.get('D10').progress.publicPages, 545);
+assert.match(effectiveCoursesById.get('D10').zenodo, /22163307$/);
+assert.equal(effectiveCoursesById.get('D20').state, 'published');
+assert.equal(effectiveCoursesById.get('D20').progress.publicUnits, 17);
+assert.match(effectiveCoursesById.get('D20').zenodo, /22088947$/);
+assert.equal(effectiveCoursesById.get('D30').progress.publicPages, 340);
+assert.match(effectiveCoursesById.get('D30').zenodo, /22163421$/);
 assert.equal(effectiveCoursesById.get('D50').state, 'published');
-assert.match(effectiveCoursesById.get('D50').zenodo, /22160677$/);
-assert.match(effectiveCoursesById.get('D60').zenodo, /22151513$/);
-assert.match(effectiveCoursesById.get('D70').zenodo, /22151447$/);
-assert.equal(effectiveCoursesById.get('D100').progress.publicUnits, 30);
+assert.match(effectiveCoursesById.get('D50').zenodo, /22161090$/);
+assert.equal(effectiveCoursesById.get('D60').progress.publicUnits, 4);
+assert.equal(effectiveCoursesById.get('D60').progress.publicPages, 558);
+assert.match(effectiveCoursesById.get('D60').zenodo, /22161294$/);
+assert.equal(effectiveCoursesById.get('D70').state, 'published');
+assert.equal(effectiveCoursesById.get('D70').progress.publicUnits, 4);
+assert.equal(effectiveCoursesById.get('D70').progress.publicPages, 716);
+assert.match(effectiveCoursesById.get('D70').zenodo, /22160944$/);
+assert.equal(effectiveCoursesById.get('D100').progress.totalUnits, 60);
+assert.equal(effectiveCoursesById.get('D100').progress.translationBearingUnits, 35);
+assert.equal(effectiveCoursesById.get('D100').progress.integrationReadyUnits, 35);
+assert.equal(effectiveCoursesById.get('D100').progress.canonicalUnits, 34);
+assert.equal(effectiveCoursesById.get('D100').progress.publicUnits, 33);
+assert.match(effectiveCoursesById.get('D100').zenodo, /22160883$/);
+assert.equal(effectiveCoursesById.get('D100').supplements.length, 1);
+assert.equal(effectiveCoursesById.get('D100').supplements[0].id, 'bgk-units-01-03');
 
 const expectedNextCourseIdsById = Object.fromEntries(
   courses.map(({ id }) => [
@@ -343,25 +378,26 @@ assert.match(app, /effectivePublishedCourses/);
 assert.match(app, /livePublicationSummary\.textContent/);
 assert.doesNotMatch(app, /liveCoursePublications\[/);
 assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
-assert.match(livePublicationsModule, /22148827/);
-assert.match(livePublicationsModule, /22160677/);
+assert.match(livePublicationsModule, /22164353/);
+assert.match(livePublicationsModule, /22161090/);
+assert.match(livePublicationsModule, /22164668/);
 assert.match(livePublicationsModule, /clemens-snapp-workbook-u022/);
 assert.match(b95Landing, /Statistika Berbasis Data/);
-assert.match(b95Landing, /22148827/);
+assert.match(b95Landing, /22164353/);
 assert.match(b95Landing, /statistika-berbasis-data-id/);
-assert.match(b95Landing, /216 halaman/);
+assert.match(b95Landing, /241 halaman/);
 assert.doesNotMatch(b95Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
 assert.match(livePublicationsModule, /id-ID\/courses\/D30\//);
-assert.match(livePublicationsModule, /22148902/);
-assert.match(livePublicationsModule, /CHECKPOINT_33/);
-assert.match(livePublicationsModule, /22151513/);
-assert.match(livePublicationsModule, /laboratorium komputasi 3\/4/);
+assert.match(livePublicationsModule, /22163421/);
+assert.match(livePublicationsModule, /CHECKPOINT_35/);
+assert.match(livePublicationsModule, /22161294/);
+assert.match(livePublicationsModule, /laboratorium komputasi 4\/4/);
 assert.match(livePublicationsModule, /22076539/);
 assert.match(d30Landing, /Probabilitas Teoretis-Ukuran dan Proses Stokastik/);
-assert.match(d30Landing, /321 halaman/);
-assert.match(d30Landing, /8\.022 catatan backend/);
-assert.match(d30Landing, /22148902/);
+assert.match(d30Landing, /340 halaman/);
+assert.match(d30Landing, /12 rangkaian penguasaan/);
+assert.match(d30Landing, /22163421/);
 assert.match(d30Landing, /measure-theoretic-probability-stochastic-processes-id/);
 assert.doesNotMatch(d30Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
