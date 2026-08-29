@@ -350,7 +350,7 @@ def local_release_inventory(
     overlay_ids = live_state.get("overlay_ids")
     published_role_ids = live_state.get("effective_published_role_ids")
     record_dois = live_state.get("distinct_record_dois")
-    require(overlay_ids == list(EXPECTED_OVERLAY_IDS), "live-overlay ID inventory differs")
+    require(overlay_ids == sorted(EXPECTED_OVERLAY_IDS), "live-overlay ID inventory differs")
     require(published_role_ids == list(EXPECTED_PUBLISHED_ROLE_IDS), "published-role ID inventory differs")
     require(record_dois == list(EXPECTED_RECORD_DOIS), "distinct-record DOI inventory differs")
     validation_document_passes(validation, "live-overlay validation receipt")
