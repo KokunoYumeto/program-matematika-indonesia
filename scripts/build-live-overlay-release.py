@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build the deterministic v0.62.4 learner-access overlay release.
+"""Build the deterministic v0.62.5 learner-access overlay release.
 
-This is an additive adapter over the immutable v0.62.3 release.  The builder
-copies every base-release byte unchanged and creates exactly five new files.
+This is an additive adapter over the immutable v0.62.4 release.  The builder
+copies every base-release byte unchanged and creates exactly nine new files.
 It uses bounded immutable raw-commit reads for provenance, performs read-only
 public QA, and never mutates a network service or publishes.
 """
@@ -24,40 +24,49 @@ from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.62.4"
-BASE_VERSION = "0.62.3"
+VERSION = "0.62.5"
+BASE_VERSION = "0.62.4"
 FROZEN_AUTHORITY_VERSION = "0.62.0"
-PREDECESSOR_RECORD_ID = 22164795
+PREDECESSOR_RECORD_ID = 22165591
 REPOSITORY_URL = "https://github.com/KokunoYumeto/program-matematika-indonesia"
 RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia"
 STUDENT_URL = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
 FIXED_ZIP_TIME = (2026, 8, 29, 0, 0, 0)
 
 BASE_EXPECTED = {
-    "files": 74,
-    "bytes": 29_290_326,
-    "aggregate_sha256": "63666cbe89bb32d89d42e0b9e01e23b664a9e241d73a705116f169d04a554c99",
+    "files": 79,
+    "bytes": 38_740_355,
+    "aggregate_sha256": "0a7281fd19440d14df1dc565ba57ecf2bc977bd68a62626df75ba124dbf6cad7",
     "checksum_file": {
-        "name": "LIVE_OVERLAY_CHECKSUMS_v0.62.3.sha256",
-        "bytes": 8_112,
-        "sha256": "b61c0f6dd13e47ea5be2c83efcf01eb1d0bcc1a42ba7de36dedce36eef54c7a7",
-        "entries": 73,
+        "name": "LIVE_OVERLAY_CHECKSUMS_v0.62.4.sha256",
+        "bytes": 8_695,
+        "sha256": "2201416d0b9688ed2f6f1b08e7ac1a4e997665b77eae38ecf94ad95b32fa942d",
+        "entries": 78,
     },
 }
 
-ADDITIVE_NAMES = (
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.4.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.4.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.4.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.4.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.4.sha256",
+CORE_ADDITIVE_NAMES = (
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.5.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.5.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.5.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.5.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.5.sha256",
 )
-STANDALONE_NAME, MANIFEST_NAME, SOURCE_ZIP_NAME, RECEIPT_NAME, CHECKSUM_NAME = ADDITIVE_NAMES
-BUILD_MARKER_NAME = ".pmi-live-overlay-v0.62.4-building.json"
+BACKEND_V23_NAMES = (
+    "program-matematika-indonesia-backend-v2.3-conformance-v0.1.1.zip",
+    "GLOBAL_BACKEND_V23_SCOPE_ADMISSION_RECEIPT_v0.62.5.json",
+    "GLOBAL_BACKEND_V23_VALIDATION_RECEIPT_v0.62.5.json",
+    "GLOBAL_BACKEND_V23_ARCHIVE_DETERMINISM_RECEIPT_v0.62.5.json",
+)
+ADDITIVE_NAMES = CORE_ADDITIVE_NAMES + BACKEND_V23_NAMES
+STANDALONE_NAME, MANIFEST_NAME, SOURCE_ZIP_NAME, RECEIPT_NAME, CHECKSUM_NAME = CORE_ADDITIVE_NAMES
+BACKEND_ARCHIVE_NAME, BACKEND_SCOPE_NAME, BACKEND_VALIDATION_NAME, BACKEND_DETERMINISM_NAME = BACKEND_V23_NAMES
+BUILD_MARKER_NAME = ".pmi-live-overlay-v0.62.5-building.json"
 
 SOURCE_MEMBERS = (
     "docs/app.js",
     "docs/courses.js",
+    "docs/id-ID/courses/B95/index.html",
     "docs/id-ID/courses/D30/index.html",
     "docs/index.html",
     "docs/learner-state.js",
@@ -79,7 +88,6 @@ STATIC_VALIDATION_FIXED_INPUTS = (
     "docs/data/unit-route-D20-v2.1.json",
     "docs/data/unit-route-v2.1.json",
     "docs/data/unit-routes-v2.1.json",
-    "docs/id-ID/courses/B95/index.html",
     "docs/id-ID/courses/C100/index.html",
     "docs/id-ID/courses/C100/reader/index.html",
     "docs/id-ID/courses/C100/reader/style.css",
@@ -99,8 +107,8 @@ PAGES_READBACKS = (
     {
         "path": "docs/index.html",
         "url": STUDENT_URL,
-        "bytes": 13_306,
-        "sha256": "c88d8aa41489cc5be0ec7a488d582ffa5486a9adb991e255c5923688f2120d10",
+        "bytes": 13_260,
+        "sha256": "f3a56b34e9d9540453284102ff97ff21cd0f5e88c27b37d125a22a14315e1cfa",
     },
     {
         "path": "docs/app.js",
@@ -111,8 +119,14 @@ PAGES_READBACKS = (
     {
         "path": "docs/live-course-publications.js",
         "url": f"{STUDENT_URL}live-course-publications.js",
-        "bytes": 28_352,
-        "sha256": "c06392ee053d1734cd57f7830da689424c013e737b3da407d0536c1d28eb6a0e",
+        "bytes": 28_637,
+        "sha256": "5577675d1d211ca2d73c8fa615e0ebea1eca9071081c2efa408f7a2edc28262b",
+    },
+    {
+        "path": "docs/id-ID/courses/B95/index.html",
+        "url": f"{STUDENT_URL}id-ID/courses/B95/",
+        "bytes": 3_913,
+        "sha256": "31de348cd30539925af931449791e67963b8571f728c99234a8b2128744a130e",
     },
     {
         "path": "docs/id-ID/courses/D30/index.html",
@@ -122,7 +136,7 @@ PAGES_READBACKS = (
     },
 )
 RECEIPT_CHECKS = {
-    "base_release": "74/74 byte-identical",
+    "base_release": "79/79 byte-identical",
     "standalone_export_replay": "byte-identical",
     "source_archive": "inventory, CRC, member bytes, timestamps, and order pass",
     "overlay_rows": "18/18",
@@ -130,7 +144,9 @@ RECEIPT_CHECKS = {
     "distinct_completed_public_records": "25",
     "strict_public_links": "161/161; live network gate executed",
     "static_site_validation": "pass; 40 courses; 18 overlay rows; 26 effective published roles",
-    "github_pages_readbacks": "4/4 exact live HTTP 200 byte/hash matches",
+    "github_pages_readbacks": "5/5 exact live HTTP 200 byte/hash matches",
+    "b95_r011_b024": "253-page learner route and public PDF exact byte/hash gate pass",
+    "backend_v23_conformance": "0.1.1 archive plus three sanitized receipts pass semantic and recursive privacy gates",
     "privacy_scan": "pass",
 }
 
@@ -142,6 +158,34 @@ PRIVATE_MARKERS = (
     b"new " + b"zenodo " + b"token.md",
     b"github " + b"tokens.md",
     b"zenodo " + b"token.md",
+    b"/" + b"users/",
+    b"/" + b"home/",
+)
+
+B95_PUBLICATION = {
+    "course_id": "B95",
+    "boundary": "R011-B024",
+    "pages": 253,
+    "next_boundary": "B025",
+    "record_id": 22166152,
+    "doi": "10.5281/zenodo.22166152",
+    "pdf_url": "https://zenodo.org/records/22166152/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B024_WORKING_READER.pdf?download=1",
+    "pdf_bytes": 12_390_137,
+    "pdf_sha256": "fcd78ff026131e4979c0ea282b4468101406527f16dc335ee6583ad220273b53",
+    "github_release": "https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b024-2026.08.29.3",
+    "backend_records": 8_911,
+    "public_assets": 9,
+    "learner_url": f"{STUDENT_URL}id-ID/courses/B95/",
+}
+
+BACKEND_REQUIRED_SUFFIXES = (
+    "manifest.json",
+    "PACKAGE_CHECKSUMS.sha256",
+    "VALIDATION_RECEIPT.json",
+    "SCOPE_AND_LIMITATIONS.json",
+    "tools/generate_v23.py",
+    "tools/validate_v23.py",
+    "tools/package_v23.py",
 )
 
 
@@ -277,7 +321,7 @@ def verify_replaceable_output(output: Path, base_names: set[str]) -> None:
     if any(not path.is_file() for path in paths):
         raise ValueError(f"existing v{VERSION} output is not a flat release")
     if {path.name for path in paths} != base_names | set(ADDITIVE_NAMES):
-        raise ValueError(f"existing v{VERSION} output is not a recognized 74+5 candidate")
+        raise ValueError(f"existing v{VERSION} output is not a recognized 79+9 candidate")
     manifest = json.loads((output / MANIFEST_NAME).read_text(encoding="utf-8"))
     if manifest.get("schema_id") != "program-matematika-indonesia/live-publication-overlay-manifest/v1":
         raise ValueError(f"existing v{VERSION} manifest is not recognized")
@@ -461,6 +505,172 @@ def privacy_scan(name: str, data: bytes) -> None:
         raise ValueError(f"private marker in {name}: {found}")
 
 
+def safe_archive_member(name: str) -> None:
+    normalized = name.replace("\\", "/")
+    if not normalized or normalized.startswith("/") or re.match(r"^[A-Za-z]:", normalized):
+        raise ValueError(f"unsafe archive member path: {name!r}")
+    if any(part in {"", ".", ".."} for part in normalized.rstrip("/").split("/")):
+        raise ValueError(f"non-canonical archive member path: {name!r}")
+
+
+def inspect_backend_archive(path: Path) -> dict[str, Any]:
+    if not path.is_file():
+        raise ValueError(f"missing backend v2.3 archive: {path}")
+    privacy_scan(path.name, path.read_bytes())
+    expected_root = "program-matematika-indonesia-backend-v2.3-conformance-v0.1.1/"
+    with zipfile.ZipFile(path) as archive:
+        if archive.testzip() is not None:
+            raise ValueError("backend v2.3 archive CRC failure")
+        names = archive.namelist()
+        if len(names) != len(set(names)) or names != sorted(names):
+            raise ValueError("backend v2.3 archive names are duplicated or not sorted")
+        if not names or any(not name.startswith(expected_root) for name in names):
+            raise ValueError("backend v2.3 archive root/version mismatch")
+        timestamps = set()
+        uncompressed = 0
+        for info in archive.infolist():
+            safe_archive_member(info.filename)
+            timestamps.add(info.date_time)
+            if info.is_dir():
+                continue
+            data = archive.read(info.filename)
+            uncompressed += len(data)
+            privacy_scan(f"{path.name}:{info.filename}", data)
+        if len(timestamps) != 1:
+            raise ValueError("backend v2.3 archive member timestamps are not deterministic")
+        missing = [
+            suffix for suffix in BACKEND_REQUIRED_SUFFIXES
+            if f"{expected_root}{suffix}" not in names
+        ]
+        if missing:
+            raise ValueError(f"backend v2.3 archive lacks required members: {missing}")
+        return {
+            "archive": fact(path, BACKEND_ARCHIVE_NAME),
+            "package_root": expected_root,
+            "entries": len(names),
+            "uncompressed_bytes": uncompressed,
+            "member_order": "sorted",
+            "fixed_member_timestamp": "%04d-%02d-%02dT%02d:%02d:%02d" % next(iter(timestamps)),
+            "crc": "pass",
+            "recursive_privacy_scan": "pass",
+            "required_members": list(BACKEND_REQUIRED_SUFFIXES),
+        }
+
+
+def walk_json(value: Any):
+    yield value
+    if isinstance(value, dict):
+        for key, child in value.items():
+            yield key
+            yield from walk_json(child)
+    elif isinstance(value, list):
+        for child in value:
+            yield from walk_json(child)
+
+
+def inspect_backend_receipt(
+    path: Path,
+    public_name: str,
+    archive_fact: dict[str, Any],
+    kind: str,
+) -> dict[str, Any]:
+    if not path.is_file():
+        raise ValueError(f"missing backend v2.3 {kind} receipt: {path}")
+    data = path.read_bytes()
+    privacy_scan(public_name, data)
+    try:
+        value = json.loads(data)
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise ValueError(f"backend v2.3 {kind} receipt is not valid UTF-8 JSON") from exc
+    if not isinstance(value, dict):
+        raise ValueError(f"backend v2.3 {kind} receipt must be a JSON object")
+    flattened = list(walk_json(value))
+    lowered = [str(item).lower() for item in flattened if isinstance(item, (str, int, bool))]
+    if not any(item in {"pass", "passed", "success", "complete", "completed"} for item in lowered):
+        raise ValueError(f"backend v2.3 {kind} receipt lacks a passing result")
+    if archive_fact["sha256"] not in flattened or archive_fact["bytes"] not in flattened:
+        raise ValueError(f"backend v2.3 {kind} receipt is not bound to archive bytes/SHA-256")
+    canonical = json.dumps(value, ensure_ascii=False, sort_keys=True).lower()
+    if kind == "scope":
+        if "a00" not in canonical or "o001" not in canonical:
+            raise ValueError("backend v2.3 scope receipt does not bind both A00 and O001")
+        for key, child in value.items():
+            key_lower = str(key).lower()
+            if ("cross" in key_lower and "lane" in key_lower) or key_lower in {
+                "global_backend_complete", "whole_program_complete",
+            }:
+                if child is not False:
+                    raise ValueError(f"backend v2.3 scope receipt overclaims scope: {key}")
+    elif kind == "validation":
+        if not any(item == 13 for item in flattened):
+            raise ValueError("backend v2.3 validation receipt does not bind the 13-check gate")
+    elif kind == "determinism":
+        if not any(token in canonical for token in ("byte-identical", "byte_identical", "byte identical")):
+            raise ValueError("backend v2.3 determinism receipt lacks byte-identical replay evidence")
+    return {"artifact": fact(path, public_name), "kind": kind, "result": "pass"}
+
+
+def inspect_backend_inputs(args: argparse.Namespace) -> dict[str, Any]:
+    paths = {
+        BACKEND_ARCHIVE_NAME: Path(args.backend_v23_archive).resolve(),
+        BACKEND_SCOPE_NAME: Path(args.backend_v23_scope_receipt).resolve(),
+        BACKEND_VALIDATION_NAME: Path(args.backend_v23_validation_receipt).resolve(),
+        BACKEND_DETERMINISM_NAME: Path(args.backend_v23_determinism_receipt).resolve(),
+    }
+    if len(set(paths.values())) != len(paths):
+        raise ValueError("backend v2.3 artifact arguments must name four distinct files")
+    archive = inspect_backend_archive(paths[BACKEND_ARCHIVE_NAME])
+    archive_fact = archive["archive"]
+    receipts = {
+        BACKEND_SCOPE_NAME: inspect_backend_receipt(
+            paths[BACKEND_SCOPE_NAME], BACKEND_SCOPE_NAME, archive_fact, "scope"
+        ),
+        BACKEND_VALIDATION_NAME: inspect_backend_receipt(
+            paths[BACKEND_VALIDATION_NAME], BACKEND_VALIDATION_NAME, archive_fact, "validation"
+        ),
+        BACKEND_DETERMINISM_NAME: inspect_backend_receipt(
+            paths[BACKEND_DETERMINISM_NAME], BACKEND_DETERMINISM_NAME, archive_fact, "determinism"
+        ),
+    }
+    return {"paths": paths, "archive": archive, "receipts": receipts}
+
+
+def verify_b95_publication(committed_sources: dict[str, bytes]) -> dict[str, Any]:
+    page = committed_sources["docs/id-ID/courses/B95/index.html"]
+    overlay = committed_sources["docs/live-course-publications.js"]
+    page_text = page.decode("utf-8")
+    overlay_text = overlay.decode("utf-8")
+    markers = (
+        B95_PUBLICATION["boundary"], str(B95_PUBLICATION["record_id"]),
+        str(B95_PUBLICATION["pages"]), B95_PUBLICATION["next_boundary"],
+        B95_PUBLICATION["pdf_url"], B95_PUBLICATION["github_release"],
+    )
+    for marker in markers:
+        if marker not in page_text or marker not in overlay_text:
+            raise ValueError(f"B95 learner/overlay source lacks exact B024 marker: {marker}")
+    if str(B95_PUBLICATION["backend_records"]) not in overlay_text:
+        raise ValueError("B95 overlay lacks exact backend record count")
+    hrefs = re.findall(r'''href=["']([^"']+)["']''', page_text, flags=re.IGNORECASE)
+    if any(re.search(r"\.(?:jsonl?|csv)(?:[?#]|$)", href, re.IGNORECASE) for href in hrefs):
+        raise ValueError("B95 primary learner route exposes a machine-data href")
+    request = urllib.request.Request(
+        B95_PUBLICATION["pdf_url"],
+        headers={"User-Agent": f"program-matematika-indonesia-release-builder/{VERSION}"},
+    )
+    with urllib.request.urlopen(request, timeout=120) as response:
+        status = response.status
+        data = response.read()
+    if status != 200 or len(data) != B95_PUBLICATION["pdf_bytes"] or sha256_bytes(data) != B95_PUBLICATION["pdf_sha256"]:
+        raise ValueError("B95 R011-B024 public PDF exact byte/hash readback mismatch")
+    return {
+        **B95_PUBLICATION,
+        "learner_route_is_primary": True,
+        "machine_data_links_on_learner_page": 0,
+        "public_pdf_http_status": 200,
+        "public_pdf_readback": "exact-byte-match",
+    }
+
+
 def zip_info(name: str) -> zipfile.ZipInfo:
     info = zipfile.ZipInfo(name, FIXED_ZIP_TIME)
     info.compress_type = zipfile.ZIP_STORED
@@ -541,18 +751,20 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     base = (root / args.base_release).resolve()
     output = (root / args.output).resolve()
     releases_root = (root / "releases").resolve()
-    expected_base = releases_root / "v0.62.3"
-    expected_output = releases_root / "v0.62.4"
+    expected_base = releases_root / "v0.62.4"
+    expected_output = releases_root / "v0.62.5"
     if base != expected_base:
         raise ValueError(f"base release must be exactly {expected_base}")
     if output != expected_output:
         raise ValueError(f"output must be exactly {expected_output}")
     committed_sources = verify_source_commit(root, args.source_commit)
     static_inputs = static_validation_inputs(root, args.source_commit, require_live=True)
+    backend_inputs = inspect_backend_inputs(args)
 
     base_facts = verify_base(base)
     summary = overlay_summary(root)
     readbacks = verify_pages_sources(root, args.source_commit)
+    b95_publication = verify_b95_publication(committed_sources)
     strict_link_result = run_strict_link_check(root)
     static_site_result = {
         "command": "node scripts/validate-static-site.mjs",
@@ -561,7 +773,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     }
 
     staging = output.with_name(f"{output.name}.building")
-    expected_staging = releases_root / "v0.62.4.building"
+    expected_staging = releases_root / "v0.62.5.building"
     if staging != expected_staging:
         raise ValueError(f"staging path must be exactly {expected_staging}")
     if staging.exists():
@@ -591,6 +803,11 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             copied = staging / source.name
             if source.read_bytes() != copied.read_bytes():
                 raise ValueError(f"base copy byte mismatch: {source.name}")
+        for public_name, source in backend_inputs["paths"].items():
+            target = staging / public_name
+            shutil.copyfile(source, target)
+            if source.read_bytes() != target.read_bytes():
+                raise ValueError(f"backend v2.3 copy byte mismatch: {public_name}")
 
         standalone = staging / STANDALONE_NAME
         replay = staging / f".{STANDALONE_NAME}.replay"
@@ -625,7 +842,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             "release_kind": "additive-learner-access-live-publication-adapter",
             "immutable_base": {
                 "version": BASE_VERSION,
-                "directory": "releases/v0.62.3",
+                "directory": "releases/v0.62.4",
                 "files": BASE_EXPECTED["files"],
                 "bytes": BASE_EXPECTED["bytes"],
                 "aggregate_algorithm": "sha256 of sorted '<sha256>  <bytes>  <name>\\n' facts",
@@ -657,6 +874,17 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
                 "overall_program_complete": False,
             },
             "live_publication_overlay": summary,
+            "b95_learner_route": b95_publication,
+            "backend_v23_conformance": {
+                "version": "2.3",
+                "package_version": "0.1.1",
+                "admitted_scope": ["A00", "O001"],
+                "cross_lane_or_whole_program_claim": False,
+                "student_route_remains_primary": True,
+                "machine_artifacts_are_secondary": True,
+                "archive": backend_inputs["archive"],
+                "receipts": backend_inputs["receipts"],
+            },
             "strict_public_link_check": strict_link_result,
             "static_site_validation": static_site_result,
             "github_pages": {
@@ -670,13 +898,20 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
                 "names": list(ADDITIVE_NAMES),
                 "standalone_html": standalone_fact,
                 "source_archive": source_zip,
+                "backend_v23": {
+                    "archive": backend_inputs["archive"]["archive"],
+                    "receipts": [
+                        backend_inputs["receipts"][name]["artifact"]
+                        for name in BACKEND_V23_NAMES[1:]
+                    ],
+                },
             },
             "source_inputs": source_facts,
             "inventory_contract": {
-                "inherited_files": 74,
-                "additive_files": 5,
-                "successor_files": 79,
-                "checksum_entries": 78,
+                "inherited_files": 79,
+                "additive_files": 9,
+                "successor_files": 88,
+                "checksum_entries": 87,
                 "checksum_excludes_only": CHECKSUM_NAME,
             },
             "privacy": {
@@ -692,7 +927,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             for path in sorted(staging.iterdir(), key=lambda value: value.name)
             if path.name != BUILD_MARKER_NAME
         ]
-        if len(before_receipt) != 77:
+        if len(before_receipt) != 86:
             raise ValueError(f"pre-receipt inventory mismatch: {len(before_receipt)}")
         receipt = {
             "schema_id": "program-matematika-indonesia/local-live-overlay-validation/v1",
@@ -705,15 +940,19 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
                 canonical_inventory_bytes(before_receipt)
             ),
             "successor_inventory": {
-                "files_before_checksum": 78,
-                "checksum_entries": 78,
-                "final_files": 79,
-                "inherited_files": 74,
-                "additive_files": 5,
+                "files_before_checksum": 87,
+                "checksum_entries": 87,
+                "final_files": 88,
+                "inherited_files": 79,
+                "additive_files": 9,
             },
             "validation_command": (
-                "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.4 "
-                f"--source-commit {args.source_commit} --pages-run-id {args.pages_run_id}"
+                "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.5 "
+                f"--source-commit {args.source_commit} --pages-run-id {args.pages_run_id} "
+                f"--backend-v23-archive releases/v0.62.5/{BACKEND_ARCHIVE_NAME} "
+                f"--backend-v23-scope-receipt releases/v0.62.5/{BACKEND_SCOPE_NAME} "
+                f"--backend-v23-validation-receipt releases/v0.62.5/{BACKEND_VALIDATION_NAME} "
+                f"--backend-v23-determinism-receipt releases/v0.62.5/{BACKEND_DETERMINISM_NAME}"
             ),
             "publication_performed": False,
         }
@@ -725,7 +964,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             for path in sorted(staging.iterdir(), key=lambda value: value.name)
             if path.name != BUILD_MARKER_NAME
         ]
-        if len(pre_checksum) != 78:
+        if len(pre_checksum) != 87:
             raise ValueError(f"pre-checksum inventory mismatch: {len(pre_checksum)}")
         (staging / CHECKSUM_NAME).write_bytes(
             "".join(
@@ -734,8 +973,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             ).encode("utf-8")
         )
         (staging / BUILD_MARKER_NAME).unlink()
-        if len(list(staging.iterdir())) != 79:
-            raise ValueError("final inventory is not 79 files")
+        if len(list(staging.iterdir())) != 88:
+            raise ValueError("final inventory is not 88 files")
         staging.rename(output)
     except BaseException:
         if staging.exists():
@@ -753,6 +992,14 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             args.source_commit,
             "--pages-run-id",
             str(args.pages_run_id),
+            "--backend-v23-archive",
+            str(output / BACKEND_ARCHIVE_NAME),
+            "--backend-v23-scope-receipt",
+            str(output / BACKEND_SCOPE_NAME),
+            "--backend-v23-validation-receipt",
+            str(output / BACKEND_VALIDATION_NAME),
+            "--backend-v23-determinism-receipt",
+            str(output / BACKEND_DETERMINISM_NAME),
         ],
         cwd=root,
         check=True,
@@ -775,10 +1022,14 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-release", default="releases/v0.62.3")
-    parser.add_argument("--output", default="releases/v0.62.4")
+    parser.add_argument("--base-release", default="releases/v0.62.4")
+    parser.add_argument("--output", default="releases/v0.62.5")
     parser.add_argument("--source-commit", required=True, help="full commit containing every packaged source")
     parser.add_argument("--pages-run-id", required=True, type=int, help="successful Pages workflow run for the source commit")
+    parser.add_argument("--backend-v23-archive", required=True, help="public-safe deterministic v2.3 0.1.1 ZIP")
+    parser.add_argument("--backend-v23-scope-receipt", required=True, help="sanitized A00+O001 scope-admission receipt")
+    parser.add_argument("--backend-v23-validation-receipt", required=True, help="sanitized 13-check validation receipt")
+    parser.add_argument("--backend-v23-determinism-receipt", required=True, help="sanitized byte-identical replay receipt")
     parser.add_argument("--force", action="store_true", help="replace only the exact output directory")
     return parser.parse_args()
 

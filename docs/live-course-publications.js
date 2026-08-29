@@ -9,6 +9,7 @@ const hasOwn = (value, key) => Object.prototype.hasOwnProperty.call(value, key);
 function publication(value) {
   const frozen = { ...value };
   if (value.progress) frozen.progress = Object.freeze({ ...value.progress });
+  if (value.verification) frozen.verification = Object.freeze({ ...value.verification });
   for (const field of ['supplements', 'additionalSupplements']) {
     if (value[field]) frozen[field] = Object.freeze(value[field].map((item) => Object.freeze({ ...item })));
   }
@@ -215,17 +216,23 @@ export const liveCoursePublications = Object.freeze({
   B95: publication({
     state: 'production',
     learner: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/',
-    edition: 'https://zenodo.org/records/22164353/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B023_WORKING_READER.pdf?download=1',
-    zenodo: 'https://doi.org/10.5281/zenodo.22164353',
+    edition: 'https://zenodo.org/records/22166152/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B024_WORKING_READER.pdf?download=1',
+    zenodo: 'https://doi.org/10.5281/zenodo.22166152',
     repository: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id',
-    release: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b023-2026.08.29.2',
-    version: 'R011-B023',
-    note: 'Edisi kerja publik R011-B023 memuat Bab 1 sampai Bab 6, Bagian 6.2, dalam pembaca 241 halaman. B024 — Bab 6, Bagian 6.3 — adalah batas berikutnya dan belum diterbitkan.',
+    release: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b024-2026.08.29.3',
+    version: 'R011-B024',
+    note: 'Edisi kerja publik R011-B024 memuat Bab 1 sampai Bab 6, Bagian 6.3, dalam pembaca 253 halaman. B025 — Bab 6, Bagian 6.4 — adalah batas berikutnya dan belum diterbitkan.',
+    verification: {
+      readerBytes: 12390137,
+      readerSha256: 'fcd78ff026131e4979c0ea282b4468101406527f16dc335ee6583ad220273b53',
+      backendRecords: 8911,
+      publicAssets: 9,
+    },
     progress: {
       unitLabel: 'batas produksi R011',
-      publicPages: 241,
-      publicBoundary: 'B023 — Bab 6, Bagian 6.2',
-      updatedAt: '2026-08-29T19:15:53+02:00',
+      publicPages: 253,
+      publicBoundary: 'B024 — Bab 6, Bagian 6.3',
+      updatedAt: '2026-08-29T23:58:00+02:00',
     },
   }),
   C10: publication({

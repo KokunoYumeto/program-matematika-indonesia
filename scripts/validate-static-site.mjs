@@ -226,8 +226,18 @@ assert.match(effectiveCoursesById.get('B30').zenodo, /22151145$/);
 assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 138);
 assert.equal(effectiveCoursesById.get('B50').supplements.length, 2);
 assert.match(effectiveCoursesById.get('B50').zenodo, /22163372$/);
-assert.match(effectiveCoursesById.get('B95').zenodo, /22164353$/);
-assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 241);
+assert.match(effectiveCoursesById.get('B95').zenodo, /22166152$/);
+assert.equal(effectiveCoursesById.get('B95').version, 'R011-B024');
+assert.match(effectiveCoursesById.get('B95').release, /r011-b024-2026\.08\.29\.3$/);
+assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 253);
+assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'B024 — Bab 6, Bagian 6.3');
+assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B024_WORKING_READER\.pdf\?download=1$/);
+assert.deepEqual(effectiveCoursesById.get('B95').verification, {
+  readerBytes: 12390137,
+  readerSha256: 'fcd78ff026131e4979c0ea282b4468101406527f16dc335ee6583ad220273b53',
+  backendRecords: 8911,
+  publicAssets: 9,
+});
 assert.equal(effectiveCoursesById.get('C90').state, 'published');
 assert.equal(effectiveCoursesById.get('C90').progress.publicUnits, 20);
 assert.equal(effectiveCoursesById.get('C90').progress.publicPages, 645);
@@ -388,7 +398,7 @@ assert.match(app, /effectivePublishedCourses/);
 assert.match(app, /livePublicationSummary\.textContent/);
 assert.doesNotMatch(app, /liveCoursePublications\[/);
 assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
-assert.match(livePublicationsModule, /22164353/);
+assert.match(livePublicationsModule, /22166152/);
 assert.match(livePublicationsModule, /22161090/);
 assert.match(livePublicationsModule, /22164668/);
 assert.match(livePublicationsModule, /22163663/);
@@ -396,9 +406,9 @@ assert.match(livePublicationsModule, /22164136/);
 assert.match(livePublicationsModule, /22163372/);
 assert.match(livePublicationsModule, /clemens-snapp-workbook-u022/);
 assert.match(b95Landing, /Statistika Berbasis Data/);
-assert.match(b95Landing, /22164353/);
+assert.match(b95Landing, /22166152/);
 assert.match(b95Landing, /statistika-berbasis-data-id/);
-assert.match(b95Landing, /241 halaman/);
+assert.match(b95Landing, /253 halaman/);
 assert.doesNotMatch(b95Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
 assert.match(livePublicationsModule, /id-ID\/courses\/D30\//);

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reserve PMI v0.62.4 as a new Zenodo version without changing its payload.
+"""Reserve PMI v0.62.5 as a new Zenodo version without changing its payload.
 
 This script performs the single mutating ``newversion`` request.  It deliberately
 does not edit metadata or files; the publication script owns those operations.
@@ -21,21 +21,25 @@ import requests
 
 
 PROJECT = Path(__file__).resolve().parents[1]
-VERSION = "0.62.4"
+VERSION = "0.62.5"
 CONCEPT_ID = 22059707
-PREDECESSOR_ID = 22164795
-PREDECESSOR_VERSION = "0.62.3"
-EXPECTED_INHERITED_FILES = 74
-EXPECTED_TOTAL_FILES = 79
+PREDECESSOR_ID = 22165591
+PREDECESSOR_VERSION = "0.62.4"
+EXPECTED_INHERITED_FILES = 79
+EXPECTED_TOTAL_FILES = 88
 API = "https://zenodo.org/api/deposit/depositions"
 PUBLIC_API = "https://zenodo.org/api/records"
 DEFAULT_RECEIPT = PROJECT / f"ZENODO_RESERVATION_RECEIPT_v{VERSION}.json"
 OVERLAY_NAMES = {
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.4.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.4.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.4.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.4.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.4.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.5.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.5.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.5.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.5.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.5.sha256",
+    "program-matematika-indonesia-backend-v2.3-conformance-v0.1.1.zip",
+    "GLOBAL_BACKEND_V23_SCOPE_ADMISSION_RECEIPT_v0.62.5.json",
+    "GLOBAL_BACKEND_V23_VALIDATION_RECEIPT_v0.62.5.json",
+    "GLOBAL_BACKEND_V23_ARCHIVE_DETERMINISM_RECEIPT_v0.62.5.json",
 }
 
 
@@ -266,7 +270,7 @@ def main() -> int:
     draft_by_name = {row["name"]: row for row in draft_files}
     require(set(inherited_by_name).issubset(draft_by_name), "successor draft is missing an inherited file")
     extra_names = set(draft_by_name) - set(inherited_by_name)
-    require(extra_names.issubset(OVERLAY_NAMES), "successor draft contains a file outside the 74+5 boundary")
+    require(extra_names.issubset(OVERLAY_NAMES), "successor draft contains a file outside the 79+9 boundary")
     for name, expected in inherited_by_name.items():
         require(draft_by_name[name] == expected, f"successor draft changed inherited file metadata: {name}")
 
@@ -298,7 +302,7 @@ def main() -> int:
         "metadata_or_file_mutation_performed": False,
         "next_action": (
             "Run publish-live-overlay-zenodo.py with this reserved record ID and the validated "
-            "flat 79-file releases/v0.62.4 payload; only its five fixed overlay files may be uploaded."
+            "flat 88-file releases/v0.62.5 payload; only its nine fixed additive files may be uploaded."
         ),
     }
     receipt_bytes, receipt_sha256 = write_receipt(args.receipt.resolve(), receipt)
