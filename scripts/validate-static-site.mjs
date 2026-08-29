@@ -275,12 +275,11 @@ assert.equal(effectiveCoursesById.get('D80').progress.integrationReadyUnits, 146
 assert.equal(effectiveCoursesById.get('D80').progress.canonicalUnits, 146);
 assert.equal(effectiveCoursesById.get('D80').progress.publicUnits, 146);
 assert.equal(effectiveCoursesById.get('D80').progress.publicPages, 864);
-assert.match(effectiveCoursesById.get('D80').reader, /metode-aljabar-jilid-2-id\/$/);
+assert.equal(effectiveCoursesById.get('D80').reader, effectiveCoursesById.get('D80').edition);
 assert.match(effectiveCoursesById.get('D80').edition, /00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia\.pdf\?download=1$/);
 assert.match(effectiveCoursesById.get('D80').zenodo, /22151139$/);
-assert.equal(effectiveCoursesById.get('D80').supplements.length, 2);
-assert.equal(effectiveCoursesById.get('D80').supplements[0].id, 'metode-aljabar-jilid-2-html-offline');
-assert.equal(effectiveCoursesById.get('D80').supplements[1].id, 'metode-aljabar-jilid-2-backend');
+assert.equal(effectiveCoursesById.get('D80').supplements.length, 1);
+assert.equal(effectiveCoursesById.get('D80').supplements[0].id, 'metode-aljabar-jilid-2-backend');
 assert.equal(effectiveCoursesById.get('D100').progress.totalUnits, 60);
 assert.equal(effectiveCoursesById.get('D100').progress.translationBearingUnits, 35);
 assert.equal(effectiveCoursesById.get('D100').progress.integrationReadyUnits, 35);

@@ -463,26 +463,13 @@ export const liveCoursePublications = Object.freeze({
   }),
   D80: publication({
     state: 'published',
-    reader: 'https://kokunoyumeto.github.io/metode-aljabar-jilid-2-id/',
+    reader: 'https://zenodo.org/records/22151139/files/00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia.pdf?download=1',
     edition: 'https://zenodo.org/records/22151139/files/00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22151139',
     repository: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id',
     version: 'complete-edition-2026-08-29',
-    note: 'Edisi lengkap memuat 146 unit berurutan, 194 latihan sumber, 117 petunjuk sumber, dua Jembatan Penguasaan asli, pembaca PDF 864 halaman, pembaca HTML reflow, serta 6.347 segmen backend semantik. Sembilan berkas Zenodo dan arsip commit GitHub final telah dibaca ulang secara anonim dengan nol ketidakcocokan byte atau SHA-256.',
+    note: 'Edisi lengkap memuat 146 unit berurutan, 194 latihan sumber, 117 petunjuk sumber, dua Jembatan Penguasaan asli, pembaca PDF 864 halaman, serta 6.347 segmen backend semantik. Rute utama sementara diarahkan ke PDF: audit peramban menemukan 719 kesalahan rendering MathJax pada 121 bagian pembaca HTML, sehingga pembaca HTML tidak ditawarkan kepada siswa sampai perbaikan formula diterbitkan.',
     supplements: [
-      {
-        id: 'metode-aljabar-jilid-2-html-offline',
-        title: 'Pembaca HTML offline lengkap',
-        resourceType: 'course-volume',
-        state: 'complete',
-        scope: 'Pembaca reflow mandiri: 148 bagian termasuk dua jembatan, 27.308 simpul matematika, 829 deskripsi diagram, dan 3.541 pranala lokal tervalidasi.',
-        license: 'CC BY 4.0; kredit komponen dipertahankan',
-        pages: 864,
-        url: 'https://zenodo.org/records/22151139/files/03_pembaca-html-offline.zip?download=1',
-        zenodo: 'https://doi.org/10.5281/zenodo.22151139',
-        bytes: 1387063,
-        sha256: '07b91e51d84ebc36449e40b621b91dedf5bb327ca4c3718ef3787f90e8d8b35b',
-      },
       {
         id: 'metode-aljabar-jilid-2-backend',
         title: 'Backend semantik lengkap',
@@ -507,7 +494,7 @@ export const liveCoursePublications = Object.freeze({
       totalPages: 864,
       publicPages: 864,
       publicBoundary: 'edisi lengkap 146/146 unit',
-      updatedAt: '2026-08-29T01:10:56+02:00',
+      updatedAt: '2026-08-30T01:28:22+02:00',
     },
   }),
   D100: publication({
