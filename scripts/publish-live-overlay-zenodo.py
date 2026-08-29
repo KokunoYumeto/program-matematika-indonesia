@@ -56,9 +56,9 @@ EXPECTED_OVERLAY_IDS = (
     "C140", "D10", "D20", "D30", "D50", "D60", "D70", "D100",
 )
 EXPECTED_PUBLISHED_ROLE_IDS = (
-    "A00", "A10", "B10", "B20", "B40", "B50", "B60", "B80", "B90", "C10", "C100",
-    "C110", "C120", "C130", "C30", "C40", "C60", "C70", "C80", "C90",
-    "D110", "D120", "D20", "D50", "D70", "D90",
+    "A00", "A10", "B10", "B20", "B40", "B50", "B60", "B80", "B90", "C10", "C30",
+    "C40", "C60", "C70", "C80", "C90", "C100", "C110", "C120", "C130",
+    "D20", "D50", "D70", "D90", "D110", "D120",
 )
 EXPECTED_RECORD_DOIS = (
     "https://doi.org/10.5281/zenodo.21932787",
@@ -407,7 +407,7 @@ def public_file_stubs(record: dict[str, object], expected_count: int, label: str
 
 def anonymous_download(row: dict[str, object], label: str) -> dict[str, object]:
     last_error: Exception | None = None
-    for attempt in range(1, 6):
+    for attempt in range(1, 8):
         sha256 = hashlib.sha256()
         md5 = hashlib.md5(usedforsecurity=False)
         observed = 0
@@ -437,14 +437,22 @@ def anonymous_download(row: dict[str, object], label: str) -> dict[str, object]:
             }
         except (requests.RequestException, RuntimeError) as exc:
             last_error = exc
-            if attempt < 5:
-                time.sleep(attempt * 1.5)
+            if attempt < 7:
+                delay = float(attempt * 2)
+                response = exc.response if isinstance(exc, requests.HTTPError) else None
+                retry_after = response.headers.get("Retry-After") if response is not None else None
+                if retry_after is not None:
+                    try:
+                        delay = max(delay, min(120.0, float(retry_after)))
+                    except ValueError:
+                        pass
+                time.sleep(delay)
     raise RuntimeError(f"{label}: anonymous readback failed for {row['name']}") from last_error
 
 
 def anonymous_inventory(record: dict[str, object], expected_count: int, label: str) -> list[dict[str, object]]:
     stubs = public_file_stubs(record, expected_count, label)
-    with ThreadPoolExecutor(max_workers=4) as executor:
+    with ThreadPoolExecutor(max_workers=2) as executor:
         rows = list(executor.map(lambda row: anonymous_download(row, label), stubs))
     rows.sort(key=lambda row: str(row["name"]))
     return rows
