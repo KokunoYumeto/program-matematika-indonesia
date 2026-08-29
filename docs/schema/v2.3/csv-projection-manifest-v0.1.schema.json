@@ -1,0 +1,197 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/csv-projection-manifest-v0.1.schema.json",
+  "title": "Backend v2.3 deterministic CSV projection manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "source_package_binding",
+    "header",
+    "table_order",
+    "tables",
+    "records_csv",
+    "aggregate_sha256",
+    "canonical_serialization",
+    "recorded_at"
+  ],
+  "properties": {
+    "$schema": { "const": "schema/csv-projection-manifest-v0.1.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-csv-projection-manifest/0.1.0" },
+    "schema_version": { "const": "0.1.0" },
+    "package_id": { "const": "urn:uuid:51a56c44-bb1d-59d5-8611-68f22c13ff76" },
+    "source_package_binding": {
+      "allOf": [
+        { "$ref": "#/$defs/binding" },
+        {
+          "type": "object",
+          "properties": {
+            "path": { "const": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0/manifest.json" },
+            "bytes": { "const": 27131 },
+            "sha256": { "const": "b196d0b851fa0f6b3b7972ab33b762898f3d577fbc26b6214542d6a5b10009af" }
+          }
+        }
+      ]
+    },
+    "header": {
+      "oneOf": [
+        { "const": "stable_id,record_type,canonical_record_json" },
+        {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "prefixItems": [
+            { "const": "stable_id" },
+            { "const": "record_type" },
+            { "const": "canonical_record_json" }
+          ],
+          "items": false
+        }
+      ]
+    },
+    "table_order": {
+      "type": "array",
+      "minItems": 19,
+      "maxItems": 19,
+      "prefixItems": [
+        { "const": "owner_authorities" },
+        { "const": "datasets" },
+        { "const": "editions" },
+        { "const": "units" },
+        { "const": "course_unit_memberships" },
+        { "const": "native_bindings" },
+        { "const": "content_bindings" },
+        { "const": "relations" },
+        { "const": "rights" },
+        { "const": "rights_assignments" },
+        { "const": "artifacts" },
+        { "const": "build_recipes" },
+        { "const": "reader_surfaces" },
+        { "const": "routes" },
+        { "const": "search_documents" },
+        { "const": "adapter_profiles" },
+        { "const": "adapter_runs" },
+        { "const": "qa_events" },
+        { "const": "identity_crosswalks" }
+      ],
+      "items": false
+    },
+    "tables": {
+      "type": "array",
+      "minItems": 19,
+      "maxItems": 19,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/table_projection" }
+    },
+    "records_csv": {
+      "type": "object",
+      "required": ["path", "records", "bytes", "sha256", "roundtrip_sha256"],
+      "properties": {
+        "path": { "const": "records.csv" },
+        "records": { "const": 1313 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "roundtrip_sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "aggregate_sha256": { "$ref": "#/$defs/sha256" },
+    "canonical_serialization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "encoding",
+        "newline",
+        "csv_dialect",
+        "table_row_order",
+        "aggregate_table_order",
+        "canonical_record_json",
+        "trailing_newline",
+        "roundtrip"
+      ],
+      "properties": {
+        "encoding": { "const": "UTF-8" },
+        "newline": { "const": "LF" },
+        "csv_dialect": { "const": "RFC4180" },
+        "table_row_order": { "const": "source_jsonl_order" },
+        "aggregate_table_order": { "const": "manifest_table_order" },
+        "canonical_record_json": { "const": "exact_source_jsonl_record" },
+        "trailing_newline": { "const": true },
+        "roundtrip": { "const": "csv_to_jsonl_to_csv_byte_identical" }
+      }
+    },
+    "recorded_at": { "$ref": "#/$defs/date_time" }
+  },
+  "$defs": {
+    "table_name": {
+      "enum": [
+        "owner_authorities",
+        "datasets",
+        "editions",
+        "units",
+        "course_unit_memberships",
+        "native_bindings",
+        "content_bindings",
+        "relations",
+        "rights",
+        "rights_assignments",
+        "artifacts",
+        "build_recipes",
+        "reader_surfaces",
+        "routes",
+        "search_documents",
+        "adapter_profiles",
+        "adapter_runs",
+        "qa_events",
+        "identity_crosswalks"
+      ]
+    },
+    "table_projection": {
+      "type": "object",
+      "required": [
+        "table",
+        "record_type",
+        "source_jsonl",
+        "csv",
+        "records",
+        "roundtrip_sha256",
+        "roundtrip_state"
+      ],
+      "properties": {
+        "table": { "$ref": "#/$defs/table_name" },
+        "record_type": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "source_jsonl": { "$ref": "#/$defs/binding" },
+        "csv": { "$ref": "#/$defs/binding" },
+        "records": { "type": "integer", "minimum": 0 },
+        "roundtrip_sha256": { "$ref": "#/$defs/sha256" },
+        "roundtrip_state": { "const": "pass" }
+      },
+      "additionalProperties": true
+    },
+    "binding": {
+      "type": "object",
+      "required": ["path", "role", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relative_path" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)[.][.](?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:[.][0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    }
+  }
+}

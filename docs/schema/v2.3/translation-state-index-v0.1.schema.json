@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/translation-state-index-v0.1.schema.json",
+  "title": "Backend v2.3 evidenced A00 translation-state index",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "dataset_id",
+    "authority_binding",
+    "coverage",
+    "states",
+    "records",
+    "identity_set_sha256",
+    "no_inference",
+    "recorded_at"
+  ],
+  "properties": {
+    "$schema": { "const": "schema/translation-state-index-v0.1.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-translation-state-index/0.1.0" },
+    "schema_version": { "const": "0.1.0" },
+    "package_id": { "const": "urn:uuid:51a56c44-bb1d-59d5-8611-68f22c13ff76" },
+    "dataset_id": { "const": "urn:uuid:2afd6e58-418c-5b1b-b690-53f4ec9bffdf" },
+    "authority_binding": {
+      "allOf": [
+        { "$ref": "#/$defs/binding" },
+        {
+          "type": "object",
+          "properties": {
+            "path": { "const": "backend/v2.1/pilots/a00-prealgebra/units.jsonl" },
+            "bytes": { "const": 124502 },
+            "sha256": { "const": "16c5e057f48d460fcbee42853e716e8537d587ba6a09953dc84c11496d943948" }
+          }
+        }
+      ]
+    },
+    "coverage": {
+      "type": "object",
+      "required": [
+        "course_id",
+        "granularity",
+        "authority_rows",
+        "indexed_rows",
+        "module_roots",
+        "segment_rows",
+        "expression_rows",
+        "term_rows",
+        "inferred_rows"
+      ],
+      "properties": {
+        "course_id": { "const": "A00" },
+        "granularity": { "const": "module_root" },
+        "authority_rows": { "const": 75 },
+        "indexed_rows": { "const": 75 },
+        "module_roots": { "const": 75 },
+        "segment_rows": { "const": 0 },
+        "expression_rows": { "const": 0 },
+        "term_rows": { "const": 0 },
+        "inferred_rows": { "const": 0 }
+      },
+      "additionalProperties": false
+    },
+    "states": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        { "const": "mathematically_reviewed" }
+      ],
+      "items": false
+    },
+    "records": {
+      "type": "array",
+      "minItems": 75,
+      "maxItems": 75,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/translation_record" }
+    },
+    "identity_set_sha256": { "$ref": "#/$defs/sha256" },
+    "no_inference": { "const": true },
+    "recorded_at": { "$ref": "#/$defs/date_time" }
+  },
+  "$defs": {
+    "translation_record": {
+      "type": "object",
+      "required": [
+        "module_id",
+        "native_unit_id",
+        "v22_unit_id",
+        "source_binding_id",
+        "target_binding_id",
+        "source_sha256",
+        "target_sha256",
+        "translation_state",
+        "evidence_row_sha256",
+        "evidence_path"
+      ],
+      "properties": {
+        "module_id": { "type": "string", "pattern": "^m[0-9]+$" },
+        "native_unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "projected_unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "v22_unit_id": { "$ref": "#/$defs/uuid5_urn" },
+        "source_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "target_binding_id": { "$ref": "#/$defs/uuid5_urn" },
+        "source_sha256": { "$ref": "#/$defs/sha256" },
+        "target_sha256": { "$ref": "#/$defs/sha256" },
+        "translation_state": { "const": "mathematically_reviewed" },
+        "evidence_row_sha256": { "$ref": "#/$defs/sha256" },
+        "evidence_path": { "$ref": "#/$defs/relative_path" }
+      },
+      "additionalProperties": true
+    },
+    "binding": {
+      "type": "object",
+      "required": ["path", "role", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relative_path" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)[.][.](?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:[.][0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    }
+  }
+}

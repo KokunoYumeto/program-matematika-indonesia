@@ -1,0 +1,117 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/scope-declaration-v0.1.schema.json",
+  "title": "A00 backend v2.3 lane-extension scope declaration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "dataset_id",
+    "scope_kind",
+    "course_ids",
+    "curriculum_role_ids",
+    "aggregate_conformance_claim",
+    "unbound_curriculum_role_ids",
+    "base_package_binding",
+    "curriculum_authority_binding",
+    "assessment_package_binding",
+    "assessment_module_resolution",
+    "limitations",
+    "recorded_at"
+  ],
+  "properties": {
+    "$schema": { "const": "schema/scope-declaration-v0.1.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-backend-scope/0.1.0" },
+    "schema_version": { "const": "0.1.0" },
+    "package_id": { "$ref": "#/$defs/uuid5_urn" },
+    "dataset_id": { "const": "urn:uuid:2afd6e58-418c-5b1b-b690-53f4ec9bffdf" },
+    "scope_kind": { "const": "lane_extension" },
+    "course_ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        { "const": "urn:uuid:8d8ea368-373c-54d7-a6d3-4d9cfdaf46fe" }
+      ],
+      "items": false
+    },
+    "curriculum_role_ids": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1,
+      "prefixItems": [
+        { "const": "A00" }
+      ],
+      "items": false
+    },
+    "aggregate_conformance_claim": { "const": false },
+    "unbound_curriculum_role_ids": {
+      "type": "array",
+      "minItems": 39,
+      "maxItems": 39,
+      "uniqueItems": true,
+      "items": {
+        "allOf": [
+          { "type": "string", "pattern": "^[A-Z][0-9]{2,3}$" },
+          { "not": { "const": "A00" } }
+        ]
+      }
+    },
+    "base_package_binding": {
+      "type": "object",
+      "required": ["package_id", "path", "bytes", "sha256"],
+      "properties": {
+        "package_id": { "const": "urn:uuid:023b0035-f385-5188-920b-2130aa61f815" },
+        "path": { "const": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0/manifest.json" },
+        "bytes": { "const": 27131 },
+        "sha256": { "const": "b196d0b851fa0f6b3b7972ab33b762898f3d577fbc26b6214542d6a5b10009af" }
+      },
+      "additionalProperties": true
+    },
+    "curriculum_authority_binding": {
+      "type": "object",
+      "required": ["path", "role", "bytes", "sha256"],
+      "properties": {
+        "path": { "const": "backend/v2/program-matematika-indonesia-federation-v0.4.4/data/courses.jsonl" },
+        "role": { "const": "v2_course_authority" },
+        "bytes": { "const": 86522 },
+        "sha256": { "const": "7dee2faef2019e23fe4d3650ee772a23f9120979dae69409672fde3951101351" }
+      },
+      "additionalProperties": true
+    },
+    "assessment_package_binding": {
+      "type": "object",
+      "required": ["package_id", "path", "role", "bytes", "sha256"],
+      "properties": {
+        "package_id": { "const": "urn:uuid:0b253fa5-067e-55b5-8248-cc528b0b4bd1" },
+        "path": { "const": "backend/v2.2/owner-native-shards/o001-a00-assessments-v0.1.0/manifest.json" },
+        "role": { "const": "o001_assessment_manifest" },
+        "bytes": { "const": 3995 },
+        "sha256": { "const": "5ed7b558ae1f621bef52b59be64df90dbf52c967c7e12e2fc9fc296309e2b19e" }
+      },
+      "additionalProperties": true
+    },
+    "assessment_module_resolution": { "const": "deferred_to_common_adapter" },
+    "limitations": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1, "maxLength": 512 }
+    },
+    "recorded_at": { "$ref": "#/$defs/date_time" }
+  },
+  "$defs": {
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:[.][0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    }
+  }
+}

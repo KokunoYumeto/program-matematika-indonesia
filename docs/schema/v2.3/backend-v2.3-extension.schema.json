@@ -1,0 +1,273 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/backend-v2.3-extension.schema.json",
+  "title": "Global modular mathematics backend v2.3 additive lane extension",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "dataset_id",
+    "extension_id",
+    "extension_version",
+    "recorded_at",
+    "scope_declaration",
+    "base_package",
+    "authorities",
+    "sidecars",
+    "csv_projection",
+    "build",
+    "files",
+    "seal_policy",
+    "zero_copy_policy"
+  ],
+  "properties": {
+    "$schema": { "const": "schema/backend-v2.3-extension.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-backend-extension/2.3.0" },
+    "schema_version": { "const": "2.3.0" },
+    "package_id": { "const": "urn:uuid:51a56c44-bb1d-59d5-8611-68f22c13ff76" },
+    "dataset_id": { "const": "urn:uuid:2afd6e58-418c-5b1b-b690-53f4ec9bffdf" },
+    "extension_id": {
+      "oneOf": [
+        { "const": "a00-openstax-prealgebra-v0.1.0" },
+        { "const": "urn:uuid:51a56c44-bb1d-59d5-8611-68f22c13ff76" }
+      ]
+    },
+    "extension_version": { "const": "0.1.0" },
+    "recorded_at": { "$ref": "#/$defs/date_time" },
+    "scope_declaration": {
+      "allOf": [
+        { "$ref": "#/$defs/binding" },
+        {
+          "type": "object",
+          "properties": {
+            "path": { "const": "scope-declaration-v0.1.0.json" },
+            "role": { "const": "scope_declaration" }
+          }
+        }
+      ]
+    },
+    "base_package": {
+      "type": "object",
+      "required": ["package_id", "manifest"],
+      "properties": {
+        "package_id": { "const": "urn:uuid:023b0035-f385-5188-920b-2130aa61f815" },
+        "manifest": {
+          "allOf": [
+            { "$ref": "#/$defs/binding" },
+            {
+              "type": "object",
+              "properties": {
+                "path": { "const": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0/manifest.json" },
+                "bytes": { "const": 27131 },
+                "sha256": { "const": "b196d0b851fa0f6b3b7972ab33b762898f3d577fbc26b6214542d6a5b10009af" }
+              }
+            }
+          ]
+        },
+        "mutated": { "const": false }
+      },
+      "additionalProperties": true
+    },
+    "authorities": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/binding" }
+    },
+    "sidecars": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "allOf": [
+        { "$ref": "#/$defs/sidecar_capabilities" },
+        { "$ref": "#/$defs/sidecar_crosswalk" },
+        { "$ref": "#/$defs/sidecar_csv" },
+        { "$ref": "#/$defs/sidecar_translation" },
+        { "$ref": "#/$defs/sidecar_scope" }
+      ],
+      "items": { "$ref": "#/$defs/binding" }
+    },
+    "csv_projection": {
+      "type": "object",
+      "required": ["manifest", "table_csv_count", "aggregate_csv_count", "record_count", "roundtrip_state"],
+      "properties": {
+        "manifest": { "$ref": "#/$defs/binding" },
+        "table_csv_count": { "const": 19 },
+        "aggregate_csv_count": { "const": 1 },
+        "record_count": { "const": 1313 },
+        "roundtrip_state": { "const": "pass" }
+      },
+      "additionalProperties": true
+    },
+    "build": {
+      "type": "object",
+      "required": [
+        "builder",
+        "validator",
+        "canonical_serialization",
+        "deterministic_replay",
+        "build_a_sha256",
+        "build_b_sha256"
+      ],
+      "properties": {
+        "builder": { "$ref": "#/$defs/binding" },
+        "validator": { "$ref": "#/$defs/binding" },
+        "canonical_serialization": {
+          "type": "object",
+          "required": ["encoding", "newline", "json_keys", "trailing_newline"],
+          "properties": {
+            "encoding": { "const": "UTF-8" },
+            "newline": { "const": "LF" },
+            "json_keys": { "const": "lexicographically_sorted" },
+            "trailing_newline": { "const": true }
+          },
+          "additionalProperties": true
+        },
+        "deterministic_replay": { "const": "byte_identical" },
+        "build_a_sha256": { "$ref": "#/$defs/sha256" },
+        "build_b_sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "files": {
+      "type": "array",
+      "minItems": 26,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/binding" }
+    },
+    "seal_policy": {
+      "type": "object",
+      "required": ["algorithm", "seal_file", "seal_excluded_from_own_digest", "binds"],
+      "properties": {
+        "algorithm": { "const": "sha256-sorted-path-bytes-v1" },
+        "seal_file": { "const": "seal.json" },
+        "seal_excluded_from_own_digest": { "const": true },
+        "binds": {
+          "type": "array",
+          "minItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "schemas",
+              "tools",
+              "input_authorities",
+              "sidecars",
+              "csv_projections",
+              "manifest",
+              "validation_report"
+            ]
+          }
+        }
+      },
+      "additionalProperties": true
+    },
+    "zero_copy_policy": {
+      "type": "object",
+      "required": [
+        "owner_native_authoritative",
+        "full_prose_centralized",
+        "owner_ids_reminted",
+        "v22_mutated",
+        "aggregate_conformance_claim",
+        "machine_data_is_learner_destination"
+      ],
+      "properties": {
+        "owner_native_authoritative": { "const": true },
+        "full_prose_centralized": { "const": false },
+        "owner_ids_reminted": { "const": false },
+        "v22_mutated": { "const": false },
+        "aggregate_conformance_claim": { "const": false },
+        "machine_data_is_learner_destination": { "const": false }
+      },
+      "additionalProperties": true
+    }
+  },
+  "$defs": {
+    "sidecar_capabilities": {
+      "contains": {
+        "type": "object",
+        "required": ["role", "path"],
+        "properties": {
+          "role": { "const": "capability_declarations" },
+          "path": { "const": "capability-declarations-v0.1.0.json" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "sidecar_crosswalk": {
+      "contains": {
+        "type": "object",
+        "required": ["role", "path"],
+        "properties": {
+          "role": { "const": "namespace_crosswalk" },
+          "path": { "const": "namespace-crosswalk-v0.1.0.json" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "sidecar_csv": {
+      "contains": {
+        "type": "object",
+        "required": ["role", "path"],
+        "properties": {
+          "role": { "const": "csv_projection_manifest" },
+          "path": { "const": "csv-projection-manifest-v0.1.0.json" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "sidecar_translation": {
+      "contains": {
+        "type": "object",
+        "required": ["role", "path"],
+        "properties": {
+          "role": { "const": "translation_state_index" },
+          "path": { "const": "translation-state-index-v0.1.0.json" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "sidecar_scope": {
+      "contains": {
+        "type": "object",
+        "required": ["role", "path"],
+        "properties": {
+          "role": { "const": "scope_declaration" },
+          "path": { "const": "scope-declaration-v0.1.0.json" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "binding": {
+      "type": "object",
+      "required": ["path", "role", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relative_path" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)[.][.](?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:[.][0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    }
+  }
+}

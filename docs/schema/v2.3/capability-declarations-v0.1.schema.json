@@ -1,0 +1,394 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/capability-declarations-v0.1.schema.json",
+  "title": "Backend v2.3 canonical capability declarations",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "dataset_id",
+    "contract_binding",
+    "capabilities",
+    "legacy_labels",
+    "namespace_crosswalk_binding",
+    "csv_projection_binding",
+    "translation_state_binding",
+    "recorded_at"
+  ],
+  "properties": {
+    "$schema": { "const": "schema/capability-declarations-v0.1.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-capability-declarations/0.1.0" },
+    "schema_version": { "const": "0.1.0" },
+    "package_id": { "const": "urn:uuid:51a56c44-bb1d-59d5-8611-68f22c13ff76" },
+    "dataset_id": { "const": "urn:uuid:2afd6e58-418c-5b1b-b690-53f4ec9bffdf" },
+    "contract_binding": {
+      "allOf": [
+        { "$ref": "#/$defs/binding" },
+        {
+          "type": "object",
+          "properties": {
+            "path": { "const": "backend/v2.2/global-capability-contract-v0.1.0.json" },
+            "bytes": { "const": 7462 },
+            "sha256": { "const": "f7708333983ec0f23379395c2a1ca8acf04f9f9fdb03a25221b93d9379537eb7" }
+          }
+        }
+      ]
+    },
+    "capabilities": {
+      "type": "array",
+      "minItems": 10,
+      "maxItems": 10,
+      "uniqueItems": true,
+      "allOf": [
+        { "$ref": "#/$defs/one_structure_localization" },
+        { "$ref": "#/$defs/one_terminology" },
+        { "$ref": "#/$defs/one_mathematical_preservation" },
+        { "$ref": "#/$defs/one_assessment_support" },
+        { "$ref": "#/$defs/one_assets" },
+        { "$ref": "#/$defs/one_accessibility" },
+        { "$ref": "#/$defs/one_corrections" },
+        { "$ref": "#/$defs/one_computational_interactives" },
+        { "$ref": "#/$defs/one_publication" },
+        { "$ref": "#/$defs/one_research_support" }
+      ],
+      "items": { "$ref": "#/$defs/capability" }
+    },
+    "legacy_labels": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": ["name", "mapping_kind", "canonical_names"],
+            "properties": {
+              "name": { "const": "semantic_native" },
+              "mapping_kind": { "const": "composite_of" }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["name", "mapping_kind", "canonical_names"],
+            "properties": {
+              "name": { "const": "learner_navigation" },
+              "mapping_kind": { "const": "composite_of" }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["name", "mapping_kind", "canonical_names"],
+            "properties": {
+              "name": { "const": "assessments" },
+              "mapping_kind": { "const": "alias_of" },
+              "canonical_names": {
+                "type": "array",
+                "minItems": 1,
+                "maxItems": 1,
+                "prefixItems": [
+                  { "const": "assessment_support" }
+                ],
+                "items": false
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ],
+      "items": {
+        "type": "object",
+        "required": ["name", "mapping_kind", "canonical_names"],
+        "properties": {
+          "name": { "enum": ["semantic_native", "learner_navigation", "assessments"] },
+          "mapping_kind": { "enum": ["composite_of", "alias_of"] },
+          "canonical_names": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": { "$ref": "#/$defs/canonical_name" }
+          }
+        },
+        "additionalProperties": true
+      }
+    },
+    "namespace_crosswalk_binding": { "$ref": "#/$defs/binding" },
+    "csv_projection_binding": { "$ref": "#/$defs/binding" },
+    "translation_state_binding": { "$ref": "#/$defs/binding" },
+    "recorded_at": { "$ref": "#/$defs/date_time" }
+  },
+  "$defs": {
+    "canonical_name": {
+      "enum": [
+        "structure_localization",
+        "terminology",
+        "mathematical_preservation",
+        "assessment_support",
+        "assets",
+        "accessibility",
+        "corrections",
+        "computational_interactives",
+        "publication",
+        "research_support"
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "name",
+        "version",
+        "state",
+        "schema_binding",
+        "shard_refs",
+        "native_count",
+        "projected_count",
+        "identity_set_sha256",
+        "identity_set_scope",
+        "identity_set_algorithm",
+        "closure_rules",
+        "loss_gap_report"
+      ],
+      "properties": {
+        "name": { "$ref": "#/$defs/canonical_name" },
+        "version": { "const": "0.1.0" },
+        "state": { "enum": ["materialized", "referenced_native_shards", "not_projected", "absent"] },
+        "schema_binding": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/binding" }
+          ]
+        },
+        "shard_refs": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              { "$ref": "#/$defs/uuid5_urn" },
+              { "$ref": "#/$defs/binding" }
+            ]
+          }
+        },
+        "native_count": { "type": ["integer", "null"], "minimum": 0 },
+        "projected_count": { "type": ["integer", "null"], "minimum": 0 },
+        "identity_set_sha256": {
+          "oneOf": [
+            { "type": "null" },
+            { "$ref": "#/$defs/sha256" }
+          ]
+        },
+        "identity_set_scope": {
+          "enum": ["projected_records", "native_records", "native_shard_sequences", "none"]
+        },
+        "identity_set_algorithm": {
+          "enum": [
+            "sha256_sorted_record_ids_lf",
+            "sha256_sorted_shard_identity_sequence_digests_lf",
+            "bound_record_id_sequence_sha256",
+            "none"
+          ]
+        },
+        "closure_rules": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1, "maxLength": 512 }
+        },
+        "loss_gap_report": {
+          "oneOf": [
+            { "type": "string", "minLength": 1, "maxLength": 1024 },
+            {
+              "type": "object",
+              "required": ["status", "reason"],
+              "properties": {
+                "status": { "enum": ["closed", "declared_limitation", "not_applicable"] },
+                "reason": { "type": "string", "minLength": 1, "maxLength": 1024 }
+              },
+              "additionalProperties": true
+            }
+          ]
+        },
+        "weaker_evidence": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/binding" }
+        },
+        "solution_gap_count": { "type": "integer", "minimum": 0 },
+        "module_resolution": { "type": "string", "minLength": 1 }
+      }
+    },
+    "one_structure_localization": { "$ref": "#/$defs/ref_structure_localization" },
+    "ref_structure_localization": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state", "projected_count"],
+        "properties": {
+          "name": { "const": "structure_localization" },
+          "state": { "const": "referenced_native_shards" },
+          "projected_count": { "const": 75 }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_terminology": { "$ref": "#/$defs/ref_terminology" },
+    "ref_terminology": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state"],
+        "properties": {
+          "name": { "const": "terminology" },
+          "state": { "const": "referenced_native_shards" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_mathematical_preservation": { "$ref": "#/$defs/ref_mathematical_preservation" },
+    "ref_mathematical_preservation": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state"],
+        "properties": {
+          "name": { "const": "mathematical_preservation" },
+          "state": { "const": "referenced_native_shards" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_assessment_support": { "$ref": "#/$defs/ref_assessment_support" },
+    "ref_assessment_support": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state", "native_count", "projected_count", "solution_gap_count", "module_resolution"],
+        "properties": {
+          "name": { "const": "assessment_support" },
+          "state": { "const": "referenced_native_shards" },
+          "native_count": { "const": 8105 },
+          "projected_count": { "const": 0 },
+          "solution_gap_count": { "const": 2865 },
+          "module_resolution": { "const": "deferred_to_common_adapter" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_assets": { "$ref": "#/$defs/ref_assets" },
+    "ref_assets": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state"],
+        "properties": {
+          "name": { "const": "assets" },
+          "state": { "const": "referenced_native_shards" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_accessibility": { "$ref": "#/$defs/ref_accessibility" },
+    "ref_accessibility": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state", "weaker_evidence"],
+        "properties": {
+          "name": { "const": "accessibility" },
+          "state": { "const": "absent" },
+          "weaker_evidence": { "type": "array", "minItems": 2 }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_corrections": { "$ref": "#/$defs/ref_corrections" },
+    "ref_corrections": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state"],
+        "properties": {
+          "name": { "const": "corrections" },
+          "state": { "const": "referenced_native_shards" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_computational_interactives": { "$ref": "#/$defs/ref_computational_interactives" },
+    "ref_computational_interactives": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state"],
+        "properties": {
+          "name": { "const": "computational_interactives" },
+          "state": { "const": "absent" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_publication": { "$ref": "#/$defs/ref_publication" },
+    "ref_publication": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state"],
+        "properties": {
+          "name": { "const": "publication" },
+          "state": { "const": "materialized" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "one_research_support": { "$ref": "#/$defs/ref_research_support" },
+    "ref_research_support": {
+      "contains": {
+        "type": "object",
+        "required": ["name", "state"],
+        "properties": {
+          "name": { "const": "research_support" },
+          "state": { "const": "absent" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "binding": {
+      "type": "object",
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relative_path" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)[.][.](?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:[.][0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    }
+  }
+}

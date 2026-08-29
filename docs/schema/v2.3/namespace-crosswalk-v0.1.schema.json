@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/namespace-crosswalk-v0.1.schema.json",
+  "title": "Backend v2.3 A00 namespace and identity crosswalk",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "package_id",
+    "profiles",
+    "mappings",
+    "owner_native_unit_bridge",
+    "federation_to_lane_course",
+    "legacy_reserved_unit_evidence",
+    "identity_set_sha256",
+    "recorded_at"
+  ],
+  "properties": {
+    "$schema": { "const": "schema/namespace-crosswalk-v0.1.schema.json" },
+    "schema_id": { "const": "interlanguage/global-modular-mathematics-namespace-crosswalk/0.1.0" },
+    "schema_version": { "const": "0.1.0" },
+    "package_id": { "const": "urn:uuid:51a56c44-bb1d-59d5-8611-68f22c13ff76" },
+    "profiles": {
+      "type": "array",
+      "minItems": 3,
+      "maxItems": 3,
+      "uniqueItems": true,
+      "allOf": [
+        { "$ref": "#/$defs/exact_v1_profile" },
+        { "$ref": "#/$defs/exact_v2_federation_profile" },
+        { "$ref": "#/$defs/exact_v22_lane_profile" }
+      ],
+      "items": { "$ref": "#/$defs/profile" }
+    },
+    "mappings": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": ["source_record_id", "target_record_id", "source_profile", "target_profile", "cardinality"],
+            "properties": {
+              "source_record_id": { "const": "urn:uuid:191e7406-4239-506b-95d6-bb0fdec738cb" },
+              "target_record_id": { "const": "urn:uuid:8d8ea368-373c-54d7-a6d3-4d9cfdaf46fe" },
+              "source_profile": { "const": "v1_central" },
+              "target_profile": { "const": "v2_federation" },
+              "cardinality": { "const": "many_to_one" }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": ["source_record_id", "target_record_id", "source_profile", "target_profile", "cardinality"],
+            "properties": {
+              "source_record_id": { "const": "urn:uuid:18f7091c-b314-5eab-b254-269c50ccca0c" },
+              "target_record_id": { "const": "urn:uuid:8d8ea368-373c-54d7-a6d3-4d9cfdaf46fe" },
+              "source_profile": { "const": "v1_central" },
+              "target_profile": { "const": "v2_federation" },
+              "cardinality": { "const": "many_to_one" }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ],
+      "items": { "$ref": "#/$defs/mapping" }
+    },
+    "owner_native_unit_bridge": {
+      "type": "object",
+      "required": [
+        "rows",
+        "mapping_cardinality",
+        "duplicated_in_this_sidecar",
+        "identity_map_binding",
+        "crosswalk_table_binding",
+        "identity_set_sha256"
+      ],
+      "properties": {
+        "rows": { "const": 75 },
+        "mapping_cardinality": { "const": "one_to_one" },
+        "duplicated_in_this_sidecar": { "const": false },
+        "identity_map_binding": {
+          "allOf": [
+            { "$ref": "#/$defs/binding" },
+            {
+              "type": "object",
+              "properties": {
+                "path": { "const": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0/identity-map.jsonl" },
+                "bytes": { "const": 51024 },
+                "sha256": { "const": "c74a14710be62b32d9a8d0a3857dd9abc95c562b0e70c6649bab77c15d363e68" }
+              }
+            }
+          ]
+        },
+        "crosswalk_table_binding": {
+          "allOf": [
+            { "$ref": "#/$defs/binding" },
+            {
+              "type": "object",
+              "properties": {
+                "path": { "const": "backend/v2.2/packages/a00-openstax-prealgebra-v0.1.0/tables/identity_crosswalks.jsonl" },
+                "bytes": { "const": 89625 },
+                "sha256": { "const": "60d73e23c1a009948fc1f1b340d55e70d9f7b9d6fb410e8ed016e4db7d3f565b" }
+              }
+            }
+          ]
+        },
+        "identity_set_sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "federation_to_lane_course": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_record_id", "mapping_state", "lane_course_record_present", "rule"],
+      "properties": {
+        "source_record_id": { "const": "urn:uuid:8d8ea368-373c-54d7-a6d3-4d9cfdaf46fe" },
+        "mapping_state": { "const": "not_asserted" },
+        "lane_course_record_present": { "const": false },
+        "rule": { "type": "string", "minLength": 1, "maxLength": 1024 }
+      }
+    },
+    "legacy_reserved_unit_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_binding", "legacy_unit_id", "reserved_v2_unit_id", "mapping_state"],
+      "properties": {
+        "authority_binding": { "$ref": "#/$defs/binding" },
+        "legacy_unit_id": { "const": "urn:uuid:18f7091c-b314-5eab-b254-269c50ccca0c" },
+        "reserved_v2_unit_id": { "const": "urn:uuid:33b761f7-2e15-5276-b028-1037c424db2a" },
+        "mapping_state": { "const": "reserved_not_materialized" }
+      }
+    },
+    "identity_set_sha256": { "$ref": "#/$defs/sha256" },
+    "recorded_at": { "$ref": "#/$defs/date_time" }
+  },
+  "$defs": {
+    "profile": {
+      "type": "object",
+      "required": ["profile_id", "namespace"],
+      "anyOf": [
+        { "required": ["formula"] },
+        { "required": ["identity_formula"] }
+      ],
+      "properties": {
+        "profile_id": { "enum": ["v1_central", "v2_federation", "v2_2_lane"] },
+        "namespace": { "$ref": "#/$defs/uuid5" },
+        "formula": { "type": "string", "minLength": 1 },
+        "identity_formula": { "type": "string", "minLength": 1 }
+      },
+      "additionalProperties": true
+    },
+    "exact_v1_profile": {
+      "contains": {
+        "type": "object",
+        "required": ["profile_id", "namespace"],
+        "properties": {
+          "profile_id": { "const": "v1_central" },
+          "namespace": { "const": "7790e70a-ae6d-5cf3-b7f5-c53d7d4c0fbd" },
+          "formula": { "const": "UUIDv5(identity_namespace, record_type + '|' + stable_key)" },
+          "identity_formula": { "const": "UUIDv5(identity_namespace, record_type + '|' + stable_key)" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "exact_v2_federation_profile": {
+      "contains": {
+        "type": "object",
+        "required": ["profile_id", "namespace"],
+        "properties": {
+          "profile_id": { "const": "v2_federation" },
+          "namespace": { "const": "7790e70a-ae6d-5cf3-b7f5-c53d7d4c0fbd" },
+          "formula": { "const": "UUIDv5(identity_namespace, record_type + ':' + semantic_key)" },
+          "identity_formula": { "const": "UUIDv5(identity_namespace, record_type + ':' + semantic_key)" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "exact_v22_lane_profile": {
+      "contains": {
+        "type": "object",
+        "required": ["profile_id", "namespace"],
+        "properties": {
+          "profile_id": { "const": "v2_2_lane" },
+          "namespace": { "const": "0e4d7b37-6108-5065-b08f-d1098697cc02" },
+          "formula": { "const": "UUIDv5(identity_namespace, record_type + ':' + semantic_key)" },
+          "identity_formula": { "const": "UUIDv5(identity_namespace, record_type + ':' + semantic_key)" }
+        }
+      },
+      "minContains": 1,
+      "maxContains": 1
+    },
+    "mapping": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "mapping_id",
+        "source_profile",
+        "target_profile",
+        "source_record_id",
+        "target_record_id",
+        "source_record_type",
+        "target_record_type",
+        "source_semantic_key",
+        "target_semantic_key",
+        "cardinality",
+        "mapping_state",
+        "reverse_recipe",
+        "evidence_refs",
+        "identity_set_sha256"
+      ],
+      "properties": {
+        "mapping_id": { "$ref": "#/$defs/uuid5_urn" },
+        "source_profile": { "const": "v1_central" },
+        "target_profile": { "const": "v2_federation" },
+        "source_record_id": {
+          "enum": [
+            "urn:uuid:191e7406-4239-506b-95d6-bb0fdec738cb",
+            "urn:uuid:18f7091c-b314-5eab-b254-269c50ccca0c"
+          ]
+        },
+        "target_record_id": { "const": "urn:uuid:8d8ea368-373c-54d7-a6d3-4d9cfdaf46fe" },
+        "source_record_type": { "enum": ["course", "unit"] },
+        "target_record_type": { "const": "course" },
+        "source_semantic_key": { "type": "string", "minLength": 1 },
+        "target_semantic_key": { "type": "string", "minLength": 1 },
+        "cardinality": { "const": "many_to_one" },
+        "mapping_state": { "enum": ["verified", "bound_legacy_identity"] },
+        "reverse_recipe": { "type": "string", "minLength": 1, "maxLength": 1024 },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              { "$ref": "#/$defs/binding" }
+            ]
+          }
+        },
+        "identity_set_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "binding": {
+      "type": "object",
+      "required": ["path", "role", "bytes", "sha256"],
+      "properties": {
+        "path": { "$ref": "#/$defs/relative_path" },
+        "role": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$" },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": true
+    },
+    "uuid5": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "uuid5_urn": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"
+    },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "relative_path": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:)(?!/)(?!.*(?:^|/)[.][.](?:/|$))[A-Za-z0-9._/-]+$"
+    },
+    "date_time": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:[.][0-9]+)?(?:Z|[+-][0-9]{2}:[0-9]{2})$"
+    }
+  }
+}
