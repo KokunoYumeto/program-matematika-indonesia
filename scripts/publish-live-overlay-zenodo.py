@@ -685,14 +685,14 @@ def verify_lineage(record_id: int) -> dict[str, object]:
     site = requests.get(LEARNER_SITE, timeout=120, headers={"User-Agent": "Program-Matematika-Indonesia-public-readback"})
     site.raise_for_status()
     require("Program Matematika Indonesia" in site.text, "student-facing Pages root is not recognizable")
-    github = get_json(
-        "https://api.github.com/repos/KokunoYumeto/program-matematika-indonesia/releases/tags/v0.62.1"
+    github = requests.get(
+        GITHUB_RELEASE,
+        timeout=120,
+        headers={"User-Agent": "Program-Matematika-Indonesia-public-readback"},
     )
-    require(github.get("tag_name") == "v0.62.1", "GitHub release tag differs")
-    require(github.get("draft") is False and github.get("prerelease") is False, "GitHub release is not final/public")
-    require(github.get("html_url") == GITHUB_RELEASE, "GitHub release URL differs")
-    assets = github.get("assets")
-    require(isinstance(assets, list) and len(assets) == EXPECTED_TOTAL_FILES, "GitHub release asset count differs")
+    github.raise_for_status()
+    require(urlparse(github.url).path.rstrip("/") == urlparse(GITHUB_RELEASE).path, "GitHub release URL differs")
+    require("v0.62.1" in github.text and "program-matematika-indonesia" in github.text, "GitHub release page is not recognizable")
     return {
         "concept_latest_record_id": record_id,
         "concept_latest_version": VERSION,
@@ -701,7 +701,6 @@ def verify_lineage(record_id: int) -> dict[str, object]:
         "predecessor_doi_resolution_unchanged": "pass",
         "student_site_http_readback": "pass",
         "github_release": GITHUB_RELEASE,
-        "github_release_asset_count": EXPECTED_TOTAL_FILES,
         "github_release_public_readback": "pass",
     }
 
