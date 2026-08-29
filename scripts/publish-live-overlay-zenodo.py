@@ -511,8 +511,8 @@ def release_description(predecessor_metadata: dict[str, object]) -> str:
     if isinstance(inherited, str) and inherited.strip():
         return (
             f"{DESCRIPTION_PREFIX}"
-            '<hr><section><h2>Deskripsi rilis dasar v0.62.0 yang dipertahankan</h2>'
-            f"{inherited}</section>"
+            '\n\n<h2>Deskripsi rilis dasar v0.62.0 yang dipertahankan</h2>'
+            f"{inherited}"
         )
     return DESCRIPTION_PREFIX
 
