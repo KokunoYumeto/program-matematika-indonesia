@@ -1,0 +1,127 @@
+{
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/namespace-crosswalk-v0.1.0.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "mapping_state": {
+            "const": "asserted_exact_entity"
+          }
+        }
+      },
+      "then": {
+        "properties": {
+          "cardinality": {
+            "const": "one_to_one"
+          },
+          "target_materialized": {
+            "const": true
+          },
+          "target_record_id": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  ],
+  "properties": {
+    "cardinality": {
+      "enum": [
+        "one_to_one",
+        "unresolved"
+      ]
+    },
+    "computed_candidate_record_id": {
+      "type": "string"
+    },
+    "evidence_refs": {
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array"
+    },
+    "identity_set_sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "mapping_state": {
+      "enum": [
+        "asserted_exact_entity",
+        "unresolved_semantic_granularity",
+        "unresolved_target_not_materialized"
+      ]
+    },
+    "note": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "recorded_at": {
+      "const": "2026-08-29T00:00:00Z"
+    },
+    "reverse_recipe": {
+      "minLength": 1,
+      "type": "string"
+    },
+    "source_identity_formula": {
+      "type": "string"
+    },
+    "source_namespace": {
+      "type": "string"
+    },
+    "source_record_id": {
+      "type": "string"
+    },
+    "source_record_type": {
+      "type": "string"
+    },
+    "source_stable_key": {
+      "type": "string"
+    },
+    "target_identity_formula": {
+      "type": "string"
+    },
+    "target_materialized": {
+      "type": "boolean"
+    },
+    "target_namespace": {
+      "type": "string"
+    },
+    "target_record_id": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "target_record_type": {
+      "type": "string"
+    },
+    "target_semantic_key": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "source_namespace",
+    "target_namespace",
+    "source_record_id",
+    "target_record_id",
+    "source_record_type",
+    "target_record_type",
+    "cardinality",
+    "mapping_state",
+    "reverse_recipe",
+    "evidence_refs",
+    "identity_set_sha256",
+    "source_identity_formula",
+    "target_identity_formula",
+    "source_stable_key",
+    "target_semantic_key",
+    "target_materialized",
+    "recorded_at",
+    "note"
+  ],
+  "title": "Backend namespace crosswalk row",
+  "type": "object"
+}
