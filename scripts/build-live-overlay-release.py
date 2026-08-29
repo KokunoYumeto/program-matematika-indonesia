@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Build the deterministic v0.62.5 learner-access overlay release.
+"""Build the deterministic v0.62.6 learner-access overlay release.
 
-This is an additive adapter over the immutable v0.62.4 release.  The builder
-copies every base-release byte unchanged and creates exactly nine new files.
+This is an additive adapter over the immutable v0.62.5 release.  The builder
+copies every base-release byte unchanged and creates exactly five new files.
 It uses bounded immutable raw-commit reads for provenance, performs read-only
 public QA, and never mutates a network service or publishes.
 """
@@ -24,33 +24,33 @@ from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.62.5"
-BASE_VERSION = "0.62.4"
+VERSION = "0.62.6"
+BASE_VERSION = "0.62.5"
 FROZEN_AUTHORITY_VERSION = "0.62.0"
-PREDECESSOR_RECORD_ID = 22165591
+PREDECESSOR_RECORD_ID = 22166520
 REPOSITORY_URL = "https://github.com/KokunoYumeto/program-matematika-indonesia"
 RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia"
 STUDENT_URL = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
-FIXED_ZIP_TIME = (2026, 8, 29, 0, 0, 0)
+FIXED_ZIP_TIME = (2026, 8, 30, 0, 0, 0)
 
 BASE_EXPECTED = {
-    "files": 79,
-    "bytes": 38_740_355,
-    "aggregate_sha256": "0a7281fd19440d14df1dc565ba57ecf2bc977bd68a62626df75ba124dbf6cad7",
+    "files": 88,
+    "bytes": 56_147_176,
+    "aggregate_sha256": "af10773f1cd81b07a0451898d2f1ee5878b795e1bf002ffe898558bf236d3204",
     "checksum_file": {
-        "name": "LIVE_OVERLAY_CHECKSUMS_v0.62.4.sha256",
-        "bytes": 8_695,
-        "sha256": "2201416d0b9688ed2f6f1b08e7ac1a4e997665b77eae38ecf94ad95b32fa942d",
-        "entries": 78,
+        "name": "LIVE_OVERLAY_CHECKSUMS_v0.62.5.sha256",
+        "bytes": 9_774,
+        "sha256": "2d5b576afc1d6a7d15b00b2af67e0133f0d808b79b34413fd16be3b87d63a7fd",
+        "entries": 87,
     },
 }
 
 CORE_ADDITIVE_NAMES = (
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.5.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.5.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.5.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.5.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.5.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.6.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.6.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.6.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.6.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.6.sha256",
 )
 BACKEND_V23_NAMES = (
     "program-matematika-indonesia-backend-v2.3-conformance-v0.1.1.zip",
@@ -58,10 +58,10 @@ BACKEND_V23_NAMES = (
     "GLOBAL_BACKEND_V23_VALIDATION_RECEIPT_v0.62.5.json",
     "GLOBAL_BACKEND_V23_ARCHIVE_DETERMINISM_RECEIPT_v0.62.5.json",
 )
-ADDITIVE_NAMES = CORE_ADDITIVE_NAMES + BACKEND_V23_NAMES
+ADDITIVE_NAMES = CORE_ADDITIVE_NAMES
 STANDALONE_NAME, MANIFEST_NAME, SOURCE_ZIP_NAME, RECEIPT_NAME, CHECKSUM_NAME = CORE_ADDITIVE_NAMES
 BACKEND_ARCHIVE_NAME, BACKEND_SCOPE_NAME, BACKEND_VALIDATION_NAME, BACKEND_DETERMINISM_NAME = BACKEND_V23_NAMES
-BUILD_MARKER_NAME = ".pmi-live-overlay-v0.62.5-building.json"
+BUILD_MARKER_NAME = ".pmi-live-overlay-v0.62.6-building.json"
 
 SOURCE_MEMBERS = (
     "docs/app.js",
@@ -100,15 +100,15 @@ STATIC_VALIDATION_FIXED_INPUTS = (
 
 EXPECTED_OVERLAY_IDS = (
     "A10", "A20", "A30", "B20", "B30", "B50", "B95", "C10", "C90", "C100",
-    "C140", "D10", "D20", "D30", "D50", "D60", "D70", "D100",
+    "C140", "D10", "D20", "D30", "D50", "D60", "D70", "D80", "D100",
 )
 
 PAGES_READBACKS = (
     {
         "path": "docs/index.html",
         "url": STUDENT_URL,
-        "bytes": 13_260,
-        "sha256": "f3a56b34e9d9540453284102ff97ff21cd0f5e88c27b37d125a22a14315e1cfa",
+        "bytes": 13_261,
+        "sha256": "e40461258911d76b25686e938a9dfa1eee220b568540a6138c8baf8fd62452ec",
     },
     {
         "path": "docs/app.js",
@@ -119,8 +119,8 @@ PAGES_READBACKS = (
     {
         "path": "docs/live-course-publications.js",
         "url": f"{STUDENT_URL}live-course-publications.js",
-        "bytes": 28_637,
-        "sha256": "5577675d1d211ca2d73c8fa615e0ebea1eca9071081c2efa408f7a2edc28262b",
+        "bytes": 31_062,
+        "sha256": "2af9c3b703673cc598bf23ec3baac51cf14171e8f41dbc10c04bb69a8e6b9684",
     },
     {
         "path": "docs/id-ID/courses/B95/index.html",
@@ -136,17 +136,17 @@ PAGES_READBACKS = (
     },
 )
 RECEIPT_CHECKS = {
-    "base_release": "79/79 byte-identical",
+    "base_release": "88/88 byte-identical",
     "standalone_export_replay": "byte-identical",
     "source_archive": "inventory, CRC, member bytes, timestamps, and order pass",
-    "overlay_rows": "18/18",
-    "effective_completed_public_roles": "26",
-    "distinct_completed_public_records": "25",
-    "strict_public_links": "161/161; live network gate executed",
-    "static_site_validation": "pass; 40 courses; 18 overlay rows; 26 effective published roles",
+    "overlay_rows": "19/19",
+    "effective_completed_public_roles": "27",
+    "distinct_completed_public_records": "26",
+    "strict_public_links": "164/164; live network gate executed",
+    "static_site_validation": "pass; 40 courses; 19 overlay rows; 27 effective published roles",
     "github_pages_readbacks": "5/5 exact live HTTP 200 byte/hash matches",
     "b95_r011_b024": "253-page learner route and public PDF exact byte/hash gate pass",
-    "backend_v23_conformance": "0.1.1 archive plus three sanitized receipts pass semantic and recursive privacy gates",
+    "backend_v23_conformance": "inherited v0.1.1 archive plus three sanitized receipts remain byte-identical and pass semantic/privacy gates",
     "privacy_scan": "pass",
 }
 
@@ -321,7 +321,7 @@ def verify_replaceable_output(output: Path, base_names: set[str]) -> None:
     if any(not path.is_file() for path in paths):
         raise ValueError(f"existing v{VERSION} output is not a flat release")
     if {path.name for path in paths} != base_names | set(ADDITIVE_NAMES):
-        raise ValueError(f"existing v{VERSION} output is not a recognized 79+9 candidate")
+        raise ValueError(f"existing v{VERSION} output is not a recognized 88+5 candidate")
     manifest = json.loads((output / MANIFEST_NAME).read_text(encoding="utf-8"))
     if manifest.get("schema_id") != "program-matematika-indonesia/live-publication-overlay-manifest/v1":
         raise ValueError(f"existing v{VERSION} manifest is not recognized")
@@ -395,10 +395,10 @@ console.log(JSON.stringify({
     value = json.loads(process.stdout)
     expected = {
         "overlay_ids": sorted(EXPECTED_OVERLAY_IDS),
-        "overlay_rows": 18,
+        "overlay_rows": 19,
         "selected_course_roles": 40,
-        "effective_published_roles": 26,
-        "distinct_completed_public_records": 25,
+        "effective_published_roles": 27,
+        "distinct_completed_public_records": 26,
     }
     for key, expected_value in expected.items():
         if value.get(key) != expected_value:
@@ -454,9 +454,9 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         raise ValueError(f"strict public-link check failed: {diagnostic}")
     report = json.loads(process.stdout)
     links = report.get("links")
-    if report.get("status") != "pass" or report.get("checked") != 161:
+    if report.get("status") != "pass" or report.get("checked") != 164:
         raise ValueError("strict public-link count/result mismatch")
-    if not isinstance(links, list) or len(links) != 161:
+    if not isinstance(links, list) or len(links) != 164:
         raise ValueError("strict public-link result inventory mismatch")
     if any(not isinstance(row.get("status"), int) or not 200 <= row["status"] < 400 for row in links):
         raise ValueError("strict public-link report contains a non-success status")
@@ -465,7 +465,7 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         "mode": "strict; no pending-central exception",
         "executed": True,
         "result": "pass",
-        "checked": 161,
+        "checked": 164,
         "failures": 0,
     }
 
@@ -488,8 +488,8 @@ def run_static_site_validation(root: Path) -> dict[str, Any]:
         "courses": 40,
         "selected": 40,
         "unresolved": 0,
-        "effectivePublishedRoles": 26,
-        "liveOverlayRows": 18,
+        "effectivePublishedRoles": 27,
+        "liveOverlayRows": 19,
         "prerequisiteEdges": 83,
     }
     for key, value in expected.items():
@@ -734,7 +734,7 @@ def build_source_zip(
         "entries": len(entries),
         "uncompressed_bytes": sum(len(data) for _, data in entries),
         "compression": "stored",
-        "fixed_member_timestamp": "2026-08-29T00:00:00Z",
+        "fixed_member_timestamp": "2026-08-30T00:00:00Z",
         "manifest": {
             "name": "SOURCE_ARCHIVE_MANIFEST.json",
             "bytes": len(manifest_data),
@@ -751,8 +751,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     base = (root / args.base_release).resolve()
     output = (root / args.output).resolve()
     releases_root = (root / "releases").resolve()
-    expected_base = releases_root / "v0.62.4"
-    expected_output = releases_root / "v0.62.5"
+    expected_base = releases_root / "v0.62.5"
+    expected_output = releases_root / "v0.62.6"
     if base != expected_base:
         raise ValueError(f"base release must be exactly {expected_base}")
     if output != expected_output:
@@ -773,7 +773,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     }
 
     staging = output.with_name(f"{output.name}.building")
-    expected_staging = releases_root / "v0.62.5.building"
+    expected_staging = releases_root / "v0.62.6.building"
     if staging != expected_staging:
         raise ValueError(f"staging path must be exactly {expected_staging}")
     if staging.exists():
@@ -803,12 +803,6 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             copied = staging / source.name
             if source.read_bytes() != copied.read_bytes():
                 raise ValueError(f"base copy byte mismatch: {source.name}")
-        for public_name, source in backend_inputs["paths"].items():
-            target = staging / public_name
-            shutil.copyfile(source, target)
-            if source.read_bytes() != target.read_bytes():
-                raise ValueError(f"backend v2.3 copy byte mismatch: {public_name}")
-
         standalone = staging / STANDALONE_NAME
         replay = staging / f".{STANDALONE_NAME}.replay"
         exporter = root / "scripts" / "export-single-file-site.mjs"
@@ -842,7 +836,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             "release_kind": "additive-learner-access-live-publication-adapter",
             "immutable_base": {
                 "version": BASE_VERSION,
-                "directory": "releases/v0.62.4",
+                "directory": "releases/v0.62.5",
                 "files": BASE_EXPECTED["files"],
                 "bytes": BASE_EXPECTED["bytes"],
                 "aggregate_algorithm": "sha256 of sorted '<sha256>  <bytes>  <name>\\n' facts",
@@ -875,7 +869,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             },
             "live_publication_overlay": summary,
             "b95_learner_route": b95_publication,
-            "backend_v23_conformance": {
+            "inherited_backend_v23_conformance": {
                 "version": "2.3",
                 "package_version": "0.1.1",
                 "admitted_scope": ["A00", "O001"],
@@ -898,20 +892,13 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
                 "names": list(ADDITIVE_NAMES),
                 "standalone_html": standalone_fact,
                 "source_archive": source_zip,
-                "backend_v23": {
-                    "archive": backend_inputs["archive"]["archive"],
-                    "receipts": [
-                        backend_inputs["receipts"][name]["artifact"]
-                        for name in BACKEND_V23_NAMES[1:]
-                    ],
-                },
             },
             "source_inputs": source_facts,
             "inventory_contract": {
-                "inherited_files": 79,
-                "additive_files": 9,
-                "successor_files": 88,
-                "checksum_entries": 87,
+                "inherited_files": 88,
+                "additive_files": 5,
+                "successor_files": 93,
+                "checksum_entries": 92,
                 "checksum_excludes_only": CHECKSUM_NAME,
             },
             "privacy": {
@@ -927,7 +914,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             for path in sorted(staging.iterdir(), key=lambda value: value.name)
             if path.name != BUILD_MARKER_NAME
         ]
-        if len(before_receipt) != 86:
+        if len(before_receipt) != 91:
             raise ValueError(f"pre-receipt inventory mismatch: {len(before_receipt)}")
         receipt = {
             "schema_id": "program-matematika-indonesia/local-live-overlay-validation/v1",
@@ -940,19 +927,19 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
                 canonical_inventory_bytes(before_receipt)
             ),
             "successor_inventory": {
-                "files_before_checksum": 87,
-                "checksum_entries": 87,
-                "final_files": 88,
-                "inherited_files": 79,
-                "additive_files": 9,
+                "files_before_checksum": 92,
+                "checksum_entries": 92,
+                "final_files": 93,
+                "inherited_files": 88,
+                "additive_files": 5,
             },
             "validation_command": (
-                "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.5 "
+                "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.6 "
                 f"--source-commit {args.source_commit} --pages-run-id {args.pages_run_id} "
-                f"--backend-v23-archive releases/v0.62.5/{BACKEND_ARCHIVE_NAME} "
-                f"--backend-v23-scope-receipt releases/v0.62.5/{BACKEND_SCOPE_NAME} "
-                f"--backend-v23-validation-receipt releases/v0.62.5/{BACKEND_VALIDATION_NAME} "
-                f"--backend-v23-determinism-receipt releases/v0.62.5/{BACKEND_DETERMINISM_NAME}"
+                f"--backend-v23-archive releases/v0.62.6/{BACKEND_ARCHIVE_NAME} "
+                f"--backend-v23-scope-receipt releases/v0.62.6/{BACKEND_SCOPE_NAME} "
+                f"--backend-v23-validation-receipt releases/v0.62.6/{BACKEND_VALIDATION_NAME} "
+                f"--backend-v23-determinism-receipt releases/v0.62.6/{BACKEND_DETERMINISM_NAME}"
             ),
             "publication_performed": False,
         }
@@ -964,7 +951,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             for path in sorted(staging.iterdir(), key=lambda value: value.name)
             if path.name != BUILD_MARKER_NAME
         ]
-        if len(pre_checksum) != 87:
+        if len(pre_checksum) != 92:
             raise ValueError(f"pre-checksum inventory mismatch: {len(pre_checksum)}")
         (staging / CHECKSUM_NAME).write_bytes(
             "".join(
@@ -973,8 +960,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             ).encode("utf-8")
         )
         (staging / BUILD_MARKER_NAME).unlink()
-        if len(list(staging.iterdir())) != 88:
-            raise ValueError("final inventory is not 88 files")
+        if len(list(staging.iterdir())) != 93:
+            raise ValueError("final inventory is not 93 files")
         staging.rename(output)
     except BaseException:
         if staging.exists():
@@ -1022,8 +1009,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-release", default="releases/v0.62.4")
-    parser.add_argument("--output", default="releases/v0.62.5")
+    parser.add_argument("--base-release", default="releases/v0.62.5")
+    parser.add_argument("--output", default="releases/v0.62.6")
     parser.add_argument("--source-commit", required=True, help="full commit containing every packaged source")
     parser.add_argument("--pages-run-id", required=True, type=int, help="successful Pages workflow run for the source commit")
     parser.add_argument("--backend-v23-archive", required=True, help="public-safe deterministic v2.3 0.1.1 ZIP")

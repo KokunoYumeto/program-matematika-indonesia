@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Commit the bounded v0.62.5 source set and publish its exact release assets.
+"""Commit the bounded v0.62.6 source set and publish its exact release assets.
 
 This script uses the GitHub API only; it never invokes Git.  Credential values
 are read at runtime, never printed, serialized, or placed in URLs.
@@ -27,12 +27,20 @@ OWNER = "KokunoYumeto"
 REPOSITORY = "program-matematika-indonesia"
 API = f"https://api.github.com/repos/{OWNER}/{REPOSITORY}"
 RAW = f"https://raw.githubusercontent.com/{OWNER}/{REPOSITORY}"
-VERSION = "0.62.5"
+VERSION = "0.62.6"
 TAG = f"v{VERSION}"
-EXPECTED_RELEASE_FILES = 88
-EXPECTED_PREDECESSOR_FILES = 79
-EXPECTED_ADDITIVE_FILES = 9
-EXPECTED_BASE_AGGREGATE = "0a7281fd19440d14df1dc565ba57ecf2bc977bd68a62626df75ba124dbf6cad7"
+PREDECESSOR_VERSION = "0.62.5"
+EXPECTED_RELEASE_FILES = 93
+EXPECTED_PREDECESSOR_FILES = 88
+EXPECTED_ADDITIVE_FILES = 5
+EXPECTED_BASE_AGGREGATE = "af10773f1cd81b07a0451898d2f1ee5878b795e1bf002ffe898558bf236d3204"
+EXPECTED_ADDITIVE_NAMES = {
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.6.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.6.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.6.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.6.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.6.sha256",
+}
 USER_AGENT = f"program-matematika-indonesia-github-publisher/{VERSION}"
 
 
@@ -304,7 +312,10 @@ def wait_pages(args: argparse.Namespace) -> None:
 def release_facts(release_dir: Path) -> list[dict[str, Any]]:
     require(release_dir.is_dir(), "release directory is unavailable")
     paths = sorted(release_dir.iterdir(), key=lambda path: path.name)
-    require(len(paths) == EXPECTED_RELEASE_FILES and all(path.is_file() for path in paths), "release is not an exact 88-file flat directory")
+    require(
+        len(paths) == EXPECTED_RELEASE_FILES and all(path.is_file() for path in paths),
+        "release is not an exact 93-file flat directory",
+    )
     rows = [fact(path) | {"path": path} for path in paths]
     checksums = release_dir / f"LIVE_OVERLAY_CHECKSUMS_v{VERSION}.sha256"
     require(checksums.is_file(), "release checksum file is absent")
@@ -353,13 +364,20 @@ def anonymous_asset(row: dict[str, Any], remote: dict[str, Any]) -> dict[str, An
 def publish_release(args: argparse.Namespace) -> None:
     require(re.fullmatch(r"[0-9a-f]{40}", args.source_commit) is not None, "--source-commit must be full lowercase SHA")
     release_dir = args.release_dir.resolve()
-    require(release_dir == (PROJECT / "releases" / f"v{VERSION}").resolve(), "release directory must be releases/v0.62.5")
+    require(
+        release_dir == (PROJECT / "releases" / f"v{VERSION}").resolve(),
+        "release directory must be releases/v0.62.6",
+    )
     rows = release_facts(release_dir)
     by_name = {row["name"]: row for row in rows}
-    base_dir = (PROJECT / "releases" / "v0.62.4").resolve()
+    base_dir = (PROJECT / "releases" / f"v{PREDECESSOR_VERSION}").resolve()
     base_rows = [fact(path) for path in sorted(base_dir.iterdir(), key=lambda path: path.name)]
     require(len(base_rows) == EXPECTED_PREDECESSOR_FILES, "predecessor file count differs")
     require(inventory_aggregate(base_rows) == EXPECTED_BASE_AGGREGATE, "predecessor aggregate differs")
+    require(
+        set(by_name) - {row["name"] for row in base_rows} == EXPECTED_ADDITIVE_NAMES,
+        "successor additive inventory differs",
+    )
     for row in base_rows:
         require(by_name[row["name"]]["bytes"] == row["bytes"] and by_name[row["name"]]["sha256"] == row["sha256"], f"inherited byte changed: {row['name']}")
 
@@ -376,9 +394,11 @@ def publish_release(args: argparse.Namespace) -> None:
                 "target_commitish": args.source_commit,
                 "name": f"Program Matematika Indonesia {TAG}",
                 "body": (
-                    "Penerus aditif v0.62.5: hub siswa memperbarui B95 ke R011-B024 (253 halaman, sampai Bab 6 §6.3). "
-                    "Paket konformansi backend v2.3 v0.1.1 yang netral-host disertakan sebagai permukaan mesin sekunder dan cakupannya dibatasi pada A00 + O001. "
-                    "Seluruh 79 aset v0.62.4 dipertahankan byte-for-byte; program keseluruhan masih dalam produksi."
+                    "Penerus aditif v0.62.6: hub siswa menambahkan D80, Metode dalam Aljabar, Jilid 2, "
+                    "sebagai kursus lengkap dengan 146 unit dan pembaca PDF 864 halaman, serta tautan langsung "
+                    "ke pembaca HTML, paket HTML luring, dan backend modular. "
+                    "Paket konformansi backend v2.3 v0.1.1 yang netral-host tetap tersedia sebagai permukaan mesin sekunder. "
+                    "Seluruh 88 aset v0.62.5 dipertahankan byte-for-byte; program keseluruhan masih dalam produksi."
                 ),
                 "draft": False,
                 "prerelease": False,
@@ -433,7 +453,7 @@ def parse_args() -> argparse.Namespace:
     commit = sub.add_parser("commit-source")
     commit.add_argument("--token-file", required=True, type=Path)
     commit.add_argument("--path", action="append", required=True)
-    commit.add_argument("--message", default="Publish B95 R011-B024 learner route and v0.62.5 release tooling")
+    commit.add_argument("--message", default="Publish D80 complete learner route and v0.62.6 release tooling")
     commit.add_argument("--receipt", type=Path, default=PROJECT / f"GITHUB_SOURCE_COMMIT_RECEIPT_v{VERSION}.json")
     pages = sub.add_parser("wait-pages")
     pages.add_argument("--token-file", required=True, type=Path)
