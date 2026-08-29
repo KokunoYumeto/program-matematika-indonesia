@@ -576,6 +576,9 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     if manifest.get("static_site_validation") != static_site_result:
         raise ValueError("static-site live gate/binding mismatch")
     expected_source_members = [data_fact(committed_sources[name], name) for name in SOURCE_MEMBERS]
+    expected_static_validation_inputs = [
+        data_fact(static_inputs[name], name) for name in sorted(static_inputs)
+    ]
     with zipfile.ZipFile(release / SOURCE_ZIP_NAME) as archive:
         inner_manifest_data = archive.read("SOURCE_ARCHIVE_MANIFEST.json")
         uncompressed_bytes = sum(info.file_size for info in archive.infolist())
@@ -592,6 +595,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
             "sha256": sha256_bytes(inner_manifest_data),
         },
         "source_members": expected_source_members,
+        "static_validation_inputs": expected_static_validation_inputs,
+        "static_validation_dependency_closure": dependency_closure(static_inputs),
     }
     expected_additive = {
         "names": list(ADDITIVE_NAMES),
