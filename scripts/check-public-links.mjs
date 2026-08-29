@@ -25,7 +25,10 @@ const wait = (milliseconds) => new Promise((resolvePromise) => setTimeout(resolv
 
 async function fetchWithBoundedRetry(url) {
   let lastError;
-  for (let attempt = 0; attempt < 5; attempt += 1) {
+  // Zenodo can return a Retry-After: 60 response while its anonymous
+  // download limiter recovers.  Honor that bounded server instruction rather
+  // than exhausting the retry budget early and reporting a false failure.
+  for (let attempt = 0; attempt < 7; attempt += 1) {
     try {
       const response = await fetch(url, {
         method: 'GET',
@@ -37,12 +40,12 @@ async function fetchWithBoundedRetry(url) {
       const retryable = response.status === 429 || response.status >= 500;
       const retryAfter = Number.parseInt(response.headers.get('retry-after') ?? '', 10);
       await response.body?.cancel();
-      if (!retryable || attempt === 4) return observed;
-      await wait(Number.isInteger(retryAfter) ? Math.min(retryAfter * 1000, 30_000) : 1000 * (2 ** attempt));
+      if (!retryable || attempt === 6) return observed;
+      await wait(Number.isInteger(retryAfter) ? Math.min(retryAfter * 1000, 120_000) : Math.min(5000 * (2 ** attempt), 120_000));
     } catch (error) {
       lastError = error;
-      if (attempt === 4) throw error;
-      await wait(1000 * (2 ** attempt));
+      if (attempt === 6) throw error;
+      await wait(Math.min(5000 * (2 ** attempt), 120_000));
     }
   }
   throw lastError;
