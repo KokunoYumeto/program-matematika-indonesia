@@ -40,6 +40,6 @@ Status program: **pekerjaan berjalan**
 ## Provenance
 
 Koordinasi, rekayasa backend, validasi, dan penerbitan snapshot pusat ini
-dilakukan oleh **OpenAI Codex gpt-5.6-sol, Ultra** atas instruksi Floris.
+dilakukan oleh **OpenAI Codex gpt-5.6-sol, Ultra** atas instruksi pengguna.
 Kredit penulis, penerjemah manusia, dan kontributor setiap korpus tidak
 digantikan oleh pernyataan ini.
