@@ -65,6 +65,7 @@ for (const name of [
   'id-ID/courses/D20/index.html',
   'id-ID/courses/D20/units/bab-01/index.html',
   'id-ID/courses/D20/units/bab-17/index.html',
+  'id-ID/courses/B95/index.html',
   'id-ID/courses/C100/index.html',
   'id-ID/courses/C100/reader/index.html',
   'id-ID/courses/C100/reader/style.css',

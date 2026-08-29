@@ -22,6 +22,7 @@ const [
   educationalAccessSchemaBytes,
   learnerStateSchemaBytes,
   publicLearnerStateSchemaBytes,
+  b95Landing,
   c100Landing,
   c100ReaderBytes,
   c100ReaderStyleBytes,
@@ -43,6 +44,7 @@ const [
   readFile(resolve(root, 'docs/schema/educational-access-federation-v1.schema.json')),
   readFile(resolve(root, 'schemas/v1/learner-state-v1.schema.json')),
   readFile(resolve(root, 'docs/schema/v1/learner-state-v1.schema.json')),
+  readFile(resolve(root, 'docs/id-ID/courses/B95/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/id-ID/courses/C100/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/id-ID/courses/C100/reader/index.html')),
   readFile(resolve(root, 'docs/id-ID/courses/C100/reader/style.css')),
@@ -234,6 +236,13 @@ assert.match(app, /from '\.\/learner-state\.js'/);
 assert.deepEqual(publicLearnerStateSchemaBytes, learnerStateSchemaBytes, 'Salinan schema keadaan pelajar harus identik byte demi byte.');
 assert.match(learnerStateModule, /program-matematika-indonesia\/learner-state\/v1/);
 assert.doesNotMatch(learnerStateModule, /\bfetch\s*\(/);
+
+assert.match(app, /id-ID\/courses\/B95\//);
+assert.match(b95Landing, /Statistika Berbasis Data/);
+assert.match(b95Landing, /22148827/);
+assert.match(b95Landing, /statistika-berbasis-data-id/);
+assert.match(b95Landing, /216 halaman/);
+assert.doesNotMatch(b95Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
 assert.equal(c100ReaderBytes.length, c100RouteManifest.reader.source_html.bytes);
 assert.equal(sha256(c100ReaderBytes), c100RouteManifest.reader.source_html.sha256);

@@ -116,6 +116,7 @@ function actionLinks(course) {
   const links = [];
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
   const centralLearnerEntries = {
+    B95: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/',
     C100: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/',
     D20: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/',
   };
