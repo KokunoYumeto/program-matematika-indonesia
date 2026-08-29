@@ -103,7 +103,7 @@ BACKEND_RECEIPT_NAMES = (
     "GLOBAL_BACKEND_V23_ARCHIVE_DETERMINISM_RECEIPT_v0.62.5.json",
 )
 PRIVATE_MARKERS = (
-    b"c:" + b"\\users\\", b"c:" + b"/users/", b"file:" + b"//",
+    b"c:" + b"\\users\\", b"c:" + b"/" + b"users/", b"file:" + b"//",
     b".codex" + b"/attachments", b"new " + b"zenodo " + b"token.md",
     b"github " + b"tokens.md", b"zenodo " + b"token.md",
     b"/" + b"users/", b"/" + b"home/",

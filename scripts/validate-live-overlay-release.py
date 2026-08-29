@@ -117,7 +117,7 @@ RECEIPT_CHECKS = {
     "privacy_scan": "pass",
 }
 PRIVATE_MARKERS = (
-    b"c:" + b"\\users\\", b"c:" + b"/users/", b"file:" + b"//",
+    b"c:" + b"\\users\\", b"c:" + b"/" + b"users/", b"file:" + b"//",
     b".codex" + b"/attachments", b"new " + b"zenodo " + b"token.md",
     b"github " + b"tokens.md", b"zenodo " + b"token.md",
     b"/" + b"users/", b"/" + b"home/",

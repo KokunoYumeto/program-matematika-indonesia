@@ -152,7 +152,7 @@ RECEIPT_CHECKS = {
 
 PRIVATE_MARKERS = (
     b"c:" + b"\\users\\",
-    b"c:" + b"/users/",
+    b"c:" + b"/" + b"users/",
     b"file:" + b"//",
     b".codex" + b"/attachments",
     b"new " + b"zenodo " + b"token.md",
