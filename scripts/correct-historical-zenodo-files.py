@@ -75,6 +75,7 @@ class RecordSpec:
     publication_receipt_name: str
     publication_receipt_bytes: int
     publication_receipt_sha256: str
+    privacy_excluded_names: tuple[str, ...]
 
 
 SPECS = (
@@ -87,6 +88,7 @@ SPECS = (
         "ZENODO_PUBLICATION_RECEIPT_v0.41.0.json",
         5118,
         "22ef7d4230a73a002a6300005f023e5315b395c920c5c772205e174e7037f47b",
+        (),
     ),
     RecordSpec(
         22061915,
@@ -97,6 +99,7 @@ SPECS = (
         "ZENODO_PUBLICATION_RECEIPT_v0.42.0.json",
         5920,
         "f688ae3931ca1fc16602af324d1dd99b8a8aebfa28ead8a77b1209cec8bbcc94",
+        ("GITHUB_PUBLICATION_RECEIPT_v0.42.0.json", "ZENODO_PUBLICATION_RECEIPT_v0.42.0.json"),
     ),
 )
 
@@ -166,8 +169,22 @@ def require_zenodo_api_url(url: str, label: str) -> str:
     require(parsed.port in {None, 443}, f"{label} uses an unexpected port")
     require(parsed.username is None and parsed.password is None, f"{label} contains user info")
     require(parsed.path.startswith("/api/"), f"{label} is outside the Zenodo API")
+    require(not parsed.query, f"{label} contains a query string")
     require(not parsed.fragment, f"{label} contains a fragment")
     return url
+
+
+def require_record_link(
+    url: str, label: str, *, record_id: int, suffix: str
+) -> str:
+    checked = require_zenodo_api_url(url, label)
+    parsed = urlparse(checked)
+    expected = f"/api/records/{record_id}/"
+    require(
+        parsed.path.startswith(expected) and parsed.path.endswith(suffix),
+        f"{label} is not bound to record {record_id}",
+    )
+    return checked
 
 
 def file_entries(record: dict[str, Any], label: str) -> dict[str, dict[str, Any]]:
@@ -220,7 +237,10 @@ def parent_identity(record: dict[str, Any]) -> dict[str, Any]:
 
 
 def immutable_record_projection(
-    record: dict[str, Any], changed: set[str]
+    record: dict[str, Any],
+    changed: set[str],
+    *,
+    include_derived_totals: bool = False,
 ) -> dict[str, Any]:
     entries = file_entries(record, "native record")
     projected_entries: dict[str, Any] = {}
@@ -244,6 +264,14 @@ def immutable_record_projection(
     files = record["files"]
     media_files = record.get("media_files")
     require(isinstance(media_files, dict), "native record has malformed media files")
+    files_projection: dict[str, Any] = {
+        "enabled": files.get("enabled"),
+        "order": without_links(files.get("order")),
+        "count": files.get("count"),
+        "entries": projected_entries,
+    }
+    if include_derived_totals:
+        files_projection["total_bytes"] = files.get("total_bytes")
     return {
         "id": str(record.get("id")),
         "pids": without_links(record.get("pids")),
@@ -251,12 +279,7 @@ def immutable_record_projection(
         "metadata": without_links(record.get("metadata")),
         "custom_fields": without_links(record.get("custom_fields")),
         "access": without_links(record.get("access")),
-        "files": {
-            "enabled": files.get("enabled"),
-            "order": without_links(files.get("order")),
-            "count": files.get("count"),
-            "entries": projected_entries,
-        },
+        "files": files_projection,
         "media_files": without_links(media_files),
     }
 
@@ -328,7 +351,9 @@ def public_record(session: requests.Session, record_id: int) -> dict[str, Any]:
     return value
 
 
-def public_rows(record: dict[str, Any], expected_count: int) -> dict[str, dict[str, Any]]:
+def public_rows(
+    record: dict[str, Any], expected_count: int, *, record_id: int
+) -> dict[str, dict[str, Any]]:
     rows: dict[str, dict[str, Any]] = {}
     entries = file_entries(record, "public record")
     for name, item in entries.items():
@@ -338,7 +363,12 @@ def public_rows(record: dict[str, Any], expected_count: int) -> dict[str, dict[s
         require(isinstance(name, str) and name, "public file has no key")
         require(isinstance(size, int) and size >= 0, f"public file has invalid size: {name}")
         require(re.fullmatch(r"md5:[0-9a-f]{32}", checksum) is not None, f"public file has invalid checksum: {name}")
-        require_zenodo_api_url(url, f"public file content URL: {name}")
+        require_record_link(
+            url,
+            f"public file content URL: {name}",
+            record_id=record_id,
+            suffix="/content",
+        )
         require(name not in rows, f"public record repeats filename: {name}")
         rows[name] = {
             "name": name,
@@ -347,6 +377,11 @@ def public_rows(record: dict[str, Any], expected_count: int) -> dict[str, dict[s
             "url": url,
         }
     require(record["files"].get("count") == expected_count, "native public file count differs")
+    total_bytes = record["files"].get("total_bytes")
+    require(
+        isinstance(total_bytes, int) and total_bytes == sum(row["bytes"] for row in rows.values()),
+        "native public total byte count differs",
+    )
     require(len(rows) == expected_count, f"expected {expected_count} public files, found {len(rows)}")
     return rows
 
@@ -448,14 +483,19 @@ def preflight_record(
 ) -> dict[str, Any]:
     record = public_record(anon, spec.record_id)
     require_public_identity(record, spec)
-    remote = public_rows(record, spec.expected_file_count)
+    remote = public_rows(record, spec.expected_file_count, record_id=spec.record_id)
     original_inventory, _ = publication_inventory(spec)
     require(set(original_inventory) == set(remote), f"record {spec.record_id}: publication-receipt filenames differ")
     release = ROOT / "releases" / spec.release_dir
     require(release.is_dir(), f"local release directory is absent: {spec.release_dir}")
     local = {name: local_fact(release / name) for name in sorted(remote)}
     changed_candidates = changed_release_postimages(privacy, spec.release_dir)
-    changed = set(remote) & set(changed_candidates)
+    excluded = set(changed_candidates) - set(remote)
+    require(
+        excluded == set(spec.privacy_excluded_names),
+        f"record {spec.record_id}: unexpected non-public privacy candidates: {sorted(excluded)}",
+    )
+    changed = set(changed_candidates) & set(remote)
     require(
         len(changed) == spec.expected_changed_count,
         f"record {spec.record_id}: expected {spec.expected_changed_count} public replacements, found {len(changed)}",
@@ -465,6 +505,11 @@ def preflight_record(
         postimage = changed_candidates[name]
         require(local[name]["bytes"] == postimage["bytes"], f"record {spec.record_id}: postimage size differs: {name}")
         require(local[name]["sha256"] == postimage["sha256"], f"record {spec.record_id}: postimage SHA-256 differs: {name}")
+    for name in sorted(excluded):
+        excluded_fact = local_fact(release / name)
+        postimage = changed_candidates[name]
+        require(excluded_fact["bytes"] == postimage["bytes"], f"record {spec.record_id}: excluded postimage size differs: {name}")
+        require(excluded_fact["sha256"] == postimage["sha256"], f"record {spec.record_id}: excluded postimage SHA-256 differs: {name}")
 
     for name in sorted(set(remote) - changed):
         require(local[name]["bytes"] == original_inventory[name]["bytes"], f"record {spec.record_id}: unaffected local size differs from publication receipt: {name}")
@@ -557,7 +602,13 @@ def ensure_draft(
 
 def draft_rows(auth: requests.Session, draft: dict[str, Any]) -> dict[str, dict[str, Any]]:
     files_url = draft.get("links", {}).get("files")
-    require_zenodo_api_url(files_url, "draft files URL")
+    record_id = int(draft.get("id", -1))
+    require_record_link(
+        files_url,
+        "draft files URL",
+        record_id=record_id,
+        suffix="/draft/files",
+    )
     response = request(auth, "GET", files_url, expected={200}, allow_redirects=False)
     body = response.json()
     require(isinstance(body, dict), "draft file listing is malformed")
@@ -584,6 +635,22 @@ def draft_rows(auth: requests.Session, draft: dict[str, Any]) -> dict[str, dict[
             "links": item.get("links", {}),
         }
     return rows
+
+
+def require_draft_total_bytes(
+    auth: requests.Session, draft: dict[str, Any], expected_total: int
+) -> None:
+    rows = draft_rows(auth, draft)
+    require(
+        sum(row["bytes"] or 0 for row in rows.values()) == expected_total,
+        "draft file byte total differs",
+    )
+    files = draft.get("files")
+    if isinstance(files, dict) and files.get("total_bytes") is not None:
+        require(
+            files.get("total_bytes") == expected_total,
+            "draft native total byte count differs",
+        )
 
 
 def require_draft_identity(
@@ -636,9 +703,19 @@ def replace_one(
     files_url = require_zenodo_api_url(
         str(draft["links"]["files"]), "draft files URL"
     )
+    record_id = int(draft.get("id", -1))
+    require_record_link(
+        files_url,
+        "draft files URL",
+        record_id=record_id,
+        suffix="/draft/files",
+    )
     encoded = quote(name, safe="")
-    item_url = require_zenodo_api_url(
-        f"{files_url}/{encoded}", f"draft item URL: {name}"
+    item_url = require_record_link(
+        f"{files_url}/{encoded}",
+        f"draft item URL: {name}",
+        record_id=record_id,
+        suffix=f"/draft/files/{encoded}",
     )
 
     data = fact["path"].read_bytes()
@@ -684,8 +761,18 @@ def replace_one(
         links = recovered.get("links", {})
     content_url = links.get("content")
     commit_url = links.get("commit")
-    require_zenodo_api_url(content_url, f"file content URL: {name}")
-    require_zenodo_api_url(commit_url, f"file commit URL: {name}")
+    require_record_link(
+        content_url,
+        f"file content URL: {name}",
+        record_id=record_id,
+        suffix=f"/draft/files/{encoded}/content",
+    )
+    require_record_link(
+        commit_url,
+        f"file commit URL: {name}",
+        record_id=record_id,
+        suffix=f"/draft/files/{encoded}/commit",
+    )
 
     upload = request(
         auth,
@@ -742,11 +829,23 @@ def require_complete_draft(
         require(rows[name].get("status") == "completed", f"draft file is not complete: {name}")
         require(rows[name].get("bytes") == expected["bytes"], f"draft file size differs: {name}")
         require(rows[name].get("md5") == expected["md5"], f"draft file MD5 differs: {name}")
+    require(
+        sum(rows[name]["bytes"] for name in rows) == sum(
+            (local[name] if name in changed else public_remote[name])["bytes"]
+            for name in rows
+        ),
+        "draft aggregate byte total differs",
+    )
 
 
 def publish_edit(auth: requests.Session, spec: RecordSpec, draft: dict[str, Any]) -> None:
     publish_url = draft.get("links", {}).get("publish")
-    require_zenodo_api_url(publish_url, "draft publish URL")
+    require_record_link(
+        publish_url,
+        "draft publish URL",
+        record_id=spec.record_id,
+        suffix="/draft/actions/publish",
+    )
     response = auth.post(publish_url, timeout=300, allow_redirects=False)
     if response.status_code in {200, 201, 202}:
         return
@@ -780,7 +879,7 @@ def anonymous_verify(
     for attempt in range(1, 11):
         record = public_record(anon, spec.record_id)
         require_public_identity(record, spec)
-        remote = public_rows(record, spec.expected_file_count)
+        remote = public_rows(record, spec.expected_file_count, record_id=spec.record_id)
         if all(
             name in remote
             and remote[name]["bytes"] == fact["bytes"]
@@ -836,10 +935,15 @@ def compact_local_rows(
     ]
 
 
-def write_receipt(path: Path, rows: list[dict[str, Any]]) -> tuple[int, str]:
+def write_receipt(
+    path: Path,
+    rows: list[dict[str, Any]],
+    *,
+    state: str = "published_public_same_doi_correction",
+) -> tuple[int, str]:
     receipt = {
         "schema_id": "program-matematika-indonesia/zenodo-historical-file-correction-receipt/v1",
-        "state": "published_public_same_doi_correction",
+        "state": state,
         "recorded_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
         "official_guidance": OFFICIAL_GUIDANCE,
         "concept_id": CONCEPT_ID,
@@ -919,6 +1023,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     require_draft_identity(
                         draft, state["record"], spec, state["changed"]
                     )
+                    require_draft_total_bytes(
+                        auth,
+                        draft,
+                        sum(row["bytes"] for row in state["remote"].values()),
+                    )
                     if created:
                         unlock_files(auth, spec)
                     draft = get_draft(auth, spec.record_id)
@@ -941,6 +1050,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                     require(fresh_draft is not None, f"record {spec.record_id}: draft unavailable before publish")
                     require_draft_identity(
                         fresh_draft, state["record"], spec, state["changed"]
+                    )
+                    require_draft_total_bytes(
+                        auth,
+                        fresh_draft,
+                        sum(row["bytes"] for row in state["local"].values()),
                     )
                     publish_edit(auth, spec, fresh_draft)
                     mutated = True
@@ -968,6 +1082,13 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                         "corrected_file_count": len(state["changed"]),
                         "mutation_performed_this_run": mutated,
                         "privacy_receipt_sha256": PRIVACY_RECEIPT_SHA256,
+                        "privacy_postimages": {
+                            name: {
+                                "bytes": state["local"][name]["bytes"],
+                                "sha256": state["local"][name]["sha256"],
+                            }
+                            for name in sorted(state["changed"])
+                        },
                         "publication_receipt": {
                             "name": spec.publication_receipt_name,
                             "bytes": spec.publication_receipt_bytes,
@@ -987,6 +1108,11 @@ def run(args: argparse.Namespace) -> dict[str, Any]:
                             canonical_bytes(anonymous_rows), "sha256"
                         ),
                     }
+                )
+                write_receipt(
+                    args.receipt.resolve(),
+                    receipt_rows,
+                    state="partial_public_same_doi_correction",
                 )
         finally:
             auth.close()
