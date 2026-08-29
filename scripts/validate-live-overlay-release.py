@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the deterministic v0.62.1 learner-access overlay release."""
+"""Validate the deterministic v0.62.3 learner-access overlay release."""
 
 from __future__ import annotations
 
@@ -10,28 +10,33 @@ import os
 import re
 import subprocess
 import tempfile
+from urllib.parse import quote
 import urllib.request
 import zipfile
 from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.62.1"
+VERSION = "0.62.3"
+BASE_VERSION = "0.62.2"
+FROZEN_AUTHORITY_VERSION = "0.62.0"
 STUDENT_URL = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
 REPOSITORY_URL = "https://github.com/KokunoYumeto/program-matematika-indonesia"
+RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia"
 FIXED_ZIP_TIME = (2026, 8, 29, 0, 0, 0)
 BASE_EXPECTED = {
-    "files": 59,
-    "bytes": 28_048_762,
-    "aggregate_sha256": "75ea3727d403fa496ab4c095bd2b3abca9c2670a385e60904fa90bff6f277ef3",
-    "checksum_sha256": "e90e5930bf0440ad8fb314af305c1be7d3b9c1e676888468adf3d8c81a33e107",
+    "files": 69,
+    "bytes": 28_840_359,
+    "aggregate_sha256": "71ef281e6b1e374c2fbf7fa4f7f2475b1a732c2bce3920a2189d8100e57e1777",
+    "checksum_name": "LIVE_OVERLAY_CHECKSUMS_v0.62.2.sha256",
+    "checksum_sha256": "7120839f54271a4d9a0cce0730d8f1ac2ba780c2271e129992ebf9837521dc97",
 }
 ADDITIVE_NAMES = (
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.1.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.1.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.1.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.1.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.1.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.3.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.3.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.3.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.3.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.3.sha256",
 )
 STANDALONE_NAME, MANIFEST_NAME, SOURCE_ZIP_NAME, RECEIPT_NAME, CHECKSUM_NAME = ADDITIVE_NAMES
 SOURCE_MEMBERS = (
@@ -69,13 +74,13 @@ STATIC_VALIDATION_FIXED_INPUTS = (
     "schemas/v1/learner-state-v1.schema.json",
 )
 EXPECTED_OVERLAY_IDS = sorted((
-    "A20", "A30", "B30", "B50", "B95", "C10", "C90", "C100",
+    "A10", "A20", "A30", "B20", "B30", "B50", "B95", "C10", "C90", "C100",
     "C140", "D10", "D20", "D30", "D50", "D60", "D70", "D100",
 ))
 PAGES_IDENTITIES = {
-    "docs/index.html": (13_230, "f24452f630419773ee6fb6f18de772262502e7afa5809858042f93d09953d62c"),
+    "docs/index.html": (13_232, "bbe0baf1265810f70ac128e7e7fc4fc11d358c73a4ef75fda5728f7e48550408"),
     "docs/app.js": (19_147, "9a14650147404c537bea2500c6cb725352e967b607ec1a1315418648de12774e"),
-    "docs/live-course-publications.js": (18_281, "cda0cb0b2d45349f775e67e8bb56fd0dd0b77285775a53ac49c013a08ef3a0bf"),
+    "docs/live-course-publications.js": (25_234, "592cfe3bda15e95b1d9b76efcddbb45f7821ed170a582f6c8af8f80d9542c66b"),
     "docs/id-ID/courses/D30/index.html": (4_406, "deb39d9cebf1cb01c677f9fa227bf238edc30fe1c0beef8f3c6bbdd13fff49be"),
 }
 PAGES_URLS = {
@@ -85,14 +90,14 @@ PAGES_URLS = {
     "docs/id-ID/courses/D30/index.html": f"{STUDENT_URL}id-ID/courses/D30/",
 }
 RECEIPT_CHECKS = {
-    "base_release": "59/59 byte-identical",
+    "base_release": "69/69 byte-identical",
     "standalone_export_replay": "byte-identical",
     "source_archive": "inventory, CRC, member bytes, timestamps, and order pass",
-    "overlay_rows": "16/16",
-    "effective_completed_public_roles": "22",
-    "distinct_completed_public_records": "21",
-    "strict_public_links": "151/151; live network gate executed",
-    "static_site_validation": "pass; 40 courses; 16 overlay rows; 22 effective published roles",
+    "overlay_rows": "18/18",
+    "effective_completed_public_roles": "24",
+    "distinct_completed_public_records": "23",
+    "strict_public_links": "159/159; live network gate executed",
+    "static_site_validation": "pass; 40 courses; 18 overlay rows; 24 effective published roles",
     "github_pages_readbacks": "4/4 exact live HTTP 200 byte/hash matches",
     "privacy_scan": "pass",
 }
@@ -150,19 +155,24 @@ def validate_full_commit(value: str) -> str:
     return value
 
 
-def git_blob(root: Path, commit: str, name: str) -> bytes:
-    process = subprocess.run(
-        ["git", "show", f"{commit}:{name}"], cwd=root,
-        check=False, capture_output=True,
+def remote_blob(commit: str, name: str) -> bytes:
+    commit = validate_full_commit(commit)
+    url = f"{RAW_REPOSITORY_URL}/{commit}/{quote(name, safe='/')}"
+    request = urllib.request.Request(
+        url,
+        headers={"User-Agent": f"program-matematika-indonesia-release-validator/{VERSION}"},
     )
-    if process.returncode != 0:
-        diagnostic = process.stderr.decode("utf-8", "replace").strip()
-        raise ValueError(f"cannot read committed source {commit}:{name}: {diagnostic}")
-    return process.stdout
+    try:
+        with urllib.request.urlopen(request, timeout=60) as response:
+            if response.status != 200:
+                raise ValueError(f"immutable source HTTP status differs: {name} -> {response.status}")
+            return response.read()
+    except Exception as exc:
+        raise ValueError(f"cannot read immutable source {commit}:{name}: {exc}") from exc
 
 
 def static_validation_inputs(root: Path, commit: str) -> dict[str, bytes]:
-    values = {name: git_blob(root, commit, name) for name in STATIC_VALIDATION_FIXED_INPUTS}
+    values = {name: remote_blob(commit, name) for name in STATIC_VALIDATION_FIXED_INPUTS}
     authority = json.loads(values["backend/authority/curriculum-authority-v1.json"])
     dynamic_names = {f"{authority['federation']['package_path']}/manifest.json"}
     d20 = json.loads(values["docs/data/unit-route-D20-v2.1.json"])
@@ -180,7 +190,7 @@ def static_validation_inputs(root: Path, commit: str) -> dict[str, bytes]:
                 f"docs/id-ID/courses/C100/units/bab-{match.group(1)}/index.html"
             )
     for name in sorted(dynamic_names):
-        values[name] = git_blob(root, commit, name)
+        values[name] = remote_blob(commit, name)
     return dict(sorted(values.items()))
 
 
@@ -245,7 +255,7 @@ def verify_pages_readbacks(
         request_url = f"{url}{separator}pmi-live-overlay-readback={source_commit}"
         request = urllib.request.Request(
             request_url,
-            headers={"User-Agent": "program-matematika-indonesia-release-validator/0.62.1"},
+            headers={"User-Agent": f"program-matematika-indonesia-release-validator/{VERSION}"},
         )
         with urllib.request.urlopen(request, timeout=30) as response:
             status = response.status
@@ -276,9 +286,9 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         raise ValueError(f"strict public-link check failed: {diagnostic}")
     report = json.loads(process.stdout)
     links = report.get("links")
-    if report.get("status") != "pass" or report.get("checked") != 151:
+    if report.get("status") != "pass" or report.get("checked") != 159:
         raise ValueError("strict public-link count/result mismatch")
-    if not isinstance(links, list) or len(links) != 151:
+    if not isinstance(links, list) or len(links) != 159:
         raise ValueError("strict public-link result inventory mismatch")
     if any(not isinstance(row.get("status"), int) or not 200 <= row["status"] < 400 for row in links):
         raise ValueError("strict public-link report contains a non-success status")
@@ -287,7 +297,7 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         "mode": "strict; no pending-central exception",
         "executed": True,
         "result": "pass",
-        "checked": 151,
+        "checked": 159,
         "failures": 0,
     }
 
@@ -306,8 +316,8 @@ def run_static_site_validation(root: Path) -> dict[str, Any]:
         "courses": 40,
         "selected": 40,
         "unresolved": 0,
-        "effectivePublishedRoles": 22,
-        "liveOverlayRows": 16,
+        "effectivePublishedRoles": 24,
+        "liveOverlayRows": 18,
         "prerequisiteEdges": 83,
     }
     for key, value in expected.items():
@@ -320,11 +330,11 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     root = Path(__file__).resolve().parent.parent
     validate_full_commit(args.source_commit)
     release = (root / args.release_dir).resolve()
-    base = (root / "releases" / "v0.62.0").resolve()
-    expected_release = (root / "releases" / "v0.62.1").resolve()
+    base = (root / "releases" / "v0.62.2").resolve()
+    expected_release = (root / "releases" / "v0.62.3").resolve()
     if release != expected_release:
         raise ValueError(f"release directory must be exactly {expected_release}")
-    committed_sources = {name: git_blob(root, args.source_commit, name) for name in SOURCE_MEMBERS}
+    committed_sources = {name: remote_blob(args.source_commit, name) for name in SOURCE_MEMBERS}
     static_inputs = static_validation_inputs(root, args.source_commit)
     if not release.is_dir():
         raise ValueError(f"missing release directory: {release}")
@@ -334,10 +344,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     base_paths = sorted(base.iterdir(), key=lambda value: value.name)
     expected_names = {path.name for path in base_paths} | set(ADDITIVE_NAMES)
     actual_names = {path.name for path in paths}
-    if actual_names != expected_names or len(paths) != 64:
+    if actual_names != expected_names or len(paths) != 74:
         missing = sorted(expected_names - actual_names)
         extra = sorted(actual_names - expected_names)
-        raise ValueError(f"64-file successor inventory mismatch; missing={missing}; extra={extra}")
+        raise ValueError(f"74-file successor inventory mismatch; missing={missing}; extra={extra}")
 
     base_facts = [fact(path) for path in base_paths]
     if len(base_facts) != BASE_EXPECTED["files"]:
@@ -346,7 +356,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("base byte-count mismatch")
     if sha256_bytes(canonical_inventory_bytes(base_facts)) != BASE_EXPECTED["aggregate_sha256"]:
         raise ValueError("base aggregate mismatch")
-    if sha256_file(base / "CHECKSUMS.sha256") != BASE_EXPECTED["checksum_sha256"]:
+    if sha256_file(base / BASE_EXPECTED["checksum_name"]) != BASE_EXPECTED["checksum_sha256"]:
         raise ValueError("base checksum identity mismatch")
     for source in base_paths:
         target = release / source.name
@@ -355,7 +365,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
 
     checksums = parse_checksum(release / CHECKSUM_NAME)
     non_checksum = [path for path in paths if path.name != CHECKSUM_NAME]
-    if set(checksums) != {path.name for path in non_checksum} or len(checksums) != 63:
+    if set(checksums) != {path.name for path in non_checksum} or len(checksums) != 73:
         raise ValueError("overlay checksum inventory mismatch")
     for path in non_checksum:
         if checksums[path.name] != sha256_file(path):
@@ -377,17 +387,17 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     if manifest.get("release_kind") != "additive-learner-access-live-publication-adapter":
         raise ValueError("manifest release-kind mismatch")
     expected_immutable = {
-        "version": "0.62.0",
-        "directory": "releases/v0.62.0",
-        "files": 59,
-        "bytes": 28_048_762,
+        "version": BASE_VERSION,
+        "directory": "releases/v0.62.2",
+        "files": 69,
+        "bytes": 28_840_359,
         "aggregate_algorithm": "sha256 of sorted '<sha256>  <bytes>  <name>\\n' facts",
         "aggregate_sha256": BASE_EXPECTED["aggregate_sha256"],
         "checksum_file": {
-            "name": "CHECKSUMS.sha256",
-            "bytes": 6_384,
+            "name": BASE_EXPECTED["checksum_name"],
+            "bytes": 7_529,
             "sha256": BASE_EXPECTED["checksum_sha256"],
-            "entries": 58,
+            "entries": 68,
         },
         "files_unchanged": base_facts,
     }
@@ -402,7 +412,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     if manifest.get("source_repository") != expected_repository:
         raise ValueError("manifest source-repository binding mismatch")
     expected_boundary = {
-        "frozen_authority_version": "0.62.0",
+        "frozen_authority_version": FROZEN_AUTHORITY_VERSION,
         "authority_file": "curriculum-authority-v1.json",
         "authority_changed": False,
         "live_overlay_is_authority_replacement": False,
@@ -412,10 +422,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("manifest authority/completion boundary mismatch")
 
     expected_inventory_contract = {
-        "inherited_files": 59,
+        "inherited_files": 69,
         "additive_files": 5,
-        "successor_files": 64,
-        "checksum_entries": 63,
+        "successor_files": 74,
+        "checksum_entries": 73,
         "checksum_excludes_only": CHECKSUM_NAME,
     }
     if manifest.get("inventory_contract") != expected_inventory_contract:
@@ -446,8 +456,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
             raise ValueError(f"manifest Pages readback state mismatch: {name}")
     pages = manifest.get("github_pages", {})
     expected_pages = {
-        "workflow_run_id": 33249907757,
-        "workflow_run_url": f"{REPOSITORY_URL}/actions/runs/33249907757",
+        "workflow_run_id": args.pages_run_id,
+        "workflow_run_url": f"{REPOSITORY_URL}/actions/runs/{args.pages_run_id}",
         "conclusion": "success",
         "student_entry_url": STUDENT_URL,
         "anonymous_exact_readbacks": network_readbacks,
@@ -516,10 +526,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
             }
     expected_live = {
         "overlay_ids": EXPECTED_OVERLAY_IDS,
-        "overlay_rows": 16,
+        "overlay_rows": 18,
         "selected_course_roles": 40,
-        "effective_published_roles": 22,
-        "distinct_completed_public_records": 21,
+        "effective_published_roles": 24,
+        "distinct_completed_public_records": 23,
     }
     for key, value in expected_live.items():
         if live.get(key) != value:
@@ -575,8 +585,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     if receipt.get("checks") != RECEIPT_CHECKS:
         raise ValueError("receipt check summary mismatch")
     expected_validation_command = (
-        "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.1 "
-        f"--source-commit {args.source_commit}"
+        "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.3 "
+        f"--source-commit {args.source_commit} --pages-run-id {args.pages_run_id}"
     )
     if receipt.get("validation_command") != expected_validation_command:
         raise ValueError("receipt validation-command mismatch")
@@ -590,10 +600,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     ):
         raise ValueError("receipt pre-receipt aggregate mismatch")
     expected_successor = {
-        "files_before_checksum": 63,
-        "checksum_entries": 63,
-        "final_files": 64,
-        "inherited_files": 59,
+        "files_before_checksum": 73,
+        "checksum_entries": 73,
+        "final_files": 74,
+        "inherited_files": 69,
         "additive_files": 5,
     }
     if receipt.get("successor_inventory") != expected_successor:
@@ -611,12 +621,12 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         "files": len(all_facts),
         "bytes": sum(item["bytes"] for item in all_facts),
         "aggregate_sha256": sha256_bytes(canonical_inventory_bytes(all_facts)),
-        "base_files_byte_identical": 59,
+        "base_files_byte_identical": 69,
         "additive_artifacts": [fact(release / name) for name in ADDITIVE_NAMES],
-        "overlay_rows": 16,
-        "effective_completed_public_roles": 22,
-        "distinct_completed_public_records": 21,
-        "strict_public_links": "151/151",
+        "overlay_rows": 18,
+        "effective_completed_public_roles": 24,
+        "distinct_completed_public_records": 23,
+        "strict_public_links": "159/159",
         "pages_exact_readbacks": "4/4",
     }
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
@@ -625,8 +635,9 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--release-dir", default="releases/v0.62.1")
+    parser.add_argument("--release-dir", default="releases/v0.62.3")
     parser.add_argument("--source-commit", required=True, help="full commit containing every packaged source")
+    parser.add_argument("--pages-run-id", required=True, type=int, help="successful Pages workflow run for the source commit")
     return parser.parse_args()
 
 

@@ -19,26 +19,48 @@ const links = courses.flatMap((course) => {
   return [...primary, ...supplements];
 });
 const results = [];
+const responseCache = new Map();
+
+const wait = (milliseconds) => new Promise((resolvePromise) => setTimeout(resolvePromise, milliseconds));
+
+async function fetchWithBoundedRetry(url) {
+  let lastError;
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    try {
+      const response = await fetch(url, {
+        method: 'GET',
+        redirect: 'follow',
+        signal: AbortSignal.timeout(30_000),
+        headers: { 'user-agent': 'program-matematika-indonesia-link-check/1.1' },
+      });
+      const observed = { status: response.status, resolvedUrl: response.url };
+      const retryable = response.status === 429 || response.status >= 500;
+      const retryAfter = Number.parseInt(response.headers.get('retry-after') ?? '', 10);
+      await response.body?.cancel();
+      if (!retryable || attempt === 4) return observed;
+      await wait(Number.isInteger(retryAfter) ? Math.min(retryAfter * 1000, 30_000) : 1000 * (2 ** attempt));
+    } catch (error) {
+      lastError = error;
+      if (attempt === 4) throw error;
+      await wait(1000 * (2 ** attempt));
+    }
+  }
+  throw lastError;
+}
 
 for (const link of links) {
-  const response = await fetch(link.url, {
-    method: 'GET',
-    redirect: 'follow',
-    signal: AbortSignal.timeout(30_000),
-    headers: { 'user-agent': 'program-matematika-indonesia-link-check/1.0' },
-  });
-  if (!(response.status >= 200 && response.status < 400) && allowPendingCentral && link.url.startsWith(centralPrefix)) {
+  const observed = responseCache.get(link.url) ?? await fetchWithBoundedRetry(link.url);
+  responseCache.set(link.url, observed);
+  if (!(observed.status >= 200 && observed.status < 400) && allowPendingCentral && link.url.startsWith(centralPrefix)) {
     const relative = new URL(link.url).pathname.slice('/program-matematika-indonesia/'.length);
     const localPath = resolve(docsRoot, relative, relative.endsWith('/') ? 'index.html' : '');
     assert.ok(localPath.startsWith(`${docsRoot}${sep}`), `${link.course} ${link.field}: rute lokal keluar dari docs/.`);
     await access(localPath);
-    await response.body?.cancel();
-    results.push({ ...link, status: 'local-pending-publication', resolvedUrl: response.url });
+    results.push({ ...link, status: 'local-pending-publication', resolvedUrl: observed.resolvedUrl });
     continue;
   }
-  assert.ok(response.status >= 200 && response.status < 400, `${link.course} ${link.field}: HTTP ${response.status}`);
-  await response.body?.cancel();
-  results.push({ ...link, status: response.status, resolvedUrl: response.url });
+  assert.ok(observed.status >= 200 && observed.status < 400, `${link.course} ${link.field}: HTTP ${observed.status}`);
+  results.push({ ...link, status: observed.status, resolvedUrl: observed.resolvedUrl });
 }
 
 console.log(JSON.stringify({ status: 'pass', checked: results.length, links: results }, null, 2));
