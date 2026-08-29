@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the deterministic v0.62.3 learner-access overlay release."""
+"""Validate the deterministic v0.62.4 learner-access overlay release."""
 
 from __future__ import annotations
 
@@ -17,26 +17,27 @@ from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.62.3"
-BASE_VERSION = "0.62.2"
+VERSION = "0.62.4"
+BASE_VERSION = "0.62.3"
 FROZEN_AUTHORITY_VERSION = "0.62.0"
+PREDECESSOR_RECORD_ID = 22164795
 STUDENT_URL = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
 REPOSITORY_URL = "https://github.com/KokunoYumeto/program-matematika-indonesia"
 RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia"
 FIXED_ZIP_TIME = (2026, 8, 29, 0, 0, 0)
 BASE_EXPECTED = {
-    "files": 69,
-    "bytes": 28_840_359,
-    "aggregate_sha256": "71ef281e6b1e374c2fbf7fa4f7f2475b1a732c2bce3920a2189d8100e57e1777",
-    "checksum_name": "LIVE_OVERLAY_CHECKSUMS_v0.62.2.sha256",
-    "checksum_sha256": "7120839f54271a4d9a0cce0730d8f1ac2ba780c2271e129992ebf9837521dc97",
+    "files": 74,
+    "bytes": 29_290_326,
+    "aggregate_sha256": "63666cbe89bb32d89d42e0b9e01e23b664a9e241d73a705116f169d04a554c99",
+    "checksum_name": "LIVE_OVERLAY_CHECKSUMS_v0.62.3.sha256",
+    "checksum_sha256": "b61c0f6dd13e47ea5be2c83efcf01eb1d0bcc1a42ba7de36dedce36eef54c7a7",
 }
 ADDITIVE_NAMES = (
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.3.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.3.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.3.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.3.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.3.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.4.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.4.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.4.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.4.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.4.sha256",
 )
 STANDALONE_NAME, MANIFEST_NAME, SOURCE_ZIP_NAME, RECEIPT_NAME, CHECKSUM_NAME = ADDITIVE_NAMES
 SOURCE_MEMBERS = (
@@ -78,10 +79,10 @@ EXPECTED_OVERLAY_IDS = sorted((
     "C140", "D10", "D20", "D30", "D50", "D60", "D70", "D100",
 ))
 PAGES_IDENTITIES = {
-    "docs/index.html": (13_232, "bbe0baf1265810f70ac128e7e7fc4fc11d358c73a4ef75fda5728f7e48550408"),
+    "docs/index.html": (13_306, "c88d8aa41489cc5be0ec7a488d582ffa5486a9adb991e255c5923688f2120d10"),
     "docs/app.js": (19_147, "9a14650147404c537bea2500c6cb725352e967b607ec1a1315418648de12774e"),
-    "docs/live-course-publications.js": (25_234, "592cfe3bda15e95b1d9b76efcddbb45f7821ed170a582f6c8af8f80d9542c66b"),
-    "docs/id-ID/courses/D30/index.html": (4_406, "deb39d9cebf1cb01c677f9fa227bf238edc30fe1c0beef8f3c6bbdd13fff49be"),
+    "docs/live-course-publications.js": (28_352, "c06392ee053d1734cd57f7830da689424c013e737b3da407d0536c1d28eb6a0e"),
+    "docs/id-ID/courses/D30/index.html": (4_502, "68e402a5a976c320fa4112d3bc2d46d824962c7fc8e38d00741aa2d6c99a1166"),
 }
 PAGES_URLS = {
     "docs/index.html": STUDENT_URL,
@@ -90,14 +91,14 @@ PAGES_URLS = {
     "docs/id-ID/courses/D30/index.html": f"{STUDENT_URL}id-ID/courses/D30/",
 }
 RECEIPT_CHECKS = {
-    "base_release": "69/69 byte-identical",
+    "base_release": "74/74 byte-identical",
     "standalone_export_replay": "byte-identical",
     "source_archive": "inventory, CRC, member bytes, timestamps, and order pass",
     "overlay_rows": "18/18",
-    "effective_completed_public_roles": "24",
-    "distinct_completed_public_records": "23",
-    "strict_public_links": "159/159; live network gate executed",
-    "static_site_validation": "pass; 40 courses; 18 overlay rows; 24 effective published roles",
+    "effective_completed_public_roles": "26",
+    "distinct_completed_public_records": "25",
+    "strict_public_links": "161/161; live network gate executed",
+    "static_site_validation": "pass; 40 courses; 18 overlay rows; 26 effective published roles",
     "github_pages_readbacks": "4/4 exact live HTTP 200 byte/hash matches",
     "privacy_scan": "pass",
 }
@@ -286,9 +287,9 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         raise ValueError(f"strict public-link check failed: {diagnostic}")
     report = json.loads(process.stdout)
     links = report.get("links")
-    if report.get("status") != "pass" or report.get("checked") != 159:
+    if report.get("status") != "pass" or report.get("checked") != 161:
         raise ValueError("strict public-link count/result mismatch")
-    if not isinstance(links, list) or len(links) != 159:
+    if not isinstance(links, list) or len(links) != 161:
         raise ValueError("strict public-link result inventory mismatch")
     if any(not isinstance(row.get("status"), int) or not 200 <= row["status"] < 400 for row in links):
         raise ValueError("strict public-link report contains a non-success status")
@@ -297,7 +298,7 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         "mode": "strict; no pending-central exception",
         "executed": True,
         "result": "pass",
-        "checked": 159,
+        "checked": 161,
         "failures": 0,
     }
 
@@ -316,7 +317,7 @@ def run_static_site_validation(root: Path) -> dict[str, Any]:
         "courses": 40,
         "selected": 40,
         "unresolved": 0,
-        "effectivePublishedRoles": 24,
+        "effectivePublishedRoles": 26,
         "liveOverlayRows": 18,
         "prerequisiteEdges": 83,
     }
@@ -330,8 +331,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     root = Path(__file__).resolve().parent.parent
     validate_full_commit(args.source_commit)
     release = (root / args.release_dir).resolve()
-    base = (root / "releases" / "v0.62.2").resolve()
-    expected_release = (root / "releases" / "v0.62.3").resolve()
+    base = (root / "releases" / "v0.62.3").resolve()
+    expected_release = (root / "releases" / "v0.62.4").resolve()
     if release != expected_release:
         raise ValueError(f"release directory must be exactly {expected_release}")
     committed_sources = {name: remote_blob(args.source_commit, name) for name in SOURCE_MEMBERS}
@@ -344,10 +345,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     base_paths = sorted(base.iterdir(), key=lambda value: value.name)
     expected_names = {path.name for path in base_paths} | set(ADDITIVE_NAMES)
     actual_names = {path.name for path in paths}
-    if actual_names != expected_names or len(paths) != 74:
+    if actual_names != expected_names or len(paths) != 79:
         missing = sorted(expected_names - actual_names)
         extra = sorted(actual_names - expected_names)
-        raise ValueError(f"74-file successor inventory mismatch; missing={missing}; extra={extra}")
+        raise ValueError(f"79-file successor inventory mismatch; missing={missing}; extra={extra}")
 
     base_facts = [fact(path) for path in base_paths]
     if len(base_facts) != BASE_EXPECTED["files"]:
@@ -365,7 +366,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
 
     checksums = parse_checksum(release / CHECKSUM_NAME)
     non_checksum = [path for path in paths if path.name != CHECKSUM_NAME]
-    if set(checksums) != {path.name for path in non_checksum} or len(checksums) != 73:
+    if set(checksums) != {path.name for path in non_checksum} or len(checksums) != 78:
         raise ValueError("overlay checksum inventory mismatch")
     for path in non_checksum:
         if checksums[path.name] != sha256_file(path):
@@ -373,7 +374,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
 
     manifest = json.loads((release / MANIFEST_NAME).read_text(encoding="utf-8"))
     expected_manifest_keys = {
-        "schema_id", "version", "release_kind", "immutable_base", "source_repository",
+        "schema_id", "version", "release_kind", "immutable_base", "source_repository", "predecessor",
         "curriculum_boundary", "live_publication_overlay", "strict_public_link_check",
         "static_site_validation", "github_pages", "additive_artifacts", "source_inputs",
         "inventory_contract", "privacy",
@@ -388,16 +389,16 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("manifest release-kind mismatch")
     expected_immutable = {
         "version": BASE_VERSION,
-        "directory": "releases/v0.62.2",
-        "files": 69,
-        "bytes": 28_840_359,
+        "directory": "releases/v0.62.3",
+        "files": 74,
+        "bytes": 29_290_326,
         "aggregate_algorithm": "sha256 of sorted '<sha256>  <bytes>  <name>\\n' facts",
         "aggregate_sha256": BASE_EXPECTED["aggregate_sha256"],
         "checksum_file": {
             "name": BASE_EXPECTED["checksum_name"],
-            "bytes": 7_529,
+            "bytes": 8_112,
             "sha256": BASE_EXPECTED["checksum_sha256"],
-            "entries": 68,
+            "entries": 73,
         },
         "files_unchanged": base_facts,
     }
@@ -411,6 +412,18 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     }
     if manifest.get("source_repository") != expected_repository:
         raise ValueError("manifest source-repository binding mismatch")
+    expected_predecessor = {
+        "version": BASE_VERSION,
+        "record_id": PREDECESSOR_RECORD_ID,
+        "doi": f"10.5281/zenodo.{PREDECESSOR_RECORD_ID}",
+        "public_inventory": {
+            "files": BASE_EXPECTED["files"],
+            "bytes": BASE_EXPECTED["bytes"],
+            "aggregate_sha256": BASE_EXPECTED["aggregate_sha256"],
+        },
+    }
+    if manifest.get("predecessor") != expected_predecessor:
+        raise ValueError("manifest predecessor binding mismatch")
     expected_boundary = {
         "frozen_authority_version": FROZEN_AUTHORITY_VERSION,
         "authority_file": "curriculum-authority-v1.json",
@@ -422,10 +435,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("manifest authority/completion boundary mismatch")
 
     expected_inventory_contract = {
-        "inherited_files": 69,
+        "inherited_files": 74,
         "additive_files": 5,
-        "successor_files": 74,
-        "checksum_entries": 73,
+        "successor_files": 79,
+        "checksum_entries": 78,
         "checksum_excludes_only": CHECKSUM_NAME,
     }
     if manifest.get("inventory_contract") != expected_inventory_contract:
@@ -476,7 +489,12 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     with zipfile.ZipFile(release / SOURCE_ZIP_NAME) as archive:
         if archive.testzip() is not None:
             raise ValueError("source ZIP CRC failure")
-        expected_zip_names = sorted((*SOURCE_MEMBERS, "SOURCE_ARCHIVE_MANIFEST.json"))
+        expected_validation_facts = [
+            data_fact(static_inputs[name], name) for name in sorted(static_inputs)
+        ]
+        expected_zip_names = sorted(
+            (*SOURCE_MEMBERS, *static_inputs.keys(), "SOURCE_ARCHIVE_MANIFEST.json")
+        )
         if archive.namelist() != expected_zip_names:
             raise ValueError("source ZIP inventory/order mismatch")
         for info in archive.infolist():
@@ -487,14 +505,31 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
             if data != committed_sources[name]:
                 raise ValueError(f"source ZIP committed-blob mismatch: {name}")
             privacy_scan(name, data)
+        archived_static_inputs: dict[str, bytes] = {}
+        for item in expected_validation_facts:
+            name = str(item["name"])
+            data = archive.read(name)
+            if data != static_inputs[name]:
+                raise ValueError(f"source ZIP static-validation input mismatch: {name}")
+            if data_fact(data, name) != item:
+                raise ValueError(f"source ZIP static-validation identity mismatch: {name}")
+            privacy_scan(name, data)
+            archived_static_inputs[name] = data
         inner = json.loads(archive.read("SOURCE_ARCHIVE_MANIFEST.json"))
         expected_member_facts = [data_fact(committed_sources[name], name) for name in SOURCE_MEMBERS]
         expected_inner = {
-            "schema_id": "program-matematika-indonesia/live-overlay-source-archive/v1",
+            "schema_id": "program-matematika-indonesia/live-overlay-source-archive/v2",
             "version": VERSION,
             "source_commit": args.source_commit,
-            "purpose": "Reproduce the standalone learner site and inspect the live-publication adapter.",
-            "members": expected_member_facts,
+            "purpose": "Reproduce the standalone learner site and replay static validation from an embedded dependency closure.",
+            "replay_contract": {
+                "static_validation_inputs_embedded": True,
+                "network_required_for_current_commit_proof": True,
+                "package_lock_present": False,
+            },
+            "source_members": expected_member_facts,
+            "static_validation_inputs": expected_validation_facts,
+            "static_validation_dependency_closure": dependency_closure(static_inputs),
         }
         if inner != expected_inner:
             raise ValueError("source ZIP manifest binding mismatch")
@@ -506,7 +541,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
                 target = snapshot_root / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(archive.read(name))
-            for name, data in static_inputs.items():
+            for name, data in archived_static_inputs.items():
                 target = snapshot_root / name
                 target.parent.mkdir(parents=True, exist_ok=True)
                 target.write_bytes(data)
@@ -528,8 +563,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         "overlay_ids": EXPECTED_OVERLAY_IDS,
         "overlay_rows": 18,
         "selected_course_roles": 40,
-        "effective_published_roles": 24,
-        "distinct_completed_public_records": 23,
+        "effective_published_roles": 26,
+        "distinct_completed_public_records": 25,
     }
     for key, value in expected_live.items():
         if live.get(key) != value:
@@ -585,7 +620,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     if receipt.get("checks") != RECEIPT_CHECKS:
         raise ValueError("receipt check summary mismatch")
     expected_validation_command = (
-        "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.3 "
+        "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.4 "
         f"--source-commit {args.source_commit} --pages-run-id {args.pages_run_id}"
     )
     if receipt.get("validation_command") != expected_validation_command:
@@ -600,10 +635,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     ):
         raise ValueError("receipt pre-receipt aggregate mismatch")
     expected_successor = {
-        "files_before_checksum": 73,
-        "checksum_entries": 73,
-        "final_files": 74,
-        "inherited_files": 69,
+        "files_before_checksum": 78,
+        "checksum_entries": 78,
+        "final_files": 79,
+        "inherited_files": 74,
         "additive_files": 5,
     }
     if receipt.get("successor_inventory") != expected_successor:
@@ -621,12 +656,12 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         "files": len(all_facts),
         "bytes": sum(item["bytes"] for item in all_facts),
         "aggregate_sha256": sha256_bytes(canonical_inventory_bytes(all_facts)),
-        "base_files_byte_identical": 69,
+        "base_files_byte_identical": 74,
         "additive_artifacts": [fact(release / name) for name in ADDITIVE_NAMES],
         "overlay_rows": 18,
-        "effective_completed_public_roles": 24,
-        "distinct_completed_public_records": 23,
-        "strict_public_links": "159/159",
+        "effective_completed_public_roles": 26,
+        "distinct_completed_public_records": 25,
+        "strict_public_links": "161/161",
         "pages_exact_readbacks": "4/4",
     }
     print(json.dumps(result, ensure_ascii=False, indent=2, sort_keys=True))
@@ -635,7 +670,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--release-dir", default="releases/v0.62.3")
+    parser.add_argument("--release-dir", default="releases/v0.62.4")
     parser.add_argument("--source-commit", required=True, help="full commit containing every packaged source")
     parser.add_argument("--pages-run-id", required=True, type=int, help="successful Pages workflow run for the source commit")
     return parser.parse_args()

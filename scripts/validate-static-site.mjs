@@ -354,7 +354,14 @@ assert.match(html, /id="learner-storage-status"/);
 assert.match(html, /Data ini tetap di browser ini dan tidak dikirim\./);
 assert.match(html, /class="english-note" lang="en"/);
 assert.match(html, new RegExp(escapeRegex(program.website)));
-assert.match(html, new RegExp(escapeRegex(program.zenodo)));
+// The learner-facing page points at the current concept/landing archive, while
+// `program.zenodo` may remain the immutable backend-authority record.  Require
+// the public concept link (or the authority link for older snapshots) without
+// coupling the static reader to one historical record number.
+assert.ok(
+  html.includes(program.zenodoConcept) || html.includes(program.zenodo),
+  'Halaman siswa harus menautkan arsip Zenodo konsep atau otoritas.',
+);
 assert.match(html, new RegExp(`${courses.length} korpus terpilih`));
 assert.match(html, /produksi yang belum selesai tetap dilabeli dengan jelas/i);
 assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));

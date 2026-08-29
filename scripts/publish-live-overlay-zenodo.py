@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Publish and independently verify the additive PMI v0.62.3 live overlay.
+"""Publish and independently verify the additive PMI v0.62.4 live overlay.
 
 The reserved record ID is intentionally a required argument because Zenodo
 assigns it at reservation time.  The script never deletes or replaces inherited
-v0.62.2 files: it proves the exact 69-file predecessor inventory, uploads only
+v0.62.3 files: it proves the exact 74-file predecessor inventory, uploads only
 the five fixed validated overlay files, publishes publicly, and then performs
-anonymous filename/byte/SHA-256 readback of all 74 successor files and all 69
+anonymous filename/byte/SHA-256 readback of all 79 successor files and all 74
 unchanged predecessor files.
 """
 
@@ -26,13 +26,13 @@ import requests
 
 
 PROJECT = Path(__file__).resolve().parents[1]
-VERSION = "0.62.3"
-PREDECESSOR_VERSION = "0.62.2"
+VERSION = "0.62.4"
+PREDECESSOR_VERSION = "0.62.3"
 FROZEN_AUTHORITY_VERSION = "0.62.0"
 CONCEPT_ID = 22059707
-PREDECESSOR_ID = 22164316
-EXPECTED_INHERITED_FILES = 69
-EXPECTED_TOTAL_FILES = 74
+PREDECESSOR_ID = 22164795
+EXPECTED_INHERITED_FILES = 74
+EXPECTED_TOTAL_FILES = 79
 PUBLIC_API = "https://zenodo.org/api/records"
 DEPOSIT_API = "https://zenodo.org/api/deposit/depositions"
 LEARNER_SITE = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
@@ -40,25 +40,25 @@ REPOSITORY = "https://github.com/KokunoYumeto/program-matematika-indonesia"
 GITHUB_RELEASE = f"{REPOSITORY}/releases/tag/v{VERSION}"
 MODEL = "OpenAI Codex gpt-5.6-sol, Ultra"
 PUBLICATION_DATE = "2026-08-29"
-RELEASE_DIR = PROJECT / "releases" / "v0.62.3"
+RELEASE_DIR = PROJECT / "releases" / "v0.62.4"
 VERSION_RECEIPT = PROJECT / f"PUBLICATION_RECEIPT_v{VERSION}.json"
 ROOT_RECEIPT = PROJECT / "PUBLICATION_RECEIPT.json"
 
 OVERLAY_NAMES = (
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.3.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.3.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.3.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.3.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.3.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.4.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.4.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.4.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.4.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.4.sha256",
 )
 EXPECTED_OVERLAY_IDS = (
     "A10", "A20", "A30", "B20", "B30", "B50", "B95", "C10", "C90", "C100",
     "C140", "D10", "D20", "D30", "D50", "D60", "D70", "D100",
 )
 EXPECTED_PUBLISHED_ROLE_IDS = (
-    "A00", "A10", "B10", "B20", "B40", "B50", "B60", "B80", "B90", "C10", "C30",
-    "C40", "C60", "C70", "C80", "C100", "C110", "C120", "C130",
-    "D20", "D50", "D90", "D110", "D120",
+    "A00", "A10", "B10", "B20", "B40", "B50", "B60", "B80", "B90", "C10", "C100",
+    "C110", "C120", "C130", "C30", "C40", "C60", "C70", "C80", "C90",
+    "D110", "D120", "D20", "D50", "D70", "D90",
 )
 EXPECTED_RECORD_DOIS = (
     "https://doi.org/10.5281/zenodo.21932787",
@@ -80,25 +80,27 @@ EXPECTED_RECORD_DOIS = (
     "https://doi.org/10.5281/zenodo.22105195",
     "https://doi.org/10.5281/zenodo.22105443",
     "https://doi.org/10.5281/zenodo.22142120",
-    "https://doi.org/10.5281/zenodo.22160677",
+    "https://doi.org/10.5281/zenodo.22160944",
+    "https://doi.org/10.5281/zenodo.22161090",
     "https://doi.org/10.5281/zenodo.22163372",
     "https://doi.org/10.5281/zenodo.22163663",
     "https://doi.org/10.5281/zenodo.22164136",
+    "https://doi.org/10.5281/zenodo.22164668",
 )
-CHECKSUM_NAME = "LIVE_OVERLAY_CHECKSUMS_v0.62.3.sha256"
-MANIFEST_NAME = "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.3.json"
-VALIDATION_NAME = "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.3.json"
-HTML_NAME = "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.3.html"
-SOURCE_ZIP_NAME = "program-matematika-indonesia-live-overlay-source-v0.62.3.zip"
+CHECKSUM_NAME = "LIVE_OVERLAY_CHECKSUMS_v0.62.4.sha256"
+MANIFEST_NAME = "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.4.json"
+VALIDATION_NAME = "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.4.json"
+HTML_NAME = "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.4.html"
+SOURCE_ZIP_NAME = "program-matematika-indonesia-live-overlay-source-v0.62.4.zip"
 
-TITLE = "Program Matematika Indonesia v0.62.3 — Lapisan Publikasi Langsung untuk Siswa"
+TITLE = "Program Matematika Indonesia v0.62.4 — Lapisan Publikasi Langsung untuk Siswa"
 DESCRIPTION_PREFIX = (
     '<p><strong>Mulai belajar sekarang:</strong> <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/">'
     "buka halaman siswa Program Matematika Indonesia</a>. Ini adalah pintu masuk utama yang dapat dibaca manusia, "
     "dengan jalur prasyarat, pencarian mata kuliah, status edisi terkini, dan tautan langsung ke bahan belajar.</p>"
-    "<p>Versi v0.62.3 memperbarui lapisan publikasi langsung dengan edisi lengkap Elementary Algebra 2e sambil mempertahankan pembaruan CLP-1 dan CLP-3. "
+    "<p>Versi v0.62.4 memperbarui lapisan publikasi langsung dari snapshot v0.62.3 dengan 26 peran terbit dan 25 rekaman DOI efektif. "
     "Lima berkas tambahan mempreservasi tampilan siswa saat ini, manifest overlay, sumber yang dapat direproduksi, "
-    "validasi lokal, dan checksum. Seluruh 69 berkas v0.62.2 diwarisi tanpa perubahan. Snapshot otoritas v0.62.0 tetap "
+    "validasi lokal, dan checksum. Seluruh 74 berkas v0.62.3 diwarisi tanpa perubahan. Snapshot otoritas v0.62.0 tetap "
     "dibedakan dari status publikasi langsung; program keseluruhan belum lengkap dan pekerjaan produksi terus berjalan.</p>"
     "<p>Lapisan JSON dan backend mesin tetap tersedia sebagai pendamping sekunder, bukan sebagai pintu masuk siswa. "
     "Setiap korpus mempertahankan atribusi, lisensi, provenance, dan otoritas publikasinya sendiri; paket gabungan "
@@ -107,7 +109,7 @@ DESCRIPTION_PREFIX = (
     "pengguna. Semua kredit sumber dan kontributor manusia yang diwarisi tetap dipertahankan.</p>"
 )
 NOTES_PREFIX = (
-    "Rilis aditif v0.62.3: lima berkas overlay publikasi langsung ditambahkan; semua 69 berkas v0.62.2 "
+    "Rilis aditif v0.62.4: lima berkas overlay publikasi langsung ditambahkan; semua 74 berkas v0.62.3 "
     "dipertahankan byte-for-byte. Program keseluruhan belum lengkap."
 )
 
@@ -281,7 +283,7 @@ def local_release_inventory(
 ) -> tuple[list[dict[str, object]], list[dict[str, object]]]:
     require(release_dir.is_dir(), "validated live-overlay release directory is unavailable")
     entries = sorted(release_dir.iterdir(), key=lambda path: path.name)
-    require(len(entries) == EXPECTED_TOTAL_FILES, "live-overlay release directory must contain exactly 74 entries")
+    require(len(entries) == EXPECTED_TOTAL_FILES, "live-overlay release directory must contain exactly 79 entries")
     require(all(path.is_file() for path in entries), "live-overlay release directory must be flat and file-only")
     require(all(not path.is_symlink() for path in entries), "live-overlay release directory may not contain symlinks")
     names = {path.name for path in entries}
@@ -297,7 +299,7 @@ def local_release_inventory(
             "bytes": path.stat().st_size,
             "md5": hash_file(path, "md5"),
             "sha256": hash_file(path, "sha256"),
-            "provenance": "v0.62.3_live_overlay" if name in OVERLAY_NAMES else "inherited_v0.62.2",
+            "provenance": "v0.62.4_live_overlay" if name in OVERLAY_NAMES else "inherited_v0.62.3",
         })
 
     checksum_lines = (release_dir / CHECKSUM_NAME).read_text(encoding="utf-8").splitlines()
@@ -309,7 +311,7 @@ def local_release_inventory(
         require(name not in declared, f"duplicate live-overlay checksum row: {name}")
         declared[name] = match.group(1)
     expected_checksum_names = names - {CHECKSUM_NAME}
-    require(len(declared) == 73, "live-overlay checksum manifest must contain exactly 73 entries")
+    require(len(declared) == 78, "live-overlay checksum manifest must contain exactly 78 entries")
     require(set(declared) == expected_checksum_names, "live-overlay checksum manifest must bind exactly every other release file")
     by_name = {str(row["name"]): row for row in rows}
     for name, sha256 in declared.items():
@@ -337,10 +339,10 @@ def local_release_inventory(
         manifest.get("inventory_contract")
         == {
             "additive_files": 5,
-            "checksum_entries": 73,
+            "checksum_entries": 78,
             "checksum_excludes_only": CHECKSUM_NAME,
-            "inherited_files": 69,
-            "successor_files": 74,
+            "inherited_files": 74,
+            "successor_files": 79,
         },
         "live-overlay manifest inventory contract differs",
     )
@@ -348,8 +350,8 @@ def local_release_inventory(
     require(isinstance(live_state, dict), "live-overlay manifest state block is absent")
     require(live_state.get("overlay_rows") == 18, "live-overlay manifest row count differs")
     require(live_state.get("selected_course_roles") == 40, "live-overlay manifest selected-role count differs")
-    require(live_state.get("effective_published_roles") == 24, "live-overlay manifest published-role count differs")
-    require(live_state.get("distinct_completed_public_records") == 23, "live-overlay manifest distinct-record count differs")
+    require(live_state.get("effective_published_roles") == 26, "live-overlay manifest published-role count differs")
+    require(live_state.get("distinct_completed_public_records") == 25, "live-overlay manifest distinct-record count differs")
     overlay_ids = live_state.get("overlay_ids")
     published_role_ids = live_state.get("effective_published_role_ids")
     record_dois = live_state.get("distinct_record_dois")
@@ -505,7 +507,7 @@ def normalized_related(metadata: dict[str, object]) -> list[dict[str, str]]:
 def release_notes(predecessor_metadata: dict[str, object]) -> str:
     inherited = predecessor_metadata.get("notes")
     if isinstance(inherited, str) and inherited.strip():
-        return f"{NOTES_PREFIX}\n\nCatatan rilis pendahulu v0.62.2 (dipertahankan):\n{inherited}"
+        return f"{NOTES_PREFIX}\n\nCatatan rilis pendahulu v0.62.3 (dipertahankan):\n{inherited}"
     return NOTES_PREFIX
 
 
@@ -514,7 +516,7 @@ def release_description(predecessor_metadata: dict[str, object]) -> str:
     if isinstance(inherited, str) and inherited.strip():
         return (
             f"{DESCRIPTION_PREFIX}"
-            '\n\n<h2>Deskripsi rilis pendahulu v0.62.2 yang dipertahankan</h2>'
+            '\n\n<h2>Deskripsi rilis pendahulu v0.62.3 yang dipertahankan</h2>'
             f"{inherited}"
         )
     return DESCRIPTION_PREFIX
@@ -595,7 +597,7 @@ def require_draft_boundary(
     overlay = {str(row["name"]): row for row in overlay_rows}
     remote = {str(row["name"]): row for row in draft_rows}
     require(set(inherited).isdisjoint(overlay), "overlay filename collides with an inherited filename")
-    require(set(remote).issubset(set(inherited) | set(overlay)), "draft contains a file outside the 69+5 boundary")
+    require(set(remote).issubset(set(inherited) | set(overlay)), "draft contains a file outside the 74+5 boundary")
     require(set(inherited).issubset(remote), "draft is missing an inherited predecessor file")
     for name, expected in inherited.items():
         require(remote[name]["bytes"] == expected["bytes"], f"draft inherited size differs: {name}")
@@ -647,7 +649,7 @@ def verify_public_successor(
 
     observed = anonymous_inventory(record, EXPECTED_TOTAL_FILES, "successor")
     expected = compact_file_inventory(expected_rows)
-    require(compact_file_inventory(observed) == expected, "successor 74-file anonymous inventory differs")
+    require(compact_file_inventory(observed) == expected, "successor 79-file anonymous inventory differs")
     expected_by_name = {str(row["name"]): row for row in expected_rows}
     for row in observed:
         row["provenance"] = expected_by_name[str(row["name"])]["provenance"]
@@ -675,7 +677,7 @@ def verify_predecessor_unchanged(
 
 def verify_lineage(record_id: int) -> dict[str, object]:
     latest = get_json(f"{PUBLIC_API}/{CONCEPT_ID}/versions/latest")
-    require(int(latest.get("id", -1)) == record_id, "concept latest does not resolve to v0.62.3")
+    require(int(latest.get("id", -1)) == record_id, "concept latest does not resolve to v0.62.4")
     require(latest.get("metadata", {}).get("version") == VERSION, "concept latest version differs")
     for doi_id, expected_path in (
         (record_id, f"/records/{record_id}"),
@@ -695,7 +697,7 @@ def verify_lineage(record_id: int) -> dict[str, object]:
     )
     github.raise_for_status()
     require(urlparse(github.url).path.rstrip("/") == urlparse(GITHUB_RELEASE).path, "GitHub release URL differs")
-    require("v0.62.3" in github.text and "program-matematika-indonesia" in github.text, "GitHub release page is not recognizable")
+    require("v0.62.4" in github.text and "program-matematika-indonesia" in github.text, "GitHub release page is not recognizable")
     return {
         "concept_latest_record_id": record_id,
         "concept_latest_version": VERSION,
@@ -720,9 +722,9 @@ def publish_or_verify(
     expected_metadata, expected_related = expected_public_metadata(predecessor_metadata, publication_date)
     expected_rows: list[dict[str, object]] = []
     for row in predecessor_rows:
-        expected_rows.append({**row, "provenance": "inherited_v0.62.2"})
+        expected_rows.append({**row, "provenance": "inherited_v0.62.3"})
     expected_rows.extend(overlay_rows)
-    require(len(expected_rows) == EXPECTED_TOTAL_FILES, "expected successor inventory does not contain 74 files")
+    require(len(expected_rows) == EXPECTED_TOTAL_FILES, "expected successor inventory does not contain 79 files")
     require(len({row["name"] for row in expected_rows}) == EXPECTED_TOTAL_FILES, "expected successor filenames are not unique")
 
     public_url = f"{PUBLIC_API}/{record_id}"
@@ -777,7 +779,7 @@ def publish_or_verify(
     prepublish = prepublish_response.json()
     prepublish_rows = draft_file_facts(prepublish)
     require_draft_boundary(prepublish_rows, predecessor_rows, overlay_rows)
-    require(len(prepublish_rows) == EXPECTED_TOTAL_FILES, "authenticated successor draft does not contain exactly 74 files")
+    require(len(prepublish_rows) == EXPECTED_TOTAL_FILES, "authenticated successor draft does not contain exactly 79 files")
     remote_by_name = {str(row["name"]): row for row in prepublish_rows}
     for row in expected_rows:
         remote = remote_by_name[str(row["name"])]
@@ -848,7 +850,7 @@ def write_receipts(
             "name": row["name"],
             "bytes": row["bytes"],
             "sha256": row["sha256"],
-            "provenance": "v0.62.3_live_overlay" if row["name"] in overlay_names else "inherited_v0.62.2",
+            "provenance": "v0.62.4_live_overlay" if row["name"] in overlay_names else "inherited_v0.62.3",
             "anonymous_url": row["url"],
             "anonymous_byte_identity": True,
         })
@@ -881,13 +883,13 @@ def write_receipts(
             "license": "other-open",
             "language": successor_metadata["language"],
             "file_count": len(successor_rows),
-            "anonymous_filename_size_sha256_readback": "pass_74_of_74",
+            "anonymous_filename_size_sha256_readback": "pass_79_of_79",
             "concept_latest": "pass",
         },
         "inheritance": {
             "inherited_file_count": len(predecessor_rows),
             "predecessor_unchanged": True,
-            "predecessor_anonymous_filename_size_sha256_readback": "pass_69_of_69",
+            "predecessor_anonymous_filename_size_sha256_readback": "pass_74_of_74",
             "predecessor_inventory_aggregate_sha256": compact_sha256(predecessor_compact),
             "creator_array_count": len(predecessor_metadata["creators"]),
             "creator_array_canonical_sha256": compact_sha256(predecessor_metadata["creators"]),
@@ -903,9 +905,9 @@ def write_receipts(
             "files": overlay_public,
         },
         "local_release": {
-            "directory": "releases/v0.62.3",
+            "directory": "releases/v0.62.4",
             "files": len(local_release_rows),
-            "checksum_entries": 73,
+            "checksum_entries": 78,
             "checksum_manifest_sha256": next(
                 row["sha256"] for row in local_release_rows if row["name"] == CHECKSUM_NAME
             ),
@@ -929,8 +931,8 @@ def write_receipts(
         },
         "publication_boundary_result": {
             "zenodo_open_record": "pass",
-            "successor_74_file_readback": "pass",
-            "predecessor_69_file_unchanged_readback": "pass",
+            "successor_79_file_readback": "pass",
+            "predecessor_74_file_unchanged_readback": "pass",
             "concept_latest": "pass",
             "student_site": "pass",
             "overall": "pass",
@@ -963,10 +965,10 @@ def main() -> int:
     predecessor_rows = anonymous_inventory(predecessor_record, EXPECTED_INHERITED_FILES, "predecessor-preflight")
     require(set(OVERLAY_NAMES).isdisjoint({row["name"] for row in predecessor_rows}), "overlay collides with predecessor inventory")
     local_inherited_rows = [row for row in local_release_rows if row["name"] not in OVERLAY_NAMES]
-    require(len(local_inherited_rows) == EXPECTED_INHERITED_FILES, "local release does not contain exactly 69 inherited files")
+    require(len(local_inherited_rows) == EXPECTED_INHERITED_FILES, "local release does not contain exactly 74 inherited files")
     require(
         compact_file_inventory(local_inherited_rows) == compact_file_inventory(predecessor_rows),
-        "local inherited 69-file inventory differs from anonymous predecessor bytes",
+        "local inherited 74-file inventory differs from anonymous predecessor bytes",
     )
 
     successor, successor_rows, _expected_metadata, uploaded_count = publish_or_verify(
