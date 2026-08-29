@@ -4,15 +4,24 @@ import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { courses, nextCourseIdsById, program, topics } from '../docs/courses.js';
+import {
+  deriveNextCourseIdsById,
+  liveCoursePublications,
+  materializeLiveCourses,
+} from '../docs/live-course-publications.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const readJson = async (relative) => JSON.parse(await readFile(resolve(root, relative), 'utf8'));
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const effectiveCourses = materializeLiveCourses(courses);
+const effectiveCoursesById = new Map(effectiveCourses.map((course) => [course.id, course]));
+const effectiveNextCourseIdsById = deriveNextCourseIdsById(effectiveCourses);
 
 const [
   html,
   app,
+  livePublicationsModule,
   learnerStateModule,
   catalogSchema,
   authorityBytes,
@@ -23,6 +32,7 @@ const [
   learnerStateSchemaBytes,
   publicLearnerStateSchemaBytes,
   b95Landing,
+  d30Landing,
   c100Landing,
   c100ReaderBytes,
   c100ReaderStyleBytes,
@@ -35,6 +45,7 @@ const [
 ] = await Promise.all([
   readFile(resolve(root, 'docs/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/app.js'), 'utf8'),
+  readFile(resolve(root, 'docs/live-course-publications.js'), 'utf8'),
   readFile(resolve(root, 'docs/learner-state.js'), 'utf8'),
   readJson('schemas/catalog-v1.schema.json'),
   readFile(resolve(root, 'backend/authority/curriculum-authority-v1.json')),
@@ -45,6 +56,7 @@ const [
   readFile(resolve(root, 'schemas/v1/learner-state-v1.schema.json')),
   readFile(resolve(root, 'docs/schema/v1/learner-state-v1.schema.json')),
   readFile(resolve(root, 'docs/id-ID/courses/B95/index.html'), 'utf8'),
+  readFile(resolve(root, 'docs/id-ID/courses/D30/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/id-ID/courses/C100/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/id-ID/courses/C100/reader/index.html')),
   readFile(resolve(root, 'docs/id-ID/courses/C100/reader/style.css')),
@@ -130,6 +142,83 @@ for (const course of courses) {
     assert.ok(course.edition, `${course.id}: edisi selesai tidak memiliki rute baca/unduh.`);
   }
 }
+
+const staleLearnerRoleIds = ['A20', 'A30', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D30', 'D50', 'D70', 'D100'];
+for (const id of staleLearnerRoleIds) {
+  assert.ok(liveCoursePublications[id], `${id}: baris lama belum memiliki overlay publikasi langsung.`);
+}
+assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
+assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
+const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
+for (const course of effectiveCourses) {
+  assert.ok(allowedStates.has(course.state), `${course.id}: status efektif tidak dikenal.`);
+  for (const prerequisite of course.prerequisites) {
+    assert.ok(idSet.has(prerequisite), `${course.id}: prasyarat efektif ${prerequisite} tidak ditemukan.`);
+  }
+  for (const field of ['learner', 'reader', 'edition', 'repository', 'zenodo', 'release']) {
+    if (course[field] !== undefined && course[field] !== null) {
+      assert.match(course[field], /^https:\/\//, `${course.id}: ${field} efektif harus memakai HTTPS atau null.`);
+    }
+  }
+  assert.ok(!Object.hasOwn(course, 'additionalSupplements'), `${course.id}: additionalSupplements bocor ke baris efektif.`);
+  for (const supplement of course.supplements ?? []) {
+    assert.ok(typeof supplement.title === 'string' && supplement.title.trim(), `${course.id}: judul suplemen kosong.`);
+    assert.match(supplement.url, /^https:\/\//, `${course.id}: URL suplemen harus memakai HTTPS.`);
+  }
+  if (!course.progress) continue;
+  const progress = course.progress;
+  assert.ok(typeof progress.unitLabel === 'string' && progress.unitLabel.trim(), `${course.id}: unitLabel progres kosong.`);
+  assert.ok(!Number.isNaN(Date.parse(progress.updatedAt)), `${course.id}: updatedAt progres tidak valid.`);
+  for (const key of [...progressStageKeys, 'totalUnits', 'totalPages', 'publicPages']) {
+    if (progress[key] === undefined) continue;
+    assert.ok(Number.isInteger(progress[key]) && progress[key] >= 0, `${course.id}: ${key} harus bilangan bulat nonnegatif.`);
+    if (key.endsWith('Units') && key !== 'totalUnits' && progress.totalUnits !== undefined) {
+      assert.ok(progress[key] <= progress.totalUnits, `${course.id}: ${key} melebihi totalUnits.`);
+    }
+  }
+  const stages = progressStageKeys.map((key) => progress[key]).filter(Number.isInteger);
+  for (let index = 1; index < stages.length; index += 1) {
+    assert.ok(stages[index - 1] >= stages[index], `${course.id}: urutan tahap progres tidak monoton.`);
+  }
+}
+assert.deepEqual(
+  effectiveNextCourseIdsById,
+  Object.fromEntries(effectiveCourses.map(({ id }) => [id, effectiveCourses.filter(({ prerequisites }) => prerequisites.includes(id)).map(({ id: nextId }) => nextId)])),
+  'Peta lanjut efektif bukan pembalikan prasyarat efektif.',
+);
+
+const syntheticAuthority = [
+  { id: 'A00', state: 'production', prerequisites: [], supplements: [{ title: 'lama', url: 'https://example.org/old' }] },
+  { id: 'A10', state: 'production', prerequisites: ['A00'] },
+];
+const syntheticBefore = JSON.stringify(syntheticAuthority);
+const syntheticEffective = materializeLiveCourses(syntheticAuthority, {
+  A00: { state: 'published', edition: null, supplements: [] },
+  A10: { prerequisites: [], additionalSupplements: [{ title: 'baru', url: 'https://example.org/new' }] },
+});
+assert.equal(syntheticEffective[0].state, 'published');
+assert.equal(syntheticEffective[0].edition, null, 'Null eksplisit harus membersihkan URL lama.');
+assert.deepEqual(syntheticEffective[0].supplements, [], 'Daftar suplemen eksplisit harus menggantikan daftar lama.');
+assert.deepEqual(syntheticEffective[1].supplements.map(({ title }) => title), ['baru'], 'Suplemen tambahan tidak digabungkan.');
+assert.deepEqual(deriveNextCourseIdsById(syntheticEffective), { A00: [], A10: [] }, 'Prasyarat efektif tidak mengubah peta lanjut.');
+assert.equal(JSON.stringify(syntheticAuthority), syntheticBefore, 'Materialisasi memutasi otoritas masukan.');
+
+assert.equal(effectiveCoursesById.get('A20').progress.canonicalUnits, 50);
+assert.equal(effectiveCoursesById.get('A20').progress.publicUnits, 48);
+assert.equal(effectiveCoursesById.get('A30').progress.translationBearingUnits, 87);
+assert.equal(effectiveCoursesById.get('A30').progress.publicUnits, 33);
+assert.match(effectiveCoursesById.get('B30').zenodo, /22151145$/);
+assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 0);
+assert.equal(effectiveCoursesById.get('C90').progress.publicUnits, 17);
+assert.equal(effectiveCoursesById.get('C100').supplements.length, 1);
+assert.equal(effectiveCoursesById.get('C100').supplements[0].id, 'clemens-snapp-workbook-u022');
+assert.match(effectiveCoursesById.get('C140').zenodo, /22151570$/);
+assert.match(effectiveCoursesById.get('D10').zenodo, /22149439$/);
+assert.equal(effectiveCoursesById.get('D50').state, 'published');
+assert.match(effectiveCoursesById.get('D50').zenodo, /22160677$/);
+assert.match(effectiveCoursesById.get('D60').zenodo, /22151513$/);
+assert.match(effectiveCoursesById.get('D70').zenodo, /22151447$/);
+assert.equal(effectiveCoursesById.get('D100').progress.publicUnits, 30);
 
 const expectedNextCourseIdsById = Object.fromEntries(
   courses.map(({ id }) => [
@@ -221,7 +310,7 @@ assert.match(html, new RegExp(escapeRegex(program.website)));
 assert.match(html, new RegExp(escapeRegex(program.zenodo)));
 assert.match(html, new RegExp(`${courses.length} korpus terpilih`));
 assert.match(html, /produksi yang belum selesai tetap dilabeli dengan jelas/i);
-assert.match(html, new RegExp(`<strong>${publishedIds.length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
+assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
 assert.match(html, new RegExp(`Mulai belajar — buka ${courses.length} mata kuliah`));
 assert.match(html, new RegExp(escapeRegex(program.repositories.github.url)));
 assert.match(html, /melanjutkan ke mana/);
@@ -237,12 +326,35 @@ assert.deepEqual(publicLearnerStateSchemaBytes, learnerStateSchemaBytes, 'Salina
 assert.match(learnerStateModule, /program-matematika-indonesia\/learner-state\/v1/);
 assert.doesNotMatch(learnerStateModule, /\bfetch\s*\(/);
 
-assert.match(app, /id-ID\/courses\/B95\//);
+assert.match(app, /courses as authorityCourses/);
+assert.match(app, /materializeLiveCourses\(authorityCourses\)/);
+assert.match(app, /deriveNextCourseIdsById\(courses\)/);
+assert.match(app, /publicationProgress\(course\)/);
+assert.match(app, /effectivePublishedCourses/);
+assert.match(app, /livePublicationSummary\.textContent/);
+assert.doesNotMatch(app, /liveCoursePublications\[/);
+assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
+assert.match(livePublicationsModule, /22148827/);
+assert.match(livePublicationsModule, /22160677/);
+assert.match(livePublicationsModule, /clemens-snapp-workbook-u022/);
 assert.match(b95Landing, /Statistika Berbasis Data/);
 assert.match(b95Landing, /22148827/);
 assert.match(b95Landing, /statistika-berbasis-data-id/);
 assert.match(b95Landing, /216 halaman/);
 assert.doesNotMatch(b95Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
+
+assert.match(livePublicationsModule, /id-ID\/courses\/D30\//);
+assert.match(livePublicationsModule, /22148902/);
+assert.match(livePublicationsModule, /CHECKPOINT_33/);
+assert.match(livePublicationsModule, /22151513/);
+assert.match(livePublicationsModule, /laboratorium komputasi 3\/4/);
+assert.match(livePublicationsModule, /22076539/);
+assert.match(d30Landing, /Probabilitas Teoretis-Ukuran dan Proses Stokastik/);
+assert.match(d30Landing, /321 halaman/);
+assert.match(d30Landing, /8\.022 catatan backend/);
+assert.match(d30Landing, /22148902/);
+assert.match(d30Landing, /measure-theoretic-probability-stochastic-processes-id/);
+assert.doesNotMatch(d30Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
 assert.equal(c100ReaderBytes.length, c100RouteManifest.reader.source_html.bytes);
 assert.equal(sha256(c100ReaderBytes), c100RouteManifest.reader.source_html.sha256);
@@ -277,6 +389,8 @@ console.log(JSON.stringify({
   selected: selectedIds.length,
   unresolved: unresolvedIds.length,
   publishedCanonRoles: publishedIds.length,
+  effectivePublishedRoles: effectiveCourses.filter(({ state }) => state === 'published').length,
+  liveOverlayRows: Object.keys(liveCoursePublications).length,
   completedPublicCourseRoles: publishedIds.length,
   completedPublicRecords: program.completedPublicRecordDois.length,
   publishedHtmlReaders: publishedHtmlReaderIds.length,

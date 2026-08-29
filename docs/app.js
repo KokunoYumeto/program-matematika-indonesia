@@ -1,4 +1,8 @@
-import { courses, nextCourseIdsById, program, topics } from './courses.js';
+import { courses as authorityCourses, program, topics } from './courses.js';
+import {
+  deriveNextCourseIdsById,
+  materializeLiveCourses,
+} from './live-course-publications.js';
 import {
   clearLearnerState,
   createEmptyLearnerState,
@@ -9,6 +13,9 @@ import {
   setCourseCompletion,
   setPrerequisiteWaiver,
 } from './learner-state.js';
+
+const courses = materializeLiveCourses(authorityCourses);
+const nextCourseIdsById = deriveNextCourseIdsById(courses);
 
 const stateLabels = {
   published: 'Edisi publik selesai',
@@ -47,7 +54,14 @@ const equivalenceCourse = document.querySelector('#equivalence-course');
 const waiverTarget = document.querySelector('#waiver-target');
 const waiverPrerequisite = document.querySelector('#waiver-prerequisite');
 const learnerClaims = document.querySelector('#learner-claims');
+const liveCompletedRoleCount = document.querySelector('#live-completed-role-count');
+const livePublicationSummary = document.querySelector('#live-publication-summary');
 let activeLevel = 'all';
+
+const effectivePublishedCourses = courses.filter(({ state }) => state === 'published');
+const effectiveCompletedRecordCount = new Set(effectivePublishedCourses.map(({ zenodo }) => zenodo).filter(Boolean)).size;
+liveCompletedRoleCount.textContent = String(effectivePublishedCourses.length);
+livePublicationSummary.textContent = `${effectivePublishedCourses.length} peran memakai ${effectiveCompletedRecordCount} rekaman edisi lengkap yang berbeda. Lapisan publikasi langsung memperbarui katalog tanpa menyamarkan keluaran terjemahan atau paket pembantu sebagai edisi kanonis; produksi yang belum selesai tetap dilabeli dengan jelas.`;
 
 let browserStorage = null;
 try {
@@ -115,21 +129,17 @@ function nextCourseLinks(course) {
 function actionLinks(course) {
   const links = [];
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
-  const centralLearnerEntries = {
-    B95: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/',
-    C100: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/',
-    D20: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/',
-  };
-  const learnerEntry = centralLearnerEntries[course.id] ?? course.reader;
+  const learnerEntry = course.learner ?? course.reader;
   const readerIsSuspendedGithub = githubUnavailable && learnerEntry?.startsWith('https://github.com/KokunoYumeto/');
   const editionIsSuspendedGithub = githubUnavailable && course.edition?.startsWith('https://github.com/KokunoYumeto/');
   const repositoryIsSuspendedGithub = githubUnavailable && course.repository?.startsWith('https://github.com/KokunoYumeto/');
   const editionLabel = course.state === 'published' ? 'Buka edisi' : 'Buka edisi kerja';
   if (learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action primary" href="${learnerEntry}" target="_blank" rel="noreferrer">Mulai belajar — HTML <span aria-hidden="true">↗</span></a>`);
-  if (centralLearnerEntries[course.id] && course.reader && course.reader !== learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action" href="${course.reader}" target="_blank" rel="noreferrer">Pembaca pemilik ↗</a>`);
+  if (course.reader && course.reader !== learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action" href="${course.reader}" target="_blank" rel="noreferrer">Pembaca pemilik ↗</a>`);
   if (course.edition && course.edition !== learnerEntry && !editionIsSuspendedGithub) links.push(`<a class="card-action${learnerEntry ? '' : ' primary'}" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
   if (course.zenodo) links.push(`<a class="card-action" href="${course.zenodo}" target="_blank" rel="noreferrer">Arsip DOI <span aria-hidden="true">↗</span></a>`);
   if (course.repository && course.repository !== course.edition && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.repository}" target="_blank" rel="noreferrer">Repositori <span aria-hidden="true">↗</span></a>`);
+  if (course.release && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.release}" target="_blank" rel="noreferrer">Rilis <span aria-hidden="true">↗</span></a>`);
   for (const supplement of course.supplements ?? []) {
     const label = supplement.state === 'complete' ? supplement.title : `${supplement.title} — parsial`;
     links.push(`<a class="card-action" href="${supplement.url}" target="_blank" rel="noreferrer">${label} <span aria-hidden="true">↗</span></a>`);
@@ -143,6 +153,23 @@ function actionLinks(course) {
     links.push(`<span class="card-action muted">${message}</span>`);
   }
   return links.join('');
+}
+
+function publicationProgress(course) {
+  if (!course.progress) return '';
+  const progress = course.progress;
+  const stages = [
+    ['Terjemahan', progress.translationBearingUnits],
+    ['Siap integrasi', progress.integrationReadyUnits],
+    ['Kanon', progress.canonicalUnits],
+    ['Publik', progress.publicUnits],
+  ].filter(([, value]) => Number.isInteger(value));
+  const denominator = Number.isInteger(progress.totalUnits) ? `/${progress.totalUnits}` : '';
+  const stageText = stages.map(([label, value]) => `${label} ${value}${denominator}`).join(' · ');
+  const pageText = Number.isInteger(progress.publicPages) ? `${progress.publicPages.toLocaleString('id-ID')} halaman publik` : '';
+  const boundaryText = progress.publicBoundary ?? '';
+  const text = [stageText, pageText, boundaryText].filter(Boolean).join(' · ');
+  return `<div><span>Progres ${progress.unitLabel}</span><p>${text}</p></div>`;
 }
 
 function learnerStatusBlock(course) {
@@ -177,6 +204,7 @@ function courseCard(course) {
         <div class="detail-body">
           <div><span>${selected ? 'Korpus terpilih' : 'Kandidat — belum kanon'}</span><strong>${course.corpus}</strong></div>
           <div><span>Hasil belajar</span><p>${course.outcome}</p></div>
+          ${publicationProgress(course)}
           <div><span>Keadaan edisi</span><p>${course.note}</p></div>
         </div>
       </details>
