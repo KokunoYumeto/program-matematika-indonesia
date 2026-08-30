@@ -20,6 +20,12 @@ const mappings = [
   ['schemas/v2/namespace-v2.json', 'docs/schema/v2/namespace-v2.json'],
   ['schemas/v2/pmi-release-policy-v2.json', 'docs/schema/v2/pmi-release-policy-v2.json'],
   ['backend/v2.2/schema/global-capability-contract-v0.1.schema.json', 'docs/schema/v2.2/global-capability-contract-v0.1.schema.json'],
+  ['backend/v2.3/schema/lane-adapter-v2.3.1.schema.json', 'docs/schema/v2.3/lane-adapter-v2.3.1.schema.json'],
+  ['backend/v2.3/schema/capability-declarations-v0.2.schema.json', 'docs/schema/v2.3/capability-declarations-v0.2.schema.json'],
+  ['backend/v2.3/schema/namespace-crosswalk-v0.2.schema.json', 'docs/schema/v2.3/namespace-crosswalk-v0.2.schema.json'],
+  ['backend/v2.3/schema/translation-state-index-v0.2.schema.json', 'docs/schema/v2.3/translation-state-index-v0.2.schema.json'],
+  ['backend/v2.3/schema/csv-projection-manifest-v0.2.schema.json', 'docs/schema/v2.3/csv-projection-manifest-v0.2.schema.json'],
+  ['backend/v2.3/schema/scope-declaration-v0.2.schema.json', 'docs/schema/v2.3/scope-declaration-v0.2.schema.json'],
 ];
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
