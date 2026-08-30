@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Commit the bounded v0.62.7 source set and publish its exact release assets.
+"""Commit the bounded v0.62.8 source set and publish its exact release assets.
 
 This script uses the GitHub API only; it never invokes Git.  Credential values
 are read at runtime, never printed, serialized, or placed in URLs.
@@ -27,19 +27,19 @@ OWNER = "KokunoYumeto"
 REPOSITORY = "program-matematika-indonesia"
 API = f"https://api.github.com/repos/{OWNER}/{REPOSITORY}"
 RAW = f"https://raw.githubusercontent.com/{OWNER}/{REPOSITORY}"
-VERSION = "0.62.7"
+VERSION = "0.62.8"
 TAG = f"v{VERSION}"
-PREDECESSOR_VERSION = "0.62.6"
-EXPECTED_RELEASE_FILES = 98
-EXPECTED_PREDECESSOR_FILES = 93
+PREDECESSOR_VERSION = "0.62.7"
+EXPECTED_RELEASE_FILES = 103
+EXPECTED_PREDECESSOR_FILES = 98
 EXPECTED_ADDITIVE_FILES = 5
-EXPECTED_BASE_AGGREGATE = "fa825a88b10c37ff7897554b15197db993a40993cf3ac3b949e317ff3305f84b"
+EXPECTED_BASE_AGGREGATE = "9e124bbbe4aa82ef85ce90a2409fc1eb1f90766addea8e084097848de9ebfdda"
 EXPECTED_ADDITIVE_NAMES = {
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.7.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.7.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.7.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.7.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.7.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.8.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.8.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.8.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.8.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.8.sha256",
 }
 USER_AGENT = f"program-matematika-indonesia-github-publisher/{VERSION}"
 
@@ -314,7 +314,7 @@ def release_facts(release_dir: Path) -> list[dict[str, Any]]:
     paths = sorted(release_dir.iterdir(), key=lambda path: path.name)
     require(
         len(paths) == EXPECTED_RELEASE_FILES and all(path.is_file() for path in paths),
-        "release is not an exact 98-file flat directory",
+        "release is not an exact 103-file flat directory",
     )
     rows = [fact(path) | {"path": path} for path in paths]
     checksums = release_dir / f"LIVE_OVERLAY_CHECKSUMS_v{VERSION}.sha256"
@@ -366,7 +366,7 @@ def publish_release(args: argparse.Namespace) -> None:
     release_dir = args.release_dir.resolve()
     require(
         release_dir == (PROJECT / "releases" / f"v{VERSION}").resolve(),
-        "release directory must be releases/v0.62.7",
+        "release directory must be releases/v0.62.8",
     )
     rows = release_facts(release_dir)
     by_name = {row["name"]: row for row in rows}
@@ -394,11 +394,11 @@ def publish_release(args: argparse.Namespace) -> None:
                 "target_commitish": args.source_commit,
                 "name": f"Program Matematika Indonesia {TAG}",
                 "body": (
-                    "Penerus aditif v0.62.7: hub siswa menyelaraskan D40 Unit 14 dengan pembaca HTML portabel "
-                    "dan PDF 230 halaman, D100 dengan Kurva Aljabar serta BGK Unit 1–6 (586 halaman publik), "
-                    "dan B95 dengan checkpoint B025 (260 halaman) serta penanda lanjut B026. Empat alamat $id "
-                    "skema backend v2.3 yang diterima kini tersedia sebagai salinan bita-persis. "
-                    "Seluruh 93 aset v0.62.6 dipertahankan byte-for-byte; program keseluruhan masih dalam produksi."
+                    "Penerus aditif v0.62.8: hub siswa kini mengarahkan D80 ke pembaca HTML daring yang telah "
+                    "divalidasi dengan 27.308 formula dan nol kesalahan MathJax, sambil mempertahankan PDF 864 halaman "
+                    "sebagai edisi unduhan. ZIP HTML luring Zenodo lama tidak ditawarkan sebagai rute siswa sampai "
+                    "versi yang telah diperbaiki terbit. Seluruh 98 aset v0.62.7 dipertahankan byte-for-byte; "
+                    "program keseluruhan masih dalam produksi."
                 ),
                 "draft": False,
                 "prerelease": False,
@@ -453,7 +453,7 @@ def parse_args() -> argparse.Namespace:
     commit = sub.add_parser("commit-source")
     commit.add_argument("--token-file", required=True, type=Path)
     commit.add_argument("--path", action="append", required=True)
-    commit.add_argument("--message", default="Publish D40 D100 B95 learner routes and v0.62.7 release tooling")
+    commit.add_argument("--message", default="Publish corrected D80 learner route and v0.62.8 release tooling")
     commit.add_argument("--receipt", type=Path, default=PROJECT / f"GITHUB_SOURCE_COMMIT_RECEIPT_v{VERSION}.json")
     pages = sub.add_parser("wait-pages")
     pages.add_argument("--token-file", required=True, type=Path)

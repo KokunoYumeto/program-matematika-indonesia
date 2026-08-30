@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Build the deterministic v0.62.7 learner-access overlay release.
+"""Build the deterministic v0.62.8 learner-access overlay release.
 
-This is an additive adapter over the immutable v0.62.6 release.  The builder
+This is an additive adapter over the immutable v0.62.7 release.  The builder
 copies every base-release byte unchanged and creates exactly five new files.
 It uses bounded immutable raw-commit reads for provenance, performs read-only
 public QA, and never mutates a network service or publishes.
@@ -24,33 +24,33 @@ from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.62.7"
-BASE_VERSION = "0.62.6"
+VERSION = "0.62.8"
+BASE_VERSION = "0.62.7"
 FROZEN_AUTHORITY_VERSION = "0.62.0"
-PREDECESSOR_RECORD_ID = 22167050
+PREDECESSOR_RECORD_ID = 22167525
 REPOSITORY_URL = "https://github.com/KokunoYumeto/program-matematika-indonesia"
 RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia"
 STUDENT_URL = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
 FIXED_ZIP_TIME = (2026, 8, 30, 0, 0, 0)
 
 BASE_EXPECTED = {
-    "files": 93,
-    "bytes": 65_639_635,
-    "aggregate_sha256": "fa825a88b10c37ff7897554b15197db993a40993cf3ac3b949e317ff3305f84b",
+    "files": 98,
+    "bytes": 75_152_814,
+    "aggregate_sha256": "9e124bbbe4aa82ef85ce90a2409fc1eb1f90766addea8e084097848de9ebfdda",
     "checksum_file": {
-        "name": "LIVE_OVERLAY_CHECKSUMS_v0.62.6.sha256",
-        "bytes": 10_357,
-        "sha256": "aec9d227250150fb0221bcdabff6811320ea2f27287cece72d40c999b58ccef2",
-        "entries": 92,
+        "name": "LIVE_OVERLAY_CHECKSUMS_v0.62.7.sha256",
+        "bytes": 10_940,
+        "sha256": "12a8d57b3730240ccd95511a3a7b63df1c5c0777b7250cd18d856a3cca0cec40",
+        "entries": 97,
     },
 }
 
 CORE_ADDITIVE_NAMES = (
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.7.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.7.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.7.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.7.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.7.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.8.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.8.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.8.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.8.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.8.sha256",
 )
 BACKEND_V23_NAMES = (
     "program-matematika-indonesia-backend-v2.3-conformance-v0.1.1.zip",
@@ -61,7 +61,7 @@ BACKEND_V23_NAMES = (
 ADDITIVE_NAMES = CORE_ADDITIVE_NAMES
 STANDALONE_NAME, MANIFEST_NAME, SOURCE_ZIP_NAME, RECEIPT_NAME, CHECKSUM_NAME = CORE_ADDITIVE_NAMES
 BACKEND_ARCHIVE_NAME, BACKEND_SCOPE_NAME, BACKEND_VALIDATION_NAME, BACKEND_DETERMINISM_NAME = BACKEND_V23_NAMES
-BUILD_MARKER_NAME = ".pmi-live-overlay-v0.62.7-building.json"
+BUILD_MARKER_NAME = ".pmi-live-overlay-v0.62.8-building.json"
 
 SOURCE_MEMBERS = (
     "docs/app.js",
@@ -78,6 +78,9 @@ SOURCE_MEMBERS = (
     "scripts/build-live-overlay-release.py",
     "scripts/check-public-links.mjs",
     "scripts/export-single-file-site.mjs",
+    "scripts/publish-live-overlay-zenodo.py",
+    "scripts/publish-v0625-github.py",
+    "scripts/reserve-live-overlay-zenodo.py",
     "scripts/validate-live-overlay-release.py",
     "scripts/validate-static-site.mjs",
 )
@@ -121,8 +124,8 @@ PAGES_READBACKS = (
     {
         "path": "docs/live-course-publications.js",
         "url": f"{STUDENT_URL}live-course-publications.js",
-        "bytes": 32_273,
-        "sha256": "34eeb8f39a5e821fd9711858949116a2dcd45cfb6012fd87e1c65735c1c552f4",
+        "bytes": 32_354,
+        "sha256": "cc7db0ca25be50cab56a537ce91f1278435bb96e76a1c0b052ab010eff2afca9",
     },
     {
         "path": "docs/id-ID/courses/B95/index.html",
@@ -150,7 +153,7 @@ PAGES_READBACKS = (
     },
 )
 RECEIPT_CHECKS = {
-    "base_release": "93/93 byte-identical",
+    "base_release": "98/98 byte-identical",
     "standalone_export_replay": "byte-identical",
     "source_archive": "inventory, CRC, member bytes, timestamps, and order pass",
     "overlay_rows": "20/20",
@@ -162,6 +165,7 @@ RECEIPT_CHECKS = {
     "b95_r011_b025": "260-page learner route and public PDF exact byte/hash gate pass",
     "d40_unit14": "230-page PDF plus 71-file portable HTML learner route pass",
     "d100_bgk_unit06": "36 public units and 586 public pages bound to record 22164552",
+    "d80_html_reader": "public corrected HTML reader with 27,308 formulae and zero MathJax errors is the primary learner route; obsolete Zenodo offline ZIP is not advertised",
     "backend_v23_conformance": "inherited v0.1.1 archive plus three sanitized receipts remain byte-identical and pass semantic/privacy gates",
     "privacy_scan": "pass",
 }
@@ -337,7 +341,7 @@ def verify_replaceable_output(output: Path, base_names: set[str]) -> None:
     if any(not path.is_file() for path in paths):
         raise ValueError(f"existing v{VERSION} output is not a flat release")
     if {path.name for path in paths} != base_names | set(ADDITIVE_NAMES):
-        raise ValueError(f"existing v{VERSION} output is not a recognized 93+5 candidate")
+        raise ValueError(f"existing v{VERSION} output is not a recognized 98+5 candidate")
     manifest = json.loads((output / MANIFEST_NAME).read_text(encoding="utf-8"))
     if manifest.get("schema_id") != "program-matematika-indonesia/live-publication-overlay-manifest/v1":
         raise ValueError(f"existing v{VERSION} manifest is not recognized")
@@ -767,8 +771,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     base = (root / args.base_release).resolve()
     output = (root / args.output).resolve()
     releases_root = (root / "releases").resolve()
-    expected_base = releases_root / "v0.62.6"
-    expected_output = releases_root / "v0.62.7"
+    expected_base = releases_root / "v0.62.7"
+    expected_output = releases_root / "v0.62.8"
     if base != expected_base:
         raise ValueError(f"base release must be exactly {expected_base}")
     if output != expected_output:
@@ -789,7 +793,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
     }
 
     staging = output.with_name(f"{output.name}.building")
-    expected_staging = releases_root / "v0.62.7.building"
+    expected_staging = releases_root / "v0.62.8.building"
     if staging != expected_staging:
         raise ValueError(f"staging path must be exactly {expected_staging}")
     if staging.exists():
@@ -852,7 +856,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             "release_kind": "additive-learner-access-live-publication-adapter",
             "immutable_base": {
                 "version": BASE_VERSION,
-                "directory": "releases/v0.62.6",
+                "directory": "releases/v0.62.7",
                 "files": BASE_EXPECTED["files"],
                 "bytes": BASE_EXPECTED["bytes"],
                 "aggregate_algorithm": "sha256 of sorted '<sha256>  <bytes>  <name>\\n' facts",
@@ -911,10 +915,10 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             },
             "source_inputs": source_facts,
             "inventory_contract": {
-                "inherited_files": 93,
+                "inherited_files": 98,
                 "additive_files": 5,
-                "successor_files": 98,
-                "checksum_entries": 97,
+                "successor_files": 103,
+                "checksum_entries": 102,
                 "checksum_excludes_only": CHECKSUM_NAME,
             },
             "privacy": {
@@ -930,7 +934,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             for path in sorted(staging.iterdir(), key=lambda value: value.name)
             if path.name != BUILD_MARKER_NAME
         ]
-        if len(before_receipt) != 96:
+        if len(before_receipt) != 101:
             raise ValueError(f"pre-receipt inventory mismatch: {len(before_receipt)}")
         receipt = {
             "schema_id": "program-matematika-indonesia/local-live-overlay-validation/v1",
@@ -943,19 +947,19 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
                 canonical_inventory_bytes(before_receipt)
             ),
             "successor_inventory": {
-                "files_before_checksum": 97,
-                "checksum_entries": 97,
-                "final_files": 98,
-                "inherited_files": 93,
+                "files_before_checksum": 102,
+                "checksum_entries": 102,
+                "final_files": 103,
+                "inherited_files": 98,
                 "additive_files": 5,
             },
             "validation_command": (
-                "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.7 "
+                "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.8 "
                 f"--source-commit {args.source_commit} --pages-run-id {args.pages_run_id} "
-                f"--backend-v23-archive releases/v0.62.7/{BACKEND_ARCHIVE_NAME} "
-                f"--backend-v23-scope-receipt releases/v0.62.7/{BACKEND_SCOPE_NAME} "
-                f"--backend-v23-validation-receipt releases/v0.62.7/{BACKEND_VALIDATION_NAME} "
-                f"--backend-v23-determinism-receipt releases/v0.62.7/{BACKEND_DETERMINISM_NAME}"
+                f"--backend-v23-archive releases/v0.62.8/{BACKEND_ARCHIVE_NAME} "
+                f"--backend-v23-scope-receipt releases/v0.62.8/{BACKEND_SCOPE_NAME} "
+                f"--backend-v23-validation-receipt releases/v0.62.8/{BACKEND_VALIDATION_NAME} "
+                f"--backend-v23-determinism-receipt releases/v0.62.8/{BACKEND_DETERMINISM_NAME}"
             ),
             "publication_performed": False,
         }
@@ -967,7 +971,7 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             for path in sorted(staging.iterdir(), key=lambda value: value.name)
             if path.name != BUILD_MARKER_NAME
         ]
-        if len(pre_checksum) != 97:
+        if len(pre_checksum) != 102:
             raise ValueError(f"pre-checksum inventory mismatch: {len(pre_checksum)}")
         (staging / CHECKSUM_NAME).write_bytes(
             "".join(
@@ -976,8 +980,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
             ).encode("utf-8")
         )
         (staging / BUILD_MARKER_NAME).unlink()
-        if len(list(staging.iterdir())) != 98:
-            raise ValueError("final inventory is not 98 files")
+        if len(list(staging.iterdir())) != 103:
+            raise ValueError("final inventory is not 103 files")
         staging.rename(output)
     except BaseException:
         if staging.exists():
@@ -1025,8 +1029,8 @@ def build(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--base-release", default="releases/v0.62.6")
-    parser.add_argument("--output", default="releases/v0.62.7")
+    parser.add_argument("--base-release", default="releases/v0.62.7")
+    parser.add_argument("--output", default="releases/v0.62.8")
     parser.add_argument("--source-commit", required=True, help="full commit containing every packaged source")
     parser.add_argument("--pages-run-id", required=True, type=int, help="successful Pages workflow run for the source commit")
     parser.add_argument("--backend-v23-archive", required=True, help="public-safe deterministic v2.3 0.1.1 ZIP")

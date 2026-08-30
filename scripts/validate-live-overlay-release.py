@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the deterministic v0.62.7 learner-access overlay release."""
+"""Validate the deterministic v0.62.8 learner-access overlay release."""
 
 from __future__ import annotations
 
@@ -17,29 +17,29 @@ from pathlib import Path
 from typing import Any
 
 
-VERSION = "0.62.7"
-BASE_VERSION = "0.62.6"
+VERSION = "0.62.8"
+BASE_VERSION = "0.62.7"
 FROZEN_AUTHORITY_VERSION = "0.62.0"
-PREDECESSOR_RECORD_ID = 22167050
+PREDECESSOR_RECORD_ID = 22167525
 STUDENT_URL = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
 REPOSITORY_URL = "https://github.com/KokunoYumeto/program-matematika-indonesia"
 RAW_REPOSITORY_URL = "https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia"
 FIXED_ZIP_TIME = (2026, 8, 30, 0, 0, 0)
 BASE_EXPECTED = {
-    "files": 93,
-    "bytes": 65_639_635,
-    "aggregate_sha256": "fa825a88b10c37ff7897554b15197db993a40993cf3ac3b949e317ff3305f84b",
-    "checksum_name": "LIVE_OVERLAY_CHECKSUMS_v0.62.6.sha256",
-    "checksum_bytes": 10_357,
-    "checksum_entries": 92,
-    "checksum_sha256": "aec9d227250150fb0221bcdabff6811320ea2f27287cece72d40c999b58ccef2",
+    "files": 98,
+    "bytes": 75_152_814,
+    "aggregate_sha256": "9e124bbbe4aa82ef85ce90a2409fc1eb1f90766addea8e084097848de9ebfdda",
+    "checksum_name": "LIVE_OVERLAY_CHECKSUMS_v0.62.7.sha256",
+    "checksum_bytes": 10_940,
+    "checksum_entries": 97,
+    "checksum_sha256": "12a8d57b3730240ccd95511a3a7b63df1c5c0777b7250cd18d856a3cca0cec40",
 }
 CORE_ADDITIVE_NAMES = (
-    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.7.html",
-    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.7.json",
-    "program-matematika-indonesia-live-overlay-source-v0.62.7.zip",
-    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.7.json",
-    "LIVE_OVERLAY_CHECKSUMS_v0.62.7.sha256",
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.8.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.8.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.8.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.8.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.8.sha256",
 )
 BACKEND_V23_NAMES = (
     "program-matematika-indonesia-backend-v2.3-conformance-v0.1.1.zip",
@@ -65,6 +65,9 @@ SOURCE_MEMBERS = (
     "scripts/build-live-overlay-release.py",
     "scripts/check-public-links.mjs",
     "scripts/export-single-file-site.mjs",
+    "scripts/publish-live-overlay-zenodo.py",
+    "scripts/publish-v0625-github.py",
+    "scripts/reserve-live-overlay-zenodo.py",
     "scripts/validate-live-overlay-release.py",
     "scripts/validate-static-site.mjs",
 )
@@ -93,7 +96,7 @@ EXPECTED_OVERLAY_IDS = sorted((
 PAGES_IDENTITIES = {
     "docs/index.html": (13_261, "e40461258911d76b25686e938a9dfa1eee220b568540a6138c8baf8fd62452ec"),
     "docs/app.js": (19_147, "9a14650147404c537bea2500c6cb725352e967b607ec1a1315418648de12774e"),
-    "docs/live-course-publications.js": (32_273, "34eeb8f39a5e821fd9711858949116a2dcd45cfb6012fd87e1c65735c1c552f4"),
+    "docs/live-course-publications.js": (32_354, "cc7db0ca25be50cab56a537ce91f1278435bb96e76a1c0b052ab010eff2afca9"),
     "docs/id-ID/courses/B95/index.html": (3_871, "65abad40c18a8ef630ed3d9d534c89d3cad7a066201986fd55320e080b140496"),
     "docs/id-ID/courses/D30/index.html": (4_502, "68e402a5a976c320fa4112d3bc2d46d824962c7fc8e38d00741aa2d6c99a1166"),
     "docs/id-ID/courses/D40/index.html": (3_879, "b8fd0395184ae47eda079bcc7ffca528338e5184ba5255882cf4ef37830cddaf"),
@@ -109,7 +112,7 @@ PAGES_URLS = {
     "docs/readers/d40/unit14/index.html": f"{STUDENT_URL}readers/d40/unit14/",
 }
 RECEIPT_CHECKS = {
-    "base_release": "93/93 byte-identical",
+    "base_release": "98/98 byte-identical",
     "standalone_export_replay": "byte-identical",
     "source_archive": "inventory, CRC, member bytes, timestamps, and order pass",
     "overlay_rows": "20/20",
@@ -121,6 +124,7 @@ RECEIPT_CHECKS = {
     "b95_r011_b025": "260-page learner route and public PDF exact byte/hash gate pass",
     "d40_unit14": "230-page PDF plus 71-file portable HTML learner route pass",
     "d100_bgk_unit06": "36 public units and 586 public pages bound to record 22164552",
+    "d80_html_reader": "public corrected HTML reader with 27,308 formulae and zero MathJax errors is the primary learner route; obsolete Zenodo offline ZIP is not advertised",
     "backend_v23_conformance": "inherited v0.1.1 archive plus three sanitized receipts remain byte-identical and pass semantic/privacy gates",
     "privacy_scan": "pass",
 }
@@ -550,8 +554,8 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     root = Path(__file__).resolve().parent.parent
     validate_full_commit(args.source_commit)
     release = (root / args.release_dir).resolve()
-    base = (root / "releases" / "v0.62.6").resolve()
-    expected_release = (root / "releases" / "v0.62.7").resolve()
+    base = (root / "releases" / "v0.62.7").resolve()
+    expected_release = (root / "releases" / "v0.62.8").resolve()
     if release != expected_release:
         raise ValueError(f"release directory must be exactly {expected_release}")
     committed_sources = {name: remote_blob(args.source_commit, name) for name in SOURCE_MEMBERS}
@@ -564,10 +568,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     base_paths = sorted(base.iterdir(), key=lambda value: value.name)
     expected_names = {path.name for path in base_paths} | set(ADDITIVE_NAMES)
     actual_names = {path.name for path in paths}
-    if actual_names != expected_names or len(paths) != 98:
+    if actual_names != expected_names or len(paths) != 103:
         missing = sorted(expected_names - actual_names)
         extra = sorted(actual_names - expected_names)
-        raise ValueError(f"98-file successor inventory mismatch; missing={missing}; extra={extra}")
+        raise ValueError(f"103-file successor inventory mismatch; missing={missing}; extra={extra}")
 
     base_facts = [fact(path) for path in base_paths]
     if len(base_facts) != BASE_EXPECTED["files"]:
@@ -585,7 +589,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
 
     checksums = parse_checksum(release / CHECKSUM_NAME)
     non_checksum = [path for path in paths if path.name != CHECKSUM_NAME]
-    if set(checksums) != {path.name for path in non_checksum} or len(checksums) != 97:
+    if set(checksums) != {path.name for path in non_checksum} or len(checksums) != 102:
         raise ValueError("overlay checksum inventory mismatch")
     for path in non_checksum:
         if checksums[path.name] != sha256_file(path):
@@ -609,9 +613,9 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("manifest release-kind mismatch")
     expected_immutable = {
         "version": BASE_VERSION,
-        "directory": "releases/v0.62.6",
-        "files": 93,
-        "bytes": 65_639_635,
+        "directory": "releases/v0.62.7",
+        "files": 98,
+        "bytes": 75_152_814,
         "aggregate_algorithm": "sha256 of sorted '<sha256>  <bytes>  <name>\\n' facts",
         "aggregate_sha256": BASE_EXPECTED["aggregate_sha256"],
         "checksum_file": {
@@ -655,10 +659,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         raise ValueError("manifest authority/completion boundary mismatch")
 
     expected_inventory_contract = {
-        "inherited_files": 93,
+        "inherited_files": 98,
         "additive_files": 5,
-        "successor_files": 98,
-        "checksum_entries": 97,
+        "successor_files": 103,
+        "checksum_entries": 102,
         "checksum_excludes_only": CHECKSUM_NAME,
     }
     if manifest.get("inventory_contract") != expected_inventory_contract:
@@ -862,12 +866,12 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     if receipt.get("checks") != RECEIPT_CHECKS:
         raise ValueError("receipt check summary mismatch")
     expected_validation_command = (
-        "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.7 "
+        "python scripts/validate-live-overlay-release.py --release-dir releases/v0.62.8 "
         f"--source-commit {args.source_commit} --pages-run-id {args.pages_run_id} "
-        f"--backend-v23-archive releases/v0.62.7/{BACKEND_ARCHIVE_NAME} "
-        f"--backend-v23-scope-receipt releases/v0.62.7/{BACKEND_SCOPE_NAME} "
-        f"--backend-v23-validation-receipt releases/v0.62.7/{BACKEND_VALIDATION_NAME} "
-        f"--backend-v23-determinism-receipt releases/v0.62.7/{BACKEND_DETERMINISM_NAME}"
+        f"--backend-v23-archive releases/v0.62.8/{BACKEND_ARCHIVE_NAME} "
+        f"--backend-v23-scope-receipt releases/v0.62.8/{BACKEND_SCOPE_NAME} "
+        f"--backend-v23-validation-receipt releases/v0.62.8/{BACKEND_VALIDATION_NAME} "
+        f"--backend-v23-determinism-receipt releases/v0.62.8/{BACKEND_DETERMINISM_NAME}"
     )
     if receipt.get("validation_command") != expected_validation_command:
         raise ValueError("receipt validation-command mismatch")
@@ -881,10 +885,10 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
     ):
         raise ValueError("receipt pre-receipt aggregate mismatch")
     expected_successor = {
-        "files_before_checksum": 97,
-        "checksum_entries": 97,
-        "final_files": 98,
-        "inherited_files": 93,
+        "files_before_checksum": 102,
+        "checksum_entries": 102,
+        "final_files": 103,
+        "inherited_files": 98,
         "additive_files": 5,
     }
     if receipt.get("successor_inventory") != expected_successor:
@@ -902,7 +906,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
         "files": len(all_facts),
         "bytes": sum(item["bytes"] for item in all_facts),
         "aggregate_sha256": sha256_bytes(canonical_inventory_bytes(all_facts)),
-        "base_files_byte_identical": 93,
+        "base_files_byte_identical": 98,
         "additive_artifacts": [fact(release / name) for name in ADDITIVE_NAMES],
         "overlay_rows": 20,
         "effective_completed_public_roles": 27,
@@ -916,7 +920,7 @@ def validate(args: argparse.Namespace) -> dict[str, Any]:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--release-dir", default="releases/v0.62.7")
+    parser.add_argument("--release-dir", default="releases/v0.62.8")
     parser.add_argument("--source-commit", required=True, help="full commit containing every packaged source")
     parser.add_argument("--pages-run-id", required=True, type=int, help="successful Pages workflow run for the source commit")
     parser.add_argument("--backend-v23-archive", required=True, help="public-safe deterministic v2.3 0.1.1 ZIP")
