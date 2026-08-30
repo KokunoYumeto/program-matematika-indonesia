@@ -105,8 +105,31 @@ between learner exercises and intentional solution demonstrations containing
 Lean `sorry` remain explicit; an untagged PDF remains secondary to semantic
 HTML.
 
-A00, B10, D60, and D110 are four lane proofs. They are not a declaration that
-the other 36 course roles conform to v2.3.1.
+### Corpus-neutral D20 lane adapter v0.1.0
+
+The fifth admitted implementation is the D20 Functional Analysis lane adapter
+at `extensions/d20-functional-analysis-v0.1.0`, prepared for distribution with
+central release v0.62.12. It projects the complete owner edition and its
+additive learner companion without copying the reader prose or replacing the
+owner's 32,383 native records. The canonical learner route remains the central
+course wrapper, which links the owner HTML reader, companion reader, PDF, and
+preservation record:
+<https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/>.
+
+The adapter contains 138,894 canonical records in nineteen JSONL tables with
+nineteen lossless per-table CSV projections plus one global `records.csv`. It
+binds 4,161 translation-state rows, 16,260 source/target content bindings,
+12,135 formula-alignment records, 9,572 typed relations, 5,136 learner routes,
+32,383 reversible native bindings and crosswalks, 2,104 additional native index
+rows, and four separately preserved rights components. Two isolated builds,
+all 59 frozen authority replays, structural coverage, reverse extraction,
+privacy checks, JSONL/CSV round trips, and deterministic ZIP replay pass. The
+case-sensitive native identities `exam_dual_C0` and `exam_dual_c0`, anchor-only
+routes, and external endpoints remain explicit rather than being normalized
+away.
+
+A00, B10, D20, D60, and D110 are five lane proofs. They are not a declaration
+that the other 35 course roles conform to v2.3.1.
 
 ## Design proposal retained separately
 

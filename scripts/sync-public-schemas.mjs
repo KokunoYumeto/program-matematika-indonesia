@@ -13,7 +13,9 @@ const mappings = [
   ['schemas/profiles/source-format-profile-v1.schema.json', 'docs/schema/v1/interlanguage-source-format-profile-v1.schema.json'],
   ['schemas/v1/curriculum-authority-v1.schema.json', 'docs/schema/v1/curriculum-authority-v1.schema.json'],
   ['schemas/v1/learner-read-model-v1.schema.json', 'docs/schema/v1/learner-read-model-v1.schema.json'],
+  ['schemas/v1/learner-delivery-v1.schema.json', 'docs/schema/v1/learner-delivery-v1.schema.json'],
   ['schemas/v1/learner-state-v1.schema.json', 'docs/schema/v1/learner-state-v1.schema.json'],
+  ['schemas/v1/v23-adapter-index-v1.schema.json', 'docs/schema/v1/v23-adapter-index-v1.schema.json'],
   ['schemas/v2/backend-migration-receipt-v2.schema.json', 'docs/schema/v2/backend-migration-receipt-v2.schema.json'],
   ['schemas/v2/federation-package-v2.schema.json', 'docs/schema/v2/federation-package-v2.schema.json'],
   ['schemas/v2/federation-record-v2.schema.json', 'docs/schema/v2/federation-record-v2.schema.json'],
@@ -26,6 +28,8 @@ const mappings = [
   ['backend/v2.3/schema/translation-state-index-v0.2.schema.json', 'docs/schema/v2.3/translation-state-index-v0.2.schema.json'],
   ['backend/v2.3/schema/csv-projection-manifest-v0.2.schema.json', 'docs/schema/v2.3/csv-projection-manifest-v0.2.schema.json'],
   ['backend/v2.3/schema/scope-declaration-v0.2.schema.json', 'docs/schema/v2.3/scope-declaration-v0.2.schema.json'],
+  ['backend/authority/modular-backend-pattern-index-v1.json', 'docs/data/modular-backend-pattern-index-v1.json'],
+  ['backend/authority/v23-adapter-index-v1.json', 'docs/data/v23-adapter-index-v1.json'],
 ];
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');

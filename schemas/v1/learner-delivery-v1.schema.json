@@ -1,0 +1,183 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-delivery-v1.schema.json",
+  "title": "Program Matematika Indonesia learner delivery sidecar v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "locale",
+    "provenance",
+    "policy",
+    "courses",
+    "summary"
+  ],
+  "properties": {
+    "$schema": {
+      "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-delivery-v1.schema.json"
+    },
+    "schema_id": {
+      "const": "interlanguage/program-matematika-indonesia-learner-delivery/v1"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "locale": {
+      "const": "id-ID"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["courses_js", "live_overlay_js", "overrides_json", "schema_json"],
+      "properties": {
+        "courses_js": { "$ref": "#/$defs/fileIdentity" },
+        "live_overlay_js": { "$ref": "#/$defs/fileIdentity" },
+        "overrides_json": { "$ref": "#/$defs/fileIdentity" },
+        "schema_json": { "$ref": "#/$defs/fileIdentity" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "machine_data_is_secondary",
+        "pdf_is_not_portable_html",
+        "source_archive_is_not_learner_package",
+        "unknown_is_not_verified",
+        "status_values"
+      ],
+      "properties": {
+        "machine_data_is_secondary": { "const": true },
+        "pdf_is_not_portable_html": { "const": true },
+        "source_archive_is_not_learner_package": { "const": true },
+        "unknown_is_not_verified": { "const": true },
+        "status_values": {
+          "const": ["verified", "available_unverified", "absent", "not_applicable"]
+        }
+      }
+    },
+    "courses": {
+      "type": "array",
+      "minItems": 40,
+      "maxItems": 40,
+      "items": { "$ref": "#/$defs/courseDelivery" }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "course_count",
+        "online_html_available",
+        "verified_portable_html",
+        "verified_epub"
+      ],
+      "properties": {
+        "course_count": { "const": 40 },
+        "online_html_available": { "type": "integer", "minimum": 0, "maximum": 40 },
+        "verified_portable_html": { "type": "integer", "minimum": 0, "maximum": 40 },
+        "verified_epub": { "type": "integer", "minimum": 0, "maximum": 40 }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "status": {
+      "enum": ["verified", "available_unverified", "absent", "not_applicable"]
+    },
+    "fileIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "locator", "verified_date"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1 },
+        "verified_date": { "type": "string", "format": "date" }
+      }
+    },
+    "resource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "format": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "entry_point": { "type": "string", "minLength": 1 },
+        "inventory_count": { "type": "integer", "minimum": 1 },
+        "scope": { "enum": ["whole_course", "chapter", "navigator", "other"] },
+        "dependency_free": { "type": "boolean" },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "verified" } }, "required": ["status"] },
+          "then": { "required": ["format", "url", "bytes", "sha256", "evidence"] }
+        }
+      ]
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      }
+    },
+    "courseDelivery": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "course_id",
+        "primary",
+        "online_html",
+        "pdf",
+        "epub",
+        "portable_html",
+        "capabilities",
+        "missing_capabilities"
+      ],
+      "properties": {
+        "course_id": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" },
+        "primary": { "$ref": "#/$defs/resource" },
+        "online_html": { "$ref": "#/$defs/resource" },
+        "pdf": { "$ref": "#/$defs/resource" },
+        "epub": { "$ref": "#/$defs/resource" },
+        "portable_html": { "$ref": "#/$defs/resource" },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["semantic_html", "mathml", "print_profile", "chapter_downloads"],
+          "properties": {
+            "semantic_html": { "$ref": "#/$defs/capability" },
+            "mathml": { "$ref": "#/$defs/capability" },
+            "print_profile": { "$ref": "#/$defs/capability" },
+            "chapter_downloads": { "$ref": "#/$defs/capability" }
+          }
+        },
+        "missing_capabilities": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "enum": ["online_html", "pdf", "epub", "portable_html", "semantic_html", "mathml", "print_profile", "chapter_downloads"] }
+        }
+      }
+    }
+  }
+}

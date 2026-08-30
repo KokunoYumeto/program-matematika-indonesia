@@ -16,22 +16,31 @@ const approvedTopLevelFiles = new Set([
   'app.js',
   'courses.js',
   'index.html',
+  'learner-delivery.js',
   'learner-state.js',
   'live-course-publications.js',
   'og.png',
   'robots.txt',
   'styles.css',
+  'peta-belajar-luring.html',
 ]);
 const approvedDataFiles = new Set([
+  'data/course-capsule-v1',
   'data/curriculum-authority-v1.json',
   'data/educational-access.json',
   'data/learner-read-model.json',
+  'data/learner-delivery-v1.json',
   'data/educational-access.json',
   'schema/educational-access-federation-v1.schema.json',
   'data/unit-route-C100-v2.1.json',
   'data/unit-route-D20-v2.1.json',
   'data/unit-route-v2.1.json',
   'data/unit-routes-v2.1.json',
+  'data/course-capsule-v1/course-capsules.jsonl',
+  'data/course-capsule-v1/course-capsules.json',
+  'data/course-capsule-v1/manifest.json',
+  'data/course-capsule-v1/validation-receipt.json',
+  'data/course-capsule-v1/README.md',
 ]);
 const approvedReaderParents = new Set(['readers', 'readers/d40', 'readers/d40/unit14']);
 const approvedReaderPrefix = 'readers/d40/unit14/';
@@ -41,6 +50,7 @@ await cp(source, target, {
     if (path === source) return true;
     const name = relative(source, path).split(sep).join('/');
     if (name === 'data' || name === 'schema' || name.startsWith('schema/')) return true;
+    if (name === 'backend' || name.startsWith('backend/')) return true;
     // Preserve central learner route wrappers for the hosted mirror.  These
     // pages contain navigation and links only; owner-native prose remains on
     // the canonical course reader.
@@ -57,13 +67,17 @@ for (const name of [
   'index.html',
   'styles.css',
   'app.js',
+  'learner-delivery.js',
   'learner-state.js',
   'live-course-publications.js',
   'courses.js',
   'data/curriculum-authority-v1.json',
   'data/learner-read-model.json',
+  'data/learner-delivery-v1.json',
+  'peta-belajar-luring.html',
   'schema/v1/curriculum-authority-v1.schema.json',
   'schema/v1/learner-read-model-v1.schema.json',
+  'schema/v1/learner-delivery-v1.schema.json',
   'schema/v1/learner-state-v1.schema.json',
   'schema/v2/federation-package-v2.schema.json',
   'schema/v2/federation-record-v2.schema.json',
@@ -86,6 +100,15 @@ for (const name of [
   'data/unit-route-D20-v2.1.json',
   'data/unit-route-v2.1.json',
   'data/unit-routes-v2.1.json',
+  'backend/index.html',
+  'backend/backend.css',
+  'backend/backend.js',
+  'data/course-capsule-v1/course-capsules.jsonl',
+  'data/course-capsule-v1/course-capsules.json',
+  'data/course-capsule-v1/manifest.json',
+  'data/course-capsule-v1/validation-receipt.json',
+  'data/course-capsule-v1/README.md',
+  'schema/course-capsule-v1/course-capsule-v1.schema.json',
 ]) {
   const [left, right] = await Promise.all([
     readFile(resolve(source, name)),

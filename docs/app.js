@@ -3,6 +3,7 @@ import {
   deriveNextCourseIdsById,
   materializeLiveCourses,
 } from './live-course-publications.js';
+import { learnerDeliveryByCourseId } from './learner-delivery.js';
 import {
   clearLearnerState,
   createEmptyLearnerState,
@@ -119,24 +120,51 @@ function nextCourseLinks(course) {
     const nextCourse = courses.find((candidate) => candidate.id === id);
     if (!nextCourse) return '';
     const otherPrerequisiteCount = Math.max(0, nextCourse.prerequisites.length - 1);
-    const otherPrerequisites = otherPrerequisiteCount
-      ? `<small>+${otherPrerequisiteCount} prasyarat lain</small>`
-      : '<small>dapat dilanjutkan langsung</small>';
+    const routeNote = otherPrerequisiteCount
+      ? `+${otherPrerequisiteCount} prasyarat lain`
+      : 'dapat dilanjutkan langsung';
+    const otherPrerequisites = `<small>${stateLabels[nextCourse.state]} · ${routeNote}</small>`;
     return `<a class="next-course-link" href="#course-${id}" data-course-link="${id}"><span>${id}</span><strong>${nextCourse.title}</strong>${otherPrerequisites}</a>`;
   }).join('');
 }
 
+function formatDownloadSize(bytes) {
+  if (!Number.isInteger(bytes)) return '';
+  return `${new Intl.NumberFormat('id-ID', { maximumFractionDigits: 1 }).format(bytes / 1_000_000)} MB`;
+}
+
+function deliveryBadges(course) {
+  const delivery = learnerDeliveryByCourseId[course.id];
+  if (!delivery) return '';
+  const badges = [];
+  if (delivery.online_html.status !== 'absent') badges.push('<span>HTML</span>');
+  if (delivery.portable_html.status === 'verified') badges.push('<span class="verified">HTML luring terverifikasi</span>');
+  if (delivery.epub.status === 'verified') badges.push('<span class="verified">EPUB terverifikasi</span>');
+  if (delivery.capabilities.mathml.status === 'verified') badges.push('<span>MathML</span>');
+  return badges.length ? `<div class="delivery-badges" aria-label="Format belajar tersedia">${badges.join('')}</div>` : '';
+}
+
 function actionLinks(course) {
   const links = [];
+  const delivery = learnerDeliveryByCourseId[course.id];
+  const portableHtml = delivery?.portable_html;
+  const epub = delivery?.epub;
   const githubUnavailable = program.repositories.github.status === 'temporarily-unavailable';
   const learnerEntry = course.learner ?? course.reader;
   const readerIsSuspendedGithub = githubUnavailable && learnerEntry?.startsWith('https://github.com/KokunoYumeto/');
   const editionIsSuspendedGithub = githubUnavailable && course.edition?.startsWith('https://github.com/KokunoYumeto/');
   const repositoryIsSuspendedGithub = githubUnavailable && course.repository?.startsWith('https://github.com/KokunoYumeto/');
   const editionLabel = course.state === 'published' ? 'Buka edisi' : 'Buka edisi kerja';
-  if (learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action primary" href="${learnerEntry}" target="_blank" rel="noreferrer">Mulai belajar — HTML <span aria-hidden="true">↗</span></a>`);
+  const learnerLabel = course.state === 'published' ? 'Mulai belajar — HTML' : 'Buka pembaca kerja — HTML';
+  if (learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action primary" href="${learnerEntry}" target="_blank" rel="noreferrer">${learnerLabel} <span aria-hidden="true">↗</span></a>`);
+  if (portableHtml?.status === 'verified') {
+    links.push(`<a class="card-action offline" href="${portableHtml.url}" target="_blank" rel="noreferrer">Unduh HTML luring · ${formatDownloadSize(portableHtml.bytes)} <span aria-hidden="true">↓</span></a>`);
+  }
+  if (epub?.status === 'verified') {
+    links.push(`<a class="card-action" href="${epub.url}" target="_blank" rel="noreferrer">Unduh EPUB · ${formatDownloadSize(epub.bytes)} <span aria-hidden="true">↓</span></a>`);
+  }
   if (course.reader && course.reader !== learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action" href="${course.reader}" target="_blank" rel="noreferrer">Pembaca pemilik ↗</a>`);
-  if (course.edition && course.edition !== learnerEntry && !editionIsSuspendedGithub) links.push(`<a class="card-action${learnerEntry ? '' : ' primary'}" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
+  if (course.edition && course.edition !== learnerEntry && course.edition !== portableHtml?.url && course.edition !== epub?.url && !editionIsSuspendedGithub) links.push(`<a class="card-action${learnerEntry ? '' : ' primary'}" href="${course.edition}" target="_blank" rel="noreferrer">${editionLabel} <span aria-hidden="true">↗</span></a>`);
   if (course.zenodo) links.push(`<a class="card-action" href="${course.zenodo}" target="_blank" rel="noreferrer">Arsip DOI <span aria-hidden="true">↗</span></a>`);
   if (course.repository && course.repository !== course.edition && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.repository}" target="_blank" rel="noreferrer">Repositori <span aria-hidden="true">↗</span></a>`);
   if (course.release && !repositoryIsSuspendedGithub) links.push(`<a class="card-action" href="${course.release}" target="_blank" rel="noreferrer">Rilis <span aria-hidden="true">↗</span></a>`);
@@ -196,6 +224,7 @@ function courseCard(course) {
       <p class="course-topic">${course.topic}</p>
       <h3>${course.title}</h3>
       <p class="course-purpose">${course.purpose}</p>
+      ${deliveryBadges(course)}
       ${learnerStatusBlock(course)}
       <div class="prerequisites"><span>Prasyarat</span><div>${prerequisiteLinks(course)}</div></div>
       <div class="next-courses"><span>Lanjut ke</span><div>${nextCourseLinks(course)}</div></div>
@@ -221,6 +250,7 @@ function filteredCourses() {
     if (statusSelect.value === 'unresolved' && course.state !== 'unresolved') return false;
     if (statusSelect.value === 'published' && course.state !== 'published') return false;
     if (statusSelect.value === 'production' && course.state !== 'production') return false;
+    if (statusSelect.value === 'offline' && learnerDeliveryByCourseId[course.id]?.portable_html.status !== 'verified') return false;
     if (statusSelect.value === 'eligible' && !['eligible', 'eligible_with_waiver'].includes(learnerEvaluation[course.id].status)) return false;
     if (statusSelect.value === 'completed' && learnerEvaluation[course.id].status !== 'completed') return false;
     if (!query) return true;

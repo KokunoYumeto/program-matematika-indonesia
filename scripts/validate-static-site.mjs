@@ -3,7 +3,9 @@ import { createHash } from 'node:crypto';
 import { readFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
+import { gzipSync } from 'node:zlib';
 import { courses, nextCourseIdsById, program, topics } from '../docs/courses.js';
+import { learnerDeliveryByCourseId, learnerDeliveryRows } from '../docs/learner-delivery.js';
 import {
   deriveNextCourseIdsById,
   liveCoursePublications,
@@ -78,9 +80,44 @@ const [
   readFile(resolve(root, 'docs/schema/v2.3/index.html'), 'utf8'),
 ]);
 
+const [
+  stylesBytes,
+  coursesModuleBytes,
+  deliveryModuleBytes,
+  learnerDeliveryAuthorityBytes,
+  learnerDeliveryPublicBytes,
+  learnerDeliverySchemaBytes,
+  publicLearnerDeliverySchemaBytes,
+  modularBackendPatternAuthorityBytes,
+  modularBackendPatternPublicBytes,
+  v23AdapterIndexAuthorityBytes,
+  v23AdapterIndexPublicBytes,
+  v23AdapterIndexSchemaBytes,
+  v23AdapterIndexPublicSchemaBytes,
+  standaloneBytes,
+] = await Promise.all([
+  readFile(resolve(root, 'docs/styles.css')),
+  readFile(resolve(root, 'docs/courses.js')),
+  readFile(resolve(root, 'docs/learner-delivery.js')),
+  readFile(resolve(root, 'backend/authority/learner-delivery-v1.json')),
+  readFile(resolve(root, 'docs/data/learner-delivery-v1.json')),
+  readFile(resolve(root, 'schemas/v1/learner-delivery-v1.schema.json')),
+  readFile(resolve(root, 'docs/schema/v1/learner-delivery-v1.schema.json')),
+  readFile(resolve(root, 'backend/authority/modular-backend-pattern-index-v1.json')),
+  readFile(resolve(root, 'docs/data/modular-backend-pattern-index-v1.json')),
+  readFile(resolve(root, 'backend/authority/v23-adapter-index-v1.json')),
+  readFile(resolve(root, 'docs/data/v23-adapter-index-v1.json')),
+  readFile(resolve(root, 'schemas/v1/v23-adapter-index-v1.schema.json')),
+  readFile(resolve(root, 'docs/schema/v1/v23-adapter-index-v1.schema.json')),
+  readFile(resolve(root, 'docs/peta-belajar-luring.html')),
+]);
+
 const authority = JSON.parse(authorityBytes.toString('utf8'));
 const catalog = authority.catalog;
 const learnerReadModel = JSON.parse(learnerReadModelBytes.toString('utf8'));
+const learnerDelivery = JSON.parse(learnerDeliveryAuthorityBytes.toString('utf8'));
+const modularBackendPatternIndex = JSON.parse(modularBackendPatternAuthorityBytes.toString('utf8'));
+const v23AdapterIndex = JSON.parse(v23AdapterIndexAuthorityBytes.toString('utf8'));
 assert.ok(catalog && typeof catalog === 'object', 'Otoritas tidak memuat katalog kanonik.');
 assert.deepEqual(publicAuthorityBytes, authorityBytes, 'Salinan otoritas publik harus identik byte demi byte.');
 assert.deepEqual(courses, catalog.courses, 'Proyeksi courses.js berbeda dari katalog otoritas.');
@@ -94,6 +131,36 @@ assert.deepEqual(
 assert.deepEqual(learnerReadModel.program, catalog.program, 'Program model baca berbeda dari otoritas.');
 assert.deepEqual(learnerReadModel.topics, catalog.topics, 'Topik model baca berbeda dari otoritas.');
 assert.equal(learnerReadModel.provenance.authority_sha256, sha256(authorityBytes));
+assert.deepEqual(learnerDeliveryPublicBytes, learnerDeliveryAuthorityBytes, 'Salinan publik learner-delivery harus identik byte demi byte.');
+assert.deepEqual(publicLearnerDeliverySchemaBytes, learnerDeliverySchemaBytes, 'Salinan skema learner-delivery harus identik byte demi byte.');
+assert.deepEqual(modularBackendPatternPublicBytes, modularBackendPatternAuthorityBytes, 'Salinan publik indeks pola backend harus identik byte demi byte.');
+assert.equal(modularBackendPatternIndex.methodology.denominator.native_implementation_families, 33);
+assert.equal(modularBackendPatternIndex.methodology.denominator.program_roles, 40);
+assert.equal(modularBackendPatternIndex.post_audit_updates.d20_adapter.canonical_records, 138894);
+assert.deepEqual(v23AdapterIndexPublicBytes, v23AdapterIndexAuthorityBytes, 'Salinan publik indeks adapter v2.3 harus identik byte demi byte.');
+assert.deepEqual(v23AdapterIndexPublicSchemaBytes, v23AdapterIndexSchemaBytes, 'Salinan publik skema indeks adapter v2.3 harus identik byte demi byte.');
+assert.equal(v23AdapterIndex.$schema, JSON.parse(v23AdapterIndexSchemaBytes.toString('utf8')).$id);
+assert.deepEqual(v23AdapterIndex.summary, {
+  curriculum_roles: 40,
+  proof_roles: 5,
+  legacy_proofs: 1,
+  contract_2_3_1_adapters: 4,
+  unbound_roles: 35,
+});
+assert.deepEqual(v23AdapterIndex.adapters.map(({ role_id }) => role_id), ['A00', 'B10', 'D20', 'D60', 'D110']);
+for (const adapter of v23AdapterIndex.adapters) {
+  for (const identity of [adapter.archive, adapter.manifest].filter(Boolean)) {
+    const bytes = await readFile(resolve(root, identity.path));
+    assert.equal(bytes.length, identity.bytes, `${adapter.role_id}: byte count indeks adapter berubah untuk ${identity.path}.`);
+    assert.equal(sha256(bytes), identity.sha256, `${adapter.role_id}: SHA-256 indeks adapter berubah untuk ${identity.path}.`);
+  }
+}
+assert.equal(learnerDelivery.$schema, JSON.parse(learnerDeliverySchemaBytes.toString('utf8')).$id);
+assert.equal(learnerDelivery.courses.length, 40);
+assert.equal(new Set(learnerDelivery.courses.map(({ course_id }) => course_id)).size, 40);
+assert.deepEqual(learnerDelivery.courses.map(({ course_id }) => course_id), courses.map(({ id }) => id));
+assert.deepEqual(learnerDeliveryRows.map(({ course_id }) => course_id), courses.map(({ id }) => id));
+assert.deepEqual(Object.keys(learnerDeliveryByCourseId), courses.map(({ id }) => id));
 
 const ids = courses.map(({ id }) => id);
 const idSet = new Set(ids);
@@ -153,14 +220,14 @@ for (const course of courses) {
   }
 }
 
-const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B20', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D100'];
+const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B20', 'B30', 'B50', 'B95', 'C10', 'C20', 'C90', 'C100', 'C140', 'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D100'];
 for (const id of liveOverlayRequiredRoleIds) {
   assert.ok(liveCoursePublications[id], `${id}: baris lama belum memiliki overlay publikasi langsung.`);
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
-assert.equal(effectivePublishedCourses.length, 28, 'Overlay harus menampilkan tepat 28 peran dengan edisi selesai.');
-assert.equal(effectivePublishedRecordDois.size, 27, 'Dua puluh delapan peran selesai harus memakai tepat 27 rekaman edisi berbeda.');
+assert.equal(effectivePublishedCourses.length, 29, 'Overlay harus menampilkan tepat 29 peran dengan edisi selesai.');
+assert.equal(effectivePublishedRecordDois.size, 28, 'Dua puluh sembilan peran selesai harus memakai tepat 28 rekaman edisi berbeda.');
 const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
 for (const course of effectiveCourses) {
   assert.ok(allowedStates.has(course.state), `${course.id}: status efektif tidak dikenal.`);
@@ -254,6 +321,16 @@ assert.equal(effectiveCoursesById.get('C90').state, 'published');
 assert.equal(effectiveCoursesById.get('C90').progress.publicUnits, 20);
 assert.equal(effectiveCoursesById.get('C90').progress.publicPages, 645);
 assert.match(effectiveCoursesById.get('C90').zenodo, /22164668$/);
+assert.equal(effectiveCoursesById.get('C20').state, 'published');
+assert.equal(effectiveCoursesById.get('C20').version, '6.3-id-wip.2026.08.30.u429');
+assert.equal(effectiveCoursesById.get('C20').progress.publicPages, 241);
+assert.match(effectiveCoursesById.get('C20').edition, /22172396\/files\/Analisis_Dasar_II_Bahasa_Indonesia_v6\.3\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('C20').release, /lebl-family-id-wip\.2026\.08\.30\.u429$/);
+assert.deepEqual(effectiveCoursesById.get('C20').verification, {
+  readerBytes: 2427379,
+  readerSha256: 'e70c74bb7edc466a7cb6ff0eff0de33dfcc7b3bc63010d018aff758a14d2dea3',
+  publicReadback: 'pass',
+});
 assert.equal(effectiveCoursesById.get('B50').progress.publicPages, 410);
 assert.equal(effectiveCoursesById.get('B50').state, 'published');
 assert.equal(effectiveCoursesById.get('C100').supplements.length, 1);
@@ -431,6 +508,14 @@ assert.equal(
 assert.match(html, /<html lang="id">/);
 assert.match(html, /href="styles\.css"/);
 assert.match(html, /src="app\.js"/);
+assert.match(html, /href="peta-belajar-luring\.html"/);
+assert.match(html, /Unduh peta belajar — HTML satu berkas/);
+assert.match(html, /STATIC-COURSE-FALLBACK:START/);
+assert.match(html, /STATIC-COURSE-FALLBACK:END/);
+const staticCourseIds = [...html.matchAll(/data-static-course-id="([A-D]\d{2,3})"/g)].map((match) => match[1]);
+assert.equal(staticCourseIds.length, 40, 'Fallback tanpa JavaScript harus memuat tepat 40 mata kuliah.');
+assert.deepEqual(staticCourseIds, effectiveCourses.map(({ id }) => id));
+assert.match(html, /<noscript><section class="static-catalog"/);
 assert.match(html, /id="progres"/);
 assert.match(html, /id="learner-summary"/);
 assert.match(html, /id="learner-storage-status"/);
@@ -448,11 +533,11 @@ assert.ok(
 assert.match(html, new RegExp(`${courses.length} korpus terpilih`));
 assert.match(html, /produksi yang belum selesai tetap dilabeli dengan jelas/i);
 assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
-assert.match(html, /28 peran melalui 27 rekaman edisi lengkap/);
-assert.match(html, /A00, B10, D60, dan D110/);
-assert.match(html, /36 peran lain/);
+assert.match(html, /29 peran melalui 28 rekaman edisi lengkap/);
+assert.match(html, /A00, B10, D20, D60, dan D110/);
+assert.match(html, /35 peran lain/);
 assert.match(rootReadme, /D60 kini merupakan edisi komposit lengkap v0\.31\.7/);
-assert.match(rootReadme, /Backend v2\.3 kini memiliki empat bukti jalur yang diterima: A00, B10, D60, dan D110/);
+assert.match(rootReadme, /Backend v2\.3 kini memiliki lima bukti jalur yang diterima: A00, B10, D20, D60, dan D110/);
 assert.match(rootReadme, /rilis pusat v0\.62\.10/);
 assert.match(rootReadme, /41\.460 rekaman kanonik/);
 assert.match(rootReadme, /rilis pusat v0\.62\.11/);
@@ -462,8 +547,10 @@ assert.match(backendV23Readme, /6,279 reversible materialized-native/);
 assert.match(backendV23Readme, /8,338 native backend records/);
 assert.match(backendV23Readme, /41,460 canonical records/);
 assert.match(backendV23Readme, /10,978 native/);
-assert.match(backendV23Readme, /other 36 course roles/);
-assert.match(schemaV23Index, /A00, B10, D60, dan D110/);
+assert.match(backendV23Readme, /138,894 canonical records/);
+assert.match(backendV23Readme, /32,383 native records/);
+assert.match(backendV23Readme, /other 35 course roles/);
+assert.match(schemaV23Index, /A00, B10, D20, D60, dan D110/);
 assert.match(schemaV23Index, /27\.642 rekaman kanonik/);
 assert.match(schemaV23Index, /41\.460 rekaman kanonik/);
 assert.match(schemaV23Index, /rilis pusat v0\.62\.11/);
@@ -472,6 +559,11 @@ assert.match(html, new RegExp(escapeRegex(program.repositories.github.url)));
 assert.match(html, /melanjutkan ke mana/);
 assert.match(html, /“Lanjut ke”.*prasyarat langsung.*prasyarat lain/s);
 assert.match(app, /Mulai belajar — HTML/);
+assert.match(app, /Buka pembaca kerja — HTML/);
+assert.match(app, /stateLabels\[nextCourse\.state\]/);
+assert.match(app, /from '\.\/learner-delivery\.js'/);
+assert.match(app, /Unduh HTML luring/);
+assert.match(app, /statusSelect\.value === 'offline'/);
 assert.match(app, /course\.repository/);
 assert.match(app, /course\.supplements/);
 assert.match(app, /nextCourseIdsById/);
@@ -489,6 +581,59 @@ assert.match(app, /publicationProgress\(course\)/);
 assert.match(app, /effectivePublishedCourses/);
 assert.match(app, /livePublicationSummary\.textContent/);
 assert.doesNotMatch(app, /liveCoursePublications\[/);
+
+const deliveryById = new Map(learnerDelivery.courses.map((row) => [row.course_id, row]));
+for (const row of learnerDelivery.courses) {
+  assert.ok(['verified', 'available_unverified', 'absent', 'not_applicable'].includes(row.portable_html.status));
+  if (row.portable_html.status === 'verified') {
+    assert.match(row.portable_html.format, /zip\+html/);
+    assert.equal(row.portable_html.dependency_free, true);
+    assert.ok(Number.isInteger(row.portable_html.bytes) && row.portable_html.bytes > 0);
+    assert.match(row.portable_html.sha256, /^[0-9a-f]{64}$/);
+    assert.ok(row.portable_html.entry_point && Number.isInteger(row.portable_html.inventory_count));
+    assert.doesNotMatch(row.portable_html.format, /pdf/i, `${row.course_id}: PDF tidak boleh dihitung sebagai HTML luring.`);
+  }
+}
+assert.equal(learnerDelivery.summary.online_html_available, effectiveCourses.filter((course) => course.learner || course.reader).length);
+assert.equal(learnerDelivery.summary.online_html_available, 24);
+assert.equal(learnerDelivery.summary.verified_portable_html, 3);
+assert.equal(learnerDelivery.summary.verified_epub, 1);
+assert.deepEqual(
+  [...learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').map(({ course_id }) => course_id)].sort(),
+  ['C100', 'D120', 'D80'].sort(),
+);
+assert.equal(deliveryById.get('C100').portable_html.sha256, 'ee26d6e1228b7b66ca7ea156081c673dd1c8ab8b3488d87f7ee35cc354c091ae');
+assert.equal(deliveryById.get('C100').epub.sha256, '5eb6773cc036015e8eb9e6f1791c6ec2f2b83812f43c8340c66aaafd91b12d99');
+assert.equal(deliveryById.get('D80').portable_html.sha256, '064dc97e9ae58217622a768f1a989eb316892a607d219211f4be17e6cf44d03c');
+assert.equal(deliveryById.get('D120').portable_html.sha256, 'c47fb636c821d574cc987a39d512f608bc4796fe2c737d8d7d02b5d0540df7e9');
+
+const styles = stylesBytes.toString('utf8');
+assert.match(styles, /\.card-action \{[^}]*min-height: 44px/s);
+assert.match(styles, /@media print/);
+assert.doesNotMatch(styles, /@media \(max-width: 820px\)[\s\S]{0,300}nav \{ display: none;/);
+assert.match(styles, /p a:not\(\.button\):not\(\.card-action\)/);
+const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesModuleBytes, Buffer.from(livePublicationsModule), Buffer.from(learnerStateModule), deliveryModuleBytes];
+const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
+const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
+assert.ok(shellRawBytes <= 200_000, `Shell melewati 200.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= 50_000, `Shell gzip melewati 50.000 byte: ${shellGzipBytes}.`);
+const runtimeAssetUrls = [
+  ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
+  ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
+].filter((url) => /^(?:https?:)?\/\//.test(url));
+assert.deepEqual(runtimeAssetUrls, [], 'Shell tidak boleh memerlukan CSS atau JavaScript jarak jauh.');
+const standalone = standaloneBytes.toString('utf8');
+assert.equal((standalone.match(/data-static-course-id=/g) ?? []).length, 40);
+assert.doesNotMatch(standalone, /href="styles\.css"|src="app\.js"|^\s*import\s/m);
+assert.match(standalone, /const learnerDeliveryByCourseId = Object\.freeze\(/);
+assert.match(standalone, /href="#katalog">Unduh peta belajar — HTML satu berkas/);
+for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-course-publications.js', 'learner-state.js', 'learner-delivery.js', 'peta-belajar-luring.html']) {
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', name)),
+    readFile(resolve(root, 'public/hub', name)),
+  ]);
+  assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror Sites berbeda dari docs.`);
+}
 assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
 assert.match(livePublicationsModule, /22166545/);
 assert.match(livePublicationsModule, /22161412/);
@@ -562,6 +707,12 @@ console.log(JSON.stringify({
   completedPublicCourseRoles: publishedIds.length,
   completedPublicRecords: program.completedPublicRecordDois.length,
   publishedHtmlReaders: publishedHtmlReaderIds.length,
+  effectiveHtmlLearnerEntries: learnerDelivery.summary.online_html_available,
+  verifiedPortableHtmlPackages: learnerDelivery.summary.verified_portable_html,
+  verifiedEpubPackages: learnerDelivery.summary.verified_epub,
+  staticNoJsCourseEntries: staticCourseIds.length,
+  shellRawBytes,
+  shellGzipBytes,
   prerequisiteEdges: prerequisiteEdgeCount,
   federationV2Records: federationManifest.record_count,
   publicReadbackOverlays: authority.public_readback_overlays.length,

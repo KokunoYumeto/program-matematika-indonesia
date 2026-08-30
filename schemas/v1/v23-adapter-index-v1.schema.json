@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/v23-adapter-index-v1.schema.json",
+  "title": "Program Matematika Indonesia v2.3 adapter index v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_id", "schema_version", "recorded_at", "policy", "summary", "adapters"],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/v23-adapter-index-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/program-matematika-indonesia-v23-adapter-index/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "recorded_at": { "type": "string", "format": "date" },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_native_authoritative", "zero_copy", "machine_data_secondary", "aggregate_conformance_claim"],
+      "properties": {
+        "owner_native_authoritative": { "const": true },
+        "zero_copy": { "const": true },
+        "machine_data_secondary": { "const": true },
+        "aggregate_conformance_claim": { "const": false }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["curriculum_roles", "proof_roles", "legacy_proofs", "contract_2_3_1_adapters", "unbound_roles"],
+      "properties": {
+        "curriculum_roles": { "const": 40 },
+        "proof_roles": { "const": 5 },
+        "legacy_proofs": { "const": 1 },
+        "contract_2_3_1_adapters": { "const": 4 },
+        "unbound_roles": { "const": 35 }
+      }
+    },
+    "adapters": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "items": { "$ref": "#/$defs/adapter" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fileIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "adapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_id", "course", "proof_kind", "contract_version", "adapter_version", "admission_state", "learner_url", "release_url", "archive", "canonical_records", "jsonl_csv_table_pairs", "owner_native_authoritative", "zero_copy"],
+      "properties": {
+        "role_id": { "enum": ["A00", "B10", "D20", "D60", "D110"] },
+        "course": { "type": "string", "minLength": 1 },
+        "proof_kind": { "enum": ["legacy_conformance_package", "reversible_lane_adapter"] },
+        "contract_version": { "enum": ["legacy-v2.3", "2.3.1"] },
+        "adapter_version": { "type": "string", "minLength": 1 },
+        "admission_state": { "enum": ["published", "admitted_pending_release"] },
+        "learner_url": { "type": "string", "format": "uri" },
+        "release_url": { "type": "string", "format": "uri" },
+        "archive": { "$ref": "#/$defs/fileIdentity" },
+        "manifest": { "$ref": "#/$defs/fileIdentity" },
+        "canonical_records": { "type": "integer", "minimum": 1 },
+        "native_records_preserved": { "type": "integer", "minimum": 1 },
+        "reversible_native_mappings": { "type": "integer", "minimum": 1 },
+        "additional_native_index_rows": { "type": "integer", "minimum": 1 },
+        "jsonl_csv_table_pairs": { "type": "integer", "minimum": 1 },
+        "owner_native_authoritative": { "const": true },
+        "zero_copy": { "const": true },
+        "scope_note": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

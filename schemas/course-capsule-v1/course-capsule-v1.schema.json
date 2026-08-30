@@ -1,0 +1,285 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/course-capsule-v1.schema.json",
+  "title": "Open course capsule v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "course_id",
+    "locale",
+    "learner_directed",
+    "open_access_policy",
+    "course",
+    "course_native",
+    "layers",
+    "evidence"
+  ],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/course-capsule-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/open-course-capsule/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "course_id": { "$ref": "#/$defs/courseId" },
+    "locale": { "const": "id-ID" },
+    "learner_directed": { "const": true },
+    "open_access_policy": { "$ref": "#/$defs/openAccessPolicy" },
+    "course": { "$ref": "#/$defs/course" },
+    "course_native": { "$ref": "#/$defs/courseNative" },
+    "layers": { "$ref": "#/$defs/layers" },
+    "evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/evidence" }
+    }
+  },
+  "$defs": {
+    "courseId": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "status": {
+      "enum": ["verified", "legacy_verified", "available_unverified", "in_progress", "not_yet_produced", "not_applicable", "unknown"]
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "locator", "verified_date"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "minLength": 1 },
+        "verified_date": { "type": "string", "format": "date" },
+        "file_name": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "openAccessPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["public_access_required", "private_access_forbidden", "download_restriction_forbidden", "educator_materials_public", "rights_are_not_access_gates"],
+      "properties": {
+        "public_access_required": { "const": true },
+        "private_access_forbidden": { "const": true },
+        "download_restriction_forbidden": { "const": true },
+        "educator_materials_public": { "const": true },
+        "rights_are_not_access_gates": { "const": true }
+      }
+    },
+    "course": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["title", "level", "topic", "state", "purpose", "outcome", "prerequisites"],
+      "properties": {
+        "title": { "type": "string", "minLength": 1 },
+        "level": { "enum": ["A", "B", "C", "D"] },
+        "topic": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["published", "production"] },
+        "purpose": { "type": "string", "minLength": 1 },
+        "outcome": { "type": "string", "minLength": 1 },
+        "prerequisites": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "$ref": "#/$defs/courseId" }
+        }
+      }
+    },
+    "courseNative": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "corpus"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "corpus": { "type": "string", "minLength": 1 },
+        "repository": { "type": "string", "format": "uri" },
+        "zenodo": { "type": "string", "format": "uri" },
+        "edition": { "type": "string", "format": "uri" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    },
+    "layers": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["curriculum", "translation", "production", "learner", "educator", "federation", "interoperability"],
+      "properties": {
+        "curriculum": { "$ref": "#/$defs/curriculumLayer" },
+        "translation": { "$ref": "#/$defs/translationLayer" },
+        "production": { "$ref": "#/$defs/productionLayer" },
+        "learner": { "$ref": "#/$defs/learnerLayer" },
+        "educator": { "$ref": "#/$defs/educatorLayer" },
+        "federation": { "$ref": "#/$defs/federationLayer" },
+        "interoperability": { "$ref": "#/$defs/interopLayer" }
+      }
+    },
+    "curriculumLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "course_identity", "unit_identity_status", "route_id", "prerequisites", "outcomes"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "course_identity": { "$ref": "#/$defs/courseId" },
+        "unit_identity_status": { "$ref": "#/$defs/status" },
+        "route_id": { "type": "string", "pattern": "^route:[A-D][0-9]{2,3}$" },
+        "prerequisites": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/courseId" } },
+        "outcomes": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "translationLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "source_locale", "target_locale", "ledger_status", "terminology_status", "rights_status", "corrections_status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "source_locale": { "type": "string", "minLength": 1 },
+        "target_locale": { "const": "id-ID" },
+        "ledger_status": { "$ref": "#/$defs/status" },
+        "terminology_status": { "$ref": "#/$defs/status" },
+        "rights_status": { "$ref": "#/$defs/status" },
+        "corrections_status": { "$ref": "#/$defs/status" }
+      }
+    },
+    "productionLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "build_status", "deterministic_replay_status", "release_status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "build_status": { "$ref": "#/$defs/status" },
+        "deterministic_replay_status": { "$ref": "#/$defs/status" },
+        "release_status": { "$ref": "#/$defs/status" },
+        "repository": { "type": "string", "format": "uri" },
+        "zenodo": { "type": "string", "format": "uri" },
+        "edition": { "type": "string", "format": "uri" }
+      }
+    },
+    "deliveryResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "format": { "type": "string", "minLength": 1 },
+        "url": { "type": "string", "format": "uri" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "entry_point": { "type": "string", "minLength": 1 },
+        "inventory_count": { "type": "integer", "minimum": 1 },
+        "scope": { "type": "string", "minLength": 1 },
+        "dependency_free": { "type": "boolean" },
+        "evidence": { "$ref": "#/$defs/evidence" }
+      }
+    },
+    "learnerLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "primary", "online_html", "pdf", "epub", "portable_html", "capabilities"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "primary": { "$ref": "#/$defs/deliveryResource" },
+        "online_html": { "$ref": "#/$defs/deliveryResource" },
+        "pdf": { "$ref": "#/$defs/deliveryResource" },
+        "epub": { "$ref": "#/$defs/deliveryResource" },
+        "portable_html": { "$ref": "#/$defs/deliveryResource" },
+        "capabilities": {
+          "type": "object",
+          "additionalProperties": { "$ref": "#/$defs/status" }
+        }
+      }
+    },
+    "educatorFeature": {
+      "enum": [
+        "outcome_evidence_map",
+        "prerequisite_diagnostics",
+        "lesson_sequences",
+        "pacing_plans",
+        "worked_examples",
+        "exercise_bank",
+        "staged_hints_answers_solutions",
+        "assessment_blueprints",
+        "rubrics",
+        "misconceptions_interventions",
+        "activities_labs",
+        "accessibility_accommodations",
+        "remix_selectors",
+        "solution_provenance"
+      ]
+    },
+    "educatorResource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "resource_type", "status", "url"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "resource_type": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "url": { "type": "string", "format": "uri" },
+        "scope": { "type": "string", "minLength": 1 },
+        "license": { "type": "string", "minLength": 1 },
+        "pages": { "type": "integer", "minimum": 1 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "educatorLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "shared_identity_scope", "unit_alignment_status", "features", "resources", "evidence"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "shared_identity_scope": { "const": "learner_and_educator_views_share_course_unit_concept_exercise_ids" },
+        "unit_alignment_status": { "$ref": "#/$defs/status" },
+        "features": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/educatorFeature" } },
+        "resources": { "type": "array", "items": { "$ref": "#/$defs/educatorResource" } },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } }
+      }
+    },
+    "component": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "title", "kind", "status", "access"],
+      "properties": {
+        "id": { "type": "string", "minLength": 1 },
+        "title": { "type": "string", "minLength": 1 },
+        "kind": { "type": "string", "minLength": 1 },
+        "status": { "$ref": "#/$defs/status" },
+        "access": { "enum": ["public", "unknown"] },
+        "url": { "type": "string", "format": "uri" },
+        "license": { "type": "string", "minLength": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "federationLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "zero_copy", "components"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "zero_copy": { "const": true },
+        "components": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/component" } }
+      }
+    },
+    "semanticAdapter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "mapping_scope", "evidence"],
+      "properties": {
+        "status": { "$ref": "#/$defs/status" },
+        "contract_version": { "type": "string", "minLength": 1 },
+        "mapping_scope": { "type": "string", "minLength": 1 },
+        "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } }
+      }
+    },
+    "interopLayer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "capsule_contract", "native_identity_preserved", "mapping_scope", "semantic_adapter"],
+      "properties": {
+        "status": { "const": "verified" },
+        "capsule_contract": { "const": "open-course-capsule/1.0.0" },
+        "native_identity_preserved": { "const": true },
+        "mapping_scope": { "const": "course_level_without_content_copy" },
+        "semantic_adapter": { "$ref": "#/$defs/semanticAdapter" }
+      }
+    }
+  }
+}

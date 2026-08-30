@@ -253,6 +253,26 @@ export const liveCoursePublications = Object.freeze({
       updatedAt: '2026-08-29T00:00:00+02:00',
     },
   }),
+  C20: publication({
+    state: 'published',
+    edition: 'https://zenodo.org/records/22172396/files/Analisis_Dasar_II_Bahasa_Indonesia_v6.3.pdf?download=1',
+    zenodo: 'https://doi.org/10.5281/zenodo.22172396',
+    repository: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id',
+    release: 'https://github.com/KokunoYumeto/lebl-mathematics-family-id/releases/tag/lebl-family-id-wip.2026.08.30.u429',
+    version: '6.3-id-wip.2026.08.30.u429',
+    note: 'Analisis Dasar Jilid II lengkap telah diterbitkan sebagai pembaca 241 halaman pada rilis keluarga U429. Angka 429 mencakup tiga korpus keluarga Lebl dan bukan jumlah unit C20; R007 dan R008 tetap diproduksi. Pembaca C20 dan rekaman Zenodo telah dibaca kembali secara anonim dengan identitas bita yang tercatat.',
+    progress: {
+      unitLabel: 'jilid Analisis Dasar II',
+      publicPages: 241,
+      publicBoundary: 'Analisis Dasar Jilid II lengkap — rilis keluarga U429',
+      updatedAt: '2026-08-30T10:37:04Z',
+    },
+    verification: {
+      readerBytes: 2427379,
+      readerSha256: 'e70c74bb7edc466a7cb6ff0eff0de33dfcc7b3bc63010d018aff758a14d2dea3',
+      publicReadback: 'pass',
+    },
+  }),
   C90: publication({
     state: 'published',
     reader: 'https://kokunoyumeto.github.io/topology-an-inquiry-based-approach-id/reader/complete/',
