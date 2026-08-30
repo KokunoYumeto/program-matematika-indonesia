@@ -279,9 +279,10 @@ export const liveCoursePublications = Object.freeze({
     reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/reader/',
     edition: 'https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22102628',
-    repository: null,
+    repository: 'https://github.com/KokunoYumeto/bidang-euklides-dan-kerabatnya-id',
+    release: 'https://github.com/KokunoYumeto/bidang-euklides-dan-kerabatnya-id/releases/tag/2026.08.25-complete-course-a11y-ch20-portable',
     version: '2026.08.25-complete-course-a11y-ch20-portable',
-    note: 'Kursus utama lengkap tetap terbuka melalui rute belajar pusat. Buku kerja Clemens/Snapp pada lini lisensi terpisah juga telah selesai seluruh 22 unit; repositori edisi khusus belum tersedia dan karena itu tidak ditautkan.',
+    note: 'Kursus utama lengkap tetap terbuka melalui rute belajar pusat, repositori edisi khusus, Zenodo, dan rilis GitHub dengan 17 aset yang dibaca kembali secara anonim. Buku kerja Clemens/Snapp selesai 22/22 unit dan diterbitkan sebagai rilis GitHub terpisah enam aset karena lisensinya berbeda.',
     supplements: [
       {
         id: 'clemens-snapp-workbook-u022',
@@ -293,6 +294,7 @@ export const liveCoursePublications = Object.freeze({
         pages: 276,
         url: 'https://zenodo.org/records/22151703/files/buku-kerja-geometri-dua-dimensi-id-unit001-022.pdf?download=1',
         zenodo: 'https://doi.org/10.5281/zenodo.22151703',
+        release: 'https://github.com/KokunoYumeto/bidang-euklides-dan-kerabatnya-id/releases/tag/2026.08.29-unit001-022',
         conceptDoi: 'https://doi.org/10.5281/zenodo.22105519',
         bytes: 1143531,
         sha256: '436239ee2918f2ea43538c665aa9241ea207474e9c9ffcfc599121115ed1a90b',
