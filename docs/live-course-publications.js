@@ -219,9 +219,9 @@ export const liveCoursePublications = Object.freeze({
     edition: 'https://zenodo.org/records/22166545/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B025_WORKING_READER.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22166545',
     repository: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id',
-    release: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b024-2026.08.29.3',
+    release: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b025-2026.08.29.4',
     version: 'R011-B025',
-    note: 'Edisi kerja publik terbaru di Zenodo adalah R011-B025: Bab 1 sampai Bab 6, Bagian 6.4, dalam pembaca 260 halaman. Repositori dan rilis GitHub masih menampilkan checkpoint R011-B024; tautan GitHub dipertahankan dan dilabeli sebagai satu checkpoint di belakang, sedangkan pembaca utama selalu menuju B025.',
+    note: 'Edisi kerja publik terbaru R011-B025 telah tersedia dan diverifikasi byte-identik di Zenodo serta GitHub: Bab 1 sampai Bab 6, Bagian 6.4, dalam pembaca 260 halaman. Pembaca utama menuju PDF Zenodo, sedangkan repositori dan rilis GitHub menyediakan inventaris aset checkpoint yang sama. Produksi berlanjut ke B026 (Bab 7).',
     verification: {
       readerBytes: 12440420,
       readerSha256: 'b154484d2d2ddf0a49f0ee9925854f45e86b6e0fb17d241607db9fc27051e99d',
