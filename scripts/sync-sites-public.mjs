@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { cp, mkdir, readFile, rm } from 'node:fs/promises';
+import { cp, mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, relative, resolve, sep } from 'node:path';
@@ -33,6 +33,8 @@ const approvedDataFiles = new Set([
   'data/unit-route-v2.1.json',
   'data/unit-routes-v2.1.json',
 ]);
+const approvedReaderParents = new Set(['readers', 'readers/d40', 'readers/d40/unit14']);
+const approvedReaderPrefix = 'readers/d40/unit14/';
 await cp(source, target, {
   recursive: true,
   filter: (path) => {
@@ -43,6 +45,9 @@ await cp(source, target, {
     // pages contain navigation and links only; owner-native prose remains on
     // the canonical course reader.
     if (name === 'id-ID' || name.startsWith('id-ID/')) return true;
+    // Preserve only the admitted D40 Unit 14 portable reader closure.  Other
+    // owner-native reader trees remain outside this generated Sites mirror.
+    if (approvedReaderParents.has(name) || name.startsWith(approvedReaderPrefix)) return true;
     return approvedTopLevelFiles.has(name) || approvedDataFiles.has(name);
   },
 });
@@ -69,6 +74,8 @@ for (const name of [
   'id-ID/courses/D20/units/bab-17/index.html',
   'id-ID/courses/B95/index.html',
   'id-ID/courses/D30/index.html',
+  'id-ID/courses/D40/index.html',
+  'readers/d40/unit14/index.html',
   'id-ID/courses/C100/index.html',
   'id-ID/courses/C100/reader/index.html',
   'id-ID/courses/C100/reader/style.css',
@@ -86,6 +93,28 @@ for (const name of [
   ]);
   assert.equal(right.length, left.length, `${name}: jumlah byte sinkron berbeda.`);
   assert.equal(sha256(right), sha256(left), `${name}: hash sinkron berbeda.`);
+}
+
+const readerRoot = 'readers/d40/unit14';
+const listFiles = async (root, current = root) => {
+  const rows = [];
+  for (const entry of await readdir(resolve(source, current), { withFileTypes: true })) {
+    const logical = `${current}/${entry.name}`;
+    if (entry.isDirectory()) rows.push(...await listFiles(root, logical));
+    else if (entry.isFile()) rows.push(logical.slice(root.length + 1));
+  }
+  return rows.sort();
+};
+const readerFiles = await listFiles(readerRoot);
+assert.equal(readerFiles.length, 71, 'Penutupan pembaca D40 Unit 14 harus tepat 71 berkas.');
+for (const name of readerFiles) {
+  const logical = `${readerRoot}/${name}`;
+  const [left, right] = await Promise.all([
+    readFile(resolve(source, logical)),
+    readFile(resolve(target, logical)),
+  ]);
+  assert.equal(right.length, left.length, `${logical}: jumlah byte sinkron berbeda.`);
+  assert.equal(sha256(right), sha256(left), `${logical}: hash sinkron berbeda.`);
 }
 
 console.log('Static hub synchronized to public/hub with exact bytes.');
