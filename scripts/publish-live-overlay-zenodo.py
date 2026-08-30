@@ -83,7 +83,7 @@ EXPECTED_RECORD_DOIS = (
     "https://doi.org/10.5281/zenodo.22105195",
     "https://doi.org/10.5281/zenodo.22105443",
     "https://doi.org/10.5281/zenodo.22142120",
-    "https://doi.org/10.5281/zenodo.22151139",
+    "https://doi.org/10.5281/zenodo.22167691",
     "https://doi.org/10.5281/zenodo.22160944",
     "https://doi.org/10.5281/zenodo.22161090",
     "https://doi.org/10.5281/zenodo.22163372",
@@ -116,7 +116,7 @@ DESCRIPTION_PREFIX = (
     "dengan jalur prasyarat, pencarian mata kuliah, status edisi terkini, dan tautan langsung ke bahan belajar.</p>"
     "<p>Versi v0.62.8 memperbaiki rute belajar D80: katalog siswa kini membuka pembaca HTML daring yang telah "
     "divalidasi pada tampilan desktop dan seluler dengan 27.308 formula, nol kesalahan MathJax, dan pengguliran lokal untuk matematika lebar. "
-    "PDF 864 halaman tetap menjadi edisi unduhan. ZIP HTML luring pada Zenodo lama belum ditawarkan sebagai rute siswa sampai versi terkoreksi diterbitkan oleh pemilik korpus. "
+    "PDF 864 halaman tetap menjadi edisi unduhan. Paket HTML luring terkoreksi dengan 31 berkas juga tersedia pada record 22167691 sebagai unduhan tambahan. "
     "Seluruh 98 berkas v0.62.7 diwarisi tanpa perubahan. Snapshot otoritas v0.62.0 tetap "
     "dibedakan dari status publikasi langsung; program keseluruhan belum lengkap dan pekerjaan produksi terus berjalan.</p>"
     "<p>Lapisan JSON dan backend mesin tetap tersedia sebagai pendamping sekunder, bukan sebagai pintu masuk siswa. "
@@ -127,7 +127,7 @@ DESCRIPTION_PREFIX = (
 )
 NOTES_PREFIX = (
     "Rilis aditif v0.62.8: lima berkas overlay siswa mengarahkan D80 ke pembaca HTML daring yang "
-    "telah divalidasi dan tidak menawarkan ZIP HTML luring lama; semua 98 berkas v0.62.7 dipertahankan "
+    "telah divalidasi dan menautkan paket HTML luring terkoreksi; semua 98 berkas v0.62.7 dipertahankan "
     "byte-for-byte. Program keseluruhan belum lengkap."
 )
 

@@ -396,8 +396,8 @@ def publish_release(args: argparse.Namespace) -> None:
                 "body": (
                     "Penerus aditif v0.62.8: hub siswa kini mengarahkan D80 ke pembaca HTML daring yang telah "
                     "divalidasi dengan 27.308 formula dan nol kesalahan MathJax, sambil mempertahankan PDF 864 halaman "
-                    "sebagai edisi unduhan. ZIP HTML luring Zenodo lama tidak ditawarkan sebagai rute siswa sampai "
-                    "versi yang telah diperbaiki terbit. Seluruh 98 aset v0.62.7 dipertahankan byte-for-byte; "
+                    "sebagai edisi unduhan. Paket HTML luring terkoreksi dengan 31 berkas tersedia pada Zenodo record "
+                    "22167691 sebagai unduhan tambahan. Seluruh 98 aset v0.62.7 dipertahankan byte-for-byte; "
                     "program keseluruhan masih dalam produksi."
                 ),
                 "draft": False,

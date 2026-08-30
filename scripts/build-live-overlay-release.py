@@ -124,8 +124,8 @@ PAGES_READBACKS = (
     {
         "path": "docs/live-course-publications.js",
         "url": f"{STUDENT_URL}live-course-publications.js",
-        "bytes": 32_354,
-        "sha256": "cc7db0ca25be50cab56a537ce91f1278435bb96e76a1c0b052ab010eff2afca9",
+        "bytes": 33_055,
+        "sha256": "114de0e71d0f3a4203eac37660a3f70d0a96a1a65810b533107179546a012d96",
     },
     {
         "path": "docs/id-ID/courses/B95/index.html",
@@ -159,13 +159,13 @@ RECEIPT_CHECKS = {
     "overlay_rows": "20/20",
     "effective_completed_public_roles": "27",
     "distinct_completed_public_records": "26",
-    "strict_public_links": "165/165; live network gate executed",
+    "strict_public_links": "166/166; live network gate executed",
     "static_site_validation": "pass; 40 courses; 20 overlay rows; 27 effective published roles",
     "github_pages_readbacks": "7/7 exact live HTTP 200 byte/hash matches",
     "b95_r011_b025": "260-page learner route and public PDF exact byte/hash gate pass",
     "d40_unit14": "230-page PDF plus 71-file portable HTML learner route pass",
     "d100_bgk_unit06": "36 public units and 586 public pages bound to record 22164552",
-    "d80_html_reader": "public corrected HTML reader with 27,308 formulae and zero MathJax errors is the primary learner route; obsolete Zenodo offline ZIP is not advertised",
+    "d80_html_reader": "public corrected HTML reader with 27,308 formulae and zero MathJax errors is the primary learner route; corrected 31-file offline ZIP is published at record 22167691",
     "backend_v23_conformance": "inherited v0.1.1 archive plus three sanitized receipts remain byte-identical and pass semantic/privacy gates",
     "privacy_scan": "pass",
 }
@@ -474,9 +474,9 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         raise ValueError(f"strict public-link check failed: {diagnostic}")
     report = json.loads(process.stdout)
     links = report.get("links")
-    if report.get("status") != "pass" or report.get("checked") != 165:
+    if report.get("status") != "pass" or report.get("checked") != 166:
         raise ValueError("strict public-link count/result mismatch")
-    if not isinstance(links, list) or len(links) != 165:
+    if not isinstance(links, list) or len(links) != 166:
         raise ValueError("strict public-link result inventory mismatch")
     if any(not isinstance(row.get("status"), int) or not 200 <= row["status"] < 400 for row in links):
         raise ValueError("strict public-link report contains a non-success status")
@@ -485,7 +485,7 @@ def run_strict_link_check(root: Path) -> dict[str, Any]:
         "mode": "strict; no pending-central exception",
         "executed": True,
         "result": "pass",
-        "checked": 165,
+        "checked": 166,
         "failures": 0,
     }
 
