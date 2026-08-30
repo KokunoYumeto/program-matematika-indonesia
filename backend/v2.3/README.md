@@ -83,8 +83,30 @@ replay are byte-identical. Component rights remain unflattened and native
 limitations remain explicit; the adapter does not upgrade missing native
 anchors or replay evidence into invented conformance.
 
-A00, B10, and D60 are three lane proofs. They are not a declaration that the
-other 37 course roles conform to v2.3.1.
+### Corpus-neutral D110 lane adapter v0.1.0
+
+The fourth admitted implementation is the D110 Mathematics in Lean lane
+adapter at `extensions/d110-mathematics-in-lean-v0.1.0`, distributed with
+central release v0.62.11. It projects the complete Indonesian id.3 edition
+without copying reader prose and without replacing the owner's 10,978 native
+backend records. The canonical learner route remains the owner's semantic HTML
+course:
+<https://kokunoyumeto.github.io/mathematics-in-lean-id/>.
+
+The adapter contains 41,460 canonical records in nineteen JSONL tables with
+nineteen lossless per-table CSV projections plus one global `records.csv`. It
+binds 1,213 source/target content pairs, 2,177 evidence-bound translation-state
+rows, 9,272 reversible materialized-native mappings, 1,706 additional native
+records by exact shard hash, and 9,272 component-rights assignments. Two
+isolated builds, canonical-copy replay, packaged-validator replay, and
+deterministic ZIP replay are byte-identical. Native `urn:mil:*` identities,
+explicit prerequisite relations, draft asset states, and the distinction
+between learner exercises and intentional solution demonstrations containing
+Lean `sorry` remain explicit; an untagged PDF remains secondary to semantic
+HTML.
+
+A00, B10, D60, and D110 are four lane proofs. They are not a declaration that
+the other 36 course roles conform to v2.3.1.
 
 ## Design proposal retained separately
 
