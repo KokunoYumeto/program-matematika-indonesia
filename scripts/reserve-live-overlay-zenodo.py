@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reserve PMI v0.62.8 as a new Zenodo version without changing its payload.
+"""Reserve the cap-compatible PMI v0.62.8.1 corrective Zenodo version.
 
 This script performs the single mutating ``newversion`` request.  It deliberately
 does not edit metadata or files; the publication script owns those operations.
@@ -21,12 +21,12 @@ import requests
 
 
 PROJECT = Path(__file__).resolve().parents[1]
-VERSION = "0.62.8"
+VERSION = "0.62.8.1"
 CONCEPT_ID = 22059707
-PREDECESSOR_ID = 22167525
-PREDECESSOR_VERSION = "0.62.7"
-EXPECTED_INHERITED_FILES = 98
-EXPECTED_TOTAL_FILES = 103
+PREDECESSOR_ID = 22167788
+PREDECESSOR_VERSION = "0.62.8"
+EXPECTED_INHERITED_FILES = 100
+EXPECTED_TOTAL_FILES = 98
 API = "https://zenodo.org/api/deposit/depositions"
 PUBLIC_API = "https://zenodo.org/api/records"
 DEFAULT_RECEIPT = PROJECT / f"ZENODO_RESERVATION_RECEIPT_v{VERSION}.json"
@@ -36,6 +36,13 @@ OVERLAY_NAMES = {
     "program-matematika-indonesia-live-overlay-source-v0.62.8.zip",
     "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.8.json",
     "LIVE_OVERLAY_CHECKSUMS_v0.62.8.sha256",
+}
+SUPERSEDED_PREDECESSOR_NAMES = {
+    "00_MULAI_BELAJAR_PROGRAM_MATEMATIKA_INDONESIA_LIVE_v0.62.7.html",
+    "LIVE_PUBLICATION_OVERLAY_MANIFEST_v0.62.7.json",
+    "program-matematika-indonesia-live-overlay-source-v0.62.7.zip",
+    "LOCAL_LIVE_OVERLAY_VALIDATION_v0.62.7.json",
+    "LIVE_OVERLAY_CHECKSUMS_v0.62.7.sha256",
 }
 
 
@@ -182,13 +189,10 @@ def main() -> int:
         candidate_files = public_file_facts(latest, EXPECTED_TOTAL_FILES)
         inherited_by_name = {row["name"]: row for row in inherited_files}
         candidate_by_name = {row["name"]: row for row in candidate_files}
-        require(set(inherited_by_name).issubset(candidate_by_name), "successor candidate is missing an inherited file")
-        require(
-            {name for name in candidate_by_name if name not in inherited_by_name} == OVERLAY_NAMES,
-            "successor candidate additive filenames differ",
-        )
-        for name, expected in inherited_by_name.items():
-            require(candidate_by_name[name] == expected, f"successor candidate changed inherited file metadata: {name}")
+        stable_names = set(inherited_by_name) - SUPERSEDED_PREDECESSOR_NAMES - OVERLAY_NAMES
+        require(set(candidate_by_name) == stable_names | OVERLAY_NAMES, "successor candidate replacement boundary differs")
+        for name in stable_names:
+            require(candidate_by_name[name] == inherited_by_name[name], f"successor candidate changed a stable file: {name}")
         receipt = {
             "schema_id": "program-matematika-indonesia/zenodo-live-overlay-reservation/v1",
             "recorded_at": datetime.now(timezone.utc).isoformat().replace("+00:00", "Z"),
@@ -264,11 +268,12 @@ def main() -> int:
     draft_files = draft_file_facts(draft)
     inherited_by_name = {row["name"]: row for row in inherited_files}
     draft_by_name = {row["name"]: row for row in draft_files}
-    require(set(inherited_by_name).issubset(draft_by_name), "successor draft is missing an inherited file")
-    extra_names = set(draft_by_name) - set(inherited_by_name)
-    require(extra_names.issubset(OVERLAY_NAMES), "successor draft contains a file outside the 98+5 boundary")
-    for name, expected in inherited_by_name.items():
-        require(draft_by_name[name] == expected, f"successor draft changed inherited file metadata: {name}")
+    stable_names = set(inherited_by_name) - SUPERSEDED_PREDECESSOR_NAMES - OVERLAY_NAMES
+    require(stable_names.issubset(draft_by_name), "successor draft is missing a stable predecessor file")
+    require(set(draft_by_name).issubset(set(inherited_by_name) | OVERLAY_NAMES), "successor draft contains an out-of-bound file")
+    for name in set(draft_by_name) & set(inherited_by_name):
+        require(draft_by_name[name] == inherited_by_name[name], f"successor draft changed predecessor file metadata: {name}")
+    present_overlay_names = set(draft_by_name) & OVERLAY_NAMES
 
     receipt = {
         "schema_id": "program-matematika-indonesia/zenodo-live-overlay-reservation/v1",
@@ -287,8 +292,11 @@ def main() -> int:
         "visibility_intent": "public_open",
         "inherited_file_count": len(inherited_files),
         "inherited_inventory_md5_aggregate_sha256": compact_sha256(inherited_files),
-        "already_present_overlay_file_count": len(extra_names),
-        "already_present_overlay_filenames": sorted(extra_names),
+        "already_present_overlay_file_count": len(present_overlay_names),
+        "already_present_overlay_filenames": sorted(present_overlay_names),
+        "planned_superseded_draft_clone_removals": sorted(SUPERSEDED_PREDECESSOR_NAMES),
+        "planned_successor_file_count": EXPECTED_TOTAL_FILES,
+        "zenodo_100_file_cap_replacement_view": True,
         "creator_array_count": len(predecessor_metadata["creators"]),
         "creator_array_canonical_sha256": compact_sha256(predecessor_metadata["creators"]),
         "contributor_array_count": len(predecessor_metadata["contributors"]),
@@ -298,7 +306,8 @@ def main() -> int:
         "metadata_or_file_mutation_performed": False,
         "next_action": (
             "Run publish-live-overlay-zenodo.py with this reserved record ID and the validated "
-            "flat 103-file releases/v0.62.8 payload; only its five fixed additive files may be uploaded."
+            "flat 103-file releases/v0.62.8 payload; remove only the five superseded v0.62.7 draft clones, "
+            "carry 93 stable files, and ensure the five v0.62.8 overlay files form a 98-file successor."
         ),
     }
     receipt_bytes, receipt_sha256 = write_receipt(args.receipt.resolve(), receipt)
