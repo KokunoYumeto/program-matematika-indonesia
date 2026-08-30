@@ -291,11 +291,14 @@ assert.equal(effectiveCoursesById.get('D80').progress.integrationReadyUnits, 146
 assert.equal(effectiveCoursesById.get('D80').progress.canonicalUnits, 146);
 assert.equal(effectiveCoursesById.get('D80').progress.publicUnits, 146);
 assert.equal(effectiveCoursesById.get('D80').progress.publicPages, 864);
-assert.equal(effectiveCoursesById.get('D80').reader, effectiveCoursesById.get('D80').edition);
+assert.equal(effectiveCoursesById.get('D80').reader, 'https://kokunoyumeto.github.io/metode-aljabar-jilid-2-id/');
 assert.match(effectiveCoursesById.get('D80').edition, /00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia\.pdf\?download=1$/);
 assert.match(effectiveCoursesById.get('D80').zenodo, /22151139$/);
 assert.equal(effectiveCoursesById.get('D80').supplements.length, 1);
 assert.equal(effectiveCoursesById.get('D80').supplements[0].id, 'metode-aljabar-jilid-2-backend');
+assert.match(effectiveCoursesById.get('D80').note, /27\.308 formula/);
+assert.match(effectiveCoursesById.get('D80').note, /nol kesalahan MathJax/);
+assert.match(effectiveCoursesById.get('D80').note, /ZIP HTML luring pada Zenodo lama belum ditawarkan/);
 assert.equal(effectiveCoursesById.get('D100').progress.totalUnits, 60);
 assert.equal(effectiveCoursesById.get('D100').progress.translationBearingUnits, 36);
 assert.equal(effectiveCoursesById.get('D100').progress.integrationReadyUnits, 36);

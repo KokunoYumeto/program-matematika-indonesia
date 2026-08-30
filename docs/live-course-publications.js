@@ -496,12 +496,12 @@ export const liveCoursePublications = Object.freeze({
   }),
   D80: publication({
     state: 'published',
-    reader: 'https://zenodo.org/records/22151139/files/00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia.pdf?download=1',
+    reader: 'https://kokunoyumeto.github.io/metode-aljabar-jilid-2-id/',
     edition: 'https://zenodo.org/records/22151139/files/00_metode-dalam-aljabar-jilid-2-edisi-bahasa-indonesia.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22151139',
     repository: 'https://github.com/KokunoYumeto/metode-aljabar-jilid-2-id',
     version: 'complete-edition-2026-08-29',
-    note: 'Edisi lengkap memuat 146 unit berurutan, 194 latihan sumber, 117 petunjuk sumber, dua Jembatan Penguasaan asli, pembaca PDF 864 halaman, serta 6.347 segmen backend semantik. Rute utama sementara diarahkan ke PDF: audit peramban menemukan 719 kesalahan rendering MathJax pada 121 bagian pembaca HTML, sehingga pembaca HTML tidak ditawarkan kepada siswa sampai perbaikan formula diterbitkan.',
+    note: 'Edisi lengkap memuat 146 unit berurutan, 194 latihan sumber, 117 petunjuk sumber, dua Jembatan Penguasaan asli, pembaca PDF 864 halaman, serta 6.347 segmen backend semantik. Pembaca HTML daring yang diperbaiki pada commit Pages b6ea8ca menampilkan 27.308 formula dengan nol kesalahan MathJax; audit desktop dan seluler membuktikan kolom baca terpusat, tanpa luapan halaman, dan matematika lebar menggulir secara lokal. ZIP HTML luring pada Zenodo lama belum ditawarkan sebagai rute siswa sampai versi koreksinya diterbitkan.',
     supplements: [
       {
         id: 'metode-aljabar-jilid-2-backend',
@@ -527,7 +527,7 @@ export const liveCoursePublications = Object.freeze({
       totalPages: 864,
       publicPages: 864,
       publicBoundary: 'edisi lengkap 146/146 unit',
-      updatedAt: '2026-08-30T01:28:22+02:00',
+      updatedAt: '2026-08-30T02:57:00+02:00',
     },
   }),
   D100: publication({
