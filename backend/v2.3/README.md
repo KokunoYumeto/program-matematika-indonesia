@@ -63,8 +63,28 @@ The six corpus-neutral Draft 2020-12 schemas for this adapter family are:
 - `csv-projection-manifest-v0.2.schema.json`; and
 - `scope-declaration-v0.2.schema.json`.
 
-The B10 extension is a second lane proof, not a declaration that the other 38
-course roles conform to v2.3.1.
+### Corpus-neutral D60 lane adapter v0.1.0
+
+The third admitted implementation is the D60 Algebraic Topology lane adapter
+at `extensions/d60-algebraic-topology-v0.1.0`, distributed with central release
+v0.62.10. It projects the final owner-bound v0.31.7 edition without copying
+reader prose and without replacing the owner's 8,338 native backend records.
+The canonical learner route remains the owner's readable HTML page:
+<https://kokunoyumeto.github.io/algebraic-topology-id/roberts-001-030-fomberg-001-007-ca01-hints-r01-r06-ca02-ca03-lab01-lab02-lab03-lab04-capstone/>.
+
+The adapter contains 27,642 canonical records covering 2,204 stable units,
+2,174 content bindings, 2,204 evidence-bound translation-state rows, 1,337
+relations, 96 component-rights declarations, 4,378 rights assignments, 258
+artifacts, and 216 QA records. It proves 6,279 reversible materialized-native
+mappings plus two explicitly scoped namespace rows. Nineteen JSONL tables have
+nineteen lossless per-table CSV projections plus one global `records.csv`.
+Two isolated builds, canonical-copy replay, packaged-validator replay, and ZIP
+replay are byte-identical. Component rights remain unflattened and native
+limitations remain explicit; the adapter does not upgrade missing native
+anchors or replay evidence into invented conformance.
+
+A00, B10, and D60 are three lane proofs. They are not a declaration that the
+other 37 course roles conform to v2.3.1.
 
 ## Design proposal retained separately
 

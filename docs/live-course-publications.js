@@ -463,7 +463,21 @@ export const liveCoursePublications = Object.freeze({
     zenodo: 'https://doi.org/10.5281/zenodo.22168033',
     repository: 'https://github.com/KokunoYumeto/algebraic-topology-id',
     version: '0.31.7',
-    note: 'Edisi komposit lengkap memuat Roberts 30/30, Fomberg §§1.1–1.13, 84/84 butir penguasaan biasa, 24/24 asesmen kumulatif, 108/108 butir penguasaan bersolusi, laboratorium komputasi 4/4, empat graf perbaikan bukti, dan capstone D60. Pembaca PDF berjumlah 564 halaman; sembilan berkas Zenodo telah dibaca balik dua kali secara anonim dan cocok byte demi byte.',
+    note: 'Edisi komposit lengkap memuat Roberts 30/30, Fomberg §§1.1–1.13, 84/84 butir penguasaan biasa, 24/24 asesmen kumulatif, 108/108 butir penguasaan bersolusi, laboratorium komputasi 4/4, empat graf perbaikan bukti, dan capstone D60. Pembaca PDF berjumlah 564 halaman; sembilan berkas Zenodo telah dibaca balik dua kali secara anonim dan cocok byte demi byte. Adapter v2.3.1 memvalidasi 27.642 rekaman kanonik, 2.204 unit, 6.279 pemetaan reversibel, 19 tabel JSONL/CSV, dan mempertahankan 8.338 rekaman native tanpa menyalin prosa.',
+    supplements: [
+      {
+        id: 'd60-editable-source-backend-complete',
+        title: 'Sumber dan backend D60 — arsip reproduksibilitas sekunder',
+        resourceType: 'reference',
+        state: 'complete',
+        scope: 'Sumber sunting dan backend native edisi komposit lengkap; bukan pembaca utama. Mulai belajar melalui HTML di atas.',
+        license: 'Hak komponen dipertahankan; lihat manifest hak dalam arsip',
+        url: 'https://zenodo.org/records/22168033/files/TOPOLOGI_ALJABAR_ID_ROBERTS_001_030_FOMBERG_001_007_CA01_HINTS_R01_R06_CA02_CA03_LAB01_LAB02_LAB03_LAB04_CAPSTONE_EDITABLE_SOURCE_BACKEND.zip?download=1',
+        zenodo: 'https://doi.org/10.5281/zenodo.22168033',
+        bytes: 8406450,
+        sha256: 'f7670f6e6ad9a95ff808a1ddf4c2fdd8b41c6bce1916d33ac6fe5063be184b1b',
+      },
+    ],
     progress: {
       unitLabel: 'laboratorium komputasi',
       totalUnits: 4,

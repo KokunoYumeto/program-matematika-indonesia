@@ -17,6 +17,8 @@ const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 const effectiveCourses = materializeLiveCourses(courses);
 const effectiveCoursesById = new Map(effectiveCourses.map((course) => [course.id, course]));
 const effectiveNextCourseIdsById = deriveNextCourseIdsById(effectiveCourses);
+const effectivePublishedCourses = effectiveCourses.filter(({ state }) => state === 'published');
+const effectivePublishedRecordDois = new Set(effectivePublishedCourses.map(({ zenodo }) => zenodo).filter(Boolean));
 
 const [
   html,
@@ -43,6 +45,9 @@ const [
   legacyD20RouteBytes,
   d20RouteBytes,
   routeManifestV21,
+  rootReadme,
+  backendV23Readme,
+  schemaV23Index,
 ] = await Promise.all([
   readFile(resolve(root, 'docs/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/app.js'), 'utf8'),
@@ -68,6 +73,9 @@ const [
   readFile(resolve(root, 'docs/data/unit-route-v2.1.json')),
   readFile(resolve(root, 'docs/data/unit-route-D20-v2.1.json')),
   readJson('docs/data/unit-routes-v2.1.json'),
+  readFile(resolve(root, 'README.md'), 'utf8'),
+  readFile(resolve(root, 'backend/v2.3/README.md'), 'utf8'),
+  readFile(resolve(root, 'docs/schema/v2.3/index.html'), 'utf8'),
 ]);
 
 const authority = JSON.parse(authorityBytes.toString('utf8'));
@@ -151,6 +159,8 @@ for (const id of liveOverlayRequiredRoleIds) {
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
+assert.equal(effectivePublishedCourses.length, 28, 'Overlay harus menampilkan tepat 28 peran dengan edisi selesai.');
+assert.equal(effectivePublishedRecordDois.size, 27, 'Dua puluh delapan peran selesai harus memakai tepat 27 rekaman edisi berbeda.');
 const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
 for (const course of effectiveCourses) {
   assert.ok(allowedStates.has(course.state), `${course.id}: status efektif tidak dikenal.`);
@@ -290,6 +300,19 @@ assert.match(effectiveCoursesById.get('D60').note, /108\/108 butir penguasaan be
 assert.match(effectiveCoursesById.get('D60').note, /empat graf perbaikan bukti/);
 assert.match(effectiveCoursesById.get('D60').note, /capstone D60/);
 assert.match(effectiveCoursesById.get('D60').note, /sembilan berkas Zenodo/);
+assert.match(effectiveCoursesById.get('D60').note, /27\.642 rekaman kanonik/);
+assert.match(effectiveCoursesById.get('D60').note, /2\.204 unit/);
+assert.match(effectiveCoursesById.get('D60').note, /6\.279 pemetaan reversibel/);
+assert.match(effectiveCoursesById.get('D60').note, /19 tabel JSONL\/CSV/);
+assert.match(effectiveCoursesById.get('D60').note, /8\.338 rekaman native/);
+assert.equal(effectiveCoursesById.get('D60').supplements.length, 1);
+assert.equal(effectiveCoursesById.get('D60').supplements[0].id, 'd60-editable-source-backend-complete');
+assert.equal(effectiveCoursesById.get('D60').supplements[0].resourceType, 'reference');
+assert.match(effectiveCoursesById.get('D60').supplements[0].scope, /bukan pembaca utama/i);
+assert.equal(effectiveCoursesById.get('D60').supplements[0].bytes, 8406450);
+assert.equal(effectiveCoursesById.get('D60').supplements[0].sha256, 'f7670f6e6ad9a95ff808a1ddf4c2fdd8b41c6bce1916d33ac6fe5063be184b1b');
+assert.match(effectiveCoursesById.get('D60').supplements[0].url, /22168033\/files\/TOPOLOGI_ALJABAR_ID_.*_CAPSTONE_EDITABLE_SOURCE_BACKEND\.zip\?download=1$/);
+assert.doesNotMatch(effectiveCoursesById.get('D60').reader, /\.(?:json|jsonl|csv|zip)(?:[?#]|$)/i, 'Rute utama D60 harus tetap pembaca HTML.');
 assert.equal(effectiveCoursesById.get('D70').state, 'published');
 assert.equal(effectiveCoursesById.get('D70').progress.publicUnits, 4);
 assert.equal(effectiveCoursesById.get('D70').progress.publicPages, 716);
@@ -425,6 +448,20 @@ assert.ok(
 assert.match(html, new RegExp(`${courses.length} korpus terpilih`));
 assert.match(html, /produksi yang belum selesai tetap dilabeli dengan jelas/i);
 assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
+assert.match(html, /28 peran melalui 27 rekaman edisi lengkap/);
+assert.match(html, /A00, B10, dan D60/);
+assert.match(html, /37 peran lain/);
+assert.match(rootReadme, /D60 kini merupakan edisi komposit lengkap v0\.31\.7/);
+assert.match(rootReadme, /Backend v2\.3 kini memiliki tiga bukti jalur yang diterima: A00, B10, dan D60/);
+assert.match(rootReadme, /rilis pusat v0\.62\.10/);
+assert.match(backendV23Readme, /27,642 canonical records/);
+assert.match(backendV23Readme, /2,204 stable units/);
+assert.match(backendV23Readme, /6,279 reversible materialized-native/);
+assert.match(backendV23Readme, /8,338 native backend records/);
+assert.match(backendV23Readme, /other 37 course roles/);
+assert.match(schemaV23Index, /A00, B10, dan D60/);
+assert.match(schemaV23Index, /27\.642 rekaman kanonik/);
+assert.match(schemaV23Index, /rilis pusat v0\.62\.10/);
 assert.match(html, new RegExp(`Mulai belajar — buka ${courses.length} mata kuliah`));
 assert.match(html, new RegExp(escapeRegex(program.repositories.github.url)));
 assert.match(html, /melanjutkan ke mana/);
@@ -514,7 +551,8 @@ console.log(JSON.stringify({
   selected: selectedIds.length,
   unresolved: unresolvedIds.length,
   publishedCanonRoles: publishedIds.length,
-  effectivePublishedRoles: effectiveCourses.filter(({ state }) => state === 'published').length,
+  effectivePublishedRoles: effectivePublishedCourses.length,
+  effectiveDistinctPublishedRecords: effectivePublishedRecordDois.size,
   liveOverlayRows: Object.keys(liveCoursePublications).length,
   completedPublicCourseRoles: publishedIds.length,
   completedPublicRecords: program.completedPublicRecordDois.length,
