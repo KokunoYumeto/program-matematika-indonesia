@@ -112,7 +112,7 @@ DESCRIPTION_PREFIX = (
     "buka halaman siswa Program Matematika Indonesia</a>. Ini adalah pintu masuk utama yang dapat dibaca manusia, "
     "dengan jalur prasyarat, pencarian mata kuliah, status edisi terkini, dan tautan langsung ke bahan belajar.</p>"
     "<p>Versi v0.62.7 menyelaraskan katalog siswa dengan bukti publik terkini: D40 Unit 14 memiliki pembaca HTML portabel dan PDF 230 halaman; "
-    "D100 memuat Kurva Aljabar lengkap serta BGK Unit 1–6 dengan 586 halaman publik; dan B95 mengarah ke checkpoint B025 260 halaman sambil melabeli GitHub B024 sebagai satu checkpoint di belakang. "
+    "D100 memuat Kurva Aljabar lengkap serta BGK Unit 1–6 dengan 586 halaman publik; dan B95 mengarah ke checkpoint B025 260 halaman yang telah diverifikasi byte-identik di Zenodo serta GitHub, dengan produksi berlanjut ke B026. "
     "Empat alamat $id skema backend v2.3 yang diterima juga tersedia sebagai salinan bita-persis. Seluruh 93 berkas v0.62.6 diwarisi tanpa perubahan. Snapshot otoritas v0.62.0 tetap "
     "dibedakan dari status publikasi langsung; program keseluruhan belum lengkap dan pekerjaan produksi terus berjalan.</p>"
     "<p>Lapisan JSON dan backend mesin tetap tersedia sebagai pendamping sekunder, bukan sebagai pintu masuk siswa. "
