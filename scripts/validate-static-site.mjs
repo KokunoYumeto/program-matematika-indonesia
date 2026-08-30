@@ -32,6 +32,7 @@ const [
   learnerStateSchemaBytes,
   publicLearnerStateSchemaBytes,
   b95Landing,
+  d40ReaderIndexBytes,
   d30Landing,
   c100Landing,
   c100ReaderBytes,
@@ -56,6 +57,7 @@ const [
   readFile(resolve(root, 'schemas/v1/learner-state-v1.schema.json')),
   readFile(resolve(root, 'docs/schema/v1/learner-state-v1.schema.json')),
   readFile(resolve(root, 'docs/id-ID/courses/B95/index.html'), 'utf8'),
+  readFile(resolve(root, 'docs/readers/d40/unit14/index.html')),
   readFile(resolve(root, 'docs/id-ID/courses/D30/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/id-ID/courses/C100/index.html'), 'utf8'),
   readFile(resolve(root, 'docs/id-ID/courses/C100/reader/index.html')),
@@ -143,7 +145,7 @@ for (const course of courses) {
   }
 }
 
-const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B20', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D20', 'D30', 'D50', 'D60', 'D70', 'D100'];
+const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B20', 'B30', 'B50', 'B95', 'C10', 'C90', 'C100', 'C140', 'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D100'];
 for (const id of liveOverlayRequiredRoleIds) {
   assert.ok(liveCoursePublications[id], `${id}: baris lama belum memiliki overlay publikasi langsung.`);
 }
@@ -226,16 +228,16 @@ assert.match(effectiveCoursesById.get('B30').zenodo, /22151145$/);
 assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 138);
 assert.equal(effectiveCoursesById.get('B50').supplements.length, 2);
 assert.match(effectiveCoursesById.get('B50').zenodo, /22163372$/);
-assert.match(effectiveCoursesById.get('B95').zenodo, /22166152$/);
-assert.equal(effectiveCoursesById.get('B95').version, 'R011-B024');
+assert.match(effectiveCoursesById.get('B95').zenodo, /22166545$/);
+assert.equal(effectiveCoursesById.get('B95').version, 'R011-B025');
 assert.match(effectiveCoursesById.get('B95').release, /r011-b024-2026\.08\.29\.3$/);
-assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 253);
-assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'B024 — Bab 6, Bagian 6.3');
-assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B024_WORKING_READER\.pdf\?download=1$/);
+assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 260);
+assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'B025 — Bab 6, Bagian 6.4');
+assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B025_WORKING_READER\.pdf\?download=1$/);
 assert.deepEqual(effectiveCoursesById.get('B95').verification, {
-  readerBytes: 12390137,
-  readerSha256: 'fcd78ff026131e4979c0ea282b4468101406527f16dc335ee6583ad220273b53',
-  backendRecords: 8911,
+  readerBytes: 12440420,
+  readerSha256: 'b154484d2d2ddf0a49f0ee9925854f45e86b6e0fb17d241607db9fc27051e99d',
+  backendRecords: 9119,
   publicAssets: 9,
 });
 assert.equal(effectiveCoursesById.get('C90').state, 'published');
@@ -259,6 +261,20 @@ assert.equal(effectiveCoursesById.get('D20').progress.publicUnits, 17);
 assert.match(effectiveCoursesById.get('D20').zenodo, /22088947$/);
 assert.equal(effectiveCoursesById.get('D30').progress.publicPages, 340);
 assert.match(effectiveCoursesById.get('D30').zenodo, /22163421$/);
+assert.equal(effectiveCoursesById.get('D40').state, 'production');
+assert.equal(effectiveCoursesById.get('D40').progress.translationBearingUnits, 14);
+assert.equal(effectiveCoursesById.get('D40').progress.integrationReadyUnits, 14);
+assert.equal(effectiveCoursesById.get('D40').progress.canonicalUnits, 14);
+assert.equal(effectiveCoursesById.get('D40').progress.publicUnits, 14);
+assert.equal(effectiveCoursesById.get('D40').progress.publicPages, 230);
+assert.match(effectiveCoursesById.get('D40').reader, /readers\/d40\/unit14\/$/);
+assert.match(effectiveCoursesById.get('D40').edition, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_UNIT_14\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('D40').zenodo, /22161412$/);
+assert.equal(effectiveCoursesById.get('D40').supplements.length, 1);
+assert.equal(effectiveCoursesById.get('D40').supplements[0].id, 'dionne-unit14-source');
+assert.equal(effectiveCoursesById.get('D40').supplements[0].bytes, 12141309);
+assert.equal(effectiveCoursesById.get('D40').supplements[0].sha256, '248b65a225e96f0a342ab2f6288aa303d28bfd2a8e108db14f7e125ef5401f0e');
+assert.equal(sha256(d40ReaderIndexBytes), 'c6785811f86cb96cc3d9a2ce81e094c511937f6d304ba78bab0973928ebcbbcf');
 assert.equal(effectiveCoursesById.get('D50').state, 'published');
 assert.match(effectiveCoursesById.get('D50').zenodo, /22161090$/);
 assert.equal(effectiveCoursesById.get('D60').progress.publicUnits, 4);
@@ -281,13 +297,16 @@ assert.match(effectiveCoursesById.get('D80').zenodo, /22151139$/);
 assert.equal(effectiveCoursesById.get('D80').supplements.length, 1);
 assert.equal(effectiveCoursesById.get('D80').supplements[0].id, 'metode-aljabar-jilid-2-backend');
 assert.equal(effectiveCoursesById.get('D100').progress.totalUnits, 60);
-assert.equal(effectiveCoursesById.get('D100').progress.translationBearingUnits, 35);
-assert.equal(effectiveCoursesById.get('D100').progress.integrationReadyUnits, 35);
-assert.equal(effectiveCoursesById.get('D100').progress.canonicalUnits, 34);
-assert.equal(effectiveCoursesById.get('D100').progress.publicUnits, 33);
-assert.match(effectiveCoursesById.get('D100').zenodo, /22160883$/);
+assert.equal(effectiveCoursesById.get('D100').progress.translationBearingUnits, 36);
+assert.equal(effectiveCoursesById.get('D100').progress.integrationReadyUnits, 36);
+assert.equal(effectiveCoursesById.get('D100').progress.canonicalUnits, 36);
+assert.equal(effectiveCoursesById.get('D100').progress.publicUnits, 36);
+assert.equal(effectiveCoursesById.get('D100').progress.publicPages, 586);
+assert.match(effectiveCoursesById.get('D100').zenodo, /22164552$/);
 assert.equal(effectiveCoursesById.get('D100').supplements.length, 1);
-assert.equal(effectiveCoursesById.get('D100').supplements[0].id, 'bgk-units-01-03');
+assert.equal(effectiveCoursesById.get('D100').supplements[0].id, 'bgk-units-01-06');
+assert.equal(effectiveCoursesById.get('D100').supplements[0].pages, 82);
+assert.equal(effectiveCoursesById.get('D100').supplements[0].sha256, 'feb45d21d6168feaedf35719fdcb0b7f5532687846041d9fd75573c6d66fc5e9');
 
 const expectedNextCourseIdsById = Object.fromEntries(
   courses.map(({ id }) => [
@@ -410,7 +429,9 @@ assert.match(app, /effectivePublishedCourses/);
 assert.match(app, /livePublicationSummary\.textContent/);
 assert.doesNotMatch(app, /liveCoursePublications\[/);
 assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
-assert.match(livePublicationsModule, /22166152/);
+assert.match(livePublicationsModule, /22166545/);
+assert.match(livePublicationsModule, /22161412/);
+assert.match(livePublicationsModule, /22164552/);
 assert.match(livePublicationsModule, /22161090/);
 assert.match(livePublicationsModule, /22164668/);
 assert.match(livePublicationsModule, /22163663/);
@@ -418,9 +439,10 @@ assert.match(livePublicationsModule, /22164136/);
 assert.match(livePublicationsModule, /22163372/);
 assert.match(livePublicationsModule, /clemens-snapp-workbook-u022/);
 assert.match(b95Landing, /Statistika Berbasis Data/);
-assert.match(b95Landing, /22166152/);
+assert.match(b95Landing, /22166545/);
 assert.match(b95Landing, /statistika-berbasis-data-id/);
-assert.match(b95Landing, /253 halaman/);
+assert.match(b95Landing, /260 halaman/);
+assert.match(b95Landing, /GitHub \(B024\)/);
 assert.doesNotMatch(b95Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
 assert.match(livePublicationsModule, /id-ID\/courses\/D30\//);

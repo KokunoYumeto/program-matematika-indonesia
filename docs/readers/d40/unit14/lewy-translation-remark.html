@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Kovariansi Translasi dan Kelas Hölder</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.cauchy-problem.seg.004">Kovariansi Translasi dan
+Kelas Hölder</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>cauchy_problem.tex</code> baris 305-335 pada sumber beku.</p>
+</div>
+<div
+id="o010.dionne.cauchy-problem.remark.lewy-translation-and-holder-class"
+class="remark">
+<p><strong>Catatan 3.2.2.</strong> Diberikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle(x_0,y_0,t_0) \in \mathbb{R}^3</annotation></semantics></math>,
+kita mendefinisikan translasi di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^3</annotation></semantics></math>
+dengan</p>
+<p><span id="o010.dionne.cauchy-problem.display-math.020"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>T</mi><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>→</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>↦</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><mi>y</mi><mo>+</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>t</mi><mo>+</mo><msub><mi>t</mi><mn>0</mn></msub><mo>+</mo><mn>2</mn><msub><mi>y</mi><mn>0</mn></msub><mi>x</mi><mo>−</mo><mn>2</mn><msub><mi>x</mi><mn>0</mn></msub><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+T:\mathbb{R}^3 &amp;\to \mathbb{R}^3 \\
+ (x,y,t) &amp;\mapsto (x+x_0,y+y_0, t+t_0 +2y_0x - 2x_0 y)
+\end{aligned}</annotation></semantics></math> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})</annotation></semantics></math>
+merupakan operator Lewy yang didefinisikan dalam Teorema <a
+href="lewy-theorem-proof.html#o010.dionne.cauchy-problem.theorem.lewy">3.2.1</a>,
+maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>∘</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>∘</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">\displaystyle L(x,y,\mathrm{D})(u \circ T) = \left(L(x,y,\mathrm{D})u\right) \circ T</annotation></semantics></math>
+untuk setiap fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle u \in C^1(\mathbb{R}^3)</annotation></semantics></math>.
+Dengan demikian, menyelesaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})u = f(t)</annotation></semantics></math>
+di dekat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,y_0,t_0)</annotation></semantics></math>
+ekuivalen dengan menyelesaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>∘</mo><mi>T</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo>+</mo><msub><mi>t</mi><mn>0</mn></msub><mo>+</mo><mn>2</mn><msub><mi>y</mi><mn>0</mn></msub><mi>x</mi><mo>−</mo><mn>2</mn><msub><mi>x</mi><mn>0</mn></msub><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})(u\circ T) = f(t+t_0+2y_0x - 2x_0y)</annotation></semantics></math>
+di dekat titik asal. Namun, ruas kanan yang ditransformasikan bergantung
+pada ketiga variabel, sehingga Teorema Lewy dalam bentuk satu variabel
+yang dinyatakan di atas tidak dapat diterapkan langsung untuk
+menyimpulkan titik analitisitas bergerak yang dinyatakan dalam sumber.
+Konsekuensi yang dibenarkan langsung adalah kasus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>0</mn></msub><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_0=y_0=0</annotation></semantics></math>:
+adanya solusi lokal kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mn>1</mn></msup><annotation encoding="application/x-tex">\displaystyle C^1</annotation></semantics></math>
+di dekat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><msub><mi>t</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0,t_0)</annotation></semantics></math>
+mengharuskan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+analitik pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>0</mn></msub><annotation encoding="application/x-tex">t_0</annotation></semantics></math>.</p>
+<p>H. Lewy juga telah menunjukkan bahwa terdapat fungsi-fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>C</mi><mi>∞</mi></msup><mo stretchy="false" form="prefix">(</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in C^{\infty}(\mathbb{R}^3)</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><mi>f</mi></mrow><annotation encoding="application/x-tex">L(x,y,\mathrm{D})u = f</annotation></semantics></math>
+tidak memiliki solusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mrow><mn>1</mn><mo>,</mo><mi>μ</mi></mrow></msup><mo stretchy="false" form="prefix">(</mo><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle C^{1,\mu}(\mathbb{R}^3)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\mu &gt; 0</annotation></semantics></math>
+di suatu lingkungan titik asal, dan melalui perluasan tidak memiliki
+solusi di mana pun di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mn>3</mn></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^3</annotation></semantics></math>.
+Ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mrow><mi>k</mi><mo>,</mo><mi>μ</mi></mrow></msup><mo stretchy="false" form="prefix">(</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle C^{k,\mu}(\mathbb{R}^n)</annotation></semantics></math>
+yang terdiri atas fungsi-fungsi kontinu Hölder didefinisikan kemudian
+dalam Definisi 11.7.8 <em>(rujukan ke bab mendatang)</em>. Sebuah bukti
+hasil ini dapat ditemukan dalam <span id="o010.dionne.bib.Smo"></span><a
+href="#o010.dionne.bib.Smo">Smo</a>.</p>
+</div>
+<p>Generalisasi Teorema <a
+href="lewy-theorem-proof.html#o010.dionne.cauchy-problem.theorem.lewy">3.2.1</a>
+diberikan kemudian dalam Teorema 11.9.2 <em>(rujukan ke bab
+mendatang)</em>.</p>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="lewy-theorem-proof.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="cauchy-exercises.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

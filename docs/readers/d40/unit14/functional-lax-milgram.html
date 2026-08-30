@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Teorema Lax–Milgram dan Latihan</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.functional-analysis.seg.005">Teorema Lax–Milgram dan
+Latihan</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>funct_anal.tex</code> baris 1744-2180 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.section.04.05"></span></p>
+<h1 id="teorema-laxmilgram">Teorema Lax–Milgram</h1>
+<div id="o010.dionne.functional-analysis.definition.030"
+class="definition">
+<p><strong>Definisi.</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+suatu ruang Hilbert atas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb{C}</annotation></semantics></math>.
+Suatu <strong>bentuk sesquilinear terbatas (atau kontinu)</strong> <span
+id="o010.dionne.functional-analysis.index.084"></span><span
+id="o010.dionne.functional-analysis.index.085"></span> pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+adalah pemetaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>:</mo><mi>H</mi><mo>×</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">B:H\times H \rightarrow \mathbb{C}</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.enumerate.014"></span></p>
+<ol type="1">
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.042"></span> Untuk
+setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>,
+pemetaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>↦</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v \mapsto B(u,v)</annotation></semantics></math>
+bersifat konjugat-linear.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.043"></span> Untuk
+setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>,
+pemetaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>↦</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u \mapsto B(u,v)</annotation></semantics></math>
+bersifat linear.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.044"></span> Terdapat
+konstanta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">|</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">|</mo></mrow><mo>≤</mo><mi>C</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><mo stretchy="false" form="postfix">∥</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">∥</mo><mi>v</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\displaystyle\left| B(u,v) \right| \leq C \|u\|\,\|v\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>∈</mo><mi>H</mi><mo>×</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\displaystyle(u,v) \in H \times H</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>⋅</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|\cdot\|</annotation></semantics></math>
+menyatakan norma yang diinduksi oleh hasil kali skalar
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\left\langle{\cdot},{\cdot}\right\rangle</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.</p></li>
+</ol>
+<p>Bentuk sesquilinear terbatas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+disebut <strong>simetris</strong><span
+id="o010.dionne.functional-analysis.index.086"></span> jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mover><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\displaystyle B(u,v) = \overline{B(v,u)}</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u,v \in H</annotation></semantics></math>.</p>
+<p>Bentuk sesquilinear terbatas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+disebut <strong>koersif</strong><span
+id="o010.dionne.functional-analysis.index.087"></span> jika terdapat
+konstanta positif
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}B(u,u) \geq c \|u\|^2</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u \in H</annotation></semantics></math>.
+Pada kasus real, yakni ketika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+suatu ruang Hilbert atas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb{R}</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>:</mo><mi>H</mi><mo>×</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">B:H\times H\rightarrow\mathbb{R}</annotation></semantics></math>
+suatu bentuk bilinear terbatas, syarat ini cukup ditulis sebagai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle B(u,u) \geq c \|u\|^2</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.functional-analysis.proposition.010"
+class="proposition">
+<p><strong>Proposisi 4.5.2.</strong> <span id="fu_an_pre_lax"
+data-label="fu_an_pre_lax"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+suatu ruang Hilbert dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+suatu himpunan bagian tak kosong, konveks, dan tertutup dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w\in H</annotation></semantics></math>,
+terdapat unsur tunggal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u \in K</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.equation.016"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.1)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><mi>u</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><munder><mi mathvariant="normal">min</mi><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow></munder><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><mi>v</mi><mo stretchy="false" form="postfix">∥</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\|w-u\| = \min_{v\in K} \|w-v\| \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.1)</span></span>
+Selain itu,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+merupakan unsur tunggal di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+yang memenuhi</p>
+<p><span id="o010.dionne.functional-analysis.equation.017"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.2)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>w</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Re}\left\langle{w-u},{v-u}\right\rangle \leq 0</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.2)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v \in K</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.functional-analysis.proof.005" class="proof">
+<p><strong>Bukti.</strong> <strong>(i)</strong> Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>−</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">w-K</annotation></semantics></math>
+merupakan himpunan bagian tak kosong, konveks, dan tertutup dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>,
+menurut Teorema <a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.theorem.003">4.1.7</a>
+himpunan ini mempunyai unsur tunggal dengan norma terkecil. Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo>∈</mo><mi>w</mi><mo>−</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">\breve{u} \in w-K</annotation></semantics></math>
+adalah unsur tersebut, maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mi>w</mi><mo>−</mo><mover><mi>u</mi><mo accent="true">̆</mo></mover></mrow><annotation encoding="application/x-tex">u=w-\breve{u}</annotation></semantics></math>.</p>
+<p><strong>(ii)</strong> Andaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.016">4.5.1</a>)
+dan ambil
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v \in K</annotation></semantics></math>.
+Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>t</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>+</mo><mi>t</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">\displaystyle v_t=(1-t)u+tv</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>t</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0\leq t\leq1</annotation></semantics></math>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+konveks, kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>t</mi></msub><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v_t\in K</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">t\in[0,1]</annotation></semantics></math>.
+Jadi,</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.017"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><msub><mi>v</mi><mi>t</mi></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>−</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>t</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>t</mi><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>w</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>+</mo><msup><mi>t</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><mo>−</mo><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\|w-u\|^2 &amp;\leq \|w-v_t\|^2 = \|(w-u)-t(v-u)\|^2 \\
+&amp;= \|w-u\|^2 - 2t \operatorname{Re}\left\langle{w-u},{v-u}\right\rangle + t^2 \|u-v\|^2 \ .
+\end{aligned}</annotation></semantics></math> Akibatnya,</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.064"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>w</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mi>t</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><mo>−</mo><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">2\operatorname{Re}\left\langle{w-u},{v-u}\right\rangle \leq t \|u-v\|^2</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>t</mi><mo>≤</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0&lt;t\leq1</annotation></semantics></math>.
+Dengan mengambil limit
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>→</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t\rightarrow0</annotation></semantics></math>,
+kita memperoleh (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.017">4.5.2</a>).</p>
+<p>Sebaliknya, jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.017">4.5.2</a>),
+maka</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.018"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>−</mi><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><mo>−</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>−</mi><mo stretchy="false" form="postfix">∥</mo><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>−</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>−</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mo>=</mo><mi>−</mi><mn>2</mn><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>w</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mi>u</mi><mo>−</mo><mi>v</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>−</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><mo>−</mo><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>=</mo><mn>2</mn><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>w</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>−</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><mo>−</mo><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>≤</mo><mn>0</mn></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+&amp;\|w-u\|^2 - \|w-v\|^2
+= \|w-u\|^2 - \|(w-u)+(u-v)\|^2 \\
+&amp;\qquad = -2 \operatorname{Re}\left\langle{w-u},{u-v}\right\rangle - \|u-v\|^2
+= 2 \operatorname{Re}\left\langle{w-u},{v-u}\right\rangle - \|u-v\|^2\leq0
+\end{aligned}</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>.
+Jadi, (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.016">4.5.1</a>)
+dipenuhi.</p>
+<p>Ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.017">4.5.2</a>)
+mengikuti dari ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.016">4.5.1</a>).
+Jika terdapat dua unsur berbeda
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>u</mi><mn>1</mn></msub><annotation encoding="application/x-tex">u_1</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>u</mi><mn>2</mn></msub><annotation encoding="application/x-tex">u_2</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.017">4.5.2</a>),
+keduanya juga harus memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.016">4.5.1</a>)
+karena (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.016">4.5.1</a>)
+dan (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.017">4.5.2</a>)
+ekuivalen. Hal ini bertentangan dengan ketunggalan unsur bernorma
+terkecil dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>−</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">w-K</annotation></semantics></math>.
+◻</p>
+</div>
+<div id="o010.dionne.functional-analysis.remark.002" class="remark">
+<p><strong>Catatan.</strong> Ketunggalan unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.017">4.5.2</a>)
+juga dapat dibuktikan secara langsung. Andaikan terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>,</mo><msub><mi>u</mi><mn>2</mn></msub><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u_1,u_2\in K</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>w</mi><mo>−</mo><msub><mi>u</mi><mn>1</mn></msub></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><msub><mi>u</mi><mn>1</mn></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}\left\langle{w-u_1},{v-u_1}\right\rangle\leq0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>w</mi><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}\left\langle{w-u_2},{v-u_2}\right\rangle\leq0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>.
+Substitusikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">v=u_2</annotation></semantics></math>
+ke dalam ketaksamaan pertama dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>u</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">v=u_1</annotation></semantics></math>
+ke dalam ketaksamaan kedua, lalu jumlahkan kedua ketaksamaan yang
+dihasilkan. Kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><mo>,</mo><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\left\langle{u_1-u_2},{u_1-u_2}\right\rangle\leq0</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>=</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">u_1=u_2</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.functional-analysis.theorem.023" class="theorem">
+<p><strong>Teorema 4.5.4.</strong> <span id="fu_an_stamp"
+data-label="fu_an_stamp"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>:</mo><mi>H</mi><mo>×</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">B:H\times H\rightarrow\mathbb{C}</annotation></semantics></math>
+suatu bentuk sesquilinear terbatas dan koersif pada ruang Hilbert
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+<span id="o010.dionne.functional-analysis.index.088"></span> Selain itu,
+misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+suatu himpunan bagian tak kosong, konveks, dan tertutup dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Maka, untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo>∈</mo><msup><mi>H</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\displaystyle\tilde{u}\in H^\ast</annotation></semantics></math>,
+terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+tunggal sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.equation.018"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.3)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{Re}B(v-u,u) \geq \operatorname{Re}\tilde{u}(v-u)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.3)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>.
+Selain itu, jika bentuk sesquilinear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+juga simetris, maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+merupakan unsur tunggal di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.equation.019"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.4)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munder><mi mathvariant="normal">min</mi><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow></munder><mrow><mo stretchy="true" form="prefix">{</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi mathvariant="normal">Re</mi><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">}</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{1}{2}B(u,u) - \operatorname{Re}\tilde{u}(u) = \min_{v\in K} \left\{
+\frac{1}{2}B(v,v) - \operatorname{Re}\tilde{u}(v) \right\} \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.4)</span></span></p>
+</div>
+<div id="o010.dionne.functional-analysis.proof.006" class="proof">
+<p><strong>Bukti.</strong> <strong>(i)</strong> Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>↦</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v\mapsto B(v,u)</annotation></semantics></math>
+merupakan fungsional linear terbatas pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>,
+kita dapat menggunakan Teorema Representasi Riesz untuk mendefinisikan
+pemetaan tunggal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>:</mo><mi>H</mi><mo>→</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">A:H\rightarrow H</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mrow><mi>A</mi><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle B(v,u)=\left\langle{v},{Au}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Dengan kata lain,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">Au</annotation></semantics></math>
+adalah unsur tunggal di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+yang memenuhi hubungan tersebut.</p>
+<p>Sekarang kita membuktikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+merupakan pemetaan linear terbatas dan injektif.</p>
+<p><span id="o010.dionne.functional-analysis.enumerate.015"></span></p>
+<ol type="1">
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.045"></span> Menurut
+definisi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>,
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>1</mn></msub><mo>,</mo><msub><mi>a</mi><mn>2</mn></msub><mo>∈</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">a_1,a_2\in\mathbb{C}</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>,</mo><msub><mi>u</mi><mn>2</mn></msub><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u_1,u_2\in H</annotation></semantics></math>
+kita mempunyai</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.019"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mrow><mi>A</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>u</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>u</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mover><msub><mi>a</mi><mn>1</mn></msub><mo accent="true">¯</mo></mover><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><msub><mi>u</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mover><msub><mi>a</mi><mn>2</mn></msub><mo accent="true">¯</mo></mover><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><msub><mi>u</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mover><msub><mi>a</mi><mn>1</mn></msub><mo accent="true">¯</mo></mover><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mrow><mi>A</mi><msub><mi>u</mi><mn>1</mn></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>+</mo><mover><msub><mi>a</mi><mn>2</mn></msub><mo accent="true">¯</mo></mover><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mrow><mi>A</mi><msub><mi>u</mi><mn>2</mn></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mrow><msub><mi>a</mi><mn>1</mn></msub><mi>A</mi><msub><mi>u</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi>A</mi><msub><mi>u</mi><mn>2</mn></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\left\langle{v},{A\left(a_1u_1+a_2u_2\right)}\right\rangle
+&amp;=B(v,a_1u_1+a_2u_2)=\overline{a_1}B(v,u_1)+\overline{a_2}B(v,u_2) \\
+&amp;=\overline{a_1}\left\langle{v},{Au_1}\right\rangle+\overline{a_2}\left\langle{v},{Au_2}\right\rangle
+=\left\langle{v},{a_1Au_1+a_2Au_2}\right\rangle
+\end{aligned}</annotation></semantics></math> untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Oleh karena representasi unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>H</mi><mo>*</mo></msup><annotation encoding="application/x-tex">H^\ast</annotation></semantics></math>
+oleh unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+dalam Teorema Representasi Riesz bersifat tunggal,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>a</mi><mn>1</mn></msub><msub><mi>u</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><msub><mi>u</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>a</mi><mn>1</mn></msub><mi>A</mi><msub><mi>u</mi><mn>1</mn></msub><mo>+</mo><msub><mi>a</mi><mn>2</mn></msub><mi>A</mi><msub><mi>u</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">A(a_1u_1+a_2u_2)=a_1Au_1+a_2Au_2</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+merupakan pemetaan linear.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.046"></span>
+Karena</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.065"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>A</mi><mi>u</mi></mrow><mo>,</mo><mrow><mi>A</mi><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>C</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><mo stretchy="false" form="postfix">∥</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><mi>u</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|Au\|^2=\left\langle{Au},{Au}\right\rangle=B(Au,u)=|B(Au,u)|
+\leq C\|u\|\,\|Au\|</annotation></semantics></math> untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>C</mi><annotation encoding="application/x-tex">C</annotation></semantics></math>
+konstanta dalam definisi bentuk sesquilinear terbatas, kita
+memperoleh</p>
+<p><span id="o010.dionne.functional-analysis.equation.020"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.5)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><mi>u</mi><mo stretchy="false" form="postfix">∥</mo><mo>≤</mo><mi>C</mi><mo stretchy="false" form="postfix">∥</mo><mi>u</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|Au\|\leq C\|u\|</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.5)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>.
+Dengan demikian, norma operator terinduksi dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+memenuhi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><mo stretchy="false" form="postfix">∥</mo><mo>≤</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">\|A\|\leq C</annotation></semantics></math>,
+sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+merupakan pemetaan linear terbatas.</p></li>
+<li><p><span
+id="o010.dionne.functional-analysis.enumerate-item.047"></span> Sifat
+koersif
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+menunjukkan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+injektif. Memang, untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>,</mo><msub><mi>u</mi><mn>2</mn></msub><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u_1,u_2\in H</annotation></semantics></math>
+kita mempunyai</p>
+<p><span id="o010.dionne.functional-analysis.equation.021"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.6)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><mo>,</mo><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub><mo>,</mo><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>,</mo></mrow><annotation encoding="application/x-tex">\operatorname{Re}\left\langle{u_1-u_2},{A(u_1-u_2)}\right\rangle
+= \operatorname{Re}B(u_1-u_2,u_1-u_2) \geq c\|u_1-u_2\|^2,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.6)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+konstanta dalam definisi bentuk sesquilinear terbatas yang koersif. Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><msub><mi>u</mi><mn>1</mn></msub><mo>=</mo><mi>A</mi><msub><mi>u</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">Au_1=Au_2</annotation></semantics></math>,
+maka</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.066"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><mo>,</mo><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≥</mo><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>u</mi><mn>1</mn></msub><mo>−</mo><msub><mi>u</mi><mn>2</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">0=\operatorname{Re}\left\langle{u_1-u_2},{A(u_1-u_2)}\right\rangle\geq c\|u_1-u_2\|^2 \ .</annotation></semantics></math>
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mn>1</mn></msub><mo>=</mo><msub><mi>u</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">u_1=u_2</annotation></semantics></math>.</p></li>
+</ol>
+<p><strong>(ii)</strong> Menurut Teorema Representasi Riesz, Teorema <a
+href="functional-hilbert-spaces.html#o010.dionne.functional-analysis.theorem.004">4.1.9</a>,
+terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\breve{u}\in H</annotation></semantics></math>
+tunggal sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\tilde{u}(v)=\left\langle{v},{\breve{u}}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.</p>
+<p>Membuktikan keberadaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+tunggal yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.018">4.5.3</a>)
+ekuivalen dengan membuktikan keberadaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+tunggal yang memenuhi</p>
+<p><span id="o010.dionne.functional-analysis.equation.022"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.7)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mi>A</mi><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≥</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\operatorname{Re}\left\langle{v-u},{Au}\right\rangle\geq\operatorname{Re}\left\langle{v-u},{\breve{u}}\right\rangle</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.7)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>.
+Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+suatu bilangan positif. Keberadaan dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.022">4.5.7</a>)
+ekuivalen dengan keberadaan dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+yang memenuhi</p>
+<p><span id="o010.dionne.functional-analysis.equation.023"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.8)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>p</mi><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo>−</mo><mi>p</mi><mi>A</mi><mi>u</mi><mo>+</mo><mi>u</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Re}\left\langle{v-u},{\left(p\breve{u}-pAu+u\right)-u}\right\rangle\leq0</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.8)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>.</p>
+<p>Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>:</mo><mi>H</mi><mo>→</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">P:H\rightarrow K</annotation></semantics></math>
+adalah fungsi yang didefinisikan oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">\displaystyle P(w)=u</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.017">4.5.2</a>).
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+tunggal, fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+terdefinisi dengan baik. Dengan demikian, keberadaan dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.023">4.5.8</a>)
+ekuivalen dengan keberadaan dan ketunggalan titik tetap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+dari</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.020"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>F</mi><mo>:</mo><mi>K</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>→</mo><mi>K</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>v</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>↦</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo>−</mo><mi>p</mi><mi>A</mi><mi>v</mi><mo>+</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+F:K&amp;\rightarrow K \\
+v&amp;\mapsto P(p\breve{u}-pAv+v).
+\end{aligned}</annotation></semantics></math> Untuk membuktikan
+pernyataan terakhir ini, cukup dibuktikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+merupakan kontraksi ketat pada himpunan tertutup
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>.
+Kita sekarang membuktikannya dengan memilih konstanta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+yang sesuai.</p>
+<p>Pertama, kita buktikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">∥</mo><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><msub><mi>w</mi><mn>1</mn></msub><mo>−</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|P(w_1)-P(w_2)\|\leq\|w_1-w_2\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>,</mo><msub><mi>w</mi><mn>2</mn></msub><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w_1,w_2\in H</annotation></semantics></math>.
+Unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(w_1)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(w_2)</annotation></semantics></math>
+masing-masing didefinisikan oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}\left\langle{w_1-P(w_1)},{v-P(w_1)}\right\rangle\leq0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>w</mi><mn>2</mn></msub><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>v</mi><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}\left\langle{w_2-P(w_2)},{v-P(w_2)}\right\rangle\leq0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>.
+Substitusikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v=P(w_2)</annotation></semantics></math>
+ke dalam ketaksamaan pertama dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v=P(w_1)</annotation></semantics></math>
+ke dalam ketaksamaan kedua, lalu jumlahkan. Kita memperoleh</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.021"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>+</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>w</mi><mn>2</mn></msub><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mspace width="2.0em"></mspace><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>−</mi><msub><mi>w</mi><mn>1</mn></msub><mo>+</mo><msub><mi>w</mi><mn>2</mn></msub><mo>+</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mo>⇔</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mspace width="2.0em"></mspace><mo>≤</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>−</mo><msub><mi>w</mi><mn>2</mn></msub></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+&amp;\operatorname{Re}\left\langle{w_1-P(w_1)},{P(w_2)-P(w_1)}\right\rangle
++\operatorname{Re}\left\langle{w_2-P(w_2)},{P(w_1)-P(w_2)}\right\rangle \\
+&amp;\qquad\qquad
+=\operatorname{Re}\left\langle{-w_1+w_2+P(w_1)-P(w_2)},{P(w_1)-P(w_2)}\right\rangle\leq0 \\
+&amp;\qquad\Leftrightarrow
+\left\langle{P(w_1)-P(w_2)},{P(w_1)-P(w_2)}\right\rangle
+=\operatorname{Re}\left\langle{P(w_1)-P(w_2)},{P(w_1)-P(w_2)}\right\rangle \\
+&amp;\qquad\qquad
+\leq\operatorname{Re}\left\langle{w_1-w_2},{P(w_1)-P(w_2)}\right\rangle.
+\end{aligned}</annotation></semantics></math> Jadi,</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.022"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>≤</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><msub><mi>w</mi><mn>1</mn></msub><mo>−</mo><msub><mi>w</mi><mn>2</mn></msub></mrow><mo>,</mo><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><msub><mi>w</mi><mn>1</mn></msub><mo>−</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">∥</mo><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\|P(w_1)-P(w_2)\|^2
+&amp;=\left\langle{P(w_1)-P(w_2)},{P(w_1)-P(w_2)}\right\rangle \\
+&amp;\leq\operatorname{Re}\left\langle{w_1-w_2},{P(w_1)-P(w_2)}\right\rangle
+\leq\|w_1-w_2\|\,\|P(w_1)-P(w_2)\|,
+\end{aligned}</annotation></semantics></math> dengan ketaksamaan
+terakhir berasal dari ketaksamaan Schwarz. Oleh karena itu,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">∥</mo><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><msub><mi>w</mi><mn>1</mn></msub><mo>−</mo><msub><mi>w</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\displaystyle\|P(w_1)-P(w_2)\|\leq\|w_1-w_2\|</annotation></semantics></math>.</p>
+<p>Akibatnya,</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.023"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="postfix">∥</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo>−</mo><mi>p</mi><mi>A</mi><msub><mi>v</mi><mn>1</mn></msub><mo>+</mo><msub><mi>v</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo>−</mo><mi>p</mi><mi>A</mi><msub><mi>v</mi><mn>2</mn></msub><mo>+</mo><msub><mi>v</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><mi>A</mi><msub><mi>v</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><msub><mi>v</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><msup><mi>p</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><mi>A</mi><msub><mi>v</mi><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>p</mi><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>A</mi><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><mi>A</mi><msub><mi>v</mi><mn>1</mn></msub></mrow><mo>,</mo><mrow><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><msub><mi>v</mi><mn>1</mn></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>+</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><msub><mi>v</mi><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>≤</mo><msup><mi>p</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup><mo stretchy="false" form="postfix">∥</mo><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><msub><mi>v</mi><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>p</mi><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><msub><mi>v</mi><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>+</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><msub><mi>v</mi><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msup><mi>p</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>p</mi><mi>c</mi><mo>+</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">∥</mo><msub><mi>v</mi><mn>2</mn></msub><mo>−</mo><msub><mi>v</mi><mn>1</mn></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\|F(v_1)-F(v_2)\|^2
+&amp;=\|P(p\breve{u}-pAv_1+v_1)-P(p\breve{u}-pAv_2+v_2)\|^2 \\
+&amp;\leq\|p(Av_2-Av_1)-(v_2-v_1)\|^2 \\
+&amp;=p^2\|Av_2-Av_1\|^2-2p\operatorname{Re}\left\langle{Av_2-Av_1},{v_2-v_1}\right\rangle
++\|v_2-v_1\|^2 \\
+&amp;\leq p^2C^2\|v_2-v_1\|^2-2pc\|v_2-v_1\|^2
++\|v_2-v_1\|^2 \\
+&amp;=(p^2C^2-2pc+1)\|v_2-v_1\|^2
+\end{aligned}</annotation></semantics></math> untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><msub><mi>v</mi><mn>2</mn></msub><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v_1,v_2\in K</annotation></semantics></math>,
+dengan (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.020">4.5.5</a>)
+dan (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.021">4.5.6</a>)
+digunakan pada ketaksamaan terakhir. Pilih
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>p</mi><mo>&lt;</mo><mn>2</mn><mi>c</mi><mi>/</mi><msup><mi>C</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle 0&lt;p&lt;2c/C^2</annotation></semantics></math>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>c</mi><mo>≤</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">0&lt;c\leq C</annotation></semantics></math>,
+kita mempunyai</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.067"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><msup><mi>p</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>p</mi><mi>c</mi><mo>+</mo><mn>1</mn><mo>&lt;</mo><mn>1</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">0\leq p^2C^2-2pc+1&lt;1.</annotation></semantics></math>
+Memang,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><msup><mi>C</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>c</mi><mo stretchy="false" form="postfix">)</mo><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p(pC^2-2c)&lt;0</annotation></semantics></math>,
+sedangkan nilai minimum ekspresi kuadrat tersebut ialah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mi>/</mi><msup><mi>C</mi><mn>2</mn></msup><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1-c^2/C^2\geq0</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+merupakan kontraksi ketat pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>
+dengan faktor kontraksi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msqrt><mrow><msup><mi>p</mi><mn>2</mn></msup><msup><mi>C</mi><mn>2</mn></msup><mo>−</mo><mn>2</mn><mi>p</mi><mi>c</mi><mo>+</mo><mn>1</mn></mrow></msqrt><mo>&lt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\sqrt{p^2C^2-2pc+1}&lt;1</annotation></semantics></math>.</p>
+<p><strong>(iii)</strong> Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+juga merupakan bentuk sesquilinear terbatas yang simetris, keberadaan
+dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.018">4.5.3</a>)
+ekuivalen dengan keberadaan dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.019">4.5.4</a>).</p>
+<p>Misalkan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.068"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>B</mi></msub><mo>=</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left\langle{v},{u}\right\rangle_B=B(v,u)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u,v\in H</annotation></semantics></math>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+merupakan bentuk sesquilinear terbatas yang koersif dan simetris pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>B</mi></msub><annotation encoding="application/x-tex">\left\langle{\cdot},{\cdot}\right\rangle_B</annotation></semantics></math>
+merupakan hasil kali skalar pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+yang ekuivalen dengan hasil kali skalar baku pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>;
+yakni,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>B</mi></msub><annotation encoding="application/x-tex">\left\langle{\cdot},{\cdot}\right\rangle_B</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>⋅</mi><mo>,</mo><mi>⋅</mi><mo stretchy="true" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\left\langle{\cdot},{\cdot}\right\rangle</annotation></semantics></math>
+mendefinisikan topologi yang sama pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Karena itu, Teorema Representasi Riesz memberikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\check{u}\in H</annotation></semantics></math>
+tunggal sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\displaystyle\tilde{u}(v)=\left\langle{v},{\check{u}}\right\rangle_B</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Dengan demikian, (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.018">4.5.3</a>)
+menjadi</p>
+<p><span id="o010.dionne.functional-analysis.equation.024"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.9)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><msub><mrow><mo stretchy="true" form="prefix">⟨</mo><mrow><mi>v</mi><mo>−</mo><mi>u</mi></mrow><mo>,</mo><mrow><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo>−</mo><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mi>B</mi></msub><mo>≤</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\operatorname{Re}\left\langle{v-u},{\check{u}-u}\right\rangle_B\leq0</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.9)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>.</p>
+<p>Menurut Proposisi <a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.proposition.010">4.5.2</a>,
+keberadaan dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.024">4.5.9</a>)
+ekuivalen dengan keberadaan dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">u\in K</annotation></semantics></math>
+yang memenuhi</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.069"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo>−</mo><mi>u</mi><msub><mo stretchy="false" form="postfix">∥</mo><mi>B</mi></msub><mo>=</mo><munder><mi mathvariant="normal">min</mi><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow></munder><mo stretchy="false" form="postfix">∥</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo>−</mo><mi>v</mi><msub><mo stretchy="false" form="postfix">∥</mo><mi>B</mi></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\|\check{u}-u\|_B=\min_{v\in K}\|\check{u}-v\|_B,</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>v</mi><msub><mo stretchy="false" form="postfix">∥</mo><mi>B</mi></msub><mo>=</mo><msqrt><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">\|v\|_B=\sqrt{B(v,v)}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Hal ini ekuivalen dengan keberadaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>
+tunggal sedemikian sehingga pemetaan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.070"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>↦</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo>−</mo><mi>v</mi><mo>,</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo>−</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo>,</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mn>2</mn><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v\mapsto B(\check{u}-v,\check{u}-v)=B(\check{u},\check{u})
+-2\operatorname{Re}B(v,\check{u})+B(v,v)</annotation></semantics></math>
+mencapai minimumnya, yang pada gilirannya ekuivalen dengan keberadaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>K</mi></mrow><annotation encoding="application/x-tex">v\in K</annotation></semantics></math>
+tunggal sedemikian sehingga pemetaan</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.071"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>↦</mo><mi>−</mi><mn>2</mn><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mover><mi>u</mi><mo accent="true">̌</mo></mover><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mn>2</mn><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v\mapsto-2\operatorname{Re}B(v,\check{u})+B(v,v)
+=B(v,v)-2\operatorname{Re}\tilde{u}(v)</annotation></semantics></math>
+mencapai minimumnya. Inilah (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.019">4.5.4</a>).
+◻</p>
+</div>
+<div id="o010.dionne.functional-analysis.corollary.002"
+class="corollary">
+<p><strong>Korolari 4.5.5.</strong> <span id="fu_an_LaxMilgTh"
+data-label="fu_an_LaxMilgTh"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>:</mo><mi>H</mi><mo>×</mo><mi>H</mi><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">B:H\times H\rightarrow\mathbb{C}</annotation></semantics></math>
+suatu bentuk sesquilinear terbatas dan koersif pada ruang Hilbert
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+<span id="o010.dionne.functional-analysis.index.089"></span> Maka, untuk
+setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo>∈</mo><msup><mi>H</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\displaystyle\tilde{u}\in H^\ast</annotation></semantics></math>,
+terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>
+tunggal sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.equation.025"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.10)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B(v,u)=\tilde{u}(v)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.10)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Selain itu, jika bentuk sesquilinear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+juga simetris, maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+merupakan unsur tunggal di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.equation.026"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.11)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munder><mi mathvariant="normal">min</mi><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow></munder><mrow><mo stretchy="true" form="prefix">{</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi mathvariant="normal">Re</mi><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">}</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{1}{2}B(u,u)-\operatorname{Re}\tilde{u}(u)=\min_{v\in H}\left\{
+\frac{1}{2}B(v,v)-\operatorname{Re}\tilde{u}(v)\right\} \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.11)</span></span></p>
+</div>
+<div id="o010.dionne.functional-analysis.proof.007" class="proof">
+<p><strong>Bukti.</strong> Ini adalah Teorema Stampacchia dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">K=H</annotation></semantics></math>.
+Untuk membuktikan (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.025">4.5.10</a>),
+perhatikan bahwa (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.018">4.5.3</a>)
+sekarang menyatakan bahwa terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>
+tunggal sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><mi>u</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}B(v-u,u)\geq\operatorname{Re}\tilde{u}(v-u)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>−</mo><mi>u</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">H-u=H</annotation></semantics></math>,
+pernyataan tersebut ekuivalen dengan keberadaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>
+tunggal sedemikian sehingga</p>
+<p><span id="o010.dionne.functional-analysis.equation.027"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.12)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{Re}B(v,u)\geq\operatorname{Re}\tilde{u}(v)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.12)</span></span>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>w</mi></mrow><annotation encoding="application/x-tex">v=w</annotation></semantics></math>
+dalam (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.027">4.5.12</a>),
+kita memperoleh</p>
+<p><span id="o010.dionne.functional-analysis.equation.028"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.13)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{Re}B(w,u)\geq\operatorname{Re}\tilde{u}(w) \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.13)</span></span>
+Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>−</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">v=-w</annotation></semantics></math>
+dalam (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.027">4.5.12</a>),
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>w</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{Re}B(-w,u)\geq\operatorname{Re}\tilde{u}(-w)</annotation></semantics></math>.
+Oleh karena itu,</p>
+<p><span id="o010.dionne.functional-analysis.equation.029"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (4.5.14)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><mi>−</mi><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\operatorname{Re}B(w,u)=-\operatorname{Re}B(-w,u)\leq-\operatorname{Re}\tilde{u}(-w)=\operatorname{Re}\tilde{u}(w) \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(4.5.14)</span></span>
+(<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.028">4.5.13</a>)
+dan (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.029">4.5.14</a>)
+mengakibatkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}B(w,u)=\operatorname{Re}\tilde{u}(w)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w\in H</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>↦</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w\mapsto B(w,u)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>u</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde{u}</annotation></semantics></math>
+menyatakan fungsional linear yang sama <a href="#fn1"
+class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a>.
+Dengan demikian, (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.025">4.5.10</a>)
+berlaku.</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>u</mi><mo>′</mo></msup><mo>≠</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">u&#39;\neq u</annotation></semantics></math>
+memenuhi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><msup><mi>u</mi><mo>′</mo></msup><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B(v,u&#39;)=\tilde{u}(v)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>,
+maka (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.027">4.5.12</a>)
+juga dipenuhi dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>u</mi><mo>′</mo></msup><annotation encoding="application/x-tex">u&#39;</annotation></semantics></math>
+menggantikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>.
+Hal ini bertentangan dengan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.027">4.5.12</a>).</p>
+<p>Jelas bahwa (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.026">4.5.11</a>)
+adalah (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.019">4.5.4</a>)
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">K=H</annotation></semantics></math>.
+◻</p>
+</div>
+<div id="o010.dionne.functional-analysis.remark.003" class="remark">
+<p><strong>Catatan 4.5.6.</strong> Jika kita hanya memerlukan keberadaan
+dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.025">4.5.10</a>),
+terdapat pembuktian singkat yang hampir sama dengan bagian pertama
+pembuktian Teorema <a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.theorem.023">4.5.4</a>.
+<span id="fu_an_LaxMilgTh1" data-label="fu_an_LaxMilgTh1"></span></p>
+<p>Menurut Teorema Representasi Riesz, terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\breve{u}\in H</annotation></semantics></math>
+tunggal sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\tilde{u}(v)=\left\langle{v},{\breve{u}}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.</p>
+<p>Serupa dengan itu, karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>↦</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v\mapsto B(v,u)</annotation></semantics></math>
+merupakan fungsional linear terbatas pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>,
+Teorema Representasi Riesz mendefinisikan pemetaan tunggal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>:</mo><mi>H</mi><mo>→</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">A:H\rightarrow H</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mrow><mi>A</mi><mi>u</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle B(v,u)=\left\langle{v},{Au}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Dengan kata lain,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>u</mi></mrow><annotation encoding="application/x-tex">Au</annotation></semantics></math>
+adalah unsur tunggal di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+yang memenuhi hubungan tersebut.</p>
+<p>Untuk membuktikan keberadaan dan ketunggalan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">u\in H</annotation></semantics></math>
+yang memenuhi (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.025">4.5.10</a>),
+cukup dibuktikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+merupakan bijeksi linear dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+ke dirinya sendiri. Unsur
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+yang diminta dalam (<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.025">4.5.10</a>)
+ialah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="prefix">(</mo><mover><mi>u</mi><mo accent="true">̆</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle A^{-1}(\breve{u})</annotation></semantics></math>.
+Bagian pertama pembuktian Teorema <a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.theorem.023">4.5.4</a>
+telah menunjukkan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+merupakan pemetaan linear terbatas dan injektif. Sifat koersif
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>
+mengakibatkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>H</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(H)</annotation></semantics></math>
+tertutup, seperti yang sekarang kita jelaskan. Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>A</mi><msub><mi>u</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{Au_j\}_{j=1}^\infty</annotation></semantics></math>
+konvergen ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w\in H</annotation></semantics></math>,
+maka</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.072"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><msub><mi>u</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">∥</mo><msub><mi>u</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo><mo>≥</mo><mo stretchy="false" form="prefix">|</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><msub><mi>u</mi><mi>j</mi></msub><mo>,</mo><mrow><mi>A</mi><msub><mi>u</mi><mi>j</mi></msub></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mi>j</mi></msub><mo>,</mo><msub><mi>u</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>≥</mo><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>u</mi><mi>j</mi></msub><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\|Au_j\|\,\|u_j\|\geq|\left\langle{u_j},{Au_j}\right\rangle|=|B(u_j,u_j)|
+\geq c\|u_j\|^2</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>≥</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">j\geq1</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><msub><mi>u</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo><mo>≥</mo><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>u</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\displaystyle\|Au_j\|\geq c\|u_j\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>.
+Dengan menerapkan ketaksamaan yang sama pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>j</mi></msub><mo>−</mo><msub><mi>u</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">u_j-u_k</annotation></semantics></math>,
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>A</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mi>j</mi></msub><mo>−</mo><msub><mi>u</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">∥</mo><mo>≥</mo><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><msub><mi>u</mi><mi>j</mi></msub><mo>−</mo><msub><mi>u</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|A(u_j-u_k)\|\geq c\|u_j-u_k\|</annotation></semantics></math>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mi>A</mi><msub><mi>u</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{Au_j\}_{j=1}^\infty</annotation></semantics></math>
+konvergen, barisan ini merupakan barisan Cauchy; akibatnya,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>u</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{u_j\}_{j=1}^\infty</annotation></semantics></math>
+juga merupakan barisan Cauchy dalam ruang Hilbert
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Jadi, barisan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><msub><mi>u</mi><mi>j</mi></msub><msubsup><mo stretchy="false" form="postfix">}</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>∞</mi></msubsup></mrow><annotation encoding="application/x-tex">\displaystyle\{u_j\}_{j=1}^\infty</annotation></semantics></math>
+konvergen. Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+limit barisan tersebut. Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+kontinu, kita mempunyai</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.073"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><munder><mi mathvariant="normal">lim</mi><mrow><mi>j</mi><mo>→</mo><mi>∞</mi></mrow></munder><mi>A</mi><msub><mi>u</mi><mi>j</mi></msub><mo>=</mo><mi>A</mi><mrow><mo stretchy="true" form="prefix">(</mo><munder><mi mathvariant="normal">lim</mi><mrow><mi>j</mi><mo>→</mo><mi>∞</mi></mrow></munder><msub><mi>u</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">w=\lim_{j\rightarrow\infty}Au_j
+=A\left(\lim_{j\rightarrow\infty}u_j\right)=A(u) \ .</annotation></semantics></math>
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>H</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w\in A(H)</annotation></semantics></math>.</p>
+<p>Terakhir, citra
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+rapat dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>.
+Andaikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>H</mi><msup><mo stretchy="false" form="postfix">)</mo><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">\displaystyle w\in A(H)^\perp</annotation></semantics></math>.
+Maka</p>
+<p><span
+id="o010.dionne.functional-analysis.display-math.bracket.074"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo stretchy="false" form="postfix">∥</mo><mi>w</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>≤</mo><mo stretchy="false" form="prefix">|</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>w</mi><mo>,</mo><mrow><mi>A</mi><mi>w</mi></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">c\|w\|^2\leq|B(w,w)|=|\left\langle{w},{Aw}\right\rangle|=0 \ .</annotation></semantics></math>
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="script">ℛ</mi><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\mathcal{R}(A)</annotation></semantics></math>
+tertutup dan rapat dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>,
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>H</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">A(H)=H</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.functional-analysis.remark.004" class="remark">
+<p><strong>Catatan 4.5.7.</strong> Pemetaan solusi</p>
+<p><span
+id="o010.dionne.functional-analysis.display_math.024"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>T</mi><mo>:</mo><msup><mi>H</mi><mo>*</mo></msup></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>→</mo><mi>H</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mover><mi>u</mi><mo accent="true">̃</mo></mover></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>↦</mo><mi>u</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+T:H^\ast&amp;\rightarrow H \\
+\tilde{u}&amp;\mapsto u
+\end{aligned}</annotation></semantics></math> yang didefinisikan oleh
+(<a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.equation.025">4.5.10</a>)
+dalam Akibat <a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.corollary.002">4.5.5</a>
+merupakan pemetaan konjugat-linear terbatas (dan merupakan pemetaan
+linear pada kasus real). Kita menunjukkannya sebagai komposisi suatu
+pemetaan linear terbatas dengan suatu pemetaan konjugat-linear terbatas.
+<span id="fu_an_LaxMilgTh2" data-label="fu_an_LaxMilgTh2"></span></p>
+<p>Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>:</mo><msup><mi>H</mi><mo>*</mo></msup><mo>→</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">\displaystyle R:H^\ast\rightarrow H</annotation></semantics></math>
+adalah pemetaan konjugat-linear terbatas yang memetakan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>u</mi><mo accent="true">̃</mo></mover><annotation encoding="application/x-tex">\tilde{u}</annotation></semantics></math>
+ke unsur tunggal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">R(\tilde{u})</annotation></semantics></math>
+dari Teorema Representasi Riesz, sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">⟩</mo></mrow></mrow><annotation encoding="application/x-tex">\tilde{u}(v)=\left\langle{v},{R(\tilde{u})}\right\rangle</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">v\in H</annotation></semantics></math>.
+Kita mempunyai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>R</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\|R\|=1</annotation></semantics></math>
+karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|\tilde{u}\|=\|R(\tilde{u})\|</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo>∈</mo><msup><mi>H</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">\displaystyle\tilde{u}\in H^\ast</annotation></semantics></math>.
+Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>:</mo><mi>H</mi><mo>→</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">A:H\rightarrow H</annotation></semantics></math>
+adalah pemetaan linear terbatas yang didefinisikan dalam Catatan <a
+href="functional-lax-milgram.html#o010.dionne.functional-analysis.remark.003">4.5.6</a>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>
+merupakan bijeksi linear dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>,
+Teorema Pemetaan Terbuka menyatakan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><annotation encoding="application/x-tex">\displaystyle A^{-1}</annotation></semantics></math>
+kontinu. Akhirnya,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mo>=</mo><msup><mi>A</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo>∘</mo><mi>R</mi></mrow><annotation encoding="application/x-tex">\displaystyle T=A^{-1}\circ R</annotation></semantics></math>,
+sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>
+konjugat-linear dan terbatas.</p>
+</div>
+<p><span id="o010.dionne.section.04.06"></span></p>
+<h1 id="latihan">Latihan</h1>
+<p>Masalah yang kami sarankan hanya mencakup ruang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>L</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle L^2</annotation></semantics></math>,
+khususnya deret Fourier klasik. Untuk latihan mengenai teori umum
+analisis fungsional, pembaca sebaiknya merujuk buku-buku seperti <span
+id="o010.citation.br"></span><a href="#o010.citation.br">Br</a>; <span
+id="o010.citation.reesim"></span><a
+href="#o010.citation.reesim">ReeSim</a>; <span
+id="o010.citation.ru"></span><a href="#o010.citation.ru">Ru</a>; <span
+id="o010.citation.rufa"></span><a href="#o010.citation.rufa">RuFA</a>.
+Beberapa buku tentang persamaan diferensial parsial dalam bibliografi
+memuat bagian mengenai analisis fungsional beserta sejumlah latihan
+dasar. Secara umum, bagian-bagian tersebut bukan pengganti buku analisis
+fungsional yang baik. Ada satu pengecualian: <a
+href="#o010.citation.br">Br</a> menyajikan pengantar yang baik terhadap
+hasil-hasil penting analisis fungsional dan juga memuat banyak latihan,
+dengan solusi terperinci bagi banyak di antaranya. Kami sangat
+menyarankan buku ini.</p>
+<p>Latihan yang disarankan:</p>
+<p><span id="o010.dionne.functional-analysis.itemize.001"></span></p>
+<ul>
+<li><span
+id="o010.dionne.functional-analysis.exercise-reference.001"></span>
+Dalam <span id="o010.citation.str"></span><a
+href="#o010.citation.str">Str</a>: nomor 1 sampai 7 pada Bagian 5.1;
+nomor 1, 2, dan 9 sampai 15 pada Bagian 5.2; nomor 2 pada Bagian 5.3;
+serta nomor 1 sampai 16 pada Bagian 5.4.</li>
+</ul>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="functional-operator-theory.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="index.html">Berikutnya</a></p>
+</div>
+<section id="footnotes" class="footnotes footnotes-end-of-document"
+role="doc-endnotes">
+<hr />
+<ol>
+<li
+id="fn1"><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}B(w,u)=\operatorname{Re}\tilde{u}(w)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w\in H</annotation></semantics></math>
+jika dan hanya jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mi>w</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}B(iw,u)=\operatorname{Re}\tilde{u}(iw)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w\in H</annotation></semantics></math>,
+jika dan hanya jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Re}(iB(w,u))=\operatorname{Re}(i\tilde{u}(w))</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w\in H</annotation></semantics></math>,
+jika dan hanya jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Im</mi><mo>&#8289;</mo></mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">Im</mi><mo>&#8289;</mo></mrow><mover><mi>u</mi><mo accent="true">̃</mo></mover><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\operatorname{Im}B(w,u)=\operatorname{Im}\tilde{u}(w)</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>∈</mo><mi>H</mi></mrow><annotation encoding="application/x-tex">w\in H</annotation></semantics></math>.<a
+href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</main>
+</body>
+</html>

@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Metode D'Alembert</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<p><span id="o010.dionne.wave-equation-1d"></span></p>
+<h1 id="o010.dionne.wave-equation-1d.seg.001">Metode D’Alembert</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>wave_equ.tex</code> baris 1-389 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.chapter.07"></span></p>
+<h1 id="persamaan-gelombang-dalam-satu-dimensi">Persamaan Gelombang
+dalam Satu Dimensi</h1>
+<p>Bab ini membahas <strong>persamaan gelombang</strong><span
+id="o010.dionne.wave-equation-1d.index.001"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.001"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} - c^2 \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} = 0 \ .</annotation></semantics></math>
+Konstanta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c&gt;0</annotation></semantics></math>
+disebut <strong>cepat rambat</strong><span
+id="o010.dionne.wave-equation-1d.index.002"></span>. Kita akan segera
+menjelaskan mengapa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>
+diberi nama ini. Kita juga akan mengasumsikan bahwa solusi persamaan
+gelombang memenuhi beberapa syarat awal dan syarat batas sesuai dengan
+domain persamaan gelombang tersebut.</p>
+<p><span id="o010.dionne.section.07.01"></span></p>
+<h2 id="metode-dalembert">Metode D’Alembert</h2>
+<p><span id="o010.dionne.subsection.07.01.01"></span></p>
+<h3 id="pada-garis-real">Pada Garis Real</h3>
+<p>Perhatikan persamaan gelombang</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.001"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.1)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>&gt;</mo><mn>0</mn><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> dan </mtext><mspace width="0.333em"></mspace></mrow><mi>x</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} - c^2 \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} = 0 \quad , \quad t &gt;0
+\text{ dan } x \in \mathbb{R}\ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.1)</span></span>
+dengan syarat awal</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.002"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.2)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>x</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">u(x,0)= f(x) \quad \text{dan} \quad \frac{\partial{u}}{\partial t}(x,0) = g(x) \quad ,
+\quad x \in \mathbb{R}\ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.2)</span></span>
+untuk dua fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">f:\mathbb{R}\rightarrow \mathbb{R}</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">g:\mathbb{R}\rightarrow \mathbb{R}</annotation></semantics></math>.
+Kemulusan fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+akan ditentukan kemudian.</p>
+<p>Seperti yang telah kita lihat pada Bagian <a
+href="classification-hyperbolic.html#o010.dionne.subsection.02.03.02">2.3.2</a>,
+persamaan gelombang merupakan persamaan diferensial parsial hiperbolik.
+Kita dapat menggunakan suatu perubahan variabel untuk mereduksi
+persamaan gelombang menjadi bentuk standar bagi suatu persamaan
+hiperbolik. Sekarang kita ulangi proses reduksi ini. Persamaan gelombang
+berbentuk</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.002"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mn>2</mn><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>t</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">L(x,t,\mathrm{D})u = a_{2,0} \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} + 2 a_{1,1} \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{} \partial t^{}} +
+a_{0,2} \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">a_{2,0} = 1</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a_{1,1} = 0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub><mo>=</mo><mi>−</mi><msup><mi>c</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle a_{0,2}=-c^2</annotation></semantics></math>.
+Simbol utamanya adalah</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.003"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.math_component.001"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.math_component.002"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.math_component.003"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo>,</mo><msub><mi>ξ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>ξ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ξ</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>ξ</mi><mn>2</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ξ</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ξ</mi><mn>2</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">p(x,t, \xi_1, \xi_2) =
+\begin{pmatrix}
+\xi_1 &amp; \xi_2
+\end{pmatrix}
+\begin{pmatrix}
+a_{2,0} &amp; a_{1,1} \\
+a_{1,1} &amp; a_{0,2}
+\end{pmatrix}
+\begin{pmatrix}
+\xi_1 \\ \xi_2
+\end{pmatrix} \ .</annotation></semantics></math> Persamaan gelombang
+bersifat hiperbolik pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^2</annotation></semantics></math>
+karena</p>
+<p><span
+id="o010.dionne.wave-equation-1d.math_component.004"></span></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">det</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>−</mi><msup><mi>c</mi><mn>2</mn></msup><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\det
+\begin{pmatrix}
+a_{2,0} &amp; a_{1,1} \\
+a_{1,1} &amp; a_{0,2}
+\end{pmatrix} = -c^2 &lt; 0</annotation></semantics></math>. Solusi
+persamaan diferensial</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.004"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi mathvariant="normal">d</mi><mi>x</mi></mrow><mrow><mi mathvariant="normal">d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mo>+</mo><msqrt><mrow><msubsup><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>−</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub></mrow></msqrt></mrow><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub></mfrac><mo>=</mo><mi>c</mi><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mfrac><mrow><mi mathvariant="normal">d</mi><mi>x</mi></mrow><mrow><mi mathvariant="normal">d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msub><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow></msub><mo>−</mo><msqrt><mrow><msubsup><mi>a</mi><mrow><mn>1</mn><mo>,</mo><mn>1</mn></mrow><mn>2</mn></msubsup><mo>−</mo><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub><msub><mi>a</mi><mrow><mn>0</mn><mo>,</mo><mn>2</mn></mrow></msub></mrow></msqrt></mrow><msub><mi>a</mi><mrow><mn>2</mn><mo>,</mo><mn>0</mn></mrow></msub></mfrac><mo>=</mo><mi>−</mi><mi>c</mi></mrow><annotation encoding="application/x-tex">\frac{\mathrm{d}x}{\mathrm{d}{t}} = \frac{a_{1,1} + \sqrt{a_{1,1}^2 - a_{2,0} a_{0,2}}}{a_{2,0}} = c
+\quad \text{dan} \quad
+\frac{\mathrm{d}x}{\mathrm{d}{t}} = \frac{a_{1,1} - \sqrt{a_{1,1}^2 - a_{2,0} a_{0,2}}}{a_{2,0}} =-c</annotation></semantics></math>
+berturut-turut adalah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>c</mi><mi>t</mi><mo>+</mo><mi>η</mi></mrow><annotation encoding="application/x-tex">x=ct+\eta</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mi>c</mi><mi>t</mi><mo>+</mo><mi>ξ</mi></mrow><annotation encoding="application/x-tex">x=-ct+\xi</annotation></semantics></math>.
+Kurva level dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\eta(x,t) = x-ct</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\xi(x,t) = x +ct</annotation></semantics></math>
+merupakan kurva karakteristik. Kita menggunakan perubahan koordinat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\eta = x-ct</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\xi = x +ct</annotation></semantics></math>
+untuk mereduksi persamaan gelombang.</p>
+<p>Karena</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.005"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mi>c</mi><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>+</mo><mi>c</mi><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{\partial{u}}{\partial x} = \frac{\partial{u}}{\partial \eta}\frac{\partial{\eta}}{\partial x} + \frac{\partial{u}}{\partial \xi}\frac{\partial{\xi}}{\partial x}
+= \frac{\partial{u}}{\partial \eta} + \frac{\partial{u}}{\partial \xi}
+\quad \text{dan} \quad
+\frac{\partial{u}}{\partial t} = \frac{\partial{u}}{\partial \eta}\frac{\partial{\eta}}{\partial t} + \frac{\partial{u}}{\partial \xi}\frac{\partial{\xi}}{\partial t}
+= -c\, \frac{\partial{u}}{\partial \eta} +c\, \frac{\partial{u}}{\partial \xi} \ ,</annotation></semantics></math>
+kita memperoleh</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.001"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mi>∂</mi><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mi>∂</mi><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mi>∂</mi><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo>=</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mn>2</mn><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} &amp;= \frac{\partial}{\partial x}{\left(\frac{\partial{u}}{\partial x}\right)}
+= \frac{\partial}{\partial \eta}{\left(\frac{\partial{u}}{\partial \eta} + \frac{\partial{u}}{\partial \xi}\right)} \frac{\partial{\eta}}{\partial x}
++ \frac{\partial}{\partial \xi}{\left(\frac{\partial{u}}{\partial \eta} + \frac{\partial{u}}{\partial \xi}\right)} \frac{\partial{\xi}}{\partial x}\\
+&amp;= \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}}\frac{\partial{\eta}}{\partial x} +
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}\frac{\partial{\eta}}{\partial x} +
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{} \partial \eta^{}}\frac{\partial{\xi}}{\partial x} +
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}}\frac{\partial{\xi}}{\partial x}
+= \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}} + 2\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}} +
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}}
+\end{aligned}</annotation></semantics></math> dan</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.002"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mi>∂</mi><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mi>∂</mi><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mi>c</mi><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>+</mo><mi>c</mi><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mrow><mi>∂</mi><mi>η</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo>+</mo><mfrac><mi>∂</mi><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mi>c</mi><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>+</mo><mi>c</mi><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>ξ</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mfrac><mrow><mi>∂</mi><mi>ξ</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mi>c</mi><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mi>c</mi><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mi>c</mi><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mi>c</mi><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mi>−</mi><mi>c</mi><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><mi>c</mi><mspace width="0.167em"></mspace><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><mn>2</mn><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} &amp;= \frac{\partial}{\partial t}{\left(\frac{\partial{u}}{\partial t}\right)}
+= \frac{\partial}{\partial \eta}{\left(-c\frac{\partial{u}}{\partial \eta} + c\frac{\partial{u}}{\partial \xi}\right)}\frac{\partial{\eta}}{\partial t}
++ \frac{\partial}{\partial \xi}{\left(-c\frac{\partial{u}}{\partial \eta} + c\frac{\partial{u}}{\partial \xi}\right)}\frac{\partial{\xi}}{\partial t}\\
+&amp;= -c\,\left( -c\, \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}}
+   + c\,\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}\right) +
+c\, \left( -c \,\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{} \partial \eta^{}} + c\,\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}} 
+\right)
+= c^2\,\left(\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}} - 2\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}
++ \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}} \right) \ .
+\end{aligned}</annotation></semantics></math> Dengan demikian, (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.001">7.1.1</a>)
+menjadi</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.006"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>=</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><mn>2</mn><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mn>2</mn><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>ξ</mi><mn>2</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>−</mi><mn>4</mn><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">0 = \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} - c^2 \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} =
+c^2\,\left(\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}} - 2\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}}
++ \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}} \right) - c^2 \left(
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{2}} + 2\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}} +
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \xi^{2}} \right)
+= -4c^2 \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}} \ .</annotation></semantics></math>
+Kita harus menyelesaikan persamaan diferensial parsial</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.003"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.3)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>η</mi><mrow></mrow></msup><mi>∂</mi><msup><mi>ξ</mi><mrow></mrow></msup></mrow></mfrac><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial \eta^{} \partial \xi^{}} = 0 \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.3)</span></span>
+Mengintegralkan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.003">7.1.3</a>)
+terhadap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ξ</mi><annotation encoding="application/x-tex">\xi</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>=</mo><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\frac{\partial{u}}{\partial \eta} = H(\eta)</annotation></semantics></math>
+untuk suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">H:\mathbb{R}\rightarrow \mathbb{R}</annotation></semantics></math>.
+Mengintegralkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>η</mi></mrow></mfrac><mo>=</mo><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\frac{\partial{u}}{\partial \eta} = H(\eta)</annotation></semantics></math>
+terhadap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>η</mi><annotation encoding="application/x-tex">\eta</annotation></semantics></math>
+menghasilkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo>∫</mo><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>η</mi><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle u(\eta,\xi) = \int H(\eta) \,\mathrm{d}{\eta} + G(\xi)</annotation></semantics></math>
+untuk suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo>:</mo><mi mathvariant="double-struck">ℝ</mi><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">G:\mathbb{R}\rightarrow \mathbb{R}</annotation></semantics></math>.
+Jika kita memperkenalkan fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+yang didefinisikan oleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo>∫</mo><mi>H</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>η</mi></mrow><annotation encoding="application/x-tex">\displaystyle F(\eta) = \int H(\eta) \,\mathrm{d}{\eta}</annotation></semantics></math>,
+maka kita memperoleh solusi</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.007"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(\eta,\xi) = F(\eta) + G(\xi)</annotation></semantics></math>
+untuk (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.003">7.1.3</a>).
+Dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>,
+kita memperoleh solusi</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.004"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.4)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(x,t) = F(x-ct) + G(x+ct)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.4)</span></span>
+untuk (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.001">7.1.1</a>).</p>
+<p>Sekarang kita tinjau syarat awal dalam (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.002">7.1.2</a>).
+Fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+memenuhi persamaan</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.008"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>c</mi><msup><mi>F</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>c</mi><msup><mi>G</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">f(x) = F(x) + G(x) \quad \text{dan} \quad g(x) = -c F&#39;(x) + c G&#39;(x) \ .</annotation></semantics></math>
+Jika kita mengasumsikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+terintegralkan lokal, kita dapat menulis</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.009"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mn>0</mn><mi>x</mi></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi><mo>=</mo><mi>−</mi><mi>c</mi><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>c</mi><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>c</mi><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>c</mi><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">\int_0^x g(s)\,\mathrm{d}{s} = -c F(x) + c G(x) + c F(0) - c G(0) \ .</annotation></semantics></math>
+Kita memperoleh dua persamaan yang saling bebas linear untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>.</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.003"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.display_math.003.aligned-equation.002"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.5)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+F(x) + G(x) &amp;= f(x)
+\end{aligned}</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.5)</span></span></p>
+<p>dan</p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.6)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mfrac><mn>1</mn><mi>c</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>x</mi></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+F(x) - G(x) &amp;= F(0) - G(0) -\frac{1}{c} \int_0^x g(s)\,\mathrm{d}{s} \ .
+\end{aligned}</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.6)</span></span> Dengan
+menjumlahkan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.display_math.003">7.1.5</a>)
+dan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.display_math.003.aligned-equation.002">7.1.6</a>),
+lalu membaginya dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>,
+kita memperoleh</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.010"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>c</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>x</mi></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">F(x) = \frac{1}{2} f(x) - \frac{1}{2c} \int_0^x g(s)\,\mathrm{d}{s} +
+\frac{1}{2} \left(F(0) - G(0)\right) \ .</annotation></semantics></math>
+Dengan mengurangkan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.display_math.003.aligned-equation.002">7.1.6</a>)
+dari (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.display_math.003">7.1.5</a>),
+lalu membaginya dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>,
+kita memperoleh</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.011"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>c</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>x</mi></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">G(x) = \frac{1}{2} f(x) + \frac{1}{2c} \int_0^x g(s)\,\mathrm{d}{s} -
+\frac{1}{2} \left(F(0) - G(0)\right) \ .</annotation></semantics></math>
+Akhirnya, kita memperoleh</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.005"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.7)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>c</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi></mrow><mrow><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(x,t) = F(x-ct) + G(x+ct)
+= \frac{1}{2} \left(f(x-ct) + f(x+ct)\right)
++ \frac{1}{2c} \int_{x-ct}^{x+ct} g(s)\,\mathrm{d}{s} \  .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.7)</span></span></p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>C</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℝ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f \in C^2(\mathbb{R})</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℝ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle g \in C^1(\mathbb{R})</annotation></semantics></math>,
+maka (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.005">7.1.7</a>)
+memberikan solusi berkelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>C</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℝ</mi><mo>×</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>∞</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle C^2(\mathbb{R}\times[0,\infty[)</annotation></semantics></math>
+untuk (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.001">7.1.1</a>)
+dengan syarat awal (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.002">7.1.2</a>).</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">g = 0</annotation></semantics></math>,
+maka solusi persamaan gelombang adalah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle u(x,t) = \frac{1}{2} \left(f(x-ct) + f(x+ct)\right)</annotation></semantics></math>.
+Pada Gambar <a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig1">7.1</a>,
+kita telah mengilustrasikan perilaku solusi ini terhadap waktu.</p>
+<figure id="o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig1">
+<img src="assets/wave_fig1.png" style="width:88.0%"
+alt="Dua gelombang merambat dari deformasi awal ke arah berlawanan dengan cepat rambat c." />
+<figcaption aria-hidden="true">Dua gelombang merambat dari deformasi
+awal ke arah berlawanan dengan cepat rambat c.</figcaption>
+</figure>
+<p>Nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+pada titik tetap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+dan waktu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+ditentukan oleh nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>±</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x\pm ct</annotation></semantics></math>
+dan nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+di antara
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x-ct</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x+ct</annotation></semantics></math>.
+Karena alasan ini, interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>,</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[x-ct,x+ct]</annotation></semantics></math>
+disebut <strong>daerah determinasi</strong><span
+id="o010.dionne.wave-equation-1d.index.003"></span> bagi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,t)</annotation></semantics></math>.
+Sebaliknya, nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+pada interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>
+hanya memengaruhi nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(x,t)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>≤</mo><mi>x</mi><mo>≤</mo><mi>b</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">a-ct \leq x \leq b+ct</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>.
+Daerah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>:</mo><mi>t</mi><mo>&gt;</mo><mn>0</mn><mspace width="0.222em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="0.222em"></mspace><mi>a</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>≤</mo><mi>x</mi><mo>≤</mo><mi>b</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="true" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\left\{ (x,t) : t&gt;0 \ \text{dan} \ a-ct \leq x \leq b+ct \right\}</annotation></semantics></math>
+disebut <strong>jangkauan pengaruh</strong><span
+id="o010.dionne.wave-equation-1d.index.004"></span> dari interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mo>,</mo><mi>b</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[a,b]</annotation></semantics></math>.
+Definisi-definisi ini diilustrasikan pada Gambar <a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig2">7.2</a>.
+Diskontinuitas syarat awal untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,0)</annotation></semantics></math>
+merambat seketika sepanjang garis-garis karakteristik yang berasal dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>0</mn></msub><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x_0,0)</annotation></semantics></math>.</p>
+<figure id="o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig2">
+<img src="assets/wave_fig2.png" style="width:88.0%"
+alt="Diagram ruang-waktu yang menunjukkan daerah determinasi suatu titik dan jangkauan pengaruh suatu selang." />
+<figcaption aria-hidden="true">Diagram ruang-waktu yang menunjukkan
+daerah determinasi suatu titik dan jangkauan pengaruh suatu
+selang.</figcaption>
+</figure>
+<div id="o010.dionne.wave-equation-1d.worked_example.001"
+class="worked_example">
+<p><strong>Contoh.</strong></p>
+<p>Sketsakan solusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+dari persamaan gelombang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mi>t</mi><mi>t</mi></mrow></msub><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><msub><mi>u</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle u_{tt} = c^2 u_{xx}</annotation></semantics></math>
+dengan syarat awal</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.012"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.math_component.005"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>t</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="2.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="2.0em"></mspace><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>h</mi></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>a</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">|</mo><mi>x</mi><mo stretchy="false" form="prefix">|</mo><mo>&gt;</mo><mi>a</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">u_t(x,0) = g(x) = 0 \qquad \text{dan} \qquad
+u(x,0) = f(x) =
+\begin{cases}
+h &amp; \quad \text{jika} \quad |x| \leq a \\
+0 &amp; \quad \text{jika} \quad |x| &gt; a
+\end{cases}</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">x \in \mathbb{R}</annotation></semantics></math>.
+Kita mengasumsikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>
+adalah konstanta positif sembarang.</p>
+<p>Dari (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.005">7.1.7</a>),
+kita memperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">u(x,t) = \frac{1}{2}\left(f(x-ct) +
+f(x+ct)\right)</annotation></semantics></math>. Karena data awal ini
+diskontinu, rumus tersebut memberi solusi dalam pengertian distribusi
+pada seluruh domain dan solusi klasik potongan demi potongan di luar
+garis-garis diskontinuitas. Dengan demikian, kita memperoleh sketsa
+solusi berikut.</p>
+<p><span
+id="o010.dionne.wave-equation-1d.layout_container.001"></span></p>
+<div class="center">
+
+</div>
+</div>
+<p><span id="o010.dionne.subsection.07.01.02"></span></p>
+<h3 id="pada-interval-setengah-takhingga">Pada Interval Setengah
+Takhingga</h3>
+<p>Dalam bagian ini, kita meninjau persamaan gelombang</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.013"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>&gt;</mo><mn>0</mn><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> dan </mtext><mspace width="0.333em"></mspace></mrow><mi>x</mi><mo>&gt;</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} - c^2 \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} = 0 \quad ,
+\quad t &gt;0 \text{ dan } x &gt; 0 \ ,</annotation></semantics></math>
+dengan syarat batas</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.006"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.8)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>&gt;</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">u(0,t) = 0  \quad , \quad t&gt;0 \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.8)</span></span>
+dan syarat awal</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.014"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>x</mi><mo>&gt;</mo><mn>0</mn><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(x,0) = f(x) \quad \text{dan} \quad \frac{\partial{u}}{\partial t}(x,0) = g(x) \quad ,
+\quad x &gt; 0 \ .</annotation></semantics></math></p>
+<p>Seperti pada bagian sebelumnya, kita dapat menggunakan perubahan
+koordinat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>η</mi><mo>=</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\eta
+= x-ct</annotation></semantics></math> dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ξ</mi><mo>=</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\xi = x +ct</annotation></semantics></math>
+untuk mereduksi persamaan gelombang menjadi (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.003">7.1.3</a>).
+Pengintegralan persamaan ini menghasilkan</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.007"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.9)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo>,</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>η</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>ξ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(\eta,\xi) = F(\eta) + G(\xi)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.9)</span></span>
+untuk fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+tertentu. Dalam variabel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>,
+kita memperoleh solusi</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.015"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(x,t) = F(x-ct) + G(x+ct)</annotation></semantics></math>
+selama
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct&gt;0</annotation></semantics></math>.
+Dengan bantuan syarat awal seperti pada bagian sebelumnya, kita
+memperoleh</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.008"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.10)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>c</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi></mrow><mrow><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">u(x,t) = \frac{1}{2} \left(f(x-ct) + f(x+ct)\right)
++ \frac{1}{2c} \int_{x-ct}^{x+ct} g(s)\,\mathrm{d}{s}</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.10)</span></span>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct &gt; 0</annotation></semantics></math>.</p>
+<p>Sekarang kita meninjau apa yang terjadi ketika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct &lt;0</annotation></semantics></math>.
+Kita menggunakan syarat batas (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.006">7.1.8</a>)
+untuk memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">0 = F(-ct) + G(ct)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>.
+Jadi,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>w</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>w</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F(w) = -G(-w)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">w&lt;0</annotation></semantics></math>.
+Sekarang kita dapat melanjutkan seperti yang kita lakukan untuk kasus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct&gt;0</annotation></semantics></math>.</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.004"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.11)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mi>t</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mi>t</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>c</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mi>c</mi><mi>t</mi><mo>−</mo><mi>x</mi></mrow></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="2.0em"></mspace><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>c</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mrow><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo stretchy="false" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mi>t</mi><mo>−</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mfrac><mn>1</mn><mrow><mn>2</mn><mi>c</mi></mrow></mfrac><msubsup><mo>∫</mo><mrow><mi>c</mi><mi>t</mi><mo>−</mo><mi>x</mi></mrow><mrow><mi>c</mi><mi>t</mi><mo>+</mo><mi>x</mi></mrow></msubsup><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>s</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+u(x,t) &amp;= F(x-ct) + G(x+ct) = -G(ct-x) + G(x+ct)  \\
+&amp;= -\left( \frac{1}{2} f(ct-x) + \frac{1}{2c} \int_0^{ct-x} g(s)\,\mathrm{d}{s} -
+\frac{1}{2} \left(F(0) - G(0)\right) \right)  \\
+&amp;\qquad + \left( \frac{1}{2} f(x+ct) + \frac{1}{2c} \int_0^{x+ct} g(s)\,\mathrm{d}{s}
+ - \frac{1}{2} \left(F(0) - G(0)\right) \right)  \\
+&amp;= \frac{1}{2} (f(x+ct) - f(ct-x)) + \frac{1}{2c}
+\int_{ct-x}^{ct+x} g(s) \,\mathrm{d}{s}
+\end{aligned}</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.11)</span></span> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct &lt; 0</annotation></semantics></math>.</p>
+<p>Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct&gt;0</annotation></semantics></math>,
+nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+pada titik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+dan waktu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+yang tetap ditentukan oleh nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>±</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x\pm ct</annotation></semantics></math>
+dan nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+di antara
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x-ct</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x+ct</annotation></semantics></math>.
+Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct&lt;0</annotation></semantics></math>,
+nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+pada titik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+dan waktu
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>
+yang tetap ditentukan oleh nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>t</mi><mo>±</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">ct\pm x</annotation></semantics></math>
+dan nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+di antara
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>t</mi><mo>−</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">ct-x</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>t</mi><mo>+</mo><mi>x</mi></mrow><annotation encoding="application/x-tex">ct+x</annotation></semantics></math>.
+Interval
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mi>c</mi><mi>t</mi><mo>−</mo><mi>x</mi><mo>,</mo><mi>c</mi><mi>t</mi><mo>+</mo><mi>x</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">[ct-x,ct+x]</annotation></semantics></math>
+adalah <strong>daerah determinasi</strong> <span
+id="o010.dionne.wave-equation-1d.index.005"></span> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,t)</annotation></semantics></math>
+ketika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-ct &lt;0</annotation></semantics></math>.</p>
+<div id="o010.dionne.wave-equation-1d.worked_example.002"
+class="worked_example">
+<p><strong>Contoh.</strong></p>
+<p>Sketsakan solusi persamaan gelombang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mrow><mi>t</mi><mi>t</mi></mrow></msub><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><msub><mi>u</mi><mrow><mi>x</mi><mi>x</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\displaystyle u_{tt} = c^2 u_{xx}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x\geq 0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t \geq 0</annotation></semantics></math>
+dengan syarat awal</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.016"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.math_component.006"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mn>0</mn><mo>≤</mo><mi>x</mi><mo>&lt;</mo><mi>a</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> atau </mtext><mspace width="0.333em"></mspace></mrow><mi>x</mi><mo>&gt;</mo><mi>b</mi></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>h</mi></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>a</mi><mo>≤</mo><mi>x</mi><mo>≤</mo><mi>b</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">u(x,0) = \begin{cases}
+0 &amp; \quad \text{jika} \ 0\leq x&lt;a \text{ atau } x &gt;b \\
+h &amp; \quad \text{jika} \ a\leq x \leq b
+\end{cases}</annotation></semantics></math> dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>u</mi><mi>t</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u_t(x,0) = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x \geq 0</annotation></semantics></math>,
+serta syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u(0,t) = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t \geq 0</annotation></semantics></math>.</p>
+<p>Dengan menggunakan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.008">7.1.10</a>)
+dan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.display_math.004">7.1.11</a>),
+kita memperoleh sketsa solusi berikut.</p>
+<p><span
+id="o010.dionne.wave-equation-1d.layout_container.002"></span></p>
+<div class="center">
+
+</div>
+</div>
+<p><span id="o010.dionne.subsection.07.01.03"></span></p>
+<h3 id="pada-interval-berhingga">Pada Interval Berhingga</h3>
+<p>Pertama-tama kita menurunkan metode grafis untuk menentukan solusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+dari persamaan gelombang</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.017"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mn>0</mn><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>&gt;</mo><mn>0</mn><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> dan </mtext><mspace width="0.333em"></mspace></mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} - c^2 \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} = 0 \quad , \quad t&gt;0
+\text{ dan } 0&lt;x&lt;L \ ,</annotation></semantics></math> dengan
+syarat batas</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.018"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>t</mi><mo>&gt;</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">u(0,t) = A(t) \quad \text{dan} \quad u(L,t) = B(t) \quad , \quad t&gt;0 \ ,</annotation></semantics></math>
+dan syarat awal</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.019"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(x,0) = f(x) \quad \text{dan} \quad \frac{\partial{u}}{\partial t}(x,0) = g(x) \quad ,
+\quad 0 &lt; x &lt; L \ .</annotation></semantics></math> Fungsi-fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>A</mi><annotation encoding="application/x-tex">A</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+diberikan.</p>
+<figure id="o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig3">
+<img src="assets/wave_fig3.png" style="width:88.0%"
+alt="Diagram karakteristik untuk metode grafis persamaan gelombang satu dimensi, dengan titik a, b, c, dan d." />
+<figcaption aria-hidden="true">Diagram karakteristik untuk metode grafis
+persamaan gelombang satu dimensi, dengan titik a, b, c, dan
+d.</figcaption>
+</figure>
+<p>Persamaan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.004">7.1.4</a>)
+tetap berlaku untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>x</mi><mo>−</mo><mi>c</mi><mi>t</mi><mo>&lt;</mo><mi>x</mi><mo>+</mo><mi>c</mi><mi>t</mi><mo>≤</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">0 \leq x-ct &lt; x+ct \leq L</annotation></semantics></math>.
+Perhatikan Gambar <a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig3">7.3</a>.
+Kita mengetahui bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>
+konstan di sepanjang garis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>c</mi><mi>t</mi><mo>+</mo><msub><mi>x</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">x=ct+x_1</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>c</mi><mi>t</mi><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">x=ct+x_2</annotation></semantics></math>,
+sedangkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math>
+konstan di sepanjang garis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mi>c</mi><mi>t</mi><mo>+</mo><msub><mi>x</mi><mn>3</mn></msub></mrow><annotation encoding="application/x-tex">x=-ct+x_3</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mi>c</mi><mi>t</mi><mo>+</mo><msub><mi>x</mi><mn>4</mn></msub></mrow><annotation encoding="application/x-tex">x=-ct+x_4</annotation></semantics></math>.
+Oleh karena itu,</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.005"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒄</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>4</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>G</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mn>4</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒅</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+u(\boldsymbol{a}) + u(\boldsymbol{c}) &amp;= F(x_1) + G(x_4) + F(x_2) + G(x_3) \\
+&amp;= F(x_1) + G(x_3) + F(x_2) + G(x_4) = u(\boldsymbol{d}) + u(\boldsymbol{b}) \ .
+\end{aligned}</annotation></semantics></math> Dengan demikian,</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.009"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.12)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒅</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒄</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(\boldsymbol{a}) = u(\boldsymbol{d}) + u(\boldsymbol{b}) - u(\boldsymbol{c})  \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.12)</span></span></p>
+<div id="o010.dionne.wave-equation-1d.worked_example.003"
+class="worked_example">
+<p><strong>Contoh 7.1.3.</strong></p>
+<p>Perhatikan Gambar <a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig4">7.4</a>.
+Nilai-nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+di dalam daerah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>1</mn></msub><annotation encoding="application/x-tex">R_1</annotation></semantics></math>
+diberikan oleh (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.005">7.1.7</a>).
+Untuk mencari nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒂</mi><annotation encoding="application/x-tex">\boldsymbol{a}</annotation></semantics></math>
+dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>3</mn></msub><annotation encoding="application/x-tex">R_3</annotation></semantics></math>,
+kita menggunakan (<a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.equation.009">7.1.12</a>).
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒃</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(\boldsymbol{b})</annotation></semantics></math>
+diberikan oleh syarat batas pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">x=L</annotation></semantics></math>,
+sedangkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒄</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(\boldsymbol{c})</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(\boldsymbol{d})</annotation></semantics></math>
+diberikan oleh nilai-nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+pada batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>1</mn></msub><annotation encoding="application/x-tex">R_1</annotation></semantics></math>.
+Dengan melanjutkan secara rekursif, kita dapat menentukan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+di setiap daerah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>i</mi></msub><annotation encoding="application/x-tex">R_i</annotation></semantics></math>.
+<span id="wave_egg1" data-label="wave_egg1"></span></p>
+<figure id="o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig4">
+<img src="assets/wave_fig4.png" style="width:88.0%"
+alt="Pembagian bidang ruang-waktu menjadi daerah karakteristik untuk metode D’Alembert dengan syarat awal dan batas." />
+<figcaption aria-hidden="true">Pembagian bidang ruang-waktu menjadi
+daerah karakteristik untuk metode D’Alembert dengan syarat awal dan
+batas.</figcaption>
+</figure>
+<p>Apakah solusi yang telah kita definisikan kontinu? Di dalam daerah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>i</mi></msub><annotation encoding="application/x-tex">R_i</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+akan selalu kontinu jika kita mengasumsikan bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><mi>C</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f\in C(]0,L[)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>∈</mo><msup><mi>L</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle g\in L^1(]0,L[)</annotation></semantics></math>.
+Kita hanya perlu meninjau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+di sepanjang garis-garis karakteristik. Dengan merujuk pada Gambar <a
+href="wave-dalembert-method.html#o010.dionne.wave-equation-1d.figure.wave-equ-wave-fig4">7.4</a>,
+kita memperoleh</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.010"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.1.13)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒂</mi><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒅</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(\boldsymbol{a}) \rightarrow u(\boldsymbol{d}) + B(0) - f(L)</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.1.13)</span></span>
+ketika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒂</mi><annotation encoding="application/x-tex">\boldsymbol{a}</annotation></semantics></math>
+mendekati garis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mi>c</mi><mi>t</mi><mo>+</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">x=-ct+L</annotation></semantics></math>.
+Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B(0)=f(L)</annotation></semantics></math>,
+maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+akan kontinu di sepanjang
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mi>c</mi><mi>t</mi><mo>+</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">x=-ct+L</annotation></semantics></math>
+yang membatasi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>3</mn></msub><annotation encoding="application/x-tex">R_3</annotation></semantics></math>.
+Demikian pula, agar
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+kontinu di sepanjang garis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x=ct</annotation></semantics></math>
+yang membatasi daerah
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>1</mn></msub><annotation encoding="application/x-tex">R_1</annotation></semantics></math>,
+kita memerlukan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(0)=f(0)</annotation></semantics></math>.
+Kita mengetahui bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>∈</mo><mi>C</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>∞</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A,B \in C([0,\infty[)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>∈</mo><msup><mi>L</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle g \in L^1(]0,L[)</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><mi>C</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f\in C([0,L])</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B(0)=f(L)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(0) = f(0)</annotation></semantics></math>
+cukup untuk menjamin bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+kontinu pada domain
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>:</mo><mi>t</mi><mo>≥</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0</mn><mo>≤</mo><mi>x</mi><mo>≤</mo><mi>L</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{ (x,t) : t\geq 0, \ 0 \leq x \leq L \}</annotation></semantics></math>.</p>
+<p>Solusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+akan berkelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mn>1</mn></msup><annotation encoding="application/x-tex">\displaystyle C^1</annotation></semantics></math>
+di dalam setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>i</mi></msub><annotation encoding="application/x-tex">R_i</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f\in C^1(]0,L[)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>∈</mo><mi>C</mi><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">g \in C(]0,L[)</annotation></semantics></math>.
+Solusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+bahkan akan berkelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle C^2</annotation></semantics></math>
+di dalam setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mi>i</mi></msub><annotation encoding="application/x-tex">R_i</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>C</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f\in C^2(]0,L[)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle g \in C^1(]0,L[)</annotation></semantics></math>.
+Persoalan kemulusan solusi terletak di sepanjang garis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>c</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x= ct</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>−</mi><mi>c</mi><mi>t</mi><mo>+</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">x=-ct+L</annotation></semantics></math>,
+serta pantulannya pada garis batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">x=L</annotation></semantics></math>.</p>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>,</mo><mi>B</mi><mo>∈</mo><msup><mi>C</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>∞</mi><mo stretchy="false" form="prefix">[</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle A,B \in C^2([0,\infty[)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle g\in C^1([0,L])</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>∈</mo><msup><mi>C</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mi>L</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle f\in C^2([0,L])</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(0)=f(0)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A&#39;(0)=g(0)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mo>″</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><msup><mi>f</mi><mo>″</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle A&#39;&#39;(0)= c^2 f&#39;&#39;(0)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B(0)=f(L)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>B</mi><mo>′</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B&#39;(0)=g(L)</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>B</mi><mo>″</mo></msup><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>c</mi><mn>2</mn></msup><msup><mi>f</mi><mo>″</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle B&#39;&#39;(0)= c^2 f&#39;&#39;(L)</annotation></semantics></math>,
+maka solusi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+akan berkelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle C^2</annotation></semantics></math>
+pada seluruh domain. Syarat pada turunan orde kedua diperlukan agar
+persamaan gelombang dipenuhi pada garis-garis karakteristik.
+Syarat-syarat di atas merupakan <strong>syarat konsistensi</strong><span
+id="o010.dionne.wave-equation-1d.index.006"></span> untuk memperoleh
+solusi klasik persamaan gelombang.</p>
+</div>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="references.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="wave-nonhomogeneous-equation.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

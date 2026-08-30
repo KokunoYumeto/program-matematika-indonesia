@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Klasifikasi Linear dalam R^n</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.classification.more.seg.004">Klasifikasi Linear
+dalam R^n</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>classification.tex</code> baris 1182-1508 pada sumber beku.</p>
+</div>
+<p><span id="o010.dionne.subsection.02.04.03"></span></p>
+<h2
+id="klasifikasi-persamaan-diferensial-parsial-linear-dalam-displaystylemathbfmathbbrn">Klasifikasi
+Persamaan Diferensial Parsial Linear dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mi mathvariant="bold-italic">𝒏</mi></msup><annotation encoding="application/x-tex">\displaystyle\mathbf{\mathbb{R}^n}</annotation></semantics></math></h2>
+<p>Meskipun persamaan diferensial parsial linear berorde lebih dari satu
+dapat direduksi menjadi suatu sistem persamaan diferensial parsial
+linear orde pertama, reduksi tersebut belum tentu menguntungkan. Selain
+itu, karena sistem linear tereduksi yang terdiri atas persamaan
+diferensial parsial orde pertama mungkin tidak memiliki jumlah persamaan
+dan variabel tak diketahui yang sama, mendefinisikan simbol utama untuk
+sistem semacam itu bukanlah perkara sepele (lihat <span
+id="o010.dionne.bib.RenRog"></span><a
+href="#o010.dionne.bib.RenRog">RenRog</a>). Karena alasan ini, kami
+hanya menyajikan klasifikasi persamaan diferensial parsial linear umum
+berbentuk</p>
+<p><span
+id="o010.dionne.classification.more.equation.classif-gen-class"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.4.10)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><munder><mo>∑</mo><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="false" form="prefix">|</mo><mo>≤</mo><mi>m</mi></mrow></munder><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><msup><mi mathvariant="normal">D</mi><mi mathvariant="bold-italic">𝜶</mi></msup><mi>u</mi><mo>=</mo><mi>f</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})u = \sum_{|\boldsymbol{\alpha}|\leq m} a_{\boldsymbol{\alpha}}(\boldsymbol{x})
+\mathrm{D}^{\boldsymbol{\alpha}} u = f \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.4.10)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\displaystyle u:\mathbb{R}^n \rightarrow \mathbb{R}</annotation></semantics></math>
+sekurang-kurangnya merupakan fungsi kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mi>m</mi></msup><annotation encoding="application/x-tex">\displaystyle C^m</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\displaystyle f:\mathbb{R}^n \rightarrow \mathbb{R}</annotation></semantics></math>
+kontinu, dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_{\boldsymbol{\alpha}}:\mathbb{R}^n \rightarrow \mathbb{R}</annotation></semantics></math>
+merupakan fungsi kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mi>∞</mi></msup><annotation encoding="application/x-tex">\displaystyle C^\infty</annotation></semantics></math>
+untuk semua multiindeks yang terlibat dalam penjumlahan. Kami akan
+memperlonggar syarat pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><annotation encoding="application/x-tex">a_{\boldsymbol{\alpha}}</annotation></semantics></math>
+mulai Bab <a href="index.html">12</a>.</p>
+<div id="o010.dionne.classification.more.definition.hypersurface"
+class="definition">
+<p><strong>Definisi 2.4.5.</strong> Suatu himpunan bagian
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^n</annotation></semantics></math>
+disebut</p>
+<p><span id="o010.dionne.classification.more.index.007"></span></p>
+<p><strong>hiperpermukaan</strong> jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+merupakan manifold berdimensi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n-1</annotation></semantics></math>
+yang dapat diorientasikan.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+disebut hiperpermukaan kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mi>k</mi></msup><annotation encoding="application/x-tex">\displaystyle C^k</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+merupakan manifold kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mi>k</mi></msup><annotation encoding="application/x-tex">\displaystyle C^k</annotation></semantics></math>.
+Demikian pula,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+disebut hiperpermukaan analitik jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+merupakan manifold analitik.</p>
+</div>
+<p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+suatu hiperpermukaan, maka secara lokal kita dapat menyatakan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+sebagai solusi suatu persamaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\phi(\boldsymbol{x}) = 0</annotation></semantics></math>
+untuk suatu fungsi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\displaystyle\phi:\mathbb{R}^n \to \mathbb{R}</annotation></semantics></math>.
+Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+merupakan hiperpermukaan kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mi>k</mi></msup><annotation encoding="application/x-tex">\displaystyle C^k</annotation></semantics></math>,
+kita dapat memilih
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>
+kelas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mi>k</mi></msup><annotation encoding="application/x-tex">\displaystyle C^k</annotation></semantics></math>;
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+analitik, kita dapat memilih
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>
+analitik. Mulai sekarang, kita akan menganggap bahwa hiperpermukaan yang
+dibahas cukup mulus.</p>
+<p>Seperti halnya persamaan diferensial parsial orde dua di bidang, kita
+memiliki definisi-definisi berikut.</p>
+<div
+id="o010.dionne.classification.more.definition.characteristic-surface"
+class="definition">
+<p><strong>Definisi 2.4.6.</strong> <span id="char_surf_hd_def"
+data-label="char_surf_hd_def"></span> Perhatikan masalah Cauchy yang
+diberikan oleh (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+dengan syarat pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+dan turunan (berarah) fungsi tersebut yang berorde
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝜶</mi><annotation encoding="application/x-tex">\boldsymbol{\alpha}</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">|\boldsymbol{\alpha}|&lt;m</annotation></semantics></math>
+pada suatu hiperpermukaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>.
+Maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+merupakan</p>
+<p><span id="o010.dionne.classification.more.index.008"></span></p>
+<p><strong>permukaan karakteristik</strong> untuk masalah Cauchy ini
+jika (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+beserta syarat pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+dan turunan (berarah) fungsi tersebut tidak cukup untuk menentukan semua
+turunan parsial (campuran maupun bukan) yang berorde
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+di suatu lingkungan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>.</p>
+</div>
+<div
+id="o010.dionne.classification.more.definition.principal-symbol-general"
+class="definition">
+<p><strong>Definisi 2.4.7.</strong> <span
+id="o010.dionne.classification.more.index.009"></span></p>
+<p><strong>Simbol utama</strong> (juga disebut</p>
+<p><span id="o010.dionne.classification.more.index.010"></span></p>
+<p><strong>bentuk karakteristik</strong>) yang terkait dengan operator
+diferensial parsial linear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+yang didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+adalah</p>
+<p><span
+id="o010.dionne.classification.more.equation.classif-gen-princ-symb"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.4.11)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munder><mo>∑</mo><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>m</mi></mrow></munder><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><msup><mi mathvariant="bold-italic">𝝃</mi><mi>α</mi></msup></mrow><annotation encoding="application/x-tex">Q(\boldsymbol{x}, \boldsymbol{\xi}) = \sum_{|\boldsymbol{\alpha}|=m}
+a_{\boldsymbol{\alpha}}(\boldsymbol{x}) \boldsymbol{\xi}^\alpha</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.4.11)</span></span>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝝃</mi><annotation encoding="application/x-tex">\boldsymbol{\xi}</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^n</annotation></semantics></math>.</p>
+</div>
+<p>Kita memperoleh hasil berikut.</p>
+<div
+id="o010.dionne.classification.more.proposition.characteristic-surface-symbol-test"
+class="proposition">
+<p><strong>Proposisi 2.4.8.</strong> Suatu hiperpermukaan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+merupakan permukaan karakteristik jika dan hanya jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝂</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle Q\left(\boldsymbol{x}, \boldsymbol{\nu}(\boldsymbol{x}) \right) = 0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \in S</annotation></semantics></math>,
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝂</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{\nu}(\boldsymbol{x})</annotation></semantics></math>
+suatu vektor normal tak nol terhadap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>.</p>
+</div>
+<p>Sebelum memberikan klasifikasi persamaan diferensial parsial linear
+berorde lebih dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>,
+kita memperluas klasifikasi persamaan diferensial parsial linear berorde
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+yang diberikan dalam Bagian <a
+href="classification-definition.html#o010.dionne.section.02.03">2.3</a>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^n</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n&gt;2</annotation></semantics></math>.</p>
+<p>Perhatikan persamaan diferensial parsial linear orde dua</p>
+<p><span
+id="o010.dionne.classification.more.equation.classif-class-n"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.4.12)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msubsup><mi>x</mi><mi>i</mi><mrow></mrow></msubsup><mi>∂</mi><msubsup><mi>x</mi><mi>j</mi><mrow></mrow></msubsup></mrow></mfrac><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>b</mi><mi>i</mi></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><msub><mi>x</mi><mi>i</mi></msub></mrow></mfrac><mo>+</mo><mi>c</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mi>u</mi><mo>=</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})u = \sum_{i,j=1}^n a_{i,j}(\boldsymbol{x})
+\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x_i^{} \partial x_j^{}} + \sum_{i=1}^n b_i(\boldsymbol{x})
+\frac{\partial{u}}{\partial x_i} + c(\boldsymbol{x})u = 0 \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.4.12)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\displaystyle u:\mathbb{R}^n \rightarrow \mathbb{R}</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>C</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle a_{i,j} \in C^2(\mathbb{R}^n)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mi>i</mi></msub><mo>∈</mo><msup><mi>C</mi><mn>1</mn></msup><mo stretchy="false" form="prefix">(</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle b_i \in C^1(\mathbb{R}^n)</annotation></semantics></math>,
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>∈</mo><mi>C</mi><mo stretchy="false" form="prefix">(</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle c \in C(\mathbb{R}^n)</annotation></semantics></math>.
+Simbol utamanya berbentuk</p>
+<p><span
+id="o010.dionne.classification.more.equation.classif-princ-symb-n"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.4.13)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>ξ</mi><mi>i</mi></msub><msub><mi>ξ</mi><mi>j</mi></msub><mo>=</mo><msup><mi>ξ</mi><mi>⊤</mi></msup><mspace width="0.222em"></mspace><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>ξ</mi><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">Q(\boldsymbol{x}, \boldsymbol{\xi}) = \sum_{i,j=1}^n a_{i,j}(\boldsymbol{x})\xi_i \xi_j
+= \xi^\top\ A(\boldsymbol{x})\ \xi \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.4.13)</span></span>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(\boldsymbol{x})</annotation></semantics></math>
+matriks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>×</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">n\times n</annotation></semantics></math>
+yang entri-entrinya
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">a_{i,j}(\boldsymbol{x})</annotation></semantics></math>.</p>
+<div
+id="o010.dionne.classification.more.definition.second-order-classification-rn"
+class="definition">
+<p><strong>Definisi 2.4.9.</strong> <span id="category2"
+data-label="category2"></span> Perhatikan operator diferensial parsial
+linear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-class-n">2.4.12</a>)
+dengan simbol utamanya
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
+yang diberikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-princ-symb-n">2.4.13</a>).</p>
+<ol type="1">
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat</p>
+<p><span id="o010.dionne.classification.more.index.011"></span></p>
+<p><strong>eliptik</strong> di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>
+jika semua nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(\boldsymbol{x})</annotation></semantics></math>
+memiliki tanda yang sama.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat</p>
+<p><span id="o010.dionne.classification.more.index.012"></span></p>
+<p><strong>hiperbolik</strong> di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>
+jika semua nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(\boldsymbol{x})</annotation></semantics></math>
+tak nol dan semuanya kecuali satu memiliki tanda yang sama.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat <strong>ultrahiperbolik</strong></p>
+<p><span id="o010.dionne.classification.more.index.013"></span></p>
+<p>di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>
+jika semua nilai eigen
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(\boldsymbol{x})</annotation></semantics></math>
+tak nol dan terdapat lebih dari satu nilai eigen untuk masing-masing
+tanda.</p></li>
+<li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat <strong>parabolik</strong></p>
+<p><span id="o010.dionne.classification.more.index.014"></span></p>
+<p>di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(\boldsymbol{x})</annotation></semantics></math>
+singular; yakni,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">A(\boldsymbol{x})</annotation></semantics></math>
+memiliki sekurang-kurangnya satu nilai eigen nol.</p></li>
+</ol>
+</div>
+<p>Di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^2</annotation></semantics></math>,
+definisi ini ekuivalen dengan Definisi <a
+href="classification-definition.html#o010.dionne.classification.through-parabolic.definition.elliptic-hyperbolic-parabolic">2.3.1</a>.
+Ingat bahwa semua nilai eigen suatu matriks simetris bernilai real.</p>
+<p>Kita tidak akan mencoba memberikan klasifikasi lengkap untuk
+persamaan diferensial parsial berorde lebih dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>.
+Bahkan, kita hanya akan memperhatikan persamaan diferensial parsial
+eliptik dan membuktikan satu hasil yang menarik tentang persamaan
+tersebut.</p>
+<div
+id="o010.dionne.classification.more.definition.even-order-classification"
+class="definition">
+<p><strong>Definisi 2.4.10.</strong> <span id="categoryM"
+data-label="categoryM"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+adalah operator diferensial parsial linear yang didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
+adalah simbol utama terkait yang didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-princ-symb">2.4.11</a>).
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat</p>
+<p><span id="o010.dionne.classification.more.index.015"></span></p>
+<p><strong>eliptik</strong> di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>
+jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle Q(\boldsymbol{x}, \boldsymbol{\xi}) \neq 0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{\xi} \in \mathbb{R}^n\setminus \{\boldsymbol{0}\}</annotation></semantics></math>.</p>
+</div>
+<p>Dalam kasus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">m=2</annotation></semantics></math>
+pada (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>),
+definisi persamaan diferensial parsial eliptik yang diberikan dalam
+Definisi <a
+href="classification-rn.html#o010.dionne.classification.more.definition.second-order-classification-rn">2.4.9</a>
+ekuivalen dengan definisi yang diberikan dalam Definisi <a
+href="classification-rn.html#o010.dionne.classification.more.definition.even-order-classification">2.4.10</a>.</p>
+<p>Proposisi berikut menunjukkan bahwa orde suatu operator diferensial
+parsial linear eliptik harus genap.</p>
+<div
+id="o010.dionne.classification.more.proposition.elliptic-even-order"
+class="proposition">
+<p><strong>Proposisi 2.4.11.</strong> <span id="classif_ell_even"
+data-label="classif_ell_even"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+adalah operator diferensial parsial linear eliptik berorde
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{x} \in \mathbb{R}^n</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n&gt;1</annotation></semantics></math>.</p>
+<ol type="1">
+<li><p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_{\boldsymbol{\alpha}}:\mathbb{R}^n \rightarrow \mathbb{R}</annotation></semantics></math>
+untuk semua multiindeks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝜶</mi><annotation encoding="application/x-tex">\boldsymbol{\alpha}</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">|\boldsymbol{\alpha}|=m</annotation></semantics></math>,
+maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+genap. Selain itu, simbol utama terkait
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Q(\boldsymbol{x}, \boldsymbol{\xi})</annotation></semantics></math>
+bernilai positif untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>≠</mo><mn mathvariant="bold">𝟎</mn></mrow><annotation encoding="application/x-tex">\boldsymbol{\xi} \neq \boldsymbol{0}</annotation></semantics></math>
+atau negatif untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>≠</mo><mn mathvariant="bold">𝟎</mn></mrow><annotation encoding="application/x-tex">\boldsymbol{\xi} \neq \boldsymbol{0}</annotation></semantics></math>.</p></li>
+<li><p>Jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_{\boldsymbol{\alpha}}:\mathbb{R}^n \rightarrow \mathbb{C}</annotation></semantics></math>
+untuk sejumlah multiindeks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝜶</mi><annotation encoding="application/x-tex">\boldsymbol{\alpha}</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">|\boldsymbol{\alpha}|=m</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n&gt;2</annotation></semantics></math>,
+maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+genap.</p></li>
+</ol>
+</div>
+<div id="o010.dionne.classification.more.proof.elliptic-even-order"
+class="proof">
+<p><strong>Bukti.</strong> <strong>(i)</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_{\boldsymbol{\alpha}}:\mathbb{R}^n\rightarrow \mathbb{R}</annotation></semantics></math>
+untuk semua multiindeks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝜶</mi><annotation encoding="application/x-tex">\boldsymbol{\alpha}</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">|\boldsymbol{\alpha}|=m</annotation></semantics></math>.</p>
+<p>Selain itu, andaikan terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\boldsymbol{\xi}_1</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝝃</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\boldsymbol{\xi}_2</annotation></semantics></math>
+di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^n</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mn>0</mn><mo>&lt;</mo><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><msub><mi mathvariant="bold-italic">𝝃</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle Q\left(\boldsymbol{x}, \boldsymbol{\xi}_1\right) &lt; 0 &lt;
+Q\left(\boldsymbol{x}, \boldsymbol{\xi}_2\right)</annotation></semantics></math>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
+kontinu, kita dapat menganggap bahwa ruas garis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">{</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><mo>+</mo><mi>s</mi><msub><mi mathvariant="bold-italic">𝝃</mi><mn>2</mn></msub><mo>:</mo><mi>s</mi><mo>∈</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo stretchy="true" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\left\{ (1-s)\boldsymbol{\xi}_1 + s\boldsymbol{\xi}_2 : s \in [0,1] \right\}</annotation></semantics></math>
+tidak memuat titik asal. Jika titik asal berada pada ruas garis ini,
+kita mengganti
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\boldsymbol{\xi}_1</annotation></semantics></math>
+dengan titik lain
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn><mo>′</mo></msubsup><annotation encoding="application/x-tex">\boldsymbol{\xi}_1&#39;</annotation></semantics></math>
+di dekat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\boldsymbol{\xi}_1</annotation></semantics></math>
+yang masih memenuhi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><msubsup><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn><mo>′</mo></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>&lt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">Q\left(\boldsymbol{x}, \boldsymbol{\xi}_1&#39;\right) &lt; 0</annotation></semantics></math>.
+Perhatikan fungsi</p>
+<p><span
+id="o010.dionne.classification.more.display-math.022"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>g</mi><mo>:</mo><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>→</mo><mi mathvariant="double-struck">ℝ</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>s</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>↦</mo><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>s</mi><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><mo>+</mo><mi>s</mi><msub><mi mathvariant="bold-italic">𝝃</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+g:[0,1] &amp;\rightarrow \mathbb{R}\\
+s &amp;\mapsto Q\left(\boldsymbol{x}, (1-s)\boldsymbol{\xi}_1 + s\boldsymbol{\xi}_2\right)
+\end{aligned}</annotation></semantics></math> Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
+kontinu,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+adalah fungsi kontinu sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>&lt;</mo><mn>0</mn><mo>&lt;</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">g(0)&lt;0&lt;g(1)</annotation></semantics></math>.
+Berdasarkan Teorema Nilai Antara, terdapat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>0</mn></msub><mo>∈</mo><mo stretchy="false" form="postfix">]</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="prefix">[</mo></mrow><annotation encoding="application/x-tex">s_0 \in ]0,1[</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>s</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">g(s_0)=0</annotation></semantics></math>.
+Jadi<br />
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>s</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><mo>+</mo><msub><mi>s</mi><mn>0</mn></msub><msub><mi mathvariant="bold-italic">𝝃</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle
+Q\left(\boldsymbol{x}, (1-s_0)\boldsymbol{\xi}_1 + s_0\boldsymbol{\xi}_2\right) = 0</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><msub><mi>s</mi><mn>0</mn></msub><mo stretchy="false" form="postfix">)</mo><msub><mi mathvariant="bold-italic">𝝃</mi><mn>1</mn></msub><mo>+</mo><msub><mi>s</mi><mn>0</mn></msub><msub><mi mathvariant="bold-italic">𝝃</mi><mn>2</mn></msub><mo>≠</mo><mn mathvariant="bold">𝟎</mn></mrow><annotation encoding="application/x-tex">\displaystyle(1-s_0)\boldsymbol{\xi}_1 + s_0\boldsymbol{\xi}_2 \neq \boldsymbol{0}</annotation></semantics></math>.
+Hal ini bertentangan dengan sifat eliptik
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>.</p>
+<p>Oleh karena itu, untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{\xi} \in \mathbb{R}^n \setminus \{\boldsymbol{0}\}</annotation></semantics></math>,
+nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi>−</mi><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>m</mi></msup><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle Q(\boldsymbol{x}, -\boldsymbol{\xi}) = (-1)^mQ(\boldsymbol{x}, \boldsymbol{\xi})</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle Q(\boldsymbol{x}, \boldsymbol{\xi})</annotation></semantics></math>
+memiliki tanda yang sama. Hal ini hanya mungkin jika
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+genap.</p>
+<p><strong>(ii)</strong> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mo>:</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>→</mo><mi mathvariant="double-struck">ℂ</mi></mrow><annotation encoding="application/x-tex">\displaystyle a_{\boldsymbol{\alpha}}:\mathbb{R}^n\rightarrow \mathbb{C}</annotation></semantics></math>
+untuk sejumlah multiindeks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝜶</mi><annotation encoding="application/x-tex">\boldsymbol{\alpha}</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi mathvariant="bold-italic">𝜶</mi><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">|\boldsymbol{\alpha}|=m</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n&gt;2</annotation></semantics></math>.</p>
+<p>Untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒚</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{y} \in \mathbb{R}^{n-1}</annotation></semantics></math>,
+misalkan</p>
+<p><span
+id="o010.dionne.classification.more.display-math.023"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi mathvariant="bold-italic">𝒚</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mi>z</mi><mo>∈</mo><mi mathvariant="double-struck">ℂ</mi><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">p_{\boldsymbol{y}}(z) = Q(\boldsymbol{x}, \,(\boldsymbol{y},z)\,) \quad , \quad z \in \mathbb{C}\ .</annotation></semantics></math>
+Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mo>+</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n_+(\boldsymbol{y})</annotation></semantics></math>
+adalah banyaknya akar (dihitung beserta multiplisitasnya) dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi mathvariant="bold-italic">𝒚</mi></msub><annotation encoding="application/x-tex">p_{\boldsymbol{y}}</annotation></semantics></math>
+yang bagian imajinernya positif, dan misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mo>−</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n_-(\boldsymbol{y})</annotation></semantics></math>
+adalah banyaknya akar (dihitung beserta multiplisitasnya) dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi mathvariant="bold-italic">𝒚</mi></msub><annotation encoding="application/x-tex">p_{\boldsymbol{y}}</annotation></semantics></math>
+yang bagian imajinernya negatif.</p>
+<p>Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi mathvariant="bold-italic">𝒚</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p_{\boldsymbol{y}}(z) \neq 0</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>∈</mo><mi mathvariant="double-struck">ℝ</mi></mrow><annotation encoding="application/x-tex">z\in \mathbb{R}</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒚</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{y} \in \mathbb{R}^{n-1}\setminus \{\boldsymbol{0}\}</annotation></semantics></math>
+sebab
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x},\mathrm{D})</annotation></semantics></math>
+bersifat eliptik, kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mo>+</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>n</mi><mo>−</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n_+(\boldsymbol{y})+n_-(\boldsymbol{y})=m</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒚</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{y} \in \mathbb{R}^{n-1}\setminus \{\boldsymbol{0}\}</annotation></semantics></math>.</p>
+<p>Selain itu, dari Teorema Rouché (lihat <span
+id="o010.dionne.bib.Co"></span><a href="#o010.dionne.bib.Co">Co</a>)
+diperoleh bahwa
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mo>+</mo></msub><annotation encoding="application/x-tex">n_+</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mo>−</mo></msub><annotation encoding="application/x-tex">n_-</annotation></semantics></math>
+konstan secara lokal. Jadi, keduanya konstan pada setiap komponen
+terhubung dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^{n-1}\setminus\{\boldsymbol{0}\}</annotation></semantics></math>
+(titik asal adalah satu-satunya nilai
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒚</mi><annotation encoding="application/x-tex">\boldsymbol{y}</annotation></semantics></math>
+yang memungkinkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mi mathvariant="bold-italic">𝒚</mi></msub><annotation encoding="application/x-tex">p_{\boldsymbol{y}}</annotation></semantics></math>
+memiliki akar real). Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^{n-1}\setminus\{\boldsymbol{0}\}</annotation></semantics></math>
+terhubung untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">n&gt;2</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mo>+</mo></msub><annotation encoding="application/x-tex">n_+</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mo>−</mo></msub><annotation encoding="application/x-tex">n_-</annotation></semantics></math>
+konstan pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^{n-1}\setminus\{\boldsymbol{0}\}</annotation></semantics></math>.</p>
+<p>Terakhir, untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒚</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{y}\in\mathbb{R}^{n-1}\setminus\{\boldsymbol{0}\}</annotation></semantics></math>,
+berlaku
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mo>+</mo></msub><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>n</mi><mo>−</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n_+(-\boldsymbol{y}) = n_-(\boldsymbol{y})</annotation></semantics></math>
+karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>−</mi><mi mathvariant="bold-italic">𝒚</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>m</mi></msup><msub><mi>p</mi><mi mathvariant="bold-italic">𝒚</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle p_{-\boldsymbol{y}}(-z) = (-1)^m p_{\boldsymbol{y}}(z)</annotation></semantics></math>.
+Karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mo>+</mo></msub><annotation encoding="application/x-tex">n_+</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mo>−</mo></msub><annotation encoding="application/x-tex">n_-</annotation></semantics></math>
+konstan pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^{n-1}\setminus\{\boldsymbol{0}\}</annotation></semantics></math>,
+kita memperoleh
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>n</mi><mo>−</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>n</mi><mo>+</mo></msub><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>n</mi><mo>+</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">n_-(\boldsymbol{y}) = n_+(-\boldsymbol{y}) = n_+(\boldsymbol{y})</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒚</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>\</mo><mo stretchy="false" form="prefix">{</mo><mn mathvariant="bold">𝟎</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{y} \in \mathbb{R}^{n-1}\setminus\{\boldsymbol{0}\}</annotation></semantics></math>.</p>
+<p>Dengan demikian,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><msub><mi>n</mi><mo>+</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>n</mi><mo>−</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>2</mn><msub><mi>n</mi><mo>+</mo></msub><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒚</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">m = n_+(\boldsymbol{y})+n_-(\boldsymbol{y}) = 2n_+(\boldsymbol{y})</annotation></semantics></math>,
+sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+genap. ◻</p>
+</div>
+<p>Untuk menggunakan metode variasional dalam menyelesaikan persamaan
+diferensial parsial eliptik di Bab <a href="index.html">12</a>, sifat
+eliptik suatu operator pada umumnya belum cukup kuat. Kita perlu
+memberlakukan syarat yang sedikit lebih kuat pada operator eliptik
+tersebut. Meskipun kelak kita mungkin tidak menggunakan tingkat keumuman
+ini sepenuhnya, kita menganggap bahwa koefisien
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><annotation encoding="application/x-tex">a_{\boldsymbol{\alpha}}</annotation></semantics></math>
+dalam operator diferensial parsial linear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+yang didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+merupakan fungsi bernilai kompleks.</p>
+<p>Karena kita tertarik pada persamaan diferensial parsial linear
+eliptik, dari Proposisi <a
+href="classification-rn.html#o010.dionne.classification.more.proposition.elliptic-even-order">2.4.11</a>
+diperoleh bahwa kita dapat menganggap orde
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+dari operator diferensial parsial linear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+yang didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+adalah genap.</p>
+<div id="o010.dionne.classification.more.definition.strong-ellipticity"
+class="definition">
+<p><strong>Definisi 2.4.12.</strong> <span id="strong_ell_form"
+data-label="strong_ell_form"></span> Misalkan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+adalah operator diferensial parsial linear berorde genap yang
+didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>
+adalah simbol utama terkait yang didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-princ-symb">2.4.11</a>).
+Operator
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat <strong>eliptik kuat atau eliptik seragam</strong></p>
+<p><span id="o010.dionne.classification.more.index.016"></span></p>
+<p><span id="o010.dionne.classification.more.index.017"></span></p>
+<p>pada suatu himpunan bagian terbuka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>⊂</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\displaystyle\Omega \subset \mathbb{R}^n</annotation></semantics></math>
+jika terdapat konstanta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">C&gt;0</annotation></semantics></math>
+sedemikian sehingga</p>
+<p><span
+id="o010.dionne.classification.more.equation.strong-ell-formeq1"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.4.14)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>m</mi><mi>/</mi><mn>2</mn></mrow></msup><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo>≥</mo><mi>C</mi><mo stretchy="false" form="postfix">∥</mo><mi mathvariant="bold-italic">𝝃</mi><msup><mo stretchy="false" form="postfix">∥</mo><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">(-1)^{m/2}
+\operatorname{Re}Q(\boldsymbol{x}, \boldsymbol{\xi}) \geq C
+\|\boldsymbol{\xi}\|^m</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.4.14)</span></span> untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{\xi} \in \mathbb{R}^n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{x}\in \Omega</annotation></semantics></math>.</p>
+</div>
+<p>Perhatikan bahwa persamaan diferensial parsial semula mungkin perlu
+dikalikan dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+agar memenuhi (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.strong-ell-formeq1">2.4.14</a>).
+Kita menganggap bahwa hal ini selalu dilakukan jika diperlukan.</p>
+<div
+id="o010.dionne.classification.more.remark.elliptic-implies-strong-elliptic"
+class="remark">
+<p><strong>Catatan 2.4.13.</strong> Jika operator diferensial parsial
+linear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat eliptik di
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒙</mi><annotation encoding="application/x-tex">\boldsymbol{x}</annotation></semantics></math>,
+maka <span id="ell_implies_strong_ell"
+data-label="ell_implies_strong_ell"></span></p>
+<p><span
+id="o010.dionne.classification.more.display-math.025"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><msub><mi>C</mi><mi mathvariant="bold-italic">𝒙</mi></msub><mo>=</mo><munder><mi mathvariant="normal">inf</mi><mrow><mo stretchy="false" form="postfix">∥</mo><mi mathvariant="bold-italic">𝝃</mi><msub><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msub><mo>=</mo><mn>1</mn></mrow></munder><mrow><mo stretchy="true" form="prefix">|</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">|</mo></mrow><mo>&lt;</mo><mi>∞</mi></mrow><annotation encoding="application/x-tex">0 &lt; C_{\boldsymbol{x}}
+= \inf_{\|\boldsymbol{\xi}\|_2 = 1} \left| Q(\boldsymbol{x}, \boldsymbol{\xi}) \right| &lt; \infty</annotation></semantics></math>
+karena
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>→</mo><mo stretchy="false" form="prefix">|</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">\boldsymbol{\xi} \to |Q(\boldsymbol{x},\boldsymbol{\xi})|</annotation></semantics></math>
+kontinu pada himpunan kompak
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi mathvariant="bold-italic">𝝃</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><mo>:</mo><mo stretchy="false" form="postfix">∥</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><mn>1</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\displaystyle B= \{\boldsymbol{\xi}\in \mathbb{R}^n : \|\boldsymbol{\xi}\| = 1\}</annotation></semantics></math>
+dan karena itu mencapai minimumnya di suatu titik dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math>.
+Jika lebih lanjut kita menganggap bahwa persamaan diferensial parsial
+linear dirumuskan pada suatu himpunan terbuka terbatas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+dengan koefisien yang kontinu pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi mathvariant="normal">Ω</mi><mo accent="true">¯</mo></mover><annotation encoding="application/x-tex">\overline{\Omega}</annotation></semantics></math>,
+maka kita dapat menemukan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">C&gt;0</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>≤</mo><msub><mi>C</mi><mi mathvariant="bold-italic">𝒙</mi></msub></mrow><annotation encoding="application/x-tex">C \leq
+C_{\boldsymbol{x}}</annotation></semantics></math> untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \in \Omega</annotation></semantics></math>,
+sebab
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>→</mo><msub><mi>C</mi><mi mathvariant="bold-italic">𝒙</mi></msub></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \to
+C_{\boldsymbol{x}}</annotation></semantics></math> kontinu pada himpunan
+kompak
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi mathvariant="normal">Ω</mi><mo accent="true">¯</mo></mover><annotation encoding="application/x-tex">\overline{\Omega}</annotation></semantics></math>.
+Dengan demikian, kita memperoleh</p>
+<p><span
+id="o010.dionne.classification.more.display-math.026"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munder><mi mathvariant="normal">inf</mi><mrow><mo stretchy="false" form="postfix">∥</mo><mi mathvariant="bold-italic">𝝃</mi><msub><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msub><mo>=</mo><mn>1</mn></mrow></munder><mrow><mo stretchy="true" form="prefix">|</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">|</mo></mrow><mo>≥</mo><mi>C</mi></mrow><annotation encoding="application/x-tex">\inf_{\|\boldsymbol{\xi}\|_2 = 1} \left| Q(\boldsymbol{x}, \boldsymbol{\xi}) \right| \geq  C</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \in \Omega</annotation></semantics></math>.
+Akibatnya,</p>
+<p><span
+id="o010.dionne.classification.more.display-math.027"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">|</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">|</mo></mrow><mo>≥</mo><mi>C</mi><mo stretchy="false" form="postfix">∥</mo><mi mathvariant="bold-italic">𝝃</mi><msup><mo stretchy="false" form="postfix">∥</mo><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">\left| Q(\boldsymbol{x}, \boldsymbol{\xi}) \right| \geq  C \|\boldsymbol{\xi}\|^m</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{\xi} \in \mathbb{R}^n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mi mathvariant="normal">Ω</mi></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \in \Omega</annotation></semantics></math>.
+Jika kita juga menganggap semua koefisien
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><annotation encoding="application/x-tex">a_{\boldsymbol{\alpha}}</annotation></semantics></math>
+dalam
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x},\mathrm{D})</annotation></semantics></math>
+adalah fungsi dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup><annotation encoding="application/x-tex">\displaystyle\mathbb{R}^n</annotation></semantics></math>
+ke
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb{R}</annotation></semantics></math>,
+maka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mspace width="0.167em"></mspace><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{Re}\, Q(\boldsymbol{x}, \boldsymbol{\xi}) = Q(\boldsymbol{x}, \boldsymbol{\xi})</annotation></semantics></math>
+sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat eliptik kuat pada
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="normal">Ω</mi><annotation encoding="application/x-tex">\Omega</annotation></semantics></math>
+karena kita selalu dapat mengalikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><annotation encoding="application/x-tex">a_{\boldsymbol{\alpha}}</annotation></semantics></math>
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>
+atau
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">-1</annotation></semantics></math>
+untuk memperoleh tanda yang sesuai dengan definisi eliptik kuat.</p>
+</div>
+<div
+id="o010.dionne.classification.more.remark.phase-adjusted-strong-ellipticity"
+class="remark">
+<p><strong>Catatan 2.4.14.</strong> Definisi operator diferensial linear
+eliptik kuat
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+sebagaimana didefinisikan dalam (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.classif-gen-class">2.4.10</a>)
+kadang-kadang dinyatakan sebagai berikut. Suatu operator diferensial
+linear
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>L</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="normal">D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">L(\boldsymbol{x}, \mathrm{D})</annotation></semantics></math>
+bersifat eliptik kuat pada suatu himpunan terbuka
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Ω</mi><mo>⊂</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\displaystyle\Omega \subset \mathbb{R}^n</annotation></semantics></math>
+jika terdapat suatu fungsi bernilai kompleks
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>∈</mo><msup><mi>C</mi><mi>∞</mi></msup><mo stretchy="false" form="prefix">(</mo><mover><mi mathvariant="normal">Ω</mi><mo accent="true">¯</mo></mover><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle\gamma \in C^\infty(\overline{\Omega})</annotation></semantics></math>
+dan konstanta
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">C&gt;0</annotation></semantics></math>
+sedemikian sehingga
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>γ</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">|\gamma(\boldsymbol{x})|=1</annotation></semantics></math>
+untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mover><mi mathvariant="normal">Ω</mi><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \in \overline{\Omega}</annotation></semantics></math>
+dan</p>
+<p><span
+id="o010.dionne.classification.more.equation.strong-ell-formeq2"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (2.4.15)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">Re</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>γ</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi>Q</mi><mo stretchy="false" form="prefix">(</mo><mi mathvariant="bold-italic">𝒙</mi><mo>,</mo><mi mathvariant="bold-italic">𝝃</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mo>≥</mo><mi>C</mi><mo stretchy="false" form="postfix">∥</mo><mi mathvariant="bold-italic">𝝃</mi><msup><mo stretchy="false" form="postfix">∥</mo><mi>m</mi></msup></mrow><annotation encoding="application/x-tex">\operatorname{Re}\left(\gamma(\boldsymbol{x})\,
+Q(\boldsymbol{x},\boldsymbol{\xi})\right) \geq C
+\|\boldsymbol{\xi}\|^m</annotation></semantics></math><span class="equation-number" aria-hidden="true">(2.4.15)</span></span> untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝝃</mi><mo>∈</mo><msup><mi mathvariant="double-struck">ℝ</mi><mi>n</mi></msup></mrow><annotation encoding="application/x-tex">\displaystyle\boldsymbol{\xi} \in \mathbb{R}^n</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="bold-italic">𝒙</mi><mo>∈</mo><mover><mi mathvariant="normal">Ω</mi><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\boldsymbol{x} \in \overline{\Omega}</annotation></semantics></math>.
+Definisi ini tidak lebih umum daripada Definisi <a
+href="classification-rn.html#o010.dionne.classification.more.definition.strong-ellipticity">2.4.12</a>
+karena kita selalu dapat mengalikan persamaan diferensial parsial linear
+dengan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>m</mi><mi>/</mi><mn>2</mn></mrow></msup><mi>/</mi><mi>γ</mi></mrow><annotation encoding="application/x-tex">\displaystyle(-1)^{m/2}/\gamma</annotation></semantics></math>
+untuk memperoleh persamaan diferensial parsial linear yang ekuivalen
+dengan persamaan semula. Koefisien
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><annotation encoding="application/x-tex">a_{\boldsymbol{\alpha}}</annotation></semantics></math>
+dari persamaan diferensial parsial linear semula diganti dengan
+koefisien
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mrow><mi>m</mi><mi>/</mi><mn>2</mn></mrow></msup><msub><mi>a</mi><mi mathvariant="bold-italic">𝜶</mi></msub><mi>/</mi><mi>γ</mi></mrow><annotation encoding="application/x-tex">\displaystyle(-1)^{m/2} a_{\boldsymbol{\alpha}}/\gamma</annotation></semantics></math>
+dalam persamaan diferensial parsial linear yang baru, sehingga (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.strong-ell-formeq2">2.4.15</a>)
+tereduksi menjadi (<a
+href="classification-rn.html#o010.dionne.classification.more.equation.strong-ell-formeq1">2.4.14</a>).</p>
+</div>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="classification-first-order-systems.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="classification-exercises.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>

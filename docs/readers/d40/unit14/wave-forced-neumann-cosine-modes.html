@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="id-ID" xml:lang="id-ID">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Benoit Dionne" />
+  <title>PDP - Mode Kosinus Neumann dengan Gaya</title>
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="assets/dionne-reader.css" />
+<meta name="source" content="Benoit Dionne, Partial Differential Equations, commit b1f909fff8f07a874f57bf8a3935a9cf5051fb3c" />
+<link rel="license" href="https://creativecommons.org/licenses/by-nc-sa/4.0/" />
+</head>
+<body>
+<a class="skip-link" href="#main-content">Lewati ke isi utama</a>
+<main id="main-content">
+<h1 id="o010.dionne.wave-equation-1d.seg.008">Mode Kosinus Neumann
+dengan Gaya</h1>
+<div class="edition-note">
+<p><strong>Batas sumber.</strong> Bagian ini mengikat
+<code>wave_equ.tex</code> baris 1717-1893 pada sumber beku.</p>
+</div>
+<p>Dalam contoh berikutnya, kita meninjau persamaan gelombang
+nonhomogen.</p>
+<div id="o010.dionne.wave-equation-1d.worked_example.011"
+class="worked_example">
+<p><strong>Contoh.</strong></p>
+<p>Selesaikan persamaan gelombang nonhomogen</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.035"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.4.17)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>≡</mo><mn>2</mn><mi>L</mi><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mspace width="1.0em"></mspace><mo>,</mo><mspace width="1.0em"></mspace><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> dan </mtext><mspace width="0.333em"></mspace></mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}} - c^2 \frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}} = h(x,t) \equiv 2Lx-x^2 \quad ,
+\quad 0 &lt; x &lt; L \text{ dan } t&gt;0 \ ,</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.4.17)</span></span>
+dengan syarat batas
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>x</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>L</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\frac{\partial{u}}{\partial x}(0,t) = \frac{\partial{u}}{\partial x}(L,t) = 0</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>,
+serta syarat awal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle u(x,0) = x^2(3L-2x)</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>π</mi><mi>x</mi><mi>/</mi><mi>L</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle\frac{\partial{u}}{\partial t}(x,0) = \sin^2\left(\pi x/L\right)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">0&lt;x&lt;L</annotation></semantics></math>.</p>
+<p>Solusi persamaan gelombang homogen dalam Contoh <a
+href="wave-free-end-neumann-separation.html#o010.dionne.wave-equation-1d.worked_example.008">7.4.5</a>
+menyarankan agar kita mencari solusi berbentuk</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.036"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.4.18)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>T</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mspace width="0.167em"></mspace><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(x,t) = T_0(t) + \sum_{n=1}^\infty T_n(t)
+\cos\left(\frac{n\pi\,x}{L}\right) \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.4.18)</span></span></p>
+<p>Andaikan deret Fourier kosinus dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>
+terhadap variabel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>
+adalah</p>
+<p><span id="o010.dionne.wave-equation-1d.equation.037"></span></p>
+<p><span class="numbered-equation" role="group" aria-label="Persamaan (7.4.19)"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>h</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><msub><mi>h</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">h(x,t) = h_0(t) +  \sum_{n=1}^\infty h_n(t) \cos\left(\frac{n\pi x}{L}\right) \ .</annotation></semantics></math><span class="equation-number" aria-hidden="true">(7.4.19)</span></span>
+Jika kita menyubstitusikan (<a
+href="wave-forced-neumann-cosine-modes.html#o010.dionne.wave-equation-1d.equation.036">7.4.18</a>)
+dan (<a
+href="wave-forced-neumann-cosine-modes.html#o010.dionne.wave-equation-1d.equation.037">7.4.19</a>)
+ke dalam (<a
+href="wave-forced-neumann-cosine-modes.html#o010.dionne.wave-equation-1d.equation.035">7.4.17</a>),
+dengan mengandaikan bahwa turunan dan penjumlahan takhingga boleh
+dipertukarkan, diperoleh</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.100"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>T</mi><mn>0</mn><mo>″</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>T</mi><mi>n</mi><mo>″</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mspace width="0.167em"></mspace><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>h</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><msub><mi>h</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">T_0&#39;&#39;(t) + \sum_{n=1}^\infty \left( T_n&#39;&#39;(t) +
+\left(\frac{c n\pi}{L}\right)^2 T_n(t) \right)
+\cos\left(\frac{n\pi\,x}{L}\right) =
+h_0(t) +  \sum_{n=1}^\infty h_n(t) \cos\left(\frac{n\pi x}{L}\right)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">0&lt;x&lt;L</annotation></semantics></math>.
+Dengan demikian,</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.101"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>T</mi><mn>0</mn><mo>″</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>h</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><msubsup><mi>T</mi><mi>n</mi><mo>″</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>h</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">T_0&#39;&#39;(t)  = h_0(t) \quad \text{dan} \quad
+T_n&#39;&#39;(t) + \left(\frac{c n\pi}{L}\right)^2 T_n(t) = h_n(t)</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&gt;0</annotation></semantics></math>.</p>
+<p>Pertama-tama, kita harus mencari deret Fourier kosinus dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>2</mn><mi>L</mi><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup></mrow><annotation encoding="application/x-tex">\displaystyle h(x,t) = 2Lx-x^2</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">0&lt;x&lt;L</annotation></semantics></math>.
+Kita mempunyai</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.102"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mn>0</mn></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mi>L</mi><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><msup><mi>x</mi><mn>2</mn></msup><mo>−</mo><mfrac><msup><mi>x</mi><mn>3</mn></msup><mn>3</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>=</mo><mfrac><mrow><mn>2</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mn>3</mn></mfrac></mrow><annotation encoding="application/x-tex">a_0 = \frac{1}{L}\int_0^L \left( 2Lx-x^2 \right) \,\mathrm{d}{x}
+= \frac{1}{L} \left( Lx^2 - \frac{x^3}{3} \right)\bigg|_0^L = \frac{2L^2}{3}</annotation></semantics></math>
+dan, dengan menggunakan integrasi parsial, diperoleh</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.019"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>a</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>2</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mi>L</mi><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>2</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mi>L</mi><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>−</mo><mfrac><mn>4</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>4</mn><mi>L</mi></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mo>−</mo><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>+</mo><mfrac><mrow><mn>4</mn><mi>L</mi></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mo>+</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><msup><mi>π</mi><mn>3</mn></msup></mrow></mfrac><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>=</mo><mi>−</mi><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+a_n &amp;= \frac{2}{L} \int_0^L \left(2Lx-x^2\right)
+\cos\left(\frac{n\pi x}{L}\right)\,\mathrm{d}{x} \\
+&amp;= \left( \frac{2}{n\pi} \left(2Lx-x^2\right)
+\sin\left(\frac{n\pi x}{L}\right)\right)\bigg|_0^L
+- \frac{4}{n\pi} \int_0^L \left(L-x\right)
+\sin\left(\frac{n\pi x}{L}\right) \,\mathrm{d}{x} \\
+&amp;= \left( \frac{4L}{n^2\pi^2} \left(L-x\right)
+\cos\left(\frac{n\pi x}{L}\right) \right)\bigg|_0^L
++ \frac{4L}{n^2\pi^2} \int_0^L \cos\left(\frac{n\pi x}{L}\right)
+\,\mathrm{d}{x} \\
+&amp;= -\frac{4L^2}{n^2\pi^2}
++ \frac{4L^2}{n^3\pi^3} \sin\left(\frac{n\pi x}{L}\right)\bigg|_0^L
+= -\frac{4L^2}{n^2\pi^2} \ .
+\end{aligned}</annotation></semantics></math> Jadi,</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.103"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mn>2</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mn>3</mn></mfrac><mo>−</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">h(x,t) = \frac{2L^2}{3} - \sum_{n=1}^\infty \frac{4L^2}{n^2\pi^2}
+\cos\left(\frac{n\pi x}{L}\right) \ .</annotation></semantics></math></p>
+<p>Untuk menentukan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mi>n</mi></msub><annotation encoding="application/x-tex">T_n</annotation></semantics></math>
+bagi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≥</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n\geq 0</annotation></semantics></math>,
+kita harus menyelesaikan</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.104"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>T</mi><mn>0</mn><mo>″</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><mn>2</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mn>3</mn></mfrac><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><msubsup><mi>T</mi><mi>n</mi><mo>″</mo></msubsup><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>−</mi><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">T_0&#39;&#39;(t) = \frac{2L^2}{3} \quad \text{dan} \quad
+T_n&#39;&#39;(t) + \left(\frac{c n\pi}{L}\right)^2 T_n(t) = -\frac{4L^2}{n^2\pi^2}</annotation></semantics></math>
+untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&gt;0</annotation></semantics></math>.
+Kita memperoleh</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.105"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>T</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><msup><mi>L</mi><mn>2</mn></msup><mn>3</mn></mfrac><mspace width="0.167em"></mspace><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><msub><mi>B</mi><mn>0</mn></msub><mi>t</mi><mo>+</mo><msub><mi>A</mi><mn>0</mn></msub><mspace width="1.0em"></mspace><mtext mathvariant="normal">dan</mtext><mspace width="1.0em"></mspace><msub><mi>T</mi><mi>n</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>A</mi><mi>n</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi><mi>t</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>B</mi><mi>n</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi><mi>t</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>4</mn></msup></mrow><mrow><msup><mi>c</mi><mn>2</mn></msup><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac></mrow><annotation encoding="application/x-tex">T_0(t) = \frac{L^2}{3}\,t^2 + B_0t + A_0 \quad \text{dan} \quad
+T_n(t) = A_n\cos\left(\frac{c n \pi t}{L}\right)
++ B_n \sin\left(\frac{c n \pi t}{L}\right) -
+\frac{4 L^4}{c^2n^4\pi^4}</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&gt;0</annotation></semantics></math>.</p>
+<p>Solusinya adalah</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.020"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msup><mi>L</mi><mn>2</mn></msup><mn>3</mn></mfrac><mspace width="0.167em"></mspace><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><msub><mi>B</mi><mn>0</mn></msub><mi>t</mi><mo>+</mo><msub><mi>A</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mi>+</mi><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>A</mi><mi>n</mi></msub><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi><mi>t</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>B</mi><mi>n</mi></msub><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi><mi>t</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>4</mn></msup></mrow><mrow><msup><mi>c</mi><mn>2</mn></msup><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+u(x,t) &amp;= \left(\frac{L^2}{3}\,t^2 + B_0t + A_0\right) \\
+&amp;+ \sum_{n=1}^\infty
+\left( A_n\cos\left(\frac{c n \pi t}{L}\right)
++ B_n \sin\left(\frac{c n \pi t}{L}\right) -
+\frac{4 L^4}{c^2n^4\pi^4} \right)\cos\left(\frac{n\pi x}{L}\right)
+\end{aligned}</annotation></semantics></math> untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">0&lt;x&lt;L</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>.</p>
+<p>Dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle u(x,0) = x^2(3L-2x)</annotation></semantics></math>,
+diperoleh</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.106"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mi>A</mi><mn>0</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>A</mi><mi>n</mi></msub><mo>−</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>4</mn></msup></mrow><mrow><msup><mi>c</mi><mn>2</mn></msup><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(x,0) = A_0
++ \sum_{n=1}^\infty
+\left( A_n - \frac{4 L^4}{c^2n^4\pi^4} \right)\cos\left(\frac{n\pi x}{L}\right)
+= x^2(3L-2x) \ .</annotation></semantics></math> Ini adalah deret
+Fourier kosinus dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\displaystyle x^2(3L-2x)</annotation></semantics></math>.
+Dengan demikian,</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.107"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mn>0</mn></msub><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi><mo>=</mo><mfrac><mn>1</mn><mi>L</mi></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><msup><mi>x</mi><mn>3</mn></msup><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><msup><mi>x</mi><mn>4</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>=</mo><mfrac><msup><mi>L</mi><mn>3</mn></msup><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">A_0 = \frac{1}{L}\int_0^L x^2(3L-2x) \,\mathrm{d}{x} =
+\frac{1}{L}\left( Lx^3 - \frac{1}{2} x^4\right)\bigg|_0^L
+= \frac{L^3}{2}</annotation></semantics></math> dan, dengan menggunakan
+integrasi parsial,</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.021"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>A</mi><mi>n</mi></msub><mo>−</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>4</mn></msup></mrow><mrow><msup><mi>c</mi><mn>2</mn></msup><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mn>2</mn><mi>L</mi></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mn>2</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mn>3</mn><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>−</mo><mfrac><mn>12</mn><mrow><mi>n</mi><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>12</mn><mi>L</mi></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mi>x</mi><mo>−</mo><msup><mi>x</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>−</mo><mfrac><mrow><mn>12</mn><mi>L</mi></mrow><mrow><msup><mi>n</mi><mn>2</mn></msup><msup><mi>π</mi><mn>2</mn></msup></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>−</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>12</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><msup><mi>π</mi><mn>3</mn></msup></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>L</mi><mo>−</mo><mn>2</mn><mi>x</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">sin</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>−</mo><mfrac><mrow><mn>24</mn><msup><mi>L</mi><mn>2</mn></msup></mrow><mrow><msup><mi>n</mi><mn>3</mn></msup><msup><mi>π</mi><mn>3</mn></msup></mrow></mfrac><msubsup><mo>∫</mo><mn>0</mn><mi>L</mi></msubsup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.167em"></mspace><mi mathvariant="normal">d</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><mrow><mn>24</mn><msup><mi>L</mi><mn>3</mn></msup></mrow><mrow><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msubsup><mo minsize="240%" maxsize="240%" stretchy="true" form="prefix">|</mo><mn>0</mn><mi>L</mi></msubsup><mo>=</mo><mfrac><mrow><mn>24</mn><msup><mi>L</mi><mn>3</mn></msup></mrow><mrow><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>n</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+A_n - \frac{4 L^4}{c^2n^4\pi^4} &amp;= \frac{2}{L}\int_0^L x^2(3L-2x)
+\cos\left(\frac{n\pi x}{L}\right) \,\mathrm{d}{x} \\
+&amp;= \left(\frac{2}{n\pi} x^2(3L-2x)
+\sin\left(\frac{n\pi x}{L}\right)\right)\bigg|_0^L
+- \frac{12}{n\pi} \int_0^L \left(Lx-x^2\right)
+\sin\left(\frac{n\pi x}{L}\right)\,\mathrm{d}{x} \\
+&amp;= \left( \frac{12L}{n^2\pi^2} \left(Lx-x^2\right)
+\cos\left(\frac{n\pi x}{L}\right)\right)\bigg|_0^L
+- \frac{12L}{n^2\pi^2} \int_0^L \left(L-2x\right)
+\cos\left(\frac{n\pi x}{L}\right) \,\mathrm{d}{x} \\
+&amp;= - \left( \frac{12L^2}{n^3\pi^3} \left(L-2x\right)
+\sin\left(\frac{n\pi x}{L}\right) \right)\bigg|_0^L
+- \frac{24L^2}{n^3\pi^3} \int_0^L
+\sin\left(\frac{n\pi x}{L}\right) \,\mathrm{d}{x} \\
+&amp;= \frac{24L^3}{n^4\pi^4}
+\cos\left(\frac{n\pi x}{L}\right)\bigg|_0^L
+= \frac{24L^3}{n^4\pi^4} \left( (-1)^n -1 \right) \ .
+\end{aligned}</annotation></semantics></math> Oleh karena itu,</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.108"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>A</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><mn>24</mn><msup><mi>L</mi><mn>3</mn></msup></mrow><mrow><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>n</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>4</mn></msup></mrow><mrow><msup><mi>c</mi><mn>2</mn></msup><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mo>,</mo><mspace width="2.0em"></mspace><mi>n</mi><mo>&gt;</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">A_n = \frac{24L^3}{n^4\pi^4}\left((-1)^n-1\right)
++ \frac{4L^4}{c^2n^4\pi^4}, \qquad n&gt;0.</annotation></semantics></math></p>
+<p>Dari</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.109"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>u</mi></mrow><mrow><mi>∂</mi><mi>t</mi></mrow></mfrac><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mn>2</mn></msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mo>,</mo></mrow><annotation encoding="application/x-tex">\frac{\partial{u}}{\partial t}(x,0) = \sin^2\left(\frac{\pi x}{L}\right)
+= \frac{1}{2} - \frac{1}{2}\cos\left(\frac{2 \pi x}{L}\right) \ ,</annotation></semantics></math>
+diperoleh</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.110"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>0</mn></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><msub><mi>B</mi><mi>n</mi></msub><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi></mrow><mi>L</mi></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">B_0
++ \sum_{n=1}^\infty B_n\frac{cn\pi}{L}\cos\left(\frac{n\pi x}{L}\right)
+= \frac{1}{2} - \frac{1}{2}\cos\left(\frac{2 \pi x}{L}\right) \ .</annotation></semantics></math>
+Ini adalah deret Fourier kosinus dari
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>−</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\displaystyle
+\frac{1}{2} - \frac{1}{2}\cos\left(\frac{2 \pi x}{L}\right)</annotation></semantics></math>.
+Berdasarkan ketunggalan representasi deret Fourier, kita mempunyai</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.111"></span></p>
+<p><span
+id="o010.dionne.wave-equation-1d.math_component.030"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>B</mi><mn>0</mn></msub><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>B</mi><mi>n</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mfrac><mi>L</mi><mrow><mn>4</mn><mi>c</mi><mi>π</mi></mrow></mfrac></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">jika</mtext><mspace width="0.222em"></mspace><mi>n</mi><mo>=</mo><mn>2</mn><mspace width="0.222em"></mspace><mo>,</mo></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mn>0</mn></mtd><mtd columnalign="left" style="text-align: left"><mspace width="1.0em"></mspace><mtext mathvariant="normal">selainnya</mtext><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable></mrow></mrow><annotation encoding="application/x-tex">B_0=\frac{1}{2}, \qquad
+B_n =
+\begin{cases}
+\displaystyle-\frac{L}{4c\pi} &amp; \quad \text{jika} \ n=2 \ ,\\[0.7em]
+0 &amp; \quad \text{selainnya} \ .
+\end{cases}</annotation></semantics></math></p>
+<p>Solusi persamaan gelombang nonhomogen tersebut adalah</p>
+<p><span id="o010.dionne.wave-equation-1d.display_math.022"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mfrac><msup><mi>L</mi><mn>2</mn></msup><mn>3</mn></mfrac><mspace width="0.167em"></mspace><msup><mi>t</mi><mn>2</mn></msup><mo>+</mo><mfrac><mi>t</mi><mn>2</mn></mfrac><mo>+</mo><mfrac><msup><mi>L</mi><mn>3</mn></msup><mn>2</mn></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="1.0em"></mspace><mo>+</mo><munderover><mo>∑</mo><mrow><mi>n</mi><mo>=</mo><mn>1</mn></mrow><mo accent="false">∞</mo></munderover><mrow><mo stretchy="true" form="prefix">[</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>24</mn><msup><mi>L</mi><mn>3</mn></msup></mrow><mrow><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mn>1</mn><msup><mo stretchy="false" form="postfix">)</mo><mi>n</mi></msup><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>4</mn></msup></mrow><mrow><msup><mi>c</mi><mn>2</mn></msup><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">cos</mi><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>c</mi><mi>n</mi><mi>π</mi><mi>t</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mfrac><mrow><mn>4</mn><msup><mi>L</mi><mn>4</mn></msup></mrow><mrow><msup><mi>c</mi><mn>2</mn></msup><msup><mi>n</mi><mn>4</mn></msup><msup><mi>π</mi><mn>4</mn></msup></mrow></mfrac><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mi>n</mi><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mspace width="1.0em"></mspace><mo>−</mo><mfrac><mi>L</mi><mrow><mn>4</mn><mi>c</mi><mi>π</mi></mrow></mfrac><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>c</mi><mi>π</mi><mi>t</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><mn>2</mn><mi>π</mi><mi>x</mi></mrow><mi>L</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="0.222em"></mspace><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{aligned}
+u(x,t) &amp;= \frac{L^2}{3}\,t^2 + \frac{t}{2} + \frac{L^3}{2} \\
+&amp;\quad + \sum_{n=1}^\infty
+\left[
+\left(\frac{24L^3}{n^4\pi^4}\left((-1)^n-1\right)
++\frac{4L^4}{c^2n^4\pi^4}\right)
+\cos\left(\frac{cn\pi t}{L}\right)
+-\frac{4L^4}{c^2n^4\pi^4}
+\right]\cos\left(\frac{n\pi x}{L}\right) \\
+&amp;\quad -\frac{L}{4c\pi}\sin\left(\frac{2c\pi t}{L}\right)
+\cos\left(\frac{2\pi x}{L}\right) \ .
+\end{aligned}</annotation></semantics></math></p>
+<p>Dapat ditunjukkan bahwa deret yang merepresentasikan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>
+dan semua turunan parsialnya yang berorde total paling tinggi
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>2</mn><annotation encoding="application/x-tex">2</annotation></semantics></math>
+konvergen mutlak dan seragam secara lokal untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>&lt;</mo><mi>x</mi><mo>&lt;</mo><mi>L</mi></mrow><annotation encoding="application/x-tex">0&lt;x&lt;L</annotation></semantics></math>
+dan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">t&gt;0</annotation></semantics></math>.</p>
+</div>
+<div id="o010.dionne.wave-equation-1d.remark.004" class="remark">
+<p><strong>Catatan.</strong></p>
+<p>Dengan pemisahan variabel, untuk setiap
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">k&gt;0</annotation></semantics></math>
+kita memperoleh mode terpisah persamaan gelombang homogen berkecepatan
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>t</mi><mn>2</mn></msup></mrow></mfrac><mo>−</mo><msup><mi>c</mi><mn>2</mn></msup><mfrac><mrow><msup><mi>∂</mi><mn>2</mn></msup><mi>u</mi></mrow><mrow><mi>∂</mi><msup><mi>x</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\displaystyle\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial t^{2}}-c^2\frac{\displaystyle \partial^{2}{u}}{\displaystyle \partial x^{2}}=0</annotation></semantics></math>,
+yang berbentuk</p>
+<p><span
+id="o010.dionne.wave-equation-1d.display-math.bracket.112"></span></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mi>k</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>B</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>c</mi><mi>k</mi><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>C</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>D</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mi>x</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>.</mi></mrow><annotation encoding="application/x-tex">u(x,t) = (A \cos (ckt) + B \sin (ckt))(C \cos (kx) + D \sin(kx)) \ .</annotation></semantics></math>
+Superposisi yang sesuai dari mode-mode tersebut memberikan solusi. Untuk
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">c=1</annotation></semantics></math>,
+pernyataan ini mencakup persamaan (<a
+href="wave-separation-theorem.html#o010.dionne.wave-equation-1d.equation.020">7.4.2</a>).</p>
+</div>
+<div class="rights-boundary">
+<p><strong>Atribusi dan hak.</strong> Karya sumber oleh Benoit Dionne
+dilisensikan berdasarkan <a
+href="https://creativecommons.org/licenses/by-nc-sa/4.0/">Creative
+Commons Attribution-NonCommercial-ShareAlike 4.0 International</a>.
+Terjemahan dan perubahan yang dicatat menggunakan lisensi komponen yang
+sama. Produksi terjemahan dan edisi dibantu OpenAI Codex gpt-5.6-sol,
+Ultra; semua kredit penulis dan kontributor manusia tetap dipertahankan.
+Ini bukan terbitan atau dukungan resmi Benoit Dionne maupun University
+of Ottawa.</p>
+</div>
+<div class="unit-navigation" role="navigation"
+aria-label="Navigasi unit">
+<p><a href="wave-mixed-boundary-spectra.html">Sebelumnya</a> · <a
+href="index.html">Halaman edisi</a> · <a
+href="index.html">Berikutnya</a></p>
+</div>
+</main>
+</body>
+</html>
