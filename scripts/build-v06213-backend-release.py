@@ -1034,9 +1034,36 @@ def require_committed_bytes(source_commit: str, path: Path, data: bytes, label: 
     require(committed == data, f"working source differs from explicit commit: {label}")
 
 
+def committed_regular_files(source_commit: str) -> set[str]:
+    raw = run_git_bytes(
+        ["ls-tree", "-r", "-z", "--full-tree", source_commit],
+        "inspect explicit source tree entry modes",
+    )
+    require(raw.endswith(b"\0"), "explicit source tree listing is not NUL-terminated")
+    paths: set[str] = set()
+    for entry in raw[:-1].split(b"\0"):
+        require(b"\t" in entry, "malformed explicit source tree entry")
+        metadata, raw_path = entry.split(b"\t", 1)
+        try:
+            mode, object_type, object_id = metadata.decode("ascii", errors="strict").split(" ")
+            path = raw_path.decode("utf-8", errors="strict")
+        except (UnicodeDecodeError, ValueError) as exc:
+            raise BuildError("explicit source tree entry is not canonical UTF-8 Git metadata") from exc
+        require(mode in {"100644", "100755"}, f"non-regular source tree mode rejected: {path}")
+        require(object_type == "blob", f"non-blob source tree object rejected: {path}")
+        require(re.fullmatch(r"[0-9a-f]{40,64}", object_id) is not None, f"source tree object ID drift: {path}")
+        normalized = safe_zip_member(path)
+        require(normalized == path, f"source tree path normalization drift: {path}")
+        require(path not in paths, f"duplicate source tree path: {path}")
+        paths.add(path)
+    require(paths, "explicit source tree has no regular files")
+    return paths
+
+
 def build_source_archive(source_commit: str, source_tree: str) -> tuple[bytes, dict[str, Any]]:
     """Create the exact Git ZIP archive twice and validate its commit comment."""
     validate_source_authority(source_commit, source_tree)
+    tree_files = committed_regular_files(source_commit)
     command = ["archive", "--format=zip", source_commit]
     first = run_git_bytes(command, "build deterministic source archive A")
     second = run_git_bytes(command, "build deterministic source archive B")
@@ -1060,15 +1087,20 @@ def build_source_archive(source_commit: str, source_tree: str) -> tuple[bytes, d
                 folded.add(key)
                 names.append(member.filename)
                 require((member.flag_bits & 0x1) == 0, f"encrypted source ZIP member: {member.filename}")
-                require(member.create_system == 3, f"source ZIP member lacks Unix creator metadata: {member.filename}")
-                unix_mode = (member.external_attr >> 16) & 0xFFFF
-                require(not stat.S_ISLNK(unix_mode), f"symlink source ZIP member: {member.filename}")
+                require(member.create_system in {0, 3}, f"unsupported source ZIP creator metadata: {member.filename}")
+                if member.create_system == 3:
+                    unix_mode = (member.external_attr >> 16) & 0xFFFF
+                    require(not stat.S_ISLNK(unix_mode), f"symlink source ZIP member: {member.filename}")
                 require(
                     member.compress_type in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED},
                     f"unsupported source ZIP compression: {member.filename}",
                 )
             require(len(names) == len(set(names)), "duplicate source ZIP member")
             require(names == sorted(names), "source ZIP members are not lexically sorted")
+            require(
+                {member.filename for member in files} == tree_files,
+                "source ZIP regular-file inventory differs from explicit Git tree",
+            )
             require(len({member.date_time for member in members}) == 1, "source ZIP has more than one timestamp")
             require(archive.testzip() is None, "source ZIP CRC failure")
             for member in files:
