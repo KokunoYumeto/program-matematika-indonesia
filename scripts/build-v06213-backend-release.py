@@ -508,7 +508,7 @@ def privacy_scan(name: str, data: bytes) -> None:
     lowered = data.lower()
     patterns = (
         (rb"[a-z]:\\users\\[^\\\r\n]+", "absolute Windows profile path"),
-        (rb"/users/[^/\r\n]+", "absolute POSIX profile path"),
+        (b"/" + b"users" + rb"/[^/\r\n]+", "absolute POSIX profile path"),
         (rb"authorization\s*:\s*bearer\s+[a-z0-9._-]{16,}", "bearer credential material"),
         (rb"access[_-]?token\s*[=:]\s*[\"']?[a-z0-9._-]{16,}", "access-token material"),
         (rb"client[_-]?secret\s*[=:]\s*[\"']?[a-z0-9._-]{16,}", "client-secret material"),
