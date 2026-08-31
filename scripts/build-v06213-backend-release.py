@@ -1240,7 +1240,17 @@ def validate_schema_document(name: str, value: Any) -> None:
     require(isinstance(value, dict), f"schema root is not an object: {name}")
     require(value.get("$schema") == "https://json-schema.org/draft/2020-12/schema", f"schema dialect drift: {name}")
     require(isinstance(value.get("$id"), str) and value["$id"].startswith("https://"), f"schema ID missing: {name}")
-    require(isinstance(value.get("properties"), dict), f"schema properties missing: {name}")
+    direct_object_shape = isinstance(value.get("properties"), dict)
+    composed_shape = any(
+        isinstance(value.get(keyword), list) and bool(value[keyword])
+        for keyword in ("oneOf", "anyOf", "allOf")
+    )
+    require(
+        direct_object_shape or composed_shape,
+        f"schema lacks direct properties or a nonempty composition: {name}",
+    )
+    if composed_shape:
+        require(isinstance(value.get("$defs"), dict) and bool(value["$defs"]), f"composed schema definitions missing: {name}")
 
 
 def validate_external(name: str, path: Path, data: bytes) -> dict[str, Any]:
