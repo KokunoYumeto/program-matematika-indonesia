@@ -123,7 +123,7 @@ The following table distinguishes patterns merely observed in native work from c
 |---|---|---|---|
 | Stable identities and nonduplicating views | Judson, D100 | Required capsule core | Implemented for all 40 course capsules |
 | Structured exercise components | B10, C90 | Optional assessment shard bound to stable units | Demonstrated by the A00/O001 adapter and learner navigator |
-| Public-safe reversible projection | B90 | Required adapter and release discipline | Adopted by the five accepted 2.3.1 lane proofs |
+| Public-safe reversible projection | B90 | Required adapter and release discipline | Adopted by nine role bindings through eight accepted 2.3.1 packages |
 | Learner delivery | B80, C90, C100, D20, D60, D70, D90 | Learner-surface and delivery records | Partially consumed by the central site |
 | Component rights federation | C140, D70 | Required unflattened provenance and rights layer | Adopted by capsule and adapter contracts |
 | Accessibility metadata | B40, C100, D20, D80 | Stable content/asset bindings consumed by delivery formats | Partial; not yet uniform across all families |
@@ -161,10 +161,10 @@ The implementation demonstrates the intended global workflow in miniature: indep
 | Roles with complete public editions | 35 |
 | Roles still in production | 5: A20, A30, B95, C140, D100 |
 | Native implementation families compared | 33 |
-| Accepted contract-2.3.1 lane proofs | 5: A00, B10, D20, D60, D110 |
+| Accepted contract-2.3.1 role bindings | 9 through 8 packages: A00, B10, C30, C40, C80, C130, D20, D60, D110 |
 | Native families without a public-replay-complete 2.3.1 adapter | 28 |
 
-The learner application now consumes validated delivery data for course actions, format badges, offline-package filters, and the one-file curriculum navigator. Course capsules expose learner tools directly, and A00 consumes its assessment adapter through a searchable exercise page. These are concrete uses of backend data, but they remain a partial convergence result rather than a claim that all 33 native families have been normalized.
+The learner application now consumes validated delivery data for course actions, format badges, offline-package filters, and the one-file curriculum navigator. Course capsules expose learner tools directly: A00 consumes its assessment adapter through a searchable exercise page; C30 and C40 consume two nonduplicating course views over one Judson graph; C80 binds all 722 Open Logic source/translation identities to its 1,116-page reader; and C130 exposes seven validated routes to its course-native landing and 666-page reader. These are concrete uses of backend data, but they remain a partial convergence result rather than a claim that all 33 native families have been normalized.
 
 D30/O009 also reached a terminal public edition during successor assembly. Its open Zenodo record contains six files totaling 48,733,779 bytes; the 447-page PDF, five declared payload checksums, and public HTML route were independently read back.
 
@@ -172,7 +172,7 @@ D40 subsequently reached a terminal public edition as well. Its open record cont
 
 The D30 learner route also demonstrates the delivery rule adopted globally. Its public Pages entry point is 10,351 bytes with SHA-256 `417e580082b32178e99a9923c8d0fa13ae21fdb767edb8eb85a38d6b6a9f7bc9`, exactly equal to `reader/index.html` inside the verified 163-entry offline ZIP. The capsule therefore makes semantic HTML the primary learner action, preserves the 447-page PDF as an edition download, and exposes the dependency-free HTML ZIP for intermittent connectivity. Machine records prove those identities but remain secondary to the readable route.
 
-The adapter inventory now states a `learner_runtime_relationship` for every admitted proof. A00 is the one current case where the learner navigator directly consumes adapter-derived mappings; B10, D20, D60, and D110 expose verified course routes without claiming that their readers consume the central adapter tables. Each row also records adopted capabilities, known limitations, an exact public asset URL, and public-replay state. This prevents a course link from being mistaken for runtime integration and makes later convergence auditable rather than rhetorical.
+The adapter inventory now states a `learner_runtime_relationship` for every admitted proof. A00, C30, C40, C80, and C130 directly consume adapter-derived mappings; C30 and C40 intentionally share one archive, manifest, and native graph. B10, D20, D60, and D110 expose verified course routes without claiming that their readers consume the central adapter tables. Each row also records adopted capabilities, known limitations, an exact public asset URL, and public-replay state. This prevents a course link from being mistaken for runtime integration and makes later convergence auditable rather than rhetorical.
 
 ## Recommended common architecture
 
@@ -185,7 +185,7 @@ The mandatory capsule should expose:
 3. localized variants without duplicating language-neutral structure;
 4. typed semantic relations and prerequisites;
 5. translation state, provenance, component rights, and corrections;
-6. learner surfaces, assets, and accessibility metadata;
+6. learner surfaces, educator support/evidence, assets, and accessibility metadata;
 7. manifest, build, validation, and public-readback receipts.
 
 Canonical exchange should use JSONL plus cryptographic hashes. CSV, SQLite, and Parquet should be optional generated views, not parallel authorities that must be synchronized manually.
@@ -197,6 +197,13 @@ Capabilities that do not apply to every course should remain optional shards:
 - formal proof and compiler-aligned records;
 - source-format topology such as TeX, PreTeXt, or CNXML structure.
 
+Terminology is concept-first rather than a global word-replacement table. A
+canonical policy records stable concept identities, preferred forms, permitted
+register-specific variants, source/context evidence, and unresolved evidence
+requirements. Existing native concordances remain bounded witnesses; the
+central policy does not claim that one term has been harmonized across all
+courses without field-specific evidence.
+
 This approach preserves the useful diversity of the 33 implementations while giving every course the same minimum open interfaces.
 
 ## Learner-facing and machine-facing layers
@@ -206,6 +213,12 @@ The machine-facing backend and the learner-facing curriculum should be connected
 The machine-facing layer should preserve exact identities, relations, localized variants, provenance, rights, correction history, accessibility metadata, and reproducibility receipts. It should support cross-language transformation, auditing, reconstruction, and curriculum assembly.
 
 The learner-facing layer should expose understandable course titles, prerequisites, completion-aware routes, available editions, HTML or other accessible readers, exercises, hints, solutions, downloads, and offline options. It should be generated from the capsule and current public receipts, but learners should not be expected to navigate raw JSON, registries, or evidence ledgers.
+
+The educator-facing layer should expose syllabi or course maps, learning
+outcomes, prerequisite evidence, exercise/solution coverage, correction and
+terminology evidence, accessibility notes, and reproducible source/build
+routes. Missing material stays explicitly unknown or in progress rather than
+being inferred from the existence of a textbook.
 
 The central hub should automatically ingest current course release receipts and construct learner routes from actually public units. Planned routes must remain visibly planned; they must never be presented as available merely because their identifiers exist in a backend.
 
@@ -235,9 +248,9 @@ The global implementation continues additively.
 
 - **Completed:** a small seven-layer course-capsule contract and capability vocabulary now cover all 40 roles while allowing course-specific extensions.
 
-- **Completed for five lane proofs:** A00, B10, D20, D60, and D110 preserve native identities through explicit crosswalks and thin adapters. They do not rewrite owner backends or copy entire corpora into the manager.
+- **Completed locally for nine role bindings through eight packages:** A00, B10, C30, C40, C80, C130, D20, D60, and D110 preserve native identities through explicit crosswalks and thin adapters. C30 and C40 are two course views over one Judson package. They do not rewrite course-native backends or copy entire corpora into the manager.
 
-- **Underway:** create independently replayable adapters for the remaining 28 native families, adopting only capabilities that are globally useful and preserving local limitations rather than flattening them.
+- **Underway:** create independently replayable adapters for the remaining 25 native families, adopting only capabilities that are globally useful and preserving local limitations rather than flattening them. Because four successor bindings are not yet publicly read back, 28 families still lack a public-replay-complete adapter at this exact release boundary.
 
 - **Underway:** expand learner consumption of capsule-derived routes, public HTML, offline packages, EPUB/PDF delivery, exercise components, and accessibility support. Planned units remain excluded from completion claims.
 
