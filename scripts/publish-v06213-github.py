@@ -23,6 +23,7 @@ import json
 import os
 from pathlib import Path
 import re
+import stat
 import sys
 import tempfile
 import time
@@ -563,6 +564,9 @@ def validate_source_archive(
             require(names == sorted(names), "source archive member order is not deterministic")
             timestamps = {member.date_time for member in members}
             require(len(timestamps) == 1, "source archive members do not share one deterministic timestamp")
+            creator_systems = {member.create_system for member in members}
+            require(creator_systems <= {0, 3}, "source archive uses unsupported creator metadata")
+            require(len(creator_systems) == 1, "source archive mixes creator metadata systems")
             for member in members:
                 name = member.filename
                 require(
@@ -574,7 +578,9 @@ def validate_source_archive(
                     f"source archive contains an unsafe member: {name}",
                 )
                 require(not (name == ".git" or name.startswith(".git/")), "source archive contains Git internals")
-                require(member.create_system == 3, f"source archive member lacks Unix Git metadata: {name}")
+                if member.create_system == 3:
+                    unix_mode = (member.external_attr >> 16) & 0xFFFF
+                    require(not stat.S_ISLNK(unix_mode), f"source archive member is a symbolic link: {name}")
                 require(member.flag_bits & 0x1 == 0, f"source archive member is encrypted: {name}")
                 require(
                     member.compress_type in {zipfile.ZIP_STORED, zipfile.ZIP_DEFLATED},
@@ -596,6 +602,9 @@ def validate_source_archive(
         "uncompressed_bytes": uncompressed_bytes,
         "member_order_deterministic": True,
         "single_archive_timestamp": True,
+        "creator_systems": sorted(creator_systems),
+        "unix_symlink_metadata_checked": 3 in creator_systems,
+        "dos_creator_bound_by_exact_archive_identity": 0 in creator_systems,
         "crc_validation": "pass",
     }
 
