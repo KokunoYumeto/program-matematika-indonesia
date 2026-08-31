@@ -47,6 +47,7 @@ const resourceLabels = {
 
 const state = { view: 'learner', query: '', level: 'all', courseState: 'all' };
 let courses = [];
+let dataReady = false;
 
 const grid = document.querySelector('#course-grid');
 const search = document.querySelector('#course-search');
@@ -54,6 +55,12 @@ const level = document.querySelector('#level-filter');
 const courseState = document.querySelector('#state-filter');
 const resultCount = document.querySelector('#result-count');
 const viewDescription = document.querySelector('#view-description');
+const fallbackMarkup = grid.innerHTML;
+const dynamicControls = [
+  ...document.querySelectorAll('[data-view]'),
+  search, level, courseState, document.querySelector('#reset-filters'),
+];
+dynamicControls.forEach((control) => { control.disabled = true; });
 
 const escapeHtml = (value) => String(value ?? '')
   .replaceAll('&', '&amp;')
@@ -64,9 +71,15 @@ const escapeHtml = (value) => String(value ?? '')
 
 const statusLabel = (status) => statusLabels[status] ?? status;
 const external = ' target="_blank" rel="noreferrer"';
-const link = (url, label, primary = false) => url
+const publicEvidenceUrl = (url) => typeof url === 'string' && /^https:\/\/[^/\s]+\//.test(url);
+const link = (url, label, primary = false) => publicEvidenceUrl(url)
   ? '<a class="' + (primary ? 'primary' : '') + '" href="' + escapeHtml(url) + '"' + external + '>' + escapeHtml(label) + ' ↗</a>'
   : '';
+const deliveryLink = (resource, label, primary = false) => link(
+  resource?.url,
+  label + (resource?.scope && resource.scope !== 'whole_course' ? ' — bagian kursus' : ''),
+  primary,
+);
 const learnerToolLink = (tool) => {
   if (tool.machine_data_is_learner_destination !== false) return '';
   const href = '../' + tool.href.replace(/^\/+/, '');
@@ -78,11 +91,11 @@ const learnerPanel = (capsule) => {
   const tools = (layer.tools ?? []).filter((tool) => tool.state !== 'planned' && tool.machine_data_is_learner_destination === false);
   const actions = [
     ...tools.map(learnerToolLink),
-    link(layer.primary?.url, 'Buka sumber utama', true),
-    link(layer.online_html?.url, 'Baca daring'),
-    link(layer.pdf?.url, 'PDF'),
-    link(layer.epub?.url, 'EPUB'),
-    link(layer.portable_html?.url, 'HTML luring'),
+    deliveryLink(layer.primary, 'Buka sumber utama', true),
+    deliveryLink(layer.online_html, 'Baca daring'),
+    deliveryLink(layer.pdf, 'PDF'),
+    deliveryLink(layer.epub, 'EPUB'),
+    deliveryLink(layer.portable_html, 'HTML luring'),
   ].filter(Boolean).join('');
   return [
     '<div class="status-line"><span>Kesiapan akses</span><strong>' + escapeHtml(statusLabel(layer.status)) + '</strong></div>',
@@ -101,9 +114,10 @@ const educatorPanel = (capsule) => {
   const resources = layer.resources.length
     ? '<ul class="resource-list">' + layer.resources.map((item) => '<li><a href="' + escapeHtml(item.url) + '"' + external + '>' + escapeHtml(item.title) + ' — ' + escapeHtml(resourceLabels[item.resource_type] ?? item.resource_type) + ' ↗</a></li>').join('') + '</ul>'
     : '';
-  const evidence = layer.evidence.length
-    ? '<div class="card-actions">' + link(layer.evidence[0].locator, 'Buka bukti bahan') + '</div>'
-    : '';
+  const publicEvidence = layer.evidence.find((item) => publicEvidenceUrl(item.locator));
+  const evidence = publicEvidence
+    ? '<div class="card-actions">' + link(publicEvidence.locator, 'Buka bukti bahan') + '</div>'
+    : layer.evidence.length ? '<p class="empty-note">Bukti terindeks belum mempunyai tautan publik.</p>' : '';
   return [
     '<div class="status-line"><span>Lapisan pengajar</span><strong>' + escapeHtml(statusLabel(layer.status)) + '</strong></div>',
     features,
@@ -184,6 +198,9 @@ const matches = (capsule) => {
 };
 
 const render = () => {
+  // The server-rendered course links remain usable while data is pending or
+  // unavailable. Never replace them with an empty client-side collection.
+  if (!dataReady) return;
   const visible = courses.filter(matches);
   grid.innerHTML = visible.length
     ? visible.map(card).join('')
@@ -193,9 +210,10 @@ const render = () => {
 
 document.querySelectorAll('[data-view]').forEach((button) => {
   button.addEventListener('click', () => {
+    if (!dataReady) return;
     state.view = button.dataset.view;
     document.querySelectorAll('[data-view]').forEach((candidate) => {
-      candidate.setAttribute('aria-selected', String(candidate === button));
+      candidate.setAttribute('aria-pressed', String(candidate === button));
     });
     viewDescription.textContent = viewDescriptions[state.view];
     render();
@@ -203,18 +221,22 @@ document.querySelectorAll('[data-view]').forEach((button) => {
 });
 
 search.addEventListener('input', () => {
+  if (!dataReady) return;
   state.query = search.value.trim().toLocaleLowerCase('id');
   render();
 });
 level.addEventListener('change', () => {
+  if (!dataReady) return;
   state.level = level.value;
   render();
 });
 courseState.addEventListener('change', () => {
+  if (!dataReady) return;
   state.courseState = courseState.value;
   render();
 });
 document.querySelector('#reset-filters').addEventListener('click', () => {
+  if (!dataReady) return;
   state.query = '';
   state.level = 'all';
   state.courseState = 'all';
@@ -229,12 +251,18 @@ try {
   if (!response.ok) throw new Error('HTTP ' + response.status);
   courses = await response.json();
   if (!Array.isArray(courses) || courses.length !== 40) throw new Error('Jumlah mata kuliah tidak cocok.');
+  dataReady = true;
   document.querySelector('#summary-total').textContent = courses.length;
   document.querySelector('#summary-published').textContent = courses.filter((item) => item.course.state === 'published').length;
   document.querySelector('#summary-production').textContent = courses.filter((item) => item.course.state === 'production').length;
   document.querySelector('#summary-educator').textContent = courses.filter((item) => item.layers.educator.features.length || item.layers.educator.resources.length).length;
   render();
+  dynamicControls.forEach((control) => { control.disabled = false; });
 } catch (error) {
+  dataReady = false;
+  courses = [];
+  dynamicControls.forEach((control) => { control.disabled = true; });
+  grid.innerHTML = fallbackMarkup;
   resultCount.textContent = 'Data dinamis tidak dapat dimuat; daftar dasar tetap tersedia di bawah.';
   grid.querySelectorAll('[hidden]').forEach((item) => item.removeAttribute('hidden'));
   console.error(error);

@@ -205,6 +205,13 @@ for (const [index, capsule] of capsules.entries()) {
   assert.equal(capsule.layers.production.zenodo, capsule.course_native.zenodo);
   assert.equal(capsule.layers.production.edition, capsule.course_native.edition);
   assert.equal(capsule.layers.educator.shared_identity_scope, 'learner_and_educator_views_share_course_unit_concept_exercise_ids');
+  const educator = capsule.layers.educator;
+  const declaredEducatorStatus = overrides.educator_evidence[capsule.course_id]?.status;
+  const expectedEducatorStatus = declaredEducatorStatus
+    ?? (educator.features.length || educator.resources.length ? 'available_unverified' : 'unknown');
+  assert.equal(educator.status, expectedEducatorStatus, `${capsule.course_id}: educator status must preserve authority or honest indexing uncertainty.`);
+  const adapter = overrides.semantic_adapters[capsule.course_id];
+  assert.equal(educator.unit_alignment_status, adapter?.status ?? (educator.features.length ? 'available_unverified' : 'unknown'), `${capsule.course_id}: educator alignment evidence differs.`);
   assert.equal(capsule.layers.federation.zero_copy, true);
   assert.equal(capsule.layers.interoperability.status, 'verified');
   assert.equal(capsule.layers.interoperability.native_identity_preserved, true);

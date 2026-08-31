@@ -39,7 +39,65 @@
       <article><strong id="summary-total">40</strong><span>mata kuliah terpilih</span></article>
       <article><strong id="summary-published">35</strong><span>edisi selesai</span></article>
       <article><strong id="summary-production">5</strong><span>masih diproduksi</span></article>
-      <article><strong id="summary-educator">20</strong><span>punya bahan pengajar terindeks</span></article>
+      <article><strong id="summary-educator">21</strong><span>punya bahan pengajar terindeks</span></article>
+    </section>
+
+
+    <section class="view-switcher" aria-labelledby="view-title">
+      <div>
+        <p class="eyebrow" id="view-title">Pilih kebutuhan</p>
+        <div class="view-tabs" role="group" aria-label="Sudut pandang katalog">
+          <button type="button" data-view="learner" aria-pressed="true" disabled>Saya belajar</button>
+          <button type="button" data-view="educator" aria-pressed="false" disabled>Saya mengajar</button>
+          <button type="button" data-view="production" aria-pressed="false" disabled>Saya memproduksi</button>
+          <button type="button" data-view="interop" aria-pressed="false" disabled>Saya merakit ulang</button>
+        </div>
+      </div>
+      <p id="view-description">Buka edisi, lihat prasyarat, dan temukan format daring atau luring yang benar-benar tersedia.</p>
+    </section>
+
+    <section class="catalog-section" id="katalog" aria-labelledby="catalog-title">
+      <div class="catalog-heading">
+        <div>
+          <p class="eyebrow">Katalog kerja</p>
+          <h2 id="catalog-title">Empat puluh mata kuliah, satu peta yang dapat disaring.</h2>
+        </div>
+        <p id="result-count" role="status" aria-live="polite">40 mata kuliah tersedia. Saringan diaktifkan setelah data dimuat.</p>
+      </div>
+
+      <div class="filters" aria-label="Saringan katalog">
+        <label class="search-field">
+          <span>Cari mata kuliah atau bidang</span>
+          <input id="course-search" type="search" placeholder="Misalnya: analisis, A20, geometri…" autocomplete="off" disabled>
+        </label>
+        <label>
+          <span>Tingkat</span>
+          <select id="level-filter" disabled>
+            <option value="all">Semua tingkat</option>
+            <option value="A">A — Fondasi</option>
+            <option value="B">B — Dasar universitas</option>
+            <option value="C">C — Inti sarjana</option>
+            <option value="D">D — Lanjut & riset</option>
+          </select>
+        </label>
+        <label>
+          <span>Keadaan</span>
+          <select id="state-filter" disabled>
+            <option value="all">Semua keadaan</option>
+            <option value="published">Edisi selesai</option>
+            <option value="production">Masih diproduksi</option>
+            <option value="educator">Ada bahan pengajar</option>
+            <option value="adapter">Ada adapter semantik</option>
+          </select>
+        </label>
+        <button class="reset-button" type="button" id="reset-filters" disabled>Hapus saringan</button>
+      </div>
+
+      <noscript><p>Tanpa JavaScript, semua tautan mata kuliah tetap tersedia di bawah. Saringan interaktif tidak diaktifkan.</p></noscript>
+      <div class="course-grid" id="course-grid">
+        <!-- COURSE-FALLBACK:START -->
+        <!-- COURSE-FALLBACK:END -->
+      </div>
     </section>
 
     <section class="explain-section" id="metode" aria-labelledby="method-title">
@@ -54,62 +112,6 @@
         <article><h3>2. Bandingkan bukti, bukan slogan</h3><p>Audit menilai identitas stabil, relasi, provenance, status terjemahan, aset, aksesibilitas, replay deterministik, pertukaran reversibel, pemakaian oleh pembaca, dan beban pemeliharaan.</p></article>
         <article><h3>3. Ambil pola terbaik secara aditif</h3><p>Kapsul bersama membawa identitas kursus, unit, relasi, status, hak, rute pelajar, dan tanda terima. Shard khusus tetap tersedia untuk formula, notebook, eksperimen, dan bukti formal.</p></article>
         <article><h3>4. Jaga dua pintu yang berbeda</h3><p>Pelajar membuka HTML, PDF, atau EPUB. Mesin membuka JSONL, JSON, skema, manifest, dan adapter. Lapisan mesin mendukung pembelajaran; ia tidak menggantikan halaman belajar.</p></article>
-      </div>
-    </section>
-
-    <section class="view-switcher" aria-labelledby="view-title">
-      <div>
-        <p class="eyebrow" id="view-title">Pilih kebutuhan</p>
-        <div class="view-tabs" role="tablist" aria-label="Sudut pandang katalog">
-          <button type="button" role="tab" data-view="learner" aria-selected="true">Saya belajar</button>
-          <button type="button" role="tab" data-view="educator" aria-selected="false">Saya mengajar</button>
-          <button type="button" role="tab" data-view="production" aria-selected="false">Saya memproduksi</button>
-          <button type="button" role="tab" data-view="interop" aria-selected="false">Saya merakit ulang</button>
-        </div>
-      </div>
-      <p id="view-description">Buka edisi, lihat prasyarat, dan temukan format daring atau luring yang benar-benar tersedia.</p>
-    </section>
-
-    <section class="catalog-section" id="katalog" aria-labelledby="catalog-title">
-      <div class="catalog-heading">
-        <div>
-          <p class="eyebrow">Katalog kerja</p>
-          <h2 id="catalog-title">Empat puluh mata kuliah, satu peta yang dapat disaring.</h2>
-        </div>
-        <p id="result-count" role="status" aria-live="polite">Memuat 40 mata kuliah…</p>
-      </div>
-
-      <div class="filters" aria-label="Saringan katalog">
-        <label class="search-field">
-          <span>Cari mata kuliah atau bidang</span>
-          <input id="course-search" type="search" placeholder="Misalnya: analisis, A20, geometri…" autocomplete="off">
-        </label>
-        <label>
-          <span>Tingkat</span>
-          <select id="level-filter">
-            <option value="all">Semua tingkat</option>
-            <option value="A">A — Fondasi</option>
-            <option value="B">B — Dasar universitas</option>
-            <option value="C">C — Inti sarjana</option>
-            <option value="D">D — Lanjut & riset</option>
-          </select>
-        </label>
-        <label>
-          <span>Keadaan</span>
-          <select id="state-filter">
-            <option value="all">Semua keadaan</option>
-            <option value="published">Edisi selesai</option>
-            <option value="production">Masih diproduksi</option>
-            <option value="educator">Ada bahan pengajar</option>
-            <option value="adapter">Ada adapter semantik</option>
-          </select>
-        </label>
-        <button class="reset-button" type="button" id="reset-filters">Hapus saringan</button>
-      </div>
-
-      <div class="course-grid" id="course-grid">
-        <!-- COURSE-FALLBACK:START -->
-        <!-- COURSE-FALLBACK:END -->
       </div>
     </section>
 
@@ -132,6 +134,10 @@
           <p>Kemampuan itu belum dihasilkan sebagai struktur yang dapat dipakai ulang. Ini bukan alasan untuk menyembunyikan buku yang sudah tersedia.</p>
         </article>
         <article>
+          <h3>Belum diketahui</h3>
+          <p>Belum ada bukti yang cukup di indeks pusat. Ini tidak berarti bahan tersebut belum pernah dibuat oleh jalur kursus.</p>
+        </article>
+        <article>
           <h3>Zero-copy</h3>
           <p>Komponen tetap berada di repositori atau edisi kanonisnya. Peta pusat menyimpan identitas dan tautan, bukan salinan isi.</p>
         </article>
@@ -143,12 +149,13 @@
         <p class="eyebrow">Untuk pengembang, perpustakaan, dan program lain</p>
         <h2>Data yang sama tersedia sebagai kontrak terbuka.</h2>
         <p>JSONL adalah pertukaran kanonis untuk kapsul, bukan format master wajib bagi buku. JSON adalah proyeksi untuk antarmuka. Manifest dan tanda terima validasi mengikat input, jumlah byte, dan hash.</p>
+        <p>Arsip <a href="https://zenodo.org/records/22207081">v0.62.13 di Zenodo</a> tetap tersedia dengan byte aslinya. Tampilan langsung ini memuat koreksi sesudah pengarsipan: 19 status bahan pengajar tanpa bukti indeks menjadi “belum diketahui”, ringkasan menjadi 21 kursus berbahan pengajar, dan tautan PDP menuju edisi lengkap. Angka 33/7/29 dalam indeks perbandingan lama adalah snapshot terdahulu; kapsul rilis tersebut memakai 35 edisi selesai, 5 masih diproduksi, dan 31 rekaman DOI berbeda.</p>
       </div>
       <div class="data-links">
         <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/blob/main/MODULAR_BACKEND_METHOD_AND_FINDINGS_V1.md">Metode dan temuan 33 keluarga</a>
         <a href="../data/modular-backend-pattern-index-v1.json">Indeks pola 33 keluarga</a>
         <a href="../data/v23-adapter-index-v1.json">Indeks lima bukti adapter v2.3</a>
-        <a href="../data/course-capsule-v1/course-capsules.jsonl">JSONL kanonis</a>
+        <a href="../data/course-capsule-v1/course-capsules.jsonl" download>Unduh JSONL kanonis</a>
         <a href="../data/course-capsule-v1/course-capsules.json">JSON untuk aplikasi</a>
         <a href="../schema/course-capsule-v1/course-capsule-v1.schema.json">Skema JSON</a>
         <a href="../data/course-capsule-v1/manifest.json">Manifest pembangunan</a>

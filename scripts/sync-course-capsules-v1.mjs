@@ -116,7 +116,18 @@ const start = '<!-- COURSE-FALLBACK:START -->';
 const end = '<!-- COURSE-FALLBACK:END -->';
 assert.equal(template.split(start).length - 1, 1);
 assert.equal(template.split(end).length - 1, 1);
-const rendered = template.replace(`${start}\n        ${end}`, `${start}\n        ${fallbackCards}\n        ${end}`);
+let rendered = template.replace(`${start}\n        ${end}`, `${start}\n        ${fallbackCards}\n        ${end}`);
+const summaryValues = {
+  total: rows.length,
+  published: rows.filter((row) => row.course.state === 'published').length,
+  production: rows.filter((row) => row.course.state === 'production').length,
+  educator: rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length,
+};
+for (const [name, count] of Object.entries(summaryValues)) {
+  const pattern = new RegExp(`(<strong id="summary-${name}">)\\d+(</strong>)`, 'g');
+  assert.equal([...rendered.matchAll(pattern)].length, 1, `Missing or duplicated ${name} summary.`);
+  rendered = rendered.replace(pattern, (_, before, after) => `${before}${count}${after}`);
+}
 assert.equal((rendered.match(/data-static-course-id=/g) ?? []).length, 40);
 await writeFile(outputPath, rendered);
 const publicText = Buffer.concat([jsonlBytes, jsonBytes, manifestBytes, receiptBytes]).toString('utf8');

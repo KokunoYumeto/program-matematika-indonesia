@@ -26,6 +26,8 @@ const logicalFiles = [
   'data/course-capsule-v1/backend-design-policy-v1.json',
   'data/course-capsule-v1/public-baseline-v0.62.12.json',
   'data/learner-tools-v1.json',
+  'data/modular-backend-pattern-index-v1.json',
+  'data/v23-adapter-index-v1.json',
   'schema/course-capsule-v1/course-capsule-v1.schema.json',
   'schema/course-capsule-v1/backend-design-policy-v1.schema.json',
   'schema/course-capsule-v1/public-baseline-v1.schema.json',
@@ -123,6 +125,16 @@ assert.match(html, /data-view="production"/);
 assert.match(html, /data-view="interop"/);
 assert.equal((html.match(/data-static-course-id=/g) ?? []).length, 40);
 assert.deepEqual([...html.matchAll(/data-static-course-id="([^"]+)"/g)].map((match) => match[1]), ids);
+for (const [name, expected] of Object.entries({
+  total: rows.length,
+  published: rows.filter((row) => row.course.state === 'published').length,
+  production: rows.filter((row) => row.course.state === 'production').length,
+  educator: rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length,
+})) {
+  const match = html.match(new RegExp(`<strong id="summary-${name}">(\\d+)</strong>`));
+  assert.ok(match, `${name}: static summary is missing.`);
+  assert.equal(Number(match[1]), expected, `${name}: static summary differs from data.`);
+}
 assert.match(html, /JSONL kanonis/);
 assert.match(html, /Tanda terima validasi/);
 assert.match(html, /Kebijakan backend tipis, netral-format, zero-copy/);
@@ -139,7 +151,9 @@ assert.match(js, /course-capsules\.json/);
 assert.match(js, /prerequisite_diagnostics/);
 assert.match(js, /staged_hints_answers_solutions/);
 assert.match(js, /zero-copy/i);
-assert.match(js, /aria-selected/);
+assert.match(js, /aria-pressed/);
+assert.match(html, /role="group" aria-label="Sudut pandang katalog"/);
+assert.doesNotMatch(html, /role="tab(?:list)?"/);
 assert.match(js, /layer\.tools/);
 assert.match(js, /machine_data_is_learner_destination/);
 assert.doesNotMatch(js, /link\(tool\.resource/i, 'Backend UI must not expose raw machine data as a learner action.');
@@ -168,8 +182,10 @@ for (const pattern of [
   /access[_-]?token/i,
   /api[_-]?token/i,
   /"access"\s*:\s*"(?:private|restricted|embargoed|blocked)"/i,
-  /owner[_-]?native/i,
 ]) assert.doesNotMatch(publicText, pattern);
+// Historical comparative evidence can retain historical terminology. This
+// wording check applies to the current learner interface, not archive quotes.
+assert.doesNotMatch(html + css + js, /owner[_-]?native/i);
 
 let publicMirror = { checked: false, byte_identical_files: 0 };
 if (checkPublic) {

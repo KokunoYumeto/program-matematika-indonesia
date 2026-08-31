@@ -28,8 +28,8 @@
       "properties": {
         "curriculum_roles": { "const": 40 },
         "proof_roles": { "const": 5 },
-        "legacy_proofs": { "const": 1 },
-        "contract_2_3_1_adapters": { "const": 4 },
+        "legacy_proofs": { "const": 0 },
+        "contract_2_3_1_adapters": { "const": 5 },
         "unbound_roles": { "const": 35 }
       }
     },
@@ -55,7 +55,7 @@
     "adapter": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["role_id", "course", "proof_kind", "contract_version", "adapter_version", "admission_state", "learner_url", "release_url", "archive", "canonical_records", "jsonl_csv_table_pairs", "owner_native_authoritative", "zero_copy"],
+      "required": ["role_id", "course", "proof_kind", "contract_version", "adapter_version", "admission_state", "learner_url", "release_url", "public_asset_url", "public_replay_status", "learner_runtime_relationship", "adopted_capabilities", "known_limitations", "archive", "canonical_records", "jsonl_csv_table_pairs", "owner_native_authoritative", "zero_copy"],
       "properties": {
         "role_id": { "enum": ["A00", "B10", "D20", "D60", "D110"] },
         "course": { "type": "string", "minLength": 1 },
@@ -65,12 +65,32 @@
         "admission_state": { "enum": ["published", "admitted_pending_release"] },
         "learner_url": { "type": "string", "format": "uri" },
         "release_url": { "type": "string", "format": "uri" },
+        "public_asset_url": { "type": "string", "format": "uri" },
+        "public_replay_status": { "enum": ["pending_release_local_seal_verified", "published_public_asset_readback_verified"] },
+        "learner_runtime_relationship": { "enum": ["directly_consumes_adapter_outputs", "course_link_only_no_adapter_consumption_claim"] },
+        "adopted_capabilities": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "pattern": "^[a-z0-9_]+$" }
+        },
+        "known_limitations": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 }
+        },
         "archive": { "$ref": "#/$defs/fileIdentity" },
         "manifest": { "$ref": "#/$defs/fileIdentity" },
         "canonical_records": { "type": "integer", "minimum": 1 },
         "native_records_preserved": { "type": "integer", "minimum": 1 },
         "reversible_native_mappings": { "type": "integer", "minimum": 1 },
         "additional_native_index_rows": { "type": "integer", "minimum": 1 },
+        "assessment_records_preserved": { "type": "integer", "minimum": 1 },
+        "exact_html_anchor_routes": { "type": "integer", "minimum": 1 },
+        "explicit_solution_gaps": { "type": "integer", "minimum": 1 },
+        "navigation_units_promoted": { "type": "integer", "minimum": 0 },
+        "component_rights_exceptions": { "type": "integer", "minimum": 0 },
         "jsonl_csv_table_pairs": { "type": "integer", "minimum": 1 },
         "owner_native_authoritative": { "const": true },
         "zero_copy": { "const": true },

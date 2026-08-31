@@ -195,11 +195,10 @@ const capsules = effectiveCourses.map((course) => {
     verified_date: educatorOverride.verified_date ?? overrides.recorded_date,
     note: 'Capability evidence is indexed without copying the course-native content.',
   }] : [];
-  const educatorStatus = educatorOverride?.status === 'in_progress'
-    ? 'in_progress'
-    : educatorFeatures.size || educatorResources.length
+  const educatorStatus = educatorOverride?.status
+    ?? (educatorFeatures.size || educatorResources.length
       ? 'available_unverified'
-      : 'not_yet_produced';
+      : 'unknown');
 
   const primaryUrl = course.edition ?? course.zenodo ?? course.repository ?? course.reader;
   const courseNativeStatus = truth?.publication_evidence
@@ -301,7 +300,7 @@ const capsules = effectiveCourses.map((course) => {
       educator: {
         status: educatorStatus,
         shared_identity_scope: 'learner_and_educator_views_share_course_unit_concept_exercise_ids',
-        unit_alignment_status: adapter ? adapter.status : educatorFeatures.size ? 'available_unverified' : 'not_yet_produced',
+        unit_alignment_status: adapter ? adapter.status : educatorFeatures.size ? 'available_unverified' : 'unknown',
         features: [...educatorFeatures].sort(),
         resources: educatorResources,
         evidence: educatorEvidence,

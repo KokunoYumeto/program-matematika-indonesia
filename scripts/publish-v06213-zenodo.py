@@ -1372,10 +1372,8 @@ def validate_draft_boundary(
     predecessor = {str(row["name"]): row for row in predecessor_rows}
     local = {str(row["name"]): row for row in local_rows}
     remote = {str(row["name"]): row for row in base.draft_file_rows(draft)}
-    retained = set(predecessor) - OMITTED
     allowed = set(predecessor) | ADDITIONS
     base.require(set(remote) <= allowed, "draft contains a file outside the pinned predecessor/addition boundary")
-    base.require(set(remote) >= retained, "draft is missing a retained predecessor file")
 
     for name in set(remote):
         row = remote[name]
@@ -1401,6 +1399,100 @@ def validate_draft_boundary(
                 predecessor_match and local_match,
                 f"draft retained file is not byte-identical across predecessor/successor: {name}",
             )
+
+
+def upload_missing_successor_files(
+    client: Any,
+    draft_id: int,
+    local_rows: list[dict[str, Any]],
+) -> int:
+    """Converge an inherited or empty successor draft to the exact local set.
+
+    New-style InvenioRDM version creation can yield an empty editable draft,
+    whereas the legacy deposition workflow copied predecessor files.  Upload
+    every missing successor file serially and verify exact size/MD5 after each
+    request.  Existing files are accepted only when already byte-identical.
+    """
+
+    local = {str(row["name"]): row for row in local_rows}
+    base.require(len(local) == EXPECTED_FILES, "local successor inventory differs")
+    uploaded = 0
+    for name in sorted(local):
+        initial = base.get_draft(client, draft_id)
+        initial_remote = {str(row["name"]): row for row in base.draft_file_rows(initial)}
+        if name in initial_remote:
+            base.require(
+                int(initial_remote[name]["bytes"]) == int(local[name]["bytes"]),
+                f"existing successor file size differs: {name}",
+            )
+            base.require(
+                initial_remote[name]["md5"] == local[name]["md5"],
+                f"existing successor file MD5 differs: {name}",
+            )
+            continue
+        observed = False
+        for attempt in range(5):
+            draft = base.get_draft(client, draft_id)
+            remote = {str(row["name"]): row for row in base.draft_file_rows(draft)}
+            if name in remote:
+                base.require(
+                    int(remote[name]["bytes"]) == int(local[name]["bytes"]),
+                    f"existing successor file size differs: {name}",
+                )
+                base.require(
+                    remote[name]["md5"] == local[name]["md5"],
+                    f"existing successor file MD5 differs: {name}",
+                )
+                observed = True
+                break
+            bucket = draft.get("links", {}).get("bucket")
+            base.require(
+                isinstance(bucket, str) and bucket.startswith("https://"),
+                "draft upload bucket is absent",
+            )
+            response = None
+            try:
+                with Path(local[name]["path"]).open("rb") as stream:
+                    response = client.put(
+                        f"{bucket.rstrip('/')}/{base.quote(name, safe='')}",
+                        data=stream,
+                        timeout=(20, 1200),
+                    )
+            except base.requests.RequestException:
+                response = None
+            if response is not None and response.status_code not in (
+                200,
+                201,
+                429,
+                500,
+                502,
+                503,
+                504,
+            ):
+                raise RuntimeError(
+                    f"Zenodo successor upload returned HTTP {response.status_code}"
+                )
+            base.time.sleep(2 * (attempt + 1))
+            refreshed = base.get_draft(client, draft_id)
+            refreshed_remote = {
+                str(row["name"]): row for row in base.draft_file_rows(refreshed)
+            }
+            if name in refreshed_remote:
+                base.require(
+                    int(refreshed_remote[name]["bytes"])
+                    == int(local[name]["bytes"]),
+                    f"uploaded successor file size differs: {name}",
+                )
+                base.require(
+                    refreshed_remote[name]["md5"] == local[name]["md5"],
+                    f"uploaded successor file MD5 differs: {name}",
+                )
+                observed = True
+                break
+        if not observed:
+            raise RuntimeError(f"Zenodo upload retry budget exhausted: {name}")
+        uploaded += 1
+    return uploaded
 
 
 def delete_omissions(client: Any, draft_id: int) -> int:
@@ -1487,20 +1579,40 @@ def _search_total(hits: dict[str, Any]) -> int:
 def anonymous_lineage_search() -> dict[str, Any]:
     """Search the complete public concept lineage without credentials."""
 
-    query = urlencode(
-        {
-            "q": f"conceptrecid:{CONCEPT_ID}",
-            "all_versions": "true",
-            "size": 100,
-        }
-    )
-    search = base.public_json(f"{base.PUBLIC_API}?{query}")
+    # Zenodo caps anonymous search pages at 25 rows.  Read the finite lineage
+    # page-by-page so the public proof remains credential-free without asking
+    # the API for an invalid 100-row page.
+    page_size = 25
+
+    def search_page(page: int) -> dict[str, Any]:
+        query = urlencode(
+            {
+                "q": f"conceptrecid:{CONCEPT_ID}",
+                "all_versions": "true",
+                "size": page_size,
+                "page": page,
+            }
+        )
+        return base.public_json(f"{base.PUBLIC_API}?{query}")
+
+    search = search_page(1)
     hits = search.get("hits", {})
     base.require(isinstance(hits, dict), "public lineage search is malformed")
-    rows = hits.get("hits")
-    base.require(isinstance(rows, list), "public lineage search rows are malformed")
     total = _search_total(hits)
-    base.require(0 < total <= 100 and len(rows) == total, "public lineage search is incomplete")
+    base.require(0 < total <= 100, "public lineage search total is out of bounds")
+    first_rows = hits.get("hits")
+    base.require(isinstance(first_rows, list), "public lineage search rows are malformed")
+    rows = list(first_rows)
+    page_count = (total + page_size - 1) // page_size
+    for page in range(2, page_count + 1):
+        page_search = search_page(page)
+        page_hits = page_search.get("hits", {})
+        base.require(isinstance(page_hits, dict), "public lineage page is malformed")
+        base.require(_search_total(page_hits) == total, "public lineage total changed between pages")
+        page_rows = page_hits.get("hits")
+        base.require(isinstance(page_rows, list), "public lineage page rows are malformed")
+        rows.extend(page_rows)
+    base.require(len(rows) == total, "public lineage search is incomplete")
 
     by_id: dict[int, dict[str, Any]] = {}
     by_index: dict[int, dict[str, Any]] = {}
@@ -1523,9 +1635,12 @@ def anonymous_lineage_search() -> dict[str, Any]:
     latest_relation = base.version_relation(latest.get("metadata", {}))
     base.require(int(latest_relation["index"]) == max(by_index), "concept latest index differs from search")
     base.require(latest_relation["is_last"] is True, "concept latest flag differs")
-    base.require(total == int(latest_relation["index"]), "public lineage total differs from latest index")
     base.require(
-        set(by_index) == set(range(1, int(latest_relation["index"]) + 1)),
+        total == int(latest_relation["index"]) + 1,
+        "public lineage total differs from zero-based latest index",
+    )
+    base.require(
+        set(by_index) == set(range(0, int(latest_relation["index"]) + 1)),
         "public lineage version-index closure differs",
     )
     search_latest = by_id[latest_id]
@@ -1553,7 +1668,8 @@ def anonymous_lineage_search() -> dict[str, Any]:
             "public v0.62.13/index-38 is not the concept-latest record",
         )
         base.require(
-            int(latest_relation["index"]) == SUCCESSOR_INDEX and total == SUCCESSOR_INDEX,
+            int(latest_relation["index"]) == SUCCESSOR_INDEX
+            and total == SUCCESSOR_INDEX + 1,
             "published v0.62.13 does not close the concept lineage at index 38",
         )
     return {
@@ -1565,6 +1681,14 @@ def anonymous_lineage_search() -> dict[str, Any]:
 
 
 def _draft_index(draft: dict[str, Any], *, client: Any | None = None, draft_id: int | None = None) -> int:
+    """Return the public zero-based lineage index for an editable draft.
+
+    Zenodo's legacy/public relation uses a zero-based index (the predecessor is
+    37), while the InvenioRDM draft API exposes the ordinal version number
+    one-based (the same successor draft is 39).  Normalize each source before
+    comparing them so the two APIs corroborate rather than falsely conflict.
+    """
+
     metadata = draft.get("metadata", {})
     base.require(isinstance(metadata, dict), "draft metadata is malformed")
     candidates: list[int] = []
@@ -1575,16 +1699,52 @@ def _draft_index(draft: dict[str, Any], *, client: Any | None = None, draft_id: 
             candidates.append(int(version_rows[0]["index"]))
     versions = draft.get("versions", {})
     if isinstance(versions, dict) and isinstance(versions.get("index"), int):
-        candidates.append(int(versions["index"]))
-    if not candidates and client is not None and draft_id is not None:
+        base.require(int(versions["index"]) > 0, "draft ordinal version index is invalid")
+        candidates.append(int(versions["index"]) - 1)
+    if client is not None and draft_id is not None:
         rdm = base.rdm_draft(client, draft_id)
         rdm_versions = rdm.get("versions", {})
         if isinstance(rdm_versions, dict) and isinstance(rdm_versions.get("index"), int):
-            candidates.append(int(rdm_versions["index"]))
+            base.require(int(rdm_versions["index"]) > 0, "InvenioRDM draft ordinal is invalid")
+            candidates.append(int(rdm_versions["index"]) - 1)
     base.require(bool(candidates), "draft version index is unavailable")
     base.require(len(set(candidates)) == 1, "draft version index evidence conflicts")
     base.require(candidates[0] == SUCCESSOR_INDEX, "draft is not lineage index 38")
     return candidates[0]
+
+
+def _discover_single_existing_successor_draft(client: Any) -> int | None:
+    """Find the one unsubmitted successor draft without creating a version."""
+
+    query = urlencode(
+        {
+            "q": f"conceptrecid:{CONCEPT_ID}",
+            "status": "draft",
+            "size": 25,
+        }
+    )
+    response = base.auth_get(client, f"{base.DEPOSIT_API}?{query}")
+    base.require(response.status_code == 200, "authenticated draft inventory is unavailable")
+    rows = response.json()
+    base.require(isinstance(rows, list), "authenticated draft inventory is malformed")
+    base.require(len(rows) < 25, "concept draft inventory exceeds the bounded query")
+    candidates: list[int] = []
+    for row in rows:
+        if not isinstance(row, dict) or row.get("submitted") is not False:
+            continue
+        try:
+            same_concept = int(row.get("conceptrecid", -1)) == CONCEPT_ID
+        except (TypeError, ValueError):
+            same_concept = False
+        if not same_concept:
+            continue
+        draft_id = int(row.get("id", -1))
+        base.require(draft_id > 0 and draft_id != PREDECESSOR_ID, "successor draft ID differs")
+        draft = base.get_draft(client, draft_id)
+        if _draft_index(draft, client=client, draft_id=draft_id) == SUCCESSOR_INDEX:
+            candidates.append(draft_id)
+    base.require(len(set(candidates)) <= 1, "multiple editable index-38 drafts exist")
+    return candidates[0] if candidates else None
 
 
 def _latest_draft_from_predecessor(client: Any) -> int:
@@ -1689,6 +1849,11 @@ def reserve_or_resume(client: Any) -> tuple[int, bool, str, int]:
         _write_reservation_cursor("draft_discovered", draft_id=existing_id)
         return existing_id, False, "resumed_single_existing_draft", 0
 
+    discovered_id = _discover_single_existing_successor_draft(client)
+    if discovered_id is not None:
+        _write_reservation_cursor("draft_discovered", draft_id=discovered_id)
+        return discovered_id, False, "resumed_single_inventory_draft", 0
+
     cursor = _load_reservation_cursor()
     if cursor is not None:
         base.require(cursor["state"] != "published_verified", "published cursor exists while target is not public")
@@ -1781,7 +1946,7 @@ def verify_lineage(
     )
     base.require(
         int(base.version_relation(latest.get("metadata", {}))["index"]) == SUCCESSOR_INDEX
-        and int(state["record_count"]) == SUCCESSOR_INDEX,
+        and int(state["record_count"]) == SUCCESSOR_INDEX + 1,
         "concept latest/lineage count does not close at v0.62.13 index 38",
     )
 
@@ -1830,7 +1995,20 @@ def verify_lineage(
     base.require(github.status_code == 200 and "v0.62.13" in github.text, "GitHub release readback failed")
     baseline = base.public_get(PUBLIC_BASELINE_URL)
     base.require(baseline.status_code == 200, "public baseline readback failed")
-    expected_baseline = (RELEASE_DIR / "public-baseline-v0.62.12.json").read_bytes()
+    # The frozen 100-file release carries policy/baseline data inside the
+    # capsule ZIP, not as extra flat assets. Verify that exact archived pair;
+    # never substitute a mutable source-tree copy or rebuild the release.
+    with zipfile.ZipFile(RELEASE_DIR / COURSE_CAPSULE_ARCHIVE_NAME) as archive:
+        expected_baseline = archive.read(
+            "backend/course-capsule-v1/authority/public-baseline-v0.62.12.json"
+        )
+        archived_public_baseline = archive.read(
+            "docs/data/course-capsule-v1/public-baseline-v0.62.12.json"
+        )
+    base.require(
+        expected_baseline == archived_public_baseline,
+        "archived baseline authority/public projection differ",
+    )
     base.require(baseline.content == expected_baseline, "public baseline bytes differ")
 
     return {
@@ -2020,7 +2198,7 @@ def write_receipts(
             "effective_draft_additions": sorted(ADDITIONS),
             "successor_files": EXPECTED_FILES,
             "draft_omissions_removed_in_this_execution": deleted,
-            "draft_additions_uploaded_in_this_execution": uploaded,
+            "draft_files_uploaded_in_this_execution": uploaded,
             "published_record_files_deleted_or_replaced": 0,
             "draft_id": draft_id,
             "newversion_http_201_observed": newversion_http_201_observed,
@@ -2221,6 +2399,7 @@ base.related_identifiers = related_identifiers
 base.verify_exact_draft = verify_exact_draft
 base.validate_draft_boundary = validate_draft_boundary
 base.delete_omissions = delete_omissions
+base.upload_additions = upload_missing_successor_files
 base.verify_final_draft_metadata = verify_final_draft_metadata
 base.verify_rdm_learner_preview = verify_rdm_learner_preview
 base.write_receipts = write_receipts

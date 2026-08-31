@@ -1,7 +1,7 @@
 import { sites } from '@openai/sites-vite-plugin';
 import tailwindcss from '@tailwindcss/postcss';
 import vinext from 'vinext';
-import { defineConfig } from 'vite';
+import { defineConfig, type ViteDevServer } from 'vite';
 import hostingConfig from './.openai/hosting.json';
 
 const SITE_CREATOR_PLACEHOLDER_DATABASE_ID =
@@ -50,9 +50,25 @@ export default defineConfig(async () => {
       ? { watch: { useFsEvents: false, usePolling: true } }
       : undefined,
     plugins: [
+      {
+        name: 'course-capsule-development-mime',
+        apply: 'serve',
+        configureServer(server: ViteDevServer) {
+          // Vite serves public files before the Cloudflare asset worker, so
+          // the preview needs the same exact NDJSON header as public/_headers.
+          server.middlewares.use((request, response, next) => {
+            if (request.url?.split('?')[0] === '/hub/data/course-capsule-v1/course-capsules.jsonl') {
+              response.setHeader('Content-Type', 'application/x-ndjson; charset=utf-8');
+              response.setHeader('X-Content-Type-Options', 'nosniff');
+            }
+            next();
+          });
+        },
+      },
       vinext(),
       sites(),
       cloudflare({
+        experimental: { headersAndRedirectsDevModeSupport: true },
         viteEnvironment: { name: 'rsc', childEnvironments: ['ssr'] },
         config: localBindingConfig,
       }),
