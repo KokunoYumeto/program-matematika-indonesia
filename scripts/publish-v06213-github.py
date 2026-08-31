@@ -1029,7 +1029,15 @@ def publish(
         require(target_tree == requested_tree, "target commit tree differs from --target-tree")
         release, created = create_release_once(client, target_commit)
         require(release.get("tag_name") == TAG, "resumed release tag differs")
-        require(release.get("html_url") == RELEASE_URL, "resumed release URL differs")
+        release_html_url = release.get("html_url")
+        if release.get("draft"):
+            require(
+                isinstance(release_html_url, str)
+                and release_html_url.startswith(f"{REPOSITORY_URL}/releases/tag/untagged-"),
+                "resumed draft release URL differs",
+            )
+        else:
+            require(release_html_url == RELEASE_URL, "resumed public release URL differs")
         if not release.get("draft") and not release.get("prerelease"):
             require(release.get("name") == RELEASE_NAME, "existing public release name differs")
             require(release.get("body") == RELEASE_BODY, "existing public release body differs")
