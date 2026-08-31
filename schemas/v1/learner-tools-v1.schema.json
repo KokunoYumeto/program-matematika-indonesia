@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-tools-v1.schema.json",
+  "title": "Program Matematika Indonesia learner tools v1",
+  "type": "object",
+  "required": ["$schema", "schema_id", "schema_version", "recorded_at", "courses"],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-tools-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/program-matematika-indonesia/learner-tools/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "courses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["course_id", "tools"],
+        "properties": {
+          "course_id": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" },
+          "tools": {
+            "type": "array",
+            "minItems": 1,
+            "items": { "$ref": "#/$defs/tool" }
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fileFact": {
+      "type": "object",
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "tool": {
+      "type": "object",
+      "required": ["tool_id", "label", "href", "action_kind", "scope", "state", "primary", "machine_data_is_learner_destination", "page", "resource", "evidence", "limitations"],
+      "properties": {
+        "tool_id": { "type": "string", "pattern": "^[a-z][a-z0-9._-]+$" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "href": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+(?:/|\\.html)$" },
+        "action_kind": { "enum": ["practice_diagnostic_map", "course_reader", "reference", "interactive"] },
+        "scope": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["verified", "available_unverified", "planned"] },
+        "primary": { "type": "boolean" },
+        "machine_data_is_learner_destination": { "const": false },
+        "page": { "$ref": "#/$defs/fileFact" },
+        "resource": { "$ref": "#/$defs/fileFact" },
+        "evidence": { "$ref": "#/$defs/fileFact" },
+        "limitations": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 } }
+      },
+      "additionalProperties": false
+    }
+  }
+}

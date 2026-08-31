@@ -22,29 +22,64 @@ OUTPUT = (
     / "program-matematika-indonesia-course-capsule-v1.zip"
 )
 FIXED_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
+D40_READBACK_MEMBER = (
+    "backend/course-capsule-v1/validation/"
+    "D40_O010_INDEPENDENT_ANONYMOUS_READBACK.json"
+)
+VALIDATION_RECEIPT_MEMBER = (
+    "backend/course-capsule-v1/validation/VALIDATION_RECEIPT.json"
+)
+D40_READBACK_IDENTITY = {
+    "path": D40_READBACK_MEMBER,
+    "bytes": 7570,
+    "sha256": "a34f5532208ad45c27d5c4b4108e51f5d3b76e8ded0ef5d334f31465f61e33f9",
+}
 
 EXACT_MEMBERS = (
     "backend/course-capsule-v1/README.md",
+    "backend/course-capsule-v1/authority/backend-design-policy-v1.json",
     "backend/course-capsule-v1/authority/integration-overrides-v1.json",
+    "backend/course-capsule-v1/authority/public-baseline-v0.62.12.json",
     "backend/course-capsule-v1/generated/course-capsules.json",
     "backend/course-capsule-v1/generated/course-capsules.jsonl",
     "backend/course-capsule-v1/generated/manifest.json",
+    "backend/course-capsule-v1/validation/D40_O010_INDEPENDENT_ANONYMOUS_READBACK.json",
     "backend/course-capsule-v1/validation/SITE_VALIDATION_RECEIPT.json",
     "backend/course-capsule-v1/validation/VALIDATION_RECEIPT.json",
+    "backend/authority/learner-delivery-overrides-v1.json",
     "backend/authority/learner-delivery-v1.json",
+    "backend/authority/learner-tools-overrides-v1.json",
+    "backend/authority/learner-tools-v1.json",
+    "schemas/course-capsule-v1/backend-design-policy-v1.schema.json",
     "schemas/course-capsule-v1/course-capsule-v1.schema.json",
+    "schemas/course-capsule-v1/public-baseline-v1.schema.json",
+    "schemas/v1/a00-assessment-map-v1.schema.json",
+    "schemas/v1/learner-delivery-v1.schema.json",
+    "schemas/v1/learner-tools-v1.schema.json",
     "scripts/build-and-validate-course-capsules-v1.mjs",
+    "scripts/build-course-capsule-package-v1.py",
     "scripts/build-course-capsules-v1.mjs",
+    "scripts/build-learner-delivery-v1.mjs",
+    "scripts/build-learner-tools-v1.mjs",
     "scripts/sync-course-capsules-v1.mjs",
     "scripts/validate-course-capsule-site-v1.mjs",
     "scripts/validate-course-capsules-v1.mjs",
+    "scripts/validate-static-site.mjs",
     "docs/courses.js",
+    "docs/data/learner-delivery-v1.json",
+    "docs/data/learner-tools-v1.json",
+    "docs/learner-delivery.js",
+    "docs/learner-tools.js",
     "docs/live-course-publications.js",
+    "docs/schema/v1/a00-assessment-map-v1.schema.json",
+    "docs/schema/v1/learner-delivery-v1.schema.json",
+    "docs/schema/v1/learner-tools-v1.schema.json",
 )
 
 TREE_MEMBERS = (
     "docs/backend",
     "docs/data/course-capsule-v1",
+    "docs/id-ID/courses/A00/latihan",
     "docs/schema/course-capsule-v1",
 )
 
@@ -58,7 +93,11 @@ PRIVATE_PATH_PATTERNS = (
         rb"(?i)(?:^|[^A-Za-z0-9])[A-Za-z]:[\\/]+Users[\\/]+[^\\/\s\"']{1,64}[\\/]"
     ),
     re.compile(rb"(?i)(?:^|[^A-Za-z0-9])/(?:home|Users)/[^/\s]+/"),
-    re.compile(rb"(?i)(?:^|[^A-Za-z0-9])\\\\[^\\\s]+\\[^\\\s]+"),
+    # Require ordinary server/share characters so this detector cannot match
+    # its own regular-expression source while still rejecting real UNC paths.
+    re.compile(
+        rb"(?i)(?:^|[^A-Za-z0-9])\\\\[A-Za-z0-9._-]+\\[A-Za-z0-9$._-]+(?:\\|$)"
+    ),
     re.compile(rb"(?i)[\\/]\.codex[\\/]"),
 )
 
@@ -74,6 +113,61 @@ CREDENTIAL_PATTERNS = (
 
 def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def parse_json_object(data: bytes, member_name: str) -> dict[str, object]:
+    try:
+        value = json.loads(data.decode("utf-8"))
+    except (UnicodeDecodeError, json.JSONDecodeError) as error:
+        raise RuntimeError(f"invalid JSON in packaged member {member_name}") from error
+    if not isinstance(value, dict):
+        raise RuntimeError(f"packaged member is not a JSON object: {member_name}")
+    return value
+
+
+def verify_d40_validation_binding(members: dict[str, bytes]) -> dict[str, object]:
+    readback_bytes = members[D40_READBACK_MEMBER]
+    readback_identity = {
+        "path": D40_READBACK_MEMBER,
+        "bytes": len(readback_bytes),
+        "sha256": sha256(readback_bytes),
+    }
+    if readback_identity != D40_READBACK_IDENTITY:
+        raise RuntimeError("D40 independent-readback receipt identity differs")
+
+    validation_receipt = parse_json_object(
+        members[VALIDATION_RECEIPT_MEMBER], VALIDATION_RECEIPT_MEMBER
+    )
+    if validation_receipt.get("state") != "pass":
+        raise RuntimeError("packaged validation receipt state is not pass")
+
+    checks = validation_receipt.get("checks")
+    if not isinstance(checks, dict):
+        raise RuntimeError("packaged validation receipt checks are missing")
+    d40_check = checks.get("d40_independent_anonymous_readback")
+    if d40_check != "pass_7_of_7":
+        raise RuntimeError(
+            "packaged validation receipt D40 readback check is not pass_7_of_7"
+        )
+
+    artifacts = validation_receipt.get("artifacts")
+    if not isinstance(artifacts, dict):
+        raise RuntimeError("packaged validation receipt artifacts are missing")
+    bound_identity = artifacts.get("d40_independent_anonymous_readback")
+    if bound_identity != D40_READBACK_IDENTITY:
+        raise RuntimeError(
+            "packaged validation receipt does not bind the exact D40 readback identity"
+        )
+
+    return {
+        "receipt_artifact": dict(readback_identity),
+        "validation_receipt": {
+            "member": VALIDATION_RECEIPT_MEMBER,
+            "state": validation_receipt["state"],
+            "check": d40_check,
+            "artifact": dict(D40_READBACK_IDENTITY),
+        },
+    }
 
 
 def collect_members() -> dict[str, bytes]:
@@ -127,7 +221,7 @@ def write_zip(path: Path, members: dict[str, bytes]) -> None:
             )
 
 
-def verify_zip(path: Path, members: dict[str, bytes]) -> None:
+def verify_zip(path: Path, members: dict[str, bytes]) -> dict[str, object]:
     expected_names = list(members)
     with zipfile.ZipFile(path, mode="r") as archive:
         infos = archive.infolist()
@@ -147,10 +241,17 @@ def verify_zip(path: Path, members: dict[str, bytes]) -> None:
                 raise RuntimeError(f"ZIP member CRC differs: {info.filename}")
             if info.date_time != FIXED_TIMESTAMP:
                 raise RuntimeError(f"ZIP member timestamp differs: {info.filename}")
+        return verify_d40_validation_binding(
+            {
+                D40_READBACK_MEMBER: archive.read(D40_READBACK_MEMBER),
+                VALIDATION_RECEIPT_MEMBER: archive.read(VALIDATION_RECEIPT_MEMBER),
+            }
+        )
 
 
 def main() -> None:
     members = collect_members()
+    d40_binding = verify_d40_validation_binding(members)
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
 
     with tempfile.TemporaryDirectory(prefix="course-capsule-v1-") as temp_dir:
@@ -166,7 +267,7 @@ def main() -> None:
             raise RuntimeError("two-build deterministic replay differs")
         os.replace(first, OUTPUT)
 
-    verify_zip(OUTPUT, members)
+    d40_binding = verify_zip(OUTPUT, members)
     archive_bytes = OUTPUT.read_bytes()
     result = {
         "archive": OUTPUT.relative_to(ROOT).as_posix(),
@@ -175,6 +276,7 @@ def main() -> None:
         "member_count": len(members),
         "payload_bytes": sum(len(data) for data in members.values()),
         "member_names": list(members),
+        "d40_independent_anonymous_readback": d40_binding,
         "verification": {
             "allow_list_exact": True,
             "forbidden_members_absent": True,
@@ -184,6 +286,10 @@ def main() -> None:
             "private_path_scan_pass": True,
             "credential_scan_pass": True,
             "two_build_byte_replay_pass": True,
+            "d40_readback_receipt_identity_exact": True,
+            "validation_receipt_state_pass": True,
+            "validation_receipt_d40_check_pass_7_of_7": True,
+            "validation_receipt_d40_artifact_identity_exact": True,
         },
     }
     print(json.dumps(result, ensure_ascii=False, indent=2))

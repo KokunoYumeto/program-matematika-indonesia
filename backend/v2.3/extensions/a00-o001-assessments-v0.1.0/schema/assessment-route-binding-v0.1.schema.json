@@ -1,0 +1,126 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/assessment-route-binding-v0.1.schema.json",
+  "title": "A00/O001 zero-prose assessment, component, and solution-gap bindings",
+  "oneOf": [
+    {"$ref": "#/$defs/assessmentBinding"},
+    {"$ref": "#/$defs/componentBinding"},
+    {"$ref": "#/$defs/gapBinding"}
+  ],
+  "$defs": {
+    "urnUuid": {"type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "module": {"type": "string", "pattern": "^m[0-9]+$"},
+    "nativeId": {"type": "string", "minLength": 1},
+    "byteBinding": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["present", "byte_start", "byte_end_exclusive", "bytes", "document_order", "sha256"],
+          "properties": {
+            "present": {"const": true},
+            "byte_start": {"type": "integer", "minimum": 0},
+            "byte_end_exclusive": {"type": "integer", "minimum": 1},
+            "bytes": {"type": "integer", "minimum": 1},
+            "document_order": {"type": "integer", "minimum": 1},
+            "sha256": {"$ref": "#/$defs/sha256"}
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["present"], "properties": {"present": {"const": false}}
+        }
+      ]
+    },
+    "a00Binding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["course_id", "edition_id", "owner_authority_id", "unit_id", "unit_rights_id", "component_rights_state", "reader_surface_id", "route_id"],
+      "properties": {
+        "course_id": {"$ref": "#/$defs/urnUuid"},
+        "edition_id": {"$ref": "#/$defs/urnUuid"},
+        "owner_authority_id": {"$ref": "#/$defs/urnUuid"},
+        "unit_id": {"$ref": "#/$defs/urnUuid"},
+        "unit_rights_id": {"$ref": "#/$defs/urnUuid"},
+        "component_rights_state": {"const": "preserved_in_sealed_A00_native_rights_shard_not_flattened"},
+        "reader_surface_id": {"$ref": "#/$defs/urnUuid"},
+        "route_id": {"$ref": "#/$defs/urnUuid"}
+      }
+    },
+    "htmlEvidence": {
+      "type": "object", "additionalProperties": false,
+      "required": ["owner_relative_path", "bytes", "sha256", "anchor_occurrences"],
+      "properties": {
+        "owner_relative_path": {"type": "string", "pattern": "^output/html-id/modules/m[0-9]+/index\\.html$"},
+        "bytes": {"type": "integer", "minimum": 1},
+        "sha256": {"$ref": "#/$defs/sha256"},
+        "anchor_occurrences": {"const": 1}
+      }
+    },
+    "routeBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["module_url", "fragment", "public_url", "target_kind", "html_evidence"],
+      "properties": {
+        "module_url": {"type": "string", "format": "uri"},
+        "fragment": {"$ref": "#/$defs/nativeId"},
+        "public_url": {"type": "string", "format": "uri"},
+        "target_kind": {"const": "readable_semantic_html_anchor"},
+        "html_evidence": {"$ref": "#/$defs/htmlEvidence"}
+      }
+    },
+    "ownerSource": {
+      "type": "object", "additionalProperties": false,
+      "required": ["package_id", "table_path", "row_ordinal"],
+      "properties": {
+        "package_id": {"$ref": "#/$defs/urnUuid"},
+        "table_path": {"enum": ["data/assessments.jsonl", "data/assessment-components.jsonl", "data/solution-gaps.jsonl"]},
+        "row_ordinal": {"type": "integer", "minimum": 1}
+      }
+    },
+    "assessmentBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "semantic_key", "module", "module_ordinal", "ordinal", "native_id", "assessment_kind", "availability", "context_classification", "context_structural_signature", "problem_component_count", "solution_component_count", "solution_availability", "source", "target", "topology_match", "a00_binding", "route", "owner_source", "mapping_state"],
+      "properties": {
+        "record_type": {"const": "assessment_binding"}, "id": {"$ref": "#/$defs/urnUuid"},
+        "semantic_key": {"type": "string", "minLength": 1}, "module": {"$ref": "#/$defs/module"},
+        "module_ordinal": {"type": "integer", "minimum": 1, "maximum": 75}, "ordinal": {"type": "integer", "minimum": 1},
+        "native_id": {"$ref": "#/$defs/nativeId"}, "assessment_kind": {"const": "exercise"},
+        "availability": {"enum": ["source_and_target", "source_only", "target_only"]},
+        "context_classification": {"type": "string", "minLength": 1}, "context_structural_signature": {"type": "string"},
+        "problem_component_count": {"type": "integer", "minimum": 0}, "solution_component_count": {"type": "integer", "minimum": 0},
+        "solution_availability": {"enum": ["available_source_and_target", "missing_source_and_target", "source_only", "target_only"]},
+        "source": {"$ref": "#/$defs/byteBinding"}, "target": {"$ref": "#/$defs/byteBinding"}, "topology_match": {"type": "boolean"},
+        "a00_binding": {"$ref": "#/$defs/a00Binding"}, "route": {"$ref": "#/$defs/routeBinding"},
+        "owner_source": {"$ref": "#/$defs/ownerSource"}, "mapping_state": {"const": "mapped_without_navigation_unit_promotion"}
+      }
+    },
+    "componentBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "semantic_key", "assessment_id", "module", "module_ordinal", "ordinal", "native_id", "native_tag", "component_kind", "availability", "source", "target", "topology_match", "a00_binding", "route", "owner_source", "mapping_state"],
+      "properties": {
+        "record_type": {"const": "assessment_component_binding"}, "id": {"$ref": "#/$defs/urnUuid"},
+        "semantic_key": {"type": "string", "minLength": 1}, "assessment_id": {"$ref": "#/$defs/urnUuid"},
+        "module": {"$ref": "#/$defs/module"}, "module_ordinal": {"type": "integer", "minimum": 1, "maximum": 75},
+        "ordinal": {"type": "integer", "minimum": 1}, "native_id": {"$ref": "#/$defs/nativeId"},
+        "native_tag": {"enum": ["problem", "solution"]}, "component_kind": {"enum": ["statement", "solution"]},
+        "availability": {"enum": ["source_and_target", "source_only", "target_only"]},
+        "source": {"$ref": "#/$defs/byteBinding"}, "target": {"$ref": "#/$defs/byteBinding"}, "topology_match": {"type": "boolean"},
+        "a00_binding": {"$ref": "#/$defs/a00Binding"}, "route": {"$ref": "#/$defs/routeBinding"},
+        "owner_source": {"$ref": "#/$defs/ownerSource"}, "mapping_state": {"const": "mapped_without_navigation_unit_promotion"}
+      }
+    },
+    "gapBinding": {
+      "type": "object", "additionalProperties": false,
+      "required": ["record_type", "id", "semantic_key", "assessment_id", "module", "module_ordinal", "ordinal", "native_exercise_id", "context_classification", "gap_kind", "source_solution_count", "target_solution_count", "a00_binding", "route", "owner_source", "mapping_state"],
+      "properties": {
+        "record_type": {"const": "solution_gap_binding"}, "id": {"$ref": "#/$defs/urnUuid"},
+        "semantic_key": {"type": "string", "minLength": 1}, "assessment_id": {"$ref": "#/$defs/urnUuid"},
+        "module": {"$ref": "#/$defs/module"}, "module_ordinal": {"type": "integer", "minimum": 1, "maximum": 75},
+        "ordinal": {"type": "integer", "minimum": 1}, "native_exercise_id": {"$ref": "#/$defs/nativeId"},
+        "context_classification": {"type": "string"}, "gap_kind": {"const": "explicit_solution_node_absent"},
+        "source_solution_count": {"const": 0}, "target_solution_count": {"const": 0},
+        "a00_binding": {"$ref": "#/$defs/a00Binding"}, "route": {"$ref": "#/$defs/routeBinding"},
+        "owner_source": {"$ref": "#/$defs/ownerSource"}, "mapping_state": {"const": "explicit_absence_preserved_no_solution_invented"}
+      }
+    }
+  }
+}

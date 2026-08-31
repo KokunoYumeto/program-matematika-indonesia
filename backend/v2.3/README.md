@@ -7,20 +7,33 @@ authority.
 
 ## Admitted packages
 
-### Legacy A00 conformance package v0.1.1
+### A00 + O001 assessment adapter v0.1.0
 
-The first admitted implementation is
+The A00 successor at `extensions/a00-o001-assessments-v0.1.0` implements the
+generic 2.3.1 lane contract without turning exercises into curriculum units or
+copying mathematical prose. It reuses the exact 1,313-record A00 course spine,
+keeps the sealed O001 shard authoritative, and adds the missing zero-prose join
+from 75 modules to 8,105 assessments, 13,345 statement/solution components, and
+2,865 explicit no-solution records. All 21,450 assessment and component
+fragments resolve exactly once in the existing Indonesian semantic HTML reader.
+
+The adapter exposes 19 lossless JSONL/CSV table pairs for the common spine and
+three capability-specific JSONL/CSV sidecars. Its capability declaration is
+deliberately `referenced_native_shards`: 24,315 native assessment records are
+preserved and none are misreported as projected common units. Ninety-one frozen
+authorities replay locally, two isolated package trees are byte-identical, and
+the generic plus A00-specific validators pass. The central learner interface
+uses the same evidence to provide a readable **Latihan & diagnosis** navigator;
+machine JSON remains secondary.
+
+### Preserved legacy A00 conformance package v0.1.1
+
+The predecessor
 `program-matematika-indonesia-backend-v2.3-conformance-v0.1.1.zip`, published
-with central release v0.62.6. Its exact scope is the frozen A00 OpenStax
-Prealgebra v2.2 package plus the bound O001 assessment shard. It makes no
-aggregate 40-role conformance claim and changes no learner reader.
-
-The package contains 48 members and projects 25,795 canonical records into 24
-per-table CSV files plus one global `records.csv`. It preserves the predecessor
-v1 and v2.2 archives byte-for-byte, exposes 980 evidence-backed workflow-state
-records in 17 groups, declares exactly ten canonical capabilities, and records
-three namespace-crosswalk rows: one exact mapping and two explicitly unresolved
-relations.
+with central release v0.62.6, remains public as historical evidence. Its exact
+scope is the frozen A00 OpenStax Prealgebra v2.2 package plus O001. It contains
+48 members and 25,795 canonical records, but it is not the current 2.3.1 adapter
+and makes no aggregate 40-role conformance claim.
 
 The four versioned Draft 2020-12 schemas admitted by that package are published
 at the exact URLs declared by their `$id` fields:

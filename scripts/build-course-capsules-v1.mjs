@@ -14,8 +14,13 @@ const relative = {
   courses: 'docs/courses.js',
   overlay: 'docs/live-course-publications.js',
   learnerDelivery: 'backend/authority/learner-delivery-v1.json',
+  learnerTools: 'backend/authority/learner-tools-v1.json',
   overrides: 'backend/course-capsule-v1/authority/integration-overrides-v1.json',
+  designPolicy: 'backend/course-capsule-v1/authority/backend-design-policy-v1.json',
+  publicBaseline: 'backend/course-capsule-v1/authority/public-baseline-v0.62.12.json',
   schema: 'schemas/course-capsule-v1/course-capsule-v1.schema.json',
+  designPolicySchema: 'schemas/course-capsule-v1/backend-design-policy-v1.schema.json',
+  publicBaselineSchema: 'schemas/course-capsule-v1/public-baseline-v1.schema.json',
 };
 const output = {
   jsonl: 'generated/course-capsules.jsonl',
@@ -24,6 +29,11 @@ const output = {
 };
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const fileIdentity = (path, bytes) => ({ path, bytes: bytes.length, sha256: sha256(bytes) });
+const publicReference = (path, bytes) => ({
+  locator: `https://kokunoyumeto.github.io/program-matematika-indonesia/${path}`,
+  bytes: bytes.length,
+  sha256: sha256(bytes),
+});
 const sortValue = (value) => {
   if (Array.isArray(value)) return value.map(sortValue);
   if (value && typeof value === 'object') {
@@ -59,10 +69,46 @@ const resourceTypeFeatures = {
 
 const inputBytes = Object.fromEntries(await Promise.all(Object.entries(relative).map(async ([key, path]) => [key, await readFile(resolve(project, path))])));
 const learnerDelivery = JSON.parse(inputBytes.learnerDelivery.toString('utf8'));
+const learnerTools = JSON.parse(inputBytes.learnerTools.toString('utf8'));
 const overrides = JSON.parse(inputBytes.overrides.toString('utf8'));
+const designPolicy = JSON.parse(inputBytes.designPolicy.toString('utf8'));
+const publicBaseline = JSON.parse(inputBytes.publicBaseline.toString('utf8'));
 assert.equal(overrides.schema_version, '1.0.0');
 assert.equal(learnerDelivery.schema_version, '1.0.0');
+assert.equal(learnerTools.schema_id, 'interlanguage/program-matematika-indonesia/learner-tools/v1');
+assert.equal(learnerTools.schema_version, '1.0.0');
+assert.equal(designPolicy.schema_id, 'interlanguage/backend-design-policy/v1');
+assert.equal(designPolicy.schema_version, '1.0.0');
+assert.equal(designPolicy.profile, 'thin_format_neutral_zero_copy');
+assert.equal(designPolicy.authority.course_native_authoritative, true);
+assert.equal(designPolicy.authority.capsule_additive, true);
+assert.equal(designPolicy.authority.native_identity_preserved, true);
+assert.equal(designPolicy.authority.full_corpus_copied_into_capsule, false);
+assert.equal(designPolicy.exchange.canonical_capsule_format, 'application/x-ndjson');
+assert.equal(designPolicy.adapters.absence_blocks_release, false);
+assert.equal(publicBaseline.schema_id, 'interlanguage/course-capsule-public-baseline/v1');
+assert.equal(publicBaseline.schema_version, '1.0.0');
+assert.equal(publicBaseline.release.tag, 'v0.62.12');
+assert.equal(publicBaseline.release.asset_count, 100);
+assert.equal(publicBaseline.zenodo.record_id, 22182000);
+assert.equal(publicBaseline.zenodo.access, 'open');
+const designPolicyRef = {
+  profile: designPolicy.profile,
+  course_native_authoritative: designPolicy.authority.course_native_authoritative,
+  capsule_additive: designPolicy.authority.capsule_additive,
+  native_identity_preserved: designPolicy.authority.native_identity_preserved,
+  content_copied_into_capsule: designPolicy.authority.full_corpus_copied_into_capsule,
+  canonical_capsule_format: designPolicy.exchange.canonical_capsule_format,
+  optional_adapters: [...designPolicy.adapters.optional],
+  adapter_absence_blocks_release: designPolicy.adapters.absence_blocks_release,
+  policy: publicReference('data/course-capsule-v1/backend-design-policy-v1.json', inputBytes.designPolicy),
+  public_baseline: publicReference('data/course-capsule-v1/public-baseline-v0.62.12.json', inputBytes.publicBaseline),
+};
 const deliveryByCourse = Object.fromEntries(learnerDelivery.courses.map((row) => [row.course_id, row]));
+assert.equal(new Set(learnerTools.courses.map(({ course_id }) => course_id)).size, learnerTools.courses.length, 'Learner-tool course IDs must be unique.');
+const toolsByCourse = Object.fromEntries(learnerTools.courses.map((row) => [row.course_id, clone(row.tools)]));
+const allToolIds = learnerTools.courses.flatMap(({ tools }) => tools.map(({ tool_id }) => tool_id));
+assert.equal(new Set(allToolIds).size, allToolIds.length, 'Learner-tool IDs must be globally unique.');
 
 const effectiveCourses = materializeLiveCourses(authorityCourses)
   .map((course) => {
@@ -74,6 +120,8 @@ const effectiveCourses = materializeLiveCourses(authorityCourses)
   .sort(courseSort);
 assert.equal(effectiveCourses.length, 40);
 assert.equal(new Set(effectiveCourses.map(({ id }) => id)).size, 40);
+const effectiveCourseIds = new Set(effectiveCourses.map(({ id }) => id));
+for (const courseId of Object.keys(toolsByCourse)) assert.ok(effectiveCourseIds.has(courseId), `Learner-tool authority refers to unknown course ${courseId}.`);
 
 const normalizeDeliveryResource = (resource) => {
   if (!resource) return { status: 'not_yet_produced' };
@@ -87,6 +135,7 @@ const capsules = effectiveCourses.map((course) => {
   const adapter = overrides.semantic_adapters[course.id];
   const deliverySource = deliveryByCourse[course.id];
   assert.ok(deliverySource, `Missing learner-delivery row ${course.id}.`);
+  const tools = toolsByCourse[course.id] ?? [];
   const delivery = {
     primary: normalizeDeliveryResource(deliverySource.primary),
     online_html: normalizeDeliveryResource(deliverySource.online_html),
@@ -104,7 +153,9 @@ const capsules = effectiveCourses.map((course) => {
       scope: 'whole_course',
       evidence: clean(clone(truth.publication_evidence)),
     };
-    delivery.primary = clone(verifiedPdf);
+    // A verified semantic HTML route remains the learner-first entry when one
+    // exists. Publication evidence still seals the PDF as the edition artifact.
+    if (delivery.primary.status !== 'verified') delivery.primary = clone(verifiedPdf);
     delivery.pdf = clone(verifiedPdf);
   }
   const learnerStatuses = Object.values(delivery).map(({ status }) => status);
@@ -141,7 +192,7 @@ const capsules = effectiveCourses.map((course) => {
   const educatorEvidence = educatorOverride ? [{
     kind: 'course_native_educator_material',
     locator: educatorOverride.locator,
-    verified_date: '2026-08-30',
+    verified_date: educatorOverride.verified_date ?? overrides.recorded_date,
     note: 'Capability evidence is indexed without copying the course-native content.',
   }] : [];
   const educatorStatus = educatorOverride?.status === 'in_progress'
@@ -207,6 +258,7 @@ const capsules = effectiveCourses.map((course) => {
     },
     course_native: clean({
       status: courseNativeStatus,
+      version: course.version,
       corpus: course.corpus,
       repository: course.repository,
       zenodo: course.zenodo,
@@ -244,6 +296,7 @@ const capsules = effectiveCourses.map((course) => {
         status: learnerStatus,
         ...delivery,
         capabilities: Object.fromEntries(Object.entries(deliverySource.capabilities).map(([key, value]) => [key, normalizeStatus(value.status)])),
+        tools,
       },
       educator: {
         status: educatorStatus,
@@ -264,6 +317,7 @@ const capsules = effectiveCourses.map((course) => {
         native_identity_preserved: true,
         mapping_scope: 'course_level_without_content_copy',
         semantic_adapter: semanticAdapter,
+        design_policy: clone(designPolicyRef),
       },
     },
     evidence: capsuleEvidence,
@@ -274,6 +328,7 @@ const jsonlBytes = Buffer.from(`${capsules.map(canonicalLine).join('\n')}\n`);
 const jsonBytes = Buffer.from(canonicalJson(capsules));
 const edges = capsules.flatMap((capsule) => capsule.course.prerequisites.map((prerequisite) => [prerequisite, capsule.course_id]));
 const educatorCourseCount = capsules.filter((capsule) => capsule.layers.educator.features.length || capsule.layers.educator.resources.length).length;
+const learnerToolCourses = capsules.filter((capsule) => capsule.layers.learner.tools.length);
 const manifest = {
   schema_id: 'interlanguage/open-course-capsule-manifest/v1',
   schema_version: '1.0.0',
@@ -282,6 +337,18 @@ const manifest = {
   projections: {
     course_capsules_json: fileIdentity(output.json, jsonBytes),
   },
+  design_policy: {
+    profile: designPolicy.profile,
+    authority: fileIdentity(relative.designPolicy, inputBytes.designPolicy),
+    schema: fileIdentity(relative.designPolicySchema, inputBytes.designPolicySchema),
+    public_projection: designPolicyRef.policy,
+  },
+  public_baseline: {
+    version: publicBaseline.release.tag,
+    authority: fileIdentity(relative.publicBaseline, inputBytes.publicBaseline),
+    schema: fileIdentity(relative.publicBaselineSchema, inputBytes.publicBaselineSchema),
+    public_projection: designPolicyRef.public_baseline,
+  },
   summary: {
     course_count: capsules.length,
     published_count: capsules.filter(({ course }) => course.state === 'published').length,
@@ -289,6 +356,8 @@ const manifest = {
     prerequisite_edge_count: edges.length,
     educator_course_count: educatorCourseCount,
     educator_resource_count: capsules.reduce((count, capsule) => count + capsule.layers.educator.resources.length, 0),
+    learner_tool_course_count: learnerToolCourses.length,
+    learner_tool_count: capsules.reduce((count, capsule) => count + capsule.layers.learner.tools.length, 0),
     verified_semantic_adapter_count: capsules.filter((capsule) => capsule.layers.interoperability.semantic_adapter.status === 'verified').length,
     legacy_semantic_adapter_count: capsules.filter((capsule) => capsule.layers.interoperability.semantic_adapter.status === 'legacy_verified').length,
   },
@@ -298,6 +367,10 @@ const manifest = {
     course_native_canonical: true,
     content_copied_into_capsule: false,
     seven_layers_required: true,
+    profile: designPolicy.profile,
+    native_formats_constrained: designPolicy.exchange.course_native_formats_constrained,
+    optional_adapters: [...designPolicy.adapters.optional],
+    adapter_absence_blocks_release: designPolicy.adapters.absence_blocks_release,
   },
 };
 const manifestBytes = Buffer.from(canonicalJson(manifest));

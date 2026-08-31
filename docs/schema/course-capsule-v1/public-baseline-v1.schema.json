@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/public-baseline-v1.schema.json",
+  "title": "Course capsule public baseline v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_id", "schema_version", "verified_date", "repository", "release", "zenodo", "artifacts", "successor"],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/public-baseline-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/course-capsule-public-baseline/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "verified_date": { "type": "string", "format": "date" },
+    "repository": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "default_branch", "commit", "tree", "public"],
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "default_branch": { "const": "main" },
+        "commit": { "$ref": "#/$defs/gitObject" },
+        "tree": { "$ref": "#/$defs/gitObject" },
+        "public": { "const": true }
+      }
+    },
+    "release": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["url", "tag", "commit", "tree", "published_at", "draft", "prerelease", "asset_count"],
+      "properties": {
+        "url": { "type": "string", "format": "uri" },
+        "tag": { "const": "v0.62.12" },
+        "commit": { "$ref": "#/$defs/gitObject" },
+        "tree": { "$ref": "#/$defs/gitObject" },
+        "published_at": { "type": "string", "format": "date-time" },
+        "draft": { "const": false },
+        "prerelease": { "const": false },
+        "asset_count": { "const": 100 }
+      }
+    },
+    "zenodo": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["concept_doi", "record_id", "version_doi", "version", "status", "access", "file_count", "payload_bytes", "inventory_aggregate_sha256"],
+      "properties": {
+        "concept_doi": { "const": "10.5281/zenodo.22059707" },
+        "record_id": { "const": 22182000 },
+        "version_doi": { "const": "10.5281/zenodo.22182000" },
+        "version": { "const": "0.62.12" },
+        "status": { "const": "published" },
+        "access": { "const": "open" },
+        "file_count": { "const": 100 },
+        "payload_bytes": { "const": 131739644 },
+        "inventory_aggregate_sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "artifacts": {
+      "type": "array",
+      "minItems": 5,
+      "maxItems": 5,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/artifact" },
+      "allOf": [
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "194_GLOBAL_MODULAR_BACKEND_LEARNER_DELIVERY_INTEGRATION_20260831.json" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "modular-backend-pattern-index-v1.json" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "course-capsule-v1.schema.json" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "course-capsules-v1.jsonl" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["name"], "properties": { "name": { "const": "program-matematika-indonesia-course-capsule-v1.zip" } } }, "minContains": 1, "maxContains": 1 }
+      ]
+    },
+    "successor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "exact_ancestor_required", "nonduplicate_release_required"],
+      "properties": {
+        "version": { "const": "v0.62.13" },
+        "exact_ancestor_required": { "const": true },
+        "nonduplicate_release_required": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "gitObject": { "type": "string", "pattern": "^[0-9a-f]{40}$" },
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "bytes", "sha256", "url"],
+      "properties": {
+        "name": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "url": { "type": "string", "format": "uri" }
+      }
+    }
+  }
+}

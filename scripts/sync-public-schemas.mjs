@@ -16,6 +16,8 @@ const mappings = [
   ['schemas/v1/learner-delivery-v1.schema.json', 'docs/schema/v1/learner-delivery-v1.schema.json'],
   ['schemas/v1/learner-state-v1.schema.json', 'docs/schema/v1/learner-state-v1.schema.json'],
   ['schemas/v1/v23-adapter-index-v1.schema.json', 'docs/schema/v1/v23-adapter-index-v1.schema.json'],
+  ['schemas/v1/a00-assessment-map-v1.schema.json', 'docs/schema/v1/a00-assessment-map-v1.schema.json'],
+  ['schemas/v1/learner-tools-v1.schema.json', 'docs/schema/v1/learner-tools-v1.schema.json'],
   ['schemas/v2/backend-migration-receipt-v2.schema.json', 'docs/schema/v2/backend-migration-receipt-v2.schema.json'],
   ['schemas/v2/federation-package-v2.schema.json', 'docs/schema/v2/federation-package-v2.schema.json'],
   ['schemas/v2/federation-record-v2.schema.json', 'docs/schema/v2/federation-record-v2.schema.json'],

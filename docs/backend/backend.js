@@ -67,10 +67,17 @@ const external = ' target="_blank" rel="noreferrer"';
 const link = (url, label, primary = false) => url
   ? '<a class="' + (primary ? 'primary' : '') + '" href="' + escapeHtml(url) + '"' + external + '>' + escapeHtml(label) + ' ↗</a>'
   : '';
+const learnerToolLink = (tool) => {
+  if (tool.machine_data_is_learner_destination !== false) return '';
+  const href = '../' + tool.href.replace(/^\/+/, '');
+  return '<a class="learner-tool" href="' + escapeHtml(href) + '" title="' + escapeHtml(tool.scope) + '">' + escapeHtml(tool.label) + '</a>';
+};
 
 const learnerPanel = (capsule) => {
   const layer = capsule.layers.learner;
+  const tools = (layer.tools ?? []).filter((tool) => tool.state !== 'planned' && tool.machine_data_is_learner_destination === false);
   const actions = [
+    ...tools.map(learnerToolLink),
     link(layer.primary?.url, 'Buka sumber utama', true),
     link(layer.online_html?.url, 'Baca daring'),
     link(layer.pdf?.url, 'PDF'),
@@ -79,6 +86,7 @@ const learnerPanel = (capsule) => {
   ].filter(Boolean).join('');
   return [
     '<div class="status-line"><span>Kesiapan akses</span><strong>' + escapeHtml(statusLabel(layer.status)) + '</strong></div>',
+    tools.length ? '<div class="status-line"><span>Alat belajar terverifikasi</span><strong>' + tools.length + '</strong></div>' : '',
     '<div class="status-line"><span>HTML semantik</span><strong>' + escapeHtml(statusLabel(layer.capabilities.semantic_html)) + '</strong></div>',
     '<div class="status-line"><span>Format cetak</span><strong>' + escapeHtml(statusLabel(layer.capabilities.print_profile)) + '</strong></div>',
     '<div class="card-actions">' + actions + '</div>',

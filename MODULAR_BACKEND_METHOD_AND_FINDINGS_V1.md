@@ -117,6 +117,18 @@ The comparison did not identify one backend that should replace every other back
 
 The program therefore benefits from the deliberate sequence it followed: independent course implementations first, comparative synthesis second, and common interfaces only after real patterns and failure modes are visible.
 
+The following table distinguishes patterns merely observed in native work from capabilities actually adopted by the central layer:
+
+| Capability | Native exemplars | Global treatment | Current status |
+|---|---|---|---|
+| Stable identities and nonduplicating views | Judson, D100 | Required capsule core | Implemented for all 40 course capsules |
+| Structured exercise components | B10, C90 | Optional assessment shard bound to stable units | Demonstrated by the A00/O001 adapter and learner navigator |
+| Public-safe reversible projection | B90 | Required adapter and release discipline | Adopted by the five accepted 2.3.1 lane proofs |
+| Learner delivery | B80, C90, C100, D20, D60, D70, D90 | Learner-surface and delivery records | Partially consumed by the central site |
+| Component rights federation | C140, D70 | Required unflattened provenance and rights layer | Adopted by capsule and adapter contracts |
+| Accessibility metadata | B40, C100, D20, D80 | Stable content/asset bindings consumed by delivery formats | Partial; not yet uniform across all families |
+| Experiments and formal proof | C110, D110 | Optional capability shards and replay oracles | Demonstrated; intentionally not mandatory for every course |
+
 ## Manager layer at the audited snapshot
 
 At the audited snapshot, the central native-v1 representation contained 2,122 records across 38 tables, of which only 20 were nonempty. It functioned mainly as a 40-course catalog.
@@ -132,6 +144,35 @@ On the audit’s coarse manager rubric, portability was 2/4, learner use 2/4, re
 The central implementation has advanced since the audited snapshot. It now generates a learner-delivery sidecar from validated central data. The learner interface consumes that sidecar to display delivery-capability badges, offer verified download actions, and filter courses with verified portable offline HTML. This is a concrete connection between machine-facing delivery metadata and the human-facing curriculum interface; it does not retroactively change the findings for the earlier snapshot.
 
 D20 Functional Analysis was subsequently admitted through a deterministic 2.3.1 adapter after all named gates passed. The admitted package contains 138,894 canonical records, preserves 32,383 native records through reversible bindings and crosswalks, carries 2,104 additional native index rows, and exposes 19 lossless JSONL/CSV table pairs. All 59 frozen authorities, reverse extraction, structural coverage, rights separation, identity preservation, privacy checks, and deterministic ZIP replay passed. This post-audit admission does not retroactively change the audited snapshot; it records the next verified convergence result.
+
+## A00 assessment convergence after the audit — 2026-08-31
+
+The A00 legacy-label defect has now been resolved additively. A contract-2.3.1 successor reuses the exact 1,313-record A00 course spine and leaves the 24,315-record O001 assessment shard authoritative. It does not inflate the common schema by pretending that exercises, solution components, or no-solution records are curriculum units. Instead, three capability-specific sidecars bind 8,105 assessments, 13,345 statement/solution components, and 2,865 explicit solution gaps to the existing 75 module identities and readable Indonesian HTML routes.
+
+This is the first direct learner-facing use of the assessment backend. A generated **Latihan & diagnosis** page lets students filter the 8,105 exercises by module, category, and availability of an explicit source solution, then opens the exact exercise or solution anchor in the owner reader. The join key is `(module, native_id)`, never `native_id` alone: 867 fragment strings recur across modules. All 21,450 assessment/component anchors resolve exactly once; no mathematical prose or formula bodies are copied into the central adapter; and the 2,865 absent solutions remain visibly absent rather than being invented.
+
+The implementation demonstrates the intended global workflow in miniature: independent native design first, comparative audit second, a thin interoperable adapter third, and a learner surface generated only from verified public routes. Ninety-one frozen authorities replay, the 19 common JSONL tables round-trip to 19 CSV views, two isolated full package builds are byte-identical, and the generic plus A00-specific validators pass. The old A00 conformance package remains public as predecessor evidence, while A00 itself is no longer counted as a legacy-only proof.
+
+## Current successor results — 2026-08-31
+
+| Measure | Current result |
+|---|---:|
+| Curriculum roles with selected corpora or frozen original specifications | 40/40 |
+| Roles with complete public editions | 35 |
+| Roles still in production | 5: A20, A30, B95, C140, D100 |
+| Native implementation families compared | 33 |
+| Accepted contract-2.3.1 lane proofs | 5: A00, B10, D20, D60, D110 |
+| Native families without a public-replay-complete 2.3.1 adapter | 28 |
+
+The learner application now consumes validated delivery data for course actions, format badges, offline-package filters, and the one-file curriculum navigator. Course capsules expose learner tools directly, and A00 consumes its assessment adapter through a searchable exercise page. These are concrete uses of backend data, but they remain a partial convergence result rather than a claim that all 33 native families have been normalized.
+
+D30/O009 also reached a terminal public edition during successor assembly. Its open Zenodo record contains six files totaling 48,733,779 bytes; the 447-page PDF, five declared payload checksums, and public HTML route were independently read back.
+
+D40 subsequently reached a terminal public edition as well. Its open record contains seven anonymously read-back files totaling 13,989,998 bytes, a 679-page Indonesian PDF, a 72-file offline HTML reader, an executed FEniCSx companion, 48 solved problems, 16 assessment items, four laboratories, and two semantic backends. Together with B30's later terminal public edition, this advances the current program split to 35 complete roles and 5 in production (A20, A30, B95, C140, and D100) without changing the historical audit snapshot above.
+
+The D30 learner route also demonstrates the delivery rule adopted globally. Its public Pages entry point is 10,351 bytes with SHA-256 `417e580082b32178e99a9923c8d0fa13ae21fdb767edb8eb85a38d6b6a9f7bc9`, exactly equal to `reader/index.html` inside the verified 163-entry offline ZIP. The capsule therefore makes semantic HTML the primary learner action, preserves the 447-page PDF as an edition download, and exposes the dependency-free HTML ZIP for intermittent connectivity. Machine records prove those identities but remain secondary to the readable route.
+
+The adapter inventory now states a `learner_runtime_relationship` for every admitted proof. A00 is the one current case where the learner navigator directly consumes adapter-derived mappings; B10, D20, D60, and D110 expose verified course routes without claiming that their readers consume the central adapter tables. Each row also records adopted capabilities, known limitations, an exact public asset URL, and public-replay state. This prevents a course link from being mistaken for runtime integration and makes later convergence auditable rather than rhetorical.
 
 ## Recommended common architecture
 
@@ -168,21 +209,17 @@ The learner-facing layer should expose understandable course titles, prerequisit
 
 The central hub should automatically ingest current course release receipts and construct learner routes from actually public units. Planned routes must remain visibly planned; they must never be presented as available merely because their identifiers exist in a backend.
 
-## Current limitations and defects
+## Audited-snapshot limitations and unresolved successor gaps
 
-At the audited snapshot, the central comparison found these consistency problems:
+At the audited snapshot, the central comparison found these consistency problems. Each item is labeled with its successor status so historical evidence is not mistaken for current truth:
 
-- current course-native truth reported 29 published and 11 unpublished roles;
-- the live overlay reported 28 published and 12 unpublished;
-- the frozen model reported 21 published and 19 unpublished;
-- C20 was stale;
-- 13 successor labels did not reflect current state;
-- the B50 repository was absent;
-- only 19 of the 28 published roles had explicit HTML;
-- unit-level routes were planned rather than public;
-- a public clone could not replay all adapters without external course or logbook roots;
-- A00 was incorrectly presented alongside the three actual 2.3.1 implementations;
-- the learner application did not yet consume the federation or capability packages.
+- **Resolved in the successor:** course-native, overlay, and frozen-model counts disagreed at 29/11, 28/12, and 21/19. Current receipt-bound evidence yields 35 complete and 5 in production (A20, A30, B95, C140, and D100).
+- **Resolved in the successor:** C20 was stale, 13 successor labels did not reflect current state, and the B50 repository was absent.
+- **Partially resolved:** only 19 of the 28 then-published roles had explicit HTML. Current learner delivery records more public HTML, but HTML and offline formats are not yet uniform across all roles.
+- **Partially resolved:** unit-level routes were planned rather than public. Several course routes are now public and A00 has 21,450 verified exercise/component anchors; other families remain course-level or planned.
+- **Open:** a public clone cannot yet replay every accepted and future adapter without external course or logbook roots. Each adapter must close this independently.
+- **Resolved in the successor:** A00 was incorrectly presented alongside the three actual 2.3.1 implementations. Its 2026-08-31 successor adapter and learner navigator close that specific defect without rewriting the historical snapshot.
+- **Partially resolved:** the learner application did not consume federation or capability packages. It now consumes learner-delivery and learner-tool sidecars, while broader capsule capability consumption remains unfinished.
 
 The post-audit learner-delivery implementation resolves only part of that final interface gap. It does not by itself resolve every publication-state discrepancy, missing reader, stale course record, adapter replay dependency, or native-family limitation.
 
@@ -192,20 +229,20 @@ No corpus-selection failure, custody conflict, duplicate-production emergency, p
 
 One audit-only recursive fan-out briefly exceeded the intended 20-agent limit. Its descendants were interrupted, after which the root audit and ten bounded top-level auditors completed the evidence groups. This did not affect application tasks or public artifacts.
 
-## Next integration stages
+## Completed, underway, and recurring integration work
 
-The next global implementation should proceed additively.
+The global implementation continues additively.
 
-First, freeze a small capsule schema and capability vocabulary using the fields above. The schema should specify required identity, relations, translation, rights, accessibility, and receipt fields while allowing course-specific extensions.
+- **Completed:** a small seven-layer course-capsule contract and capability vocabulary now cover all 40 roles while allowing course-specific extensions.
 
-Second, create one adapter from each of the 33 native families into that capsule. Adapters should preserve native identities through explicit crosswalks and should be independently replayable. They should not rewrite the course-native backend or copy entire corpora into the manager.
+- **Completed for five lane proofs:** A00, B10, D20, D60, and D110 preserve native identities through explicit crosswalks and thin adapters. They do not rewrite owner backends or copy entire corpora into the manager.
 
-Third, repair the manager’s conformance labels and publication-state disagreements. The 29/11 native truth, 28/12 live overlay, and 21/19 frozen model must converge through current public receipts rather than manual labels. Stale C20 data, the missing B50 repository reference, and the 13 state-blind successor labels should be resolved in the same pass.
+- **Underway:** create independently replayable adapters for the remaining 28 native families, adopting only capabilities that are globally useful and preserving local limitations rather than flattening them.
 
-Fourth, continue connecting the learner application to capsule-derived routes and surfaces. Public HTML availability, offline packages, EPUB or PDF delivery, exercise components, and accessibility support should be explicit per course. Planned units must be excluded from public completion claims.
+- **Underway:** expand learner consumption of capsule-derived routes, public HTML, offline packages, EPUB/PDF delivery, exercise components, and accessibility support. Planned units remain excluded from completion claims.
 
-Fifth, make every accepted adapter reproducible from the public central release. A public clone should contain the adapter source, schemas, crosswalks, manifests, validation commands, and all non-corpus evidence needed to replay the central projection without private task or logbook roots.
+- **Underway:** make every accepted adapter reproducible from the public central release. A public clone must contain its source, schemas, crosswalks, manifests, validation commands, and all non-corpus evidence needed to replay the central projection without private roots.
 
-Sixth, publish the evolving methodology, capsule schema, capability shards, adapter inventory, comparison results, and validation receipts in the established central DOI lineage. Each version should preserve the prior snapshot and identify which native families have passed the common capsule and public-replay gates.
+- **Current release duty:** publish this evolving methodology, capsule schema, capability shards, adapter inventory, comparison results, and validation receipts in the established central DOI lineage. Every version preserves its predecessor and names the native families that passed the capsule and public-replay gates.
 
-Finally, continue the same comparative workflow as new corpus implementations mature. Independent course-native innovation remains useful; global convergence should adopt demonstrated capabilities without forcing every book into the largest or most specialized backend.
+- **Recurring:** re-audit native work as it matures. Independent innovation remains useful; global convergence adopts demonstrated capabilities without forcing every book into the largest or most specialized backend.

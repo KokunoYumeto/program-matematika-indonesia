@@ -22,6 +22,16 @@ const fileIdentity = (path, bytes) => ({ path, bytes: bytes.length, sha256: sha2
 const absent = () => ({ status: 'absent' });
 const available = (url, format) => ({ status: 'available_unverified', format, url });
 const resourceExtension = (url) => extname(new URL(url).pathname).toLowerCase();
+const resourceFormat = (url, htmlUrl = null) => {
+  if (url === htmlUrl) return 'text/html';
+  const extension = resourceExtension(url);
+  if (extension === '.pdf') return 'application/pdf';
+  if (extension === '.epub') return 'application/epub+zip';
+  if (extension === '.json') return 'application/json';
+  if (extension === '.jsonl') return 'application/x-ndjson';
+  if (extension === '.zip') return 'application/zip';
+  return 'application/octet-stream';
+};
 
 const [coursesBytes, overlayBytes, overridesBytes, schemaBytes] = await Promise.all([
   readFile(resolve(project, paths.courses)),
@@ -44,7 +54,7 @@ const rows = effectiveCourses.map((course) => {
   const editionExtension = course.edition ? resourceExtension(course.edition) : '';
   const base = {
     course_id: course.id,
-    primary: primaryUrl ? available(primaryUrl, onlineHtmlUrl ? 'text/html' : 'application/octet-stream') : absent(),
+    primary: primaryUrl ? available(primaryUrl, resourceFormat(primaryUrl, onlineHtmlUrl)) : absent(),
     online_html: onlineHtmlUrl ? available(onlineHtmlUrl, 'text/html') : absent(),
     pdf: editionExtension === '.pdf' ? available(course.edition, 'application/pdf') : absent(),
     epub: absent(),
@@ -89,6 +99,9 @@ for (const row of rows) {
     assert.match(row.portable_html.format, /zip\+html/);
     assert.equal(row.portable_html.dependency_free, true);
     assert.ok(row.portable_html.entry_point && Number.isInteger(row.portable_html.inventory_count));
+  }
+  if (row.primary.url && row.pdf.url && row.primary.url === row.pdf.url) {
+    assert.equal(row.primary.format, 'application/pdf', `${row.course_id}/primary: PDF utama memiliki MIME yang salah.`);
   }
 }
 

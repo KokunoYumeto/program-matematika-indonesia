@@ -89,6 +89,7 @@
       "required": ["status", "corpus"],
       "properties": {
         "status": { "$ref": "#/$defs/status" },
+        "version": { "type": "string", "minLength": 1 },
         "corpus": { "type": "string", "minLength": 1 },
         "repository": { "type": "string", "format": "uri" },
         "zenodo": { "type": "string", "format": "uri" },
@@ -166,7 +167,13 @@
         "scope": { "type": "string", "minLength": 1 },
         "dependency_free": { "type": "boolean" },
         "evidence": { "$ref": "#/$defs/evidence" }
-      }
+      },
+      "allOf": [
+        {
+          "if": { "properties": { "status": { "const": "verified" } }, "required": ["status"] },
+          "then": { "required": ["format", "url", "bytes", "sha256", "evidence"] }
+        }
+      ]
     },
     "learnerLayer": {
       "type": "object",
@@ -182,6 +189,43 @@
         "capabilities": {
           "type": "object",
           "additionalProperties": { "$ref": "#/$defs/status" }
+        },
+        "tools": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/learnerTool" }
+        }
+      }
+    },
+    "fileFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "learnerTool": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tool_id", "label", "href", "action_kind", "scope", "state", "primary", "machine_data_is_learner_destination", "page", "resource", "evidence", "limitations"],
+      "properties": {
+        "tool_id": { "type": "string", "pattern": "^[a-z][a-z0-9._-]+$" },
+        "label": { "type": "string", "minLength": 1, "maxLength": 80 },
+        "href": { "type": "string", "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$))[A-Za-z0-9._/-]+(?:/|\\.html)$" },
+        "action_kind": { "enum": ["practice_diagnostic_map", "course_reader", "reference", "interactive"] },
+        "scope": { "type": "string", "minLength": 1 },
+        "state": { "enum": ["verified", "available_unverified", "planned"] },
+        "primary": { "type": "boolean" },
+        "machine_data_is_learner_destination": { "const": false },
+        "page": { "$ref": "#/$defs/fileFact" },
+        "resource": { "$ref": "#/$defs/fileFact" },
+        "evidence": { "$ref": "#/$defs/fileFact" },
+        "limitations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
         }
       }
     },
@@ -269,16 +313,50 @@
         "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } }
       }
     },
+    "artifactReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locator", "bytes", "sha256"],
+      "properties": {
+        "locator": { "type": "string", "format": "uri" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "designPolicyRef": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["profile", "course_native_authoritative", "capsule_additive", "native_identity_preserved", "content_copied_into_capsule", "canonical_capsule_format", "optional_adapters", "adapter_absence_blocks_release", "policy", "public_baseline"],
+      "properties": {
+        "profile": { "const": "thin_format_neutral_zero_copy" },
+        "course_native_authoritative": { "const": true },
+        "capsule_additive": { "const": true },
+        "native_identity_preserved": { "const": true },
+        "content_copied_into_capsule": { "const": false },
+        "canonical_capsule_format": { "const": "application/x-ndjson" },
+        "optional_adapters": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "enum": ["myst", "quarto", "xliff"] }
+        },
+        "adapter_absence_blocks_release": { "const": false },
+        "policy": { "$ref": "#/$defs/artifactReference" },
+        "public_baseline": { "$ref": "#/$defs/artifactReference" }
+      }
+    },
     "interopLayer": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "capsule_contract", "native_identity_preserved", "mapping_scope", "semantic_adapter"],
+      "required": ["status", "capsule_contract", "native_identity_preserved", "mapping_scope", "semantic_adapter", "design_policy"],
       "properties": {
         "status": { "const": "verified" },
         "capsule_contract": { "const": "open-course-capsule/1.0.0" },
         "native_identity_preserved": { "const": true },
         "mapping_scope": { "const": "course_level_without_content_copy" },
-        "semantic_adapter": { "$ref": "#/$defs/semanticAdapter" }
+        "semantic_adapter": { "$ref": "#/$defs/semanticAdapter" },
+        "design_policy": { "$ref": "#/$defs/designPolicyRef" }
       }
     }
   }

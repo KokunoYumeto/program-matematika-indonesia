@@ -21,8 +21,8 @@ Every capsule contains all seven interfaces:
    translation-ledger capability.
 3. `production` — build, deterministic replay, repository, edition, DOI, and
    release state.
-4. `learner` — online, PDF, EPUB, portable HTML, accessibility, and other
-   learner-delivery capabilities.
+4. `learner` — online, PDF, EPUB, portable HTML, accessibility, other
+   learner-delivery capabilities, and verified human-facing learner tools.
 5. `educator` — outcome/evidence maps, diagnostics, lesson and pacing plans,
    worked examples, exercises, staged support, assessments, rubrics,
    misconceptions/interventions, activities/labs, accommodations, and remix
@@ -60,3 +60,10 @@ graph, public-access, evidence, canonicalization, and two-build replay checks.
 The first version is intentionally course-level. Unit-level crosswalks and
 educator resources can be added without changing course identities or copying
 course-native content.
+
+`backend/authority/learner-tools-v1.json` is an exact build input. Every
+capsule carries a `layers.learner.tools` array: it is empty when no tool has
+been admitted and otherwise preserves the authority row byte-for-byte at the
+JSON-value level. A tool's `href` must lead to a readable HTML interface;
+machine resources and validation evidence remain bound file facts, never the
+student-facing destination.

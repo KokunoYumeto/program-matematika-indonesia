@@ -1,0 +1,132 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/lane-adapter-v2.3.1.schema.json",
+  "title": "Corpus-neutral modular mathematics lane adapter",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "$schema", "schema_id", "schema_version", "package_id", "dataset_id",
+    "extension_id", "extension_version", "recorded_at", "scope_declaration",
+    "authorities", "sidecars", "csv_projection", "build", "files",
+    "seal_policy", "zero_copy_policy"
+  ],
+  "properties": {
+    "$schema": {"const": "schema/lane-adapter-v2.3.1.schema.json"},
+    "schema_id": {"const": "interlanguage/global-modular-mathematics-lane-adapter/2.3.1"},
+    "schema_version": {"const": "2.3.1"},
+    "package_id": {"$ref": "#/$defs/urnUuid"},
+    "dataset_id": {"$ref": "#/$defs/urnUuid"},
+    "extension_id": {"$ref": "#/$defs/urnUuid"},
+    "extension_version": {"type": "string", "minLength": 1},
+    "recorded_at": {"type": "string", "format": "date-time"},
+    "scope_declaration": {"$ref": "#/$defs/fileFact"},
+    "authorities": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/authorityFact"}
+    },
+    "sidecars": {
+      "type": "array",
+      "minItems": 5,
+      "items": {"$ref": "#/$defs/fileFact"}
+    },
+    "csv_projection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["manifest", "table_csv_count", "aggregate_csv_count", "record_count", "roundtrip_state"],
+      "properties": {
+        "manifest": {"$ref": "#/$defs/fileFact"},
+        "table_csv_count": {"type": "integer", "minimum": 1},
+        "aggregate_csv_count": {"const": 1},
+        "record_count": {"type": "integer", "minimum": 1},
+        "roundtrip_state": {"const": "pass"}
+      }
+    },
+    "build": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["builder", "validator", "canonical_serialization", "deterministic_replay", "build_a_sha256", "build_b_sha256"],
+      "properties": {
+        "builder": {"$ref": "#/$defs/fileFact"},
+        "validator": {"$ref": "#/$defs/fileFact"},
+        "canonical_serialization": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scope", "encoding", "newline", "json_keys", "trailing_newline", "copied_schema_and_tool_files"],
+          "properties": {
+            "scope": {"const": "builder_generated_json_jsonl_and_csv_only"},
+            "encoding": {"const": "UTF-8"},
+            "newline": {"const": "LF"},
+            "json_keys": {"const": "lexicographically_sorted"},
+            "trailing_newline": {"const": true},
+            "copied_schema_and_tool_files": {"const": "preserved_exact_source_bytes"}
+          }
+        },
+        "deterministic_replay": {"const": "byte_identical"},
+        "build_a_sha256": {"$ref": "#/$defs/sha256"},
+        "build_b_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/fileFact"}
+    },
+    "seal_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["algorithm", "seal_file", "seal_excluded_from_own_digest", "binds"],
+      "properties": {
+        "algorithm": {"const": "sha256-sorted-path-bytes-v1"},
+        "seal_file": {"const": "seal.json"},
+        "seal_excluded_from_own_digest": {"const": true},
+        "binds": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "zero_copy_policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "owner_native_authoritative", "full_prose_centralized", "owner_ids_reminted",
+        "aggregate_conformance_claim", "machine_data_is_learner_destination"
+      ],
+      "properties": {
+        "owner_native_authoritative": {"const": true},
+        "full_prose_centralized": {"const": false},
+        "owner_ids_reminted": {"const": false},
+        "aggregate_conformance_claim": {"const": false},
+        "machine_data_is_learner_destination": {"const": false},
+        "machine_surfaces_secondary": {"const": true}
+      }
+    }
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "urnUuid": {"type": "string", "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "relativePath": {"type": "string", "minLength": 1, "pattern": "^(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"},
+    "fileFact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "role", "bytes", "sha256"],
+      "properties": {
+        "path": {"$ref": "#/$defs/relativePath"},
+        "path_base": {"enum": ["program_repository_root", "owner_package_root", "package_root"]},
+        "role": {"type": "string", "minLength": 1},
+        "bytes": {"type": "integer", "minimum": 0},
+        "sha256": {"$ref": "#/$defs/sha256"}
+      }
+    },
+    "authorityFact": {
+      "allOf": [
+        {"$ref": "#/$defs/fileFact"},
+        {
+          "type": "object",
+          "required": ["path_base"],
+          "properties": {
+            "path_base": {"enum": ["program_repository_root", "owner_package_root"]}
+          }
+        }
+      ]
+    }
+  }
+}

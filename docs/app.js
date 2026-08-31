@@ -4,6 +4,7 @@ import {
   materializeLiveCourses,
 } from './live-course-publications.js';
 import { learnerDeliveryByCourseId } from './learner-delivery.js';
+import { learnerToolsByCourseId } from './learner-tools.js';
 import {
   clearLearnerState,
   createEmptyLearnerState,
@@ -159,6 +160,10 @@ function actionLinks(course) {
   const editionLabel = course.state === 'published' ? 'Buka edisi' : 'Buka edisi kerja';
   const learnerLabel = course.state === 'published' ? 'Mulai belajar — HTML' : 'Buka pembaca kerja — HTML';
   if (learnerEntry && !readerIsSuspendedGithub) links.push(`<a class="card-action primary" href="${learnerEntry}" target="_blank" rel="noreferrer">${learnerLabel} <span aria-hidden="true">↗</span></a>`);
+  for (const tool of learnerToolsByCourseId[course.id] ?? []) {
+    if (tool.state === 'planned') continue;
+    links.push(`<a class="card-action learner-tool" href="${tool.href}">${tool.label} <span aria-hidden="true">→</span></a>`);
+  }
   if (portableHtml?.status === 'verified') {
     links.push(`<a class="card-action offline" href="${portableHtml.url}" target="_blank" rel="noreferrer">Unduh HTML luring · ${formatDownloadSize(portableHtml.bytes)} <span aria-hidden="true">↓</span></a>`);
   }

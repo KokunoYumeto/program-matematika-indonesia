@@ -1,0 +1,122 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/backend-design-policy-v1.schema.json",
+  "title": "Backend design policy v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_id", "schema_version", "recorded_date", "locale", "profile", "objective", "authority", "required_layers", "exchange", "adapters", "render_targets", "nonrequirements", "evidence"],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/backend-design-policy-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/backend-design-policy/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "recorded_date": { "type": "string", "format": "date" },
+    "locale": { "const": "id-ID" },
+    "profile": { "const": "thin_format_neutral_zero_copy" },
+    "objective": { "type": "string", "minLength": 1 },
+    "authority": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["course_native_authoritative", "capsule_additive", "native_identity_preserved", "full_corpus_copied_into_capsule"],
+      "properties": {
+        "course_native_authoritative": { "const": true },
+        "capsule_additive": { "const": true },
+        "native_identity_preserved": { "const": true },
+        "full_corpus_copied_into_capsule": { "const": false }
+      }
+    },
+    "required_layers": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "uniqueItems": true,
+      "items": { "enum": ["curriculum", "translation", "production", "learner", "educator", "federation", "interoperability"] }
+    },
+    "exchange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["canonical_capsule_format", "canonical_serialization", "integrity", "generated_json_projection_authoritative", "course_native_formats_constrained"],
+      "properties": {
+        "canonical_capsule_format": { "const": "application/x-ndjson" },
+        "canonical_serialization": { "const": "canonical_sorted_json_utf8_lf" },
+        "integrity": { "const": "sha256" },
+        "generated_json_projection_authoritative": { "const": false },
+        "course_native_formats_constrained": { "const": false }
+      }
+    },
+    "adapters": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["optional", "activation_condition", "absence_blocks_release"],
+      "properties": {
+        "optional": {
+          "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
+          "uniqueItems": true,
+          "items": { "enum": ["myst", "quarto", "xliff"] }
+        },
+        "activation_condition": { "const": "concrete_consumer_and_verified_round_trip" },
+        "absence_blocks_release": { "const": false }
+      }
+    },
+    "render_targets": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["id", "purpose", "required_globally"],
+        "properties": {
+          "id": { "enum": ["latex_pdf", "html_math", "mathml", "epub"] },
+          "purpose": { "enum": ["print", "web_learning", "web_accessibility", "offline_reading"] },
+          "required_globally": { "const": false }
+        }
+      },
+      "allOf": [
+        { "contains": { "type": "object", "required": ["id", "purpose"], "properties": { "id": { "const": "latex_pdf" }, "purpose": { "const": "print" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["id", "purpose"], "properties": { "id": { "const": "html_math" }, "purpose": { "const": "web_learning" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["id", "purpose"], "properties": { "id": { "const": "mathml" }, "purpose": { "const": "web_accessibility" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["id", "purpose"], "properties": { "id": { "const": "epub" }, "purpose": { "const": "offline_reading" } } }, "minContains": 1, "maxContains": 1 }
+      ]
+    },
+    "nonrequirements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["universal_normalized_master", "program_wide_source_rewrite", "mandatory_myst_or_quarto", "mandatory_xliff"],
+      "properties": {
+        "universal_normalized_master": { "const": false },
+        "program_wide_source_rewrite": { "const": false },
+        "mandatory_myst_or_quarto": { "const": false },
+        "mandatory_xliff": { "const": false }
+      }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 2,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/evidence" },
+      "allOf": [
+        { "contains": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "public_pattern_index" } } }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "type": "object", "required": ["kind"], "properties": { "kind": { "const": "public_integration_receipt" } } }, "minContains": 1, "maxContains": 1 }
+      ]
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "locator", "bytes", "sha256", "note"],
+      "properties": {
+        "kind": { "type": "string", "minLength": 1 },
+        "locator": { "type": "string", "format": "uri" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "note": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.3/assessment-capability-manifest-v0.1.schema.json",
+  "title": "A00/O001 assessment capability sidecar manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_id", "schema_version", "package_id", "dataset_id", "course_id", "edition_id", "owner_authority_id", "rights_id", "component_rights_policy", "source_package_id", "counts", "shards", "route_policy", "identity_sets", "module_unit_mapping_sha256", "pattern_audit_combined_shards_sha256", "loss_accounting", "zero_copy_policy", "recorded_at"],
+  "properties": {
+    "$schema": {"const": "schema/assessment-capability-manifest-v0.1.schema.json"},
+    "schema_id": {"const": "interlanguage/a00-o001-assessment-capability/0.1.0"},
+    "schema_version": {"const": "0.1.0"},
+    "package_id": {"$ref": "#/$defs/urnUuid"}, "dataset_id": {"$ref": "#/$defs/urnUuid"},
+    "course_id": {"$ref": "#/$defs/urnUuid"}, "edition_id": {"$ref": "#/$defs/urnUuid"},
+    "owner_authority_id": {"$ref": "#/$defs/urnUuid"}, "rights_id": {"$ref": "#/$defs/urnUuid"},
+    "component_rights_policy": {"type": "object", "additionalProperties": false, "required": ["native_component_exceptions", "state"], "properties": {"native_component_exceptions": {"const": 18}, "state": {"const": "preserved_in_sealed_A00_native_rights_shard_not_flattened"}}},
+    "source_package_id": {"$ref": "#/$defs/urnUuid"},
+    "counts": {
+      "type": "object", "additionalProperties": false,
+      "required": ["modules", "assessments", "assessment_components", "solution_gaps", "statement_components", "solution_components", "exact_html_anchor_routes"],
+      "properties": {
+        "modules": {"const": 75}, "assessments": {"const": 8105}, "assessment_components": {"const": 13345},
+        "solution_gaps": {"const": 2865}, "statement_components": {"const": 8105}, "solution_components": {"const": 5240},
+        "exact_html_anchor_routes": {"const": 21450}
+      }
+    },
+    "shards": {"type": "array", "minItems": 6, "maxItems": 6, "items": {"$ref": "#/$defs/shard"}},
+    "route_policy": {
+      "type": "object", "additionalProperties": false,
+      "required": ["destination", "fragment_source", "anchor_evidence", "network_state"],
+      "properties": {
+        "destination": {"const": "existing_A00_readable_semantic_HTML"},
+        "fragment_source": {"const": "owner_native_id"},
+        "anchor_evidence": {"const": "exactly_one_local_HTML_id_attribute_per_assessment_or_component"},
+        "network_state": {"const": "module_publication_state_inherited_from_sealed_A00_package_no_refetch"}
+      }
+    },
+    "identity_sets": {"type": "object", "additionalProperties": false, "required": ["assessments", "assessment_components", "solution_gaps", "combined"], "properties": {"assessments": {"$ref": "#/$defs/sha256"}, "assessment_components": {"$ref": "#/$defs/sha256"}, "solution_gaps": {"$ref": "#/$defs/sha256"}, "combined": {"$ref": "#/$defs/sha256"}}},
+    "module_unit_mapping_sha256": {"const": "dca9b8dfe1aad797315d6c7186665eedcdcd045bde8514ad91448b3484342dfe"},
+    "pattern_audit_combined_shards_sha256": {"const": "ee21807297f7ac0b04c00ccbf7b3c1eae5ba9ff7bc48f20d0f236b389f259455"},
+    "loss_accounting": {"type": "object", "additionalProperties": false, "required": ["explicit_no_solution_gaps", "invented_solutions", "unmapped_assessments", "unmapped_components", "missing_anchors"], "properties": {"explicit_no_solution_gaps": {"const": 2865}, "invented_solutions": {"const": 0}, "unmapped_assessments": {"const": 0}, "unmapped_components": {"const": 0}, "missing_anchors": {"const": 0}}},
+    "zero_copy_policy": {"type": "object", "additionalProperties": false, "required": ["mathematical_prose_copied", "formula_bodies_copied", "navigation_units_promoted", "owner_native_ids_preserved"], "properties": {"mathematical_prose_copied": {"const": false}, "formula_bodies_copied": {"const": false}, "navigation_units_promoted": {"const": false}, "owner_native_ids_preserved": {"const": true}}},
+    "recorded_at": {"type": "string", "format": "date-time"}
+  },
+  "$defs": {
+    "urnUuid": {"type": "string", "pattern": "^urn:uuid:[0-9a-f-]{36}$"},
+    "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "shard": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "path_base", "role", "format", "records", "bytes", "sha256", "record_id_set_sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1}, "path_base": {"const": "package_root"}, "role": {"type": "string", "minLength": 1},
+        "format": {"enum": ["canonical_jsonl", "deterministic_csv"]}, "records": {"type": "integer", "minimum": 1},
+        "bytes": {"type": "integer", "minimum": 1}, "sha256": {"$ref": "#/$defs/sha256"},
+        "record_id_set_sha256": {"$ref": "#/$defs/sha256"}
+      }
+    }
+  }
+}
