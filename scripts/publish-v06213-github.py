@@ -836,7 +836,8 @@ def validate_remote_inventory(
     require(len(names) == len(set(names)), "remote release asset names are not unique")
     remote = {str(asset.get("name") or ""): asset for asset in assets}
     extra = sorted(set(remote) - set(local))
-    require(not extra, f"remote release contains an extra asset: {extra[0]}")
+    if extra:
+        raise VerificationError(f"remote release contains an extra asset: {extra[0]}")
     for name, asset in remote.items():
         row = local[name]
         require(asset.get("state") == "uploaded", f"remote asset is not uploaded: {name}")
@@ -848,7 +849,8 @@ def validate_remote_inventory(
         require(asset.get("digest") == f"sha256:{row['sha256']}", f"remote asset digest differs: {name}")
     missing = sorted(set(local) - set(remote))
     if require_complete:
-        require(not missing, f"remote release is missing asset: {missing[0]}")
+        if missing:
+            raise VerificationError(f"remote release is missing asset: {missing[0]}")
         require(len(remote) == EXPECTED_FILES, "remote release is not exactly 100 assets")
     return missing
 
