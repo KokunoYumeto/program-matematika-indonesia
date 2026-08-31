@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/comparison-evidence-manifest-v1.schema.json",
+  "title": "Sanitized modular-backend comparison evidence manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_id", "schema_version", "recorded_at", "snapshot_id", "methodology", "decision_rules", "evidence", "outputs", "sanitization"],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/comparison-evidence-manifest-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/program-matematika-indonesia-comparison-evidence-manifest/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "recorded_at": { "type": "string", "format": "date" },
+    "snapshot_id": { "type": "string", "minLength": 1 },
+    "methodology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["native_designs_compared_before_convergence", "stages"],
+      "properties": {
+        "native_designs_compared_before_convergence": { "const": true },
+        "stages": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sequence", "stage_id", "description_id"],
+            "properties": {
+              "sequence": { "type": "integer", "minimum": 1, "maximum": 4 },
+              "stage_id": { "enum": ["inventory_native_designs", "compare_common_axes", "adopt_evidenced_features", "publish_validate_reaudit"] },
+              "description_id": { "type": "string", "minLength": 1 }
+            }
+          }
+        }
+      }
+    },
+    "decision_rules": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/evidence" }
+    },
+    "outputs": {
+      "type": "array",
+      "minItems": 3,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["path", "schema_id", "purpose"],
+        "properties": {
+          "path": { "type": "string", "minLength": 1 },
+          "schema_id": { "type": "string", "minLength": 1 },
+          "purpose": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "sanitization": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["credentials_excluded", "absolute_local_paths_excluded", "coordination_transcripts_excluded", "public_safe_repository_relative_paths_only"],
+      "properties": {
+        "credentials_excluded": { "const": true },
+        "absolute_local_paths_excluded": { "const": true },
+        "coordination_transcripts_excluded": { "const": true },
+        "public_safe_repository_relative_paths_only": { "const": true }
+      }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "kind", "path", "bytes", "sha256", "claim_scope", "immutability"],
+      "properties": {
+        "evidence_id": { "type": "string", "pattern": "^[a-z0-9_-]+$" },
+        "kind": { "enum": ["immutable_release", "live_overlay_input", "adapter_admission", "adapter_manifest", "terminology_evidence", "design_policy", "methodology_record"] },
+        "path": { "type": "string", "pattern": "^(?![A-Za-z]:|/).+" },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" },
+        "claim_scope": { "type": "string", "minLength": 1 },
+        "immutability": { "enum": ["immutable_release_byte", "sealed_admission_byte", "preserved_overlay_input", "current_authority_byte"] }
+      }
+    }
+  }
+}

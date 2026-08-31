@@ -272,10 +272,22 @@
         "status": { "$ref": "#/$defs/status" },
         "shared_identity_scope": { "const": "learner_and_educator_views_share_course_unit_concept_exercise_ids" },
         "unit_alignment_status": { "$ref": "#/$defs/status" },
+        "unlisted_features_status": { "const": "unknown", "description": "Omitted feature names are unindexed, not evidence of nonproduction." },
         "features": { "type": "array", "uniqueItems": true, "items": { "$ref": "#/$defs/educatorFeature" } },
         "resources": { "type": "array", "items": { "$ref": "#/$defs/educatorResource" } },
         "evidence": { "type": "array", "items": { "$ref": "#/$defs/evidence" } }
       }
+    },
+    "componentProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "locator", "note"],
+      "properties": {
+        "kind": { "const": "course_native_component_reference" },
+        "locator": { "type": "string", "format": "uri" },
+        "note": { "type": "string", "minLength": 1 }
+      },
+      "description": "A traceable source reference, not a claim of independently verified license or semantic identity."
     },
     "component": {
       "type": "object",
@@ -287,6 +299,8 @@
         "kind": { "type": "string", "minLength": 1 },
         "status": { "$ref": "#/$defs/status" },
         "access": { "enum": ["public", "unknown"] },
+        "rights_status": { "$ref": "#/$defs/status" },
+        "provenance": { "type": "array", "items": { "$ref": "#/$defs/componentProvenance" } },
         "url": { "type": "string", "format": "uri" },
         "license": { "type": "string", "minLength": 1 },
         "sha256": { "$ref": "#/$defs/sha256" }

@@ -19,10 +19,15 @@ const paths = {
   schema: resolve(project, 'schemas/course-capsule-v1/course-capsule-v1.schema.json'),
   designPolicySchema: resolve(project, 'schemas/course-capsule-v1/backend-design-policy-v1.schema.json'),
   publicBaselineSchema: resolve(project, 'schemas/course-capsule-v1/public-baseline-v1.schema.json'),
+  terminologyPolicySchema: resolve(project, 'schemas/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json'),
+  terminologyConceptSchema: resolve(project, 'schemas/course-capsule-v1/v2/terminology-concept-record-v1.schema.json'),
   designPolicy: resolve(project, 'backend/course-capsule-v1/authority/backend-design-policy-v1.json'),
   publicBaseline: resolve(project, 'backend/course-capsule-v1/authority/public-baseline-v0.62.12.json'),
+  terminologyPolicy: resolve(project, 'backend/course-capsule-v1/authority/terminology-policy-v1/canonical-register-policy.json'),
   d40Readback: resolve(project, 'backend/course-capsule-v1/validation/D40_O010_INDEPENDENT_ANONYMOUS_READBACK.json'),
   overrides: resolve(project, 'backend/course-capsule-v1/authority/integration-overrides-v1.json'),
+  nativePackages: resolve(project, 'backend/course-capsule-v1/authority/native-package-references-v1.json'),
+  learnerDelivery: resolve(project, 'backend/authority/learner-delivery-v1.json'),
   learnerTools: resolve(project, 'backend/authority/learner-tools-v1.json'),
   jsonl: resolve(outputRoot, 'generated/course-capsules.jsonl'),
   json: resolve(outputRoot, 'generated/course-capsules.json'),
@@ -42,12 +47,15 @@ const courseSort = (left, right) => left.id.localeCompare(right.id, 'en', { nume
 const statusValues = new Set(['verified', 'legacy_verified', 'available_unverified', 'in_progress', 'not_yet_produced', 'not_applicable', 'unknown']);
 const layerNames = ['curriculum', 'translation', 'production', 'learner', 'educator', 'federation', 'interoperability'];
 
-const [schemaBytes, designPolicySchemaBytes, publicBaselineSchemaBytes, designPolicyBytes, publicBaselineBytes, d40ReadbackBytes, overrideBytes, learnerToolsBytes, jsonlBytes, jsonBytes, manifestBytes] = await Promise.all([
+const [schemaBytes, designPolicySchemaBytes, publicBaselineSchemaBytes, terminologyPolicySchemaBytes, terminologyConceptSchemaBytes, designPolicyBytes, publicBaselineBytes, terminologyPolicyBytes, d40ReadbackBytes, overrideBytes, learnerToolsBytes, jsonlBytes, jsonBytes, manifestBytes] = await Promise.all([
   readFile(paths.schema),
   readFile(paths.designPolicySchema),
   readFile(paths.publicBaselineSchema),
+  readFile(paths.terminologyPolicySchema),
+  readFile(paths.terminologyConceptSchema),
   readFile(paths.designPolicy),
   readFile(paths.publicBaseline),
+  readFile(paths.terminologyPolicy),
   readFile(paths.d40Readback),
   readFile(paths.overrides),
   readFile(paths.learnerTools),
@@ -58,14 +66,54 @@ const [schemaBytes, designPolicySchemaBytes, publicBaselineSchemaBytes, designPo
 const overrides = JSON.parse(overrideBytes.toString('utf8'));
 const designPolicy = JSON.parse(designPolicyBytes.toString('utf8'));
 const publicBaseline = JSON.parse(publicBaselineBytes.toString('utf8'));
+const terminologyPolicy = JSON.parse(terminologyPolicyBytes.toString('utf8'));
 const d40Readback = JSON.parse(d40ReadbackBytes.toString('utf8'));
 const learnerTools = JSON.parse(learnerToolsBytes.toString('utf8'));
+const learnerDelivery = JSON.parse(await readFile(paths.learnerDelivery, 'utf8'));
+const deliveryById = Object.fromEntries(learnerDelivery.courses.map((row) => [row.course_id, row]));
+assert.equal(Object.keys(deliveryById).length, 40, 'Learner delivery must contain forty unique courses.');
+const nativePackages = JSON.parse(await readFile(paths.nativePackages, 'utf8'));
+const nativePackageEvidence = await readFile(resolve(project, 'backend/course-capsule-v1/validation', nativePackages.evidence.name));
+assert.equal(nativePackageEvidence.length, nativePackages.evidence.bytes, 'Native package evidence byte drift.');
+assert.equal(sha256(nativePackageEvidence), nativePackages.evidence.sha256, 'Native package evidence hash drift.');
+const packageAddendum = JSON.parse(nativePackageEvidence);
+const pointer = (value, path) => path.split('/').slice(1).reduce((at, key) => at?.[key.replaceAll('~1', '/').replaceAll('~0', '~')], value);
+for (const operation of nativePackages.operations) {
+  let fact;
+  if (operation.evidence_file) {
+    const bytes = await readFile(resolve(project, 'backend/course-capsule-v1/validation', operation.evidence_file));
+    assert.equal(bytes.length, operation.evidence_bytes, 'Native package extra evidence byte drift.');
+    assert.equal(sha256(bytes), operation.evidence_sha256, 'Native package extra evidence hash drift.');
+    fact = pointer(JSON.parse(bytes), operation.evidence_package_pointer);
+    assert.ok(fact, 'Native package evidence pointer missing.');
+    const url = new URL(operation.expected_component.url);
+    assert.equal(url.origin, 'https://zenodo.org', 'Native package evidence origin differs.');
+    assert.equal(fact.url, url.origin + '/api' + url.pathname + '/content', 'Native package claim/evidence URL mismatch.');
+    assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
+    assert.equal(fact.bytes, operation.artifact_bytes, 'Native package claim/evidence byte mismatch.');
+  } else {
+    fact = pointer(packageAddendum, operation.evidence_addendum_pointer);
+    assert.ok(fact, 'Native package evidence pointer missing.');
+    assert.equal(fact.role, operation.artifact_role, 'Native package evidence role mismatch.');
+    assert.equal(fact.public_record_file_url, operation.expected_component.url, 'Native package claim/evidence URL mismatch.');
+    assert.equal(fact.sha256, operation.expected_component.sha256, 'Native package claim/evidence hash mismatch.');
+    assert.equal(fact.bytes, operation.artifact_bytes, 'Native package claim/evidence byte mismatch.');
+  }
+  assert.equal(fact.sha256, operation.artifact_sha256, 'Native package artifact/evidence hash mismatch.');
+}
+const normalizedStatus = (status) => ({ absent: 'not_yet_produced', verified: 'verified', available_unverified: 'available_unverified', not_applicable: 'not_applicable', in_progress: 'in_progress', unknown: 'unknown' }[status] ?? 'unknown');
+const clean = (value) => Object.fromEntries(Object.entries(value).filter(([, item]) => item !== undefined && item !== null));
 const manifest = JSON.parse(manifestBytes.toString('utf8'));
 assert.equal(learnerTools.schema_id, 'interlanguage/program-matematika-indonesia/learner-tools/v1');
 assert.equal(learnerTools.schema_version, '1.0.0');
 assert.equal(new Set(learnerTools.courses.map(({ course_id }) => course_id)).size, learnerTools.courses.length, 'Learner-tool authority contains duplicate course IDs.');
-const authorityToolsByCourse = Object.fromEntries(learnerTools.courses.map(({ course_id, tools }) => [course_id, tools]));
-const authorityToolIds = learnerTools.courses.flatMap(({ tools }) => tools.map(({ tool_id }) => tool_id));
+const authorityToolsByCourse = Object.fromEntries(learnerTools.courses.map(({ course_id, tools }) => [course_id, structuredClone(tools)]));
+for (const [courseId, tools] of Object.entries(overrides.learner_tools ?? {}).sort(([left], [right]) => left.localeCompare(right))) {
+  authorityToolsByCourse[courseId] ??= [];
+  authorityToolsByCourse[courseId].push(...structuredClone(tools));
+  authorityToolsByCourse[courseId].sort((left, right) => left.tool_id.localeCompare(right.tool_id));
+}
+const authorityToolIds = Object.values(authorityToolsByCourse).flatMap((tools) => tools.map(({ tool_id }) => tool_id));
 assert.equal(new Set(authorityToolIds).size, authorityToolIds.length, 'Learner-tool authority contains duplicate tool IDs.');
 const text = jsonlBytes.toString('utf8');
 assert.ok(text.endsWith('\n'), 'JSONL must end with LF.');
@@ -100,7 +148,7 @@ if errors:
     raise SystemExit(1)
 print(json.dumps({'status': 'pass', 'instances': line_number}, sort_keys=True))
 `;
-const schemaRun = spawnSync('python', ['-c', pythonValidation, paths.schema, paths.jsonl], { encoding: 'utf8' });
+const schemaRun = spawnSync('python', ['-B', '-c', pythonValidation, paths.schema, paths.jsonl], { encoding: 'utf8' });
 assert.equal(schemaRun.status, 0, `JSON Schema validation failed:\n${schemaRun.stdout}\n${schemaRun.stderr}`);
 
 const documentValidation = String.raw`
@@ -122,10 +170,21 @@ print(json.dumps({'status': 'pass', 'document': document_path}, sort_keys=True))
 for (const [schemaPath, documentPath, label] of [
   [paths.designPolicySchema, paths.designPolicy, 'backend design policy'],
   [paths.publicBaselineSchema, paths.publicBaseline, 'public baseline'],
+  [paths.terminologyPolicySchema, paths.terminologyPolicy, 'canonical terminology and register policy'],
 ]) {
-  const run = spawnSync('python', ['-c', documentValidation, schemaPath, documentPath], { encoding: 'utf8' });
+  const run = spawnSync('python', ['-B', '-c', documentValidation, schemaPath, documentPath], { encoding: 'utf8' });
   assert.equal(run.status, 0, `${label} schema validation failed:\n${run.stdout}\n${run.stderr}`);
 }
+const schemaOnlyValidation = String.raw`
+import json, sys
+from jsonschema import Draft202012Validator
+with open(sys.argv[1], encoding='utf-8') as handle:
+    schema = json.load(handle)
+Draft202012Validator.check_schema(schema)
+print(json.dumps({'status': 'pass', 'schema': sys.argv[1]}, sort_keys=True))
+`;
+const terminologyConceptSchemaRun = spawnSync('python', ['-B', '-c', schemaOnlyValidation, paths.terminologyConceptSchema], { encoding: 'utf8' });
+assert.equal(terminologyConceptSchemaRun.status, 0, `Terminology concept-record schema validation failed:\n${terminologyConceptSchemaRun.stdout}\n${terminologyConceptSchemaRun.stderr}`);
 
 assert.equal(designPolicy.profile, 'thin_format_neutral_zero_copy');
 assert.deepEqual(designPolicy.required_layers, layerNames);
@@ -147,6 +206,14 @@ assert.equal(publicBaseline.zenodo.access, 'open');
 assert.equal(publicBaseline.zenodo.file_count, 100);
 assert.equal(publicBaseline.zenodo.payload_bytes, 131739644);
 assert.equal(publicBaseline.artifacts.length, 5);
+assert.equal(terminologyPolicy.schema_id, 'interlanguage/program-matematika-indonesia-canonical-terminology-register-policy/v1');
+assert.equal(terminologyPolicy.decision_procedure.length, 9);
+assert.deepEqual(terminologyPolicy.decision_procedure.map(({ sequence }) => sequence), [1, 2, 3, 4, 5, 6, 7, 8, 9]);
+assert.equal(terminologyPolicy.termbase_contract.schema_id, 'interlanguage/program-matematika-indonesia-terminology-concept/v1');
+assert.equal(terminologyPolicy.probability_family_audit.status, 'evidence_required');
+assert.equal(terminologyPolicy.probability_family_audit.automatic_replacement_allowed, false);
+assert.equal(terminologyPolicy.probability_family_audit.concepts.length, 9);
+assert.equal(terminologyPolicy.probability_family_audit.concepts.every(({ decision_state }) => decision_state === 'evidence_required'), true);
 const expectedDesignPolicyRef = {
   profile: 'thin_format_neutral_zero_copy',
   course_native_authoritative: true,
@@ -211,7 +278,40 @@ for (const [index, capsule] of capsules.entries()) {
     ?? (educator.features.length || educator.resources.length ? 'available_unverified' : 'unknown');
   assert.equal(educator.status, expectedEducatorStatus, `${capsule.course_id}: educator status must preserve authority or honest indexing uncertainty.`);
   const adapter = overrides.semantic_adapters[capsule.course_id];
-  assert.equal(educator.unit_alignment_status, adapter?.status ?? (educator.features.length ? 'available_unverified' : 'unknown'), `${capsule.course_id}: educator alignment evidence differs.`);
+  const nativeClaims = overrides.native_capabilities?.[capsule.course_id] ?? {};
+  for (const [key, actual] of Object.entries({
+    unit_identity: capsule.layers.curriculum.unit_identity_status,
+    translation_ledger: capsule.layers.translation.ledger_status,
+    terminology: capsule.layers.translation.terminology_status,
+    translation_rights: capsule.layers.translation.rights_status,
+    corrections: capsule.layers.translation.corrections_status,
+    build: capsule.layers.production.build_status,
+    deterministic_replay: capsule.layers.production.deterministic_replay_status,
+    educator_unit_alignment: educator.unit_alignment_status,
+  })) {
+    const claim = nativeClaims[key];
+    if (claim) assert.ok(statusValues.has(claim.status), `${capsule.course_id}/${key}: invalid native capability status.`);
+    assert.equal(actual, claim?.status ?? 'unknown', `${capsule.course_id}/${key}: native status needs capability-specific evidence, not adapter status.`);
+    if (actual !== 'unknown') assert.ok(claim.evidence?.length, `${capsule.course_id}/${key}: native evidence is missing.`);
+    for (const evidence of claim?.evidence ?? []) assert.ok(capsule.evidence.some((entry) => canonicalLine(entry) === canonicalLine(evidence)), `${capsule.course_id}/${key}: native evidence not exposed.`);
+  }
+  assert.equal(educator.unlisted_features_status, 'unknown', `${capsule.course_id}: unlisted educator features must remain unknown.`);
+  const declaredDelivery = deliveryById[capsule.course_id];
+  const expectedDelivery = Object.fromEntries(['primary', 'online_html', 'pdf', 'epub', 'portable_html'].map((key) => {
+    const resource = declaredDelivery[key];
+    return [key, resource ? clean({ ...structuredClone(resource), status: normalizedStatus(resource.status) }) : { status: 'not_yet_produced' }];
+  }));
+  const publication = overrides.course_truth[capsule.course_id];
+  if (publication?.publication_evidence) {
+    const pdf = { status: 'verified', format: 'application/pdf', url: publication.edition, bytes: publication.publication_evidence.bytes, sha256: publication.publication_evidence.sha256, scope: 'whole_course', evidence: clean(structuredClone(publication.publication_evidence)) };
+    if (expectedDelivery.primary.status !== 'verified') expectedDelivery.primary = structuredClone(pdf);
+    expectedDelivery.pdf = pdf;
+  }
+  for (const [key, expected] of Object.entries(expectedDelivery)) assert.deepEqual(capsule.layers.learner[key], expected, `${capsule.course_id}/${key}: learner delivery authority drift.`);
+  const deliveryStates = Object.values(expectedDelivery).map((entry) => entry.status);
+  const aggregateDelivery = deliveryStates.includes('verified') ? 'verified' : deliveryStates.includes('available_unverified') ? 'available_unverified' : capsule.course.state === 'production' ? 'in_progress' : 'not_yet_produced';
+  assert.equal(capsule.layers.learner.status, aggregateDelivery, `${capsule.course_id}: aggregate learner authority drift.`);
+  assert.deepEqual(capsule.layers.learner.capabilities, Object.fromEntries(Object.entries(declaredDelivery.capabilities).map(([key, value]) => [key, normalizedStatus(value.status)])), `${capsule.course_id}: learner capability authority drift.`);
   assert.equal(capsule.layers.federation.zero_copy, true);
   assert.equal(capsule.layers.interoperability.status, 'verified');
   assert.equal(capsule.layers.interoperability.native_identity_preserved, true);
@@ -228,7 +328,19 @@ for (const [index, capsule] of capsules.entries()) {
     }
   }
   for (const layer of layerNames) assert.ok(statusValues.has(capsule.layers[layer].status), `${capsule.course_id}/${layer}: invalid status.`);
-  for (const component of capsule.layers.federation.components) assert.ok(['public', 'unknown'].includes(component.access));
+  const components = capsule.layers.federation.components;
+  assert.equal(new Set(components.map(({ id }) => id)).size, components.length, `${capsule.course_id}: duplicate component identity.`);
+  for (const component of components) {
+    assert.ok(['public', 'unknown'].includes(component.access));
+    assert.equal(component.rights_status, component.license ? 'available_unverified' : 'unknown', `${component.id}: component rights uncertainty missing or overstated.`);
+    assert.deepEqual(component.provenance, component.url ? [{ kind: 'course_native_component_reference', locator: component.url, note: 'Reference provenance; independent rights verification is not implied.' }] : [], `${component.id}: component provenance reference drift.`);
+  }
+  for (const operation of nativePackages.operations.filter((entry) => entry.course_id === capsule.course_id)) {
+    const actual = components.find((entry) => entry.id === operation.expected_component.id);
+    assert.ok(actual, `${capsule.course_id}: native package reference missing.`);
+    const { rights_status: _rights, provenance: _provenance, ...identity } = actual;
+    assert.deepEqual(identity, operation.expected_component, `${capsule.course_id}: native package reference drift.`);
+  }
   for (const resource of capsule.layers.educator.resources) {
     assert.match(resource.url, /^https:\/\//);
     assert.ok(statusValues.has(resource.status));
@@ -450,9 +562,46 @@ for (const [id, expected] of Object.entries(leblFamily)) {
   assert.equal(capsule.layers.learner.pdf.bytes, expected.bytes);
   assert.equal(capsule.layers.learner.pdf.sha256, expected.sha256);
 }
-for (const id of ['A00', 'B10', 'D20', 'D60', 'D110']) {
+for (const id of ['A00', 'B10', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110']) {
   assert.equal(byId[id].layers.interoperability.semantic_adapter.status, 'verified');
   assert.equal(byId[id].layers.interoperability.semantic_adapter.contract_version, '2.3.1');
+}
+for (const id of ['C30', 'C40']) {
+  const adapter = byId[id].layers.interoperability.semantic_adapter;
+  assert.equal(adapter.mapping_scope, 'reversible_native_two_course_chapter_route_adapter');
+  assert.deepEqual(adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt']);
+  assert.equal(adapter.evidence[0].sha256, '00b80a3f7406c96b375ddb390981dbd0a1f1e3d41e0d240c93b194694521c28a');
+  assert.equal(adapter.evidence[1].sha256, '0c73d1be90d3a0318b70293eccf7b5ec58b41f323fbb2639b5c12b4451783e74');
+  assert.equal(
+    byId[id].layers.learner.portable_html.evidence.locator,
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/judson/route-evidence.json',
+  );
+}
+const c80Adapter = byId.C80.layers.interoperability.semantic_adapter;
+assert.equal(c80Adapter.mapping_scope, 'reversible_native_course_route_adapter');
+assert.deepEqual(c80Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
+assert.equal(c80Adapter.evidence[0].sha256, '01974670c902a50d3e0166214f665286e0030a270a781a56413976be52ca4b01');
+assert.equal(c80Adapter.evidence[1].sha256, '2a86c41e92f9c9ef7e215448967998504bd4c16e7ba8e680d795d155aebef9a7');
+assert.equal(c80Adapter.evidence[2].sha256, '4774d889bf52244ef22181b0c90cfa2826ee4da401193d8229d2ac67181be6bc');
+assert.equal(byId.C80.layers.learner.tools.length, 1);
+assert.equal(byId.C80.layers.learner.tools[0].href, 'backend/openlogic/C80.html');
+assert.equal(byId.C80.layers.learner.tools[0].primary, true);
+assert.equal(byId.C80.layers.learner.tools[0].resource.sha256, 'e4a859bae966c0cc6272a814273c882b79cb7136f83ae83c147559c530921414');
+const c130Adapter = byId.C130.layers.interoperability.semantic_adapter;
+assert.equal(c130Adapter.mapping_scope, 'reversible_native_course_route_adapter');
+assert.deepEqual(c130Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
+assert.equal(c130Adapter.evidence[0].sha256, 'cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239');
+assert.equal(c130Adapter.evidence[1].sha256, 'b311ab7d2a6a86af40174d051fbd8ef273a8536b34f0af77b76e5a1ce9b3397e');
+assert.equal(c130Adapter.evidence[2].sha256, '382049f6cdf92eb99b0cc03de723c3c2a7347422ec6fc5b772ee843fd3bad608');
+assert.equal(byId.C130.layers.learner.tools.length, 1);
+assert.equal(byId.C130.layers.learner.tools[0].href, 'backend/c130/C130.html');
+assert.equal(byId.C130.layers.learner.tools[0].primary, true);
+assert.equal(byId.C130.layers.learner.tools[0].resource.sha256, 'a0a869d79b0063122615f6b0dc7c5891f79286e2e0a7bf89bce3d48ad1845e09');
+for (const id of ['A10', 'D100']) {
+  assert.equal(byId[id].layers.translation.terminology_status, 'in_progress');
+  assert.equal(byId[id].layers.translation.corrections_status, 'in_progress');
+  const evidence = byId[id].evidence.filter(({ sha256 }) => sha256 === 'd36a33be7b2dbd5d3a921f32f2b2f5dff81bc8e98d9ff66781314d9251167aa8');
+  assert.ok(evidence.length >= 1, `${id}: native terminology witness is missing.`);
 }
 
 assert.equal(manifest.schema_version, '1.0.0');
@@ -462,7 +611,7 @@ assert.equal(manifest.summary.course_count, 40);
 assert.equal(manifest.summary.published_count, 35);
 assert.equal(manifest.summary.production_count, 5);
 assert.equal(manifest.summary.prerequisite_edge_count, 83);
-assert.equal(manifest.summary.learner_tool_course_count, learnerTools.courses.length);
+assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
 assert.equal(manifest.design_policy.profile, 'thin_format_neutral_zero_copy');
 assert.deepEqual(manifest.design_policy.authority, identity('backend/course-capsule-v1/authority/backend-design-policy-v1.json', designPolicyBytes));
@@ -472,6 +621,17 @@ assert.equal(manifest.public_baseline.version, 'v0.62.12');
 assert.deepEqual(manifest.public_baseline.authority, identity('backend/course-capsule-v1/authority/public-baseline-v0.62.12.json', publicBaselineBytes));
 assert.deepEqual(manifest.public_baseline.schema, identity('schemas/course-capsule-v1/public-baseline-v1.schema.json', publicBaselineSchemaBytes));
 assert.deepEqual(manifest.public_baseline.public_projection, expectedDesignPolicyRef.public_baseline);
+assert.equal(manifest.terminology_policy.status, 'normative_for_central_integration');
+assert.deepEqual(manifest.terminology_policy.authority, identity('backend/course-capsule-v1/authority/terminology-policy-v1/canonical-register-policy.json', terminologyPolicyBytes));
+assert.deepEqual(manifest.terminology_policy.policy_schema, identity('schemas/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', terminologyPolicySchemaBytes));
+assert.deepEqual(manifest.terminology_policy.concept_schema, identity('schemas/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', terminologyConceptSchemaBytes));
+assert.deepEqual(manifest.terminology_policy.public_projection, {
+  locator: 'https://kokunoyumeto.github.io/program-matematika-indonesia/data/course-capsule-v1/terminology-policy-v1/canonical-register-policy.json',
+  bytes: terminologyPolicyBytes.length,
+  sha256: sha256(terminologyPolicyBytes),
+});
+assert.equal(manifest.terminology_policy.probability_family_state, 'evidence_required');
+assert.equal(manifest.terminology_policy.probability_family_concept_count, 9);
 for (const input of manifest.inputs) {
   const bytes = await readFile(resolve(project, input.path));
   assert.deepEqual(input, { key: input.key, ...identity(input.path, bytes) }, `${input.path}: manifest identity drift.`);
@@ -520,6 +680,10 @@ const receipt = {
     learner_tool_course_count: learnerToolCourses.length,
     learner_tool_count: capsules.reduce((count, capsule) => count + capsule.layers.learner.tools.length, 0),
     learner_tool_authority_equality: 'pass',
+    learner_delivery_authority_equality: 'pass',
+    native_capability_specific_evidence: 'pass',
+    component_rights_and_provenance: 'pass',
+    native_package_evidence_bindings: nativePackages.operations.length,
     learner_tool_file_identity_replay: 'pass',
     learner_tool_html_destination_gate: 'pass',
     lebl_family_truth_overrides: 'pass',
@@ -535,6 +699,7 @@ const receipt = {
     credential_profile_scan: 'pass',
   },
   artifacts: {
+    native_package_references: identity('backend/course-capsule-v1/authority/native-package-references-v1.json', await readFile(paths.nativePackages)),
     course_capsules_jsonl: identity('generated/course-capsules.jsonl', jsonlBytes),
     course_capsules_json: identity('generated/course-capsules.json', jsonBytes),
     manifest_json: identity('generated/manifest.json', manifestBytes),

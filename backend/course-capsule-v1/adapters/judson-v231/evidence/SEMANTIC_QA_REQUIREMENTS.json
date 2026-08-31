@@ -1,0 +1,76 @@
+{
+  "schema_id": "interlanguage/judson-adapter-independent-qa-requirements/v1",
+  "state": "test_contract_before_candidate_admission",
+  "source_archive_sha256": "0aa85116679703b632333f4003b3373f42bb7b282c3719bea3731257c0fe55e0",
+  "tests": [
+    {
+      "id": "exact_unit_identity",
+      "oracle": "Native topology/units.jsonl and identity/id-map.jsonl",
+      "pass": "All3323 native unit IDs represented once; each mapped birth/current tuple exact; new central IDs depend only on a frozen namespace and native identity.",
+      "negative": "Duplicate/remint/remove a native unit mapping."
+    },
+    {
+      "id": "course_partition",
+      "oracle": "Native courses/courses.jsonl and courses/course-units.jsonl plus parent graph",
+      "pass": "23 chapter memberships preserve15/8 split and native sequence. Derived ancestry gives2014/1279 with30 support units outside both, one graph only.",
+      "negative": "Move a C40 chapter into C30, duplicate membership, or force a support unit into a role."
+    },
+    {
+      "id": "typed_relation_closure",
+      "oracle": "All6505 native relation rows and all endpoint namespaces",
+      "pass": "All native relation IDs, type/from/to/scope/ordinal/provenance retained;6401 unit-to-unit and104 other edges remain distinguishable; no dangling endpoint.",
+      "negative": "Change/remove a cross-course prerequisite, correction/asset endpoint, or has_hint relation."
+    },
+    {
+      "id": "source_target_bindings",
+      "oracle": "4466 native segment/translation pairs",
+      "pass": "Source ID and target ID plus source/target SHA-256 preserved; fragment/text prose absent from central bindings.",
+      "negative": "Change a source/target hash or pair translation to a different segment."
+    },
+    {
+      "id": "translation_state",
+      "oracle": "Native segment states, dispositions, actual content locales and reasons",
+      "pass": "4150translated and316source_frozen remain distinct; unit metadata active is not translated; mixed or no-segment evidence explicit.",
+      "negative": "Promote any source_frozen segment to translated or erase reason/content locale."
+    },
+    {
+      "id": "rights",
+      "oracle": "Native rights row and modification/distribution notices",
+      "pass": "GFDL1.2-or-later upstream and GFDL1.3-or-later modified distribution remain separate; component/native provenance retained.",
+      "negative": "Flatten native license to a central license or mark modified text under only the upstream version."
+    },
+    {
+      "id": "inverse_metadata",
+      "oracle": "Included native metadata streams and canonical row identity",
+      "pass": "Every declared reversible native metadata stream reconstructs byte-identically; excluded prose is not described as reconstructed.",
+      "negative": "Mutate one reconstructed metadata byte or remove an identity mapping."
+    },
+    {
+      "id": "public_replay",
+      "oracle": "Frozen public SOURCE_BACKEND.zip and public central schemas/contracts",
+      "pass": "Exact commands reproduce candidate without a private profile path or mutable owner file; all prerequisite bytes bound.",
+      "negative": "Supply altered source ZIP or a missing required input; builder must fail closed."
+    },
+    {
+      "id": "learner_scope",
+      "oracle": "WEB.zip native chapter pages and exact native selectors",
+      "pass": "23 chapter routes are actual archive entries. Live exact-byte checks distinguished from frozen offline witnesses and unavailable endpoints.",
+      "negative": "Replace a chapter URL or label with an unbound route; no guessed fragment."
+    },
+    {
+      "id": "capability_honesty",
+      "oracle": "Packaged records, evidence links, native verifier limitations",
+      "pass": "Only actual materialized capabilities claimed. No Sage execution, full semantic translation review, full corpus render or automatic mastery claim.",
+      "negative": "Upgrade a referenced-only or absent capability into a materialized/runtime claim."
+    }
+  ],
+  "generic_gates": [
+    "unchanged six 2.3.1 schemas",
+    "unchanged generic validator",
+    "19 JSONL/CSV pairs",
+    "complete checksum and seal inventory",
+    "two exact byte-identical builds"
+  ],
+  "root_proof": "NATIVE_PUBLIC_REPLAY_RECEIPT.json",
+  "no_candidate_pass_claim": true
+}

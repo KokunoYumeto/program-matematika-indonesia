@@ -105,8 +105,9 @@ for (const [name, fetch] of [
     assert.equal(button.attrs.get('aria-pressed'), 'true');
     assert.equal(f.buttons.filter((item) => item.attrs.get('aria-pressed') === 'true').length, 1);
     assert.doesNotMatch(f.element('#course-grid').innerHTML, /href="(?:04_mirrors|javascript:)/);
+    assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
-  for (const [value, count] of [['published', 35], ['production', 5], ['educator', 21], ['adapter', 5]]) {
+  for (const [value, count] of [['published', 35], ['production', 5], ['educator', 21], ['adapter', 9]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
     assert.equal(visibleCount(), count);
@@ -120,6 +121,19 @@ for (const [name, fetch] of [
   f.element('#course-search').value = 'A20';
   f.fire(f.element('#course-search'), 'input');
   assert.equal(visibleCount(), 1);
+  f.fire(f.element('#view-learner'), 'click');
+  f.element('#course-search').value = 'C80';
+  f.fire(f.element('#course-search'), 'input');
+  assert.equal(visibleCount(), 1);
+  assert.match(f.element('#course-grid').innerHTML, /href="\.\.\/backend\/openlogic\/C80\.html"/);
+  assert.match(f.element('#course-grid').innerHTML, /Buka Open Logic lengkap/);
+  assert.match(f.element('#course-grid').innerHTML, /class="learner-tool primary"/);
+  f.element('#course-search').value = 'C130';
+  f.fire(f.element('#course-search'), 'input');
+  assert.equal(visibleCount(), 1);
+  assert.match(f.element('#course-grid').innerHTML, /href="\.\.\/backend\/c130\/C130\.html"/);
+  assert.match(f.element('#course-grid').innerHTML, /Buka Riset Operasi — Buku 1/);
+  assert.match(f.element('#course-grid').innerHTML, /class="learner-tool primary"/);
   f.element('#course-search').value = 'zzzz_no_matching_course';
   f.fire(f.element('#course-search'), 'input');
   assert.equal(visibleCount(), 0);

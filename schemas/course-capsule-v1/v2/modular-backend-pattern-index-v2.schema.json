@@ -1,0 +1,148 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/modular-backend-pattern-index-v2.schema.json",
+  "title": "Program Matematika Indonesia snapshot-aware backend pattern index v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_id", "schema_version", "recorded_at", "locale", "snapshot", "methodology", "audit_axes", "canonical_recommendation", "adapter_snapshot", "source_evidence", "families"],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/modular-backend-pattern-index-v2.schema.json" },
+    "schema_id": { "const": "interlanguage/program-matematika-indonesia-modular-backend-pattern-index/v2" },
+    "schema_version": { "const": "2.0.0" },
+    "recorded_at": { "type": "string", "format": "date" },
+    "locale": { "const": "id-ID" },
+    "snapshot": { "$ref": "v23-adapter-index-v2.schema.json#/$defs/snapshot" },
+    "methodology": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["design_premise", "comparison_policy", "denominator", "stages", "evidence_basis"],
+      "properties": {
+        "design_premise": { "type": "string", "minLength": 1 },
+        "comparison_policy": { "type": "string", "minLength": 1 },
+        "denominator": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["program_roles", "native_implementation_families", "manager_federation_is_separate_synthesis_candidate"],
+          "properties": {
+            "program_roles": { "const": 40 },
+            "native_implementation_families": { "const": 33 },
+            "manager_federation_is_separate_synthesis_candidate": { "const": true }
+          }
+        },
+        "stages": {
+          "type": "array",
+          "minItems": 4,
+          "maxItems": 4,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["sequence", "stage_id", "description_id"],
+            "properties": {
+              "sequence": { "type": "integer", "minimum": 1, "maximum": 4 },
+              "stage_id": { "enum": ["inventory_native_designs", "compare_common_axes", "adopt_evidenced_features", "publish_validate_reaudit"] },
+              "description_id": { "type": "string", "minLength": 1 }
+            }
+          }
+        },
+        "evidence_basis": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } }
+      }
+    },
+    "audit_axes": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "canonical_recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["preserve", "required_thin_signed_capsule", "optional_capability_shards", "canonical_exchange", "generated_views", "generated_views_are_authoritative", "central_hub_behavior"],
+      "properties": {
+        "preserve": { "$ref": "#/$defs/stringArray" },
+        "required_thin_signed_capsule": { "$ref": "#/$defs/stringArray" },
+        "optional_capability_shards": { "$ref": "#/$defs/stringArray" },
+        "canonical_exchange": { "type": "string", "minLength": 1 },
+        "generated_views": { "$ref": "#/$defs/stringArray" },
+        "generated_views_are_authoritative": { "const": false },
+        "central_hub_behavior": { "$ref": "#/$defs/stringArray" }
+      }
+    },
+    "adapter_snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["adapter_index", "role_bindings", "published_role_bindings", "pending_role_bindings", "distinct_adapter_packages", "represented_native_families", "unbound_roles", "families_without_local_adapter", "families_without_public_replay_complete_adapter"],
+      "properties": {
+        "adapter_index": { "$ref": "#/$defs/fileIdentity" },
+        "role_bindings": { "const": 9 },
+        "published_role_bindings": { "const": 5 },
+        "pending_role_bindings": { "const": 4 },
+        "distinct_adapter_packages": { "const": 8 },
+        "represented_native_families": { "const": 8 },
+        "unbound_roles": { "const": 31 },
+        "families_without_local_adapter": { "const": 25 },
+        "families_without_public_replay_complete_adapter": { "const": 28 }
+      }
+    },
+    "source_evidence": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["source_id", "purpose", "path", "bytes", "sha256"],
+        "properties": {
+          "source_id": { "type": "string", "pattern": "^[a-z0-9_-]+$" },
+          "purpose": { "type": "string", "minLength": 1 },
+          "path": { "type": "string", "minLength": 1 },
+          "bytes": { "type": "integer", "minimum": 1 },
+          "sha256": { "$ref": "#/$defs/sha256" }
+        }
+      }
+    },
+    "families": {
+      "type": "array",
+      "minItems": 33,
+      "maxItems": 33,
+      "items": { "$ref": "#/$defs/family" }
+    }
+  },
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "fileIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 1 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      }
+    },
+    "stringArray": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "minLength": 1 } },
+    "adapterBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role_id", "adapter_package_id", "admission_state", "public_replay_status"],
+      "properties": {
+        "role_id": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" },
+        "adapter_package_id": { "type": "string", "minLength": 1 },
+        "admission_state": { "enum": ["published", "admitted_pending_release"] },
+        "public_replay_status": { "enum": ["pending_release_local_seal_verified", "published_public_asset_readback_verified"] }
+      }
+    },
+    "family": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["ordinal", "native_family_id", "roles", "family_name", "core_pattern", "demonstrated_strengths", "limitations", "learner_runtime_status", "reversible_exchange_status", "recommended_reuse", "adapter_bindings"],
+      "properties": {
+        "ordinal": { "type": "integer", "minimum": 1, "maximum": 33 },
+        "native_family_id": { "type": "string", "pattern": "^family-[0-9]{2}-[a-z0-9-]+$" },
+        "roles": { "type": "array", "minItems": 1, "uniqueItems": true, "items": { "type": "string", "pattern": "^[A-D][0-9]{2,3}$" } },
+        "family_name": { "type": "string", "minLength": 1 },
+        "core_pattern": { "type": "string", "minLength": 1 },
+        "demonstrated_strengths": { "$ref": "#/$defs/stringArray" },
+        "limitations": { "$ref": "#/$defs/stringArray" },
+        "learner_runtime_status": { "type": "string", "minLength": 1 },
+        "reversible_exchange_status": { "type": "string", "minLength": 1 },
+        "recommended_reuse": { "$ref": "#/$defs/stringArray" },
+        "adapter_bindings": { "type": "array", "items": { "$ref": "#/$defs/adapterBinding" } }
+      }
+    }
+  }
+}

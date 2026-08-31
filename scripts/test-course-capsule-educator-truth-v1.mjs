@@ -19,6 +19,18 @@ const tests = [
   { name: 'unindexed_is_not_proof_of_nonproduction', id: 'B10', status: 'not_yet_produced', error: /educator status must preserve authority or honest indexing uncertainty/ },
   { name: 'explicit_in_progress_authority_is_preserved', id: 'C140', status: 'available_unverified', error: /educator status must preserve authority or honest indexing uncertainty/ },
   { name: 'invalid_capsule_status_cannot_escape_schema', id: 'B10', status: 'invented_status', error: /JSON Schema validation failed/ },
+  ...[
+    ['curriculum', 'unit_identity_status'],
+    ['translation', 'ledger_status'],
+    ['production', 'deterministic_replay_status'],
+    ['educator', 'unit_alignment_status'],
+  ].map(([layer, key]) => ({ name: `adapter_cannot_verify_native_${key}`, id: 'B10', mutate: (row) => { row.layers[layer][key] = 'verified'; }, error: /native status needs capability-specific evidence/ })),
+  { name: 'learner_url_must_match_authority', id: 'B10', mutate: (row) => { row.layers.learner.primary.url = 'https://example.org/wrong-edition/'; }, error: /learner delivery authority drift/ },
+  { name: 'aggregate_learner_status_must_match_authority', id: 'B10', mutate: (row) => { row.layers.learner.status = 'unknown'; }, error: /aggregate learner authority drift/ },
+  { name: 'learner_capability_must_match_authority', id: 'B10', mutate: (row) => { row.layers.learner.capabilities.semantic_html = 'unknown'; }, error: /learner capability authority drift/ },
+  { name: 'component_rights_cannot_be_omitted', id: 'B10', mutate: (row) => { delete row.layers.federation.components[0].rights_status; }, error: /component rights uncertainty missing or overstated/ },
+  { name: 'component_provenance_cannot_be_omitted', id: 'B10', mutate: (row) => { row.layers.federation.components[0].provenance = []; }, error: /component provenance reference drift/ },
+  { name: 'native_package_reference_must_match_evidence', id: 'B30', mutate: (row) => { row.layers.federation.components.find((component) => component.id === 'B30:clp-native-source-and-modular-backend').sha256 = '0'.repeat(64); }, error: /native package reference drift/ },
 ];
 try {
   for (const test of tests) {
@@ -26,7 +38,9 @@ try {
     const generated = join(mutationRoot, 'generated');
     await mkdir(generated, { recursive: true });
     const rows = structuredClone(original);
-    rows.find((row) => row.course_id === test.id).layers.educator.status = test.status;
+    const row = rows.find((row) => row.course_id === test.id);
+    if (test.mutate) test.mutate(row);
+    else row.layers.educator.status = test.status;
     await writeFile(join(generated, 'course-capsules.jsonl'), rows.map((row) => JSON.stringify(sort(row))).join('\n') + '\n');
     await writeFile(join(generated, 'course-capsules.json'), JSON.stringify(sort(rows), null, 2) + '\n');
     await writeFile(join(generated, 'manifest.json'), manifest);

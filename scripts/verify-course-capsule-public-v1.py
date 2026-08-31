@@ -26,6 +26,12 @@ PATHS = (
     "backend/",
     "backend/backend.css",
     "backend/backend.js",
+    "backend/judson/C30.html",
+    "backend/judson/C40.html",
+    "backend/judson/chapters.json",
+    "backend/judson/route-evidence.json",
+    "backend/judson/contribution.md",
+    "backend/judson/validation.json",
     "data/course-capsule-v1/course-capsules.jsonl",
     "data/course-capsule-v1/course-capsules.json",
     "data/course-capsule-v1/manifest.json",
@@ -33,6 +39,9 @@ PATHS = (
     "data/course-capsule-v1/README.md",
     "data/course-capsule-v1/backend-design-policy-v1.json",
     "data/course-capsule-v1/public-baseline-v0.62.12.json",
+    "data/course-capsule-v1/native-package-references-v1.json",
+    "data/course-capsule-v1/native-family-public-evidence-v1.json",
+    "data/course-capsule-v1/native-family-public-evidence-note-v1.md",
     "data/learner-tools-v1.json",
     "data/learner-delivery-v1.json",
     "data/modular-backend-pattern-index-v1.json",
@@ -41,7 +50,10 @@ PATHS = (
     "schema/course-capsule-v1/backend-design-policy-v1.schema.json",
     "schema/course-capsule-v1/public-baseline-v1.schema.json",
     "schema/v1/learner-tools-v1.schema.json",
+    "schema/v1/v23-adapter-index-v1.schema.json",
     "id-ID/courses/A00/latihan/index.html",
+    "id-ID/courses/B95/index.html",
+    "id-ID/courses/B95/",
     "id-ID/courses/D20/index.html",
     "id-ID/courses/D30/index.html",
     "id-ID/courses/D40/index.html",
@@ -107,10 +119,12 @@ def main() -> None:
     global ORIGIN, DESTINATION
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--local", action="store_true", help="check the retained localhost curriculum preview")
+    parser.add_argument("--receipt-version", default="v0.62.14", choices=("v0.62.13", "v0.62.14"))
     args = parser.parse_args()
+    DESTINATION = ROOT / f"backend/course-capsule-v1/validation/PUBLIC_SITE_READBACK_{args.receipt_version}.json"
     if args.local:
         ORIGIN = "http://localhost:3000/hub/"
-        DESTINATION = ROOT / "backend/course-capsule-v1/validation/LOCAL_HTTP_READBACK_v0.62.13.json"
+        DESTINATION = ROOT / f"backend/course-capsule-v1/validation/LOCAL_HTTP_READBACK_{args.receipt_version}.json"
     with ThreadPoolExecutor(max_workers=4) as executor:
         rows = list(executor.map(check, PATHS))
     local_rows = json.loads(

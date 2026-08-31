@@ -1,0 +1,263 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json",
+  "title": "Program Matematika Indonesia terminology concept record v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_id",
+    "schema_version",
+    "concept_id",
+    "subject_field",
+    "definition",
+    "decision_state",
+    "production_eligible",
+    "languages",
+    "concept_relations",
+    "source_evidence",
+    "decision_rationale",
+    "confidence",
+    "change_log",
+    "interoperability"
+  ],
+  "properties": {
+    "schema_id": {
+      "const": "interlanguage/program-matematika-indonesia-terminology-concept/v1"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "concept_id": {
+      "type": "string",
+      "pattern": "^urn:interlanguage:concept:[a-z0-9][a-z0-9._:-]*$"
+    },
+    "subject_field": {
+      "type": "string",
+      "minLength": 1
+    },
+    "definition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["text", "language", "source_evidence_ids"],
+      "properties": {
+        "text": { "type": "string", "minLength": 1 },
+        "language": { "type": "string", "minLength": 2 },
+        "source_evidence_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        }
+      }
+    },
+    "decision_state": {
+      "enum": ["resolved", "evidence_required", "deprecated"]
+    },
+    "production_eligible": {
+      "type": "boolean"
+    },
+    "languages": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": { "$ref": "#/$defs/languageRecord" }
+    },
+    "concept_relations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["relation", "target_concept_id"],
+        "properties": {
+          "relation": {
+            "enum": ["broader", "narrower", "related", "part_of", "has_part", "not_equivalent_to"]
+          },
+          "target_concept_id": {
+            "type": "string",
+            "pattern": "^urn:interlanguage:concept:"
+          }
+        }
+      }
+    },
+    "source_evidence": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/sourceEvidence" },
+      "uniqueItems": true
+    },
+    "decision_rationale": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidence": {
+      "enum": ["high", "medium", "low", "insufficient"]
+    },
+    "change_log": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/changeEvent" },
+      "minItems": 1
+    },
+    "interoperability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["tbx_concept_entry", "locale_neutral_identity", "export_status"],
+      "properties": {
+        "tbx_concept_entry": { "type": "boolean" },
+        "locale_neutral_identity": { "const": true },
+        "export_status": { "enum": ["ready", "blocked_by_unresolved_decision", "deprecated"] }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": { "decision_state": { "const": "resolved" } },
+        "required": ["decision_state"]
+      },
+      "then": {
+        "properties": {
+          "production_eligible": { "const": true },
+          "languages": {
+            "additionalProperties": {
+              "allOf": [
+                {
+                  "properties": {
+                    "designations": {
+                      "contains": {
+                        "type": "object",
+                        "properties": { "status": { "const": "preferred" } },
+                        "required": ["status"]
+                      },
+                      "minContains": 1,
+                      "maxContains": 1
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      "else": {
+        "properties": { "production_eligible": { "const": false } }
+      }
+    }
+  ],
+  "$defs": {
+    "languageRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["locale", "designations"],
+      "properties": {
+        "locale": { "type": "string", "minLength": 2 },
+        "designations": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/designation" }
+        }
+      }
+    },
+    "designation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "term",
+        "status",
+        "registers",
+        "attested_compounds",
+        "attested_collocations",
+        "source_evidence_ids",
+        "usage_note"
+      ],
+      "properties": {
+        "term": { "type": "string", "minLength": 1 },
+        "status": { "enum": ["preferred", "admitted", "deprecated", "candidate"] },
+        "registers": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "learner_introductory",
+              "general_academic",
+              "specialist_academic",
+              "historical",
+              "deprecated"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true
+        },
+        "attested_compounds": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "attested_collocations": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "source_evidence_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "usage_note": { "type": "string" }
+      }
+    },
+    "sourceEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id", "kind", "locator", "citation", "observation"],
+      "properties": {
+        "evidence_id": { "type": "string", "minLength": 1 },
+        "kind": {
+          "enum": [
+            "national_terminology",
+            "authoritative_standard",
+            "specialist_corpus",
+            "curriculum_artifact",
+            "native_usage_witness",
+            "decision_receipt"
+          ]
+        },
+        "locator": { "type": "string", "minLength": 1 },
+        "citation": { "type": "string", "minLength": 1 },
+        "observation": { "type": "string", "minLength": 1 }
+      }
+    },
+    "changeEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "version",
+        "date",
+        "decision",
+        "evidence_ids",
+        "impact_paths",
+        "propagation_status",
+        "qa_receipt",
+        "previous_record_sha256"
+      ],
+      "properties": {
+        "version": { "type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$" },
+        "date": { "type": "string", "format": "date" },
+        "decision": { "type": "string", "minLength": 1 },
+        "evidence_ids": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "impact_paths": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 },
+          "uniqueItems": true
+        },
+        "propagation_status": {
+          "enum": ["not_started", "planned", "applied", "verified", "reverted"]
+        },
+        "qa_receipt": { "type": ["string", "null"] },
+        "previous_record_sha256": {
+          "type": ["string", "null"],
+          "pattern": "^[a-f0-9]{64}$"
+        }
+      }
+    }
+  }
+}

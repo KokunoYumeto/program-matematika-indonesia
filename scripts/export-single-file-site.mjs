@@ -25,7 +25,9 @@ const overlayScript = sourceOverlay.replace(/^export (const|function) /gm, '$1 '
 const deliveryScript = sourceDelivery.replace(/^export (const|function) /gm, '$1 ');
 const toolsScript = sourceTools
   .replace(/^export (const|function) /gm, '$1 ')
-  .replaceAll('"href":"id-ID/courses/A00/latihan/index.html"', '"href":"https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A00/latihan/index.html"');
+  .replaceAll('"href":"id-ID/courses/A00/latihan/index.html"', '"href":"https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A00/latihan/index.html"')
+  .replaceAll('"href":"backend/judson/C30.html"', '"href":"https://kokunoyumeto.github.io/program-matematika-indonesia/backend/judson/C30.html"')
+  .replaceAll('"href":"backend/judson/C40.html"', '"href":"https://kokunoyumeto.github.io/program-matematika-indonesia/backend/judson/C40.html"');
 const learnerStateScript = sourceLearnerState.replace(/^export (const|function) /gm, '$1 ');
 const appScript = sourceApp.replace(/^import[\s\S]*?from ['"][^'"]+['"];\r?\n/gm, '');
 if (/^\s*import\s/m.test(appScript)) {
@@ -38,6 +40,8 @@ const standalone = sourceHtml
   .replace('  <link rel="stylesheet" href="styles.css">', `  <style>\n${sourceCss}\n  </style>`)
   .replace('  <script type="module" src="app.js"></script>\n', '')
   .replace('href="peta-belajar-luring.html"', 'href="#katalog"')
+  .replaceAll('href="backend/judson/C30.html"', 'href="https://kokunoyumeto.github.io/program-matematika-indonesia/backend/judson/C30.html"')
+  .replaceAll('href="backend/judson/C40.html"', 'href="https://kokunoyumeto.github.io/program-matematika-indonesia/backend/judson/C40.html"')
   .replace('</body>', `  <script>\n${executable}\n  </script>\n</body>`);
 
 if (/href="styles\.css"|src="app\.js"|from ['"]\.\/learner-delivery\.js['"]/.test(standalone)) {
@@ -59,6 +63,15 @@ if ((standalone.match(/data-static-course-id=/g) ?? []).length !== 40) {
 if (!standalone.includes('"href":"https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A00/latihan/index.html"')
   || standalone.includes('"href":"id-ID/courses/A00/latihan/index.html"')) {
   throw new Error('Ekspor mandiri harus menautkan alat A00 ke rute Pages absolut yang dapat dipakai.');
+}
+for (const courseId of ['C30', 'C40']) {
+  const absolute = `https://kokunoyumeto.github.io/program-matematika-indonesia/backend/judson/${courseId}.html`;
+  if (!standalone.includes(`"href":"${absolute}"`)
+    || !standalone.includes(`href="${absolute}"`)
+    || standalone.includes(`"href":"backend/judson/${courseId}.html"`)
+    || standalone.includes(`href="backend/judson/${courseId}.html"`)) {
+    throw new Error(`Ekspor mandiri harus menautkan pembaca ${courseId} ke rute Pages absolut.`);
+  }
 }
 
 await writeFile(outputPath, standalone, 'utf8');

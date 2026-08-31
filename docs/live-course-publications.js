@@ -84,22 +84,51 @@ export const liveCoursePublications = Object.freeze({
     },
   }),
   A30: publication({
-    state: 'production',
-    edition: 'https://zenodo.org/records/22163371/files/OpenStax-Precalculus-2e-id-ID-0.1.0-alpha.49-reader.pdf?download=1',
-    zenodo: 'https://doi.org/10.5281/zenodo.22163371',
-    repository: 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id',
-    version: '0.1.0-alpha.49-reader.1',
-    note: 'Seluruh 87 modul memiliki keluaran terjemahan. Sebanyak 49 modul berurutan telah diterima pemilik dan diterbitkan sebagai edisi alpha.49 dalam pembaca 1.501 halaman sampai m49399. Sisa keluaran pembantu belum dihitung sebagai masukan integrasi karena peninjauan semantik dan perbaikan masih berlangsung.',
-    progress: {
-      unitLabel: 'modul OpenStax',
-      totalUnits: 87,
-      translationBearingUnits: 87,
-      canonicalUnits: 49,
-      publicUnits: 49,
-      publicPages: 1501,
-      publicBoundary: '49/87 modul berurutan; sampai m49399; berikutnya m49402',
-      updatedAt: '2026-08-29T19:08:24+02:00',
+    "state": "production",
+    "edition": "https://zenodo.org/records/22184511/files/OpenStax-Precalculus-2e-id-ID-0.1.0-alpha.67-reader.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22184511",
+    "repository": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id",
+    "version": "0.1.0-alpha.67-reader.1",
+    "note": "Edisi kerja alpha.67-reader.1 terbuka: 67 dari 87 modul berurutan, sampai m49436, dalam PDF 2.031 halaman. Produksi dan integrasi modul berikutnya masih berlangsung; paket sumber dan backend bukan pembaca HTML luring.",
+    "progress": {
+      "unitLabel": "modul OpenStax",
+      "totalUnits": 87,
+      "translationBearingUnits": 87,
+      "canonicalUnits": 67,
+      "publicUnits": 67,
+      "publicPages": 2031,
+      "publicBoundary": "67/87 modul berurutan; sampai m49436; berikutnya m49437",
+      "updatedAt": "2026-08-31"
     },
+    "release": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id/releases/tag/v0.1.0-alpha.67-reader.1",
+    "verification": {
+      "readerBytes": 208753713,
+      "readerSha256": "afbf64d4acd37e70cc1d468fcb6b79ee10fd6ff367b9fa79a9862fb5ec7c2dff",
+      "backendRecords": 174567,
+      "publicAssets": 7
+    },
+    "additionalSupplements": [
+      {
+        "id": "a30-current-native-backend",
+        "title": "Backend native edisi kerja",
+        "resourceType": "reference",
+        "state": "complete",
+        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
+        "url": "https://zenodo.org/records/22184511/files/precalculus-2e-id-ID-0.1.0-alpha.67-reader.1-backend-core.zip?download=1",
+        "bytes": 75074717,
+        "sha256": "d109ee3a1fac0868f000fd86a4f3aea4d77f414f4697f9ca7c2855c5b13e4e4f"
+      },
+      {
+        "id": "a30-current-source",
+        "title": "Sumber sunting edisi kerja",
+        "resourceType": "reference",
+        "state": "complete",
+        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
+        "url": "https://zenodo.org/records/22184511/files/precalculus-2e-id-ID-0.1.0-alpha.67-reader.1-source-core.zip?download=1",
+        "bytes": 74521202,
+        "sha256": "0ed4c1997c0347ed17fa0ebf36f90a2f7eb321ead608b86285076e9f32334845"
+      }
+    ]
   }),
   B20: publication({
     state: 'published',
@@ -245,26 +274,48 @@ export const liveCoursePublications = Object.freeze({
     },
   }),
   B95: publication({
-    state: 'production',
-    learner: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/',
-    edition: 'https://zenodo.org/records/22166545/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B025_WORKING_READER.pdf?download=1',
-    zenodo: 'https://doi.org/10.5281/zenodo.22166545',
-    repository: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id',
-    release: 'https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b025-2026.08.29.4',
-    version: 'R011-B025',
-    note: 'Edisi kerja publik terbaru R011-B025 telah tersedia dan diverifikasi byte-identik di Zenodo serta GitHub: Bab 1 sampai Bab 6, Bagian 6.4, dalam pembaca 260 halaman. Pembaca utama menuju PDF Zenodo, sedangkan repositori dan rilis GitHub menyediakan inventaris aset checkpoint yang sama. Produksi berlanjut ke B026 (Bab 7).',
-    verification: {
-      readerBytes: 12440420,
-      readerSha256: 'b154484d2d2ddf0a49f0ee9925854f45e86b6e0fb17d241607db9fc27051e99d',
-      backendRecords: 9119,
-      publicAssets: 9,
+    "state": "production",
+    "learner": "https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/",
+    "edition": "https://zenodo.org/records/22192066/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B030_WORKING_READER.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22192066",
+    "repository": "https://github.com/KokunoYumeto/statistika-berbasis-data-id",
+    "release": "https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b030-2026.08.31.1",
+    "version": "2026.08.31.1-R011-B030",
+    "note": "Edisi kerja publik R011-B030 sampai Bab 7 Bagian 7.5 tersedia dalam PDF 322 halaman. Produksi B031 dan bagian berikutnya masih berlangsung. Paket sumber dan backend bukan pembaca HTML luring.",
+    "verification": {
+      "readerBytes": 13576715,
+      "readerSha256": "28881f11d05dca933d16960f22be9a73ef2069c96d3e00d4e612afaf3dbecfcb",
+      "backendRecords": 11810,
+      "publicAssets": 9
     },
-    progress: {
-      unitLabel: 'batas produksi R011',
-      publicPages: 260,
-      publicBoundary: 'B025 — Bab 6, Bagian 6.4',
-      updatedAt: '2026-08-29T23:52:42.919409+02:00',
+    "progress": {
+      "unitLabel": "batas produksi R011",
+      "publicPages": 322,
+      "publicBoundary": "B030 — Bab 7, Bagian 7.5",
+      "updatedAt": "2026-08-31"
     },
+    "additionalSupplements": [
+      {
+        "id": "b95-current-native-backend",
+        "title": "Backend native edisi kerja",
+        "resourceType": "reference",
+        "state": "complete",
+        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
+        "url": "https://zenodo.org/records/22192066/files/02_STATISTIKA_BERBASIS_DATA_ID_R011-B030_MODULAR_BACKEND.zip?download=1",
+        "bytes": 335761173,
+        "sha256": "20fc7ed127c7a2b60107854b29c2b98f7055e06f3527ce09c785dfc5c31b9553"
+      },
+      {
+        "id": "b95-current-source",
+        "title": "Sumber sunting edisi kerja",
+        "resourceType": "reference",
+        "state": "complete",
+        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
+        "url": "https://zenodo.org/records/22192066/files/01_STATISTIKA_BERBASIS_DATA_ID_R011-B030_EDITABLE_SOURCE.zip?download=1",
+        "bytes": 36025332,
+        "sha256": "146ec42eb39d229b50a4166dedc60c7768665baa48793ef5d06bddf0ccff7296"
+      }
+    ]
   }),
   C10: publication({
     state: 'published',

@@ -35,6 +35,7 @@ const featureLabels = {
 };
 
 const resourceLabels = {
+  'course-native-primary': 'sumber utama kursus',
   'problem-book': 'buku soal',
   solutions: 'solusi',
   workbook: 'buku kerja',
@@ -83,12 +84,12 @@ const deliveryLink = (resource, label, primary = false) => link(
 const learnerToolLink = (tool) => {
   if (tool.machine_data_is_learner_destination !== false) return '';
   const href = '../' + tool.href.replace(/^\/+/, '');
-  return '<a class="learner-tool" href="' + escapeHtml(href) + '" title="' + escapeHtml(tool.scope) + '">' + escapeHtml(tool.label) + '</a>';
+  return '<a class="learner-tool' + (tool.primary ? ' primary' : '') + '" href="' + escapeHtml(href) + '" title="' + escapeHtml(tool.scope) + '">' + escapeHtml(tool.label) + '</a>';
 };
 
 const learnerPanel = (capsule) => {
   const layer = capsule.layers.learner;
-  const tools = (layer.tools ?? []).filter((tool) => tool.state !== 'planned' && tool.machine_data_is_learner_destination === false);
+  const tools = (layer.tools ?? []).filter((tool) => tool.state === 'verified' && tool.machine_data_is_learner_destination === false);
   const actions = [
     ...tools.map(learnerToolLink),
     deliveryLink(layer.primary, 'Buka sumber utama', true),
@@ -132,6 +133,8 @@ const productionPanel = (capsule) => {
   return [
     '<div class="status-line"><span>Terjemahan</span><strong>' + escapeHtml(statusLabel(translation.status)) + '</strong></div>',
     '<div class="status-line"><span>Ledger terjemahan</span><strong>' + escapeHtml(statusLabel(translation.ledger_status)) + '</strong></div>',
+    '<div class="status-line"><span>Terminologi</span><strong>' + escapeHtml(statusLabel(translation.terminology_status)) + '</strong></div>',
+    '<div class="status-line"><span>Koreksi</span><strong>' + escapeHtml(statusLabel(translation.corrections_status)) + '</strong></div>',
     '<div class="status-line"><span>Pembangunan ulang</span><strong>' + escapeHtml(statusLabel(production.deterministic_replay_status)) + '</strong></div>',
     '<div class="status-line"><span>Rilis</span><strong>' + escapeHtml(statusLabel(production.release_status)) + '</strong></div>',
     '<div class="card-actions">' + link(production.repository, 'Repositori', true) + link(production.zenodo, 'Zenodo') + '</div>',
@@ -142,11 +145,10 @@ const interopPanel = (capsule) => {
   const federation = capsule.layers.federation;
   const adapter = capsule.layers.interoperability.semantic_adapter;
   const components = federation.components.length
-    ? '<ul class="component-list">' + federation.components.map((item) => '<li>' + escapeHtml(resourceLabels[item.kind] ?? item.kind) + '</li>').join('') + '</ul>'
+    ? '<ul class="component-list">' + federation.components.map((item) => '<li>' + escapeHtml(resourceLabels[item.kind] ?? 'komponen kursus') + ' — ' + escapeHtml(item.title) + ' <small>Hak: ' + escapeHtml(statusLabel(item.rights_status ?? 'unknown')) + '</small></li>').join('') + '</ul>'
     : '<p class="empty-note">Belum ada komponen yang dipetakan.</p>';
   const actions = federation.components
     .filter((item) => item.url)
-    .slice(0, 3)
     .map((item, index) => link(item.url, index === 0 ? 'Sumber kanonis' : item.title, index === 0))
     .join('');
   return [

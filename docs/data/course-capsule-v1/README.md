@@ -67,3 +67,17 @@ been admitted and otherwise preserves the authority row byte-for-byte at the
 JSON-value level. A tool's `href` must lead to a readable HTML interface;
 machine resources and validation evidence remain bound file facts, never the
 student-facing destination.
+
+## Capability and component evidence
+
+Verification of a semantic adapter does not verify a native translation ledger,
+native compiler/build replay, complete unit inventory, or educator alignment.
+Those fields require capability-specific `native_capabilities` declarations
+with evidence in the integration override ledger; without one their status is
+`unknown`. Unlisted educator feature names likewise mean unknown/unindexed.
+
+Every current component exposes `rights_status` and source-reference
+`provenance`. A preserved license label is available but not independently
+verified unless a dedicated rights audit is bound; absence is explicitly
+unknown. These fields never change public access. Exact native-package links
+are bound to their evidence tuples independently of adapter capability claims.

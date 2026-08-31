@@ -14,9 +14,20 @@ const mappings = [
   ['backend/course-capsule-v1/README.md', 'docs/data/course-capsule-v1/README.md'],
   ['backend/course-capsule-v1/authority/backend-design-policy-v1.json', 'docs/data/course-capsule-v1/backend-design-policy-v1.json'],
   ['backend/course-capsule-v1/authority/public-baseline-v0.62.12.json', 'docs/data/course-capsule-v1/public-baseline-v0.62.12.json'],
+  ['backend/course-capsule-v1/authority/native-package-references-v1.json', 'docs/data/course-capsule-v1/native-package-references-v1.json'],
+  ['backend/course-capsule-v1/authority/native-terminology-qa/unib-teori-bilangan-20260831/README.md', 'docs/data/course-capsule-v1/native-terminology-qa/unib-teori-bilangan-20260831/README.md'],
+  ['backend/course-capsule-v1/authority/native-terminology-qa/unib-teori-bilangan-20260831/terminology_concordance.json', 'docs/data/course-capsule-v1/native-terminology-qa/unib-teori-bilangan-20260831/terminology_concordance.json'],
+  ['backend/course-capsule-v1/authority/native-terminology-qa/unib-teori-bilangan-20260831/checksums.sha256', 'docs/data/course-capsule-v1/native-terminology-qa/unib-teori-bilangan-20260831/checksums.sha256'],
+  ['backend/course-capsule-v1/authority/terminology-policy-v1/README.md', 'docs/data/course-capsule-v1/terminology-policy-v1/README.md'],
+  ['backend/course-capsule-v1/authority/terminology-policy-v1/canonical-register-policy.json', 'docs/data/course-capsule-v1/terminology-policy-v1/canonical-register-policy.json'],
+  ['backend/course-capsule-v1/authority/terminology-policy-v1/checksums.sha256', 'docs/data/course-capsule-v1/terminology-policy-v1/checksums.sha256'],
+  ['backend/course-capsule-v1/validation/manager-followthrough/NATIVE_FAMILY_PUBLIC_EVIDENCE_INDEX_V06213_20260831.json', 'docs/data/course-capsule-v1/native-family-public-evidence-v1.json'],
+  ['backend/course-capsule-v1/validation/manager-followthrough/NATIVE_FAMILY_PUBLIC_EVIDENCE_NOTE_V06213_20260831.md', 'docs/data/course-capsule-v1/native-family-public-evidence-note-v1.md'],
   ['schemas/course-capsule-v1/course-capsule-v1.schema.json', 'docs/schema/course-capsule-v1/course-capsule-v1.schema.json'],
   ['schemas/course-capsule-v1/backend-design-policy-v1.schema.json', 'docs/schema/course-capsule-v1/backend-design-policy-v1.schema.json'],
   ['schemas/course-capsule-v1/public-baseline-v1.schema.json', 'docs/schema/course-capsule-v1/public-baseline-v1.schema.json'],
+  ['schemas/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'docs/schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json'],
+  ['schemas/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', 'docs/schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json'],
 ];
 
 const sourceEntries = await Promise.all(mappings.map(async ([source, target]) => [
@@ -54,6 +65,25 @@ assert.equal(d40.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22184259'
 assert.equal(d40.course_native.repository, undefined, 'D40 must not invent a producer repository.');
 assert.equal(d40.layers.learner.pdf.sha256, 'c4e4f470eeb096129e7bf7306422d316c93aaeed99d2b12890e08f15777ac13f');
 assert.equal(d40.layers.learner.portable_html.sha256, 'a370bba5ddb54081387a484a304b24af92691c3bc167db964c486625a79add59');
+const c80 = rows.find(({ course_id }) => course_id === 'C80');
+assert.equal(c80.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(c80.layers.interoperability.semantic_adapter.contract_version, '2.3.1');
+assert.equal(c80.layers.interoperability.semantic_adapter.mapping_scope, 'reversible_native_course_route_adapter');
+assert.equal(c80.layers.learner.tools.length, 1);
+assert.equal(c80.layers.learner.tools[0].href, 'backend/openlogic/C80.html');
+assert.equal(c80.layers.learner.tools[0].primary, true);
+const c130 = rows.find(({ course_id }) => course_id === 'C130');
+assert.equal(c130.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(c130.layers.interoperability.semantic_adapter.contract_version, '2.3.1');
+assert.equal(c130.layers.interoperability.semantic_adapter.mapping_scope, 'reversible_native_course_route_adapter');
+assert.equal(c130.layers.learner.tools.length, 1);
+assert.equal(c130.layers.learner.tools[0].href, 'backend/c130/C130.html');
+assert.equal(c130.layers.learner.tools[0].primary, true);
+for (const id of ['A10', 'D100']) {
+  const row = rows.find(({ course_id }) => course_id === id);
+  assert.equal(row.layers.translation.terminology_status, 'in_progress');
+  assert.equal(row.layers.translation.corrections_status, 'in_progress');
+}
 assert.equal(manifest.output.bytes, jsonlBytes.length);
 assert.equal(manifest.output.sha256, sha256(jsonlBytes));
 assert.equal(manifest.projections.course_capsules_json.bytes, jsonBytes.length);
@@ -103,11 +133,11 @@ const fallbackCards = rows.map((capsule) => {
   const prerequisites = capsule.course.prerequisites.length ? capsule.course.prerequisites.join(', ') : 'tidak ada';
   const educatorCount = capsule.layers.educator.features.length + capsule.layers.educator.resources.length;
   const learnerTools = capsule.layers.learner.tools
-    .filter((tool) => tool.state !== 'planned' && tool.machine_data_is_learner_destination === false)
-    .map((tool) => `<a class="learner-tool" href="../${escapeHtml(tool.href.replace(/^\/+/, ''))}" title="${escapeHtml(tool.scope)}">${escapeHtml(tool.label)}</a>`)
+    .filter((tool) => tool.state === 'verified' && tool.machine_data_is_learner_destination === false)
+    .map((tool) => `<a class="learner-tool${tool.primary ? ' primary' : ''}" href="../${escapeHtml(tool.href.replace(/^\/+/, ''))}" title="${escapeHtml(tool.scope)}">${escapeHtml(tool.label)}</a>`)
     .join('');
   const stateLabel = capsule.course.state === 'published' ? 'Edisi selesai' : 'Sedang diproduksi';
-  return `<article class="course-card" data-static-course-id="${escapeHtml(capsule.course_id)}"><div class="card-top"><span class="course-code">${escapeHtml(capsule.course_id)}</span><span class="state-badge ${escapeHtml(capsule.course.state)}">${stateLabel}</span></div><h3>${escapeHtml(capsule.course.title)}</h3><p class="topic">${escapeHtml(capsule.course.topic)}</p><p class="outcome">${escapeHtml(capsule.course.outcome)}</p><p class="prerequisites"><strong>Prasyarat</strong>${escapeHtml(prerequisites)}</p><div class="view-panel"><div class="status-line"><span>Bahan pengajar terindeks</span><strong>${educatorCount}</strong></div>${learnerTools ? `<div class="status-line"><span>Alat belajar terverifikasi</span><strong>${capsule.layers.learner.tools.length}</strong></div>` : ''}<div class="card-actions">${learnerTools}<a class="primary" href="${escapeHtml(primary)}" target="_blank" rel="noreferrer">Buka sumber utama ↗</a></div></div></article>`;
+  return `<article class="course-card" data-static-course-id="${escapeHtml(capsule.course_id)}"><div class="card-top"><span class="course-code">${escapeHtml(capsule.course_id)}</span><span class="state-badge ${escapeHtml(capsule.course.state)}">${stateLabel}</span></div><h3>${escapeHtml(capsule.course.title)}</h3><p class="topic">${escapeHtml(capsule.course.topic)}</p><p class="outcome">${escapeHtml(capsule.course.outcome)}</p><p class="prerequisites"><strong>Prasyarat</strong>${escapeHtml(prerequisites)}</p><div class="view-panel"><div class="status-line"><span>Bahan pengajar terindeks</span><strong>${educatorCount}</strong></div>${learnerTools ? `<div class="status-line"><span>Alat belajar terverifikasi</span><strong>${capsule.layers.learner.tools.filter((tool) => tool.state === 'verified').length}</strong></div>` : ''}<div class="card-actions">${learnerTools}<a class="primary" href="${escapeHtml(primary)}" target="_blank" rel="noreferrer">Buka sumber utama ↗</a></div></div></article>`;
 }).join('');
 const templatePath = resolve(project, 'docs/backend/index.template.html');
 const outputPath = resolve(project, 'docs/backend/index.html');
