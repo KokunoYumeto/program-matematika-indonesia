@@ -1,0 +1,136 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/a00-assessment-map-v1.schema.json",
+  "title": "A00 learner assessment map v1",
+  "type": "object",
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "recorded_at",
+    "course_id",
+    "locale",
+    "authority",
+    "counts",
+    "category_labels",
+    "limitations",
+    "modules"
+  ],
+  "properties": {
+    "$schema": { "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/a00-assessment-map-v1.schema.json" },
+    "schema_id": { "const": "interlanguage/program-matematika-indonesia/a00-assessment-map/v1" },
+    "schema_version": { "const": "1.0.0" },
+    "recorded_at": { "type": "string", "format": "date-time" },
+    "course_id": { "const": "A00" },
+    "locale": { "const": "id-ID" },
+    "authority": {
+      "type": "object",
+      "required": ["a00_manifest", "o001_manifest", "owner_html_anchor_audit"],
+      "additionalProperties": { "$ref": "#/$defs/fileFact" }
+    },
+    "counts": {
+      "type": "object",
+      "required": ["modules", "modules_with_assessments", "assessments", "components", "explicit_solutions", "without_explicit_solution"],
+      "properties": {
+        "modules": { "const": 75 },
+        "modules_with_assessments": { "const": 60 },
+        "assessments": { "const": 8105 },
+        "components": { "const": 13345 },
+        "explicit_solutions": { "const": 5240 },
+        "without_explicit_solution": { "const": 2865 }
+      },
+      "additionalProperties": false
+    },
+    "category_labels": {
+      "type": "object",
+      "minProperties": 9,
+      "additionalProperties": { "type": "string", "minLength": 1 }
+    },
+    "limitations": {
+      "type": "array",
+      "minItems": 3,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "modules": {
+      "type": "array",
+      "minItems": 75,
+      "maxItems": 75,
+      "items": { "$ref": "#/$defs/module" }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "uuidUrn": { "type": "string", "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$" },
+    "fileFact": {
+      "type": "object",
+      "required": ["path", "bytes", "sha256"],
+      "properties": {
+        "path": { "type": "string", "minLength": 1 },
+        "bytes": { "type": "integer", "minimum": 0 },
+        "sha256": { "$ref": "#/$defs/sha256" }
+      },
+      "additionalProperties": false
+    },
+    "anchor": {
+      "type": "object",
+      "required": ["id", "native_id", "route_url"],
+      "properties": {
+        "id": { "$ref": "#/$defs/uuidUrn" },
+        "native_id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$" },
+        "route_url": { "type": "string", "format": "uri", "pattern": "#[A-Za-z][A-Za-z0-9._:-]*$" }
+      },
+      "additionalProperties": false
+    },
+    "assessment": {
+      "type": "object",
+      "required": ["id", "native_id", "ordinal", "category", "category_label", "has_explicit_solution", "solution_gap_id", "route_url", "statement_anchors", "solution_anchors"],
+      "properties": {
+        "id": { "$ref": "#/$defs/uuidUrn" },
+        "native_id": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9._:-]*$" },
+        "ordinal": { "type": "integer", "minimum": 1 },
+        "category": { "type": "string", "minLength": 1 },
+        "category_label": { "type": "string", "minLength": 1 },
+        "has_explicit_solution": { "type": "boolean" },
+        "solution_gap_id": { "oneOf": [{ "$ref": "#/$defs/uuidUrn" }, { "type": "null" }] },
+        "route_url": { "type": "string", "format": "uri", "pattern": "#[A-Za-z][A-Za-z0-9._:-]*$" },
+        "statement_anchors": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/anchor" } },
+        "solution_anchors": { "type": "array", "maxItems": 1, "items": { "$ref": "#/$defs/anchor" } }
+      },
+      "additionalProperties": false
+    },
+    "module": {
+      "type": "object",
+      "required": ["module_id", "ordinal", "unit_id", "title", "edition_id", "rights_id", "route_id", "surface_id", "artifact_id", "module_url", "counts", "category_counts", "assessments"],
+      "properties": {
+        "module_id": { "type": "string", "pattern": "^m[0-9]+$" },
+        "ordinal": { "type": "integer", "minimum": 1, "maximum": 75 },
+        "unit_id": { "$ref": "#/$defs/uuidUrn" },
+        "title": { "type": "string", "minLength": 1 },
+        "edition_id": { "$ref": "#/$defs/uuidUrn" },
+        "rights_id": { "$ref": "#/$defs/uuidUrn" },
+        "route_id": { "$ref": "#/$defs/uuidUrn" },
+        "surface_id": { "$ref": "#/$defs/uuidUrn" },
+        "artifact_id": { "$ref": "#/$defs/uuidUrn" },
+        "module_url": { "type": "string", "format": "uri" },
+        "counts": {
+          "type": "object",
+          "required": ["assessments", "components", "explicit_solutions", "without_explicit_solution"],
+          "properties": {
+            "assessments": { "type": "integer", "minimum": 0 },
+            "components": { "type": "integer", "minimum": 0 },
+            "explicit_solutions": { "type": "integer", "minimum": 0 },
+            "without_explicit_solution": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false
+        },
+        "category_counts": {
+          "type": "object",
+          "additionalProperties": { "type": "integer", "minimum": 0 }
+        },
+        "assessments": { "type": "array", "items": { "$ref": "#/$defs/assessment" } }
+      },
+      "additionalProperties": false
+    }
+  }
+}
