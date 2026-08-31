@@ -142,14 +142,22 @@ while (queue.length) {
 }
 assert.equal(visited, 40, 'Prerequisite graph contains a cycle.');
 
-assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 29);
-assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 11);
-const c20 = byId.C20;
-assert.equal(c20.course.state, 'published');
-assert.equal(c20.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22172396');
-assert.equal(c20.layers.learner.pdf.status, 'verified');
-assert.equal(c20.layers.learner.pdf.bytes, 2427379);
-assert.equal(c20.layers.learner.pdf.sha256, 'e70c74bb7edc466a7cb6ff0eff0de33dfcc7b3bc63010d018aff758a14d2dea3');
+assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 32);
+assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 8);
+const leblFamily = {
+  B70: { bytes: 5135134, sha256: '1c18dfc1572d22ef7fc5d8ad25be18f3b91f1bffea5b9f9d521ff4e56ca969d4' },
+  C10: { bytes: 2870909, sha256: '38743ea0e7ce52bdadf5233fc9d6e79e00717f9ba55a393f2bf46ea21c65ef56' },
+  C20: { bytes: 2427379, sha256: 'e70c74bb7edc466a7cb6ff0eff0de33dfcc7b3bc63010d018aff758a14d2dea3' },
+  C50: { bytes: 2822132, sha256: '87e4810abdedbdd8121995a8e53936891135037f03054dce76a06beebc3cfaae' },
+};
+for (const [id, expected] of Object.entries(leblFamily)) {
+  const capsule = byId[id];
+  assert.equal(capsule.course.state, 'published');
+  assert.equal(capsule.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22182427');
+  assert.equal(capsule.layers.learner.pdf.status, 'verified');
+  assert.equal(capsule.layers.learner.pdf.bytes, expected.bytes);
+  assert.equal(capsule.layers.learner.pdf.sha256, expected.sha256);
+}
 assert.equal(byId.A00.layers.interoperability.semantic_adapter.status, 'legacy_verified');
 assert.notEqual(byId.A00.layers.interoperability.semantic_adapter.contract_version, '2.3.1');
 for (const id of ['B10', 'D20', 'D60', 'D110']) {
@@ -161,8 +169,8 @@ assert.equal(manifest.schema_version, '1.0.0');
 assert.deepEqual(manifest.output, identity('generated/course-capsules.jsonl', jsonlBytes));
 assert.deepEqual(manifest.projections.course_capsules_json, identity('generated/course-capsules.json', jsonBytes));
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(manifest.summary.published_count, 29);
-assert.equal(manifest.summary.production_count, 11);
+assert.equal(manifest.summary.published_count, 32);
+assert.equal(manifest.summary.production_count, 8);
 assert.equal(manifest.summary.prerequisite_edge_count, 83);
 for (const input of manifest.inputs) {
   const bytes = await readFile(resolve(project, input.path));
@@ -203,12 +211,12 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: edges.length,
     prerequisite_dag_visited: visited,
-    published_count: 29,
-    production_count: 11,
+    published_count: 32,
+    production_count: 8,
     public_access_policy_rows: 40,
     educator_course_count: educatorCourses.length,
     educator_resource_count: capsules.reduce((count, capsule) => count + capsule.layers.educator.resources.length, 0),
-    c20_truth_override: 'pass',
+    lebl_family_truth_overrides: 'pass',
     semantic_adapter_truth: 'pass',
     canonical_jsonl: 'pass',
     manifest_input_replay: 'pass',

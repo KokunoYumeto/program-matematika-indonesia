@@ -119,11 +119,13 @@ function nextCourseLinks(course) {
   return nextIds.map((id) => {
     const nextCourse = courses.find((candidate) => candidate.id === id);
     if (!nextCourse) return '';
-    const otherPrerequisiteCount = Math.max(0, nextCourse.prerequisites.length - 1);
-    const routeNote = otherPrerequisiteCount
-      ? `+${otherPrerequisiteCount} prasyarat lain`
-      : 'dapat dilanjutkan langsung';
-    const otherPrerequisites = `<small>${stateLabels[nextCourse.state]} · ${routeNote}</small>`;
+    const nextCourseEvaluation = learnerEvaluation[nextCourse.id];
+    const learnerRouteNote = nextCourseEvaluation?.status === 'blocked'
+      ? `${learnerStatusLabels.blocked}${nextCourseEvaluation.missingPrerequisiteIds.length
+        ? ` · Kurang: ${nextCourseEvaluation.missingPrerequisiteIds.join(', ')}`
+        : ''}`
+      : learnerStatusLabels[nextCourseEvaluation?.status] ?? 'Status pelajar tidak tersedia';
+    const otherPrerequisites = `<small>${stateLabels[nextCourse.state]} · ${learnerRouteNote}</small>`;
     return `<a class="next-course-link" href="#course-${id}" data-course-link="${id}"><span>${id}</span><strong>${nextCourse.title}</strong>${otherPrerequisites}</a>`;
   }).join('');
 }

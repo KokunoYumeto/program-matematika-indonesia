@@ -38,8 +38,8 @@ const mainHtml = await readFile(resolve(project, 'docs/index.html'), 'utf8');
 assert.equal(rows.length, 40);
 assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 29);
-assert.equal(rows.filter(({ course }) => course.state === 'production').length, 11);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 32);
+assert.equal(rows.filter(({ course }) => course.state === 'production').length, 8);
 assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 20);
 assert.equal(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status)).length, 5);
 assert.equal(rows.filter((row) => Object.keys(row.layers).sort().join(',') === 'curriculum,educator,federation,interoperability,learner,production,translation').length, 40);
@@ -132,8 +132,8 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: 83,
     prerequisite_dag_visited: 40,
-    published_rows: 29,
-    production_rows: 11,
+    published_rows: 32,
+    production_rows: 8,
     educator_rows: 20,
     semantic_adapter_rows: 4,
     public_access_rows: 40,
