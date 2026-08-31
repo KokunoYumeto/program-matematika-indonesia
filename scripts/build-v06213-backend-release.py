@@ -2280,7 +2280,7 @@ def run_hydrate_predecessor() -> dict[str, Any]:
             request = Request(
                 anonymous_url,
                 headers={
-                    "Accept": "application/octet-stream",
+                    "Accept": "*/*",
                     "Accept-Encoding": "identity",
                     "User-Agent": PREDECESSOR_DOWNLOAD_USER_AGENT,
                 },
