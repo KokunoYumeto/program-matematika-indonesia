@@ -87,7 +87,7 @@
             "source": { "$ref": "#/$defs/fileIdentity" }
           }
         },
-        "public_replay_state": { "enum": ["published_public_readback_complete", "prepublication_local_validation_only"] }
+        "public_replay_state": { "enum": ["published_public_readback_complete", "prepublication_local_validation_only", "postpublication_release_assets_readback_complete"] }
       },
       "allOf": [
         {
@@ -96,7 +96,11 @@
         },
         {
           "if": { "properties": { "snapshot_kind": { "const": "live_successor_overlay" } }, "required": ["snapshot_kind"] },
-          "then": { "properties": { "mutable_overlay": { "const": true }, "public_replay_state": { "const": "prepublication_local_validation_only" }, "supersedes": { "type": "object" } } }
+          "then": { "properties": { "mutable_overlay": { "const": true }, "public_replay_state": { "enum": ["prepublication_local_validation_only", "postpublication_release_assets_readback_complete"] }, "supersedes": { "type": "object" } } }
+        },
+        {
+          "if": { "properties": { "public_replay_state": { "const": "postpublication_release_assets_readback_complete" } }, "required": ["public_replay_state"] },
+          "then": { "properties": { "central_release_record_doi": { "type": "string" } } }
         }
       ]
     },

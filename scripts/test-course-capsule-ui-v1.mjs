@@ -14,6 +14,8 @@ const fallback = html.split('<!-- COURSE-FALLBACK:START -->')[1].split('<!-- COU
 const staticIds = [...fallback.matchAll(/data-static-course-id="([^"]+)"/g)].map((match) => match[1]);
 assert.equal(staticIds.length, 40);
 assert.equal(new Set(staticIds).size, 40);
+assert.equal((fallback.match(/Kesiapan akses/g) ?? []).length, 40);
+assert.equal((fallback.match(/Bahan pengajar terindeks/g) ?? []).length, 0);
 const AsyncFunction = Object.getPrototypeOf(async function () {}).constructor;
 const runModule = new AsyncFunction('document', 'fetch', 'console', source);
 
@@ -98,7 +100,13 @@ for (const [name, fetch] of [
   assert.ok(f.controls.every((control) => !control.disabled));
   const visibleCount = () => (f.element('#course-grid').innerHTML.match(/data-course-id=/g) ?? []).length;
   assert.equal(visibleCount(), 40);
-  assert.match(f.element('#course-grid').innerHTML, />Baca daring — bagian kursus ↗</);
+  assert.match(f.element('#course-grid').innerHTML, />Baca daring — [A-D][0-9]{2,3} — bagian kursus /);
+  const learnerCards = [...f.element('#course-grid').innerHTML.matchAll(/<article class="course-card"[^>]*>([\s\S]*?)<\/article>/g)];
+  assert.equal(learnerCards.length, 40);
+  for (const [, cardHtml] of learnerCards) {
+    const hrefs = [...cardHtml.matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
+    assert.equal(new Set(hrefs).size, hrefs.length, 'Learner card contains a duplicate destination.');
+  }
   for (const button of f.buttons) {
     f.fire(button, 'click');
     assert.equal(visibleCount(), 40);
@@ -107,10 +115,13 @@ for (const [name, fetch] of [
     assert.doesNotMatch(f.element('#course-grid').innerHTML, /href="(?:04_mirrors|javascript:)/);
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
-  for (const [value, count] of [['published', 35], ['production', 5], ['educator', 21], ['adapter', 9]]) {
+  const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
+  assert.equal(adapterCount, 10);
+  for (const [value, count] of [['published', 35], ['production', 5], ['educator', 21], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
     assert.equal(visibleCount(), count);
+    if (value === 'adapter') assert.match(f.element('#course-grid').innerHTML, /data-course-id="D40"/);
   }
   f.fire(f.element('#reset-filters'), 'click');
   f.element('#level-filter').value = 'D';

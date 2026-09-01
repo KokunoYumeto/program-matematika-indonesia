@@ -32,6 +32,12 @@ PATHS = (
     "backend/judson/route-evidence.json",
     "backend/judson/contribution.md",
     "backend/judson/validation.json",
+    "backend/openlogic/C80.html",
+    "backend/openlogic/learner-route.json",
+    "backend/openlogic/validation.json",
+    "backend/c130/C130.html",
+    "backend/c130/learner-route.json",
+    "backend/c130/validation.json",
     "data/course-capsule-v1/course-capsules.jsonl",
     "data/course-capsule-v1/course-capsules.json",
     "data/course-capsule-v1/manifest.json",
@@ -45,12 +51,21 @@ PATHS = (
     "data/learner-tools-v1.json",
     "data/learner-delivery-v1.json",
     "data/modular-backend-pattern-index-v1.json",
+    "data/modular-backend-pattern-index-v2.json",
     "data/v23-adapter-index-v1.json",
+    "data/v23-adapter-index-v2.json",
+    "data/feature-adoption-provenance-v1.json",
+    "data/comparison-evidence-manifest-v1.json",
+    "data/modular-backend-snapshot-v2-validation-receipt.json",
     "schema/course-capsule-v1/course-capsule-v1.schema.json",
     "schema/course-capsule-v1/backend-design-policy-v1.schema.json",
     "schema/course-capsule-v1/public-baseline-v1.schema.json",
     "schema/v1/learner-tools-v1.schema.json",
     "schema/v1/v23-adapter-index-v1.schema.json",
+    "schema/v2/v23-adapter-index-v2.schema.json",
+    "schema/v2/modular-backend-pattern-index-v2.schema.json",
+    "schema/v2/feature-adoption-provenance-v1.schema.json",
+    "schema/v2/comparison-evidence-manifest-v1.schema.json",
     "id-ID/courses/A00/latihan/index.html",
     "id-ID/courses/B95/index.html",
     "id-ID/courses/B95/",
@@ -72,12 +87,22 @@ def sha256(data: bytes) -> str:
 def check(path: str) -> dict:
     local_path = path + "index.html" if not path or path.endswith("/") else path
     expected = (ROOT / "docs" / local_path).read_bytes()
+    local_origin = ORIGIN.startswith("http://localhost:")
+    request_url = (
+        "http://localhost:3000/"
+        if local_origin and not path
+        else ORIGIN + (local_path if local_origin else path)
+    )
     with requests.Session() as session:
         session.trust_env = False
         session.auth = None
         session.headers.clear()
         session.headers["User-Agent"] = "PMI-CourseCapsule-AnonymousReadback/1.0"
-        response = session.get(ORIGIN + path, timeout=(15, 60), allow_redirects=False)
+        response = session.get(
+            request_url,
+            timeout=(15, 60),
+            allow_redirects=local_origin and not path,
+        )
         data = response.content
         mime = response.headers.get("Content-Type", "").split(";", 1)[0].lower()
         assert response.status_code == 200, (path, response.status_code)
@@ -119,7 +144,11 @@ def main() -> None:
     global ORIGIN, DESTINATION
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--local", action="store_true", help="check the retained localhost curriculum preview")
-    parser.add_argument("--receipt-version", default="v0.62.14", choices=("v0.62.13", "v0.62.14"))
+    parser.add_argument(
+        "--receipt-version",
+        default="v0.62.14",
+        choices=("v0.62.13", "v0.62.14", "v0.62.15"),
+    )
     args = parser.parse_args()
     DESTINATION = ROOT / f"backend/course-capsule-v1/validation/PUBLIC_SITE_READBACK_{args.receipt_version}.json"
     if args.local:

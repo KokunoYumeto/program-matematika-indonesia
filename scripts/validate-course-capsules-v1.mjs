@@ -592,11 +592,11 @@ assert.equal(c130Adapter.mapping_scope, 'reversible_native_course_route_adapter'
 assert.deepEqual(c130Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
 assert.equal(c130Adapter.evidence[0].sha256, 'cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239');
 assert.equal(c130Adapter.evidence[1].sha256, 'b311ab7d2a6a86af40174d051fbd8ef273a8536b34f0af77b76e5a1ce9b3397e');
-assert.equal(c130Adapter.evidence[2].sha256, '382049f6cdf92eb99b0cc03de723c3c2a7347422ec6fc5b772ee843fd3bad608');
+assert.equal(c130Adapter.evidence[2].sha256, '6d9fa92226d7eee2ab29aba647d3cca0cee80b6cc2ee0bb0e14642216f9c8ae7');
 assert.equal(byId.C130.layers.learner.tools.length, 1);
 assert.equal(byId.C130.layers.learner.tools[0].href, 'backend/c130/C130.html');
 assert.equal(byId.C130.layers.learner.tools[0].primary, true);
-assert.equal(byId.C130.layers.learner.tools[0].resource.sha256, 'a0a869d79b0063122615f6b0dc7c5891f79286e2e0a7bf89bce3d48ad1845e09');
+assert.equal(byId.C130.layers.learner.tools[0].resource.sha256, '8114562c963295577d8f845719061febed5993b5cbbe5fc4beb8ba235d7fd709');
 for (const id of ['A10', 'D100']) {
   assert.equal(byId[id].layers.translation.terminology_status, 'in_progress');
   assert.equal(byId[id].layers.translation.corrections_status, 'in_progress');

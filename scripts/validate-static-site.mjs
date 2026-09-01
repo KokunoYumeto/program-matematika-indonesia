@@ -317,15 +317,15 @@ assert.equal(v23AdapterIndex.summary.proof_roles, 5);
 assert.deepEqual(v23AdapterIndexV2.summary, {
   curriculum_roles: 40,
   role_bindings: 9,
-  published_role_bindings: 5,
-  pending_role_bindings: 4,
+  published_role_bindings: 9,
+  pending_role_bindings: 0,
   distinct_adapter_packages: 8,
-  published_adapter_packages: 5,
-  pending_adapter_packages: 3,
+  published_adapter_packages: 8,
+  pending_adapter_packages: 0,
   represented_native_families: 8,
   unbound_roles: 31,
   families_without_local_adapter: 25,
-  families_without_public_replay_complete_adapter: 28,
+  families_without_public_replay_complete_adapter: 25,
   package_deduplicated_canonical_records: 285829,
 });
 assert.equal(modularBackendPatternV2.families.length, 33);
@@ -440,8 +440,8 @@ assert.deepEqual(publicBaseline.successor, {
 });
 assert.equal(learnerTools.$schema, JSON.parse(learnerToolsSchemaBytes.toString('utf8')).$id);
 assert.deepEqual(learnerTools.courses, learnerToolsRows);
-assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40']);
-assert.equal(learnerTools.courses.length, 3);
+assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130']);
+assert.equal(learnerTools.courses.length, 5);
 const a00LearnerTool = learnerToolsByCourseId.A00?.[0];
 assert.ok(a00LearnerTool, 'A00 harus memiliki alat latihan pelajar.');
 assert.equal(a00LearnerTool.tool_id, 'a00-assessment-map-v1');
@@ -458,9 +458,11 @@ for (const identity of [a00LearnerTool.page, a00LearnerTool.resource, a00Learner
 for (const [courseId, toolId, href] of [
   ['C30', 'judson-c30-chapter-map-v1', 'backend/judson/C30.html'],
   ['C40', 'judson-c40-chapter-map-v1', 'backend/judson/C40.html'],
+  ['C80', 'c80-openlogic-course-map-v1', 'backend/openlogic/C80.html'],
+  ['C130', 'c130-operations-research-course-map-v1', 'backend/c130/C130.html'],
 ]) {
   const tool = learnerToolsByCourseId[courseId]?.[0];
-  assert.ok(tool, `${courseId} harus memiliki peta bab Judson.`);
+  assert.ok(tool, `${courseId} harus memiliki alat belajar terverifikasi.`);
   assert.equal(tool.tool_id, toolId);
   assert.equal(tool.href, href);
   assert.equal(tool.state, 'verified');
@@ -1047,12 +1049,19 @@ for (const row of learnerDelivery.courses) {
     assert.doesNotMatch(row.portable_html.format, /pdf/i, `${row.course_id}: PDF tidak boleh dihitung sebagai HTML luring.`);
   }
 }
-assert.equal(learnerDelivery.summary.online_html_available, effectiveCourses.filter((course) => course.learner || course.reader).length);
+const legacyReaderCandidatesRejectedByDeliveryAuthority = effectiveCourses
+  .filter((course) => (course.learner || course.reader) && deliveryById.get(course.id)?.online_html.status === 'absent')
+  .map(({ id }) => id);
+assert.deepEqual(legacyReaderCandidatesRejectedByDeliveryAuthority, ['D90']);
+assert.equal(
+  learnerDelivery.summary.online_html_available,
+  effectiveCourses.filter((course) => course.learner || course.reader).length - legacyReaderCandidatesRejectedByDeliveryAuthority.length,
+);
 assert.equal(learnerDelivery.summary.course_count, learnerDelivery.courses.length);
 assert.equal(learnerDelivery.summary.online_html_available, learnerDelivery.courses.filter(({ online_html }) => online_html.status !== 'absent').length);
 assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').length);
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
-assert.equal(learnerDelivery.summary.online_html_available, 24);
+assert.equal(learnerDelivery.summary.online_html_available, 23);
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
 assert.equal(learnerDelivery.summary.verified_epub, 1);
 assert.deepEqual(

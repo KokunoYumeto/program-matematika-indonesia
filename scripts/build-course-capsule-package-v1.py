@@ -254,6 +254,10 @@ ADAPTER_INTEGRATION_EXACT_MEMBERS = (
     "scripts/import-openlogic-course-capsule-v1.py",
     "scripts/build-c130-course-capsule-v1.mjs",
     "scripts/build-modular-backend-snapshots-v2.mjs",
+    "backend/course-capsule-v1/validation/C130_AUTHORITY_REPLAY_RECEIPT_20260901.json",
+    "releases/v0.62.14/v23-adapter-index-v2.json",
+    "GITHUB_PUBLICATION_RECEIPT_v0.62.14.json",
+    "PUBLICATION_RECEIPT_v0.62.14.json",
 )
 EXACT_MEMBERS = (
     BASE_EXACT_MEMBERS
@@ -345,22 +349,22 @@ ADAPTER_SPECS = (
     },
 )
 
-EXPECTED_STATIC_MEMBER_COUNT = 123
+EXPECTED_STATIC_MEMBER_COUNT = 127
 EXPECTED_MEMBER_COUNT = EXPECTED_STATIC_MEMBER_COUNT + sum(
     int(spec["input_count"]) + 2 for spec in ADAPTER_SPECS
 )
 EXPECTED_V2_SUMMARY = {
     "curriculum_roles": 40,
     "role_bindings": 9,
-    "published_role_bindings": 5,
-    "pending_role_bindings": 4,
+    "published_role_bindings": 9,
+    "pending_role_bindings": 0,
     "distinct_adapter_packages": 8,
-    "published_adapter_packages": 5,
-    "pending_adapter_packages": 3,
+    "published_adapter_packages": 8,
+    "pending_adapter_packages": 0,
     "represented_native_families": 8,
     "unbound_roles": 31,
     "families_without_local_adapter": 25,
-    "families_without_public_replay_complete_adapter": 28,
+    "families_without_public_replay_complete_adapter": 25,
     "package_deduplicated_canonical_records": 285829,
 }
 EXPECTED_V2_ROLE_ORDER = (
@@ -1178,11 +1182,12 @@ def verify_v2_snapshot_binding(
     if (
         not isinstance(snapshot_id, str)
         or snapshot.get("mutable_overlay") is not True
-        or snapshot.get("central_release_version") != "v0.62.14-prepublication"
+        or snapshot.get("central_release_version") != "v0.62.14"
+        or snapshot.get("central_release_record_doi") != "10.5281/zenodo.22217240"
         or snapshot.get("public_replay_state")
-        != "prepublication_local_validation_only"
+        != "postpublication_release_assets_readback_complete"
     ):
-        raise RuntimeError("v2 adapter-index prepublication snapshot binding differs")
+        raise RuntimeError("v2 adapter-index postpublication snapshot binding differs")
     pattern_snapshot = pattern.get("snapshot")
     if not isinstance(pattern_snapshot, dict) or pattern_snapshot.get("snapshot_id") != snapshot_id:
         raise RuntimeError("v2 pattern snapshot id differs")
@@ -1238,14 +1243,14 @@ def verify_v2_snapshot_binding(
     pending_packages = [
         row for row in packages if row.get("admission_state") == "admitted_pending_release"
     ]
-    if len(published_packages) != 5 or len(pending_packages) != 3:
+    if len(published_packages) != 8 or pending_packages:
         raise RuntimeError("v2 published/pending package split differs")
     published_bindings = sum(
         package_by_id[str(row["adapter_package_id"])].get("admission_state")
         == "published"
         for row in adapters
     )
-    if published_bindings != 5 or len(adapters) - published_bindings != 4:
+    if published_bindings != 9 or len(adapters) - published_bindings != 0:
         raise RuntimeError("v2 published/pending role split differs")
     canonical_total = sum(int(row.get("canonical_records", -1)) for row in packages)
     if canonical_total != 285829:
@@ -1259,12 +1264,14 @@ def verify_v2_snapshot_binding(
             raise RuntimeError(f"v2 package is missing: {spec['label']}")
         if package.get("dataset_id") != spec["dataset_id"]:
             raise RuntimeError(f"v2 dataset id differs: {spec['label']}")
-        if package.get("admission_state") != "admitted_pending_release":
+        if package.get("admission_state") != "published":
             raise RuntimeError(f"v2 admission state differs: {spec['label']}")
-        if package.get("public_replay_status") != "pending_release_local_seal_verified":
+        if package.get("public_replay_status") != "published_public_asset_readback_verified":
             raise RuntimeError(f"v2 replay state differs: {spec['label']}")
-        if package.get("public_asset_url") is not None or package.get("release_url") is not None:
-            raise RuntimeError(f"v2 pending package exposes a release URL: {spec['label']}")
+        if not package.get("public_asset_url") or not package.get("release_url"):
+            raise RuntimeError(f"v2 published package lacks a release URL: {spec['label']}")
+        if "planned_release" in package:
+            raise RuntimeError(f"v2 published package retains a planned release: {spec['label']}")
         reference_matches(package.get("archive"), binding["archive"], f"v2 {spec['label']} archive")
         reference_matches(
             package.get("manifest"), binding["manifest"], f"v2 {spec['label']} manifest"
@@ -1286,6 +1293,8 @@ def verify_v2_snapshot_binding(
             ) + f"{role_id}.html"
             if not isinstance(projection, dict) or projection.get("path") != expected_projection:
                 raise RuntimeError(f"v2 learner projection differs: {role_id}")
+            if projection.get("status") != "published":
+                raise RuntimeError(f"v2 learner projection is not published: {role_id}")
 
     index_identity = member_identity(members, V23_ADAPTER_INDEX_V2_MEMBER)
     adapter_snapshot = pattern.get("adapter_snapshot")
@@ -1323,8 +1332,8 @@ def verify_v2_snapshot_binding(
     )
     expected_c130_binding = {
         "adapter_package_id": ADAPTER_SPECS[2]["package_id"],
-        "admission_state": "admitted_pending_release",
-        "public_replay_status": "pending_release_local_seal_verified",
+        "admission_state": "published",
+        "public_replay_status": "published_public_asset_readback_verified",
         "role_id": "C130",
     }
     if c130_family is None or c130_family.get("adapter_bindings") != [expected_c130_binding]:
@@ -1337,6 +1346,11 @@ def verify_v2_snapshot_binding(
     bound_evidence_members = [TERMINOLOGY_CONCORDANCE_MEMBER]
     for spec in ADAPTER_SPECS:
         bound_evidence_members.extend((str(spec["admission"]), str(spec["manifest"])))
+    bound_evidence_members.extend((
+        "backend/course-capsule-v1/validation/C130_AUTHORITY_REPLAY_RECEIPT_20260901.json",
+        "GITHUB_PUBLICATION_RECEIPT_v0.62.14.json",
+        "PUBLICATION_RECEIPT_v0.62.14.json",
+    ))
     for evidence_member in bound_evidence_members:
         actual = member_identity(members, evidence_member)
         reference_matches(
@@ -1448,7 +1462,7 @@ def required_member_names() -> list[str]:
     ]
     if missing_c130:
         raise FileNotFoundError(
-            "pending C130 package dependencies are missing: " + ", ".join(missing_c130)
+            "C130 package dependencies are missing: " + ", ".join(missing_c130)
         )
 
     if len(EXACT_MEMBERS) != EXPECTED_STATIC_MEMBER_COUNT:

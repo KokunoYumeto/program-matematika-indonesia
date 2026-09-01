@@ -230,7 +230,9 @@ assert.match(html, /Kebijakan backend tipis, netral-format, zero-copy/);
 assert.match(html, /Baseline publik v0\.62\.12/);
 assert.match(html, /Indeks adapter v2/);
 assert.match(html, /Ledger adopsi fitur tujuh lapis/);
-assert.match(html, /Publik tidak sama dengan diterima lokal/);
+assert.match(html, /Overlay pascapublikasi v0\.62\.14/);
+assert.match(html, /semuanya sudah publik dan dibaca balik/);
+assert.doesNotMatch(html, /publikasi paket pusat masih tertunda|pending_successor_release/);
 assert.match(html, /href="\.\.\/id-ID\/courses\/A00\/latihan\/index\.html"/);
 assert.match(html, /Latihan &amp; diagnosis/);
 assert.match(html, /href="\.\.\/backend\/openlogic\/C80\.html"/);
@@ -241,16 +243,36 @@ assert.match(mainHtml, /href="backend\/index\.html">Buka pusat belajar &amp; men
 assert.match(css, /font-size:\s*17px/);
 assert.match(css, /@media \(max-width: 780px\)/);
 assert.match(css, /prefers-reduced-motion/);
+assert.match(css, /\.sr-only\s*\{[\s\S]*?clip:\s*rect\(0, 0, 0, 0\)/);
 assert.match(js, /course-capsules\.json/);
 assert.match(js, /prerequisite_diagnostics/);
 assert.match(js, /staged_hints_answers_solutions/);
 assert.match(js, /zero-copy/i);
 assert.match(js, /aria-pressed/);
 assert.match(html, /role="group" aria-label="Sudut pandang katalog"/);
+assert.match(html, /class="filters" role="group" aria-label="Saringan katalog"/);
+assert.match(html, /class="summary-strip" role="group" aria-label="Ringkasan program"/);
+assert.match(html, /id="cara-baca" aria-labelledby="status-reading-title"/);
+assert.match(html, /id="data-terbuka" aria-labelledby="open-data-title"/);
 assert.doesNotMatch(html, /role="tab(?:list)?"/);
 assert.match(js, /layer\.tools/);
 assert.match(js, /machine_data_is_learner_destination/);
 assert.doesNotMatch(js, /link\(tool\.resource/i, 'Backend UI must not expose raw machine data as a learner action.');
+assert.match(js, /available_unverified/);
+assert.match(js, /Buka sumber utama —/);
+assert.match(js, /terbuka di tab baru/);
+assert.match(css, /\.topbar nav\s*\{\s*display:\s*none/);
+assert.doesNotMatch(css, /@media[^}]+\}\s*nav\s*\{\s*display:\s*none/i);
+assert.doesNotMatch(html, />Buka sumber utama ↗</);
+const staticPrimaryLabels = [...html.matchAll(/Buka sumber utama — ([A-D][0-9]{2,3}) ↗/g)].map((match) => match[1]);
+assert.equal(new Set(staticPrimaryLabels).size, staticPrimaryLabels.length, 'Static primary-link accessible labels are duplicated.');
+assert.ok(staticPrimaryLabels.every((id) => ids.includes(id)), 'Static primary-link label names an unknown course.');
+const c80StaticStart = html.indexOf('data-static-course-id="C80"');
+const c80StaticEnd = html.indexOf('data-static-course-id="C90"');
+assert.ok(c80StaticStart >= 0 && c80StaticEnd > c80StaticStart);
+assert.match(html.slice(c80StaticStart, c80StaticEnd), /Kesiapan akses<\/span><strong>tersedia; belum diverifikasi penuh<\/strong>/);
+assert.equal((html.match(/Kesiapan akses/g) ?? []).length, 40);
+assert.equal((html.match(/Bahan pengajar terindeks/g) ?? []).length, 0);
 
 for (const row of rows) {
   assert.match(row.course_native.edition, /^https:\/\//);
@@ -268,6 +290,17 @@ assert.equal(d40.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22184259'
 assert.equal(d40.layers.learner.pdf.sha256, 'c4e4f470eeb096129e7bf7306422d316c93aaeed99d2b12890e08f15777ac13f');
 assert.equal(d40.layers.learner.portable_html.sha256, 'a370bba5ddb54081387a484a304b24af92691c3bc167db964c486625a79add59');
 assert.equal(d40.layers.interoperability.semantic_adapter.status, 'available_unverified');
+const b20 = rows.find(({ course_id }) => course_id === 'B20');
+const b50 = rows.find(({ course_id }) => course_id === 'B50');
+const c100 = rows.find(({ course_id }) => course_id === 'C100');
+const d20 = rows.find(({ course_id }) => course_id === 'D20');
+const d90 = rows.find(({ course_id }) => course_id === 'D90');
+assert.match(b20.layers.learner.primary.url, /records\/22183943\//);
+assert.match(b50.layers.learner.primary.url, /records\/22184443\//);
+assert.equal(c100.layers.learner.primary.format, 'text/html');
+assert.equal(d20.layers.learner.primary.format, 'text/html');
+assert.equal(d90.layers.learner.primary.format, 'application/pdf');
+assert.equal(d90.layers.learner.online_html.status, 'not_yet_produced');
 
 assert.deepEqual(judsonValidation.admitted_courses, ['C30', 'C40']);
 assert.equal(judsonValidation.state, 'pass');
@@ -303,17 +336,21 @@ assert.deepEqual(v23AdapterIndexV2.summary, {
   curriculum_roles: 40,
   distinct_adapter_packages: 8,
   families_without_local_adapter: 25,
-  families_without_public_replay_complete_adapter: 28,
+  families_without_public_replay_complete_adapter: 25,
   package_deduplicated_canonical_records: 285829,
-  pending_adapter_packages: 3,
-  pending_role_bindings: 4,
-  published_adapter_packages: 5,
-  published_role_bindings: 5,
+  pending_adapter_packages: 0,
+  pending_role_bindings: 0,
+  published_adapter_packages: 8,
+  published_role_bindings: 9,
   represented_native_families: 8,
   role_bindings: 9,
   unbound_roles: 31,
 });
-assert.equal(v23AdapterIndexV2.snapshot.public_replay_state, 'prepublication_local_validation_only');
+assert.equal(v23AdapterIndexV2.snapshot.snapshot_id, 'urn:interlanguage:program-matematika-indonesia:v23-adapters:v0.62.14-postpublication:2026-09-01');
+assert.equal(v23AdapterIndexV2.snapshot.central_release_version, 'v0.62.14');
+assert.equal(v23AdapterIndexV2.snapshot.central_release_record_doi, '10.5281/zenodo.22217240');
+assert.equal(v23AdapterIndexV2.snapshot.public_replay_state, 'postpublication_release_assets_readback_complete');
+assert.equal(v23AdapterIndexV2.packages.every((row) => row.admission_state === 'published' && row.public_replay_status === 'published_public_asset_readback_verified' && !Object.hasOwn(row, 'planned_release')), true);
 const c30Adapter = v23AdapterIndexV2.adapters.find(({ role_id }) => role_id === 'C30');
 const c40Adapter = v23AdapterIndexV2.adapters.find(({ role_id }) => role_id === 'C40');
 const c80Adapter = v23AdapterIndexV2.adapters.find(({ role_id }) => role_id === 'C80');
@@ -324,7 +361,7 @@ assert.equal(c130Adapter.adapter_package_id, 'urn:uuid:a84539b5-455b-5baf-89a4-f
 assert.equal(c130Adapter.native_family_id, 'family-20-operations-research');
 assert.equal(c130Adapter.learner_runtime_relationship, 'course_link_only_no_adapter_consumption_claim');
 assert.equal(c80Adapter.central_learner_projection.path, 'docs/backend/openlogic/C80.html');
-assert.equal(c80Adapter.central_learner_projection.status, 'pending_successor_release');
+for (const adapter of [c30Adapter, c40Adapter, c80Adapter, c130Adapter]) assert.equal(adapter.central_learner_projection.status, 'published');
 assert.equal(patternIndexV2.families.length, 33);
 assert.equal(patternIndexV2.snapshot.snapshot_id, v23AdapterIndexV2.snapshot.snapshot_id);
 assert.equal(featureAdoption.layers.length, 7);
@@ -361,6 +398,8 @@ assert.equal(c130Validation.learner_routes.linked_pdf_is_only_primary_reader, tr
 assert.equal(c130Validation.learner_routes.pdf.pages, 666);
 assert.equal(c130Validation.claim_boundaries.native_html_claimed, false);
 assert.equal(c130Validation.claim_boundaries.pdf_ua_claimed, false);
+assert.equal(c130Validation.claim_boundaries.python_authority_validators_replayed, true);
+assert.equal(c130Validation.authority_replay.state, 'pass_postpublication_authority_replay');
 assert.equal(c130Route.course_id, 'C130');
 assert.equal(c130Route.primary_learner_action.kind, 'pages_learner_landing');
 assert.equal(c130Route.primary_reader.format, 'linked_pdf');
@@ -406,8 +445,8 @@ const receipt = {
     educator_rows: 21,
     semantic_adapter_rows: 9,
     semantic_adapter_packages: 8,
-    snapshot_v2_public_role_bindings: 5,
-    snapshot_v2_pending_role_bindings: 4,
+    snapshot_v2_public_role_bindings: 9,
+    snapshot_v2_pending_role_bindings: 0,
     judson_course_views: 2,
     judson_native_chapter_joins: 23,
     judson_route_evidence: 'pass',

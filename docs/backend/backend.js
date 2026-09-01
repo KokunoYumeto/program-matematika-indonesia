@@ -72,32 +72,48 @@ const escapeHtml = (value) => String(value ?? '')
 
 const statusLabel = (status) => statusLabels[status] ?? status;
 const external = ' target="_blank" rel="noreferrer"';
+const externalHint = '<span class="sr-only"> (terbuka di tab baru)</span>';
 const publicEvidenceUrl = (url) => typeof url === 'string' && /^https:\/\/[^/\s]+\//.test(url);
 const link = (url, label, primary = false) => publicEvidenceUrl(url)
-  ? '<a class="' + (primary ? 'primary' : '') + '" href="' + escapeHtml(url) + '"' + external + '>' + escapeHtml(label) + ' ↗</a>'
+  ? '<a class="' + (primary ? 'primary' : '') + '" href="' + escapeHtml(url) + '"' + external + '>' + escapeHtml(label) + ' <span aria-hidden="true">↗</span>' + externalHint + '</a>'
   : '';
-const deliveryLink = (resource, label, primary = false) => link(
-  resource?.url,
-  label + (resource?.scope && resource.scope !== 'whole_course' ? ' — bagian kursus' : ''),
-  primary,
-);
-const learnerToolLink = (tool) => {
+const deliverableStatuses = new Set(['verified', 'available_unverified']);
+const deliveryLink = (resource, label, primary = false, allowedFormats = []) => {
+  if (!deliverableStatuses.has(resource?.status)) return '';
+  if (!publicEvidenceUrl(resource?.url)) return '';
+  if (!allowedFormats.includes(resource?.format)) return '';
+  return link(
+    resource.url,
+    label + (resource.scope && resource.scope !== 'whole_course' ? ' — bagian kursus' : ''),
+    primary,
+  );
+};
+const learnerToolLink = (tool, courseId) => {
   if (tool.machine_data_is_learner_destination !== false) return '';
   const href = '../' + tool.href.replace(/^\/+/, '');
-  return '<a class="learner-tool' + (tool.primary ? ' primary' : '') + '" href="' + escapeHtml(href) + '" title="' + escapeHtml(tool.scope) + '">' + escapeHtml(tool.label) + '</a>';
+  return '<a class="learner-tool' + (tool.primary ? ' primary' : '') + '" href="' + escapeHtml(href) + '" title="' + escapeHtml(tool.scope) + '">' + escapeHtml(tool.label) + '<span class="sr-only"> — ' + escapeHtml(courseId) + '</span></a>';
 };
 
 const learnerPanel = (capsule) => {
   const layer = capsule.layers.learner;
+  if (capsule.locale !== 'id-ID') {
+    return '<p class="empty-note">Rute pelajar disembunyikan karena locale kapsul tidak terverifikasi sebagai Bahasa Indonesia.</p>';
+  }
   const tools = (layer.tools ?? []).filter((tool) => tool.state === 'verified' && tool.machine_data_is_learner_destination === false);
-  const actions = [
-    ...tools.map(learnerToolLink),
-    deliveryLink(layer.primary, 'Buka sumber utama', true),
-    deliveryLink(layer.online_html, 'Baca daring'),
-    deliveryLink(layer.pdf, 'PDF'),
-    deliveryLink(layer.epub, 'EPUB'),
-    deliveryLink(layer.portable_html, 'HTML luring'),
-  ].filter(Boolean).join('');
+  const actionRows = [
+    ...tools.map((tool) => ({ href: '../' + tool.href.replace(/^\/+/, ''), html: learnerToolLink(tool, capsule.course_id) })),
+    { href: layer.primary?.url, html: deliveryLink(layer.primary, 'Buka sumber utama — ' + capsule.course_id, true, ['text/html', 'application/pdf', 'application/epub+zip', 'application/zip+html']) },
+    { href: layer.online_html?.url, html: deliveryLink(layer.online_html, 'Baca daring — ' + capsule.course_id, false, ['text/html']) },
+    { href: layer.pdf?.url, html: deliveryLink(layer.pdf, 'PDF — ' + capsule.course_id, false, ['application/pdf']) },
+    { href: layer.epub?.url, html: deliveryLink(layer.epub, 'EPUB — ' + capsule.course_id, false, ['application/epub+zip']) },
+    { href: layer.portable_html?.url, html: deliveryLink(layer.portable_html, 'HTML luring — ' + capsule.course_id, false, ['application/zip+html']) },
+  ].filter((row) => row.html);
+  const seenHrefs = new Set();
+  const actions = actionRows.filter(({ href }) => {
+    if (seenHrefs.has(href)) return false;
+    seenHrefs.add(href);
+    return true;
+  }).map(({ html }) => html).join('');
   return [
     '<div class="status-line"><span>Kesiapan akses</span><strong>' + escapeHtml(statusLabel(layer.status)) + '</strong></div>',
     tools.length ? '<div class="status-line"><span>Alat belajar terverifikasi</span><strong>' + tools.length + '</strong></div>' : '',
@@ -113,11 +129,11 @@ const educatorPanel = (capsule) => {
     ? '<ul class="feature-list">' + layer.features.map((item) => '<li>' + escapeHtml(featureLabels[item] ?? item) + '</li>').join('') + '</ul>'
     : '<p class="empty-note">Belum ada paket pengajar terstruktur yang terindeks. Edisi pelajar tetap dapat digunakan.</p>';
   const resources = layer.resources.length
-    ? '<ul class="resource-list">' + layer.resources.map((item) => '<li><a href="' + escapeHtml(item.url) + '"' + external + '>' + escapeHtml(item.title) + ' — ' + escapeHtml(resourceLabels[item.resource_type] ?? item.resource_type) + ' ↗</a></li>').join('') + '</ul>'
+    ? '<ul class="resource-list">' + layer.resources.map((item) => '<li><a href="' + escapeHtml(item.url) + '"' + external + '>' + escapeHtml(item.title) + ' — ' + escapeHtml(resourceLabels[item.resource_type] ?? item.resource_type) + '<span class="sr-only"> — ' + escapeHtml(capsule.course_id) + '</span> <span aria-hidden="true">↗</span>' + externalHint + '</a></li>').join('') + '</ul>'
     : '';
   const publicEvidence = layer.evidence.find((item) => publicEvidenceUrl(item.locator));
   const evidence = publicEvidence
-    ? '<div class="card-actions">' + link(publicEvidence.locator, 'Buka bukti bahan') + '</div>'
+    ? '<div class="card-actions">' + link(publicEvidence.locator, 'Buka bukti bahan — ' + capsule.course_id) + '</div>'
     : layer.evidence.length ? '<p class="empty-note">Bukti terindeks belum mempunyai tautan publik.</p>' : '';
   return [
     '<div class="status-line"><span>Lapisan pengajar</span><strong>' + escapeHtml(statusLabel(layer.status)) + '</strong></div>',
@@ -137,7 +153,7 @@ const productionPanel = (capsule) => {
     '<div class="status-line"><span>Koreksi</span><strong>' + escapeHtml(statusLabel(translation.corrections_status)) + '</strong></div>',
     '<div class="status-line"><span>Pembangunan ulang</span><strong>' + escapeHtml(statusLabel(production.deterministic_replay_status)) + '</strong></div>',
     '<div class="status-line"><span>Rilis</span><strong>' + escapeHtml(statusLabel(production.release_status)) + '</strong></div>',
-    '<div class="card-actions">' + link(production.repository, 'Repositori', true) + link(production.zenodo, 'Zenodo') + '</div>',
+    '<div class="card-actions">' + link(production.repository, 'Repositori — ' + capsule.course_id, true) + link(production.zenodo, 'Zenodo — ' + capsule.course_id) + '</div>',
   ].join('');
 };
 
@@ -149,7 +165,7 @@ const interopPanel = (capsule) => {
     : '<p class="empty-note">Belum ada komponen yang dipetakan.</p>';
   const actions = federation.components
     .filter((item) => item.url)
-    .map((item, index) => link(item.url, index === 0 ? 'Sumber kanonis' : item.title, index === 0))
+    .map((item, index) => link(item.url, (index === 0 ? 'Sumber kanonis' : item.title) + ' — ' + capsule.course_id, index === 0))
     .join('');
   return [
     '<div class="status-line"><span>Kontrak kapsul</span><strong>1.0.0</strong></div>',
@@ -195,7 +211,7 @@ const matches = (capsule) => {
   if (state.courseState === 'published' && capsule.course.state !== 'published') return false;
   if (state.courseState === 'production' && capsule.course.state !== 'production') return false;
   if (state.courseState === 'educator' && !capsule.layers.educator.features.length && !capsule.layers.educator.resources.length) return false;
-  if (state.courseState === 'adapter' && !['verified', 'legacy_verified'].includes(capsule.layers.interoperability.semantic_adapter.status)) return false;
+  if (state.courseState === 'adapter' && !['verified', 'legacy_verified', 'available_unverified'].includes(capsule.layers.interoperability.semantic_adapter.status)) return false;
   return true;
 };
 

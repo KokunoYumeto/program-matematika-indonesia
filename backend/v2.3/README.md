@@ -141,8 +141,21 @@ case-sensitive native identities `exam_dual_C0` and `exam_dual_c0`, anchor-only
 routes, and external endpoints remain explicit rather than being normalized
 away.
 
-A00, B10, D20, D60, and D110 are five lane proofs. They are not a declaration
-that the other 35 course roles conform to v2.3.1.
+### Shared C30/C40 Judson chapter-route adapter
+
+The sixth admitted package binds two curriculum roles, C30 and C40, to one
+Judson source graph without duplicating units or book prose. The package lives
+at `backend/course-capsule-v1/adapters/judson-v231`; its 19 JSONL/CSV table
+pairs contain 17,745 canonical records. The public learner projections expose
+15 ordered C30 chapters and 8 ordered C40 chapters, preserve 23 native route
+joins, and explicitly decline to invent descendant exercise anchors or mastery
+semantics. The recorded live pages all returned HTTP 200 but differed from the
+frozen WEB edition, so the current reader and archived edition remain distinct
+identities rather than being collapsed into one claim.
+
+A00, B10, C30, C40, D20, D60, and D110 are seven role bindings through six
+admitted packages. They are not a declaration that the other 33 course roles
+conform to v2.3.1.
 
 ## Design proposal retained separately
 

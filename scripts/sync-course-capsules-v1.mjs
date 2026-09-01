@@ -128,16 +128,41 @@ const escapeHtml = (value) => String(value ?? '')
   .replaceAll('>', '&gt;')
   .replaceAll('"', '&quot;')
   .replaceAll("'", '&#039;');
+const deliverableStatuses = new Set(['verified', 'available_unverified']);
+const learnerDeliveryFormats = new Set(['text/html', 'application/pdf', 'application/epub+zip', 'application/zip+html']);
+const statusLabels = {
+  verified: 'terverifikasi',
+  legacy_verified: 'terverifikasi — kontrak lama',
+  available_unverified: 'tersedia; belum diverifikasi penuh',
+  in_progress: 'sedang dibuat',
+  not_yet_produced: 'belum dibuat',
+  not_applicable: 'tidak berlaku',
+  unknown: 'belum diketahui',
+};
+const statusLabel = (status) => statusLabels[status] ?? status;
+const publicEvidenceUrl = (url) => typeof url === 'string' && /^https:\/\/[^/\s]+\//.test(url);
+const eligibleDelivery = (resource, allowedFormats) => deliverableStatuses.has(resource?.status)
+  && allowedFormats.has(resource?.format)
+  && publicEvidenceUrl(resource?.url);
 const fallbackCards = rows.map((capsule) => {
-  const primary = capsule.layers.learner.primary?.url ?? capsule.course_native.edition;
+  const layer = capsule.layers.learner;
+  const primary = capsule.locale === 'id-ID' ? [
+    [layer.primary, learnerDeliveryFormats],
+    [layer.online_html, new Set(['text/html'])],
+    [layer.pdf, new Set(['application/pdf'])],
+    [layer.epub, new Set(['application/epub+zip'])],
+    [layer.portable_html, new Set(['application/zip+html'])],
+  ].find(([resource, formats]) => eligibleDelivery(resource, formats))?.[0] : undefined;
   const prerequisites = capsule.course.prerequisites.length ? capsule.course.prerequisites.join(', ') : 'tidak ada';
-  const educatorCount = capsule.layers.educator.features.length + capsule.layers.educator.resources.length;
   const learnerTools = capsule.layers.learner.tools
     .filter((tool) => tool.state === 'verified' && tool.machine_data_is_learner_destination === false)
-    .map((tool) => `<a class="learner-tool${tool.primary ? ' primary' : ''}" href="../${escapeHtml(tool.href.replace(/^\/+/, ''))}" title="${escapeHtml(tool.scope)}">${escapeHtml(tool.label)}</a>`)
+    .map((tool) => `<a class="learner-tool${tool.primary ? ' primary' : ''}" href="../${escapeHtml(tool.href.replace(/^\/+/, ''))}" title="${escapeHtml(tool.scope)}">${escapeHtml(tool.label)}<span class="sr-only"> — ${escapeHtml(capsule.course_id)}</span></a>`)
     .join('');
+  const primaryAction = primary
+    ? `<a class="primary" href="${escapeHtml(primary.url)}" target="_blank" rel="noreferrer">Buka sumber utama — ${escapeHtml(capsule.course_id)} <span aria-hidden="true">↗</span><span class="sr-only"> (terbuka di tab baru)</span></a>`
+    : '<span class="empty-note">Rute sumber utama belum memenuhi bukti format dan akses publik.</span>';
   const stateLabel = capsule.course.state === 'published' ? 'Edisi selesai' : 'Sedang diproduksi';
-  return `<article class="course-card" data-static-course-id="${escapeHtml(capsule.course_id)}"><div class="card-top"><span class="course-code">${escapeHtml(capsule.course_id)}</span><span class="state-badge ${escapeHtml(capsule.course.state)}">${stateLabel}</span></div><h3>${escapeHtml(capsule.course.title)}</h3><p class="topic">${escapeHtml(capsule.course.topic)}</p><p class="outcome">${escapeHtml(capsule.course.outcome)}</p><p class="prerequisites"><strong>Prasyarat</strong>${escapeHtml(prerequisites)}</p><div class="view-panel"><div class="status-line"><span>Bahan pengajar terindeks</span><strong>${educatorCount}</strong></div>${learnerTools ? `<div class="status-line"><span>Alat belajar terverifikasi</span><strong>${capsule.layers.learner.tools.filter((tool) => tool.state === 'verified').length}</strong></div>` : ''}<div class="card-actions">${learnerTools}<a class="primary" href="${escapeHtml(primary)}" target="_blank" rel="noreferrer">Buka sumber utama ↗</a></div></div></article>`;
+  return `<article class="course-card" data-static-course-id="${escapeHtml(capsule.course_id)}"><div class="card-top"><span class="course-code">${escapeHtml(capsule.course_id)}</span><span class="state-badge ${escapeHtml(capsule.course.state)}">${stateLabel}</span></div><h3>${escapeHtml(capsule.course.title)}</h3><p class="topic">${escapeHtml(capsule.course.topic)}</p><p class="outcome">${escapeHtml(capsule.course.outcome)}</p><p class="prerequisites"><strong>Prasyarat</strong>${escapeHtml(prerequisites)}</p><div class="view-panel"><div class="status-line"><span>Kesiapan akses</span><strong>${escapeHtml(statusLabel(layer.status))}</strong></div>${learnerTools ? `<div class="status-line"><span>Alat belajar terverifikasi</span><strong>${capsule.layers.learner.tools.filter((tool) => tool.state === 'verified').length}</strong></div>` : ''}<div class="status-line"><span>HTML semantik</span><strong>${escapeHtml(statusLabel(layer.capabilities.semantic_html))}</strong></div><div class="status-line"><span>Format cetak</span><strong>${escapeHtml(statusLabel(layer.capabilities.print_profile))}</strong></div><div class="card-actions">${learnerTools}${primaryAction}</div></div></article>`;
 }).join('');
 const templatePath = resolve(project, 'docs/backend/index.template.html');
 const outputPath = resolve(project, 'docs/backend/index.html');

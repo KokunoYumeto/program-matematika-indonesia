@@ -15,7 +15,11 @@ SCHEMA_ROOT = ROOT / "schemas/course-capsule-v1/v2"
 PUBLIC_DATA = ROOT / "docs/data"
 PUBLIC_SCHEMA = ROOT / "docs/schema/v2"
 VALIDATION = ROOT / "backend/course-capsule-v1/validation"
-SNAPSHOT_ID = "urn:interlanguage:program-matematika-indonesia:v23-adapters:v0.62.14-prepublication:2026-08-31"
+SNAPSHOT_ID = "urn:interlanguage:program-matematika-indonesia:v23-adapters:v0.62.14-postpublication:2026-09-01"
+RELEASED_SNAPSHOT = ROOT / "releases/v0.62.14/v23-adapter-index-v2.json"
+GITHUB_RECEIPT = ROOT / "GITHUB_PUBLICATION_RECEIPT_v0.62.14.json"
+ZENODO_RECEIPT = ROOT / "PUBLICATION_RECEIPT_v0.62.14.json"
+C130_AUTHORITY_REPLAY = VALIDATION / "C130_AUTHORITY_REPLAY_RECEIPT_20260901.json"
 
 DATA_FILES = {
     "adapter": "v23-adapter-index-v2.json",
@@ -94,11 +98,52 @@ v1_pairs = [
 for predecessor, projection in v1_pairs:
     assert predecessor.read_bytes() == projection.read_bytes(), f"immutable v1 drift: {projection}"
 
+assert identify(RELEASED_SNAPSHOT) == {
+    "path": "releases/v0.62.14/v23-adapter-index-v2.json",
+    "bytes": 29806,
+    "sha256": "99d7ee51454981a29f2d03ed493ea400520c605141fe20b58d3c4aea64aedf78",
+}
+assert identify(GITHUB_RECEIPT) == {
+    "path": "GITHUB_PUBLICATION_RECEIPT_v0.62.14.json",
+    "bytes": 88060,
+    "sha256": "8a3883c811574864f0d40f029d1f48ca13870327feb0e9048cd3cad1d1abf390",
+}
+assert identify(ZENODO_RECEIPT) == {
+    "path": "PUBLICATION_RECEIPT_v0.62.14.json",
+    "bytes": 58227,
+    "sha256": "e34bdc951961bf6c18d4ffacfb80fc2fda411f02cba7de001c05ae6898229ad8",
+}
+assert identify(C130_AUTHORITY_REPLAY) == {
+    "path": "backend/course-capsule-v1/validation/C130_AUTHORITY_REPLAY_RECEIPT_20260901.json",
+    "bytes": 2977,
+    "sha256": "7cf3be9570c59f8fa1f35ea83b54e6ca2add842a19c65da3751a5a609dcdc09b",
+}
+released_snapshot = load_json(RELEASED_SNAPSHOT)
+github_receipt = load_json(GITHUB_RECEIPT)
+zenodo_receipt = load_json(ZENODO_RECEIPT)
+c130_authority_replay = load_json(C130_AUTHORITY_REPLAY)
+assert github_receipt["state"] == "published_public_verified"
+assert github_receipt["release"]["tag"] == "v0.62.14"
+assert github_receipt["anonymous_asset_readback"]["result"] == "pass_112_of_112"
+assert zenodo_receipt["state"] == "published_open_modular_backend_successor"
+assert zenodo_receipt["zenodo"]["access_right"] == "open"
+assert zenodo_receipt["zenodo"]["anonymous_readback"] == "pass_100_of_100"
+assert c130_authority_replay["state"] == "pass_postpublication_authority_replay"
+assert c130_authority_replay["input_authorities"]["declared"] == 14
+assert c130_authority_replay["input_authorities"]["locally_replayed"] == 14
+asset_by_name = {
+    row["name"]: row for row in github_receipt["anonymous_asset_readback"]["entries"]
+}
+
 adapter = instances["adapter"]
 assert adapter["snapshot"]["snapshot_id"] == SNAPSHOT_ID
 assert adapter["snapshot"]["snapshot_kind"] == "live_successor_overlay"
 assert adapter["snapshot"]["mutable_overlay"] is True
-assert adapter["snapshot"]["central_release_record_doi"] is None
+assert adapter["snapshot"]["central_release_version"] == "v0.62.14"
+assert adapter["snapshot"]["central_release_record_doi"] == "10.5281/zenodo.22217240"
+assert adapter["snapshot"]["public_replay_state"] == "postpublication_release_assets_readback_complete"
+assert adapter["snapshot"]["supersedes"]["snapshot_id"] == released_snapshot["snapshot"]["snapshot_id"]
+assert adapter["snapshot"]["supersedes"]["source"] == identify(RELEASED_SNAPSHOT)
 packages = adapter["packages"]
 bindings = adapter["adapters"]
 assert len(packages) == 8
@@ -116,10 +161,7 @@ for package in packages:
         assert package["public_replay_status"] == "published_public_asset_readback_verified"
         assert package["release_url"] and package["public_asset_url"]
         assert "planned_release" not in package
-    else:
-        assert package["public_replay_status"] == "pending_release_local_seal_verified"
-        assert package["release_url"] is None and package["public_asset_url"] is None
-        assert package["planned_release"]["state"] == "planned_not_public"
+assert all(row["admission_state"] == "published" for row in packages)
 
 published_packages = {row["package_id"] for row in packages if row["admission_state"] == "published"}
 family_ids = {row["native_family_id"] for row in packages}
@@ -142,15 +184,15 @@ assert adapter["summary"] == recomputed_summary
 assert recomputed_summary == {
     "curriculum_roles": 40,
     "role_bindings": 9,
-    "published_role_bindings": 5,
-    "pending_role_bindings": 4,
+    "published_role_bindings": 9,
+    "pending_role_bindings": 0,
     "distinct_adapter_packages": 8,
-    "published_adapter_packages": 5,
-    "pending_adapter_packages": 3,
+    "published_adapter_packages": 8,
+    "pending_adapter_packages": 0,
     "represented_native_families": 8,
     "unbound_roles": 31,
     "families_without_local_adapter": 25,
-    "families_without_public_replay_complete_adapter": 28,
+    "families_without_public_replay_complete_adapter": 25,
     "package_deduplicated_canonical_records": 285829,
 }
 
@@ -181,8 +223,8 @@ assert c130["dataset_id"] == "urn:uuid:2e16c60d-7ee3-52f4-9c05-2c4dea0b07ca"
 assert c130["extension_id"] == "urn:uuid:d46eb7f0-cab9-5646-89cb-e4e82394c344"
 assert c130["adapter_version"] == "0.1.0"
 assert c130["contract_version"] == "2.3.1"
-assert c130["admission_state"] == "admitted_pending_release"
-assert c130["public_replay_status"] == "pending_release_local_seal_verified"
+assert c130["admission_state"] == "published"
+assert c130["public_replay_status"] == "published_public_asset_readback_verified"
 assert c130["canonical_records"] == 51704
 assert c130["unit_records"] == 1993
 assert c130["relation_records"] == 9545
@@ -198,6 +240,16 @@ assert c130["manifest"]["bytes"] == 22488
 assert c130["manifest"]["sha256"] == "cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239"
 assert c130["archive"]["bytes"] == 21213937
 assert c130["archive"]["sha256"] == "eb195d1aa555e9d5e639c1e35a08b6f4425be24cc93b7f1f633161e9cacee865"
+for package in (judson, openlogic, c130):
+    asset = asset_by_name[Path(package["archive"]["path"]).name]
+    assert asset["anonymous_http_status"] == 200
+    assert asset["anonymous_byte_identity"] is True
+    assert package["public_asset_url"] == asset["url"]
+    assert package["archive"]["bytes"] == asset["bytes"]
+    assert package["archive"]["sha256"] == asset["sha256"]
+for role_id in ("C30", "C40", "C80", "C130"):
+    binding = next(row for row in bindings if row["role_id"] == role_id)
+    assert binding["central_learner_projection"]["status"] == "published"
 c130_binding = next(row for row in bindings if row["role_id"] == "C130")
 assert c130_binding["adapter_package_id"] == c130["package_id"]
 assert c130_binding["native_family_id"] == "family-20-operations-research"
@@ -231,6 +283,7 @@ assert evidence_by_id["terminology_policy"]["path"] == (
     "backend/course-capsule-v1/authority/terminology-policy-v1/"
     "canonical-register-policy.json"
 )
+assert {"c130_authority_replay", "v06214_github_publication", "v06214_zenodo_publication"} <= set(evidence_by_id)
 for layer in feature["layers"]:
     for feature_row in layer["features"]:
         assert set(feature_row["evidence_ids"]) <= set(evidence_by_id)
@@ -242,7 +295,9 @@ for row in feature["evidence"]:
 comparison = instances["comparison"]
 assert comparison["snapshot_id"] == SNAPSHOT_ID
 assert [row["sequence"] for row in comparison["methodology"]["stages"]] == [1, 2, 3, 4]
-assert {row["evidence_id"] for row in comparison["evidence"]} >= {"terminology_policy"}
+assert {row["evidence_id"] for row in comparison["evidence"]} >= {
+    "terminology_policy", "c130_authority_replay", "v06214_github_publication", "v06214_zenodo_publication"
+}
 assert comparison["sanitization"] == {
     "credentials_excluded": True,
     "absolute_local_paths_excluded": True,
@@ -265,7 +320,7 @@ for path in public_outputs:
 VALIDATION.mkdir(parents=True, exist_ok=True)
 receipt = {
     "schema_id": "interlanguage/program-matematika-indonesia-modular-backend-snapshot-validation/v1",
-    "recorded_at": "2026-08-31",
+    "recorded_at": "2026-09-01",
     "snapshot_id": SNAPSHOT_ID,
     "status": "pass",
     "summary": recomputed_summary,
@@ -276,7 +331,9 @@ receipt = {
         "immutable v1 authority/public bytes equal v0.62.13",
         "nine unique role bindings resolve to eight unique packages",
         "Judson is one shared package for C30/C40 and is counted once",
-        "published and pending package states obey URL/readback coupling",
+        "all eight packages and nine role bindings carry public asset readback evidence",
+        "the mutable postpublication overlay supersedes the exact v0.62.14 release snapshot",
+        "C130 independently replays all 14 declared authorities without package or owner mutation",
         "33 families cover 40 roles exactly once",
         "seven feature-adoption layers resolve all evidence references",
         "comparison evidence paths and hashes replay",

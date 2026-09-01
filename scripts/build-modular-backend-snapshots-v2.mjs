@@ -10,15 +10,18 @@ const snapshotInputRoot = `${authorityRoot}/snapshot-inputs/live-v1-overlay-2026
 const schemaRoot = 'schemas/course-capsule-v1/v2';
 const publicDataRoot = 'docs/data';
 const publicSchemaRoot = 'docs/schema/v2';
-const recordedAt = '2026-08-31';
-const snapshotId = 'urn:interlanguage:program-matematika-indonesia:v23-adapters:v0.62.14-prepublication:2026-08-31';
-const predecessorSnapshotId = 'urn:interlanguage:program-matematika-indonesia:v23-adapters:v0.62.13';
+const recordedAt = '2026-09-01';
+const snapshotId = 'urn:interlanguage:program-matematika-indonesia:v23-adapters:v0.62.14-postpublication:2026-09-01';
+const predecessorSnapshotId = 'urn:interlanguage:program-matematika-indonesia:v23-adapters:v0.62.14-prepublication:2026-08-31';
 
 const paths = {
   releaseAdapter: 'releases/v0.62.13/v23-adapter-index-v1.json',
   releasePattern: 'releases/v0.62.13/modular-backend-pattern-index-v1.json',
   releaseSchema: 'releases/v0.62.13/v23-adapter-index-v1.schema.json',
   releaseMethod: 'releases/v0.62.13/MODULAR_BACKEND_METHOD_AND_FINDINGS_V1.md',
+  releasedV2Snapshot: 'releases/v0.62.14/v23-adapter-index-v2.json',
+  githubV06214Receipt: 'GITHUB_PUBLICATION_RECEIPT_v0.62.14.json',
+  zenodoV06214Receipt: 'PUBLICATION_RECEIPT_v0.62.14.json',
   liveAdapter: `${snapshotInputRoot}/v23-adapter-index-v1.live-overlay-source.json`,
   livePattern: `${snapshotInputRoot}/modular-backend-pattern-index-v1.live-overlay-source.json`,
   liveSchema: `${snapshotInputRoot}/v23-adapter-index-v1.live-overlay-schema-source.json`,
@@ -33,6 +36,7 @@ const paths = {
   c130Manifest: 'backend/course-capsule-v1/adapters/c130-v231/manifest.json',
   c130Route: 'docs/backend/c130/learner-route.json',
   c130Validation: 'docs/backend/c130/validation.json',
+  c130AuthorityReplay: 'backend/course-capsule-v1/validation/C130_AUTHORITY_REPLAY_RECEIPT_20260901.json',
   terminology: `${authorityRoot}/native-terminology-qa/unib-teori-bilangan-20260831/terminology_concordance.json`,
   terminologyPolicy: `${authorityRoot}/terminology-policy-v1/canonical-register-policy.json`,
   designPolicy: `${authorityRoot}/backend-design-policy-v1.json`,
@@ -49,6 +53,9 @@ const expected = new Map([
   [paths.releasePattern, { bytes: 41452, sha256: '89436f3c319057a87aef82aae7e53f5a0c484193cd92a9c8e293f1b52198f391' }],
   [paths.releaseSchema, { bytes: 4933, sha256: 'c84b160115f6b8e45e7b466899e4081fac02947df93934bcd50e6dedc3559fa7' }],
   [paths.releaseMethod, { bytes: 32070, sha256: 'c30745104ae42a0f29aa3399bb4ef3415c413dba241b1ac494525759214e5536' }],
+  [paths.releasedV2Snapshot, { bytes: 29806, sha256: '99d7ee51454981a29f2d03ed493ea400520c605141fe20b58d3c4aea64aedf78' }],
+  [paths.githubV06214Receipt, { bytes: 88060, sha256: '8a3883c811574864f0d40f029d1f48ca13870327feb0e9048cd3cad1d1abf390' }],
+  [paths.zenodoV06214Receipt, { bytes: 58227, sha256: 'e34bdc951961bf6c18d4ffacfb80fc2fda411f02cba7de001c05ae6898229ad8' }],
   [paths.liveAdapter, { bytes: 18002, sha256: 'ec20bc7e9f0637f5b7b3af0d86698b697b70e66eca34cdb7330e4cdf16d705e0' }],
   [paths.livePattern, { bytes: 41704, sha256: 'af92591838cbe949fa52e5f23d8b57478b1bd649d9a8f56bf47c9fb866d08bb8' }],
   [paths.liveSchema, { bytes: 5029, sha256: '0c25d6f83a293a58f30ba64ac16a50a6effed583368cb88e1a73d59a8642b1a6' }],
@@ -61,8 +68,9 @@ const expected = new Map([
   [paths.openLogicValidation, { bytes: 2867, sha256: '4774d889bf52244ef22181b0c90cfa2826ee4da401193d8229d2ac67181be6bc' }],
   [paths.c130Admission, { bytes: 4889, sha256: 'b311ab7d2a6a86af40174d051fbd8ef273a8536b34f0af77b76e5a1ce9b3397e' }],
   [paths.c130Manifest, { bytes: 22488, sha256: 'cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239' }],
-  [paths.c130Route, { bytes: 9672, sha256: 'a0a869d79b0063122615f6b0dc7c5891f79286e2e0a7bf89bce3d48ad1845e09' }],
-  [paths.c130Validation, { bytes: 6379, sha256: '382049f6cdf92eb99b0cc03de723c3c2a7347422ec6fc5b772ee843fd3bad608' }],
+  [paths.c130Route, { bytes: 9930, sha256: '8114562c963295577d8f845719061febed5993b5cbbe5fc4beb8ba235d7fd709' }],
+  [paths.c130Validation, { bytes: 6636, sha256: '6d9fa92226d7eee2ab29aba647d3cca0cee80b6cc2ee0bb0e14642216f9c8ae7' }],
+  [paths.c130AuthorityReplay, { bytes: 2977, sha256: '7cf3be9570c59f8fa1f35ea83b54e6ca2add842a19c65da3751a5a609dcdc09b' }],
   [paths.terminology, { bytes: 12407, sha256: 'd36a33be7b2dbd5d3a921f32f2b2f5dff81bc8e98d9ff66781314d9251167aa8' }],
   [paths.terminologyPolicy, { bytes: 20125, sha256: 'c3bc63376dfeac2427703cc53635c50418c1a5db93abe3074ad65aa760b1acaa' }],
   [paths.designPolicy, { bytes: 2816, sha256: '2369d55d6faa699139b830e68ab317f9961f23e329e004408622726eb1c776d2' }],
@@ -99,6 +107,9 @@ for (const [path, expectedIdentity] of expected) {
 
 const releaseAdapter = await loadJson(paths.releaseAdapter);
 const releasePattern = await loadJson(paths.releasePattern);
+const releasedV2Snapshot = await loadJson(paths.releasedV2Snapshot);
+const githubV06214Receipt = await loadJson(paths.githubV06214Receipt);
+const zenodoV06214Receipt = await loadJson(paths.zenodoV06214Receipt);
 const liveAdapter = await loadJson(paths.liveAdapter);
 const livePattern = await loadJson(paths.livePattern);
 const judsonAdmission = await loadJson(paths.judsonAdmission);
@@ -110,6 +121,7 @@ const openLogicRoute = await loadJson(paths.openLogicRoute);
 const c130Admission = await loadJson(paths.c130Admission);
 const c130Manifest = await loadJson(paths.c130Manifest);
 const c130Route = await loadJson(paths.c130Route);
+const c130AuthorityReplay = await loadJson(paths.c130AuthorityReplay);
 
 assert.deepEqual(releaseAdapter.adapters.map((row) => row.role_id), ['A00', 'B10', 'D20', 'D60', 'D110']);
 assert.deepEqual(liveAdapter.adapters.map((row) => row.role_id), ['A00', 'B10', 'C30', 'C40', 'D20', 'D60', 'D110']);
@@ -118,6 +130,25 @@ assert.deepEqual(livePattern.families.map((row) => row.ordinal), Array.from({ le
 const allRoles = livePattern.families.flatMap((family) => family.roles);
 assert.equal(allRoles.length, 40);
 assert.equal(new Set(allRoles).size, 40);
+assert.equal(releasedV2Snapshot.snapshot.snapshot_id, predecessorSnapshotId);
+assert.equal(githubV06214Receipt.state, 'published_public_verified');
+assert.equal(githubV06214Receipt.version, '0.62.14');
+assert.equal(githubV06214Receipt.repository_public, true);
+assert.equal(githubV06214Receipt.release.tag, 'v0.62.14');
+assert.equal(githubV06214Receipt.release.draft, false);
+assert.equal(githubV06214Receipt.release.prerelease, false);
+assert.equal(githubV06214Receipt.anonymous_asset_readback.result, 'pass_112_of_112');
+assert.equal(githubV06214Receipt.anonymous_asset_readback.entries.length, 112);
+assert.equal(zenodoV06214Receipt.state, 'published_open_modular_backend_successor');
+assert.equal(zenodoV06214Receipt.version, '0.62.14');
+assert.equal(zenodoV06214Receipt.zenodo.version_doi, '10.5281/zenodo.22217240');
+assert.equal(zenodoV06214Receipt.zenodo.access_right, 'open');
+assert.equal(zenodoV06214Receipt.zenodo.anonymous_readback, 'pass_100_of_100');
+assert.equal(zenodoV06214Receipt.github_authority.anonymous_readback, 'pass_112_of_112');
+assert.equal(c130AuthorityReplay.state, 'pass_postpublication_authority_replay');
+assert.equal(c130AuthorityReplay.input_authorities.declared, 14);
+assert.equal(c130AuthorityReplay.input_authorities.locally_replayed, 14);
+assert.equal(c130AuthorityReplay.scope.package_or_owner_bytes_mutated, false);
 
 const familyIdByRole = new Map();
 for (const family of livePattern.families) {
@@ -128,17 +159,32 @@ for (const family of livePattern.families) {
 const snapshot = {
   snapshot_id: snapshotId,
   snapshot_kind: 'live_successor_overlay',
-  as_of: '2026-08-31T00:00:00Z',
-  central_release_version: 'v0.62.14-prepublication',
-  central_release_record_doi: null,
+  as_of: zenodoV06214Receipt.recorded_at_utc,
+  central_release_version: 'v0.62.14',
+  central_release_record_doi: zenodoV06214Receipt.zenodo.version_doi,
   mutable_overlay: true,
   supersedes: {
     snapshot_id: predecessorSnapshotId,
-    central_release_version: 'v0.62.13',
-    central_release_record_doi: '10.5281/zenodo.22207081',
-    source: fileRow(paths.releaseAdapter, await load(paths.releaseAdapter)),
+    central_release_version: 'v0.62.14-prepublication',
+    central_release_record_doi: zenodoV06214Receipt.zenodo.version_doi,
+    source: fileRow(paths.releasedV2Snapshot, await load(paths.releasedV2Snapshot)),
   },
-  public_replay_state: 'prepublication_local_validation_only',
+  public_replay_state: 'postpublication_release_assets_readback_complete',
+};
+
+const v06214AssetByName = new Map(githubV06214Receipt.anonymous_asset_readback.entries.map((row) => [row.name, row]));
+const publishedV06214Asset = (archive) => {
+  const asset = v06214AssetByName.get(basename(archive.path));
+  assert.ok(asset, `${archive.path}: missing from v0.62.14 anonymous GitHub readback`);
+  assert.equal(asset.anonymous_http_status, 200);
+  assert.equal(asset.anonymous_byte_identity, true);
+  assert.deepEqual({ bytes: asset.bytes, sha256: asset.sha256 }, { bytes: archive.bytes, sha256: archive.sha256 });
+  return {
+    admission_state: 'published',
+    release_url: githubV06214Receipt.release.url,
+    public_asset_url: asset.url,
+    public_replay_status: 'published_public_asset_readback_verified',
+  };
 };
 
 const numericFields = [
@@ -211,16 +257,7 @@ const judsonPackage = {
   proof_kind: 'reversible_lane_adapter',
   contract_version: '2.3.1',
   adapter_version: judsonBase.adapter_version,
-  admission_state: 'admitted_pending_release',
-  release_url: null,
-  public_asset_url: null,
-  planned_release: {
-    central_release_version: 'v0.62.14',
-    artifact_path: judsonAdmission.archive.path,
-    public_url_after_release: `https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia/v0.62.14/${judsonAdmission.archive.path}`,
-    state: 'planned_not_public',
-  },
-  public_replay_status: 'pending_release_local_seal_verified',
+  ...publishedV06214Asset(judsonAdmission.archive),
   adopted_capabilities: judsonBase.adopted_capabilities,
   known_limitations: judsonBase.known_limitations,
   archive: judsonAdmission.archive,
@@ -251,7 +288,7 @@ for (const roleId of ['C30', 'C40']) {
     native_family_id: judsonPackage.native_family_id,
     adapter_package_id: judsonPackage.package_id,
     learner_url: course.chapters[0].public_url,
-    central_learner_projection: { path: `docs/backend/judson/${roleId}.html`, status: 'pending_successor_release', locale: 'id-ID' },
+    central_learner_projection: { path: `docs/backend/judson/${roleId}.html`, status: 'published', locale: 'id-ID' },
     learner_runtime_relationship: 'directly_consumes_adapter_outputs',
     course_specific_route_count: course.chapters.length,
     scope_note: `${roleId} memilih ${course.chapters.length} rute bab dari satu graf Judson bersama; hitungan paket tidak diulang.`,
@@ -266,28 +303,28 @@ assert.equal(openLogicRoute.primary_learner_action.pages, 1116);
 assert.equal(openLogicAdmission.semantic_counts.units, 722);
 assert.equal(openLogicAdmission.semantic_counts.native_html_claimed, false);
 assert.equal(openLogicAdmission.semantic_counts.unit_or_page_anchors_claimed, false);
+const historicalOpenLogicPublicationLimit =
+  'Central adapter publication remains pending until GitHub and Zenodo readback of the successor release.';
+assert.ok(openLogicAdmission.limits.includes(historicalOpenLogicPublicationLimit));
+const currentOpenLogicLimitations = openLogicAdmission.limits.filter(
+  (item) => item !== historicalOpenLogicPublicationLimit,
+);
+assert.equal(currentOpenLogicLimitations.length, openLogicAdmission.limits.length - 1);
 const openLogicPackage = {
   package_id: openLogicManifest.package_id,
   native_family_id: familyIdByRole.get('C80'),
   proof_kind: 'reversible_lane_adapter',
   contract_version: '2.3.1',
   adapter_version: openLogicAdmission.extension_version,
-  admission_state: 'admitted_pending_release',
-  release_url: null,
-  public_asset_url: null,
-  planned_release: {
-    central_release_version: 'v0.62.14',
-    artifact_path: openLogicAdmission.archive.path,
-    public_url_after_release: `https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia/v0.62.14/${openLogicAdmission.archive.path}`,
-    state: 'planned_not_public',
-  },
-  public_replay_status: 'pending_release_local_seal_verified',
+  ...publishedV06214Asset(openLogicAdmission.archive),
   adopted_capabilities: [
     'stable_owner_module_identity', 'reversible_prior_v1_mappings', 'ordered_import_graph',
     'translation_state_evidence', 'component_rights', 'lossless_jsonl_csv_projection',
     'learner_pdf_authority',
   ],
-  known_limitations: openLogicAdmission.limits,
+  // Preserve only still-current limitations. The sealed admission's former
+  // publication-pending note was resolved and publicly read back in v0.62.14.
+  known_limitations: currentOpenLogicLimitations,
   archive: openLogicAdmission.archive,
   manifest: fileRow(paths.openLogicManifest, await load(paths.openLogicManifest)),
   canonical_records: 5807,
@@ -328,10 +365,10 @@ adapters.push({
   native_family_id: openLogicPackage.native_family_id,
   adapter_package_id: openLogicPackage.package_id,
   learner_url: openLogicRoute.primary_learner_action.url,
-  central_learner_projection: { path: 'docs/backend/openlogic/C80.html', status: 'pending_successor_release', locale: 'id-ID' },
+  central_learner_projection: { path: 'docs/backend/openlogic/C80.html', status: 'published', locale: 'id-ID' },
   learner_runtime_relationship: 'course_link_only_no_adapter_consumption_claim',
   course_specific_route_count: 0,
-  scope_note: 'Buka PDF Indonesia yang telah dibaca balik; data adapter tetap sekunder dan publikasi paket pusat masih tertunda.',
+  scope_note: 'Buka PDF Indonesia yang telah dibaca balik; data adapter tetap sekunder dan paket pusat telah dibaca balik pada rilis v0.62.14.',
 });
 
 assert.equal(c130Manifest.package_id, c130Admission.package_id);
@@ -357,16 +394,7 @@ const c130Package = {
   proof_kind: 'reversible_lane_adapter',
   contract_version: '2.3.1',
   adapter_version: c130Admission.extension_version,
-  admission_state: 'admitted_pending_release',
-  release_url: null,
-  public_asset_url: null,
-  planned_release: {
-    central_release_version: 'v0.62.14',
-    artifact_path: c130Admission.archive.path,
-    public_url_after_release: `https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia/v0.62.14/${c130Admission.archive.path}`,
-    state: 'planned_not_public',
-  },
-  public_replay_status: 'pending_release_local_seal_verified',
+  ...publishedV06214Asset(c130Admission.archive),
   adopted_capabilities: [
     'stable_owner_native_identity', 'typed_curriculum_graph', 'reversible_identity_crosswalks',
     'component_rights_assignments', 'lossless_jsonl_csv_projection', 'learner_pdf_authority',
@@ -409,7 +437,7 @@ adapters.push({
   native_family_id: c130Package.native_family_id,
   adapter_package_id: c130Package.package_id,
   learner_url: c130Route.primary_learner_action.url,
-  central_learner_projection: { path: 'docs/backend/c130/C130.html', status: 'pending_successor_release', locale: 'id-ID' },
+  central_learner_projection: { path: 'docs/backend/c130/C130.html', status: 'published', locale: 'id-ID' },
   learner_runtime_relationship: 'course_link_only_no_adapter_consumption_claim',
   course_specific_route_count: 7,
   scope_note: 'Buka landing course-native lalu PDF Indonesia; tujuh rute publik dipertahankan dan data mesin tetap sekunder.',
@@ -459,10 +487,10 @@ const summary = {
   package_deduplicated_canonical_records: packages.reduce((sum, row) => sum + row.canonical_records, 0),
 };
 assert.deepEqual(summary, {
-  curriculum_roles: 40, role_bindings: 9, published_role_bindings: 5, pending_role_bindings: 4,
-  distinct_adapter_packages: 8, published_adapter_packages: 5, pending_adapter_packages: 3,
+  curriculum_roles: 40, role_bindings: 9, published_role_bindings: 9, pending_role_bindings: 0,
+  distinct_adapter_packages: 8, published_adapter_packages: 8, pending_adapter_packages: 0,
   represented_native_families: 8, unbound_roles: 31, families_without_local_adapter: 25,
-  families_without_public_replay_complete_adapter: 28, package_deduplicated_canonical_records: 285829,
+  families_without_public_replay_complete_adapter: 25, package_deduplicated_canonical_records: 285829,
 });
 
 const adapterIndex = {
@@ -489,6 +517,8 @@ const sourceEvidence = [
   { source_id: 'immutable_pattern_v1', purpose: 'Temuan 33 keluarga pada rilis beku v0.62.13.', ...fileRow(paths.releasePattern, await load(paths.releasePattern)) },
   { source_id: 'live_pattern_overlay_input', purpose: 'Koreksi overlay yang dipertahankan sebagai input penerus, bukan v1 publik.', ...fileRow(paths.livePattern, await load(paths.livePattern)) },
   { source_id: 'methodology_v1', purpose: 'Metode perbandingan dan konvergensi yang sudah dipreservasi publik.', ...fileRow(paths.releaseMethod, await load(paths.releaseMethod)) },
+  { source_id: 'v06214_github_publication', purpose: 'Bukti baca-balik anonim 112 aset GitHub pada rilis v0.62.14.', ...fileRow(paths.githubV06214Receipt, await load(paths.githubV06214Receipt)) },
+  { source_id: 'v06214_zenodo_publication', purpose: 'Bukti rilis terbuka dan baca-balik anonim 100 berkas Zenodo v0.62.14.', ...fileRow(paths.zenodoV06214Receipt, await load(paths.zenodoV06214Receipt)) },
 ];
 const patternIndex = {
   $schema: 'https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/modular-backend-pattern-index-v2.schema.json',
@@ -551,6 +581,9 @@ const featureEvidence = [
   evidenceFromInput('openlogic_manifest', 'adapter_manifest', paths.openLogicManifest, 'Identitas dan tabel paket Open Logic.'),
   evidenceFromInput('c130_admission', 'adapter_admission', paths.c130Admission, 'Penerimaan lokal C130 dengan batas klaim.'),
   evidenceFromInput('c130_manifest', 'adapter_manifest', paths.c130Manifest, 'Identitas, tabel, dan proyeksi paket C130.'),
+  evidenceFromInput('c130_authority_replay', 'adapter_validation', paths.c130AuthorityReplay, 'Replay lokal 14/14 otoritas C130 setelah publikasi tanpa mutasi paket atau sumber native.'),
+  evidenceFromInput('v06214_github_publication', 'immutable_release', paths.githubV06214Receipt, 'Baca-balik anonim 112/112 aset GitHub v0.62.14.'),
+  evidenceFromInput('v06214_zenodo_publication', 'immutable_release', paths.zenodoV06214Receipt, 'Rilis terbuka Zenodo v0.62.14 dan baca-balik anonim 100/100 berkas.'),
   evidenceFromInput('terminology_concordance', 'terminology_evidence', paths.terminology, 'Bukti istilah Indonesia teratribusi; bukan verifikasi global.'),
   evidenceFromInput('terminology_policy', 'design_policy', paths.terminologyPolicy, 'Kebijakan konsep dan register Indonesia; keputusan peluang/probabilitas tetap menunggu bukti.'),
   evidenceFromInput('design_policy', 'design_policy', paths.designPolicy, 'Kebijakan kapsul tipis, netral-format, dan zero-copy.'),
@@ -590,7 +623,7 @@ const featureLedger = {
       feature('zero_copy_component_federation', 'Buku utama, donor, suplemen, edisi, dan tampilan kursus ditautkan tanpa menyalin prosa.', ['manager-federation', 'family-12-judson', 'family-20-operations-research'], ['design_policy', 'judson_manifest', 'c130_manifest', 'capsule_manifest'], 'implemented'),
     ] },
     { sequence: 7, layer_id: 'interoperability', label_id: 'Interoperabilitas dan adapter', status: 'adopted_partial', features: [
-      feature('reversible_native_identity_adapters', 'Adapter mempertahankan identitas native dan menyediakan proyeksi JSONL/CSV reversibel.', ['family-12-judson', 'family-15-open-logic', 'family-20-operations-research', 'family-32-mathematics-in-lean'], ['immutable_adapter_v1', 'judson_manifest', 'openlogic_manifest', 'c130_manifest', 'adapter_snapshot_v2'], 'partially_implemented', ['Delapan dari 33 keluarga memiliki paket lokal; lima telah dibaca balik publik pada snapshot ini.']),
+      feature('reversible_native_identity_adapters', 'Adapter mempertahankan identitas native dan menyediakan proyeksi JSONL/CSV reversibel.', ['family-12-judson', 'family-15-open-logic', 'family-20-operations-research', 'family-32-mathematics-in-lean'], ['immutable_adapter_v1', 'judson_manifest', 'openlogic_manifest', 'c130_manifest', 'c130_authority_replay', 'v06214_github_publication', 'v06214_zenodo_publication', 'adapter_snapshot_v2'], 'partially_implemented', ['Delapan dari 33 keluarga memiliki paket yang telah dibaca balik publik; 25 keluarga belum memiliki adapter umum.']),
     ] },
   ],
 };
@@ -612,6 +645,9 @@ const comparisonEvidence = [
   ['openlogic_manifest', 'adapter_manifest', paths.openLogicManifest, 'Manifest paket C80.', 'sealed_admission_byte'],
   ['c130_admission', 'adapter_admission', paths.c130Admission, 'Penerimaan lokal paket C130.', 'sealed_admission_byte'],
   ['c130_manifest', 'adapter_manifest', paths.c130Manifest, 'Manifest paket C130.', 'sealed_admission_byte'],
+  ['c130_authority_replay', 'adapter_validation', paths.c130AuthorityReplay, 'Replay 14/14 otoritas C130 setelah publikasi.', 'current_authority_byte'],
+  ['v06214_github_publication', 'immutable_release', paths.githubV06214Receipt, 'Baca-balik anonim 112/112 aset GitHub v0.62.14.', 'immutable_release_byte'],
+  ['v06214_zenodo_publication', 'immutable_release', paths.zenodoV06214Receipt, 'Rilis Zenodo terbuka dan baca-balik anonim 100/100 berkas.', 'immutable_release_byte'],
   ['terminology_concordance', 'terminology_evidence', paths.terminology, 'Bukti istilah sumber-native untuk QA terarah.', 'current_authority_byte'],
   ['terminology_policy', 'design_policy', paths.terminologyPolicy, 'Kebijakan normatif istilah dan register Indonesia berbasis konsep.', 'current_authority_byte'],
   ['design_policy', 'design_policy', paths.designPolicy, 'Kebijakan normatif kapsul tipis dan zero-copy.', 'current_authority_byte'],

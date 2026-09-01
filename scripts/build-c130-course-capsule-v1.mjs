@@ -11,12 +11,17 @@ const inputRoot = 'backend/course-capsule-v1/adapters/c130-v231';
 const outputRoot = 'docs/backend/c130';
 const archivePath = 'backend/course-capsule-v1/builds/program-matematika-indonesia-c130-operations-research-v2.3.1.zip';
 const admissionPath = `${inputRoot}/ADMISSION.json`;
+const authorityReplayPath = 'backend/course-capsule-v1/validation/C130_AUTHORITY_REPLAY_RECEIPT_20260901.json';
 const recordedAt = '2026-09-01';
 
 const expected = {
   archive: {
     bytes: 21213937,
     sha256: 'eb195d1aa555e9d5e639c1e35a08b6f4425be24cc93b7f1f633161e9cacee865',
+  },
+  authorityReplay: {
+    bytes: 2977,
+    sha256: '7cf3be9570c59f8fa1f35ea83b54e6ca2add842a19c65da3751a5a609dcdc09b',
   },
   checksums: {
     bytes: 6054,
@@ -328,6 +333,39 @@ assert.deepEqual(admission.owner_authority, {
 });
 assert.equal(admission.validation_scope.python_authority_validators_replayed, false);
 
+// ADMISSION.json is the preserved prepublication intake receipt. The bounded
+// postpublication authority replay is additive evidence and must not rewrite
+// that historical byte.
+const authorityReplayBytes = await readFile(resolve(root, authorityReplayPath));
+assert.deepEqual(identify(authorityReplayBytes), expected.authorityReplay);
+const authorityReplay = JSON.parse(authorityReplayBytes);
+assert.equal(authorityReplay.schema_id, 'interlanguage/c130-postpublication-authority-replay/v1');
+assert.equal(authorityReplay.state, 'pass_postpublication_authority_replay');
+assert.equal(authorityReplay.scope.course_id, 'C130');
+assert.equal(authorityReplay.scope.require_authorities, true);
+assert.equal(authorityReplay.scope.package_or_owner_bytes_mutated, false);
+assert.deepEqual(authorityReplay.package_archive, {
+  bytes: expected.archive.bytes,
+  sha256: expected.archive.sha256,
+  members: expected.package.files,
+  member_bytes: expected.package.bytes,
+  tree_sha256: expected.package.tree_sha256,
+});
+assert.equal(authorityReplay.input_authorities.declared, 14);
+assert.equal(authorityReplay.input_authorities.locally_replayed, 14);
+assert.equal(authorityReplay.validator.exit_code, 0);
+assert.equal(authorityReplay.validator.stderr_bytes, 0);
+assert.equal(authorityReplay.generic_replay.status, 'PASS');
+assert.equal(authorityReplay.generic_replay.canonical_records, semanticCounts.canonical_records);
+assert.equal(authorityReplay.generic_replay.credential_or_local_path_hits, 0);
+assert.equal(authorityReplay.c130_semantic_replay.status, 'PASS');
+assert.equal(authorityReplay.c130_semantic_replay.identity_crosswalks, semanticCounts.identity_crosswalks);
+assert.equal(authorityReplay.c130_semantic_replay.rights_assignments, semanticCounts.rights_assignments);
+assert.equal(authorityReplay.claim_boundaries.authority_gate_closed, true);
+const currentLimitations = admission.limits
+  .filter((item) => !item.includes("does not replay the package's Python authority validators"))
+  .concat('The packaged generic and C130 semantic validators were replayed postpublication with all 14 declared external authorities; this does not enlarge the package scope or rewrite owner-native bytes.');
+
 const allInputPaths = (await collectFiles()).sort(ordinal);
 assert.deepEqual(allInputPaths.filter((path) => path === 'ADMISSION.json'), ['ADMISSION.json']);
 const importedPaths = allInputPaths.filter((path) => path !== 'ADMISSION.json');
@@ -594,15 +632,22 @@ const route = {
     checksums: { path: `${inputRoot}/PACKAGE_CHECKSUMS.sha256`, ...expected.checksums, rows_verified: 64 },
     archive: admission.archive,
   },
-  limitations: admission.limits,
+  authority_replay: { path: authorityReplayPath, ...expected.authorityReplay, state: authorityReplay.state },
+  limitations: currentLimitations,
 };
 const routeBytes = Buffer.from(stable(route));
 
 const byKind = new Map(exactRoutePayloads.map((row) => [row.route_kind, row]));
 const title = `C130 — ${course.title}`;
-const html = `<!doctype html>
+let html = `<!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${escape(title)}</title><meta name="description" content="Buku 1 optimisasi linear dan integer Bahasa Indonesia, PDF 666 halaman, laboratorium solver terbuka, serta bukti adapter C130."><link rel="stylesheet" href="../backend.css"><style>main{max-width:900px;margin:2rem auto;padding:0 1rem}.actions{display:flex;flex-wrap:wrap;gap:.75rem;margin:1.25rem 0}.primary,.secondary{display:inline-flex;min-height:44px;align-items:center;padding:.65rem 1rem;border:2px solid currentColor;border-radius:.5rem;font-weight:700}.secondary{border-width:1px}.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(12rem,1fr));gap:.75rem}.facts div,details,.notice{padding:1rem;border:1px solid currentColor;border-radius:.5rem}.facts strong{display:block;font-size:1.35rem}.notice{border-left-width:4px}.machine-evidence li{margin:.65rem 0}code{overflow-wrap:anywhere}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}a:focus-visible,summary:focus-visible{outline:3px solid currentColor;outline-offset:4px}</style></head><body><main><nav aria-label="Navigasi"><a href="../index.html">← Kembali ke katalog program</a></nav><h1>${escape(title)}</h1><p><cite>Pemrograman Matematis dan Riset Operasi — Buku 1</cite> adalah edisi Bahasa Indonesia lengkap dengan laboratorium Pyomo dan HiGHS yang diatribusikan terpisah.</p><div class="actions"><a class="primary" data-route-kind="pages_learner_landing" href="${escape(byKind.get('pages_learner_landing').url)}">Buka halaman pembaca Bahasa Indonesia</a><a class="secondary" data-route-kind="linked_pdf" href="${escape(byKind.get('linked_pdf').url)}">Buka PDF langsung — 666 halaman</a></div><p class="notice">Identitas PDF yang diikat bukti publikasi pemilik: ${formatInteger(pdf.bytes)} byte, SHA-256 <code>${pdf.sha256}</code>. PDF memiliki teks Unicode, bookmark, dan tautan, tetapi belum bertag dan tidak diklaim sesuai PDF/UA.</p><section aria-labelledby="closure-title"><h2 id="closure-title">Cakupan adapter yang diterima</h2><div class="facts"><div><strong>${formatInteger(semanticCounts.units)}</strong>unit owner-native</div><div><strong>${formatInteger(semanticCounts.segments)}</strong>segmen zero-copy</div><div><strong>${formatInteger(semanticCounts.relations)}</strong>relasi bertipe</div><div><strong>${semanticCounts.routes}</strong>rute publik terurut</div></div></section><details><summary>Sumber dan preservasi</summary><ul><li><a data-route-kind="source_repository" href="${escape(byKind.get('source_repository').url)}">Repositori sumber Indonesia</a></li><li><a data-route-kind="zenodo_preservation_record" href="${escape(byKind.get('zenodo_preservation_record').url)}">Rekaman preservasi Zenodo versi ini</a></li></ul><p>GitHub Pages dan repositori adalah alamat yang dapat berubah; adapter mengikat commit <code>${owner.release_commit}</code>, tree <code>${owner.release_tree}</code>, dan rekaman Zenodo versi tetap.</p></details><details class="machine-evidence"><summary>Unduhan sekunder dan bukti mesin</summary><p>Mulai dari pembaca di atas. Sumber, laboratorium, dan backend berikut adalah unduhan sekunder.</p><ul><li><a data-route-kind="editable_source_download" href="${escape(byKind.get('editable_source_download').url)}">Unduh sumber edisi</a></li><li><a data-route-kind="computational_labs_download" href="${escape(byKind.get('computational_labs_download').url)}">Unduh laboratorium O018</a></li><li><a data-route-kind="owner_backend_download" href="${escape(byKind.get('owner_backend_download').url)}">Unduh backend modular pemilik</a></li><li><a href="learner-route.json">Rute pelajar dan batas klaim</a></li><li><a href="validation.json">Bukti validasi penerimaan lokal</a></li></ul><p>Adapter pusat memverifikasi ${expected.package.files} berkas direktori dan anggota ZIP secara identik-byte. Validator Python pemilik tidak diputar ulang oleh halaman ini. Tidak ada HTML bab native, jangkar unit/halaman, mesin asesmen, atau kebenaran semantik hasil laboratorium yang diklaim ulang.</p></details></main></body></html>
 `;
+const staleAuthoritySentence = 'Validator Python pemilik tidak diputar ulang oleh halaman ini.';
+assert.equal(html.split(staleAuthoritySentence).length - 1, 1, 'Historical C130 validator wording drift');
+html = html.replace(
+  staleAuthoritySentence,
+  'Validator generik dan semantik C130 telah diputar ulang terhadap seluruh 14 otoritas eksternal dan lulus tanpa mengubah byte paket atau sumber pemilik.',
+);
 const htmlBytes = Buffer.from(html);
 const machineEvidenceOffset = html.indexOf('<details class="machine-evidence">');
 assert.ok(machineEvidenceOffset > 0, 'Machine-evidence section is absent');
@@ -651,16 +696,17 @@ const validation = {
     machine_downloads_are_secondary: true,
     guessed_descendant_anchors: 0,
   },
+  authority_replay: { path: authorityReplayPath, ...expected.authorityReplay, state: authorityReplay.state },
   claim_boundaries: {
     aggregate_program_conformance_claimed: false,
     native_html_claimed: false,
     pdf_ua_claimed: false,
-    python_authority_validators_replayed: false,
+    python_authority_validators_replayed: true,
     textbook_body_centralized: false,
     current_mutable_url_availability_claimed: false,
   },
   javascript_required: false,
-  limitations: admission.limits,
+  limitations: currentLimitations,
   outputs: {
     'C130.html': identify(htmlBytes),
     'learner-route.json': identify(routeBytes),
