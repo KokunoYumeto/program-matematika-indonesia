@@ -76,7 +76,7 @@ PATHS = (
     "peta-belajar-luring.html",
 )
 DESTINATION = (
-    ROOT / "backend/course-capsule-v1/validation/PUBLIC_SITE_READBACK_v0.62.13.json"
+    ROOT / "backend/course-capsule-v1/validation/PUBLIC_SITE_READBACK_v0.62.16.json"
 )
 
 
@@ -146,8 +146,8 @@ def main() -> None:
     parser.add_argument("--local", action="store_true", help="check the retained localhost curriculum preview")
     parser.add_argument(
         "--receipt-version",
-        default="v0.62.14",
-        choices=("v0.62.13", "v0.62.14", "v0.62.15"),
+        default="v0.62.16",
+        choices=("v0.62.13", "v0.62.14", "v0.62.15", "v0.62.16"),
     )
     args = parser.parse_args()
     DESTINATION = ROOT / f"backend/course-capsule-v1/validation/PUBLIC_SITE_READBACK_{args.receipt_version}.json"
