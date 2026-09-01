@@ -1,4 +1,12 @@
 const dataUrl = '../data/course-capsule-v1/course-capsules.json';
+// CLP v0.62.17 is an additive successor projection.  Prefer the generated
+// capsule-sidecar mirror, then fall back to its explicitly versioned public
+// mirror when the generic projection has not yet been copied into a staging
+// tree.  Neither path changes the historical v0.62.16 snapshot.
+const learnerReaderActionsUrls = [
+  '../data/course-capsule-v1/learner-reader-actions-v1.json',
+  '../data/clp-successor/v0.62.17/learner-reader-actions-v1.json',
+];
 
 const viewDescriptions = {
   learner: 'Buka edisi, lihat prasyarat, dan temukan format daring atau luring yang benar-benar tersedia.',
@@ -49,6 +57,7 @@ const resourceLabels = {
 const state = { view: 'learner', query: '', level: 'all', courseState: 'all' };
 let courses = [];
 let dataReady = false;
+let learnerReaderActionsByCourseId = new Map();
 
 const grid = document.querySelector('#course-grid');
 const search = document.querySelector('#course-search');
@@ -94,28 +103,78 @@ const learnerToolLink = (tool, courseId) => {
   return '<a class="learner-tool' + (tool.primary ? ' primary' : '') + '" href="' + escapeHtml(href) + '" title="' + escapeHtml(tool.scope) + '">' + escapeHtml(tool.label) + '<span class="sr-only"> — ' + escapeHtml(courseId) + '</span></a>';
 };
 
+const clpCourseIds = ['B20', 'B30', 'B50', 'B60'];
+const readerActionLink = (action, courseId) => '<a class="reader-action" href="' + escapeHtml(action.url) + '"' + external + '>' + escapeHtml(action.label ?? (courseId + ' — ' + action.role)) + ' <span aria-hidden="true">↗</span>' + externalHint + '</a>';
+
+const validateReaderActionSidecar = (payload) => {
+  if (!payload || payload.schema_id !== 'interlanguage/learner-reader-actions/v1') throw new Error('schema_id tidak cocok');
+  if (payload.schema_version !== '1.0.0' || payload.locale !== 'id-ID' || payload.status !== 'verified_route_evidence_projection') throw new Error('status sidecar tidak cocok');
+  const actions = Array.isArray(payload.actions) ? payload.actions : [];
+  if (actions.length !== 7) throw new Error('sidecar CLP harus memuat tujuh aksi pembaca');
+  if (new Set(actions.map((action) => action.action_id)).size !== 7) throw new Error('action_id sidecar tidak unik');
+  if (JSON.stringify([...new Set(actions.map((action) => action.course_id))].sort()) !== JSON.stringify(clpCourseIds)) throw new Error('cakupan kursus sidecar tidak cocok');
+  if (JSON.stringify(actions.map((action) => action.order)) !== JSON.stringify([1, 2, 3, 4, 5, 6, 7])) throw new Error('urutan sidecar tidak cocok');
+  for (const action of actions) {
+    if (!/^(B20|B30|B50|B60):reader:[a-z]+$/u.test(action.action_id)) throw new Error('action_id CLP tidak valid');
+    if (!clpCourseIds.includes(action.course_id)) throw new Error('course_id CLP tidak valid');
+    if (action.state !== 'verified' || action.format !== 'application/pdf' || action.route_granularity !== 'whole_file_only') throw new Error('aksi CLP bukan PDF whole-file terverifikasi');
+    if (!Number.isInteger(action.pages) || action.pages <= 0 || !Number.isInteger(action.bytes) || action.bytes <= 0) throw new Error('ukuran aksi CLP tidak valid');
+    if (!/^[0-9a-f]{64}$/iu.test(action.sha256) || !publicEvidenceUrl(action.url)) throw new Error('identitas publik aksi CLP tidak valid');
+  }
+  const summary = payload.summary ?? {};
+  if (summary.course_count !== 4 || summary.action_count !== 7 || summary.verified_action_count !== 7 || summary.pages !== 4077 || summary.bytes !== 35639691) throw new Error('ringkasan sidecar CLP tidak cocok');
+  if (actions.reduce((total, action) => total + action.pages, 0) !== summary.pages || actions.reduce((total, action) => total + action.bytes, 0) !== summary.bytes) throw new Error('jumlah sidecar CLP tidak cocok');
+  return new Map(clpCourseIds.map((courseId) => [
+    courseId,
+    actions.filter((action) => action.course_id === courseId).sort((left, right) => left.order - right.order),
+  ]));
+};
+
+const loadReaderActions = async () => {
+  let lastError;
+  for (const url of learnerReaderActionsUrls) {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error('HTTP ' + response.status);
+      return validateReaderActionSidecar(await response.json());
+    } catch (error) {
+      lastError = error;
+    }
+  }
+  if (lastError) console.warn?.('Rute pembaca CLP tidak dimuat:', lastError);
+  return new Map();
+};
+
 const learnerPanel = (capsule) => {
   const layer = capsule.layers.learner;
   if (capsule.locale !== 'id-ID') {
     return '<p class="empty-note">Rute pelajar disembunyikan karena locale kapsul tidak terverifikasi sebagai Bahasa Indonesia.</p>';
   }
   const tools = (layer.tools ?? []).filter((tool) => tool.state === 'verified' && tool.machine_data_is_learner_destination === false);
+  const readerActions = learnerReaderActionsByCourseId.get(capsule.course_id) ?? [];
+  const readerActionHrefs = new Set(readerActions.map((action) => action.url));
   const actionRows = [
+    ...readerActions.map((action) => ({ href: action.url, preserveDuplicate: true, html: readerActionLink(action, capsule.course_id) })),
     ...tools.map((tool) => ({ href: '../' + tool.href.replace(/^\/+/, ''), html: learnerToolLink(tool, capsule.course_id) })),
-    { href: layer.primary?.url, html: deliveryLink(layer.primary, 'Buka sumber utama — ' + capsule.course_id, true, ['text/html', 'application/pdf', 'application/epub+zip', 'application/zip+html']) },
+    ...(readerActionHrefs.has(layer.primary?.url) ? [] : [{ href: layer.primary?.url, html: deliveryLink(layer.primary, 'Buka sumber utama — ' + capsule.course_id, true, ['text/html', 'application/pdf', 'application/epub+zip', 'application/zip+html']) }]),
     { href: layer.online_html?.url, html: deliveryLink(layer.online_html, 'Baca daring — ' + capsule.course_id, false, ['text/html']) },
     { href: layer.pdf?.url, html: deliveryLink(layer.pdf, 'PDF — ' + capsule.course_id, false, ['application/pdf']) },
     { href: layer.epub?.url, html: deliveryLink(layer.epub, 'EPUB — ' + capsule.course_id, false, ['application/epub+zip']) },
     { href: layer.portable_html?.url, html: deliveryLink(layer.portable_html, 'HTML luring — ' + capsule.course_id, false, ['application/zip+html']) },
   ].filter((row) => row.html);
-  const seenHrefs = new Set();
-  const actions = actionRows.filter(({ href }) => {
+  // Seed de-duplication with sidecar destinations.  The seven sidecar rows
+  // are retained even when a capsule's legacy `pdf`/`primary` field points at
+  // the same file; generic aliases should not create extra duplicate buttons.
+  const seenHrefs = new Set(readerActions.map((action) => action.url));
+  const actions = actionRows.filter(({ href, preserveDuplicate }) => {
+    if (preserveDuplicate) return true;
     if (seenHrefs.has(href)) return false;
     seenHrefs.add(href);
     return true;
   }).map(({ html }) => html).join('');
   return [
     '<div class="status-line"><span>Kesiapan akses</span><strong>' + escapeHtml(statusLabel(layer.status)) + '</strong></div>',
+    readerActions.length ? '<div class="status-line"><span>Rute pembaca CLP</span><strong>' + readerActions.length + '</strong></div>' : '',
     tools.length ? '<div class="status-line"><span>Alat belajar terverifikasi</span><strong>' + tools.length + '</strong></div>' : '',
     '<div class="status-line"><span>HTML semantik</span><strong>' + escapeHtml(statusLabel(layer.capabilities.semantic_html)) + '</strong></div>',
     '<div class="status-line"><span>Format cetak</span><strong>' + escapeHtml(statusLabel(layer.capabilities.print_profile)) + '</strong></div>',
@@ -269,6 +328,11 @@ try {
   if (!response.ok) throw new Error('HTTP ' + response.status);
   courses = await response.json();
   if (!Array.isArray(courses) || courses.length !== 40) throw new Error('Jumlah mata kuliah tidak cocok.');
+  // Fetch the small successor sidecar only after the catalog response has
+  // succeeded.  This keeps the offline/rejected-catalog path non-blocking,
+  // while making the seven CLP actions available in the first successful
+  // render whenever the public sidecar is reachable.
+  learnerReaderActionsByCourseId = await loadReaderActions();
   dataReady = true;
   document.querySelector('#summary-total').textContent = courses.length;
   document.querySelector('#summary-published').textContent = courses.filter((item) => item.course.state === 'published').length;

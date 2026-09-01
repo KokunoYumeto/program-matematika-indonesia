@@ -1,0 +1,276 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-reader-actions-v1.schema.json",
+  "title": "CLP v2.3.1 learner reader actions sidecar",
+  "description": "Strict seven-action projection of the sealed CLP learner route evidence. It claims whole-file PDF routes only.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["$schema", "schema_id", "schema_version", "snapshot_id", "locale", "status", "source", "actions", "summary"],
+  "properties": {
+    "$schema": {
+      "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v1/learner-reader-actions-v1.schema.json"
+    },
+    "schema_id": {
+      "const": "interlanguage/learner-reader-actions/v1"
+    },
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "snapshot_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "locale": {
+      "const": "id-ID"
+    },
+    "status": {
+      "const": "verified_route_evidence_projection"
+    },
+    "source": {
+      "$ref": "#/$defs/source"
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "$ref": "#/$defs/action"
+      }
+    },
+    "summary": {
+      "$ref": "#/$defs/summary"
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "relativePath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^(?![A-Za-z]:[\\\\/])(?!\\\\\\\\)(?!/)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+    },
+    "httpsUrl": {
+      "type": "string",
+      "pattern": "^https://[^\\s]+$"
+    },
+    "source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "bytes", "sha256", "schema_id", "generated_utc", "sealed_authority"],
+      "properties": {
+        "path": {
+          "$ref": "#/$defs/relativePath"
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "schema_id": {
+          "enum": [
+            "clp-family-v231/learner-primary-route-evidence/v1",
+            "interlanguage/clp-learner-route-input/v1"
+          ]
+        },
+        "generated_utc": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "sealed_authority": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["schema_id", "generated_utc", "bytes", "sha256"],
+          "properties": {
+            "schema_id": {
+              "const": "clp-family-v231/learner-primary-route-evidence/v1"
+            },
+            "generated_utc": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "bytes": {
+              "const": 28779
+            },
+            "sha256": {
+              "const": "d806aee1d1ac177d9ad41844d847f5d4d1abf6895de47b6eedbb7c5e17c262e9"
+            }
+          }
+        }
+      }
+    },
+    "offline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["initial_fetch_requires_network", "post_download_reading_is_offline", "dependency_free_after_download"],
+      "properties": {
+        "initial_fetch_requires_network": {
+          "const": true
+        },
+        "post_download_reading_is_offline": {
+          "const": true
+        },
+        "dependency_free_after_download": {
+          "const": true
+        }
+      }
+    },
+    "evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "locator", "record_id", "source_json_pointer", "status", "version_doi"],
+      "properties": {
+        "kind": {
+          "const": "receipt_bound_anonymous_public_readback"
+        },
+        "locator": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "record_id": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "source_json_pointer": {
+          "type": "string",
+          "pattern": "^(?:/courses/[0-3]/readers/[0-1]|/routes/[0-6])$"
+        },
+        "status": {
+          "const": "pass_receipt_bound"
+        },
+        "version_doi": {
+          "type": "string",
+          "pattern": "^10\\.5281/zenodo\\.[0-9]+$"
+        }
+      }
+    },
+    "action": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "action_id", "course_id", "volume", "order", "course_order", "label", "title",
+        "role", "kind", "learner_surface_role", "format", "scope", "pages", "bytes",
+        "sha256", "license", "filename", "url", "state", "verification_scope",
+        "route_granularity", "anchor_status", "offline", "evidence"
+      ],
+      "properties": {
+        "action_id": {
+          "type": "string",
+          "pattern": "^(B20|B30|B50|B60):reader:(textbook|problembook|combined)$"
+        },
+        "course_id": {
+          "enum": ["B20", "B30", "B50", "B60"]
+        },
+        "volume": {
+          "enum": ["CLP1", "CLP2", "CLP3", "CLP4"]
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 7
+        },
+        "course_order": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 2
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "role": {
+          "enum": ["textbook", "problembook", "combined_textbook_problembook"]
+        },
+        "kind": {
+          "enum": ["textbook", "problembook", "combined_textbook_problembook"]
+        },
+        "learner_surface_role": {
+          "enum": ["default_primary", "learner_primary_companion"]
+        },
+        "format": {
+          "const": "application/pdf"
+        },
+        "scope": {
+          "enum": ["whole_course", "whole_course_companion", "whole_course_combined_reader"]
+        },
+        "pages": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "bytes": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "license": {
+          "const": "CC BY-NC-SA 4.0"
+        },
+        "filename": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[^/\\\\]+$"
+        },
+        "url": {
+          "$ref": "#/$defs/httpsUrl"
+        },
+        "state": {
+          "const": "verified"
+        },
+        "verification_scope": {
+          "const": "pass_receipt_bound"
+        },
+        "route_granularity": {
+          "const": "whole_file_only"
+        },
+        "anchor_status": {
+          "const": "not_established"
+        },
+        "offline": {
+          "$ref": "#/$defs/offline"
+        },
+        "evidence": {
+          "$ref": "#/$defs/evidence"
+        }
+      }
+    },
+    "summary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["course_count", "action_count", "pages", "bytes", "verified_action_count", "route_granularity", "native_html_claimed", "chapter_or_unit_routes_claimed"],
+      "properties": {
+        "course_count": {
+          "const": 4
+        },
+        "action_count": {
+          "const": 7
+        },
+        "pages": {
+          "const": 4077
+        },
+        "bytes": {
+          "const": 35639691
+        },
+        "verified_action_count": {
+          "const": 7
+        },
+        "route_granularity": {
+          "const": "whole_file_only"
+        },
+        "native_html_claimed": {
+          "const": false
+        },
+        "chapter_or_unit_routes_claimed": {
+          "const": false
+        }
+      }
+    }
+  }
+}

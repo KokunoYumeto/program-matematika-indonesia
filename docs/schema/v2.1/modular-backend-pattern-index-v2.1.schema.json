@@ -1,0 +1,413 @@
+{
+  "$defs": {
+    "adapterBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_package_id": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "admission_state": {
+          "enum": [
+            "published",
+            "admitted_pending_release"
+          ]
+        },
+        "public_replay_status": {
+          "enum": [
+            "pending_release_local_seal_verified",
+            "published_public_asset_readback_verified"
+          ]
+        },
+        "role_id": {
+          "pattern": "^[A-D][0-9]{2,3}$",
+          "type": "string"
+        }
+      },
+      "required": [
+        "role_id",
+        "adapter_package_id",
+        "admission_state",
+        "public_replay_status"
+      ],
+      "type": "object"
+    },
+    "family": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_bindings": {
+          "items": {
+            "$ref": "#/$defs/adapterBinding"
+          },
+          "type": "array"
+        },
+        "core_pattern": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "demonstrated_strengths": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "family_name": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "learner_runtime_status": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "limitations": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "native_family_id": {
+          "pattern": "^family-[0-9]{2}-[a-z0-9-]+$",
+          "type": "string"
+        },
+        "ordinal": {
+          "maximum": 33,
+          "minimum": 1,
+          "type": "integer"
+        },
+        "recommended_reuse": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "reversible_exchange_status": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "roles": {
+          "items": {
+            "pattern": "^[A-D][0-9]{2,3}$",
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "ordinal",
+        "native_family_id",
+        "roles",
+        "family_name",
+        "core_pattern",
+        "demonstrated_strengths",
+        "limitations",
+        "learner_runtime_status",
+        "reversible_exchange_status",
+        "recommended_reuse",
+        "adapter_bindings"
+      ],
+      "type": "object"
+    },
+    "fileIdentity": {
+      "additionalProperties": false,
+      "properties": {
+        "bytes": {
+          "minimum": 1,
+          "type": "integer"
+        },
+        "path": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      },
+      "required": [
+        "path",
+        "bytes",
+        "sha256"
+      ],
+      "type": "object"
+    },
+    "sha256": {
+      "pattern": "^[0-9a-f]{64}$",
+      "type": "string"
+    },
+    "stringArray": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.1/modular-backend-pattern-index-v2.1.schema.json",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "const": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2.1/modular-backend-pattern-index-v2.1.schema.json"
+    },
+    "adapter_snapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "adapter_index": {
+          "$ref": "#/$defs/fileIdentity"
+        },
+        "distinct_adapter_packages": {
+          "maximum": 40,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "families_without_local_adapter": {
+          "maximum": 33,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "families_without_public_replay_complete_adapter": {
+          "maximum": 33,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "pending_role_bindings": {
+          "maximum": 40,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "published_role_bindings": {
+          "maximum": 40,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "represented_native_families": {
+          "maximum": 33,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "role_bindings": {
+          "maximum": 40,
+          "minimum": 0,
+          "type": "integer"
+        },
+        "unbound_roles": {
+          "maximum": 40,
+          "minimum": 0,
+          "type": "integer"
+        }
+      },
+      "required": [
+        "adapter_index",
+        "role_bindings",
+        "published_role_bindings",
+        "pending_role_bindings",
+        "distinct_adapter_packages",
+        "represented_native_families",
+        "unbound_roles",
+        "families_without_local_adapter",
+        "families_without_public_replay_complete_adapter"
+      ],
+      "type": "object"
+    },
+    "audit_axes": {
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "minItems": 1,
+      "type": "array",
+      "uniqueItems": true
+    },
+    "canonical_recommendation": {
+      "additionalProperties": false,
+      "properties": {
+        "canonical_exchange": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "central_hub_behavior": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "generated_views": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "generated_views_are_authoritative": {
+          "const": false
+        },
+        "optional_capability_shards": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "preserve": {
+          "$ref": "#/$defs/stringArray"
+        },
+        "required_thin_signed_capsule": {
+          "$ref": "#/$defs/stringArray"
+        }
+      },
+      "required": [
+        "preserve",
+        "required_thin_signed_capsule",
+        "optional_capability_shards",
+        "canonical_exchange",
+        "generated_views",
+        "generated_views_are_authoritative",
+        "central_hub_behavior"
+      ],
+      "type": "object"
+    },
+    "families": {
+      "items": {
+        "$ref": "#/$defs/family"
+      },
+      "maxItems": 33,
+      "minItems": 33,
+      "type": "array"
+    },
+    "locale": {
+      "const": "id-ID"
+    },
+    "methodology": {
+      "additionalProperties": false,
+      "properties": {
+        "comparison_policy": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "denominator": {
+          "additionalProperties": false,
+          "properties": {
+            "manager_federation_is_separate_synthesis_candidate": {
+              "const": true
+            },
+            "native_implementation_families": {
+              "const": 33
+            },
+            "program_roles": {
+              "const": 40
+            }
+          },
+          "required": [
+            "program_roles",
+            "native_implementation_families",
+            "manager_federation_is_separate_synthesis_candidate"
+          ],
+          "type": "object"
+        },
+        "design_premise": {
+          "minLength": 1,
+          "type": "string"
+        },
+        "evidence_basis": {
+          "items": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "minItems": 1,
+          "type": "array",
+          "uniqueItems": true
+        },
+        "stages": {
+          "items": {
+            "additionalProperties": false,
+            "properties": {
+              "description_id": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "sequence": {
+                "maximum": 4,
+                "minimum": 1,
+                "type": "integer"
+              },
+              "stage_id": {
+                "enum": [
+                  "inventory_native_designs",
+                  "compare_common_axes",
+                  "adopt_evidenced_features",
+                  "publish_validate_reaudit"
+                ]
+              }
+            },
+            "required": [
+              "sequence",
+              "stage_id",
+              "description_id"
+            ],
+            "type": "object"
+          },
+          "maxItems": 4,
+          "minItems": 4,
+          "type": "array"
+        }
+      },
+      "required": [
+        "design_premise",
+        "comparison_policy",
+        "denominator",
+        "stages",
+        "evidence_basis"
+      ],
+      "type": "object"
+    },
+    "recorded_at": {
+      "format": "date",
+      "type": "string"
+    },
+    "schema_id": {
+      "const": "interlanguage/program-matematika-indonesia-modular-backend-pattern-index/v2.1"
+    },
+    "schema_version": {
+      "const": "2.1.0"
+    },
+    "snapshot": {
+      "$ref": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/v2/v23-adapter-index-v2.schema.json#/$defs/snapshot"
+    },
+    "source_evidence": {
+      "items": {
+        "additionalProperties": false,
+        "properties": {
+          "bytes": {
+            "minimum": 1,
+            "type": "integer"
+          },
+          "path": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "purpose": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "sha256": {
+            "$ref": "#/$defs/sha256"
+          },
+          "source_id": {
+            "pattern": "^[a-z0-9_-]+$",
+            "type": "string"
+          }
+        },
+        "required": [
+          "source_id",
+          "purpose",
+          "path",
+          "bytes",
+          "sha256"
+        ],
+        "type": "object"
+      },
+      "minItems": 2,
+      "type": "array",
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "$schema",
+    "schema_id",
+    "schema_version",
+    "recorded_at",
+    "locale",
+    "snapshot",
+    "methodology",
+    "audit_axes",
+    "canonical_recommendation",
+    "adapter_snapshot",
+    "source_evidence",
+    "families"
+  ],
+  "title": "Program Matematika Indonesia snapshot-aware backend pattern index v2.1 (successor counts)",
+  "type": "object"
+}

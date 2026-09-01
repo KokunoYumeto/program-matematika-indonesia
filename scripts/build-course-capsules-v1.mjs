@@ -233,6 +233,12 @@ const capsules = effectiveCourses.map((course) => {
     locator: educatorOverride.locator,
     verified_date: educatorOverride.verified_date ?? overrides.recorded_date,
     note: 'Capability evidence is indexed without copying the course-native content.',
+    ...(Number.isInteger(educatorOverride.bytes) && educatorOverride.bytes > 0
+      ? { bytes: educatorOverride.bytes }
+      : {}),
+    ...(typeof educatorOverride.sha256 === 'string' && /^[0-9a-f]{64}$/.test(educatorOverride.sha256)
+      ? { sha256: educatorOverride.sha256 }
+      : {}),
   }] : [];
   const educatorStatus = educatorOverride?.status
     ?? (educatorFeatures.size || educatorResources.length

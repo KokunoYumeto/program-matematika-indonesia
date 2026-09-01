@@ -10,6 +10,11 @@ const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const html = await readFile(resolve(project, 'docs/backend/index.html'), 'utf8');
 const source = await readFile(resolve(project, 'docs/backend/backend.js'), 'utf8');
 const courses = JSON.parse(await readFile(resolve(project, 'docs/data/course-capsule-v1/course-capsules.json'), 'utf8'));
+const catalogUrl = '../data/course-capsule-v1/course-capsules.json';
+const canonicalReaderActionsUrl = '../data/course-capsule-v1/learner-reader-actions-v1.json';
+const canonicalReaderActions = JSON.parse(await readFile(resolve(project, 'docs/data/course-capsule-v1/learner-reader-actions-v1.json'), 'utf8'));
+assert.equal(canonicalReaderActions.schema_id, 'interlanguage/learner-reader-actions/v1');
+assert.equal(canonicalReaderActions.actions.length, 7);
 const fallback = html.split('<!-- COURSE-FALLBACK:START -->')[1].split('<!-- COURSE-FALLBACK:END -->')[0];
 const staticIds = [...fallback.matchAll(/data-static-course-id="([^"]+)"/g)].map((match) => match[1]);
 assert.equal(staticIds.length, 40);
@@ -96,13 +101,28 @@ for (const [name, fetch] of [
 }
 {
   const f = fixture();
-  await runModule(f.document, async () => ({ ok: true, json: async () => structuredClone(courses) }), quietConsole);
+  const requestedUrls = [];
+  const fetchSuccessFixture = async (url) => {
+    requestedUrls.push(url);
+    if (url === catalogUrl) return { ok: true, json: async () => structuredClone(courses) };
+    if (url === canonicalReaderActionsUrl) return { ok: true, json: async () => structuredClone(canonicalReaderActions) };
+    throw new Error('unexpected fixture URL: ' + url);
+  };
+  await runModule(f.document, fetchSuccessFixture, quietConsole);
+  assert.deepEqual(requestedUrls, [catalogUrl, canonicalReaderActionsUrl]);
   assert.ok(f.controls.every((control) => !control.disabled));
   const visibleCount = () => (f.element('#course-grid').innerHTML.match(/data-course-id=/g) ?? []).length;
   assert.equal(visibleCount(), 40);
   assert.match(f.element('#course-grid').innerHTML, />Baca daring — [A-D][0-9]{2,3} — bagian kursus /);
   const learnerCards = [...f.element('#course-grid').innerHTML.matchAll(/<article class="course-card"[^>]*>([\s\S]*?)<\/article>/g)];
   assert.equal(learnerCards.length, 40);
+  const clpReaderLinksByCourse = Object.fromEntries(['B20', 'B30', 'B50', 'B60'].map((courseId) => [courseId, 0]));
+  for (const [, cardHtml] of learnerCards) {
+    const courseId = cardHtml.match(/<span class="course-code">(B20|B30|B50|B60)<\/span>/)?.[1];
+    if (courseId) clpReaderLinksByCourse[courseId] = (cardHtml.match(/class="reader-action"/g) ?? []).length;
+  }
+  assert.deepEqual(clpReaderLinksByCourse, { B20: 2, B30: 1, B50: 2, B60: 2 });
+  assert.equal(Object.values(clpReaderLinksByCourse).reduce((total, count) => total + count, 0), 7);
   for (const [, cardHtml] of learnerCards) {
     const hrefs = [...cardHtml.matchAll(/href="([^"]+)"/g)].map((match) => match[1]);
     assert.equal(new Set(hrefs).size, hrefs.length, 'Learner card contains a duplicate destination.');
@@ -116,7 +136,7 @@ for (const [name, fetch] of [
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
   const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
-  assert.equal(adapterCount, 10);
+  assert.equal(adapterCount, 14);
   for (const [value, count] of [['published', 35], ['production', 5], ['educator', 21], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');

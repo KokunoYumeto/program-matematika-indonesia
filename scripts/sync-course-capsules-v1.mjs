@@ -1,11 +1,19 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
+import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
+const successorSidecarSource = 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json';
+const successorSidecarSchemaSource = 'schemas/v1/learner-reader-actions-v1.schema.json';
+const successorSidecarTargets = [
+  'backend/course-capsule-v1/generated/learner-reader-actions-v1.json',
+  'docs/data/course-capsule-v1/learner-reader-actions-v1.json',
+];
+const successorSidecarAvailable = existsSync(resolve(project, successorSidecarSource));
 const mappings = [
   ['backend/course-capsule-v1/generated/course-capsules.jsonl', 'docs/data/course-capsule-v1/course-capsules.jsonl'],
   ['backend/course-capsule-v1/generated/course-capsules.json', 'docs/data/course-capsule-v1/course-capsules.json'],
@@ -28,6 +36,8 @@ const mappings = [
   ['schemas/course-capsule-v1/public-baseline-v1.schema.json', 'docs/schema/course-capsule-v1/public-baseline-v1.schema.json'],
   ['schemas/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'docs/schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json'],
   ['schemas/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', 'docs/schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json'],
+  ...(existsSync(resolve(project, successorSidecarSchemaSource)) ? [[successorSidecarSchemaSource, 'docs/schema/v1/learner-reader-actions-v1.schema.json']] : []),
+  ...(successorSidecarAvailable ? successorSidecarTargets.map((target) => [successorSidecarSource, target]) : []),
 ];
 
 const sourceEntries = await Promise.all(mappings.map(async ([source, target]) => [
@@ -40,6 +50,7 @@ const jsonlBytes = sourceBytesByPath.get('backend/course-capsule-v1/generated/co
 const jsonBytes = sourceBytesByPath.get('backend/course-capsule-v1/generated/course-capsules.json');
 const manifestBytes = sourceBytesByPath.get('backend/course-capsule-v1/generated/manifest.json');
 const receiptBytes = sourceBytesByPath.get('backend/course-capsule-v1/validation/VALIDATION_RECEIPT.json');
+const successorSidecarBytes = sourceBytesByPath.get(successorSidecarSource);
 const rows = JSON.parse(jsonBytes.toString('utf8'));
 const jsonlText = jsonlBytes.toString('utf8');
 assert.ok(jsonlText.endsWith('\n'), 'Canonical JSONL must end with LF.');
@@ -107,6 +118,64 @@ assert.deepEqual(receipt.artifacts.course_capsules_json, {
   path: 'generated/course-capsules.json',
   sha256: sha256(jsonBytes),
 });
+
+// The CLP successor reader routes are intentionally a separate, additive
+// projection.  Keep this old capsule sync runnable when the successor
+// authority is not present, but validate every successor row whenever it is
+// available so a malformed sidecar can never become a learner link.
+let readerActionsByCourseId = new Map();
+let successorSidecarSummary = null;
+if (successorSidecarBytes) {
+  const sidecar = JSON.parse(successorSidecarBytes.toString('utf8'));
+  assert.equal(sidecar.schema_id, 'interlanguage/learner-reader-actions/v1');
+  assert.equal(sidecar.schema_version, '1.0.0');
+  assert.equal(sidecar.locale, 'id-ID');
+  assert.equal(sidecar.status, 'verified_route_evidence_projection');
+  const actions = Array.isArray(sidecar.actions) ? sidecar.actions : [];
+  assert.equal(actions.length, 7, 'CLP successor sidecar must contain seven reader actions.');
+  assert.deepEqual([...new Set(actions.map(({ action_id }) => action_id))].length, 7);
+  assert.deepEqual([...new Set(actions.map(({ course_id }) => course_id))].sort(), ['B20', 'B30', 'B50', 'B60']);
+  assert.deepEqual(actions.map(({ order }) => order), [1, 2, 3, 4, 5, 6, 7]);
+  for (const action of actions) {
+    assert.match(action.action_id, /^(B20|B30|B50|B60):reader:[a-z]+$/u);
+    assert.match(action.course_id, /^(B20|B30|B50|B60)$/u);
+    assert.equal(action.state, 'verified');
+    assert.equal(action.format, 'application/pdf');
+    assert.equal(action.route_granularity, 'whole_file_only');
+    assert.equal(action.scope === 'whole_course' || action.scope === 'whole_course_companion' || action.scope === 'whole_course_combined_reader', true);
+    assert.equal(Number.isInteger(action.pages) && action.pages > 0, true);
+    assert.equal(Number.isInteger(action.bytes) && action.bytes > 0, true);
+    assert.match(action.sha256, /^[0-9a-f]{64}$/iu);
+    assert.match(action.url, /^https:\/\/[^\s]+$/u);
+    assert.equal(typeof action.label, 'string');
+  }
+  const summary = sidecar.summary ?? {};
+  assert.deepEqual(
+    {
+      course_count: summary.course_count,
+      action_count: summary.action_count,
+      pages: summary.pages,
+      bytes: summary.bytes,
+      verified_action_count: summary.verified_action_count,
+    },
+    { course_count: 4, action_count: 7, pages: 4077, bytes: 35639691, verified_action_count: 7 },
+  );
+  assert.equal(actions.reduce((total, action) => total + action.pages, 0), summary.pages);
+  assert.equal(actions.reduce((total, action) => total + action.bytes, 0), summary.bytes);
+  readerActionsByCourseId = new Map(
+    ['B20', 'B30', 'B50', 'B60'].map((courseId) => [
+      courseId,
+      actions.filter((action) => action.course_id === courseId).sort((left, right) => left.order - right.order),
+    ]),
+  );
+  successorSidecarSummary = {
+    bytes: successorSidecarBytes.length,
+    sha256: sha256(successorSidecarBytes),
+    action_count: actions.length,
+    pages: summary.pages,
+    reader_bytes: summary.bytes,
+  };
+}
 assert.deepEqual(receipt.artifacts.manifest_json, {
   bytes: manifestBytes.length,
   path: 'generated/manifest.json',
@@ -158,11 +227,17 @@ const fallbackCards = rows.map((capsule) => {
     .filter((tool) => tool.state === 'verified' && tool.machine_data_is_learner_destination === false)
     .map((tool) => `<a class="learner-tool${tool.primary ? ' primary' : ''}" href="../${escapeHtml(tool.href.replace(/^\/+/, ''))}" title="${escapeHtml(tool.scope)}">${escapeHtml(tool.label)}<span class="sr-only"> — ${escapeHtml(capsule.course_id)}</span></a>`)
     .join('');
-  const primaryAction = primary
+  const readerActions = (readerActionsByCourseId.get(capsule.course_id) ?? [])
+    .map((action) => `<a class="reader-action" href="${escapeHtml(action.url)}" target="_blank" rel="noreferrer">${escapeHtml(action.label)} <span aria-hidden="true">↗</span><span class="sr-only"> (terbuka di tab baru)</span></a>`)
+    .join('');
+  const readerActionHrefs = new Set((readerActionsByCourseId.get(capsule.course_id) ?? []).map((action) => action.url));
+  const primaryAction = primary && !readerActionHrefs.has(primary.url)
     ? `<a class="primary" href="${escapeHtml(primary.url)}" target="_blank" rel="noreferrer">Buka sumber utama — ${escapeHtml(capsule.course_id)} <span aria-hidden="true">↗</span><span class="sr-only"> (terbuka di tab baru)</span></a>`
-    : '<span class="empty-note">Rute sumber utama belum memenuhi bukti format dan akses publik.</span>';
+    : readerActions
+      ? ''
+      : '<span class="empty-note">Rute sumber utama belum memenuhi bukti format dan akses publik.</span>';
   const stateLabel = capsule.course.state === 'published' ? 'Edisi selesai' : 'Sedang diproduksi';
-  return `<article class="course-card" data-static-course-id="${escapeHtml(capsule.course_id)}"><div class="card-top"><span class="course-code">${escapeHtml(capsule.course_id)}</span><span class="state-badge ${escapeHtml(capsule.course.state)}">${stateLabel}</span></div><h3>${escapeHtml(capsule.course.title)}</h3><p class="topic">${escapeHtml(capsule.course.topic)}</p><p class="outcome">${escapeHtml(capsule.course.outcome)}</p><p class="prerequisites"><strong>Prasyarat</strong>${escapeHtml(prerequisites)}</p><div class="view-panel"><div class="status-line"><span>Kesiapan akses</span><strong>${escapeHtml(statusLabel(layer.status))}</strong></div>${learnerTools ? `<div class="status-line"><span>Alat belajar terverifikasi</span><strong>${capsule.layers.learner.tools.filter((tool) => tool.state === 'verified').length}</strong></div>` : ''}<div class="status-line"><span>HTML semantik</span><strong>${escapeHtml(statusLabel(layer.capabilities.semantic_html))}</strong></div><div class="status-line"><span>Format cetak</span><strong>${escapeHtml(statusLabel(layer.capabilities.print_profile))}</strong></div><div class="card-actions">${learnerTools}${primaryAction}</div></div></article>`;
+  return `<article class="course-card" data-static-course-id="${escapeHtml(capsule.course_id)}"><div class="card-top"><span class="course-code">${escapeHtml(capsule.course_id)}</span><span class="state-badge ${escapeHtml(capsule.course.state)}">${stateLabel}</span></div><h3>${escapeHtml(capsule.course.title)}</h3><p class="topic">${escapeHtml(capsule.course.topic)}</p><p class="outcome">${escapeHtml(capsule.course.outcome)}</p><p class="prerequisites"><strong>Prasyarat</strong>${escapeHtml(prerequisites)}</p><div class="view-panel"><div class="status-line"><span>Kesiapan akses</span><strong>${escapeHtml(statusLabel(layer.status))}</strong></div>${readerActions ? `<div class="status-line"><span>Rute pembaca CLP</span><strong>${readerActionsByCourseId.get(capsule.course_id).length}</strong></div>` : ''}${learnerTools ? `<div class="status-line"><span>Alat belajar terverifikasi</span><strong>${capsule.layers.learner.tools.filter((tool) => tool.state === 'verified').length}</strong></div>` : ''}<div class="status-line"><span>HTML semantik</span><strong>${escapeHtml(statusLabel(layer.capabilities.semantic_html))}</strong></div><div class="status-line"><span>Format cetak</span><strong>${escapeHtml(statusLabel(layer.capabilities.print_profile))}</strong></div><div class="card-actions">${readerActions}${learnerTools}${primaryAction}</div></div></article>`;
 }).join('');
 const templatePath = resolve(project, 'docs/backend/index.template.html');
 const outputPath = resolve(project, 'docs/backend/index.html');
@@ -185,7 +260,7 @@ for (const [name, count] of Object.entries(summaryValues)) {
 }
 assert.equal((rendered.match(/data-static-course-id=/g) ?? []).length, 40);
 await writeFile(outputPath, rendered);
-const publicText = Buffer.concat([jsonlBytes, jsonBytes, manifestBytes, receiptBytes]).toString('utf8');
+const publicText = Buffer.concat([jsonlBytes, jsonBytes, manifestBytes, receiptBytes, ...(successorSidecarBytes ? [successorSidecarBytes] : [])]).toString('utf8');
 for (const pattern of [
   /C:\\\\Users\\\\/i,
   /Authorization:\s*Bearer/i,
@@ -199,6 +274,7 @@ console.log(JSON.stringify({
   public_course_rows: rows.length,
   copied_files: mappings.length,
   static_fallback_rows: 40,
+  successor_sidecar: successorSidecarSummary,
   jsonl: { bytes: jsonlBytes.length, sha256: sha256(jsonlBytes) },
   json: { bytes: jsonBytes.length, sha256: sha256(jsonBytes) },
 }, null, 2));
