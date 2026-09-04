@@ -18,6 +18,7 @@ INPUTS = {
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
     'geometry': 'backend/course-capsule-v1/adapters/geometry-capability-v1/publication/GITHUB_READBACK_a2584b9448c9.json',
     'topology': 'backend/course-capsule-v1/adapters/topology-capability-v1/publication/GITHUB_READBACK_d7141489fe34.json',
+    'd40': 'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
     'd80': 'backend/course-capsule-v1/adapters/d80-capability-v1/publication/GITHUB_READBACK_b22cd627901c.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
@@ -55,7 +56,7 @@ assert roles['D40']['common_adapter']['contract'] == 'course-learning-capability
 assert roles['D40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D40']['learner']['tools']) == 1
 assert roles['D40']['educator']['unit_alignment'] == 'verified'
-assert roles['D40']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['D40']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['D40']['common_adapter']['zenodo_preservation'] == 'not_established'
 for dimension in ('curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production', 'educator', 'interoperability'):
     assert 'unknown' not in roles['D40']['dimensions'][dimension].values()
@@ -152,6 +153,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('geometry_missing_teacher_readback', 'geometry', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/geometry/pengajar.html'])),
         ('topology_nonanonymous', 'topology', lambda value: value.update(anonymous=False)),
         ('topology_missing_teacher_readback', 'topology', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/topology/pengajar.html'])),
+        ('d40_nonanonymous', 'd40', lambda value: value.update(anonymous=False)),
+        ('d40_missing_teacher_readback', 'd40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d40/D40-pengajar.html'])),
         ('d80_nonanonymous', 'd80', lambda value: value.update(anonymous=False)),
         ('d80_missing_teacher_readback', 'd80', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d80/D80-pengajar.html'])),
     ]

@@ -12,6 +12,7 @@ const sources={
   lebl:'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
   geometry:'backend/course-capsule-v1/adapters/geometry-capability-v1/publication/GITHUB_READBACK_a2584b9448c9.json',
   topology:'backend/course-capsule-v1/adapters/topology-capability-v1/publication/GITHUB_READBACK_d7141489fe34.json',
+  d40:'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
   d80:'backend/course-capsule-v1/adapters/d80-capability-v1/publication/GITHUB_READBACK_b22cd627901c.json',
 };
 const bytes=Object.fromEntries(await Promise.all(Object.entries(sources).map(async([key,path])=>[key,await readFile(resolve(root,path))])));
@@ -23,6 +24,7 @@ assert.equal(data.b80.anonymous,true);assert.equal(data.b80.credentials_used,fal
 assert.equal(data.lebl.state,'pass');assert.equal(data.lebl.anonymous,true);assert.equal(data.lebl.credentials_used,false);
 assert.equal(data.geometry.state,'pass');assert.equal(data.geometry.anonymous,true);assert.equal(data.geometry.credentials_used,false);
 assert.equal(data.topology.state,'pass');assert.equal(data.topology.anonymous,true);assert.equal(data.topology.credentials_used,false);
+assert.equal(data.d40.state,'pass');assert.equal(data.d40.anonymous,true);assert.equal(data.d40.credentials_used,false);
 assert.equal(data.d80.state,'pass');assert.equal(data.d80.anonymous,true);assert.equal(data.d80.credentials_used,false);
 const leblRoles=['B70','C10','C20','C50'];
 for(const filename of [...leblRoles.flatMap(role=>[role+'.html',role+'-pengajar.html']),'istilah.html','learning-map.json','validation.json','filters.js']){
@@ -38,6 +40,9 @@ for(const filename of ['C100.html','pengajar.html','konsep.html','istilah.html',
 }
 for(const filename of ['C90.html','latihan.html','pengajar.html','istilah.html','catatan.html','learning-map.json','validation.json','topology.js']){
   assert.ok(data.topology.files.some(row=>row.surface==='pages'&&row.path==='docs/backend/topology/'+filename&&row.http_status===200&&row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)),filename);
+}
+for(const filename of ['D40.html','D40-pengajar.html','learning-map.json','validation.json']){
+  assert.ok(data.d40.files.some(row=>row.surface==='pages'&&row.path==='docs/backend/d40/'+filename&&row.http_status===200&&row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)),filename);
 }
 for(const filename of ['D80.html','D80-pengajar.html','learning-map.json','validation.json']){
   assert.ok(data.d80.files.some(row=>row.surface==='pages'&&row.path==='docs/backend/d80/'+filename&&row.http_status===200&&row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)),filename);
@@ -63,7 +68,7 @@ const rows=data.capsules.map(capsule=>{
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
-      github_public_evidence:publicRow?'frozen_public_readback':role==='B80'||role==='D80'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
+      github_public_evidence:publicRow?'frozen_public_readback':role==='B80'||role==='D40'||role==='D80'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
       zenodo_preservation:publicRow?'frozen_public_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established',
       local_evidence:adapter.evidence??[],
       public_package:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
