@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schemas/course-capsule-v1/topology-learning-capability-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract", "role", "locale", "native_edition", "counts", "chapters",
+    "completion_modules", "entries", "support_relations", "occurrence_aliases",
+    "terms", "corrections", "rights_accessibility", "projection_policy", "limitations"
+  ],
+  "properties": {
+    "contract": {"const": "topology-learning-capability/1"},
+    "role": {"const": "C90"},
+    "locale": {"const": "id-ID"},
+    "native_edition": {
+      "type": "object",
+      "required": ["repository", "commit", "tree", "upstream_authority", "public_release", "reader_url"]
+    },
+    "counts": {"type": "object"},
+    "chapters": {
+      "type": "array", "minItems": 20, "maxItems": 20,
+      "items": {"type": "object", "required": ["sequence", "source_id", "source_title", "source_file", "source_url", "companion_id", "companion_title", "companion_file", "companion_url", "component_manifest", "native_manifest_status", "entry_count", "entry_ids"]}
+    },
+    "completion_modules": {
+      "type": "array", "minItems": 8, "maxItems": 8,
+      "items": {"type": "object", "required": ["module_id", "title", "status", "file", "mastery_exercises", "reader_url", "entry_ids"]}
+    },
+    "entries": {
+      "type": "array", "minItems": 1227, "maxItems": 1227,
+      "items": {
+        "type": "object",
+        "required": ["id", "context_id", "chapter", "completion_module", "kind", "classification", "title", "source_anchor", "source_locator", "component_rights", "stages", "stage_urls", "stage_facts", "learner_url", "native"]
+      }
+    },
+    "support_relations": {"type": "array", "minItems": 3681, "maxItems": 3681},
+    "occurrence_aliases": {"type": "array", "minItems": 3, "maxItems": 3},
+    "terms": {"type": "array", "minItems": 299, "maxItems": 299, "items": {"type": "object", "required": ["id", "native"]}},
+    "corrections": {"type": "array", "minItems": 272, "maxItems": 272, "items": {"type": "object", "required": ["id", "native"]}},
+    "rights_accessibility": {"type": "object"},
+    "projection_policy": {"type": "object"},
+    "limitations": {"type": "array", "minItems": 6, "items": {"type": "string"}}
+  }
+}

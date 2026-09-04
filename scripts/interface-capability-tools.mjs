@@ -11,6 +11,7 @@ const contracts = {
   'b80-exercise-map-v1':['B80','practice_diagnostic_map','backend/b80/B80.html'],
   'c100-geometry-learning-map-v1':['C100','practice_diagnostic_map','backend/geometry/C100.html'],
   'c100-geometry-educator-map-v1':['C100','reference','backend/geometry/pengajar.html'],
+  'c90-topology-course-map-v1':['C90','reference','backend/topology/C90.html'],
 };
 for(const role of ['B70','C10','C20','C50']) for(const [suffix,kind,file] of [
   ['exercise-map','practice_diagnostic_map',role+'.html'],
@@ -25,7 +26,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // Explicit B80, Lebl and Geometry presentation contracts; no generic auto-admission.
+    // Explicit B80, Lebl, Geometry and Topology presentation contracts; no generic auto-admission.
     const expected = contracts[tool.tool_id];
     assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');

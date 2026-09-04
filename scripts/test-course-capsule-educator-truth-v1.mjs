@@ -20,6 +20,8 @@ const tests = [
   { name: 'b80_educator_hash_cannot_drift', id: 'B80', mutate: row=>{row.layers.educator.resources[0].sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'c100_geometry_educator_resource_cannot_be_removed', id: 'C100', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(resource=>resource.id!=='C100:geometry-educator-v1');}, error: /missing\/duplicate educator resource/ },
   { name: 'c100_geometry_educator_hash_cannot_drift', id: 'C100', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='C100:geometry-educator-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
+  { name: 'c90_topology_educator_resource_cannot_be_removed', id: 'C90', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(resource=>resource.id!=='C90:topology-educator-v1');}, error: /missing\/duplicate educator resource/ },
+  { name: 'c90_topology_educator_hash_cannot_drift', id: 'C90', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='C90:topology-educator-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'unindexed_is_not_proof_of_nonproduction', id: 'B10', status: 'not_yet_produced', error: /educator status must preserve authority or honest indexing uncertainty/ },
   { name: 'explicit_in_progress_authority_is_preserved', id: 'C140', status: 'available_unverified', error: /educator status must preserve authority or honest indexing uncertainty/ },
   { name: 'invalid_capsule_status_cannot_escape_schema', id: 'B10', status: 'invented_status', error: /JSON Schema validation failed/ },
