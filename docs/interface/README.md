@@ -26,7 +26,15 @@ The backend integrator's published CLP follow-through corrected the earlier nine
 
 `locales.js` records English source/edition links and explicit exceptions. Missing English bindings are a discovery state, not a statement about Indonesian translation completion. Original Indonesian companions remain visible with their actual language. English upstream spines are not represented as containing those original companions.
 
-Public-source checks on 2026-09-03/04 found direct English learning resources for 35 course roles. B80, D50, D70, D80, and D100 have no English main-reader binding in the scoped checks. D120 has an existing complete English edition at its `/en/` reader. The exception list also records original companion gaps and a 403 response from the official C120 English host.
+Current bindings cover 37 course roles. The earlier D70/D80 omissions were discovery errors: their independent English editions were already complete in separate English repositories. D70 now links the complete 457-page Li Volume 1 plus the 102-page Duncan, 68-page selected CRing, and 7-page original study/mastery readers (634 pages total). D80 links corrected Volume 2 r2: 146 units, two mastery bridges, 820 PDF pages and a complete HTML reader. Each PDF is hash-bound; the current HTML identity is retained in the resource row. D70's four public PDFs and D80's pinned GitHub PDF/Pages HTML were freshly read back on 2026-09-04. D80's Zenodo r2 receipt is historical; fresh Zenodo PDF access returned 403, so the immediate PDF action uses the verified pinned GitHub bytes. The DOI remains linked. Both language interfaces expose these actual English editions without changing the Indonesian counterparts.
+
+B80, D50 and D100 remain unresolved English-main-reader bindings, not demonstrated missing translations. D120 has an existing complete English edition at its `/en/` reader. Remaining original-companion bindings require checking existing English work; the audit task coordinates any genuine gaps without duplicate translation. The exception list retains the dated 403 observation for the official C120 English host.
+
+## B80 capability handoff
+
+The interface consumes the audit's two new B80 actions from `course-capsules.json` through a hash-checked, build-time projection. It preserves the five legacy tools without rewriting their backend file. B80's learner and teacher pages share 14 units, 75 exercises (72 core; three require additional prerequisites), four laboratories and native stable IDs. Both destinations are Indonesian, including when linked from the English interface. They do not run Python/SageMath, grade work, or provide offline copies of externally linked lessons.
+
+The preserved packet is `B80_NATIVE_LEARNING_CAPABILITY_V1.zip`, SHA-256 `a80132e761fa1c2d09aebe264aa3f0efc890bd2922c9dd50e0d5f90fcfcebf3a`. Its contract is `course-learning-capability/1`, not a new 2.3.1 claim. It retains all 326 native catalog records. The original packet's historical `docs/id/index.html` is an embedded snapshot, not a replacement for these current bilingual pages. Source/hash validation and later public readback remain separate from the native validation receipt's historical publication flag.
 
 ## Offline scope
 

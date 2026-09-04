@@ -123,6 +123,7 @@ export const englishCourseCopy = {
   D120: ['Research Reading and Reproducible Mathematical Work', 'Research reading, mathematical exposition, evidence, reproducibility, and traceable workflows.', 'Produce clear mathematical work with inspectable reasoning and reproducible supporting artifacts.'],
 };
 const english = (label, href, kind = 'HTML') => ({ label, href, kind, contentLanguage: 'en', origin: 'upstream-original' });
+const englishEdition = (label, href, kind, facts = {}) => ({ ...english(label, href, kind), origin: 'published-translation', ...facts });
 export const englishResources = {
   A00: [english('OpenStax Prealgebra 2e', 'https://openstax.org/books/prealgebra-2e/pages/1-introduction')],
   A10: [english('OpenStax Elementary Algebra 2e', 'https://openstax.org/books/elementary-algebra-2e/pages/1-introduction')],
@@ -156,7 +157,21 @@ export const englishResources = {
   D20: [english('Functional Analysis and Operator Algebras', 'https://web.pdx.edu/~erdman/FAOA/functional_analysis_operator_algebras_pdf.pdf', 'PDF')],
   D30: [english('Random: Probability and Stochastic Processes', 'https://www.randomservices.org/random/'), english('Continuous Time Markov Chains', 'https://continuous-time-mcs.quantecon.org/intro.html'), english('Intro to Stochastic Processes', 'https://gordanz.github.io/stochastic-book/')],
   D40: [english('Dionne: Partial Differential Equations', 'https://openlibrary-repo.ecampusontario.ca/xmlui/bitstream/handle/123456789/2405/PDE_Benoit_Dionne_2024.pdf?isAllowed=y&sequence=1', 'PDF'), english('The FEniCSx Tutorial', 'https://jsdokken.com/dolfinx-tutorial/index.html')],
-  D50: [], D70: [], D80: [], D100: [],
+  D50: [], D100: [],
+  D70: [
+    englishEdition('Methods of Algebra, Volume 1 — complete English book — 457 pages', 'https://zenodo.org/records/22216113/files/methods-of-algebra-volume-1-en.pdf?download=1', 'PDF', { pages:457, bytes:2691212, sha256:'112eef57e92f685e90bdff963f5a01c046a5f7d1eedc88faf316c930be7d4017', offlineAfterDownload:true }),
+    englishEdition('Duncan: Representation Theory — selected complete English component — 102 pages', 'https://zenodo.org/records/22216113/files/duncan-representation-theory-en.pdf?download=1', 'PDF', { pages:102, bytes:507750, sha256:'77c0f34dc28457dd750bf67c88857910c2a57ee8f70dd3dccbcca840854cf565', offlineAfterDownload:true, origin:'published-english-component' }),
+    englishEdition('CRing: Six selected commutative-algebra topics — English — 68 pages', 'https://zenodo.org/records/22216113/files/cring-selected-commutative-algebra-en.pdf?download=1', 'PDF', { pages:68, bytes:372132, sha256:'73e335b53f1ab156917962e2714d08b81030c8b16a72eb0dda944f4241df1521', offlineAfterDownload:true, origin:'published-english-component' }),
+    englishEdition('English learning route and mastery companion — 7 pages', 'https://zenodo.org/records/22216113/files/o013-learning-route-and-mastery-en.pdf?download=1', 'PDF', { pages:7, bytes:81315, sha256:'fa68a194127a2863484bc3e05b26010d81631e9c38ebcdd174b63856471aa07f', offlineAfterDownload:true }),
+    englishEdition('Full English advanced-algebra course archive', 'https://doi.org/10.5281/zenodo.22216113', 'archive'),
+    englishEdition('English source and modular backend', 'https://github.com/KokunoYumeto/methods-of-algebra-volume-1-en', 'repository'),
+  ],
+  D80: [
+    englishEdition('Methods of Algebra, Volume 2 — complete corrected English HTML reader', 'https://kokunoyumeto.github.io/methods-of-algebra-volume-2-en/', 'HTML', { bytes:4493910, sha256:'411fe6246743388ba9c5352732cc7958c02aa5dc578a54daecd4e6a5b317347e' }),
+    englishEdition('Methods of Algebra, Volume 2 — English PDF and mastery bridges — 820 pages', 'https://raw.githubusercontent.com/KokunoYumeto/methods-of-algebra-volume-2-en/674ef26c04dba544e80a95a3f320a9961649407c/output/pdf/methods-of-algebra-volume-2-independent-english-edition.pdf', 'PDF', { pages:820, bytes:3894743, sha256:'8193d44ef52c9c39807e769ad04507130f163481f82aa9cfaa0a1a3022ef7aa5', offlineAfterDownload:true }),
+    englishEdition('Corrected English edition archive', 'https://doi.org/10.5281/zenodo.22233942', 'archive'),
+    englishEdition('English source and modular backend', 'https://github.com/KokunoYumeto/methods-of-algebra-volume-2-en', 'repository'),
+  ],
   D60: [english('Roberts: Algebraic Topology', 'https://github.com/DavidMichaelRoberts/AlgebraicTopology2019/raw/master/Notes.pdf', 'PDF'), english('Fomberg: Algebraic Topology', 'https://yp.srht.site/notes/math/algebraic_topology.pdf', 'PDF')],
   D90: [english('Habring: Convex Optimization', 'https://arxiv.org/pdf/2607.11664', 'PDF')],
   D110: [english('Mathematics in Lean', 'https://leanprover-community.github.io/mathematics_in_lean/')],
@@ -165,8 +180,6 @@ export const englishResources = {
 export const englishBindingExceptions = {
   B80: 'Indonesian-original course. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
   D50: 'German original. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
-  D70: 'Chinese primary source. No English main reader advertised in the scoped public repository/reader check of 2026-09-04.',
-  D80: 'Chinese primary source. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
   D100: 'German originals. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
   C60: 'English spine is linked. The program-original mastery/solution companion is available in Indonesian; an English companion link was not located.',
   C90: 'English spine is linked. The program-original companion is available in Indonesian; an English companion link was not located.',

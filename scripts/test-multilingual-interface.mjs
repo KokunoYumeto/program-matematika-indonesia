@@ -12,10 +12,41 @@ import { verifiedReaderActions, readerActionSource } from '../docs/interface/rea
 import { projectReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { finalEditions, finalEditionSource } from '../docs/interface/final-editions.js';
 import { validateFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
+import {capabilityTools, capabilityToolSource} from '../docs/interface/capability-tools.js';
+import {projectCapabilityTools, capabilityInput} from './interface-capability-tools.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
+const capsuleBytes = await readFile(resolve(root,capabilityInput));
+const capsules = JSON.parse(capsuleBytes);
+assert.deepEqual(projectCapabilityTools(capsules,ids),capabilityTools);
+assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
+assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
+for (const corrupt of [
+  c=>{c.find(r=>r.course_id==='B80').locale='en';},
+  c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].state='planned';},
+  c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].href='backend/b80/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].primary=true;},
+  c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].machine_data_is_learner_destination=true;},
+  c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].page.path='../../secret';},
+  c=>{c.find(r=>r.course_id==='B80').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='A00').layers.learner.tools[0].label='changed';},
+]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
+assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,37);
+assert.deepEqual(englishResources.D70.filter(r=>r.pages).map(r=>r.pages),[457,102,68,7]);
+assert.equal(englishResources.D80.find(r=>r.pages).pages,820);
+assert.ok(!englishBindingExceptions.D70 && !englishBindingExceptions.D80);
+for (const locale of supportedLocales) {
+  const tools=resourceBindings(interfaceCourses.find(c=>c.id==='B80'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(tools.length,2);
+  for(const tool of tools) {assert.equal(tool.contentLanguage,'id');assert.equal(tool.primary,false);assert.ok(tool.note.includes('72') && tool.note.includes('3'));}
+  for(const courseId of ['D70','D80']) {
+    const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
+    for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
+    if(locale==='en') assert.equal(resources.filter(r=>r.primary).length,1);
+  }
+}
 const editionBytes = await readFile(resolve(root, finalEditionInput));
 const editionInput = JSON.parse(editionBytes);
 assert.deepEqual(validateFinalEditions(editionInput, ids), finalEditions);
@@ -174,6 +205,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
+  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,2);
+  for(const courseId of ['D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);

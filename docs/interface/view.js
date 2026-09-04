@@ -5,6 +5,7 @@ import { learnerToolsByCourseId } from '../learner-tools.js';
 import { interfaceCopy, topicCopy, englishCourseCopy, englishResources, siteOrigin } from './locales.js';
 import { verifiedReaderActions } from './reader-actions.js';
 import { finalEditions } from './final-editions.js';
+import { capabilityTools } from './capability-tools.js';
 
 // Final links are a presentation overlay, not a replacement backend or corpus.
 export const interfaceCourses = materializeLiveCourses(authorityCourses).map(course => {
@@ -41,8 +42,10 @@ export function resourceBindings(course, locale) {
   const add = (label, href, contentLanguage, kind = 'link', extra = {}) => {
     if (href && !rows.some((row) => row.href === safeResourceUrl(href))) rows.push({ label, labelLanguage: locale, href: safeResourceUrl(href), contentLanguage, kind, ...extra });
   };
-  if (locale === 'en') for (const row of englishResources[course.id] ?? []) {
-    add(row.label, row.href, row.contentLanguage, row.kind, { origin: row.origin, primary: rows.length === 0 });
+  for (const row of englishResources[course.id] ?? []) {
+    if (locale !== 'en' && !row.origin.startsWith('published-')) continue;
+    const {label,href,contentLanguage,kind,...facts} = row;
+    add(label, href, contentLanguage, kind, { ...facts, labelLanguage:'en', primary: locale === 'en' && rows.length === 0 });
   }
   const idPrefix = locale === 'en' ? 'Bahasa Indonesia — ' : '';
   const finalEdition = finalEditions.find(row => row.courseId === course.id);
@@ -74,6 +77,11 @@ export function resourceBindings(course, locale) {
   for (const tool of learnerToolsByCourseId[course.id] ?? []) {
     if (tool.state !== 'planned') add(tool.label, tool.href, 'id', 'tool', { labelLanguage: 'id' });
   }
+  for (const tool of capabilityTools.filter(row=>row.courseId===course.id)) {
+    add(tool.label, tool.href, tool.contentLanguage, 'tool', {labelLanguage:'id', capabilityToolId:tool.tool_id,
+      bytes:tool.page.bytes, sha256:tool.page.sha256, primary:false, scope:tool.scope, limitations:tool.limitations,
+      note:locale==='id' ? tool.scope+'. 72 latihan inti; 3 latihan menunggu prasyarat tambahan. '+tool.limitations.join(' ') : '14 units, 75 exercises (72 core; 3 need additional prerequisites), 4 labs. Indonesian material; no code execution or automatic grading. Linked lessons need a connection or a separate download.'});
+  }
   const delivery = learnerDeliveryByCourseId[course.id];
   for (const [field, name] of [['portable_html', 'HTML'], ['epub', 'EPUB']]) {
     const item = delivery?.[field];
@@ -100,9 +108,11 @@ export function renderResourceLinks(course, locale) {
     + '" data-content-language="' + row.contentLanguage + '" hreflang="' + row.contentLanguage
     + '"' + (row.actionId ? ' data-reader-action="' + escapeMarkup(row.actionId) + '"' : '')
     + (row.editionResourceId ? ' data-edition-resource="' + escapeMarkup(row.editionResourceId) + '"' : '')
+    + (row.capabilityToolId ? ' data-capability-tool="' + escapeMarkup(row.capabilityToolId) + '"' : '')
     + '><span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
     + ' · <span lang="' + (row.contentLanguage === 'und' ? locale : row.contentLanguage) + '">' + (row.contentLanguage === 'id' ? 'Bahasa Indonesia' : row.contentLanguage === 'en' ? 'English' : locale === 'id' ? 'metadata bersama' : 'shared metadata') + '</span>'
-    + (row.offlineAfterDownload ? ' · ' + (locale === 'id' ? 'Luring setelah diunduh' : 'Offline after download') : '') + '</small></a>';
+    + (row.offlineAfterDownload ? ' · ' + (locale === 'id' ? 'Luring setelah diunduh' : 'Offline after download') : '') + '</small></a>'
+    + (row.note ? '<p class="footnote" lang="'+locale+'">'+escapeMarkup(row.note)+'</p>' : '');
   return (preferred.length ? preferred.map(link).join('') : '<p class="binding-note">' + escapeMarkup(t.noPrimary) + '</p>')
     + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(locale === 'en' ? t.otherLanguage + ' / ' + t.sharedBackend : t.companion + ' / ' + t.source)
       + '</summary><div class="resource-list">' + other.map(link).join('') + '</div></details>' : '');
