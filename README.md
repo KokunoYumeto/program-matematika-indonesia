@@ -4,7 +4,7 @@
 
 [Buka peta belajar Bahasa Indonesia](https://kokunoyumeto.github.io/program-matematika-indonesia/id/) · [Open the English learning map](https://kokunoyumeto.github.io/program-matematika-indonesia/en/)
 
-[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22304151) · [Interface release v0.63.1](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.1)
+[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22305135) · [Interface release v0.63.2](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.2)
 
 Both interfaces use the same 40-course graph and 83 prerequisite links. Each resource is labeled with its actual language; English original textbooks are not presented as containing the program's Indonesian-original companions. The dated backend/publication snapshots below are historical, not a current translation queue.
 
