@@ -24,7 +24,13 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
   const bindings = resourceBindings(course, locale);
   assert.ok(bindings.length);
   assert.ok(bindings.every(row => learnerAccessRoles.includes(row.accessRole)), course.id + ': every resource has a typed learner access role');
-  assert.equal(new Set(bindings.map(row => row.href)).size, bindings.length, course.id + ': resource URLs are unique');
+  assert.equal(new Set(bindings.map(row => row.href + '\u0000' + row.accessRole)).size, bindings.length, course.id + ': resource URL/role pairs are unique');
+  for (const href of new Set(bindings.map(row => row.href))) {
+    const sameUrl = bindings.filter(row => row.href === href);
+    if (sameUrl.length < 2) continue;
+    assert.deepEqual(new Set(sameUrl.map(row => row.accessRole)), new Set(['hosted-reader','authoritative-original']), course.id + ': only a program original may have a dual-role URL');
+    assert.ok(sameUrl.some(row => row.origin === 'program-original'), course.id + ': dual-role URL must be a program original');
+  }
   const sources = bindings.filter(isOriginalSource);
   assert.ok(sources.length, course.id + ': original source must be available in every interface language');
   const visible = renderResourceLinks(course, locale).split('<details class="resource-details">')[0];
@@ -53,6 +59,8 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
 assert.notEqual(contentLanguageName('zh','en'),'shared metadata');
 assert.notEqual(contentLanguageName('de','id'),'metadata bersama');
 assert.ok(contentLanguageName('bn','en'));
+assert.throws(()=>coursePresentation(interfaceCourses[0],'pt-BR'),/Unsupported interface locale/);
+assert.throws(()=>resourceBindings(interfaceCourses[0],'pt-BR'),/Unsupported interface locale/);
 assert.equal(isOriginalSource({origin:'published-translation'}),false);
 assert.equal(isOriginalSource({origin:'published-english-component'}),false);
 assert.equal(isOriginalSource({origin:'program-mirror'}),false);
@@ -105,6 +113,14 @@ assert.equal(a20MirrorEvidence.source.publisher_url,a20English.find(r=>r.origin=
 assert.equal(a20MirrorEvidence.program_mirror.offline_zip_sha256,a20English.find(r=>r.kind==='HTML ZIP').sha256);
 assert.equal(a20MirrorEvidence.public_verification.pages_files_verified,4094);
 assert.equal(a20MirrorEvidence.public_verification.all_exact,true);
+for (const id of ['B80','D120']) {
+  const idBindings=resourceBindings(interfaceCourses.find(c=>c.id===id),'id');
+  const dualRoleUrl=idBindings.find(row=>row.origin==='program-original').href;
+  assert.ok(idBindings.some(row=>row.href===dualRoleUrl&&row.accessRole==='hosted-reader'),id+': program original remains a hosted reader');
+  assert.ok(idBindings.some(row=>row.href===dualRoleUrl&&row.accessRole==='authoritative-original'),id+': program original is also identified as the authoritative original');
+}
+const unmappedOriginal=renderResourceLinks({id:'ZZZ',learner:null,reader:null,edition:null,zenodo:null,repository:null,supplements:[]},'en');
+assert.ok(unmappedOriginal.includes(interfaceCopy.en.noAuthoritativeOriginal));
 assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin),['program-original','program-original']);
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {
@@ -314,7 +330,7 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
   assert.ok(copy.title && copy.purpose && copy.outcome && copy.topic, course.id + ' copy ' + locale);
   const bindings = resourceBindings(course, locale);
   assert.ok(bindings.length);
-  assert.equal(new Set(bindings.map((row) => row.href)).size, bindings.length, 'No duplicate resource URL');
+  assert.equal(new Set(bindings.map((row) => row.href + '\u0000' + row.accessRole)).size, bindings.length, 'No duplicate resource URL/role pair');
   const projected = bindings.filter((row) => row.actionId);
   const expected = verifiedReaderActions.filter((row) => row.courseId === course.id);
   assert.deepEqual(projected.map((row) => row.actionId), expected.map((row) => row.actionId));

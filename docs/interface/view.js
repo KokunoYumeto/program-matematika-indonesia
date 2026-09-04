@@ -34,9 +34,12 @@ export function safeResourceUrl(value) {
 }
 export function coursePresentation(course, locale) {
   if (locale === 'id') return { title: course.title, purpose: course.purpose, outcome: course.outcome, topic: course.topic };
-  const copy = englishCourseCopy[course.id];
-  if (!copy || !topicCopy[course.topic]) throw new Error('Missing English presentation: ' + course.id);
-  return { title: copy[0], purpose: copy[1], outcome: copy[2], topic: topicCopy[course.topic] };
+  if (locale === 'en') {
+    const copy = englishCourseCopy[course.id];
+    if (!copy || !topicCopy[course.topic]) throw new Error('Missing English presentation: ' + course.id);
+    return { title: copy[0], purpose: copy[1], outcome: copy[2], topic: topicCopy[course.topic] };
+  }
+  throw new Error('Unsupported interface locale without a complete localized bundle: ' + locale);
 }
 export const learnerAccessRoles = Object.freeze([
   'hosted-reader', 'authoritative-original', 'offline-copy', 'companion', 'tool',
@@ -46,15 +49,23 @@ const learnerAccessRoleSet = new Set(learnerAccessRoles);
 const isProgramOriginalCourse = (courseId) => (additionalOriginalSources[courseId] ?? []).some(row => row.origin === 'program-original');
 export function resourceBindings(course, locale) {
   const t = interfaceCopy[locale];
+  if (!t) throw new Error('Unsupported interface locale without a complete localized bundle: ' + locale);
   const rows = [];
   const add = (label, href, contentLanguage, kind = 'link', extra = {}) => {
     if (!href) return;
     const normalizedHref = safeResourceUrl(href);
     const candidate = { label, labelLanguage: locale, href: normalizedHref, contentLanguage, kind, ...extra };
     if (!learnerAccessRoleSet.has(candidate.accessRole)) throw new Error('Missing or invalid learner access role: ' + course.id + ' ' + normalizedHref);
-    const existing = rows.find((row) => row.href === normalizedHref);
-    if (!existing) rows.push(candidate);
-    else if (existing.accessRole !== candidate.accessRole) throw new Error('One URL cannot have incompatible learner access roles: ' + course.id + ' ' + normalizedHref);
+    const existing = rows.find((row) => row.href === normalizedHref && row.accessRole === candidate.accessRole);
+    if (existing) return;
+    const sameUrl = rows.filter((row) => row.href === normalizedHref);
+    if (sameUrl.length) {
+      const roles = new Set([...sameUrl.map((row) => row.accessRole), candidate.accessRole]);
+      const isProgramOriginalDualRole = candidate.origin === 'program-original'
+        && roles.size === 2 && roles.has('hosted-reader') && roles.has('authoritative-original');
+      if (!isProgramOriginalDualRole) throw new Error('One URL cannot have incompatible learner access roles: ' + course.id + ' ' + normalizedHref);
+    }
+    rows.push(candidate);
   };
   for (const row of englishResources[course.id] ?? []) {
     const {label,href,contentLanguage,kind,...facts} = row;
@@ -131,9 +142,7 @@ export function resourceBindings(course, locale) {
   // These indices are shared metadata, not an English translation of course prose.
   add(t.sharedBackend, 'backend/index.html', 'und', 'backend', {accessRole:'backend', authorityRole:'program-edition', relationToSource:'indexes'});
   for (const source of additionalOriginalSources[course.id] ?? []) {
-    const existing = rows.find(row => row.href === safeResourceUrl(source.href));
-    if (existing) Object.assign(existing, {origin:source.origin, accessRole:source.accessRole, authorityRole:source.authorityRole, relationToSource:source.relationToSource});
-    else add(source.label, source.href, source.contentLanguage, 'HTML', {...source, labelLanguage:source.contentLanguage, primary:false});
+    add(source.label, source.href, source.contentLanguage, 'HTML', {...source, labelLanguage:source.contentLanguage, primary:false});
   }
   return rows;
 }
@@ -172,7 +181,7 @@ export function renderResourceLinks(course, locale) {
     + (row.note ? '<p class="footnote" lang="'+locale+'">'+escapeMarkup(row.note)+'</p>' : '');
   const group = (role, title, body) => '<section class="resource-group" data-access-group="' + role + '"><h4>' + escapeMarkup(title) + '</h4>' + body + '</section>';
   return group('hosted-reader', t.hostedReader, (hostedReaders.length ? '' : '<p class="binding-note">' + escapeMarkup(t.noHostedReader) + '</p>') + hosted.map(link).join(''))
-    + group('authoritative-original', t.authoritativeOriginal, originals.map(link).join(''))
+    + group('authoritative-original', t.authoritativeOriginal, originals.length ? originals.map(link).join('') : '<p class="binding-note">' + escapeMarkup(t.noAuthoritativeOriginal) + '</p>')
     + preferred.map(link).join('')
     + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(locale === 'en' ? t.otherLanguage + ' / ' + t.sharedBackend : t.companion + ' / ' + t.source)
       + '</summary><div class="resource-list">' + other.map(link).join('') + '</div></details>' : '');
