@@ -87,11 +87,11 @@ def read(url: str, data: bytes) -> dict[str, object]:
     return {"bytes": len(result), "sha256": sha(result), "http_status": 200}
 
 
-response = session.get("https://api.github.com/repos/" + repo, timeout=(15, 30))
+repository_url = "https://github.com/" + repo
+response = session.get(repository_url, timeout=(15, 30))
 response.raise_for_status()
-public = response.json()
-assert public["private"] is False and public["full_name"] == repo
-receipt["public_repository"] = public["html_url"]
+assert "Authorization" not in response.request.headers
+receipt["public_repository"] = repository_url
 complete = {(row["surface"], row["path"]) for row in receipt["files"]}
 receipt["failures"] = []
 jobs = [
