@@ -13,11 +13,52 @@ import { projectReaderActions, readerActionInput } from './interface-reader-acti
 import { finalEditions, finalEditionSource } from '../docs/interface/final-editions.js';
 import { validateFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
 import {capabilityTools, capabilityToolSource} from '../docs/interface/capability-tools.js';
+import {supplementalReaders} from '../docs/interface/supplemental-readers.js';
 import {projectCapabilityTools, capabilityInput} from './interface-capability-tools.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
+assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
+for (const row of supplementalReaders) {
+  assert.ok(ids.includes(row.courseId) && row.id.startsWith(row.courseId+':'));
+  assert.equal(row.contentLanguage,'id');
+  assert.ok(row.labels.id && row.labels.en && row.notes.id && row.notes.en);
+  assert.ok(['companion','portable_html','html_download'].includes(row.kind));
+  assert.ok(['HTML','HTML ZIP'].includes(row.format));
+  assert.equal(new URL(row.href).protocol,'https:');
+  assert.ok(['zenodo.org','kokunoyumeto.github.io'].includes(new URL(row.href).hostname));
+  assert.match(row.sha256,/^[a-f0-9]{64}$/);
+  assert.match(row.evidenceFile,/^docs\/interface\/evidence\/[a-z0-9-]+\.json$/);
+  const proof=JSON.parse(await readFile(resolve(root,row.evidenceFile),'utf8'));
+  const fact=proof.public_readback.find(item=>item.url===row.href);
+  assert.ok(fact,'Reader must have actual public-byte evidence');
+  assert.equal(fact.bytes,row.bytes); assert.equal(fact.sha256,row.sha256);
+  if(row.offlineAfterDownload) {
+    assert.equal(row.kind,'portable_html');
+    assert.equal(proof.offline_dependency_replay.external_runtime_dependencies,0);
+    assert.equal(proof.offline_dependency_replay.missing_local_references,0);
+    assert.equal(proof.offline_dependency_replay.unresolved_fragments,0);
+    assert.equal(proof.offline_dependency_replay.scripts,0);
+    assert.ok(row.notes.en.includes('Extract'));
+  } else assert.notEqual(row.kind,'portable_html');
+  for (const locale of supportedLocales) {
+    const rows=resourceBindings(interfaceCourses.find(c=>c.id===row.courseId),locale);
+    const actual=rows.filter(item=>item.href===row.href);
+    assert.equal(actual.length,1); assert.equal(actual[0].primary,false);
+    assert.equal(actual[0].contentLanguage,'id'); assert.equal(actual[0].note,row.notes[locale]);
+  }
+}
+assert.deepEqual(supplementalReaders.map(row=>row.id),['D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download']);
+const b10Download=supplementalReaders.find(row=>row.courseId==='B10');
+assert.equal(b10Download.offlineAfterDownload,false);
+assert.equal(b10Download.kind,'html_download');
+assert.ok(b10Download.notes.en.includes('MathJax and online features require internet'));
+const b10Proof=JSON.parse(await readFile(resolve(root,b10Download.evidenceFile),'utf8'));
+assert.equal(b10Proof.fully_offline_claim_supported,false);
+assert.equal(b10Proof.mathjax_dependency,'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js');
+assert.equal(resourceBindings(interfaceCourses.find(c=>c.id==='B10'),'id').find(row=>row.primary).href,'https://kokunoyumeto.github.io/discrete-mathematics-open-introduction-id/');
+assert.equal(resourceBindings(interfaceCourses.find(c=>c.id==='D20'),'id').find(row=>row.primary).href,'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/');
 const capsuleBytes = await readFile(resolve(root,capabilityInput));
 const capsules = JSON.parse(capsuleBytes);
 assert.deepEqual(projectCapabilityTools(capsules,ids),capabilityTools);
@@ -214,6 +255,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,2);
+  assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
+  for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   for(const courseId of ['B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');

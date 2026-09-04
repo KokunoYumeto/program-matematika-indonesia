@@ -7,6 +7,7 @@ import { syncReaderActions, readerActionInput } from './interface-reader-actions
 import { syncFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
 import { syncCapabilityTools, capabilityInput } from './interface-capability-tools.mjs';
 import { supportedLocales, interfaceCopy, topicCopy, siteOrigin, englishBindingExceptions } from '../docs/interface/locales.js';
+import { supplementalReaders } from '../docs/interface/supplemental-readers.js';
 
 const interfaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 await syncReaderActions(interfaceRoot, canonicalCourses.map((course) => course.id));
@@ -20,7 +21,7 @@ const stripImports = (code) => code.replace(/^import[\s\S]*?from ['"][^'"]+['"];
 const sources = [
   (await read('docs/courses.js')).replace(/^export const courses =/m, 'export const authorityCourses =').replace(/^export const nextCourseIdsById =/m, 'export const authorityNextCourseIdsById ='),
   await read('docs/live-course-publications.js'), await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
-  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), await read('docs/interface/capability-tools.js'), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
+  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), await read('docs/interface/capability-tools.js'), await read('docs/interface/supplemental-readers.js'), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
@@ -80,7 +81,7 @@ for (const locale of supportedLocales) {
 const receipt = {
   schema: 'multilingual-interface-build/v1', locales: supportedLocales, canonicalCourseCount: interfaceCourses.length,
   canonicalEdgeCount: interfaceCourses.reduce((n, c) => n + c.prerequisites.length, 0),
-  inputs: await Promise.all(['docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
+  inputs: await Promise.all(['docs/interface/supplemental-readers.js', ...new Set(supplementalReaders.map(row=>row.evidenceFile)), 'docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
     const bytes = await readFile(resolve(interfaceRoot, path));
     return { path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
   })),

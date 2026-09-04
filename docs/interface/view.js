@@ -6,6 +6,7 @@ import { interfaceCopy, topicCopy, englishCourseCopy, englishResources, siteOrig
 import { verifiedReaderActions } from './reader-actions.js';
 import { finalEditions } from './final-editions.js';
 import { capabilityTools } from './capability-tools.js';
+import { supplementalReaders } from './supplemental-readers.js';
 
 // Final links are a presentation overlay, not a replacement backend or corpus.
 export const interfaceCourses = materializeLiveCourses(authorityCourses).map(course => {
@@ -83,6 +84,12 @@ export function resourceBindings(course, locale) {
       note:locale==='id' ? tool.scope+'. 72 latihan inti; 3 latihan menunggu prasyarat tambahan. '+tool.limitations.join(' ') : '14 units, 75 exercises (72 core; 3 need additional prerequisites), 4 labs. Indonesian material; no code execution or automatic grading. Linked lessons need a connection or a separate download.'});
   }
   const delivery = learnerDeliveryByCourseId[course.id];
+  for (const row of supplementalReaders.filter(item => item.courseId === course.id)) {
+    add(idPrefix + row.labels[locale], row.href, row.contentLanguage, row.kind, {
+      supplementalReaderId: row.id, format: row.format, bytes: row.bytes, sha256: row.sha256,
+      primary: false, offlineAfterDownload: row.offlineAfterDownload, note: row.notes[locale],
+    });
+  }
   for (const [field, name] of [['portable_html', 'HTML'], ['epub', 'EPUB']]) {
     const item = delivery?.[field];
     if (item?.status === 'verified') add(idPrefix + t.download + ' ' + name, item.url, 'id', field, { bytes: item.bytes });
@@ -109,6 +116,7 @@ export function renderResourceLinks(course, locale) {
     + '"' + (row.actionId ? ' data-reader-action="' + escapeMarkup(row.actionId) + '"' : '')
     + (row.editionResourceId ? ' data-edition-resource="' + escapeMarkup(row.editionResourceId) + '"' : '')
     + (row.capabilityToolId ? ' data-capability-tool="' + escapeMarkup(row.capabilityToolId) + '"' : '')
+    + (row.supplementalReaderId ? ' data-supplemental-reader="' + escapeMarkup(row.supplementalReaderId) + '"' : '')
     + '><span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
     + ' · <span lang="' + (row.contentLanguage === 'und' ? locale : row.contentLanguage) + '">' + (row.contentLanguage === 'id' ? 'Bahasa Indonesia' : row.contentLanguage === 'en' ? 'English' : locale === 'id' ? 'metadata bersama' : 'shared metadata') + '</span>'
     + (row.offlineAfterDownload ? ' · ' + (locale === 'id' ? 'Luring setelah diunduh' : 'Offline after download') : '') + '</small></a>'

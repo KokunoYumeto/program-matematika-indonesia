@@ -38,6 +38,12 @@ The preserved packet is `B80_NATIVE_LEARNING_CAPABILITY_V1.zip`, SHA-256 `a80132
 
 ## Offline scope
 
+### Existing reader additions
+
+Additive `supplemental-readers.js` rows expose already-published reader resources without changing course identity, primary routes, corpus publication state or common backend capabilities. Each row is bound to anonymous byte-verification evidence; its material language stays Indonesian in both interfaces. D20 retains its existing primary chapter map and complete 298-page PDF, while adding the complete companion HTML and existing combined source/backend/HTML ZIP. The two archived readers contain 37 HTML documents and 13,481 MathML elements, with 4,058 resolved local references and no external rendering dependencies. Extract the complete ZIP and keep its directory layout; external citations still need internet. No new translation, repackaged corpus or new backend admission is implied.
+
+B10 also gains its existing complete HTML ZIP (1,229 files, including 553 HTML documents), without replacing its primary online reader or complete 613-page PDF. Unlike D20, this ZIP loads MathJax and interactive features externally: both language interfaces explicitly say it requires internet and do not label it offline-ready. After extraction, open `matematika-diskret-id-html/index.html`. The compact public evidence binds the full local archive-audit receipt, verified download and dependency limitation; it does not claim browser testing or a newly self-contained edition.
+
 Each `learning-map.html` embeds the catalog, presentation, scripts, and CSS. It is an offline navigator, not an archive of all linked books. External resources require a connection unless downloaded separately. There are no remote runtime dependencies. Language switching from an independently downloaded file points to the corresponding public language route.
 
 The bilingual ZIP also includes `docs/id/learning-map-paired.html` and `docs/en/learning-map-paired.html`. `START-HERE.html` opens these paired copies. Their static language links point to each other locally, including without JavaScript; retain the extracted directory layout. Individual standalone downloads keep their online language fallback and need no sibling files. The live pages expose the existing central DOI download page for the full ZIP.
