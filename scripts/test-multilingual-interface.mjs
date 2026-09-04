@@ -41,6 +41,13 @@ assert.notEqual(contentLanguageName('de','id'),'metadata bersama');
 assert.ok(contentLanguageName('bn','en'));
 assert.equal(isOriginalSource({origin:'published-translation'}),false);
 assert.equal(isOriginalSource({origin:'published-english-component'}),false);
+assert.equal(isOriginalSource({origin:'program-mirror'}),false);
+const a00English=resourceBindings(interfaceCourses.find(c=>c.id==='A00'),'en');
+assert.equal(a00English.filter(r=>r.primary).length,1);
+assert.equal(a00English.find(r=>r.primary).origin,'program-mirror');
+assert.equal(a00English.find(r=>r.origin==='upstream-original').href,'https://openstax.org/details/books/prealgebra-2e');
+assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A00'),'en').split('<details class="resource-details">')[0].includes('Original source'));
+assert.equal(a00English.find(r=>r.kind==='HTML ZIP').offlineAfterDownload,true);
 assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin),['program-original','program-original']);
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {

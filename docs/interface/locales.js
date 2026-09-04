@@ -129,9 +129,14 @@ export const englishCourseCopy = {
   D120: ['Research Reading and Reproducible Mathematical Work', 'Research reading, mathematical exposition, evidence, reproducibility, and traceable workflows.', 'Produce clear mathematical work with inspectable reasoning and reproducible supporting artifacts.'],
 };
 const english = (label, href, kind = 'HTML') => ({ label, href, kind, contentLanguage: 'en', origin: 'upstream-original' });
+const englishMirror = (label, href, kind = 'HTML', facts = {}) => ({ label, href, kind, contentLanguage: 'en', origin: 'program-mirror', ...facts });
 const englishEdition = (label, href, kind, facts = {}) => ({ ...english(label, href, kind), origin: 'published-translation', ...facts });
 export const englishResources = {
-  A00: [english('OpenStax Prealgebra 2e', 'https://openstax.org/books/prealgebra-2e/pages/1-introduction')],
+  A00: [
+    englishMirror('Program-hosted complete English HTML reader', 'https://kokunoyumeto.github.io/openstax-prealgebra-2e-original-en/', 'HTML', { modules:75, assets:2958, sourceRevision:'38cae454e644abf9f0a623e876994553881597c9' }),
+    english('Original publisher page — OpenStax Prealgebra 2e', 'https://openstax.org/details/books/prealgebra-2e'),
+    englishMirror('Complete English HTML reader — offline ZIP', 'https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/openstax-prealgebra-2e-original-en-html-v1.0.0.zip', 'HTML ZIP', { bytes:79027794, sha256:'8fc15a085987cea3963bac27c831bb339fa05553001267564c8a66db3cefc04a', offlineAfterDownload:true }),
+  ],
   A10: [english('OpenStax Elementary Algebra 2e', 'https://openstax.org/books/elementary-algebra-2e/pages/1-introduction')],
   A20: [english('OpenStax Intermediate Algebra 2e', 'https://openstax.org/books/intermediate-algebra-2e/pages/1-introduction')],
   A30: [english('OpenStax Precalculus 2e', 'https://openstax.org/books/precalculus-2e/pages/1-introduction-to-functions')],
