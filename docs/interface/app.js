@@ -10,12 +10,26 @@ try { storage = window.localStorage; } catch { /* Private browsing or file: rest
 const loaded = loadLearnerState(storage, interfaceCourses);
 let record = loaded.state, evaluated = evaluateLearnerState(interfaceCourses, record);
 let unpersistedChanges = false;
+let viewFragment = navigationFragment(location.hash);
 const normalizeSearch = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase(interfaceLocale);
 
+function navigationFragment(value) {
+  return ['#top', '#katalog', '#progress', '#about'].includes(value) || interfaceCourses.some(course => value === '#course-' + course.id) ? value : '';
+}
+function viewUrl() {
+  const url = new URL(location.href);
+  url.search = ''; url.hash = viewFragment;
+  // Navigation carries only view filters, never learner records or unknown URL data.
+  for (const [key, value] of Object.entries(readFilters())) {
+    if (value && value !== 'all') url.searchParams.set(key, value);
+  }
+  return url;
+}
 function updateLanguageLinks() {
+  const view = viewUrl();
   document.querySelectorAll('[data-locale-link]').forEach((link) => {
     const url = new URL(link.getAttribute('data-locale-base'), location.href);
-    url.search = location.search; url.hash = location.hash;
+    url.search = view.search; url.hash = view.hash;
     link.href = url.href;
   });
 }
@@ -31,12 +45,9 @@ function restoreFilters() {
   }
 }
 function storeFilters(preserveCourseFragment = false) {
-  const url = new URL(location.href);
   // A newly chosen filter is a new view, not an instruction to reopen an old card.
-  if (!preserveCourseFragment && /^#course-/.test(url.hash)) url.hash = '';
-  for (const [key, value] of Object.entries(readFilters())) {
-    if (!value || value === 'all') url.searchParams.delete(key); else url.searchParams.set(key, value);
-  }
+  if (!preserveCourseFragment && /^#course-/.test(viewFragment)) viewFragment = '';
+  const url = viewUrl();
   try { history.replaceState(null, '', url); } catch { /* Offline file URLs may not support this. */ }
   updateLanguageLinks();
 }
@@ -87,7 +98,7 @@ function saveRecord(next) {
   renderInterface();
 }
 function restoreCourseFragment(focus = false) {
-  const match = location.hash.match(/^#course-([A-D]\d{2,3})$/);
+  const match = viewFragment.match(/^#course-([A-D]\d{2,3})$/);
   if (!match || !interfaceCourses.some((c) => c.id === match[1])) return;
   if (!$('#course-' + match[1])) {
     $('#search').value = ''; for (const selector of ['#topic', '#level', '#show']) $(selector).value = 'all';
@@ -111,7 +122,8 @@ document.addEventListener('click', (event) => {
   const courseLink = event.target.closest('[data-course-link]');
   if (courseLink && !event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && event.button === 0) {
     event.preventDefault();
-    const url = new URL(location.href); url.hash = 'course-' + courseLink.dataset.courseLink;
+    viewFragment = '#course-' + courseLink.dataset.courseLink;
+    const url = viewUrl();
     try { history.pushState(null, '', url); } catch { location.hash = url.hash; }
     restoreCourseFragment(true); updateLanguageLinks();
   }
@@ -147,8 +159,8 @@ $('#import-progress').addEventListener('change', async (event) => {
   } catch { $('#storage-message').textContent = ui.importError; }
   event.target.value = '';
 });
-window.addEventListener('hashchange', () => { restoreCourseFragment(true); updateLanguageLinks(); });
-window.addEventListener('popstate', () => { restoreFilters(); renderInterface(); restoreCourseFragment(); updateLanguageLinks(); });
+window.addEventListener('hashchange', () => { viewFragment = navigationFragment(location.hash); restoreCourseFragment(true); updateLanguageLinks(); });
+window.addEventListener('popstate', () => { viewFragment = navigationFragment(location.hash); restoreFilters(); renderInterface(); restoreCourseFragment(); updateLanguageLinks(); });
 window.addEventListener('storage', (event) => {
   if (!storage || event.storageArea !== storage || (event.key !== null && event.key !== LEARNER_STATE_STORAGE_KEY)) return;
   // Failed writes leave an intentionally usable in-memory record. Another tab

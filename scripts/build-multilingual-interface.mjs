@@ -25,10 +25,10 @@ const sources = [
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
 
-function renderDocument(locale, offline) {
+function renderDocument(locale, offline, paired = false) {
   const t = interfaceCopy[locale], esc = escapeMarkup;
   const languageLinks = supportedLocales.map((code) => {
-    const href = offline ? siteOrigin + code + '/' : '../' + code + '/';
+    const href = paired ? '../' + code + '/learning-map-paired.html' : offline ? siteOrigin + code + '/' : '../' + code + '/';
     return '<a data-locale-link="' + code + '" data-locale-base="' + href + '" href="' + href + '" lang="' + code + '" hreflang="' + code + '"' + (code === locale ? ' aria-current="page"' : '') + '>' + (code === 'id' ? 'Bahasa Indonesia' : 'English') + '</a>';
   }).join('');
   const options = interfaceCourses.map((course) => '<option value="' + course.id + '">' + course.id + ' — ' + esc(coursePresentation(course, locale).title) + '</option>').join('');
@@ -49,7 +49,8 @@ function renderDocument(locale, offline) {
     + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a></nav>'
     + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + '</nav></div></header>'
     + '<main id="top"><section class="intro"><h1>' + esc(t.title) + '</h1><p>' + esc(t.description) + '</p></section>'
-    + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + t.offlineMap + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
+    + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://doi.org/10.5281/zenodo.22059707">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
+    + '<p class="footnote">' + (paired ? t.pairedHelp : t.standaloneHelp) + '</p>'
     + '<details class="progress-panel js-only" id="progress"><summary>' + t.progress + ' — <span id="progress-summary"></span></summary><p>' + t.progressHelp + '</p>'
     + '<div class="progress-controls">' + claimForm('placement') + claimForm('equivalence')
     + '<div class="claim-form"><label for="waiver-target">' + t.target + '</label><select id="waiver-target">' + options + '</select><label for="waiver-prereq">' + t.prerequisite + '</label><select id="waiver-prereq"></select><button id="add-waiver" type="button">' + t.add + '</button></div></div>'
@@ -69,9 +70,9 @@ function renderDocument(locale, offline) {
 const outputFiles = [];
 for (const locale of supportedLocales) {
   await mkdir(resolve(interfaceRoot, 'docs', locale), { recursive: true });
-  for (const [file, offline] of [['index.html', false], ['learning-map.html', true]]) {
+  for (const [file, offline, paired] of [['index.html', false, false], ['learning-map.html', true, false], ['learning-map-paired.html', true, true]]) {
     const relative = 'docs/' + locale + '/' + file;
-    const bytes = Buffer.from(renderDocument(locale, offline));
+    const bytes = Buffer.from(renderDocument(locale, offline, paired));
     await writeFile(resolve(interfaceRoot, relative), bytes);
     outputFiles.push({ path: relative, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   }

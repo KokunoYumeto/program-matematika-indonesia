@@ -160,7 +160,8 @@ function executeOffline(html, locale, sharedStorage = new Map(), options = {}) {
   for (const id of ['search','topic','level','show','course-grid','result-count','empty-state','progress-summary','claims','storage-message','placement-course','equivalence-course','waiver-target','waiver-prereq','add-placement','add-equivalence','add-waiver','reset-filters','clear-progress','export-progress','import-progress']) {
     nodes.set('#' + id, fakeNode(id, ['topic','level','show'].includes(id) ? 'all' : id.endsWith('-course') || id === 'waiver-target' ? 'A00' : ''));
   }
-  const localeLinks = supportedLocales.map((code) => ({ ...fakeNode(code), 'data-locale-base': siteOrigin + code + '/' }));
+  const localeLinks = [...html.matchAll(/<a data-locale-link="([^"]+)" data-locale-base="([^"]+)" href="([^"]+)"/g)].map((match) => ({ ...fakeNode(match[1]), 'data-locale-base': match[2], href: match[3] }));
+  assert.deepEqual(localeLinks.map(link => link.id), supportedLocales, 'Use actual generated language anchors');
   const classNames = new Set();
   const doc = {
     documentElement: { lang: locale, classList: { add: (name) => classNames.add(name) } },
@@ -184,8 +185,8 @@ function executeOffline(html, locale, sharedStorage = new Map(), options = {}) {
     console, URL, URLSearchParams, Blob, Intl, document: doc, window: win,
     get location() { return address; },
     history: {
-      replaceState(_state, _title, url) { address = new URL(url, address); historyRows[historyRows.length - 1] = address.href; },
-      pushState(_state, _title, url) { address = new URL(url, address); historyRows.push(address.href); },
+      replaceState(_state, _title, url) { if (options.failHistory) throw new Error('History unavailable'); address = new URL(url, address); historyRows[historyRows.length - 1] = address.href; },
+      pushState(_state, _title, url) { if (options.failHistory) throw new Error('History unavailable'); address = new URL(url, address); historyRows.push(address.href); },
     },
     requestAnimationFrame: (fn) => fn(), setTimeout: () => 0,
   });
@@ -202,7 +203,7 @@ for (const item of [...receipt.inputs, ...receipt.outputs]) {
   assert.equal(bytes.length, item.bytes, item.path);
   assert.equal(createHash('sha256').update(bytes).digest('hex'), item.sha256, item.path);
 }
-for (const locale of supportedLocales) for (const file of ['index.html', 'learning-map.html']) {
+for (const locale of supportedLocales) for (const file of ['index.html', 'learning-map.html', 'learning-map-paired.html']) {
   const html = await readFile(resolve(root, 'docs', locale, file), 'utf8');
   assert.ok(html.includes('<html lang="' + locale + '">'));
   const staticHtml = html.replace(/<script[\s\S]*?<\/script>/g, '');
@@ -223,12 +224,14 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const match of staticHtml.matchAll(/(?:src|href)="([^"]+)"/g)) {
     if (match[1].startsWith('#')) continue;
     if (/^https:\/\//.test(match[1])) continue;
-    assert.equal(file, 'index.html', 'Offline document must have no relative dependency: ' + match[1]);
+    if (file === 'learning-map-paired.html') {
+      assert.ok(supportedLocales.some(code => match[1] === '../' + code + '/learning-map-paired.html'), 'Only paired language anchors may be relative');
+    } else assert.equal(file, 'index.html', 'Standalone document must have no relative dependency: ' + match[1]);
     const target = resolve(root, 'docs', locale, match[1], match[1].endsWith('/') ? 'index.html' : '');
     await readFile(target);
   }
   sizes.push({ locale, file, bytes: Buffer.byteLength(html), gzipBytes: gzipSync(html).length });
-  if (file === 'learning-map.html') {
+  if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     assert.ok(Buffer.byteLength(html) < 350000, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 70000, 'Compressed map size budget');
@@ -268,7 +271,47 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     next.doc.activeElement = { dataset: { completion: 'A00' } };
     next.documentEvents.get('change')({ target: { matches: () => true, dataset: { completion: 'A00' }, checked: true } });
     assert.equal(next.nodes.get('#result-count').focused, true, 'Completing an eligible card restores focus to results');
-    executeOffline(html, locale, new Map(), { noStorage: true, url: 'file:///tmp/learning-map.html' });
+    for (const base of ['file:///C:/Learning%20folder/Matematika%20%E6%95%B0%E5%AD%A6/docs/', 'https://example.test/unpacked/docs/']) {
+      const fileUrl = base + locale + '/' + file;
+      const unknown = executeOffline(html, locale, new Map(), { url: fileUrl + '?progress=QUERY_SENTINEL#completedCourseIds=FRAGMENT_SENTINEL', failHistory: true });
+      for (const action of [() => {}, () => unknown.windowEvents.get('hashchange')(), () => unknown.windowEvents.get('popstate')()]) {
+        action();
+        for (const link of unknown.localeLinks) assert.ok(!link.href.includes('SENTINEL') && !new URL(link.href).hash, 'Only known navigation fragments propagate');
+      }
+      for (const fragment of ['#top', '#katalog', '#progress', '#about']) {
+        unknown.address().hash = fragment; unknown.windowEvents.get('hashchange')();
+        for (const link of unknown.localeLinks) assert.equal(new URL(link.href).hash, fragment);
+      }
+      const offline = executeOffline(html, locale, new Map(), { noStorage: true, failHistory: true, url: fileUrl + '?level=C&progress=private&claims=private#course-C30' });
+      for (const link of offline.localeLinks) {
+        const actual = new URL(link.href);
+        const expected = file === 'learning-map-paired.html' ? base + link.id + '/learning-map-paired.html' : siteOrigin + link.id + '/';
+        assert.equal(actual.origin + actual.pathname, new URL(expected).origin + new URL(expected).pathname);
+        assert.equal(actual.search, '?level=C');
+        assert.equal(actual.hash, '#course-C30');
+        assert.ok(!actual.href.includes('private'), 'Do not propagate unknown/progress query data');
+      }
+      offline.nodes.get('#search').value = 'new search';
+      offline.nodes.get('#search').events.get('input')();
+      assert.ok(offline.address().href.includes('#course-C30'), 'Throwing history leaves old address unchanged');
+      for (const link of offline.localeLinks) {
+        assert.equal(new URL(link.href).searchParams.get('q'), 'new search', 'Current filters survive rejected history write');
+        assert.equal(new URL(link.href).hash, '', 'Stale course fragment is cleared in navigation despite rejected history');
+      }
+      offline.nodes.get('#reset-filters').events.get('click')();
+      offline.documentEvents.get('click')(event);
+      for (const link of offline.localeLinks) assert.equal(new URL(link.href).hash, '#course-A00', 'Course navigation fallback retains current fragment');
+      const imported = JSON.stringify(state);
+      await offline.nodes.get('#import-progress').events.get('change')({ target: { files: [{ size: imported.length, text: async () => imported }], value: 'record.json' } });
+      assert.ok(offline.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'), 'Import moves progress into isolated/offline context');
+      offline.nodes.get('#show').value = 'completed';
+      offline.nodes.get('#show').events.get('change')();
+      for (const link of offline.localeLinks) {
+        assert.equal(new URL(link.href).search, '?show=completed');
+        assert.equal(new URL(link.href).hash, '');
+        assert.ok(!link.href.includes('placement') && !link.href.includes('waiver') && !link.href.includes('completedCourseIds'));
+      }
+    }
     const quota = executeOffline(html, locale, new Map(), { failWrites: true, url: 'https://example.test/' + locale + '/' });
     quota.documentEvents.get('change')({ target: { matches: () => true, dataset: { completion: 'A00' }, checked: true } });
     for (const event of [{ key: 'unrelated-preference', storageArea: quota.fakeStorage }, { key: LEARNER_STATE_STORAGE_KEY, storageArea: quota.fakeStorage }, { key: null, storageArea: quota.fakeStorage }]) {
@@ -285,4 +328,4 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(sync.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'), 'Matching persisted progress event still synchronizes');
   }
 }
-console.log(JSON.stringify({ status: 'pass', courses: ids.length, edges: 83, locales: supportedLocales, tests: ['graph-identity','explicit-language-bindings','static-40-course-catalogs','all-internal-fragments','safe-https-links','offline-script-execution','search-and-reset','course-history','shared-progress','storage-unavailable','receipt-hashes'], sizes }));
+console.log(JSON.stringify({ status: 'pass', courses: ids.length, edges: 83, locales: supportedLocales, tests: ['graph-identity','explicit-language-bindings','static-40-course-catalogs','all-internal-fragments','safe-https-links','offline-script-execution','search-and-reset','course-history','shared-progress','storage-unavailable','receipt-hashes','rendered-language-anchors','paired-static-local-closure','standalone-online-fallback','file-and-unicode-paths','history-rejection-current-view','navigation-no-progress-data','isolated-progress-import'], sizes }));
