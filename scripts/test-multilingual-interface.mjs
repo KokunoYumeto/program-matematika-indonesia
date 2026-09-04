@@ -6,7 +6,8 @@ import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
 import vm from 'node:vm';
 import { courses as canonicalCourses } from '../docs/courses.js';
-import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, safeResourceUrl } from '../docs/interface/view.js';
+import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, renderResourceLinks, safeResourceUrl, isOriginalSource, contentLanguageName } from '../docs/interface/view.js';
+import { additionalOriginalSources } from '../docs/interface/original-sources.js';
 import { supportedLocales, englishResources, englishBindingExceptions, siteOrigin } from '../docs/interface/locales.js';
 import { verifiedReaderActions, readerActionSource } from '../docs/interface/reader-actions.js';
 import { projectReaderActions, readerActionInput } from './interface-reader-actions.mjs';
@@ -19,6 +20,28 @@ import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerStat
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
+for (const course of interfaceCourses) for (const locale of supportedLocales) {
+  const bindings = resourceBindings(course, locale);
+  const sources = bindings.filter(isOriginalSource);
+  assert.ok(sources.length, course.id + ': original source must be available in every interface language');
+  const visible = renderResourceLinks(course, locale).split('<details class="resource-details">')[0];
+  for (const source of sources) {
+    assert.ok(visible.includes('href="'+source.href.replaceAll('&','&amp;')+'"'), 'Source must not be collapsed: '+course.id);
+    assert.ok(visible.includes('data-original-source="'+source.origin+'"'));
+  }
+  for (const source of additionalOriginalSources[course.id] ?? []) {
+    assert.equal(sources.filter(r=>r.href===safeResourceUrl(source.href) && r.contentLanguage===source.contentLanguage).length,1);
+  }
+  for (const source of (englishResources[course.id] ?? []).filter(isOriginalSource)) {
+    assert.ok(sources.some(r=>r.href===source.href && r.contentLanguage==='en'));
+  }
+}
+assert.notEqual(contentLanguageName('zh','en'),'shared metadata');
+assert.notEqual(contentLanguageName('de','id'),'metadata bersama');
+assert.ok(contentLanguageName('bn','en'));
+assert.equal(isOriginalSource({origin:'published-translation'}),false);
+assert.equal(isOriginalSource({origin:'published-english-component'}),false);
+assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin),['program-original','program-original']);
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {
   assert.ok(ids.includes(row.courseId) && row.id.startsWith(row.courseId+':'));
@@ -174,7 +197,7 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
     assert.ok(row.offlineAfterDownload);
   }
   for (const row of bindings) {
-    assert.ok(['en', 'id', 'und'].includes(row.contentLanguage));
+    assert.equal(Intl.getCanonicalLocales(row.contentLanguage)[0],row.contentLanguage, 'Actual BCP 47 material language');
     assert.equal(new URL(row.href).protocol, 'https:');
   }
   const card = renderCourseCard(course, locale);
@@ -279,6 +302,12 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(Buffer.byteLength(html) < 350000, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 70000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
+    // Compact payload must preserve all effective data, not just course counts.
+    assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
+    for (const c of interfaceCourses) {
+      const actual=JSON.parse(vm.runInContext('JSON.stringify(resourceBindings(interfaceCourses.find(c=>c.id==='+JSON.stringify(c.id)+'),'+JSON.stringify(locale)+'))',run.context));
+      assert.deepEqual(actual,resourceBindings(c,locale),'Online/offline binding equality: '+c.id);
+    }
     assert.ok(run.nodes.get('#course-grid').innerHTML.includes('id="course-C30"'));
     for (const link of run.localeLinks) { assert.ok(link.href.endsWith('?level=C#course-C30')); }
     run.nodes.get('#search').value = 'zzzz-no-matches';

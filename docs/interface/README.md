@@ -24,6 +24,16 @@ The backend integrator's published CLP follow-through corrected the earlier nine
 
 ## Language binding
 
+### Paired access: program reader and original source
+
+All 40 course cards expose their identified original book/course sources outside collapsed details, in both interfaces and all offline maps. Existing English upstream links are labeled **Original source**, not mistaken for program-hosted mirrors. `original-sources.js` adds German Brenner course sources, Wen-Wei Li's Chinese author/book page, and the original Indonesian homes of the program-authored B80/D120 works. D100 preserves both the 2025–2026 and 2012 source courses plus BGK 2019–2020; this is not a new English reader or a change to its owner pause.
+
+These links identify original spines and explicitly listed components, not the origin of every program-authored companion. Source sites can advance independently of frozen editions. Exact revisions, licenses, authorship, component rights and corrections remain in each edition's existing provenance. No source site is presented as endorsing an adaptation. German and Chinese links do not create new interface routes or imply that those originals are locally mirrored.
+
+Program-hosted English mirrors remain incomplete: 34 course roles currently use external English originals; five have mapped program-published English editions; D100 has no mapped public English edition. These are interface binding categories, not a new census of translation completion. A hosted HTML mirror is distinct from a hosted PDF. This increment does not import or translate more books. Original-site links remain prominent when hosted editions are added.
+
+The offline payload stores the effective catalog once instead of duplicating historical and live catalogs. All original inputs remain hash-bound. Tests compare every effective course and resolved resource between online and offline execution, retaining size budgets, all six static pages, navigation and progress behavior.
+
 `locales.js` records English source/edition links and explicit exceptions. Missing English bindings are a discovery state, not a statement about Indonesian translation completion. Original Indonesian companions remain visible with their actual language. English upstream spines are not represented as containing those original companions.
 
 Current bindings cover 39 course roles. The earlier D70/D80 omissions were discovery errors: their independent English editions were already complete in separate English repositories. D70 now links the complete 457-page Li Volume 1 plus the 102-page Duncan, 68-page selected CRing, and 7-page original study/mastery readers (634 pages total). D80 links corrected Volume 2 r2: 146 units, two mastery bridges, 820 PDF pages and a complete HTML reader. Each PDF is hash-bound; the current HTML identity is retained in the resource row. D70's four public PDFs and D80's pinned GitHub PDF/Pages HTML were freshly read back on 2026-09-04. D80's Zenodo r2 receipt is historical; fresh Zenodo PDF access returned 403, so the immediate PDF action uses the verified pinned GitHub bytes. The DOI remains linked. Both language interfaces expose these actual English editions without changing the Indonesian counterparts.

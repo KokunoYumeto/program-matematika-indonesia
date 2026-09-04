@@ -7,6 +7,7 @@ import { verifiedReaderActions } from './reader-actions.js';
 import { finalEditions } from './final-editions.js';
 import { capabilityTools } from './capability-tools.js';
 import { supplementalReaders } from './supplemental-readers.js';
+import { additionalOriginalSources } from './original-sources.js';
 
 // Final links are a presentation overlay, not a replacement backend or corpus.
 export const interfaceCourses = materializeLiveCourses(authorityCourses).map(course => {
@@ -44,7 +45,6 @@ export function resourceBindings(course, locale) {
     if (href && !rows.some((row) => row.href === safeResourceUrl(href))) rows.push({ label, labelLanguage: locale, href: safeResourceUrl(href), contentLanguage, kind, ...extra });
   };
   for (const row of englishResources[course.id] ?? []) {
-    if (locale !== 'en' && !row.origin.startsWith('published-')) continue;
     const {label,href,contentLanguage,kind,...facts} = row;
     add(label, href, contentLanguage, kind, { ...facts, labelLanguage:'en', primary: locale === 'en' && rows.length === 0 });
   }
@@ -104,24 +104,43 @@ export function resourceBindings(course, locale) {
   add(t.source + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.repository ?? course.repository, 'id', 'repository');
   // These indices are shared metadata, not an English translation of course prose.
   add(t.sharedBackend, 'backend/index.html', 'und', 'backend');
+  for (const source of additionalOriginalSources[course.id] ?? []) {
+    const existing = rows.find(row => row.href === safeResourceUrl(source.href));
+    if (existing) Object.assign(existing, {origin:source.origin});
+    else add(source.label, source.href, source.contentLanguage, 'HTML', {origin:source.origin, labelLanguage:source.contentLanguage, primary:false});
+  }
   return rows;
+}
+export function isOriginalSource(row) {
+  return ['upstream-original', 'program-original'].includes(row.origin);
+}
+export function contentLanguageName(code, locale) {
+  if (code === 'und') return locale === 'id' ? 'metadata bersama' : 'shared metadata';
+  if (code === 'id') return 'Bahasa Indonesia';
+  if (code === 'en') return 'English';
+  try { return new Intl.DisplayNames([locale], {type:'language'}).of(code) ?? code; }
+  catch { return code; }
 }
 export function renderResourceLinks(course, locale) {
   const t = interfaceCopy[locale];
   const rows = resourceBindings(course, locale);
   const preferred = rows.filter((row) => row.contentLanguage === locale && !['repository', 'archive', 'source-archive'].includes(row.kind));
-  const other = rows.filter((row) => !preferred.includes(row));
+  const originals = rows.filter(row => isOriginalSource(row) && !preferred.includes(row));
+  const other = rows.filter((row) => !preferred.includes(row) && !originals.includes(row));
   const link = (row) => '<a class="resource-link' + (row.primary ? ' primary' : '') + '" href="' + escapeMarkup(row.href)
     + '" data-content-language="' + row.contentLanguage + '" hreflang="' + row.contentLanguage
     + '"' + (row.actionId ? ' data-reader-action="' + escapeMarkup(row.actionId) + '"' : '')
     + (row.editionResourceId ? ' data-edition-resource="' + escapeMarkup(row.editionResourceId) + '"' : '')
     + (row.capabilityToolId ? ' data-capability-tool="' + escapeMarkup(row.capabilityToolId) + '"' : '')
     + (row.supplementalReaderId ? ' data-supplemental-reader="' + escapeMarkup(row.supplementalReaderId) + '"' : '')
-    + '><span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
-    + ' · <span lang="' + (row.contentLanguage === 'und' ? locale : row.contentLanguage) + '">' + (row.contentLanguage === 'id' ? 'Bahasa Indonesia' : row.contentLanguage === 'en' ? 'English' : locale === 'id' ? 'metadata bersama' : 'shared metadata') + '</span>'
+    + (isOriginalSource(row) ? ' data-original-source="' + row.origin + '"' : '')
+    + '>' + (isOriginalSource(row) ? '<strong>' + (locale === 'id' ? 'Sumber asli' : 'Original source') + '</strong>' : '')
+    + '<span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
+    + ' · <span lang="' + (['en','id'].includes(row.contentLanguage) ? row.contentLanguage : locale) + '">' + escapeMarkup(contentLanguageName(row.contentLanguage, locale)) + '</span>'
     + (row.offlineAfterDownload ? ' · ' + (locale === 'id' ? 'Luring setelah diunduh' : 'Offline after download') : '') + '</small></a>'
     + (row.note ? '<p class="footnote" lang="'+locale+'">'+escapeMarkup(row.note)+'</p>' : '');
   return (preferred.length ? preferred.map(link).join('') : '<p class="binding-note">' + escapeMarkup(t.noPrimary) + '</p>')
+    + originals.map(link).join('')
     + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(locale === 'en' ? t.otherLanguage + ' / ' + t.sharedBackend : t.companion + ' / ' + t.source)
       + '</summary><div class="resource-list">' + other.map(link).join('') + '</div></details>' : '');
 }
