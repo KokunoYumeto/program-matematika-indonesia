@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/o004/backend/schema-v0.json",
+  "title": "O004 additive curriculum backend v0",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema", "generated_at", "records", "relations"],
+  "properties": {
+    "schema": {"const": "o004-curriculum-backend-v0"},
+    "generated_at": {"type": "string", "format": "date"},
+    "records": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/record"}
+    },
+    "relations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/relation"}
+    }
+  },
+  "$defs": {
+    "record": {
+      "type": "object",
+      "additionalProperties": true,
+      "required": ["entity_type", "id", "status"],
+      "properties": {
+        "entity_type": {
+          "enum": ["program", "course", "resource", "edition", "unit", "concept", "segment", "term", "asset", "rights", "qa_event", "artifact", "correction"]
+        },
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+        "status": {"type": "string"},
+        "locale": {"type": ["string", "null"]},
+        "source_local_id": {"type": ["string", "null"]},
+        "source_path": {"type": ["string", "null"]},
+        "source_sha256": {"type": ["string", "null"], "pattern": "^([0-9a-f]{64})?$"},
+        "rights_id": {"type": ["string", "null"]},
+        "authority_edition_id": {"type": ["string", "null"]}
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "type", "from", "to"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]*$"},
+        "type": {"enum": ["contains", "precedes", "hints", "illustrates", "translates", "adapts", "depends-on"]},
+        "from": {"type": "string"},
+        "to": {"type": "string"}
+      }
+    }
+  }
+}

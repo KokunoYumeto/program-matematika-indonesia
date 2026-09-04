@@ -79,9 +79,12 @@ export function resourceBindings(course, locale) {
     if (tool.state !== 'planned') add(tool.label, tool.href, 'id', 'tool', { labelLanguage: 'id' });
   }
   for (const tool of capabilityTools.filter(row=>row.courseId===course.id)) {
+    const note = locale === 'id'
+      ? tool.scope.replace(/[.\s]+$/u, '') + '. ' + tool.limitations.join(' ')
+      : 'Indonesian-language capability. Open the linked tool for its source-specific scope, evidence and limitations.';
     add(tool.label, tool.href, tool.contentLanguage, 'tool', {labelLanguage:'id', capabilityToolId:tool.tool_id,
       bytes:tool.page.bytes, sha256:tool.page.sha256, primary:false, scope:tool.scope, limitations:tool.limitations,
-      note:locale==='id' ? tool.scope+'. 72 latihan inti; 3 latihan menunggu prasyarat tambahan. '+tool.limitations.join(' ') : '14 units, 75 exercises (72 core; 3 need additional prerequisites), 4 labs. Indonesian material; no code execution or automatic grading. Linked lessons need a connection or a separate download.'});
+      note});
   }
   const delivery = learnerDeliveryByCourseId[course.id];
   for (const row of supplementalReaders.filter(item => item.courseId === course.id)) {
