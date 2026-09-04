@@ -4,13 +4,15 @@
 
 [Buka peta belajar Bahasa Indonesia](https://kokunoyumeto.github.io/program-matematika-indonesia/id/) · [Open the English learning map](https://kokunoyumeto.github.io/program-matematika-indonesia/en/)
 
-[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22305135) · [Interface release v0.63.2](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.2)
+[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22305658) · [Interface release v0.63.3](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.3)
 
 Both interfaces use the same 40-course graph and 83 prerequisite links. Each resource is labeled with its actual language; English original textbooks are not presented as containing the program's Indonesian-original companions. The dated backend/publication snapshots below are historical, not a current translation queue.
 
 The interface directly consumes the integrated seven verified CLP reader actions (4,077 pages), with localized labels and offline-after-download scope. Source archives remain secondary. Unsaved progress is protected from unrelated cross-tab storage events.
 
 Current learner-link update, 4 September 2026: all Indonesian translations are complete. Both language maps now bind the final A20, A30, B95, C140 and D100 editions through 13 anonymously byte/hash-verified reader links. C140 keeps its independent statistics supplements and completed companion; D100 exposes both complete courses plus the bridge. The following dated tables describe historical snapshots, not remaining translation work. Modular-backend integration remains a separate audit-owned activity.
+
+The English link correction also connects the already completed D70 and D80 editions: Li Volume 1 plus its three English companions (634 pages total), and corrected Volume 2 with a full HTML reader and 820-page PDF. English learning resources are now linked for 37 course roles; unmapped links are not evidence of missing translations. The B80 card exposes the audit's [learner exercise map](https://kokunoyumeto.github.io/program-matematika-indonesia/backend/b80/B80.html) and [teacher guide](https://kokunoyumeto.github.io/program-matematika-indonesia/backend/b80/B80-pengajar.html): 14 units, 75 exercises (72 core; three need further prerequisites), and four labs, in Indonesian. The exact B80 native-capability packet and the audit's dated [40-role backend coverage evidence](https://kokunoyumeto.github.io/program-matematika-indonesia/backend/coverage.html) are preserved in the current downloadable navigator. The historical coverage snapshot's pending B80 Zenodo statement is superseded by the current publication receipt; no claim of whole-program backend completion is made.
 
 ## ▶ [Mulai belajar di situs Program Matematika Indonesia](https://kokunoyumeto.github.io/program-matematika-indonesia/)
 
