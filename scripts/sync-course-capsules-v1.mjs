@@ -70,10 +70,10 @@ assert.deepEqual(rows, lines, 'Public JSON and canonical JSONL differ.');
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
 const layerNames = ['curriculum', 'translation', 'production', 'learner', 'educator', 'federation', 'interoperability'];
 for (const row of rows) assert.deepEqual(Object.keys(row.layers).sort(), [...layerNames].sort(), `${row.course_id}: seven-layer contract drift.`);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 35);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 36);
 assert.deepEqual(
   rows.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id),
-  ['A20', 'A30', 'B95', 'C140', 'D100'],
+  ['A30', 'B95', 'C140', 'D100'],
 );
 const d40 = rows.find(({ course_id }) => course_id === 'D40');
 assert.equal(d40.course.state, 'published');
@@ -106,13 +106,13 @@ assert.equal(manifest.output.sha256, sha256(jsonlBytes));
 assert.equal(manifest.projections.course_capsules_json.bytes, jsonBytes.length);
 assert.equal(manifest.projections.course_capsules_json.sha256, sha256(jsonBytes));
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(manifest.summary.published_count, 35);
-assert.equal(manifest.summary.production_count, 5);
+assert.equal(manifest.summary.published_count, 36);
+assert.equal(manifest.summary.production_count, 4);
 assert.equal(receipt.state, 'pass');
 assert.equal(receipt.checks.schema_instances, 40);
 assert.equal(receipt.checks.seven_layer_rows, 40);
-assert.equal(receipt.checks.published_count, 35);
-assert.equal(receipt.checks.production_count, 5);
+assert.equal(receipt.checks.published_count, 36);
+assert.equal(receipt.checks.production_count, 4);
 assert.deepEqual(receipt.peer_replay, { byte_identical: true, compared: true });
 assert.deepEqual(receipt.artifacts.course_capsules_jsonl, {
   bytes: jsonlBytes.length,

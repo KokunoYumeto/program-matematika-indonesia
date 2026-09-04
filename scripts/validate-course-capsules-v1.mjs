@@ -378,12 +378,12 @@ while (queue.length) {
 }
 assert.equal(visited, 40, 'Prerequisite graph contains a cycle.');
 
-assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 35);
-assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 5);
+assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 36);
+assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 4);
 assert.deepEqual(
   capsules.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id),
-  ['A20', 'A30', 'B95', 'C140', 'D100'],
-  'The exact five-role production set drifted.',
+  ['A30', 'B95', 'C140', 'D100'],
+  'The exact four-role production set drifted.',
 );
 const d30 = byId.D30;
 assert.equal(d30.course.state, 'published');
@@ -416,7 +416,7 @@ assert.equal(d40.course.state, 'published');
 assert.equal(d40.course_native.status, 'verified');
 assert.equal(d40.course_native.version, '2026.08.31-d40-complete');
 assert.equal(d40.course_native.repository, undefined, 'D40 must not invent a producer GitHub repository.');
-assert.equal(d40.evidence.length, 1);
+assert.equal(d40.evidence.length, 4, 'D40 course evidence must deduplicate one publication receipt and three shared native-capability receipts.');
 assert.equal(d40.layers.production.repository, undefined, 'D40 production layer must retain the GitHub-not-yet-produced truth.');
 assert.equal(d40.layers.production.release_status, 'verified');
 assert.equal(d40.layers.learner.primary.status, 'verified');
@@ -426,8 +426,9 @@ assert.equal(d40.layers.learner.portable_html.status, 'verified');
 assert.equal(d40.layers.learner.portable_html.entry_point, 'reader/html/index.html');
 assert.equal(d40.layers.learner.portable_html.inventory_count, 273);
 assert.equal(d40.layers.learner.portable_html.dependency_free, true);
-assert.equal(d40.layers.interoperability.semantic_adapter.status, 'available_unverified');
-assert.equal(d40.layers.interoperability.semantic_adapter.mapping_scope, 'course_native_composite_backend_not_yet_consumed_by_global_runtime');
+assert.equal(d40.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(d40.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(d40.layers.interoperability.semantic_adapter.mapping_scope, 'zero_copy_68_root_pde_mastery_projection_with_14_theory_chapters_130_many_to_many_supports_108_prerequisites_and_execution_evidence');
 assert.deepEqual(
   identity('backend/course-capsule-v1/validation/D40_O010_INDEPENDENT_ANONYMOUS_READBACK.json', d40ReadbackBytes),
   {
@@ -538,21 +539,37 @@ assert.equal(d40.layers.learner.portable_html.url, d40ZipUrl);
 assert.equal(d40FederationById['D40:d40-complete-package'].sha256, d40ZipReadback.anonymous_download.sha256);
 assert.equal(d40FederationById['D40:d40-complete-package'].url, d40ZipUrl);
 
-assert.equal(d40.layers.interoperability.semantic_adapter.evidence.length, 1);
-assert.equal(d40.layers.interoperability.semantic_adapter.evidence[0].file_name, d40ManifestReadback.filename);
-assert.equal(d40.layers.interoperability.semantic_adapter.evidence[0].bytes, d40ManifestReadback.anonymous_download.bytes);
-assert.equal(d40.layers.interoperability.semantic_adapter.evidence[0].sha256, d40ManifestReadback.anonymous_download.sha256);
-assert.equal(d40.layers.interoperability.semantic_adapter.evidence[0].locator, d40ManifestUrl);
+const d40AdapterEvidenceByKind = Object.fromEntries(
+  d40.layers.interoperability.semantic_adapter.evidence.map((row) => [row.kind, row]),
+);
+assert.equal(Object.keys(d40AdapterEvidenceByKind).length, 4);
+assert.equal(d40AdapterEvidenceByKind.course_native_release_manifest.file_name, d40ManifestReadback.filename);
+assert.equal(d40AdapterEvidenceByKind.course_native_release_manifest.bytes, d40ManifestReadback.anonymous_download.bytes);
+assert.equal(d40AdapterEvidenceByKind.course_native_release_manifest.sha256, d40ManifestReadback.anonymous_download.sha256);
+assert.equal(d40AdapterEvidenceByKind.course_native_release_manifest.locator, d40ManifestUrl);
+for (const [kind, relativePath] of Object.entries({
+  central_adapter_manifest: 'backend/course-capsule-v1/adapters/d40-capability-v1/manifest.json',
+  deterministic_validation_receipt: 'backend/course-capsule-v1/adapters/d40-capability-v1/validation.json',
+  native_metadata_intake: 'backend/course-capsule-v1/adapters/d40-capability-v1/input/source-lock.json',
+})) {
+  const bytes = await readFile(resolve(project, relativePath));
+  assert.deepEqual(
+    d40AdapterEvidenceByKind[kind],
+    {kind, locator: relativePath, bytes: bytes.length, sha256: sha256(bytes), verified_date: '2026-09-04'},
+  );
+}
 
 for (const [label, evidence] of [
   ['course', d40.evidence[0]],
-  ['educator', d40.layers.educator.evidence[0]],
   ['learner primary', d40.layers.learner.primary.evidence],
   ['learner PDF', d40.layers.learner.pdf.evidence],
   ['learner portable HTML', d40.layers.learner.portable_html.evidence],
 ]) {
   assert.equal(evidence.locator, d40Readback.public_record_url, `D40 ${label} evidence locator drifted from independent readback.`);
 }
+assert.equal(d40.layers.educator.evidence[0].locator, 'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d40/D40-pengajar.html');
+assert.equal(d40.layers.educator.evidence[0].bytes, d40.layers.educator.resources.find((row) => row.id === 'D40:educator-hub-v1').bytes);
+assert.equal(d40.layers.educator.evidence[0].sha256, d40.layers.educator.resources.find((row) => row.id === 'D40:educator-hub-v1').sha256);
 const leblFamily = {
   B70: { bytes: 5135134, sha256: '1c18dfc1572d22ef7fc5d8ad25be18f3b91f1bffea5b9f9d521ff4e56ca969d4' },
   C10: { bytes: 2870909, sha256: '38743ea0e7ce52bdadf5233fc9d6e79e00717f9ba55a393f2bf46ea21c65ef56' },
@@ -613,8 +630,8 @@ assert.equal(manifest.schema_version, '1.0.0');
 assert.deepEqual(manifest.output, identity('generated/course-capsules.jsonl', jsonlBytes));
 assert.deepEqual(manifest.projections.course_capsules_json, identity('generated/course-capsules.json', jsonBytes));
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(manifest.summary.published_count, 35);
-assert.equal(manifest.summary.production_count, 5);
+assert.equal(manifest.summary.published_count, 36);
+assert.equal(manifest.summary.production_count, 4);
 assert.equal(manifest.summary.prerequisite_edge_count, 83);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
@@ -677,8 +694,8 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: edges.length,
     prerequisite_dag_visited: visited,
-    published_count: 35,
-    production_count: 5,
+    published_count: 36,
+    production_count: 4,
     public_access_policy_rows: 40,
     educator_course_count: educatorCourses.length,
     educator_resource_count: capsules.reduce((count, capsule) => count + capsule.layers.educator.resources.length, 0),

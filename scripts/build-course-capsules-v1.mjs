@@ -297,8 +297,13 @@ const capsules = effectiveCourses.map((course) => {
     mapping_scope: 'capsule_only',
     evidence: [],
   };
-  const capsuleEvidence = truth?.publication_evidence ? [clean(clone(truth.publication_evidence))] : [];
-  for (const claim of Object.values(nativeCapabilities)) capsuleEvidence.push(...clone(claim.evidence ?? []));
+  const capsuleEvidenceByIdentity = new Map();
+  const addCapsuleEvidence = (item) => capsuleEvidenceByIdentity.set(canonicalLine(item), item);
+  if (truth?.publication_evidence) addCapsuleEvidence(clean(clone(truth.publication_evidence)));
+  for (const claim of Object.values(nativeCapabilities)) {
+    for (const item of clone(claim.evidence ?? [])) addCapsuleEvidence(item);
+  }
+  const capsuleEvidence = [...capsuleEvidenceByIdentity.values()];
 
   return {
     $schema: 'https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/course-capsule-v1.schema.json',

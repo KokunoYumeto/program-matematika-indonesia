@@ -14,14 +14,26 @@ await syncReaderActions(interfaceRoot, canonicalCourses.map((course) => course.i
 await syncFinalEditions(interfaceRoot, canonicalCourses.map((course) => course.id));
 const capabilityFiles = await syncCapabilityTools(interfaceRoot, canonicalCourses.map((course) => course.id));
 const { interfaceCourses, interfaceTopics, coursePresentation, renderCourseCard, escapeMarkup, resourceBindings } = await import('../docs/interface/view.js');
+const { capabilityTools: admittedCapabilityTools } = await import('../docs/interface/capability-tools.js');
 const read = (path) => readFile(resolve(interfaceRoot, path), 'utf8');
 const css = await read('docs/interface/styles.css');
 const stripExports = (code) => code.replace(/^export (const|function) /gm, '$1 ');
 const stripImports = (code) => code.replace(/^import[\s\S]*?from ['"][^'"]+['"];\r?\n/gm, '');
-const capabilityRuntime = (await read('docs/interface/capability-tools.js'))
-  // The file inventory is build evidence, not runtime state. It remains hashed
-  // in the build receipt but must not consume the bounded offline payload.
-  .replace(/^export const capabilityToolFiles = .*;\r?\n/m, '');
+// Keep the complete admitted objects and file inventory in the hash-bound source,
+// but embed only fields consumed by resourceBindings in the offline document.
+// This is a lossless runtime projection: online/offline binding equality below
+// proves that omitted build-only evidence fields cannot alter learner links.
+const capabilityRuntimeTools = admittedCapabilityTools.map((tool) => ({
+  courseId: tool.courseId,
+  contentLanguage: tool.contentLanguage,
+  href: tool.href,
+  label: tool.label,
+  limitations: tool.limitations,
+  page: { bytes: tool.page.bytes, sha256: tool.page.sha256 },
+  scope: tool.scope,
+  tool_id: tool.tool_id,
+}));
+const capabilityRuntime = 'const capabilityTools = ' + JSON.stringify(capabilityRuntimeTools) + ';';
 const sources = [
   // Carry the effective catalog once in the offline payload; native inputs are
   // still hash-bound below. No course source or backend is changed.

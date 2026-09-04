@@ -193,12 +193,24 @@ const numericFields = [
   'navigation_units_promoted', 'component_rights_exceptions',
 ];
 const packageFromPublishedRow = async (row) => {
-  const archivePath = await exists(row.archive.path)
+  const archivePath = row.archive.path.startsWith('backend/')
     ? row.archive.path
     : `releases/v0.62.13/${basename(row.archive.path)}`;
-  const archiveBytes = await load(archivePath);
+  if (await exists(archivePath)) {
+    const archiveBytes = await load(archivePath);
+    assert.deepEqual(identity(archiveBytes), { bytes: row.archive.bytes, sha256: row.archive.sha256 }, `${row.role_id}: archive drift`);
+  } else {
+    const publicAsset = v06214AssetByName.get(basename(row.archive.path));
+    assert.ok(publicAsset, `${row.role_id}: missing local archive and public readback identity`);
+    assert.equal(publicAsset.anonymous_http_status, 200);
+    assert.equal(publicAsset.anonymous_byte_identity, true);
+    assert.deepEqual(
+      { bytes: publicAsset.bytes, sha256: publicAsset.sha256 },
+      { bytes: row.archive.bytes, sha256: row.archive.sha256 },
+      `${row.role_id}: public archive identity drift`,
+    );
+  }
   const manifestBytes = await load(row.manifest.path);
-  assert.deepEqual(identity(archiveBytes), { bytes: row.archive.bytes, sha256: row.archive.sha256 }, `${row.role_id}: archive drift`);
   assert.deepEqual(identity(manifestBytes), { bytes: row.manifest.bytes, sha256: row.manifest.sha256 }, `${row.role_id}: manifest drift`);
   const manifest = JSON.parse(manifestBytes);
   const result = {
