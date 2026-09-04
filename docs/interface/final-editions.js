@@ -1,0 +1,345 @@
+// Generated presentation bindings; corpus/backend authority remains unchanged.
+export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":14756,"sha256":"f0c1a7f364e2483f620708ad434b58373dbac5d632d368c5acdc87eb4ab9c861"};
+export const finalEditions = [
+  {
+    "courseId": "A20",
+    "version": "1.0.0",
+    "archive": "https://doi.org/10.5281/zenodo.22229860",
+    "repository": "https://github.com/KokunoYumeto/openstax-intermediate-algebra-2e-id",
+    "supersededSupplementIds": [],
+    "resources": [
+      {
+        "id": "A20:textbook",
+        "href": "https://zenodo.org/records/22229860/files/openstax-intermediate-algebra-2e-id-ID-1.0.0-reader.pdf?download=1",
+        "labels": {
+          "id": "Buku teks lengkap",
+          "en": "Complete textbook"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "PDF",
+        "primary": true,
+        "offlineAfterDownload": true,
+        "pages": 3438,
+        "bytes": 412049461,
+        "sha256": "76276eeab590cd8181fd531378c4b4860bf30289a5e8093c9af5788d1eca3a9c",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "76276eeab590cd8181fd531378c4b4860bf30289a5e8093c9af5788d1eca3a9c",
+          "source_receipt": "publication/final-release-1.0.0/zenodo-publication-receipt-1.0.0.json",
+          "source_receipt_sha256": "d42f1f9e003978ebf9248bbe1e9f7ae6ff209c7f982dc19c71c72c5ada86d756"
+        }
+      }
+    ]
+  },
+  {
+    "courseId": "A30",
+    "version": "1.0.0",
+    "archive": "https://doi.org/10.5281/zenodo.22290180",
+    "repository": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id",
+    "supersededSupplementIds": [
+      "a30-current-native-backend",
+      "a30-current-source"
+    ],
+    "resources": [
+      {
+        "id": "A30:textbook",
+        "href": "https://zenodo.org/records/22290180/files/OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf?download=1",
+        "labels": {
+          "id": "Buku teks lengkap",
+          "en": "Complete textbook"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "PDF",
+        "primary": true,
+        "offlineAfterDownload": true,
+        "pages": 3165,
+        "bytes": 305654938,
+        "sha256": "3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e",
+          "source_receipt": "qa/FULL87_FINAL_RELEASE_TERMINAL_AUDIT_1.0.0_20260904.json",
+          "source_receipt_sha256": "15c9f634db44a04022b5abde1cb5f468e6480cf18630a361a594d1ff2f760fde"
+        }
+      }
+    ]
+  },
+  {
+    "courseId": "B95",
+    "version": "2026.09.01.2-R011-B039",
+    "archive": "https://doi.org/10.5281/zenodo.22261912",
+    "repository": "https://github.com/KokunoYumeto/statistika-berbasis-data-id",
+    "supersededSupplementIds": [
+      "b95-current-native-backend",
+      "b95-current-source"
+    ],
+    "resources": [
+      {
+        "id": "B95:textbook",
+        "href": "https://zenodo.org/records/22261912/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER.pdf?download=1",
+        "labels": {
+          "id": "Buku teks lengkap",
+          "en": "Complete textbook"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "PDF",
+        "primary": true,
+        "offlineAfterDownload": true,
+        "pages": 462,
+        "bytes": 57049904,
+        "sha256": "7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049",
+          "source_receipt": "qa/b039-publication/R011-B039_FINAL_COMPLETION_RECEIPT.json",
+          "source_receipt_sha256": "40191d3429229dd426d9ce308b1e7dd040637dd862146a43ee45dc7599db5e61"
+        }
+      }
+    ]
+  },
+  {
+    "courseId": "C140",
+    "version": "2026.08.31.c140-companion-c5",
+    "archive": "https://doi.org/10.5281/zenodo.22208527",
+    "repository": "https://github.com/KokunoYumeto/penn-state-stat-415-id",
+    "supersededSupplementIds": [
+      "c140-companion-reader"
+    ],
+    "resources": [
+      {
+        "id": "C140:course-html",
+        "href": "https://kokunoyumeto.github.io/penn-state-stat-415-id/index.html",
+        "labels": {
+          "id": "Baca mata kuliah STAT 415",
+          "en": "Read the STAT 415 course"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "HTML",
+        "primary": true,
+        "offlineAfterDownload": false,
+        "pages": null,
+        "bytes": 24947,
+        "sha256": "055bca74a3068a619ef9fb01dd3038c0e1b5b33da0b9de6f84337710047b48bb",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "055bca74a3068a619ef9fb01dd3038c0e1b5b33da0b9de6f84337710047b48bb",
+          "source_receipt": "00_control/GITHUB_PAGES_RECEIPT_2026-08-31_C140_COMPANION_C5.json",
+          "source_receipt_sha256": "2230f83f946c83d5a9633cdc3f4b1c5af72069634ff72586768a4f8f08a3eae6"
+        }
+      },
+      {
+        "id": "C140:course-pdf",
+        "href": "https://zenodo.org/records/22208527/files/00_00_stat415-pengantar-statistika-matematis-id.pdf",
+        "labels": {
+          "id": "Unduh buku STAT 415",
+          "en": "Download the STAT 415 textbook"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "PDF",
+        "primary": false,
+        "offlineAfterDownload": true,
+        "pages": 219,
+        "bytes": 20170549,
+        "sha256": "f39c1c438cc3e793fe9522eb11f5b02704d89fcdc7aecb2207a599087d458964",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "f39c1c438cc3e793fe9522eb11f5b02704d89fcdc7aecb2207a599087d458964",
+          "source_receipt": "00_control/ZENODO_PUBLIC_READBACK_2026-08-31_C140_COMPANION_C5.json",
+          "source_receipt_sha256": "eb6c661e93450580296f8aec6b2be103b128f6b57834f4f6fb9b2148ee9897ff"
+        }
+      },
+      {
+        "id": "C140:companion-html",
+        "href": "https://kokunoyumeto.github.io/penn-state-stat-415-id/components/c140-companion/index.html",
+        "labels": {
+          "id": "Baca pendamping lengkap C5 — 146 soal terselesaikan",
+          "en": "Read the complete C5 companion — 146 solved problems"
+        },
+        "contentLanguage": "id",
+        "kind": "companion",
+        "format": "HTML",
+        "primary": false,
+        "offlineAfterDownload": false,
+        "pages": null,
+        "bytes": 21723,
+        "sha256": "3fe7d9cad39af310b797acbf5b4e7936067f3b1fbe0e6743860f0a4e1d00f406",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "3fe7d9cad39af310b797acbf5b4e7936067f3b1fbe0e6743860f0a4e1d00f406",
+          "source_receipt": "00_control/GITHUB_PAGES_RECEIPT_2026-08-31_C140_COMPANION_C5.json",
+          "source_receipt_sha256": "2230f83f946c83d5a9633cdc3f4b1c5af72069634ff72586768a4f8f08a3eae6"
+        }
+      },
+      {
+        "id": "C140:companion-offline",
+        "href": "https://zenodo.org/records/22208527/files/06_C140_COMPANION_C5_OFFLINE_READER.zip",
+        "labels": {
+          "id": "Unduh pendamping lengkap C5",
+          "en": "Download the complete C5 companion"
+        },
+        "contentLanguage": "id",
+        "kind": "portable_html",
+        "format": "HTML ZIP",
+        "primary": false,
+        "offlineAfterDownload": true,
+        "pages": null,
+        "bytes": 15803617,
+        "sha256": "1abdd3746b2886216ef70b35e6f3064ddc60afa490bdd134b92995068abccf4b",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "1abdd3746b2886216ef70b35e6f3064ddc60afa490bdd134b92995068abccf4b",
+          "source_receipt": "00_control/ZENODO_PUBLIC_READBACK_2026-08-31_C140_COMPANION_C5.json",
+          "source_receipt_sha256": "eb6c661e93450580296f8aec6b2be103b128f6b57834f4f6fb9b2148ee9897ff"
+        }
+      }
+    ]
+  },
+  {
+    "courseId": "D100",
+    "version": "ak-unit-30-corr1+bgk-unit-30-corr1+bridge-corr1",
+    "archive": "https://doi.org/10.5281/zenodo.22237442",
+    "repository": "https://github.com/KokunoYumeto/algebraic-geometry-bridge-id",
+    "supersededSupplementIds": [
+      "bgk-units-01-06"
+    ],
+    "resources": [
+      {
+        "id": "D100:curves-pdf",
+        "href": "https://zenodo.org/api/records/22237442/files/01_Kurva-Aljabar_id-ID_Units-01-30_corr1.pdf/content",
+        "labels": {
+          "id": "Kurva Aljabar — 30 unit lengkap",
+          "en": "Algebraic Curves — all 30 units"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "PDF",
+        "primary": true,
+        "offlineAfterDownload": true,
+        "pages": 505,
+        "bytes": 16026554,
+        "sha256": "5af87fd1fd4b85c76bc4fa83e655bdb47d859700a3e57b2d4e7c0ca9c4cf5421",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "5af87fd1fd4b85c76bc4fa83e655bdb47d859700a3e57b2d4e7c0ca9c4cf5421",
+          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
+          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+        }
+      },
+      {
+        "id": "D100:curves-html",
+        "href": "https://zenodo.org/api/records/22237442/files/02_Kurva-Aljabar_id-ID_Units-01-30_corr1.html/content",
+        "labels": {
+          "id": "Unduh HTML Kurva Aljabar lengkap",
+          "en": "Download complete Algebraic Curves HTML"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "HTML",
+        "primary": false,
+        "offlineAfterDownload": false,
+        "pages": null,
+        "bytes": 23773577,
+        "sha256": "ea23c11b6a710a058e9d782eea1a7e0f2971a1551606f6cd51fc45209e9f87b5",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "ea23c11b6a710a058e9d782eea1a7e0f2971a1551606f6cd51fc45209e9f87b5",
+          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
+          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+        }
+      },
+      {
+        "id": "D100:bgk-pdf",
+        "href": "https://zenodo.org/api/records/22237442/files/01_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.pdf/content",
+        "labels": {
+          "id": "Bundel, Berkas, dan Kohomologi — 30 unit lengkap",
+          "en": "Bundles, Sheaves and Cohomology — all 30 units"
+        },
+        "contentLanguage": "id",
+        "kind": "companion",
+        "format": "PDF",
+        "primary": false,
+        "offlineAfterDownload": true,
+        "pages": 380,
+        "bytes": 2943608,
+        "sha256": "34fb81e572f60e20e4dadff9f5040da7abf9882bbf5cf64a425a03297428a436",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "34fb81e572f60e20e4dadff9f5040da7abf9882bbf5cf64a425a03297428a436",
+          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
+          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+        }
+      },
+      {
+        "id": "D100:bgk-html",
+        "href": "https://zenodo.org/api/records/22237442/files/02_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.html/content",
+        "labels": {
+          "id": "Unduh HTML Bundel, Berkas, dan Kohomologi lengkap",
+          "en": "Download complete Bundles, Sheaves and Cohomology HTML"
+        },
+        "contentLanguage": "id",
+        "kind": "companion",
+        "format": "HTML",
+        "primary": false,
+        "offlineAfterDownload": false,
+        "pages": null,
+        "bytes": 6837686,
+        "sha256": "1805fb6325a12d0400999d5fab5bd4fe101174e088a7a2e54fa47ffb32ce243e",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "1805fb6325a12d0400999d5fab5bd4fe101174e088a7a2e54fa47ffb32ce243e",
+          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
+          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+        }
+      },
+      {
+        "id": "D100:bridge-pdf",
+        "href": "https://zenodo.org/api/records/22237442/files/01_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1.pdf/content",
+        "labels": {
+          "id": "Pendamping: dari varietas ke skema",
+          "en": "Companion: from varieties to schemes"
+        },
+        "contentLanguage": "id",
+        "kind": "companion",
+        "format": "PDF",
+        "primary": false,
+        "offlineAfterDownload": true,
+        "pages": 90,
+        "bytes": 747673,
+        "sha256": "ed54f440409b2aa7beb5a1ff24be0e54de7845576f3f4d06e88fd58c9feb2131",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "ed54f440409b2aa7beb5a1ff24be0e54de7845576f3f4d06e88fd58c9feb2131",
+          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
+          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+        }
+      },
+      {
+        "id": "D100:bridge-html",
+        "href": "https://zenodo.org/api/records/22237442/files/02_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1_html.zip/content",
+        "labels": {
+          "id": "Unduh paket HTML pendamping",
+          "en": "Download the companion HTML package"
+        },
+        "contentLanguage": "id",
+        "kind": "portable_html",
+        "format": "HTML ZIP",
+        "primary": false,
+        "offlineAfterDownload": false,
+        "pages": null,
+        "bytes": 2784305,
+        "sha256": "487c13991626f0e2c524d5c455930b83b6b242d54d8915087edf4823f1303bdc",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "487c13991626f0e2c524d5c455930b83b6b242d54d8915087edf4823f1303bdc",
+          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
+          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+        }
+      }
+    ]
+  }
+];
