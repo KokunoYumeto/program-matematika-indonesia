@@ -99,6 +99,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='C20').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='B70').layers.learner.tools[0].href='backend/lebl/C50.html';},
   c=>{c.find(r=>r.course_id==='C50').locale='en';},
+  c=>{c.find(r=>r.course_id==='C100').layers.learner.tools[0].href='backend/geometry/C100.html';},
+  c=>{c.find(r=>r.course_id==='C100').layers.learner.tools.pop();},
 ]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
 assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,39);
 assert.equal(englishResources.B80.find(r=>r.pages).pages,161);
@@ -114,11 +116,27 @@ assert.ok(!englishBindingExceptions.D70 && !englishBindingExceptions.D80);
 for (const locale of supportedLocales) {
   const tools=resourceBindings(interfaceCourses.find(c=>c.id==='B80'),locale).filter(r=>r.capabilityToolId);
   assert.equal(tools.length,2);
-  for(const tool of tools) {assert.equal(tool.contentLanguage,'id');assert.equal(tool.primary,false);assert.ok(tool.note.includes('72') && tool.note.includes('3'));}
+  for(const tool of tools) {
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
+    if(locale==='id') assert.ok(tool.note.includes('14') && tool.note.includes('75') && tool.note.includes('4'));
+    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    assert.ok(!tool.note.includes('72 latihan inti'));
+  }
   for(const role of ['B70','C10','C20','C50']){
     const leblTools=resourceBindings(interfaceCourses.find(c=>c.id===role),locale).filter(r=>r.capabilityToolId);
     assert.equal(leblTools.length,3);
     for(const tool of leblTools){assert.equal(tool.contentLanguage,'id');assert.equal(tool.primary,false);assert.ok(tool.href.includes('/backend/lebl/'));}
+  }
+  const geometryTools=resourceBindings(interfaceCourses.find(c=>c.id==='C100'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(geometryTools.length,2);
+  assert.deepEqual(geometryTools.map(tool=>tool.href).sort(),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/geometry/C100.html',
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/geometry/pengajar.html',
+  ]);
+  for(const tool of geometryTools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
+    if(locale==='id') assert.ok(tool.note.includes('939')&&tool.note.includes('491'));
+    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
   }
   for(const courseId of ['B80','D50','D70','D80']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
@@ -285,7 +303,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,14);
+  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,16);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   for(const courseId of ['B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
