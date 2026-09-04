@@ -185,6 +185,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='C90').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D40').layers.learner.tools[0].href='backend/d40/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D40').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='D70').layers.learner.tools[0].href='backend/d70/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='D70').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools[0].href='backend/d80/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools.pop();},
 ]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
@@ -242,6 +244,16 @@ for (const locale of supportedLocales) {
   for(const tool of d40Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
     if(locale==='id') assert.ok(tool.note.includes('68')&&tool.note.includes('14')&&tool.note.includes('130'));
+    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+  }
+  const d70Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D70'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(d70Tools.length,1);
+  assert.deepEqual(d70Tools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d70/D70.html',
+  ]);
+  for(const tool of d70Tools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
+    if(locale==='id') assert.ok(tool.note.includes('716')&&tool.note.includes('54')&&tool.note.includes('20'));
     else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
   }
   const d80Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D80'),locale).filter(r=>r.capabilityToolId);
@@ -420,7 +432,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,14);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,19);
+  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,20);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   for(const courseId of ['A10','A20','B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
