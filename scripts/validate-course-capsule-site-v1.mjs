@@ -15,6 +15,8 @@ const sortValue = (value) => {
 };
 const canonicalJson = (value) => JSON.stringify(sortValue(value), null, 2) + '\n';
 const logicalFiles = [
+  'backend/coverage.html',
+  'backend/program-backend-coverage.json',
   'backend/index.html',
   'backend/backend.css',
   'backend/backend.js',
