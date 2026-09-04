@@ -248,9 +248,11 @@ The global implementation continues additively.
 
 - **Completed:** a small seven-layer course-capsule contract and capability vocabulary now cover all 40 roles while allowing course-specific extensions.
 
-- **Completed locally for nine role bindings through eight packages:** A00, B10, C30, C40, C80, C130, D20, D60, and D110 preserve native identities through explicit crosswalks and thin adapters. C30 and C40 are two course views over one Judson package. They do not rewrite course-native backends or copy entire corpora into the manager.
+- **Published and publicly read back for thirteen role bindings through nine packages:** A00, B10, B20, B30, B50, B60, C30, C40, C80, C130, D20, D60, and D110 preserve native identities through explicit crosswalks and thin adapters. C30 and C40 are two course views over one Judson package; B20/B30/B50/B60 retain four distinct native profiles inside one CLP package. They do not rewrite course-native backends or copy entire corpora into the manager.
 
-- **Underway:** create independently replayable adapters for the remaining 25 native families, adopting only capabilities that are globally useful and preserving local limitations rather than flattening them. Because four successor bindings are not yet publicly read back, 28 families still lack a public-replay-complete adapter at this exact release boundary.
+- **Remaining integration capability:** 24 of the 33 native families do not yet have a common adapter with full public readback. This is an adapter-coverage denominator, not a claim that those textbooks remain untranslated. Future adapters should adopt only useful capabilities and preserve native limitations rather than flattening them.
+
+The v0.62.17 CLP delta is public on [GitHub](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.62.17) and [Zenodo](https://zenodo.org/records/22303203). Anonymous readback verified all 121 GitHub assets and all 100 Zenodo files. Its seven Indonesian PDF routes cover 4,077 pages across four already-complete native calculus editions. Current publication evidence is in the root v0.62.17 receipts; the immutable release source remains pinned to its original commit, while the additive postpublication overlay records thirteen published bindings and zero pending adapter bindings.
 
 - **Underway:** expand learner consumption of capsule-derived routes, public HTML, offline packages, EPUB/PDF delivery, exercise components, and accessibility support. Planned units remain excluded from completion claims.
 

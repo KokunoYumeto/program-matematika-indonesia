@@ -51,6 +51,7 @@ const logicalFiles = [
   'data/modular-backend-pattern-index-v2.json',
   'data/v23-adapter-index-v1.json',
   'data/v23-adapter-index-v2.json',
+  'data/clp-successor/v0.62.17/v23-adapter-index-v2.json',
   'data/feature-adoption-provenance-v1.json',
   'data/comparison-evidence-manifest-v1.json',
   'data/modular-backend-snapshot-v2-validation-receipt.json',
@@ -89,6 +90,14 @@ const c130Route = JSON.parse(docsBytes['backend/c130/learner-route.json'].toStri
 const c130Validation = JSON.parse(docsBytes['backend/c130/validation.json'].toString('utf8'));
 const v23AdapterIndex = JSON.parse(docsBytes['data/v23-adapter-index-v1.json'].toString('utf8'));
 const v23AdapterIndexV2 = JSON.parse(docsBytes['data/v23-adapter-index-v2.json'].toString('utf8'));
+const clpSuccessorIndex = JSON.parse(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'].toString('utf8'));
+const clpSuccessorAuthority = await readFile(resolve(project, 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json'));
+assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'], clpSuccessorAuthority, 'CLP successor public index differs from its authority.');
+const expectedLiveAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
+const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
+assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedLiveAdapterRoles), 'Live successor adapter role set differs.');
+assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
+assert.equal(clpSuccessorIndex.packages.length, 9);
 const patternIndexV2 = JSON.parse(docsBytes['data/modular-backend-pattern-index-v2.json'].toString('utf8'));
 const featureAdoption = JSON.parse(docsBytes['data/feature-adoption-provenance-v1.json'].toString('utf8'));
 const comparisonEvidence = JSON.parse(docsBytes['data/comparison-evidence-manifest-v1.json'].toString('utf8'));
@@ -161,7 +170,10 @@ assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
 assert.equal(rows.filter(({ course }) => course.state === 'published').length, 35);
 assert.equal(rows.filter(({ course }) => course.state === 'production').length, 5);
 assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 21);
-assert.equal(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status)).length, 9);
+// The v2 snapshot below remains immutable at nine bindings. The live capsules
+// additionally admit the four CLP roles; test the exact role set, not just a count.
+assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status)).map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
+assert.equal(manifest.summary.verified_semantic_adapter_count, expectedLiveAdapterRoles.length);
 assert.equal(rows.filter((row) => Object.keys(row.layers).sort().join(',') === 'curriculum,educator,federation,interoperability,learner,production,translation').length, 40);
 assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy.public_access_required).length, 40);
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
@@ -228,10 +240,11 @@ assert.match(html, /JSONL kanonis/);
 assert.match(html, /Tanda terima validasi/);
 assert.match(html, /Kebijakan backend tipis, netral-format, zero-copy/);
 assert.match(html, /Baseline publik v0\.62\.12/);
-assert.match(html, /Indeks adapter v2/);
+assert.match(html, /href="\.\.\/data\/v23-adapter-index-v2\.json"/);
+assert.match(html, /href="\.\.\/data\/clp-successor\/v0\.62\.17\/v23-adapter-index-v2\.json"/);
 assert.match(html, /Ledger adopsi fitur tujuh lapis/);
-assert.match(html, /Overlay pascapublikasi v0\.62\.14/);
-assert.match(html, /semuanya sudah publik dan dibaca balik/);
+assert.match(html, /overlay pascapublikasi v0\.62\.14/i);
+assert.match(html, /sembilan ikatan peran memakai delapan paket yang telah terbit dan dibaca balik/);
 assert.doesNotMatch(html, /publikasi paket pusat masih tertunda|pending_successor_release/);
 assert.match(html, /href="\.\.\/id-ID\/courses\/A00\/latihan\/index\.html"/);
 assert.match(html, /Latihan &amp; diagnosis/);
@@ -443,8 +456,8 @@ const receipt = {
     published_rows: 35,
     production_rows: 5,
     educator_rows: 21,
-    semantic_adapter_rows: 9,
-    semantic_adapter_packages: 8,
+    semantic_adapter_rows: expectedLiveAdapterRoles.length,
+    semantic_adapter_packages: clpSuccessorIndex.packages.length,
     snapshot_v2_public_role_bindings: 9,
     snapshot_v2_pending_role_bindings: 0,
     judson_course_views: 2,

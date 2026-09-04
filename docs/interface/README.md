@@ -16,7 +16,7 @@ Cross-tab progress synchronization responds only to this application's local-sto
 
 The previous backend-production pipeline remains intact as `pnpm build:backend`. It includes historical admission/replay checks and all capsule mutation tests. It is not an interface-generation prerequisite: the historical admission script assumes a particular private workspace location, and the source snapshot also references a missing `B10_PUBLIC_NATIVE_BACKEND_EVIDENCE_20260831.json`. Those backend producer checks have not been claimed as passing here. No admission, schema, or backend-validator logic has been weakened.
 
-The inherited full capsule-site validator also fails on its unchanged assertion of nine semantic adapters: the checked source projection already has thirteen. That assertion and its backend-production gate are preserved unchanged for the backend integrator; this interface does not claim to repair or certify that backend snapshot.
+The backend integrator's published CLP follow-through corrected the earlier nine-versus-thirteen live-adapter assertion. That independent work is preserved when rebuilding these pages. Interface QA does not substitute for the backend producer's admission and replay evidence.
 
 ## Language binding
 
