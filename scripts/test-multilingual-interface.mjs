@@ -6,9 +6,9 @@ import { createHash } from 'node:crypto';
 import { gzipSync } from 'node:zlib';
 import vm from 'node:vm';
 import { courses as canonicalCourses } from '../docs/courses.js';
-import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, renderResourceLinks, safeResourceUrl, isOriginalSource, contentLanguageName } from '../docs/interface/view.js';
+import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, renderResourceLinks, safeResourceUrl, isOriginalSource, contentLanguageName, learnerAccessProjection, learnerAccessRoles } from '../docs/interface/view.js';
 import { additionalOriginalSources } from '../docs/interface/original-sources.js';
-import { supportedLocales, englishResources, englishBindingExceptions, siteOrigin } from '../docs/interface/locales.js';
+import { supportedLocales, interfaceCopy, englishResources, englishBindingExceptions, siteOrigin } from '../docs/interface/locales.js';
 import { verifiedReaderActions, readerActionSource } from '../docs/interface/reader-actions.js';
 import { projectReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { finalEditions, finalEditionSource } from '../docs/interface/final-editions.js';
@@ -22,12 +22,18 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
 for (const course of interfaceCourses) for (const locale of supportedLocales) {
   const bindings = resourceBindings(course, locale);
+  assert.ok(bindings.length);
+  assert.ok(bindings.every(row => learnerAccessRoles.includes(row.accessRole)), course.id + ': every resource has a typed learner access role');
+  assert.equal(new Set(bindings.map(row => row.href)).size, bindings.length, course.id + ': resource URLs are unique');
   const sources = bindings.filter(isOriginalSource);
   assert.ok(sources.length, course.id + ': original source must be available in every interface language');
   const visible = renderResourceLinks(course, locale).split('<details class="resource-details">')[0];
+  assert.ok(visible.includes('data-access-group="hosted-reader"'));
+  assert.ok(visible.includes('data-access-group="authoritative-original"'));
   for (const source of sources) {
     assert.ok(visible.includes('href="'+source.href.replaceAll('&','&amp;')+'"'), 'Source must not be collapsed: '+course.id);
     assert.ok(visible.includes('data-original-source="'+source.origin+'"'));
+    assert.equal(source.accessRole,'authoritative-original');
   }
   for (const source of additionalOriginalSources[course.id] ?? []) {
     assert.equal(sources.filter(r=>r.href===safeResourceUrl(source.href) && r.contentLanguage===source.contentLanguage).length,1);
@@ -35,6 +41,14 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
   for (const source of (englishResources[course.id] ?? []).filter(isOriginalSource)) {
     assert.ok(sources.some(r=>r.href===source.href && r.contentLanguage==='en'));
   }
+  const projection=learnerAccessProjection(course,locale);
+  assert.equal(projection.course_id,course.id); assert.equal(projection.interface_locale,locale);
+  assert.equal(projection.authoritative_original.status,'available');
+  assert.equal(projection.authoritative_original.resources.length,sources.length);
+  const hosted=bindings.filter(row=>row.contentLanguage===locale&&row.accessRole==='hosted-reader');
+  assert.equal(projection.program_hosted_reader.status,hosted.length?'available':'not-yet-hosted');
+  assert.equal(projection.program_hosted_reader.resources.length,hosted.length);
+  if(!hosted.length) assert.ok(visible.includes(interfaceCopy[locale].noHostedReader));
 }
 assert.notEqual(contentLanguageName('zh','en'),'shared metadata');
 assert.notEqual(contentLanguageName('de','id'),'metadata bersama');
@@ -42,12 +56,15 @@ assert.ok(contentLanguageName('bn','en'));
 assert.equal(isOriginalSource({origin:'published-translation'}),false);
 assert.equal(isOriginalSource({origin:'published-english-component'}),false);
 assert.equal(isOriginalSource({origin:'program-mirror'}),false);
+assert.equal(isOriginalSource({accessRole:'authoritative-original'}),true);
 const a00English=resourceBindings(interfaceCourses.find(c=>c.id==='A00'),'en');
 assert.equal(a00English.filter(r=>r.primary).length,1);
 assert.equal(a00English.find(r=>r.primary).origin,'program-mirror');
+assert.equal(a00English.find(r=>r.primary).accessRole,'hosted-reader');
 assert.equal(a00English.find(r=>r.origin==='upstream-original').href,'https://openstax.org/details/books/prealgebra-2e');
-assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A00'),'en').split('<details class="resource-details">')[0].includes('Original source'));
+assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A00'),'en').split('<details class="resource-details">')[0].includes('Authoritative original source'));
 assert.equal(a00English.find(r=>r.kind==='HTML ZIP').offlineAfterDownload,true);
+assert.equal(a00English.find(r=>r.kind==='HTML ZIP').accessRole,'offline-copy');
 const a00MirrorEvidence=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/a00-original-english-mirror.json'),'utf8'));
 assert.equal(a00MirrorEvidence.status,'published_and_anonymously_verified');
 assert.equal(a00MirrorEvidence.work_kind,'presentation_mirror_of_original_source');
@@ -59,9 +76,11 @@ assert.equal(a00MirrorEvidence.public_verification.all_exact,true);
 const a10English=resourceBindings(interfaceCourses.find(c=>c.id==='A10'),'en');
 assert.equal(a10English.filter(r=>r.primary).length,1);
 assert.equal(a10English.find(r=>r.primary).origin,'program-mirror');
+assert.equal(a10English.find(r=>r.primary).accessRole,'hosted-reader');
 assert.equal(a10English.find(r=>r.origin==='upstream-original').href,'https://openstax.org/details/books/elementary-algebra-2e');
-assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A10'),'en').split('<details class="resource-details">')[0].includes('Original source'));
+assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A10'),'en').split('<details class="resource-details">')[0].includes('Authoritative original source'));
 assert.equal(a10English.find(r=>r.kind==='HTML ZIP').offlineAfterDownload,true);
+assert.equal(a10English.find(r=>r.kind==='HTML ZIP').accessRole,'offline-copy');
 const a10MirrorEvidence=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/a10-original-english-mirror.json'),'utf8'));
 assert.equal(a10MirrorEvidence.status,'published_and_anonymously_verified');
 assert.equal(a10MirrorEvidence.work_kind,'presentation_mirror_of_original_source');
@@ -73,9 +92,11 @@ assert.equal(a10MirrorEvidence.public_verification.all_exact,true);
 const a20English=resourceBindings(interfaceCourses.find(c=>c.id==='A20'),'en');
 assert.equal(a20English.filter(r=>r.primary).length,1);
 assert.equal(a20English.find(r=>r.primary).origin,'program-mirror');
+assert.equal(a20English.find(r=>r.primary).accessRole,'hosted-reader');
 assert.equal(a20English.find(r=>r.origin==='upstream-original').href,'https://openstax.org/books/intermediate-algebra-2e/pages/1-introduction');
-assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A20'),'en').split('<details class="resource-details">')[0].includes('Original source'));
+assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A20'),'en').split('<details class="resource-details">')[0].includes('Authoritative original source'));
 assert.equal(a20English.find(r=>r.kind==='HTML ZIP').offlineAfterDownload,true);
+assert.equal(a20English.find(r=>r.kind==='HTML ZIP').accessRole,'offline-copy');
 const a20MirrorEvidence=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/a20-original-english-mirror.json'),'utf8'));
 assert.equal(a20MirrorEvidence.status,'published_and_anonymously_verified');
 assert.equal(a20MirrorEvidence.work_kind,'presentation_mirror_of_original_source');
@@ -311,7 +332,7 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
   for (const next of canonicalCourses.filter((row) => row.prerequisites.includes(course.id))) assert.ok(card.includes('data-course-link="' + next.id + '"'));
   if (locale === 'en' && !englishResources[course.id].length) {
     assert.ok(englishBindingExceptions[course.id]);
-    assert.ok(card.includes('An edition link for this language has not yet been mapped'));
+    assert.ok(card.includes(interfaceCopy.en.noHostedReader));
     assert.ok(!bindings.some((row) => row.primary));
   }
 }
@@ -405,9 +426,9 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   sizes.push({ locale, file, bytes: Buffer.byteLength(html), gzipBytes: gzipSync(html).length });
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
-    // Preserve a compact payload while retaining all evidence-bound mirrors and Lebl tools.
-    assert.ok(Buffer.byteLength(html) < 360000, 'Offline map size budget');
-    assert.ok(gzipSync(html).length < 70000, 'Compressed map size budget');
+    // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
+    assert.ok(Buffer.byteLength(html) < 390000, 'Offline map size budget');
+    assert.ok(gzipSync(html).length < 72000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

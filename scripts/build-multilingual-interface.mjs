@@ -13,7 +13,7 @@ const interfaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 await syncReaderActions(interfaceRoot, canonicalCourses.map((course) => course.id));
 await syncFinalEditions(interfaceRoot, canonicalCourses.map((course) => course.id));
 const capabilityFiles = await syncCapabilityTools(interfaceRoot, canonicalCourses.map((course) => course.id));
-const { interfaceCourses, interfaceTopics, coursePresentation, renderCourseCard, escapeMarkup, resourceBindings } = await import('../docs/interface/view.js');
+const { interfaceCourses, interfaceTopics, coursePresentation, renderCourseCard, escapeMarkup, resourceBindings, learnerAccessProjection, learnerAccessRoles } = await import('../docs/interface/view.js');
 const { capabilityTools: admittedCapabilityTools } = await import('../docs/interface/capability-tools.js');
 const read = (path) => readFile(resolve(interfaceRoot, path), 'utf8');
 const css = await read('docs/interface/styles.css');
@@ -56,6 +56,7 @@ function renderDocument(locale, offline, paired = false) {
   return '<!doctype html>\n<html lang="' + locale + '">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
     + '<title>' + esc(t.title) + '</title>\n<meta name="description" content="' + esc(t.description) + '">\n<meta name="theme-color" content="#15302e">\n'
     + '<link rel="canonical" href="' + canonical + '">\n'
+    + '<link rel="alternate" type="application/json" title="Learner access manifest" href="' + siteOrigin + 'interface/learner-access-manifest.json">\n'
     + supportedLocales.map((code) => '<link rel="alternate" hreflang="' + code + '" href="' + siteOrigin + code + '/">').join('\n')
     + '\n<link rel="alternate" hreflang="x-default" href="' + siteOrigin + '">\n'
     + '<meta property="og:title" content="' + esc(t.title) + '">\n<meta property="og:description" content="' + esc(t.description) + '">\n'
@@ -96,6 +97,22 @@ for (const locale of supportedLocales) {
     outputFiles.push({ path: relative, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   }
 }
+const learnerAccessManifest = {
+  schema_name: 'learner-access-presentation', schema_version: '1.0.0',
+  authority_note: 'Presentation sidecar only; canonical edition, rights, provenance, and translation records remain authoritative in the modular backend.',
+  locale_route_template: '/{interface_locale}/', supported_interface_locales: supportedLocales,
+  access_roles: learnerAccessRoles,
+  invariants: [
+    'interface_locale_does_not_imply_content_language',
+    'authoritative_original_remains_prominent_when_a_hosted_reader_exists',
+    'missing_hosted_reader_is_explicit_and_never_fabricated',
+    'offline_status_is_evidence_bound',
+  ],
+  courses: Object.fromEntries(interfaceCourses.map(course => [course.id, Object.fromEntries(supportedLocales.map(locale => [locale, learnerAccessProjection(course, locale)]))])),
+};
+const learnerAccessManifestBytes = Buffer.from(JSON.stringify(learnerAccessManifest, null, 2) + '\n');
+await writeFile(resolve(interfaceRoot, 'docs/interface/learner-access-manifest.json'), learnerAccessManifestBytes);
+outputFiles.push({path:'docs/interface/learner-access-manifest.json', bytes:learnerAccessManifestBytes.length, sha256:createHash('sha256').update(learnerAccessManifestBytes).digest('hex')});
 const receipt = {
   schema: 'multilingual-interface-build/v1', locales: supportedLocales, canonicalCourseCount: interfaceCourses.length,
   canonicalEdgeCount: interfaceCourses.reduce((n, c) => n + c.prerequisites.length, 0),
@@ -105,6 +122,19 @@ const receipt = {
   })),
   outputs: outputFiles,
   resourceBindingScope: 'Presentation/resource URLs only; no corpus or backend mutation.',
+  learnerAccessContract: {
+    schema: learnerAccessManifest.schema_name + '/' + learnerAccessManifest.schema_version,
+    manifest: outputFiles.find(row => row.path === 'docs/interface/learner-access-manifest.json'),
+    roles: learnerAccessRoles,
+    perLocale: Object.fromEntries(supportedLocales.map(locale => {
+      const projections = interfaceCourses.map(course => learnerAccessProjection(course, locale));
+      return [locale, {
+        availableHostedReaders: projections.filter(row => row.program_hosted_reader.status === 'available').length,
+        unavailableHostedReaders: projections.filter(row => row.program_hosted_reader.status === 'not-yet-hosted').length,
+        authoritativeOriginals: projections.reduce((count, row) => count + row.authoritative_original.resources.length, 0),
+      }];
+    })),
+  },
   resourceBindings: Object.fromEntries(supportedLocales.map((locale) => [locale, Object.fromEntries(interfaceCourses.map((course) => [course.id, resourceBindings(course, locale)]))])),
 };
 const originalSourceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/original-sources.js'));

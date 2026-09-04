@@ -18,6 +18,8 @@ export const interfaceCopy = {
     completedByYou: 'Selesai menurut catatan Anda', waiverReady: 'Prasyarat terpenuhi dengan pengecualian',
     open: 'Buka bahan belajar', download: 'Unduh', source: 'Sumber & repositori', archive: 'Arsip DOI',
     companion: 'Bahan tambahan', sharedBackend: 'Indeks modular bersama',
+    hostedReader: 'Pembaca yang dihosting program', authoritativeOriginal: 'Sumber asli otoritatif',
+    noHostedReader: 'Belum ada pembaca yang dihosting program untuk bahasa antarmuka ini. Sumber asli dan bahan dalam bahasa lain tetap tersedia.',
     originalLanguage: 'Bahasa bahan', bindingNote: 'Untuk setiap bahasa, kebijakan program adalah menyediakan salinan baca yang dihosting program dan tautan sumber asli yang menonjol. Sumber tetap ditampilkan dalam bahasa sebenarnya; cakupan mirror lokal belum lengkap. Tautan sumber buku tidak mencakup pendamping orisinal program, dan status katalog adalah snapshot publikasi, bukan kemajuan terjemahan saat ini.',
     noPrimary: 'Tautan edisi untuk bahasa ini belum dipetakan. Bahan bahasa lain tetap tersedia di bawah.',
     otherLanguage: 'Bahan dalam bahasa lain', offlineMap: 'Unduh peta ini — satu berkas HTML',
@@ -56,6 +58,8 @@ export const interfaceCopy = {
     completedByYou: 'Complete in your own record', waiverReady: 'Prerequisites met with a waiver',
     open: 'Open learning material', download: 'Download', source: 'Source & repository', archive: 'DOI archive',
     companion: 'Additional material', sharedBackend: 'Shared modular index',
+    hostedReader: 'Program-hosted reader', authoritativeOriginal: 'Authoritative original source',
+    noHostedReader: 'No program-hosted reader is available yet for this interface language. The authoritative original and materials in other languages remain available.',
     originalLanguage: 'Material language', bindingNote: 'For every language, the program policy is to provide a program-hosted readable copy and a prominent original-source link. Sources remain labeled in their actual languages; local mirror coverage is not yet complete. Book-source links do not include program-original companions, and catalog snapshots do not measure current translation progress.',
     noPrimary: 'An edition link for this language has not yet been mapped. Other-language materials remain available below.',
     otherLanguage: 'Material in another language', offlineMap: 'Download this map — one HTML file',
@@ -128,9 +132,21 @@ export const englishCourseCopy = {
   D110: ['Formalized Mathematics in Lean', 'Interactive theorem proving, mathematical libraries, tactics, and checked mathematical development.', 'Build and explain machine-checked mathematical proofs.'],
   D120: ['Research Reading and Reproducible Mathematical Work', 'Research reading, mathematical exposition, evidence, reproducibility, and traceable workflows.', 'Produce clear mathematical work with inspectable reasoning and reproducible supporting artifacts.'],
 };
-const english = (label, href, kind = 'HTML') => ({ label, href, kind, contentLanguage: 'en', origin: 'upstream-original' });
-const englishMirror = (label, href, kind = 'HTML', facts = {}) => ({ label, href, kind, contentLanguage: 'en', origin: 'program-mirror', ...facts });
-const englishEdition = (label, href, kind, facts = {}) => ({ ...english(label, href, kind), origin: 'published-translation', ...facts });
+const english = (label, href, kind = 'HTML') => ({
+  label, href, kind, contentLanguage: 'en', origin: 'upstream-original',
+  accessRole: 'authoritative-original', authorityRole: 'upstream-authority', relationToSource: 'source',
+});
+const englishMirror = (label, href, kind = 'HTML', facts = {}) => ({
+  label, href, kind, contentLanguage: 'en', origin: 'program-mirror',
+  accessRole: kind === 'HTML ZIP' ? 'offline-copy' : 'hosted-reader',
+  authorityRole: 'program-mirror', relationToSource: kind === 'HTML ZIP' ? 'offline-copy-of' : 'mirror-of', ...facts,
+});
+const englishEdition = (label, href, kind, facts = {}) => ({
+  ...english(label, href, kind), origin: 'published-translation',
+  accessRole: kind === 'archive' ? 'preservation-record' : kind === 'repository' ? 'repository' : kind === 'HTML ZIP' ? 'offline-copy' : 'hosted-reader',
+  authorityRole: 'program-edition', relationToSource: kind === 'HTML ZIP' ? 'offline-copy-of' : kind === 'archive' ? 'preserves' : kind === 'repository' ? 'supports' : 'translation-of',
+  ...facts,
+});
 export const englishResources = {
   A00: [
     englishMirror('Program-hosted complete English HTML reader', 'https://kokunoyumeto.github.io/openstax-prealgebra-2e-original-en/', 'HTML', { modules:75, assets:2958, sourceRevision:'38cae454e644abf9f0a623e876994553881597c9' }),
@@ -203,7 +219,7 @@ export const englishResources = {
   D60: [english('Roberts: Algebraic Topology', 'https://github.com/DavidMichaelRoberts/AlgebraicTopology2019/raw/master/Notes.pdf', 'PDF'), english('Fomberg: Algebraic Topology', 'https://yp.srht.site/notes/math/algebraic_topology.pdf', 'PDF')],
   D90: [english('Habring: Convex Optimization', 'https://arxiv.org/pdf/2607.11664', 'PDF')],
   D110: [english('Mathematics in Lean', 'https://leanprover-community.github.io/mathematics_in_lean/')],
-  D120: [{ ...english('Traceable Mathematical Work — complete English edition', 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/en/'), origin: 'published-translation' }],
+  D120: [englishEdition('Traceable Mathematical Work — complete English edition', 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/en/', 'HTML')],
 };
 export const englishBindingExceptions = {
   D100: 'German originals. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',

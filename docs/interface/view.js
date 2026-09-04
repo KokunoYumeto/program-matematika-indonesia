@@ -38,11 +38,23 @@ export function coursePresentation(course, locale) {
   if (!copy || !topicCopy[course.topic]) throw new Error('Missing English presentation: ' + course.id);
   return { title: copy[0], purpose: copy[1], outcome: copy[2], topic: topicCopy[course.topic] };
 }
+export const learnerAccessRoles = Object.freeze([
+  'hosted-reader', 'authoritative-original', 'offline-copy', 'companion', 'tool',
+  'repository', 'preservation-record', 'source-package', 'backend',
+]);
+const learnerAccessRoleSet = new Set(learnerAccessRoles);
+const isProgramOriginalCourse = (courseId) => (additionalOriginalSources[courseId] ?? []).some(row => row.origin === 'program-original');
 export function resourceBindings(course, locale) {
   const t = interfaceCopy[locale];
   const rows = [];
   const add = (label, href, contentLanguage, kind = 'link', extra = {}) => {
-    if (href && !rows.some((row) => row.href === safeResourceUrl(href))) rows.push({ label, labelLanguage: locale, href: safeResourceUrl(href), contentLanguage, kind, ...extra });
+    if (!href) return;
+    const normalizedHref = safeResourceUrl(href);
+    const candidate = { label, labelLanguage: locale, href: normalizedHref, contentLanguage, kind, ...extra };
+    if (!learnerAccessRoleSet.has(candidate.accessRole)) throw new Error('Missing or invalid learner access role: ' + course.id + ' ' + normalizedHref);
+    const existing = rows.find((row) => row.href === normalizedHref);
+    if (!existing) rows.push(candidate);
+    else if (existing.accessRole !== candidate.accessRole) throw new Error('One URL cannot have incompatible learner access roles: ' + course.id + ' ' + normalizedHref);
   };
   for (const row of englishResources[course.id] ?? []) {
     const {label,href,contentLanguage,kind,...facts} = row;
@@ -54,7 +66,9 @@ export function resourceBindings(course, locale) {
     const pages = row.pages ? ' — ' + row.pages + (locale === 'id' ? ' halaman' : ' pages') : '';
     add(idPrefix + row.labels[locale] + pages, row.href, 'id', row.kind,
       {editionResourceId:row.id, format:row.format, bytes:row.bytes, sha256:row.sha256,
-        offlineAfterDownload:row.offlineAfterDownload, primary:locale === 'id' && row.primary});
+        offlineAfterDownload:row.offlineAfterDownload, primary:locale === 'id' && row.primary,
+        accessRole:row.kind === 'portable_html' ? 'offline-copy' : row.kind === 'reader' ? 'hosted-reader' : 'companion',
+        authorityRole:'program-edition', relationToSource:isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of'});
   }
   const actions = verifiedReaderActions.filter((action) => action.courseId === course.id);
   const actionNames = locale === 'id'
@@ -63,20 +77,25 @@ export function resourceBindings(course, locale) {
   for (const action of actions) {
     const { label: sourceLabel, ...metadata } = action;
     add(idPrefix + actionNames[action.role] + ' — ' + action.pages + (locale === 'id' ? ' halaman' : ' pages'), action.href, 'id', action.role === 'problembook' ? 'companion' : 'reader',
-      { ...metadata, labelLanguage: locale, primary: locale === 'id' && action.surfaceRole === 'default_primary' });
+      { ...metadata, labelLanguage: locale, primary: locale === 'id' && action.surfaceRole === 'default_primary',
+        accessRole:action.role === 'problembook' ? 'companion' : 'hosted-reader', authorityRole:'program-edition',
+        relationToSource:isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of' });
   }
   const primary = course.learner ?? course.reader ?? course.edition;
   if (!actions.length && !finalEdition) {
-    add(idPrefix + t.open, primary, 'id', 'reader', { primary: locale === 'id' });
-    if (course.edition !== primary) add(idPrefix + t.download, course.edition, 'id', 'edition');
-    if (course.reader !== primary && course.reader !== course.edition) add(idPrefix + t.open, course.reader, 'id', 'reader');
+    add(idPrefix + t.open, primary, 'id', 'reader', { primary: locale === 'id', accessRole:'hosted-reader', authorityRole:'program-edition', relationToSource:isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of' });
+    if (course.edition !== primary) {
+      const editionIsArchive = /\.zip$/i.test(new URL(safeResourceUrl(course.edition)).pathname);
+      add(idPrefix + t.download, course.edition, 'id', 'edition', {accessRole:editionIsArchive ? 'offline-copy' : 'hosted-reader', authorityRole:'program-edition', relationToSource:editionIsArchive ? 'offline-copy-of' : isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of'});
+    }
+    if (course.reader !== primary && course.reader !== course.edition) add(idPrefix + t.open, course.reader, 'id', 'reader', {accessRole:'hosted-reader', authorityRole:'program-edition', relationToSource:isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of'});
   } else if (!finalEdition) {
     // The admitted whole-file reader actions supersede dated PDF overlay URLs.
     // Retain a distinct native HTML entry when one exists.
-    for (const href of [course.learner, course.reader]) if (href && !/\.pdf$/i.test(new URL(safeResourceUrl(href)).pathname)) add(idPrefix + t.open, href, 'id', 'reader');
+    for (const href of [course.learner, course.reader]) if (href && !/\.pdf$/i.test(new URL(safeResourceUrl(href)).pathname)) add(idPrefix + t.open, href, 'id', 'reader', {accessRole:'hosted-reader', authorityRole:'program-edition', relationToSource:isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of'});
   }
   for (const tool of learnerToolsByCourseId[course.id] ?? []) {
-    if (tool.state !== 'planned') add(tool.label, tool.href, 'id', 'tool', { labelLanguage: 'id' });
+    if (tool.state !== 'planned') add(tool.label, tool.href, 'id', 'tool', { labelLanguage: 'id', accessRole:'tool', authorityRole:'program-edition', relationToSource:'supports' });
   }
   for (const tool of capabilityTools.filter(row=>row.courseId===course.id)) {
     const note = locale === 'id'
@@ -84,38 +103,42 @@ export function resourceBindings(course, locale) {
       : 'Indonesian-language capability. Open the linked tool for its source-specific scope, evidence and limitations.';
     add(tool.label, tool.href, tool.contentLanguage, 'tool', {labelLanguage:'id', capabilityToolId:tool.tool_id,
       bytes:tool.page.bytes, sha256:tool.page.sha256, primary:false, scope:tool.scope, limitations:tool.limitations,
-      note});
+      note, accessRole:'tool', authorityRole:'program-edition', relationToSource:'supports'});
   }
   const delivery = learnerDeliveryByCourseId[course.id];
   for (const row of supplementalReaders.filter(item => item.courseId === course.id)) {
     add(idPrefix + row.labels[locale], row.href, row.contentLanguage, row.kind, {
       supplementalReaderId: row.id, format: row.format, bytes: row.bytes, sha256: row.sha256,
       primary: false, offlineAfterDownload: row.offlineAfterDownload, note: row.notes[locale],
+      accessRole:row.offlineAfterDownload ? 'offline-copy' : 'companion', authorityRole:'program-edition',
+      relationToSource:row.offlineAfterDownload ? 'offline-copy-of' : 'companion-to',
     });
   }
   for (const [field, name] of [['portable_html', 'HTML'], ['epub', 'EPUB']]) {
     const item = delivery?.[field];
-    if (item?.status === 'verified') add(idPrefix + t.download + ' ' + name, item.url, 'id', field, { bytes: item.bytes });
+    if (item?.status === 'verified') add(idPrefix + t.download + ' ' + name, item.url, 'id', field, { bytes: item.bytes, accessRole:'offline-copy', authorityRole:'program-edition', relationToSource:'offline-copy-of' });
   }
   for (const supplement of course.supplements ?? []) {
     if (finalEdition?.supersededSupplementIds.includes(supplement.id)) continue;
     if (actions.some((action) => action.href === supplement.url || action.sha256 === supplement.sha256)) continue;
+    if (rows.some(row => row.href === safeResourceUrl(supplement.url))) continue;
     const machineArchive = supplement.resourceType === 'reference' && /(?:backend|sumber)/i.test(supplement.title) && !/HTML|pembaca|paket lengkap/i.test(supplement.title);
-    add(supplement.title, supplement.url, 'id', machineArchive ? 'source-archive' : 'companion', { labelLanguage: 'id', supplementId: supplement.id, sha256: supplement.sha256 ?? null });
+    add(supplement.title, supplement.url, 'id', machineArchive ? 'source-archive' : 'companion', { labelLanguage: 'id', supplementId: supplement.id, sha256: supplement.sha256 ?? null,
+      accessRole:machineArchive ? 'source-package' : 'companion', authorityRole:'program-edition', relationToSource:machineArchive ? 'supports' : 'companion-to' });
   }
-  add(t.archive + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.archive ?? course.zenodo, 'id', 'archive');
-  add(t.source + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.repository ?? course.repository, 'id', 'repository');
+  add(t.archive + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.archive ?? course.zenodo, 'id', 'archive', {accessRole:'preservation-record', authorityRole:'program-edition', relationToSource:'preserves'});
+  add(t.source + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.repository ?? course.repository, 'id', 'repository', {accessRole:'repository', authorityRole:'program-edition', relationToSource:'supports'});
   // These indices are shared metadata, not an English translation of course prose.
-  add(t.sharedBackend, 'backend/index.html', 'und', 'backend');
+  add(t.sharedBackend, 'backend/index.html', 'und', 'backend', {accessRole:'backend', authorityRole:'program-edition', relationToSource:'indexes'});
   for (const source of additionalOriginalSources[course.id] ?? []) {
     const existing = rows.find(row => row.href === safeResourceUrl(source.href));
-    if (existing) Object.assign(existing, {origin:source.origin});
-    else add(source.label, source.href, source.contentLanguage, 'HTML', {origin:source.origin, labelLanguage:source.contentLanguage, primary:false});
+    if (existing) Object.assign(existing, {origin:source.origin, accessRole:source.accessRole, authorityRole:source.authorityRole, relationToSource:source.relationToSource});
+    else add(source.label, source.href, source.contentLanguage, 'HTML', {...source, labelLanguage:source.contentLanguage, primary:false});
   }
   return rows;
 }
 export function isOriginalSource(row) {
-  return ['upstream-original', 'program-original'].includes(row.origin);
+  return row.accessRole === 'authoritative-original' || ['upstream-original', 'program-original'].includes(row.origin);
 }
 export function contentLanguageName(code, locale) {
   if (code === 'und') return locale === 'id' ? 'metadata bersama' : 'shared metadata';
@@ -127,25 +150,52 @@ export function contentLanguageName(code, locale) {
 export function renderResourceLinks(course, locale) {
   const t = interfaceCopy[locale];
   const rows = resourceBindings(course, locale);
-  const preferred = rows.filter((row) => row.contentLanguage === locale && !['repository', 'archive', 'source-archive'].includes(row.kind));
-  const originals = rows.filter(row => isOriginalSource(row) && !preferred.includes(row));
-  const other = rows.filter((row) => !preferred.includes(row) && !originals.includes(row));
+  const hostedReaders = rows.filter((row) => row.contentLanguage === locale && row.accessRole === 'hosted-reader');
+  const offlineCopies = rows.filter((row) => row.contentLanguage === locale && row.accessRole === 'offline-copy');
+  const hosted = [...hostedReaders, ...offlineCopies];
+  const originals = rows.filter(row => row.accessRole === 'authoritative-original');
+  const preferred = rows.filter((row) => row.contentLanguage === locale && !hosted.includes(row) && !originals.includes(row)
+    && !['repository', 'preservation-record', 'source-package', 'backend'].includes(row.accessRole));
+  const other = rows.filter((row) => !hosted.includes(row) && !preferred.includes(row) && !originals.includes(row));
   const link = (row) => '<a class="resource-link' + (row.primary ? ' primary' : '') + '" href="' + escapeMarkup(row.href)
     + '" data-content-language="' + row.contentLanguage + '" hreflang="' + row.contentLanguage
+    + '" data-access-role="' + escapeMarkup(row.accessRole)
     + '"' + (row.actionId ? ' data-reader-action="' + escapeMarkup(row.actionId) + '"' : '')
     + (row.editionResourceId ? ' data-edition-resource="' + escapeMarkup(row.editionResourceId) + '"' : '')
     + (row.capabilityToolId ? ' data-capability-tool="' + escapeMarkup(row.capabilityToolId) + '"' : '')
     + (row.supplementalReaderId ? ' data-supplemental-reader="' + escapeMarkup(row.supplementalReaderId) + '"' : '')
     + (isOriginalSource(row) ? ' data-original-source="' + row.origin + '"' : '')
-    + '>' + (isOriginalSource(row) ? '<strong>' + (locale === 'id' ? 'Sumber asli' : 'Original source') + '</strong>' : '')
+    + '>'
     + '<span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
     + ' · <span lang="' + (['en','id'].includes(row.contentLanguage) ? row.contentLanguage : locale) + '">' + escapeMarkup(contentLanguageName(row.contentLanguage, locale)) + '</span>'
     + (row.offlineAfterDownload ? ' · ' + (locale === 'id' ? 'Luring setelah diunduh' : 'Offline after download') : '') + '</small></a>'
     + (row.note ? '<p class="footnote" lang="'+locale+'">'+escapeMarkup(row.note)+'</p>' : '');
-  return (preferred.length ? preferred.map(link).join('') : '<p class="binding-note">' + escapeMarkup(t.noPrimary) + '</p>')
-    + originals.map(link).join('')
+  const group = (role, title, body) => '<section class="resource-group" data-access-group="' + role + '"><h4>' + escapeMarkup(title) + '</h4>' + body + '</section>';
+  return group('hosted-reader', t.hostedReader, (hostedReaders.length ? '' : '<p class="binding-note">' + escapeMarkup(t.noHostedReader) + '</p>') + hosted.map(link).join(''))
+    + group('authoritative-original', t.authoritativeOriginal, originals.map(link).join(''))
+    + preferred.map(link).join('')
     + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(locale === 'en' ? t.otherLanguage + ' / ' + t.sharedBackend : t.companion + ' / ' + t.source)
       + '</summary><div class="resource-list">' + other.map(link).join('') + '</div></details>' : '');
+}
+export function learnerAccessProjection(course, locale) {
+  const rows = resourceBindings(course, locale);
+  const normalize = (row) => ({
+    access_role: row.accessRole, authority_role: row.authorityRole ?? 'unspecified',
+    relation_to_source: row.relationToSource ?? 'unspecified', content_language: row.contentLanguage,
+    media_type: row.format ?? (row.actionId ? 'PDF' : row.kind), url: row.href,
+    label: row.label, label_language: row.labelLanguage, primary: Boolean(row.primary),
+    offline_after_download: Boolean(row.offlineAfterDownload), bytes: row.bytes ?? null, sha256: row.sha256 ?? null,
+  });
+  const hosted = rows.filter(row => row.contentLanguage === locale && row.accessRole === 'hosted-reader').map(normalize);
+  const originals = rows.filter(row => row.accessRole === 'authoritative-original').map(normalize);
+  const offline = rows.filter(row => row.contentLanguage === locale && row.accessRole === 'offline-copy').map(normalize);
+  return {
+    course_id: course.id, interface_locale: locale, locale_route: siteOrigin + locale + '/#course-' + course.id,
+    program_hosted_reader: {status: hosted.length ? 'available' : 'not-yet-hosted', resources: hosted},
+    authoritative_original: {status: originals.length ? 'available' : 'unavailable', resources: originals},
+    offline_copies: offline,
+    alternatives: rows.filter(row => !hosted.some(item => item.url === row.href) && !originals.some(item => item.url === row.href) && !offline.some(item => item.url === row.href)).map(normalize),
+  };
 }
 export function renderCourseCard(course, locale, evaluation = null) {
   const t = interfaceCopy[locale], c = coursePresentation(course, locale);
