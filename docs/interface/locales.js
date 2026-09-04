@@ -136,7 +136,11 @@ export const englishResources = {
   B50: [english('CLP-3: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP3/clp_3_mc/index.html')],
   B60: [english('CLP-4: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP4/clp_4_vc/index.html')],
   B70: [english('Notes on Diffy Qs', 'https://www.jirka.org/diffyqs/html/diffyqs.html')],
-  B80: [],
+  B80: [
+    englishEdition('Mathematical Computing — complete English HTML reader', 'https://kokunoyumeto.github.io/mathematical-computing-reproducible-experiments-en/', 'HTML', { bytes:40293, sha256:'2949e3e489008999193f6c396e78a79771e98a1cee3b3c7232abbd076f21dff8' }),
+    englishEdition('Mathematical Computing — English PDF — 161 pages', 'https://kokunoyumeto.github.io/mathematical-computing-reproducible-experiments-en/Mathematical-Computing-and-Reproducible-Experiments.pdf', 'PDF', { pages:161, bytes:774069, sha256:'12aedcef4d00df81f4d269ac14eb7fc545fbfc057572b6942f15303506e604b2', offlineAfterDownload:true }),
+    englishEdition('Complete English computing edition archive', 'https://doi.org/10.5281/zenodo.22210474', 'archive'),
+  ],
   B90: [english('Grinstead–Snell: Introduction to Probability', 'https://math.dartmouth.edu/~prob/prob/prob.pdf', 'PDF')],
   B95: [english('OpenIntro Statistics, 4th edition', 'https://www.openintro.org/book/os/')],
   C10: [english('Basic Analysis I', 'https://www.jirka.org/ra/html/rn_chapter.html')],
@@ -157,7 +161,12 @@ export const englishResources = {
   D20: [english('Functional Analysis and Operator Algebras', 'https://web.pdx.edu/~erdman/FAOA/functional_analysis_operator_algebras_pdf.pdf', 'PDF')],
   D30: [english('Random: Probability and Stochastic Processes', 'https://www.randomservices.org/random/'), english('Continuous Time Markov Chains', 'https://continuous-time-mcs.quantecon.org/intro.html'), english('Intro to Stochastic Processes', 'https://gordanz.github.io/stochastic-book/')],
   D40: [english('Dionne: Partial Differential Equations', 'https://openlibrary-repo.ecampusontario.ca/xmlui/bitstream/handle/123456789/2405/PDE_Benoit_Dionne_2024.pdf?isAllowed=y&sequence=1', 'PDF'), english('The FEniCSx Tutorial', 'https://jsdokken.com/dolfinx-tutorial/index.html')],
-  D50: [], D100: [],
+  D50: [
+    englishEdition('Smooth Manifolds and Differential Geometry — complete English PDF — 658 pages', 'https://github.com/KokunoYumeto/brenner-differentialgeometrie-en/releases/download/v2026.09.01-complete/smooth-manifolds-differential-geometry-complete-en.pdf', 'PDF', { pages:658, bytes:8160069, sha256:'dbbe985214a5642e08be0d6cb0302e3156e8d5dbc2c225a7e1fb2ecc554ffb28', offlineAfterDownload:true }),
+    englishEdition('Complete English HTML ZIP — unzip; MathJax requires internet', 'https://github.com/KokunoYumeto/brenner-differentialgeometrie-en/releases/download/v2026.09.01-complete/smooth-manifolds-differential-geometry-complete-html-20260901.zip', 'HTML ZIP', { bytes:5609567, sha256:'dcddd62d88553b8db768dbae7ea0e64c7eb43e4b438c3eca37dfea1db41620cd' }),
+    englishEdition('Complete English geometry edition archive', 'https://doi.org/10.5281/zenodo.22233733', 'archive'),
+  ],
+  D100: [],
   D70: [
     englishEdition('Methods of Algebra, Volume 1 — complete English book — 457 pages', 'https://zenodo.org/records/22216113/files/methods-of-algebra-volume-1-en.pdf?download=1', 'PDF', { pages:457, bytes:2691212, sha256:'112eef57e92f685e90bdff963f5a01c046a5f7d1eedc88faf316c930be7d4017', offlineAfterDownload:true }),
     englishEdition('Duncan: Representation Theory — selected complete English component — 102 pages', 'https://zenodo.org/records/22216113/files/duncan-representation-theory-en.pdf?download=1', 'PDF', { pages:102, bytes:507750, sha256:'77c0f34dc28457dd750bf67c88857910c2a57ee8f70dd3dccbcca840854cf565', offlineAfterDownload:true, origin:'published-english-component' }),
@@ -178,8 +187,6 @@ export const englishResources = {
   D120: [{ ...english('Traceable Mathematical Work — complete English edition', 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/en/'), origin: 'published-translation' }],
 };
 export const englishBindingExceptions = {
-  B80: 'Indonesian-original course. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
-  D50: 'German original. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
   D100: 'German originals. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
   C60: 'English spine is linked. The program-original mastery/solution companion is available in Indonesian; an English companion link was not located.',
   C90: 'English spine is linked. The program-original companion is available in Indonesian; an English companion link was not located.',

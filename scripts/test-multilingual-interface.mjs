@@ -33,7 +33,14 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='B80').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='A00').layers.learner.tools[0].label='changed';},
 ]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
-assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,37);
+assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,39);
+assert.equal(englishResources.B80.find(r=>r.pages).pages,161);
+assert.equal(englishResources.D50.find(r=>r.pages).pages,658);
+assert.ok(!englishBindingExceptions.B80 && !englishBindingExceptions.D50);
+assert.equal(englishResources.B80[0].kind,'HTML');
+assert.equal(englishResources.D50[0].kind,'PDF');
+assert.equal(englishResources.D50.find(r=>r.kind==='HTML ZIP').offlineAfterDownload,undefined);
+assert.ok(englishResources.D50.find(r=>r.kind==='HTML ZIP').label.includes('MathJax requires internet'));
 assert.deepEqual(englishResources.D70.filter(r=>r.pages).map(r=>r.pages),[457,102,68,7]);
 assert.equal(englishResources.D80.find(r=>r.pages).pages,820);
 assert.ok(!englishBindingExceptions.D70 && !englishBindingExceptions.D80);
@@ -41,7 +48,7 @@ for (const locale of supportedLocales) {
   const tools=resourceBindings(interfaceCourses.find(c=>c.id==='B80'),locale).filter(r=>r.capabilityToolId);
   assert.equal(tools.length,2);
   for(const tool of tools) {assert.equal(tool.contentLanguage,'id');assert.equal(tool.primary,false);assert.ok(tool.note.includes('72') && tool.note.includes('3'));}
-  for(const courseId of ['D70','D80']) {
+  for(const courseId of ['B80','D50','D70','D80']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
     for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
     if(locale==='en') assert.equal(resources.filter(r=>r.primary).length,1);
@@ -206,7 +213,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,2);
-  for(const courseId of ['D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
+  for(const courseId of ['B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);
