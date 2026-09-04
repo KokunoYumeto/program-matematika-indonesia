@@ -9,6 +9,7 @@ const sources={
   families:'backend/course-capsule-v1/authority/clp-family-v231/modular-backend-pattern-index-v2.1.json',
   published:'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
   b80:'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
+  lebl:'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
 };
 const bytes=Object.fromEntries(await Promise.all(Object.entries(sources).map(async([key,path])=>[key,await readFile(resolve(root,path))])));
 const data=Object.fromEntries(Object.entries(bytes).map(([key,value])=>[key,JSON.parse(value)]));
@@ -16,6 +17,11 @@ assert.equal(data.capsules.length,40);assert.equal(data.families.families.length
 assert.equal(data.b80.state,'pass');
 assert.equal(new Set(data.capsules.map(row=>row.course_id)).size,40,'Duplicate course role.');
 assert.equal(data.b80.anonymous,true);assert.equal(data.b80.credentials_used,false);
+assert.equal(data.lebl.state,'pass');assert.equal(data.lebl.anonymous,true);assert.equal(data.lebl.credentials_used,false);
+const leblRoles=['B70','C10','C20','C50'];
+for(const filename of [...leblRoles.flatMap(role=>[role+'.html',role+'-pengajar.html']),'istilah.html','learning-map.json','validation.json','filters.js']){
+  assert.ok(data.lebl.files.some(row=>row.surface==='pages'&&row.path==='docs/backend/lebl/'+filename&&row.http_status===200&&row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)),filename);
+}
 for(const path of ['docs/backend/b80/B80.html','docs/backend/b80/B80-pengajar.html','docs/backend/b80/learning-map.json']){
   const proof=data.b80.files.find(row=>row.path===path);
   assert.ok(proof&&proof.http_status===200&&proof.bytes>0,`Missing B80 public readback: ${path}`);
@@ -42,7 +48,7 @@ const rows=data.capsules.map(capsule=>{
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
-      github_public_evidence:publicRow?'frozen_public_readback':role==='B80'?'new_anonymous_source_and_pages_readback':'not_established',
+      github_public_evidence:publicRow?'frozen_public_readback':role==='B80'||leblRoles.includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
       zenodo_preservation:publicRow?'frozen_public_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established',
       local_evidence:adapter.evidence??[],
       public_package:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
