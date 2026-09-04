@@ -4,7 +4,11 @@
 
 [Buka peta belajar Bahasa Indonesia](https://kokunoyumeto.github.io/program-matematika-indonesia/id/) · [Open the English learning map](https://kokunoyumeto.github.io/program-matematika-indonesia/en/)
 
-[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22306974/files/peta-belajar-multilingual-v0.63.6.zip?download=1) · [Central DOI record](https://zenodo.org/records/22306974) · [Interface release v0.63.6](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.6)
+[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22307693/files/peta-belajar-multilingual-v0.63.7.zip?download=1) · [Central DOI record](https://zenodo.org/records/22307693) · [Interface release v0.63.7](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.7)
+
+**Read a program edition or visit its original source.** All 40 course cards now show original book/course links prominently in both interfaces and offline maps: 48 bindings covering 46 distinct source destinations. Original German and Chinese material keeps its actual language, and program-original Indonesian works link to their original homes. These links identify the listed spines/components, not the origins of every added companion. External English links are labeled original sources, not local mirrors; full English HTML mirroring remains work to do. Existing readers, downloads, citations and corpus ownership are preserved.
+
+**Baca edisi program atau kunjungi sumber aslinya.** Tautan sumber asli kini terlihat langsung pada seluruh 40 kartu mata kuliah, tanpa membuka rincian tambahan. Bahasa bahan tidak berubah ketika bahasa antarmuka diganti. Tautan eksternal bukan salinan lokal; pendamping orisinal program tetap mempunyai provenance tersendiri.
 
 Download the bilingual ZIP, extract everything, and open `START-HERE.html`. The paired maps switch between English and Indonesian using local files, including without JavaScript. Keep the extracted folder layout. Separate single-file downloads retain online language buttons. Linked books need separate downloads; use download/restore progress when your browser isolates records between local files. This update also keeps language-switch filters current when an offline browser rejects address-bar updates, without putting learner records in navigation URLs.
 
