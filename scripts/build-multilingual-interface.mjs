@@ -19,9 +19,11 @@ const css = await read('docs/interface/styles.css');
 const stripExports = (code) => code.replace(/^export (const|function) /gm, '$1 ');
 const stripImports = (code) => code.replace(/^import[\s\S]*?from ['"][^'"]+['"];\r?\n/gm, '');
 const sources = [
-  (await read('docs/courses.js')).replace(/^export const courses =/m, 'export const authorityCourses =').replace(/^export const nextCourseIdsById =/m, 'export const authorityNextCourseIdsById ='),
-  await read('docs/live-course-publications.js'), await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
-  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), await read('docs/interface/capability-tools.js'), await read('docs/interface/supplemental-readers.js'), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
+  // Carry the effective catalog once in the offline payload; native inputs are
+  // still hash-bound below. No course source or backend is changed.
+  'const authorityCourses = ' + JSON.stringify(interfaceCourses) + ';\nconst topics = ' + JSON.stringify(interfaceTopics) + ';\nconst materializeLiveCourses = rows => rows;',
+  await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
+  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), await read('docs/interface/capability-tools.js'), await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
@@ -89,5 +91,9 @@ const receipt = {
   resourceBindingScope: 'Presentation/resource URLs only; no corpus or backend mutation.',
   resourceBindings: Object.fromEntries(supportedLocales.map((locale) => [locale, Object.fromEntries(interfaceCourses.map((course) => [course.id, resourceBindings(course, locale)]))])),
 };
+const originalSourceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/original-sources.js'));
+receipt.inputs.push({path:'docs/interface/original-sources.js', bytes:originalSourceBytes.length, sha256:createHash('sha256').update(originalSourceBytes).digest('hex')});
+const sourceAccessBytes = await readFile(resolve(interfaceRoot, 'docs/interface/evidence/original-source-access-review.json'));
+receipt.inputs.push({path:'docs/interface/evidence/original-source-access-review.json', bytes:sourceAccessBytes.length, sha256:createHash('sha256').update(sourceAccessBytes).digest('hex')});
 await writeFile(resolve(interfaceRoot, 'docs/interface/build-receipt.json'), JSON.stringify(receipt, null, 2) + '\n');
 console.log(JSON.stringify({ locales: supportedLocales, courses: receipt.canonicalCourseCount, edges: receipt.canonicalEdgeCount, outputs: outputFiles }));
