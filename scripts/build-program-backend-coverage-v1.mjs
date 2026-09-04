@@ -49,7 +49,7 @@ const rows=data.capsules.map(capsule=>{
         central_record:`https://doi.org/${data.published.snapshot.central_release_record_doi}`} : null},
     learner:{tools:capsule.layers.learner.tools.map(tool=>({label:tool.label,href:'../'+tool.href})),
       unit_identity:capsule.layers.curriculum.unit_identity_status,
-      relationship:role==='B80'?'directly_consumes_adapter_outputs':publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
+      relationship:role==='B80'||adapter.contract_version==='lebl-learning-capability/1'?'directly_consumes_adapter_outputs':publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources},
     dimensions:{
       curriculum:{course_graph:capsule.layers.curriculum.status,unit_identity:capsule.layers.curriculum.unit_identity_status},

@@ -1,0 +1,69 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://kokunoyumeto.github.io/program-matematika-indonesia/schema/course-capsule-v1/lebl-learning-capability-v1.schema.json",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["contract", "locale", "native_commit", "native_dataset_id", "native_records", "books", "roles", "units", "terms", "resources", "editions", "rights", "relations", "projection_policy", "counts", "limitations"],
+  "properties": {
+    "contract": {"const": "lebl-learning-capability/1"},
+    "locale": {"const": "id-ID"},
+    "native_commit": {"type": "string", "pattern": "^[0-9a-f]{40}$"},
+    "native_dataset_id": {"$ref": "#/$defs/id"},
+    "native_records": {"type": "integer", "minimum": 1},
+    "books": {"type": "array", "minItems": 4, "maxItems": 4, "items": {"type": "object", "required": ["book_id", "url", "sha256", "bytes", "pages", "outline"], "properties": {"book_id": {"$ref": "#/$defs/bookId"}, "url": {"type": "string", "format": "uri"}, "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}, "bytes": {"type": "integer", "minimum": 1}, "pages": {"type": "integer", "minimum": 1}, "outline": {"type": "array"}}}},
+    "roles": {"type": "object", "additionalProperties": false, "required": ["B70", "C10", "C20", "C50"], "properties": {"B70": {"$ref": "#/$defs/role"}, "C10": {"$ref": "#/$defs/role"}, "C20": {"$ref": "#/$defs/role"}, "C50": {"$ref": "#/$defs/role"}}},
+    "units": {"type": "array", "items": {"type": "object", "additionalProperties": false, "required": ["id", "semantic_key", "source_local_id", "resource_id", "resource_key", "edition_id", "rights_id", "parent_id", "kind", "title", "order_key", "section_id", "section_title", "books", "book_assignment_basis", "target_components", "source_components", "support_state", "support", "destinations", "concept_ids", "term_ids", "inventory_layer"], "properties": {
+      "id": {"$ref": "#/$defs/id"},
+      "semantic_key": {"type": "string"},
+      "source_local_id": {"type": "string"},
+      "resource_id": {"$ref": "#/$defs/id"},
+      "resource_key": {"enum": ["R006", "R007", "R008"]},
+      "edition_id": {"$ref": "#/$defs/id"},
+      "rights_id": {"$ref": "#/$defs/id"},
+      "parent_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+      "kind": {"type": "string"},
+      "title": {"type": "string"},
+      "order_key": {"type": "string"},
+      "section_id": {"anyOf": [{"$ref": "#/$defs/id"}, {"type": "null"}]},
+      "section_title": {"type": "string"},
+      "books": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/bookId"}},
+      "book_assignment_basis": {"enum": ["native_resource", "verified_volume_entrypoint_component", "native_parent_volume_component", "shared_or_unresolved_family_component"]},
+      "target_components": {"type": "array"},
+      "source_components": {"type": "array"},
+      "support_state": {"enum": [null, "unknown", "none", "hint_only", "answer_only", "full_solution", "mixed_partial", "not_applicable"]},
+      "support": {
+        "type": "array",
+        "items": {
+          "type": "object", "additionalProperties": false,
+          "required": ["id", "kind", "evidence"],
+          "properties": {
+            "id": {"$ref": "#/$defs/id"},
+            "kind": {"enum": ["hint", "answer", "solution"]},
+            "evidence": {
+              "type": "array", "minItems": 1,
+              "items": {
+                "type": "object", "required": ["basis"],
+                "properties": {
+                  "basis": {"enum": ["explicit_native_relation", "native_parent_id"]},
+                  "relation_id": {"$ref": "#/$defs/id"}
+                }
+              }
+            }
+          }
+        }
+      },
+      "destinations": {"type": "array"},
+      "concept_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+      "term_ids": {"type": "array", "items": {"$ref": "#/$defs/id"}},
+      "inventory_layer": {"enum": ["logical_tex_unit", "native_editorial_or_semantic_unit"]}
+    }}},
+    "terms": {"type": "array", "items": {"type": "object", "required": ["id", "concept_id", "preferred", "variants", "rejected_forms", "rights_id", "scope_ids", "evidence", "ledger_binding"], "properties": {"id": {"$ref": "#/$defs/id"}, "concept_id": {"$ref": "#/$defs/id"}, "preferred": {"type": "string"}, "variants": {"type": "array"}, "rejected_forms": {"type": "array"}, "scope_ids": {"type": "array"}, "rights_id": {"$ref": "#/$defs/id"}}}},
+    "projection_policy": {"type": "object", "required": ["scope", "whole_records_preserved", "units", "terms", "recovery"], "properties": {"scope": {"type": "string"}, "whole_records_preserved": {"const": ["resources", "editions", "rights", "relations"]}, "units": {"type": "object", "required": ["copied_fields", "not_copied_whole", "partial_and_derived"]}, "terms": {"type": "object", "required": ["copied_fields", "not_copied_whole", "derived_fields"]}, "recovery": {"type": "string"}}},
+    "resources": {"type": "array"}, "editions": {"type": "array"}, "rights": {"type": "array"}, "relations": {"type": "array"}, "counts": {"type": "object"}, "limitations": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "id": {"type": "string", "pattern": "^urn:uuid:[0-9a-f]{8}-[0-9a-f]{4}-5[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$"},
+    "bookId": {"enum": ["R006-volume-1", "R006-volume-2", "R007", "R008"]},
+    "role": {"type": "object", "required": ["title", "books", "resource"], "properties": {"title": {"type": "string"}, "books": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/bookId"}}, "resource": {"enum": ["R006", "R007", "R008"]}}}
+  }
+}

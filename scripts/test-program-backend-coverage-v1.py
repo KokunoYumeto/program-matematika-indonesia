@@ -31,6 +31,11 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters'])
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
+for role in ('B70', 'C10', 'C20', 'C50'):
+    assert roles[role]['common_adapter']['contract'] == 'lebl-learning-capability/1'
+    assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+    assert len(roles[role]['learner']['tools']) == 3
+    assert roles[role]['educator']['unit_alignment'] == 'verified'
 dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production',
               'accessibility', 'learner', 'educator', 'federation', 'interoperability'}
 for row in inputs['capsules']:
@@ -128,5 +133,5 @@ receipt = {'schema': 'program-backend-coverage-validation/1', 'state': 'pass', '
            'translation_progress_inferred': False, 'whole_program_completion_claimed': False}
 target = ROOT / 'backend/course-capsule-v1/validation/PROGRAM_BACKEND_COVERAGE_VALIDATION.json'
 target.parent.mkdir(parents=True, exist_ok=True)
-target.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+target.write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8', newline='\n')
 print(json.dumps(receipt))

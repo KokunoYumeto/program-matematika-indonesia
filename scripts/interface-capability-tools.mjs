@@ -6,6 +6,15 @@ import {learnerToolsByCourseId} from '../docs/learner-tools.js';
 
 export const capabilityInput = 'docs/data/course-capsule-v1/course-capsules.json';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
+const contracts = {
+  'b80-educator-map-v1':['B80','reference','backend/b80/B80-pengajar.html'],
+  'b80-exercise-map-v1':['B80','practice_diagnostic_map','backend/b80/B80.html'],
+};
+for(const role of ['B70','C10','C20','C50']) for(const [suffix,kind,file] of [
+  ['exercise-map','practice_diagnostic_map',role+'.html'],
+  ['educator-map','reference',role+'-pengajar.html'],
+  ['terminology','reference','istilah.html'],
+]) contracts[role.toLowerCase()+'-lebl-'+suffix+'-v1']=[role,kind,'backend/lebl/'+file];
 export function projectCapabilityTools(capsules, courseIds) {
   assert.equal(capsules.length, courseIds.length);
   assert.deepEqual(capsules.map(row=>row.course_id).sort(), [...courseIds].sort());
@@ -14,11 +23,9 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // This release accepts only the audit's frozen B80 addition. New capability
-    // families need their own explicit presentation contract, not auto-admission.
-    assert.equal(capsule.course_id, 'B80');
-    const expected = {'b80-educator-map-v1':['reference','backend/b80/B80-pengajar.html'], 'b80-exercise-map-v1':['practice_diagnostic_map','backend/b80/B80.html']}[tool.tool_id];
-    assert.ok(expected); assert.deepEqual([tool.action_kind,tool.href],expected);
+    // Explicit B80 and Lebl presentation contracts; no generic auto-admission.
+    const expected = contracts[tool.tool_id];
+    assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');
     assert.equal(tool.state, 'verified');
     assert.equal(tool.primary, false);
@@ -35,7 +42,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     result.push({courseId:capsule.course_id, contentLanguage:'id', ...tool});
   }
   assert.deepEqual([...matchedLegacy].sort(),Object.values(learnerToolsByCourseId).flat().map(t=>t.tool_id).sort());
-  assert.deepEqual(result.map(t=>t.tool_id).sort(),['b80-educator-map-v1','b80-exercise-map-v1']);
+  assert.deepEqual(result.map(t=>t.tool_id).sort(),Object.keys(contracts).sort());
   return result;
 }
 export async function syncCapabilityTools(root, courseIds) {
