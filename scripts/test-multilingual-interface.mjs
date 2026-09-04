@@ -307,10 +307,9 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   sizes.push({ locale, file, bytes: Buffer.byteLength(html), gzipBytes: gzipSync(html).length });
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
-    // Four Lebl roles add twelve explicit tool entries (about 71 KB gzip).
-    // Bound both document size and compressed transfer for low-bandwidth use.
-    assert.ok(Buffer.byteLength(html) < 400000, 'Offline map size budget');
-    assert.ok(gzipSync(html).length < 75000, 'Compressed map size budget');
+    // Preserve the manager's compact-payload limits with all Lebl tools present.
+    assert.ok(Buffer.byteLength(html) < 350000, 'Offline map size budget');
+    assert.ok(gzipSync(html).length < 70000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
