@@ -95,6 +95,7 @@ await cp(source, target, {
     // pages contain navigation and links only; owner-native prose remains on
     // the canonical course reader.
     if (name === 'id-ID' || name.startsWith('id-ID/')) return true;
+    if (['id', 'en', 'interface'].some((part) => name === part || name.startsWith(part + '/'))) return true;
     // Preserve only the admitted D40 Unit 14 portable reader closure.  Other
     // owner-native reader trees remain outside this generated Sites mirror.
     if (approvedReaderParents.has(name) || name.startsWith(approvedReaderPrefix)) return true;

@@ -478,6 +478,8 @@ footer { display: grid; grid-template-columns: 1.2fr .8fr; gap: 35px; align-item
       <span>Program Matematika Indonesia</span>
     </a>
     <nav aria-label="Navigasi utama">
+      <a href="id/" hreflang="id" lang="id" data-interface-locale="id">Bahasa Indonesia</a>
+      <a href="en/" hreflang="en" lang="en" data-interface-locale="en">English</a>
       <a href="#mulai">Mulai</a>
       <a href="#progres">Progres</a>
       <a href="#jalur">Jalur belajar</a>
@@ -2070,6 +2072,19 @@ const hashId = location.hash.match(/^#course-([A-D]\d{2,3})$/)?.[1];
 if (hashId && courses.some((course) => course.id === hashId)) {
   requestAnimationFrame(() => document.querySelector(`#course-${hashId}`)?.scrollIntoView({ block: 'center' }));
 }
+
+// Existing root bookmarks remain valid; language links preserve the selected course.
+document.querySelectorAll('[data-interface-locale]').forEach((link) => {
+  const update = () => {
+    const url = new URL(link.dataset.interfaceLocale + '/', location.href);
+    url.search = location.search;
+    url.hash = location.hash;
+    link.href = url.href;
+  };
+  update();
+  window.addEventListener('hashchange', update);
+  link.addEventListener('click', update);
+});
 
   </script>
 </body>

@@ -1101,8 +1101,10 @@ assert.match(styles, /p a:not\(\.button\):not\(\.card-action\)/);
 const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesModuleBytes, Buffer.from(livePublicationsModule), Buffer.from(learnerStateModule), deliveryModuleBytes, learnerToolsModuleBytes];
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
-assert.ok(shellRawBytes <= 200_000, `Shell melewati 200.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 50_000, `Shell gzip melewati 50.000 byte: ${shellGzipBytes}.`);
+// Legacy entry gained two language links and fragment-preserving handoff.
+// Each new language route has its own separately measured offline/closure budget.
+assert.ok(shellRawBytes <= 202_000, `Shell melewati 202.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= 51_000, `Shell gzip melewati 51.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
