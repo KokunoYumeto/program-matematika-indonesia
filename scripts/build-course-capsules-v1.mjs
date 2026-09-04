@@ -220,6 +220,8 @@ const capsules = effectiveCourses.map((course) => {
       bytes: supplement.bytes,
       sha256: supplement.sha256,
     }));
+  educatorResources.push(...clone(educatorOverride?.resources ?? []));
+  assert.equal(new Set(educatorResources.map(row=>row.id)).size,educatorResources.length,`${course.id}: duplicate educator resource identity.`);
   const educatorFeatures = new Set(educatorOverride?.features ?? []);
   for (const supplement of supplements) {
     for (const feature of resourceTypeFeatures[supplement.resourceType] ?? []) educatorFeatures.add(feature);

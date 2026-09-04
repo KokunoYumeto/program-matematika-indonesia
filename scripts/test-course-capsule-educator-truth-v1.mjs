@@ -16,6 +16,8 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
   : value && typeof value === 'object'
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
+  { name: 'b80_educator_resource_cannot_be_removed', id: 'B80', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },
+  { name: 'b80_educator_hash_cannot_drift', id: 'B80', mutate: row=>{row.layers.educator.resources[0].sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'unindexed_is_not_proof_of_nonproduction', id: 'B10', status: 'not_yet_produced', error: /educator status must preserve authority or honest indexing uncertainty/ },
   { name: 'explicit_in_progress_authority_is_preserved', id: 'C140', status: 'available_unverified', error: /educator status must preserve authority or honest indexing uncertainty/ },
   { name: 'invalid_capsule_status_cannot_escape_schema', id: 'B10', status: 'invented_status', error: /JSON Schema validation failed/ },

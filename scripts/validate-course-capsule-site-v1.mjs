@@ -30,6 +30,10 @@ const logicalFiles = [
   'backend/c130/C130.html',
   'backend/c130/learner-route.json',
   'backend/c130/validation.json',
+  'backend/b80/B80.html',
+  'backend/b80/B80-pengajar.html',
+  'backend/b80/learning-map.json',
+  'backend/b80/validation.json',
   'data/course-capsule-v1/course-capsules.jsonl',
   'data/course-capsule-v1/course-capsules.json',
   'data/course-capsule-v1/manifest.json',
@@ -172,15 +176,21 @@ assert.equal(rows.filter(({ course }) => course.state === 'production').length, 
 assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 21);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
-assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status)).map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
-assert.equal(manifest.summary.verified_semantic_adapter_count, expectedLiveAdapterRoles.length);
+assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
+assert.equal(manifest.summary.verified_semantic_adapter_count, expectedLiveAdapterRoles.length + 1);
+const b80 = rows.find(row=>row.course_id==='B80');
+assert.equal(b80.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
+assert.equal(b80.layers.interoperability.semantic_adapter.status,'verified');
+assert.equal(b80.layers.learner.tools.length,2);
+assert.equal(b80.layers.educator.resources.length,1);
+assert.equal(JSON.parse(docsBytes['backend/b80/validation.json']).state,'pass');
 assert.equal(rows.filter((row) => Object.keys(row.layers).sort().join(',') === 'curriculum,educator,federation,interoperability,learner,production,translation').length, 40);
 assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy.public_access_required).length, 40);
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 5);
-assert.equal(authorityToolIds.length, 5);
+assert.equal(Object.keys(authorityToolsByCourse).length, 6);
+assert.equal(authorityToolIds.length, 7);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
 assert.equal(manifest.summary.published_count, 35);
@@ -456,8 +466,10 @@ const receipt = {
     published_rows: 35,
     production_rows: 5,
     educator_rows: 21,
-    semantic_adapter_rows: expectedLiveAdapterRoles.length,
-    semantic_adapter_packages: clpSuccessorIndex.packages.length,
+    semantic_adapter_rows: expectedLiveAdapterRoles.length + 1,
+    semantic_adapter_packages: clpSuccessorIndex.packages.length + 1,
+    contract_2_3_1_roles: expectedLiveAdapterRoles.length,
+    course_learning_capability_roles: 1,
     snapshot_v2_public_role_bindings: 9,
     snapshot_v2_pending_role_bindings: 0,
     judson_course_views: 2,

@@ -273,6 +273,11 @@ for (const [index, capsule] of capsules.entries()) {
   assert.equal(capsule.layers.production.edition, capsule.course_native.edition);
   assert.equal(capsule.layers.educator.shared_identity_scope, 'learner_and_educator_views_share_course_unit_concept_exercise_ids');
   const educator = capsule.layers.educator;
+  for (const expected of overrides.educator_evidence[capsule.course_id]?.resources ?? []) {
+    const matches = educator.resources.filter(row=>row.id===expected.id);
+    assert.equal(matches.length,1,`${capsule.course_id}: missing/duplicate educator resource.`);
+    assert.deepEqual(matches[0],expected,`${capsule.course_id}: educator resource evidence drift.`);
+  }
   const declaredEducatorStatus = overrides.educator_evidence[capsule.course_id]?.status;
   const expectedEducatorStatus = declaredEducatorStatus
     ?? (educator.features.length || educator.resources.length ? 'available_unverified' : 'unknown');

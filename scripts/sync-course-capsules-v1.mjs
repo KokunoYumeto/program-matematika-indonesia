@@ -32,6 +32,8 @@ const mappings = [
   ['backend/course-capsule-v1/validation/manager-followthrough/NATIVE_FAMILY_PUBLIC_EVIDENCE_INDEX_V06213_20260831.json', 'docs/data/course-capsule-v1/native-family-public-evidence-v1.json'],
   ['backend/course-capsule-v1/validation/manager-followthrough/NATIVE_FAMILY_PUBLIC_EVIDENCE_NOTE_V06213_20260831.md', 'docs/data/course-capsule-v1/native-family-public-evidence-note-v1.md'],
   ['schemas/course-capsule-v1/course-capsule-v1.schema.json', 'docs/schema/course-capsule-v1/course-capsule-v1.schema.json'],
+  ['schemas/course-capsule-v1/native-catalog-record-v1.schema.json', 'docs/schema/course-capsule-v1/native-catalog-record-v1.schema.json'],
+  ['schemas/course-capsule-v1/course-learning-capability-v1.schema.json', 'docs/schema/course-capsule-v1/course-learning-capability-v1.schema.json'],
   ['schemas/course-capsule-v1/backend-design-policy-v1.schema.json', 'docs/schema/course-capsule-v1/backend-design-policy-v1.schema.json'],
   ['schemas/course-capsule-v1/public-baseline-v1.schema.json', 'docs/schema/course-capsule-v1/public-baseline-v1.schema.json'],
   ['schemas/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'docs/schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json'],

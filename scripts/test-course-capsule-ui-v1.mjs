@@ -136,7 +136,13 @@ for (const [name, fetch] of [
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
   const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
-  assert.equal(adapterCount, 14);
+  assert.equal(adapterCount, 15); // Thirteen 2.3.1 bindings, B80 capability adapter, and D40 native evidence.
+  const b80 = courses.find(course=>course.course_id==='B80');
+  assert.equal(b80.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
+  assert.equal(b80.layers.curriculum.unit_identity_status,'verified');
+  assert.equal(b80.layers.educator.unit_alignment_status,'verified');
+  assert.equal(b80.layers.learner.tools.length,2);
+  assert.equal(b80.layers.educator.resources[0].id,'B80:educator-map-v1');
   for (const [value, count] of [['published', 35], ['production', 5], ['educator', 21], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
@@ -177,8 +183,8 @@ for (const [name, fetch] of [
   }
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
-const educatorCounts = Object.fromEntries(['available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { available_unverified: 20, in_progress: 1, unknown: 19 });
+const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
+assert.deepEqual(educatorCounts, { verified: 1, available_unverified: 19, in_progress: 1, unknown: 19 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),
