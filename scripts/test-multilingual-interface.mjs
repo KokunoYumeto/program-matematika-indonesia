@@ -73,6 +73,9 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].page.path='../../secret';},
   c=>{c.find(r=>r.course_id==='B80').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='A00').layers.learner.tools[0].label='changed';},
+  c=>{c.find(r=>r.course_id==='C20').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='B70').layers.learner.tools[0].href='backend/lebl/C50.html';},
+  c=>{c.find(r=>r.course_id==='C50').locale='en';},
 ]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
 assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,39);
 assert.equal(englishResources.B80.find(r=>r.pages).pages,161);
@@ -89,6 +92,11 @@ for (const locale of supportedLocales) {
   const tools=resourceBindings(interfaceCourses.find(c=>c.id==='B80'),locale).filter(r=>r.capabilityToolId);
   assert.equal(tools.length,2);
   for(const tool of tools) {assert.equal(tool.contentLanguage,'id');assert.equal(tool.primary,false);assert.ok(tool.note.includes('72') && tool.note.includes('3'));}
+  for(const role of ['B70','C10','C20','C50']){
+    const leblTools=resourceBindings(interfaceCourses.find(c=>c.id===role),locale).filter(r=>r.capabilityToolId);
+    assert.equal(leblTools.length,3);
+    for(const tool of leblTools){assert.equal(tool.contentLanguage,'id');assert.equal(tool.primary,false);assert.ok(tool.href.includes('/backend/lebl/'));}
+  }
   for(const courseId of ['B80','D50','D70','D80']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
     for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
@@ -254,7 +262,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,2);
+  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,14);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   for(const courseId of ['B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
@@ -276,8 +284,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   sizes.push({ locale, file, bytes: Buffer.byteLength(html), gzipBytes: gzipSync(html).length });
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
-    assert.ok(Buffer.byteLength(html) < 350000, 'Offline map size budget');
-    assert.ok(gzipSync(html).length < 70000, 'Compressed map size budget');
+    // Four Lebl roles add twelve explicit tool entries (about 71 KB gzip).
+    // Bound both document size and compressed transfer for low-bandwidth use.
+    assert.ok(Buffer.byteLength(html) < 400000, 'Offline map size budget');
+    assert.ok(gzipSync(html).length < 75000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     assert.ok(run.nodes.get('#course-grid').innerHTML.includes('id="course-C30"'));
     for (const link of run.localeLinks) { assert.ok(link.href.endsWith('?level=C#course-C30')); }

@@ -136,14 +136,20 @@ for (const [name, fetch] of [
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
   const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
-  assert.equal(adapterCount, 15); // Thirteen 2.3.1 bindings, B80 capability adapter, and D40 native evidence.
+  assert.equal(adapterCount, 19); // Thirteen 2.3.1, B80, four Lebl roles, and D40 native evidence.
+  for(const role of ['B70','C10','C20','C50']){
+    const capsule=courses.find(c=>c.course_id===role);
+    assert.equal(capsule.layers.interoperability.semantic_adapter.contract_version,'lebl-learning-capability/1');
+    assert.equal(capsule.layers.learner.tools.length,3);
+    assert.equal(capsule.layers.educator.unit_alignment_status,'verified');
+  }
   const b80 = courses.find(course=>course.course_id==='B80');
   assert.equal(b80.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
   assert.equal(b80.layers.curriculum.unit_identity_status,'verified');
   assert.equal(b80.layers.educator.unit_alignment_status,'verified');
   assert.equal(b80.layers.learner.tools.length,2);
   assert.equal(b80.layers.educator.resources[0].id,'B80:educator-map-v1');
-  for (const [value, count] of [['published', 35], ['production', 5], ['educator', 21], ['adapter', adapterCount]]) {
+  for (const [value, count] of [['published', 35], ['production', 5], ['educator', 25], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
     assert.equal(visibleCount(), count);
@@ -177,14 +183,14 @@ for (const [name, fetch] of [
   assert.match(f.element('#course-grid').innerHTML, /Tidak ada mata kuliah/);
   f.fire(f.element('#reset-filters'), 'click');
   assert.equal(visibleCount(), 40);
-  for (const [name, count] of Object.entries({ total: 40, published: 35, production: 5, educator: 21 })) {
+  for (const [name, count] of Object.entries({ total: 40, published: 35, production: 5, educator: 25 })) {
     assert.equal(Number(f.element('#summary-' + name).textContent), count);
     assert.match(html, new RegExp(`<strong id="summary-${name}">${count}</strong>`));
   }
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { verified: 1, available_unverified: 19, in_progress: 1, unknown: 19 });
+assert.deepEqual(educatorCounts, { verified: 5, available_unverified: 19, in_progress: 1, unknown: 15 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),
