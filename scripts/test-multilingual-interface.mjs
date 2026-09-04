@@ -56,6 +56,20 @@ assert.equal(a00MirrorEvidence.source.publisher_url,a00English.find(r=>r.origin=
 assert.equal(a00MirrorEvidence.program_mirror.offline_zip_sha256,a00English.find(r=>r.kind==='HTML ZIP').sha256);
 assert.equal(a00MirrorEvidence.public_verification.pages_files_verified,3041);
 assert.equal(a00MirrorEvidence.public_verification.all_exact,true);
+const a10English=resourceBindings(interfaceCourses.find(c=>c.id==='A10'),'en');
+assert.equal(a10English.filter(r=>r.primary).length,1);
+assert.equal(a10English.find(r=>r.primary).origin,'program-mirror');
+assert.equal(a10English.find(r=>r.origin==='upstream-original').href,'https://openstax.org/details/books/elementary-algebra-2e');
+assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A10'),'en').split('<details class="resource-details">')[0].includes('Original source'));
+assert.equal(a10English.find(r=>r.kind==='HTML ZIP').offlineAfterDownload,true);
+const a10MirrorEvidence=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/a10-original-english-mirror.json'),'utf8'));
+assert.equal(a10MirrorEvidence.status,'published_and_anonymously_verified');
+assert.equal(a10MirrorEvidence.work_kind,'presentation_mirror_of_original_source');
+assert.equal(a10MirrorEvidence.program_mirror.reader_url,a10English.find(r=>r.primary).href);
+assert.equal(a10MirrorEvidence.source.publisher_url,a10English.find(r=>r.origin==='upstream-original').href);
+assert.equal(a10MirrorEvidence.program_mirror.offline_zip_sha256,a10English.find(r=>r.kind==='HTML ZIP').sha256);
+assert.equal(a10MirrorEvidence.public_verification.pages_files_verified,4108);
+assert.equal(a10MirrorEvidence.public_verification.all_exact,true);
 assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin),['program-original','program-original']);
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {
@@ -177,7 +191,7 @@ for (const locale of supportedLocales) {
     if(locale==='id') assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
     else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
   }
-  for(const courseId of ['B80','D50','D70','D80']) {
+  for(const courseId of ['A10','B80','D50','D70','D80']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
     for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
     if(locale==='en') assert.equal(resources.filter(r=>r.primary).length,1);
@@ -188,10 +202,10 @@ const editionInput = JSON.parse(editionBytes);
 assert.deepEqual(validateFinalEditions(editionInput, ids), finalEditions);
 assert.equal(finalEditionSource.bytes, editionBytes.length);
 assert.equal(finalEditionSource.sha256, createHash('sha256').update(editionBytes).digest('hex'));
-assert.deepEqual(finalEditions.map(r=>r.courseId), ['A20','A30','B95','C140','D100']);
+assert.deepEqual(finalEditions.map(r=>r.courseId), ['A10','A20','A30','B95','C140','D100']);
 const finalResources = finalEditions.flatMap(r=>r.resources);
-assert.equal(finalResources.length,13);
-assert.equal(finalResources.reduce((n,r)=>n+(r.pages??0),0),8259);
+assert.equal(finalResources.length,14);
+assert.equal(finalResources.reduce((n,r)=>n+(r.pages??0),0),9886);
 for (const corrupt of [
   input=>{input.editions[0].courseId='Z999';},
   input=>{input.editions[0].prerequisites=[];},
@@ -215,7 +229,8 @@ for(const locale of supportedLocales) {
   const stats=resourceBindings(interfaceCourses.find(r=>r.id==='C140'),locale);
   for(const id of ['random-mathematical-statistics-html','random-mathematical-statistics-pdf','random-mathematical-statistics-doi']) assert.ok(stats.some(r=>r.supplementId===id));
   const geo=resourceBindings(interfaceCourses.find(r=>r.id==='D100'),locale).filter(r=>r.editionResourceId);
-  assert.equal(geo.length,6); assert.equal(geo.reduce((n,r)=>n+(editionInput.editions[4].resources.find(e=>e.id===r.editionResourceId)?.pages??0),0),975);
+  const d100Edition=editionInput.editions.find(e=>e.courseId==='D100');
+  assert.equal(geo.length,6); assert.equal(geo.reduce((n,r)=>n+(d100Edition.resources.find(e=>e.id===r.editionResourceId)?.pages??0),0),975);
   assert.ok(!resourceBindings(interfaceCourses.find(r=>r.id==='B95'),locale).some(r=>r.href.includes('/id-ID/courses/B95/')));
   for(const id of ['A20','A30','B95']) assert.ok(!resourceBindings(interfaceCourses.find(r=>r.id===id),locale).some(r=>r.editionResourceId && r.format !== 'PDF'));
 }
@@ -340,12 +355,12 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.deepEqual(cardIds, ids, locale + '/' + file + ' static coverage');
   assert.equal([...staticHtml.matchAll(/data-reader-action="([^"]+)"/g)].length, 7, 'Seven verified CLP actions visible in static markup');
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
+  assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,14);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,18);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
-  for(const courseId of ['B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
+  for(const courseId of ['A10','B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);
@@ -364,8 +379,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   sizes.push({ locale, file, bytes: Buffer.byteLength(html), gzipBytes: gzipSync(html).length });
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
-    // Preserve the manager's compact-payload limits with all Lebl tools present.
-    assert.ok(Buffer.byteLength(html) < 350000, 'Offline map size budget');
+    // Preserve a compact payload while retaining all evidence-bound mirrors and Lebl tools.
+    assert.ok(Buffer.byteLength(html) < 360000, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 70000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.

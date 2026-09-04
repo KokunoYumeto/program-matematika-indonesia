@@ -1,6 +1,37 @@
 // Generated presentation bindings; corpus/backend authority remains unchanged.
-export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":14756,"sha256":"f0c1a7f364e2483f620708ad434b58373dbac5d632d368c5acdc87eb4ab9c861"};
+export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":16015,"sha256":"bb59e199b735fc05c5eff696694e059845ab06b23c80ca430b4c1b1f55987eba"};
 export const finalEditions = [
+  {
+    "courseId": "A10",
+    "version": "1.0.3",
+    "archive": "https://doi.org/10.5281/zenodo.22236314",
+    "repository": "https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-id",
+    "supersededSupplementIds": [],
+    "resources": [
+      {
+        "id": "A10:textbook",
+        "href": "https://zenodo.org/records/22236314/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader.pdf?download=1",
+        "labels": {
+          "id": "Buku teks lengkap",
+          "en": "Complete textbook"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "PDF",
+        "primary": true,
+        "offlineAfterDownload": true,
+        "pages": 1627,
+        "bytes": 74917277,
+        "sha256": "e4bc958edeb60a41604862dd0b67692bbfbcbb85b5de906c92af1f6c93bda505",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "e4bc958edeb60a41604862dd0b67692bbfbcbb85b5de906c92af1f6c93bda505",
+          "source_receipt": "zenodo/22236314/elementary-algebra-2e-id-ID-1.0.3-release-manifest.json",
+          "source_receipt_sha256": "a1cb3f183b37fc80013d3be68966bcbe667ae735582063a25cb4d3dd55ea2805"
+        }
+      }
+    ]
+  },
   {
     "courseId": "A20",
     "version": "1.0.0",
