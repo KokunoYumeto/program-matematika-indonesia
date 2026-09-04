@@ -76,6 +76,9 @@ PATHS = (
     "peta-belajar-luring.html",
 )
 CLP_SUCCESSOR_PATHS = (
+    "id/index.html", "en/index.html", "id/learning-map.html", "en/learning-map.html",
+    "interface/app.js", "interface/view.js", "interface/locales.js", "interface/styles.css",
+    "interface/build-receipt.json", "interface/publication-receipt.json",
     "live-course-publications.js",
     "data/course-capsule-v1/learner-reader-actions-v1.json",
     "data/modular-backend-pattern-index-v2.1.json",
