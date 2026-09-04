@@ -103,5 +103,7 @@ const a00MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/inter
 receipt.inputs.push({path:'docs/interface/evidence/a00-original-english-mirror.json', bytes:a00MirrorEvidenceBytes.length, sha256:createHash('sha256').update(a00MirrorEvidenceBytes).digest('hex')});
 const a10MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/evidence/a10-original-english-mirror.json'));
 receipt.inputs.push({path:'docs/interface/evidence/a10-original-english-mirror.json', bytes:a10MirrorEvidenceBytes.length, sha256:createHash('sha256').update(a10MirrorEvidenceBytes).digest('hex')});
+const a20MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/evidence/a20-original-english-mirror.json'));
+receipt.inputs.push({path:'docs/interface/evidence/a20-original-english-mirror.json', bytes:a20MirrorEvidenceBytes.length, sha256:createHash('sha256').update(a20MirrorEvidenceBytes).digest('hex')});
 await writeFile(resolve(interfaceRoot, 'docs/interface/build-receipt.json'), JSON.stringify(receipt, null, 2) + '\n');
 console.log(JSON.stringify({ locales: supportedLocales, courses: receipt.canonicalCourseCount, edges: receipt.canonicalEdgeCount, outputs: outputFiles }));

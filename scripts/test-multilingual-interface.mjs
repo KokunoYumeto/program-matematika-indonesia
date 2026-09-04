@@ -70,6 +70,20 @@ assert.equal(a10MirrorEvidence.source.publisher_url,a10English.find(r=>r.origin=
 assert.equal(a10MirrorEvidence.program_mirror.offline_zip_sha256,a10English.find(r=>r.kind==='HTML ZIP').sha256);
 assert.equal(a10MirrorEvidence.public_verification.pages_files_verified,4108);
 assert.equal(a10MirrorEvidence.public_verification.all_exact,true);
+const a20English=resourceBindings(interfaceCourses.find(c=>c.id==='A20'),'en');
+assert.equal(a20English.filter(r=>r.primary).length,1);
+assert.equal(a20English.find(r=>r.primary).origin,'program-mirror');
+assert.equal(a20English.find(r=>r.origin==='upstream-original').href,'https://openstax.org/books/intermediate-algebra-2e/pages/1-introduction');
+assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='A20'),'en').split('<details class="resource-details">')[0].includes('Original source'));
+assert.equal(a20English.find(r=>r.kind==='HTML ZIP').offlineAfterDownload,true);
+const a20MirrorEvidence=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/a20-original-english-mirror.json'),'utf8'));
+assert.equal(a20MirrorEvidence.status,'published_and_anonymously_verified');
+assert.equal(a20MirrorEvidence.work_kind,'presentation_mirror_of_original_source');
+assert.equal(a20MirrorEvidence.program_mirror.reader_url,a20English.find(r=>r.primary).href);
+assert.equal(a20MirrorEvidence.source.publisher_url,a20English.find(r=>r.origin==='upstream-original').href);
+assert.equal(a20MirrorEvidence.program_mirror.offline_zip_sha256,a20English.find(r=>r.kind==='HTML ZIP').sha256);
+assert.equal(a20MirrorEvidence.public_verification.pages_files_verified,4094);
+assert.equal(a20MirrorEvidence.public_verification.all_exact,true);
 assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin),['program-original','program-original']);
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {
@@ -191,7 +205,7 @@ for (const locale of supportedLocales) {
     if(locale==='id') assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
     else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
   }
-  for(const courseId of ['A10','B80','D50','D70','D80']) {
+  for(const courseId of ['A10','A20','B80','D50','D70','D80']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
     for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
     if(locale==='en') assert.equal(resources.filter(r=>r.primary).length,1);
@@ -360,7 +374,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,18);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
-  for(const courseId of ['A10','B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
+  for(const courseId of ['A10','A20','B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);

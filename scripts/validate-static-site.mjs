@@ -638,17 +638,17 @@ for (const id of liveOverlayRequiredRoleIds) {
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
-assert.equal(effectivePublishedCourses.length, 35, 'Overlay harus menampilkan tepat 35 peran dengan edisi selesai.');
-assert.equal(effectivePublishedRecordDois.size, 31, 'Tiga puluh lima peran selesai harus memakai tepat 31 rekaman DOI edisi berbeda.');
+assert.equal(effectivePublishedCourses.length, 36, 'Overlay harus menampilkan tepat 36 peran dengan edisi selesai.');
+assert.equal(effectivePublishedRecordDois.size, 32, 'Tiga puluh enam peran selesai harus memakai tepat 32 rekaman DOI edisi berbeda.');
 assert.equal(
   effectiveCourses.filter(({ state }) => state === 'production').length,
-  5,
-  'Overlay harus menampilkan tepat 5 peran yang masih diproduksi.',
+  4,
+  'Overlay harus menampilkan tepat 4 peran yang masih diproduksi.',
 );
 assert.deepEqual(
   effectiveCourses.filter(({ state }) => state === 'production').map(({ id }) => id),
-  ['A20', 'A30', 'B95', 'C140', 'D100'],
-  'Daftar lima peran produksi berubah.',
+  ['A30', 'B95', 'C140', 'D100'],
+  'Daftar empat peran produksi berubah.',
 );
 const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
 for (const course of effectiveCourses) {
@@ -710,10 +710,15 @@ assert.equal(effectiveCoursesById.get('A10').progress.publicUnits, 82);
 assert.equal(effectiveCoursesById.get('A10').progress.publicPages, 1627);
 assert.equal(effectiveCoursesById.get('A10').state, 'published');
 assert.match(effectiveCoursesById.get('A10').zenodo, /22236314$/);
-assert.equal(effectiveCoursesById.get('A20').progress.translationBearingUnits, 66);
+assert.equal(effectiveCoursesById.get('A20').progress.translationBearingUnits, 83);
 assert.equal(effectiveCoursesById.get('A10').supplements.length, 2);
-assert.equal(effectiveCoursesById.get('A20').progress.canonicalUnits, 51);
-assert.equal(effectiveCoursesById.get('A20').progress.publicUnits, 48);
+assert.equal(effectiveCoursesById.get('A20').progress.integrationReadyUnits, 83);
+assert.equal(effectiveCoursesById.get('A20').progress.canonicalUnits, 83);
+assert.equal(effectiveCoursesById.get('A20').progress.publicUnits, 83);
+assert.equal(effectiveCoursesById.get('A20').progress.publicPages, 3438);
+assert.equal(effectiveCoursesById.get('A20').state, 'published');
+assert.equal(effectiveCoursesById.get('A20').version, '1.0.0');
+assert.match(effectiveCoursesById.get('A20').zenodo, /22229860$/);
 assert.equal(effectiveCoursesById.get('A30').progress.translationBearingUnits, 87);
 assert.ok(!Object.hasOwn(effectiveCoursesById.get('A30').progress, 'integrationReadyUnits'));
 assert.equal(effectiveCoursesById.get('A30').progress.canonicalUnits, 67);

@@ -142,7 +142,11 @@ export const englishResources = {
     english('Original publisher page — OpenStax Elementary Algebra 2e', 'https://openstax.org/details/books/elementary-algebra-2e'),
     englishMirror('Complete English HTML reader — offline ZIP', 'https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-original-en/releases/download/v1.0.0/openstax-elementary-algebra-2e-original-en-html-v1.0.0.zip', 'HTML ZIP', { bytes:86119672, sha256:'83697cc22a9902792df6db89613044941a6669d4c4bff0c270aa1729dc2b1ef0', offlineAfterDownload:true }),
   ],
-  A20: [english('OpenStax Intermediate Algebra 2e', 'https://openstax.org/books/intermediate-algebra-2e/pages/1-introduction')],
+  A20: [
+    englishMirror('Program-hosted complete English HTML reader', 'https://kokunoyumeto.github.io/openstax-intermediate-algebra-2e-original-en/', 'HTML', { modules:83, assets:4003, sourceRevision:'38cae454e644abf9f0a623e876994553881597c9' }),
+    english('Original publisher reader — OpenStax Intermediate Algebra 2e', 'https://openstax.org/books/intermediate-algebra-2e/pages/1-introduction'),
+    englishMirror('Complete English HTML reader — offline ZIP', 'https://github.com/KokunoYumeto/openstax-intermediate-algebra-2e-original-en/releases/download/v1.0.0/openstax-intermediate-algebra-2e-original-en-html-v1.0.0.zip', 'HTML ZIP', { bytes:90279762, sha256:'6348f5085bf7e6b7dc01dd62704019b56f2cbf6202849951875aa5398fc20e11', offlineAfterDownload:true }),
+  ],
   A30: [english('OpenStax Precalculus 2e', 'https://openstax.org/books/precalculus-2e/pages/1-introduction-to-functions')],
   B10: [english('Discrete Mathematics: An Open Introduction, 4th edition', 'https://discrete.openmathbooks.org/dmoi4/')],
   B20: [english('CLP-1: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP1/clp_1_dc/index.html')],
