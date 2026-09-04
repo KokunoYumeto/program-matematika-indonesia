@@ -17,6 +17,7 @@ INPUTS = {
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
     'geometry': 'backend/course-capsule-v1/adapters/geometry-capability-v1/publication/GITHUB_READBACK_a2584b9448c9.json',
+    'topology': 'backend/course-capsule-v1/adapters/topology-capability-v1/publication/GITHUB_READBACK_d7141489fe34.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
@@ -44,6 +45,11 @@ assert roles['C100']['learner']['relationship'] == 'directly_consumes_adapter_ou
 assert len(roles['C100']['learner']['tools']) == 2
 assert roles['C100']['educator']['unit_alignment'] == 'verified'
 assert roles['C100']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['C90']['common_adapter']['contract'] == 'topology-learning-capability/1'
+assert roles['C90']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(roles['C90']['learner']['tools']) == 1
+assert roles['C90']['educator']['unit_alignment'] == 'verified'
+assert roles['C90']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production',
               'accessibility', 'learner', 'educator', 'federation', 'interoperability'}
 for row in inputs['capsules']:
@@ -129,6 +135,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('lebl_missing_teacher_readback', 'lebl', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/lebl/C20-pengajar.html'])),
         ('geometry_nonanonymous', 'geometry', lambda value: value.update(anonymous=False)),
         ('geometry_missing_teacher_readback', 'geometry', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/geometry/pengajar.html'])),
+        ('topology_nonanonymous', 'topology', lambda value: value.update(anonymous=False)),
+        ('topology_missing_teacher_readback', 'topology', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/topology/pengajar.html'])),
     ]
     for name, key, mutate in cases:
         altered = copy.deepcopy(inputs[key])
