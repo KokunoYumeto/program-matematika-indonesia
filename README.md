@@ -4,11 +4,13 @@
 
 [Buka peta belajar Bahasa Indonesia](https://kokunoyumeto.github.io/program-matematika-indonesia/id/) · [Open the English learning map](https://kokunoyumeto.github.io/program-matematika-indonesia/en/)
 
-[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22306522/files/peta-belajar-multilingual-v0.63.5.zip?download=1) · [Central DOI record](https://zenodo.org/records/22306522) · [Interface release v0.63.5](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.5)
+[Paket peta luring dwibahasa / bilingual offline maps](https://zenodo.org/records/22306974/files/peta-belajar-multilingual-v0.63.6.zip?download=1) · [Central DOI record](https://zenodo.org/records/22306974) · [Interface release v0.63.6](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.63.6)
 
 Download the bilingual ZIP, extract everything, and open `START-HERE.html`. The paired maps switch between English and Indonesian using local files, including without JavaScript. Keep the extracted folder layout. Separate single-file downloads retain online language buttons. Linked books need separate downloads; use download/restore progress when your browser isolates records between local files. This update also keeps language-switch filters current when an offline browser rejects address-bar updates, without putting learner records in navigation URLs.
 
 Unduh ZIP kedua bahasa, ekstrak seluruh isinya, lalu buka `START-HERE.html`. Tombol bahasa pada peta berpasangan memakai berkas lokal; buku tetap perlu diunduh terpisah. Gunakan unduh/pulihkan catatan jika browser memisahkan kemajuan antarberkas.
+
+Existing reader downloads are now easier to find on both maps. D20 Functional Analysis offers its complete companion HTML and an offline-capable textbook/companion HTML ZIP; extract the whole archive and retain its folders. B10 Discrete Mathematics offers its complete HTML ZIP, explicitly requiring internet for MathJax and online features. These materials are Indonesian; they are not new English translations. The existing primary readers and complete 298-page D20 and 613-page B10 PDFs remain unchanged.
 
 Both interfaces use the same 40-course graph and 83 prerequisite links. Each resource is labeled with its actual language; English original textbooks are not presented as containing the program's Indonesian-original companions. The dated backend/publication snapshots below are historical, not a current translation queue.
 
