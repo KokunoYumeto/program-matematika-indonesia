@@ -38,10 +38,9 @@ SCRIPT_NAMES = (
     "package_d40_capability_v1.py",
 )
 FORBIDDEN_SUFFIXES = {".pdf", ".tex", ".ipynb", ".zip"}
-KNOWN_VERBATIM_ABSOLUTE_PATH_MEMBERS = {
-    "native/composite/qa/mastery/D40_MASTERY_VALIDATION.json"
-}
 ABSOLUTE_PATH_PATTERN = re.compile(rb"(?i)(?<![A-Za-z0-9])[A-Za-z]:[\\/]")
+SANITIZED_NATIVE_MEMBER = "native/composite/qa/mastery/D40_MASTERY_VALIDATION.json"
+SANITIZED_NATIVE_RELATIVE_PATH = "composite/mastery/id-ID"
 
 
 class PacketError(ValueError):
@@ -59,7 +58,7 @@ def safe_member(name: str) -> bool:
 
 def collect_members(
     native: Path,
-) -> tuple[dict[str, bytes], list[dict[str, Any]], list[str]]:
+) -> tuple[dict[str, bytes], list[dict[str, Any]], list[str], list[dict[str, Any]]]:
     if not (ADAPTER / "validation.json").is_file():
         raise PacketError("D40-PACKET-VALIDATION-MISSING")
     members: dict[str, bytes] = {}
@@ -97,7 +96,7 @@ def collect_members(
         if path.is_file()
         and not (
             path.relative_to(ADAPTER).parts
-            and path.relative_to(ADAPTER).parts[0] == "build"
+            and path.relative_to(ADAPTER).parts[0] in {"build", "publication"}
         )
     }
     if actual_adapter != allowed_adapter:
@@ -117,6 +116,97 @@ def collect_members(
             continue
         source = native / item["path"]
         add((Path("native") / item["path"]).as_posix(), source)
+
+    # The native QA receipt contains a historical absolute workstation path.
+    # It is evidence-only and never used for routing, so the portable packet
+    # replaces that one field with its already-recorded relative scope.  The
+    # original immutable identity remains recorded in PACKET_INVENTORY.json.
+    original_native = members[SANITIZED_NATIVE_MEMBER]
+    sanitized_json = json.loads(original_native)
+    if sanitized_json.get("scope") != SANITIZED_NATIVE_RELATIVE_PATH:
+        raise PacketError("D40-PACKET-SANITIZATION-SCOPE-DRIFT")
+    if not ABSOLUTE_PATH_PATTERN.search(str(sanitized_json.get("scope_absolute", "")).encode("utf-8")):
+        raise PacketError("D40-PACKET-SANITIZATION-SOURCE-NOT-ABSOLUTE")
+    sanitized_json["scope_absolute"] = SANITIZED_NATIVE_RELATIVE_PATH
+    sanitized_native = canonical_json(sanitized_json)
+    members[SANITIZED_NATIVE_MEMBER] = sanitized_native
+
+    lock_member = (ADAPTER_REL / "input/source-lock.json").as_posix()
+    packaged_lock = json.loads(members[lock_member])
+    packaged_row = next(
+        item
+        for item in packaged_lock["inputs"]
+        if item["path"] == "composite/qa/mastery/D40_MASTERY_VALIDATION.json"
+    )
+    if packaged_row["bytes"] != len(original_native) or packaged_row["sha256"] != sha256_bytes(original_native):
+        raise PacketError("D40-PACKET-SANITIZATION-LOCK-DRIFT")
+    packaged_row["bytes"] = len(sanitized_native)
+    packaged_row["sha256"] = sha256_bytes(sanitized_native)
+    members[lock_member] = canonical_json(packaged_lock)
+
+    manifest_member = (ADAPTER_REL / "manifest.json").as_posix()
+    packaged_manifest = json.loads(members[manifest_member])
+    packaged_manifest["inputs"] = packaged_lock["inputs"]
+    members[manifest_member] = canonical_json(packaged_manifest)
+    sanitization_rows = [
+        {
+            "member": SANITIZED_NATIVE_MEMBER,
+            "json_field": "scope_absolute",
+            "original_bytes": len(original_native),
+            "original_sha256": sha256_bytes(original_native),
+            "packaged_bytes": len(sanitized_native),
+            "packaged_sha256": sha256_bytes(sanitized_native),
+            "replacement": SANITIZED_NATIVE_RELATIVE_PATH,
+            "routing_use": False,
+            "reason": "remove historical local workstation path from public portable packet",
+        }
+    ]
+
+    # Rebuild the adapter projection against the package-local sanitized lock.
+    # This keeps evidence.json and manifest.json truthful and makes the later
+    # extracted replay byte-identical rather than merely relaxing that gate.
+    with tempfile.TemporaryDirectory(prefix="d40-packet-sanitize-") as temporary:
+        root = Path(temporary)
+        for name, data in members.items():
+            write_bytes(root / PurePosixPath(name), data)
+        staged_adapter = root / ADAPTER_REL
+        staged_native = root / "native"
+        run_checked(
+            [
+                sys.executable,
+                "-B",
+                str(root / "scripts/build_d40_capability_v1.py"),
+                "--native-root",
+                str(staged_native),
+                "--output-root",
+                str(staged_adapter),
+                "--source-lock",
+                str(staged_adapter / "input/source-lock.json"),
+                "--allow-identity-only-public-artifacts",
+            ],
+            root,
+            "D40-PACKET-SANITIZED-BUILD",
+        )
+        run_checked(
+            [
+                sys.executable,
+                "-B",
+                str(root / "scripts/validate_d40_capability_v1.py"),
+                "--native-root",
+                str(staged_native),
+                "--output-root",
+                str(staged_adapter),
+                "--source-lock",
+                str(staged_adapter / "input/source-lock.json"),
+                "--receipt",
+                str(staged_adapter / "validation.json"),
+                "--allow-identity-only-public-artifacts",
+            ],
+            root,
+            "D40-PACKET-SANITIZED-VALIDATION",
+        )
+        for relative in sorted(allowed_adapter, key=lambda item: item.as_posix()):
+            members[(ADAPTER_REL / relative).as_posix()] = (staged_adapter / relative).read_bytes()
 
     start_here = """# D40 thin capability validation packet
 
@@ -139,7 +229,7 @@ anonymous-readback receipts. It is not a full native roundtrip.
     absolute_path_members = sorted(
         name for name, data in members.items() if ABSOLUTE_PATH_PATTERN.search(data)
     )
-    if set(absolute_path_members) != KNOWN_VERBATIM_ABSOLUTE_PATH_MEMBERS:
+    if absolute_path_members:
         raise PacketError(
             "D40-PACKET-ABSOLUTE-PATH-MEMBERS:" + repr(absolute_path_members)
         )
@@ -154,14 +244,8 @@ anonymous-readback receipts. It is not a full native roundtrip.
         "full_native_roundtrip_claimed": False,
         "included_before_inventory": inventory_rows,
         "excluded_public_byte_roles": excluded,
-        "verbatim_native_path_metadata": [
-            {
-                "member": "native/composite/qa/mastery/D40_MASTERY_VALIDATION.json",
-                "json_field": "scope_absolute",
-                "routing_use": False,
-                "reason": "historical source receipt preserved byte-for-byte",
-            }
-        ],
+        "verbatim_native_path_metadata": [],
+        "sanitized_native_path_metadata": sanitization_rows,
         "exclusions": [
             "public PDF bytes",
             "public release ZIP bytes and offline book HTML",
@@ -171,7 +255,7 @@ anonymous-readback receipts. It is not a full native roundtrip.
         ],
     }
     members["PACKET_INVENTORY.json"] = canonical_json(inventory)
-    return members, excluded, absolute_path_members
+    return members, excluded, absolute_path_members, sanitization_rows
 
 
 def zip_bytes(members: dict[str, bytes]) -> bytes:
@@ -298,12 +382,16 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--native-root", type=Path, default=DEFAULT_NATIVE)
     parser.add_argument("--output-root", type=Path, default=DEFAULT_OUTPUT)
+    parser.add_argument(
+        "--allow-identity-only-public-artifacts",
+        action="store_true",
+        help="Allow the two excluded public PDF/ZIP inputs to remain identity-only when rebuilding from a frozen thin packet.",
+    )
     args = parser.parse_args()
     native = args.native_root.resolve()
     output = args.output_root.resolve()
 
-    prevalidation = run_checked(
-        [
+    prevalidation_command = [
             sys.executable,
             "-B",
             str(PROJECT / "scripts/validate_d40_capability_v1.py"),
@@ -315,11 +403,15 @@ def main() -> int:
             str(ADAPTER / "input/source-lock.json"),
             "--receipt",
             str(ADAPTER / "validation.json"),
-        ],
+        ]
+    if args.allow_identity_only_public_artifacts:
+        prevalidation_command.append("--allow-identity-only-public-artifacts")
+    prevalidation = run_checked(
+        prevalidation_command,
         PROJECT,
         "D40-PACKET-PREVALIDATION",
     )
-    members, excluded, absolute_path_members = collect_members(native)
+    members, excluded, absolute_path_members, sanitization_rows = collect_members(native)
     first = zip_bytes(members)
     second = zip_bytes(members)
     if first != second:
@@ -344,6 +436,7 @@ def main() -> int:
         "prevalidation": prevalidation,
         "excluded_public_byte_roles": excluded,
         "verbatim_native_absolute_path_members": absolute_path_members,
+        "sanitized_native_path_metadata": sanitization_rows,
         "locked_inputs_included": len(read_json(ADAPTER / "input/source-lock.json")["inputs"])
         - len(excluded),
         "forbidden_payloads_included": False,
