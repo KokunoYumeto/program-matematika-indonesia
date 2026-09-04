@@ -118,6 +118,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='C100').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='C90').layers.learner.tools[0].href='backend/topology/learning-map.json';},
   c=>{c.find(r=>r.course_id==='C90').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='D80').layers.learner.tools[0].href='backend/d80/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='D80').layers.learner.tools.pop();},
 ]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
 assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,39);
 assert.equal(englishResources.B80.find(r=>r.pages).pages,161);
@@ -163,6 +165,16 @@ for (const locale of supportedLocales) {
   for(const tool of topologyTools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
     if(locale==='id') assert.ok(tool.note.includes('1.227')&&tool.note.includes('4.908'));
+    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+  }
+  const d80Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D80'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(d80Tools.length,1);
+  assert.deepEqual(d80Tools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d80/D80.html',
+  ]);
+  for(const tool of d80Tools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
+    if(locale==='id') assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
     else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
   }
   for(const courseId of ['B80','D50','D70','D80']) {
@@ -330,7 +342,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,17);
+  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,18);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   for(const courseId of ['B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));

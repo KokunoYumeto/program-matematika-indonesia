@@ -38,6 +38,10 @@ const mappings = [
   ['schemas/course-capsule-v1/public-baseline-v1.schema.json', 'docs/schema/course-capsule-v1/public-baseline-v1.schema.json'],
   ['schemas/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'docs/schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json'],
   ['schemas/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', 'docs/schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json'],
+  ['backend/course-capsule-v1/adapters/d80-capability-v1/views/D80.html', 'docs/backend/d80/D80.html'],
+  ['backend/course-capsule-v1/adapters/d80-capability-v1/views/D80-pengajar.html', 'docs/backend/d80/D80-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/d80-capability-v1/data/learning-map.json', 'docs/backend/d80/learning-map.json'],
+  ['backend/course-capsule-v1/adapters/d80-capability-v1/validation.json', 'docs/backend/d80/validation.json'],
   ...(existsSync(resolve(project, successorSidecarSchemaSource)) ? [[successorSidecarSchemaSource, 'docs/schema/v1/learner-reader-actions-v1.schema.json']] : []),
   ...(successorSidecarAvailable ? successorSidecarTargets.map((target) => [successorSidecarSource, target]) : []),
 ];

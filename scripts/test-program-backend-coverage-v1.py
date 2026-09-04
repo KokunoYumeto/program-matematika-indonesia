@@ -50,6 +50,12 @@ assert roles['C90']['learner']['relationship'] == 'directly_consumes_adapter_out
 assert len(roles['C90']['learner']['tools']) == 1
 assert roles['C90']['educator']['unit_alignment'] == 'verified'
 assert roles['C90']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['D80']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['D80']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(roles['D80']['learner']['tools']) == 1
+assert roles['D80']['educator']['unit_alignment'] == 'verified'
+assert roles['D80']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['D80']['common_adapter']['zenodo_preservation'] == 'not_established'
 dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production',
               'accessibility', 'learner', 'educator', 'federation', 'interoperability'}
 for row in inputs['capsules']:

@@ -18,12 +18,16 @@ const read = (path) => readFile(resolve(interfaceRoot, path), 'utf8');
 const css = await read('docs/interface/styles.css');
 const stripExports = (code) => code.replace(/^export (const|function) /gm, '$1 ');
 const stripImports = (code) => code.replace(/^import[\s\S]*?from ['"][^'"]+['"];\r?\n/gm, '');
+const capabilityRuntime = (await read('docs/interface/capability-tools.js'))
+  // The file inventory is build evidence, not runtime state. It remains hashed
+  // in the build receipt but must not consume the bounded offline payload.
+  .replace(/^export const capabilityToolFiles = .*;\r?\n/m, '');
 const sources = [
   // Carry the effective catalog once in the offline payload; native inputs are
   // still hash-bound below. No course source or backend is changed.
   'const authorityCourses = ' + JSON.stringify(interfaceCourses) + ';\nconst topics = ' + JSON.stringify(interfaceTopics) + ';\nconst materializeLiveCourses = rows => rows;',
   await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
-  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), await read('docs/interface/capability-tools.js'), await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
+  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
