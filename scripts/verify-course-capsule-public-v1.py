@@ -75,6 +75,19 @@ PATHS = (
     "id-ID/courses/D40/",
     "peta-belajar-luring.html",
 )
+CLP_SUCCESSOR_PATHS = (
+    "live-course-publications.js",
+    "data/course-capsule-v1/learner-reader-actions-v1.json",
+    "data/modular-backend-pattern-index-v2.1.json",
+    "schema/v1/learner-reader-actions-v1.schema.json",
+    "schema/v2.1/modular-backend-pattern-index-v2.1.schema.json",
+) + tuple("data/clp-successor/v0.62.17/" + name for name in (
+    "v23-adapter-index-v2.json", "feature-adoption-provenance-v1.json",
+    "comparison-evidence-manifest-v1.json", "learner-reader-actions-v1.json",
+    "clp-learner-route-input-v1.json", "evidence/HANDOFF_FILE_INVENTORY.identity.json",
+    "evidence/CLP_PACKAGE_MANIFEST.identity.json", "evidence/CLP_LEARNER_ROUTE_EVIDENCE.identity.json",
+    "evidence/CLP_NATIVE_PROFILE_DESIGN.identity.json",
+))
 DESTINATION = (
     ROOT / "backend/course-capsule-v1/validation/PUBLIC_SITE_READBACK_v0.62.16.json"
 )
@@ -147,7 +160,7 @@ def main() -> None:
     parser.add_argument(
         "--receipt-version",
         default="v0.62.16",
-        choices=("v0.62.13", "v0.62.14", "v0.62.15", "v0.62.16"),
+        choices=("v0.62.13", "v0.62.14", "v0.62.15", "v0.62.16", "v0.62.17"),
     )
     args = parser.parse_args()
     DESTINATION = ROOT / f"backend/course-capsule-v1/validation/PUBLIC_SITE_READBACK_{args.receipt_version}.json"
@@ -155,7 +168,8 @@ def main() -> None:
         ORIGIN = "http://localhost:3000/hub/"
         DESTINATION = ROOT / f"backend/course-capsule-v1/validation/LOCAL_HTTP_READBACK_{args.receipt_version}.json"
     with ThreadPoolExecutor(max_workers=4) as executor:
-        rows = list(executor.map(check, PATHS))
+        paths = PATHS + CLP_SUCCESSOR_PATHS if args.receipt_version == "v0.62.17" else PATHS
+        rows = list(executor.map(check, paths))
     local_rows = json.loads(
         (ROOT / "docs/data/course-capsule-v1/course-capsules.json").read_text("utf-8")
     )
@@ -181,6 +195,7 @@ def main() -> None:
         "no_javascript_cards": 40,
         "published_roles": sum(row["course"]["state"] == "published" for row in local_rows),
         "production_roles": [row["course_id"] for row in local_rows if row["course"]["state"] == "production"],
+        "course_status_scope": "Frozen 2026-09-01 source snapshot; not a current translation task census.",
         "mime_note": "The browser consumes application/json. GitHub Pages exposes the canonical JSONL export as an octet-stream download; its forty records are parsed and byte-verified here.",
         "entries": rows,
     }

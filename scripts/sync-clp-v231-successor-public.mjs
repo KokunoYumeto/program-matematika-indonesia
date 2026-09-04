@@ -241,7 +241,9 @@ function validatePattern(patternBytes, schemaMeta) {
   assert.equal(pattern.locale, 'id-ID', 'successor pattern locale drift');
   assert.equal(pattern.families?.length, 33, 'successor pattern family denominator drift');
   assert.equal(pattern.adapter_snapshot?.role_bindings, 13, 'successor pattern binding count drift');
-  assert.equal(pattern.adapter_snapshot?.pending_role_bindings, 4, 'successor pattern pending count drift');
+  const published = pattern.snapshot?.public_replay_state === 'postpublication_release_assets_readback_complete';
+  assert.equal(pattern.adapter_snapshot?.pending_role_bindings, published ? 0 : 4, 'successor pattern pending count drift');
+  assert.equal(pattern.adapter_snapshot?.published_role_bindings, published ? 13 : 9, 'successor pattern published count drift');
   assert.equal(pattern.adapter_snapshot?.distinct_adapter_packages, 9, 'successor pattern package count drift');
   assert.equal(pattern.snapshot?.central_release_version, successorVersion, 'successor pattern release drift');
   return {
@@ -261,7 +263,19 @@ function validateAdapter(adapterBytes) {
     (row) => row.package_id === clpPackageId,
   );
   assert.ok(clpPackage, 'CLP successor package is missing');
-  assert.equal(clpPackage.admission_state, 'admitted_pending_release', 'CLP package state drift');
+  assert.ok(['admitted_pending_release', 'published'].includes(clpPackage.admission_state), 'CLP package state drift');
+  if (clpPackage.admission_state === 'published') {
+    assert.equal(clpPackage.public_replay_status, 'published_public_asset_readback_verified');
+    assert.equal(clpPackage.release_url, 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.62.17');
+    assert.equal(clpPackage.public_asset_url, 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.62.17/CLP_CALCULUS_FAMILY_V231_ADAPTER_0.1.0.zip');
+    assert.equal(adapter.snapshot.public_replay_state, 'postpublication_release_assets_readback_complete');
+    assert.equal(adapter.snapshot.central_release_record_doi, '10.5281/zenodo.22303203');
+    assert.equal('planned_release' in clpPackage, false);
+  } else {
+    assert.equal(clpPackage.public_replay_status, 'pending_release_local_seal_verified');
+    assert.equal(clpPackage.release_url, null);
+    assert.equal(clpPackage.public_asset_url, null);
+  }
   assert.deepEqual(
     clpPackage.archive,
     { path: clpArchivePath, ...clpArchiveIdentity },
@@ -288,6 +302,7 @@ function validateAdapter(adapterBytes) {
   );
   return {
     package_id: clpPackage.package_id,
+    admission_state: clpPackage.admission_state,
     archive: clpPackage.archive,
     manifest: clpPackage.manifest,
     role_ids: clpAdapters.map((row) => row.role_id).sort(),
@@ -300,7 +315,7 @@ function validateSidecar(sidecarBytes) {
   assert.equal(sidecar.summary?.action_count, 7, 'sidecar action count drift');
   assert.equal(sidecar.summary?.course_count, 4, 'sidecar course count drift');
   assert.equal(sidecar.actions?.length, 7, 'sidecar action array drift');
-  return { action_count: sidecar.actions.length, course_count: sidecar.summary.course_count };
+  return { action_count: sidecar.actions.length, course_count: sidecar.summary.course_count, snapshot_id: sidecar.snapshot_id };
 }
 
 async function readMapping(mapping) {
@@ -329,6 +344,18 @@ async function main() {
   const patternMeta = validatePattern(patternRow.bytes, schemaMeta);
   const adapterMeta = validateAdapter(adapterRow.bytes);
   const sidecarMeta = validateSidecar(sidecarRow.bytes);
+  assert.equal(sidecarMeta.snapshot_id, patternMeta.snapshot_id, 'reader-action snapshot differs from adapter snapshot');
+  if (adapterMeta.admission_state === 'published') {
+    for (const [name, expectedBytes, expectedSha] of [
+      ['GITHUB_PUBLICATION_RECEIPT_v0.62.17.json', 23105, '1a8d3733c1bda0094c9f30ab94cacf2bd67de213038c4a46f2c2f933b74e1f41'],
+      ['ZENODO_PUBLICATION_RECEIPT_v0.62.17.json', 35615, 'b439eef9dcd23b6c39dcf902f04de7e22f30ad1de3189c6c8c50fefe3ec52738'],
+    ]) {
+      const bytes = await readFile(resolve(projectRoot, name));
+      assert.equal(bytes.length, expectedBytes, `${name}: publication receipt size differs`);
+      assert.equal(sha256(bytes), expectedSha, `${name}: publication receipt hash differs`);
+      assert.equal(parseJson(bytes, name).status, 'pass');
+    }
+  }
 
   for (const row of rows) {
     if (row.existing && !row.existing.equals(row.bytes) && !args.allowReplaceSuccessor) {
