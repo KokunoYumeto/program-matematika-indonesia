@@ -10,10 +10,48 @@ import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings
 import { supportedLocales, englishResources, englishBindingExceptions, siteOrigin } from '../docs/interface/locales.js';
 import { verifiedReaderActions, readerActionSource } from '../docs/interface/reader-actions.js';
 import { projectReaderActions, readerActionInput } from './interface-reader-actions.mjs';
+import { finalEditions, finalEditionSource } from '../docs/interface/final-editions.js';
+import { validateFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
+const editionBytes = await readFile(resolve(root, finalEditionInput));
+const editionInput = JSON.parse(editionBytes);
+assert.deepEqual(validateFinalEditions(editionInput, ids), finalEditions);
+assert.equal(finalEditionSource.bytes, editionBytes.length);
+assert.equal(finalEditionSource.sha256, createHash('sha256').update(editionBytes).digest('hex'));
+assert.deepEqual(finalEditions.map(r=>r.courseId), ['A20','A30','B95','C140','D100']);
+const finalResources = finalEditions.flatMap(r=>r.resources);
+assert.equal(finalResources.length,13);
+assert.equal(finalResources.reduce((n,r)=>n+(r.pages??0),0),8259);
+for (const corrupt of [
+  input=>{input.editions[0].courseId='Z999';},
+  input=>{input.editions[0].prerequisites=[];},
+  input=>{input.editions[0].resources[0].contentLanguage='en';},
+  input=>{input.editions[0].resources[0].evidence.actual_sha256='0'.repeat(64);},
+  input=>{input.editions[0].resources[0].href='javascript:alert(1)';},
+  input=>{input.editions[0].resources[0].primary=false;},
+  input=>{input.editions[0].resources[0].pages=-1;},
+]) {const input=structuredClone(editionInput);corrupt(input);assert.throws(()=>validateFinalEditions(input,ids));}
+for (const edition of finalEditions) for(const locale of supportedLocales) {
+  const course=interfaceCourses.find(r=>r.id===edition.courseId);
+  assert.equal(course.state,'published');
+  const bindings=resourceBindings(course,locale);
+  assert.deepEqual(bindings.filter(r=>r.editionResourceId).map(r=>r.editionResourceId),edition.resources.map(r=>r.id));
+  assert.ok(bindings.some(r=>r.href===edition.archive));
+  for(const id of edition.supersededSupplementIds) assert.ok(!bindings.some(r=>r.supplementId===id));
+  for(const old of ['22142022','22184511','22192066','22164344','22164552']) assert.ok(!bindings.some(r=>r.href.includes(old)));
+  for(const row of bindings.filter(r=>r.editionResourceId)) assert.equal(row.contentLanguage,'id');
+}
+for(const locale of supportedLocales) {
+  const stats=resourceBindings(interfaceCourses.find(r=>r.id==='C140'),locale);
+  for(const id of ['random-mathematical-statistics-html','random-mathematical-statistics-pdf','random-mathematical-statistics-doi']) assert.ok(stats.some(r=>r.supplementId===id));
+  const geo=resourceBindings(interfaceCourses.find(r=>r.id==='D100'),locale).filter(r=>r.editionResourceId);
+  assert.equal(geo.length,6); assert.equal(geo.reduce((n,r)=>n+(editionInput.editions[4].resources.find(e=>e.id===r.editionResourceId)?.pages??0),0),975);
+  assert.ok(!resourceBindings(interfaceCourses.find(r=>r.id==='B95'),locale).some(r=>r.href.includes('/id-ID/courses/B95/')));
+  for(const id of ['A20','A30','B95']) assert.ok(!resourceBindings(interfaceCourses.find(r=>r.id===id),locale).some(r=>r.editionResourceId && r.format !== 'PDF'));
+}
 const actionBytes = await readFile(resolve(root, readerActionInput));
 const actionInput = JSON.parse(actionBytes);
 assert.deepEqual(projectReaderActions(actionInput, ids), verifiedReaderActions);
@@ -134,6 +172,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.deepEqual(cardIds, ids, locale + '/' + file + ' static coverage');
   assert.equal([...staticHtml.matchAll(/data-reader-action="([^"]+)"/g)].length, 7, 'Seven verified CLP actions visible in static markup');
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
+  assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,13);
+  for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);
