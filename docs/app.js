@@ -410,3 +410,16 @@ const hashId = location.hash.match(/^#course-([A-D]\d{2,3})$/)?.[1];
 if (hashId && courses.some((course) => course.id === hashId)) {
   requestAnimationFrame(() => document.querySelector(`#course-${hashId}`)?.scrollIntoView({ block: 'center' }));
 }
+
+// Existing root bookmarks remain valid; language links preserve the selected course.
+document.querySelectorAll('[data-interface-locale]').forEach((link) => {
+  const update = () => {
+    const url = new URL(link.dataset.interfaceLocale + '/', location.href);
+    url.search = location.search;
+    url.hash = location.hash;
+    link.href = url.href;
+  };
+  update();
+  window.addEventListener('hashchange', update);
+  link.addEventListener('click', update);
+});
