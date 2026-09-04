@@ -8,10 +8,26 @@ import vm from 'node:vm';
 import { courses as canonicalCourses } from '../docs/courses.js';
 import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, safeResourceUrl } from '../docs/interface/view.js';
 import { supportedLocales, englishResources, englishBindingExceptions, siteOrigin } from '../docs/interface/locales.js';
+import { verifiedReaderActions, readerActionSource } from '../docs/interface/reader-actions.js';
+import { projectReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
+const actionBytes = await readFile(resolve(root, readerActionInput));
+const actionInput = JSON.parse(actionBytes);
+assert.deepEqual(projectReaderActions(actionInput, ids), verifiedReaderActions);
+assert.equal(readerActionSource.bytes, actionBytes.length);
+assert.equal(readerActionSource.sha256, createHash('sha256').update(actionBytes).digest('hex'));
+assert.equal(verifiedReaderActions.length, 7);
+assert.equal(verifiedReaderActions.reduce((sum, action) => sum + action.pages, 0), 4077);
+for (const corrupt of [
+  (input) => { input.actions[0].evidence.status = 'pending'; },
+  (input) => { input.actions[1].action_id = input.actions[0].action_id; },
+  (input) => { input.actions[0].sha256 = 'not-a-hash'; },
+  (input) => { input.actions[0].url = 'javascript:alert(1)'; },
+  (input) => { input.summary.pages += 1; },
+]) { const changed = structuredClone(actionInput); corrupt(changed); assert.throws(() => projectReaderActions(changed, ids)); }
 assert.equal(ids.length, 40);
 assert.equal(new Set(ids).size, 40);
 assert.equal(canonicalCourses.reduce((n, c) => n + c.prerequisites.length, 0), 83);
@@ -31,6 +47,15 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
   assert.ok(copy.title && copy.purpose && copy.outcome && copy.topic, course.id + ' copy ' + locale);
   const bindings = resourceBindings(course, locale);
   assert.ok(bindings.length);
+  assert.equal(new Set(bindings.map((row) => row.href)).size, bindings.length, 'No duplicate resource URL');
+  const projected = bindings.filter((row) => row.actionId);
+  const expected = verifiedReaderActions.filter((row) => row.courseId === course.id);
+  assert.deepEqual(projected.map((row) => row.actionId), expected.map((row) => row.actionId));
+  for (const row of projected) {
+    assert.equal(row.contentLanguage, 'id', 'Interface language does not translate a book');
+    assert.ok(row.label.endsWith(locale === 'id' ? ' halaman' : ' pages'), 'Localized reader labels');
+    assert.ok(row.offlineAfterDownload);
+  }
   for (const row of bindings) {
     assert.ok(['en', 'id', 'und'].includes(row.contentLanguage));
     assert.equal(new URL(row.href).protocol, 'https:');
@@ -74,7 +99,7 @@ function executeOffline(html, locale, sharedStorage = new Map(), options = {}) {
   };
   const fakeStorage = {
     getItem: (key) => sharedStorage.get(key) ?? null,
-    setItem: (key, value) => sharedStorage.set(key, value),
+    setItem: (key, value) => { if (options.failWrites) throw new Error('Quota exceeded'); sharedStorage.set(key, value); },
     removeItem: (key) => sharedStorage.delete(key),
   };
   const win = { localStorage: fakeStorage, confirm: () => true, addEventListener: (type, fn) => windowEvents.set(type, fn) };
@@ -92,7 +117,7 @@ function executeOffline(html, locale, sharedStorage = new Map(), options = {}) {
   assert.ok(code, 'Offline inline script');
   new vm.Script(code, { filename: locale + '-offline.js' }).runInContext(context, { timeout: 5000 });
   assert.ok(classNames.has('js'), 'Initialization completed');
-  return { doc, nodes, documentEvents, windowEvents, localeLinks, historyRows, sharedStorage, context, address: () => address };
+  return { doc, nodes, documentEvents, windowEvents, localeLinks, historyRows, sharedStorage, fakeStorage, context, address: () => address };
 }
 const sizes = [];
 const receipt = JSON.parse(await readFile(resolve(root, 'docs/interface/build-receipt.json'), 'utf8'));
@@ -107,6 +132,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   const staticHtml = html.replace(/<script[\s\S]*?<\/script>/g, '');
   const cardIds = [...staticHtml.matchAll(/<article class="course-card" id="course-([^"]+)"/g)].map((m) => m[1]);
   assert.deepEqual(cardIds, ids, locale + '/' + file + ' static coverage');
+  assert.equal([...staticHtml.matchAll(/data-reader-action="([^"]+)"/g)].length, 7, 'Seven verified CLP actions visible in static markup');
+  for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);
@@ -162,6 +189,20 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     next.documentEvents.get('change')({ target: { matches: () => true, dataset: { completion: 'A00' }, checked: true } });
     assert.equal(next.nodes.get('#result-count').focused, true, 'Completing an eligible card restores focus to results');
     executeOffline(html, locale, new Map(), { noStorage: true, url: 'file:///tmp/learning-map.html' });
+    const quota = executeOffline(html, locale, new Map(), { failWrites: true, url: 'https://example.test/' + locale + '/' });
+    quota.documentEvents.get('change')({ target: { matches: () => true, dataset: { completion: 'A00' }, checked: true } });
+    for (const event of [{ key: 'unrelated-preference', storageArea: quota.fakeStorage }, { key: LEARNER_STATE_STORAGE_KEY, storageArea: quota.fakeStorage }, { key: null, storageArea: quota.fakeStorage }]) {
+      quota.windowEvents.get('storage')(event);
+      assert.ok(quota.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'), 'Failed-write progress survives cross-tab events');
+    }
+    const sync = executeOffline(html, locale, new Map(), { url: 'https://example.test/' + locale + '/' });
+    sync.sharedStorage.set(LEARNER_STATE_STORAGE_KEY, JSON.stringify(setCourseCompletion(createEmptyLearnerState(), canonicalCourses, 'A00', true)));
+    sync.windowEvents.get('storage')({ key: 'unrelated-preference', storageArea: sync.fakeStorage });
+    assert.ok(!sync.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'));
+    sync.windowEvents.get('storage')({ key: LEARNER_STATE_STORAGE_KEY, storageArea: {} });
+    assert.ok(!sync.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'));
+    sync.windowEvents.get('storage')({ key: LEARNER_STATE_STORAGE_KEY, storageArea: sync.fakeStorage });
+    assert.ok(sync.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'), 'Matching persisted progress event still synchronizes');
   }
 }
 console.log(JSON.stringify({ status: 'pass', courses: ids.length, edges: 83, locales: supportedLocales, tests: ['graph-identity','explicit-language-bindings','static-40-course-catalogs','all-internal-fragments','safe-https-links','offline-script-execution','search-and-reset','course-history','shared-progress','storage-unavailable','receipt-hashes'], sizes }));

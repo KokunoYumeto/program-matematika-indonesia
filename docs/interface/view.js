@@ -3,6 +3,7 @@ import { materializeLiveCourses } from '../live-course-publications.js';
 import { learnerDeliveryByCourseId } from '../learner-delivery.js';
 import { learnerToolsByCourseId } from '../learner-tools.js';
 import { interfaceCopy, topicCopy, englishCourseCopy, englishResources, siteOrigin } from './locales.js';
+import { verifiedReaderActions } from './reader-actions.js';
 
 export const interfaceCourses = materializeLiveCourses(authorityCourses);
 // Reject any publication overlay that changes the authority graph.
@@ -33,16 +34,31 @@ export function resourceBindings(course, locale) {
   const t = interfaceCopy[locale];
   const rows = [];
   const add = (label, href, contentLanguage, kind = 'link', extra = {}) => {
-    if (href) rows.push({ label, labelLanguage: locale, href: safeResourceUrl(href), contentLanguage, kind, ...extra });
+    if (href && !rows.some((row) => row.href === safeResourceUrl(href))) rows.push({ label, labelLanguage: locale, href: safeResourceUrl(href), contentLanguage, kind, ...extra });
   };
   if (locale === 'en') for (const row of englishResources[course.id] ?? []) {
     add(row.label, row.href, row.contentLanguage, row.kind, { origin: row.origin, primary: rows.length === 0 });
   }
   const idPrefix = locale === 'en' ? 'Bahasa Indonesia — ' : '';
+  const actions = verifiedReaderActions.filter((action) => action.courseId === course.id);
+  const actionNames = locale === 'id'
+    ? { textbook: 'Buku teks', problembook: 'Buku soal dan penyelesaian', combined_textbook_problembook: 'Buku gabungan teks dan soal' }
+    : { textbook: 'Textbook', problembook: 'Problems and solutions', combined_textbook_problembook: 'Combined textbook and problems' };
+  for (const action of actions) {
+    const { label: sourceLabel, ...metadata } = action;
+    add(idPrefix + actionNames[action.role] + ' — ' + action.pages + (locale === 'id' ? ' halaman' : ' pages'), action.href, 'id', action.role === 'problembook' ? 'companion' : 'reader',
+      { ...metadata, labelLanguage: locale, primary: locale === 'id' && action.surfaceRole === 'default_primary' });
+  }
   const primary = course.learner ?? course.reader ?? course.edition;
-  add(idPrefix + t.open, primary, 'id', 'reader', { primary: locale === 'id' });
-  if (course.edition !== primary) add(idPrefix + t.download, course.edition, 'id', 'edition');
-  if (course.reader !== primary && course.reader !== course.edition) add(idPrefix + t.open, course.reader, 'id', 'reader');
+  if (!actions.length) {
+    add(idPrefix + t.open, primary, 'id', 'reader', { primary: locale === 'id' });
+    if (course.edition !== primary) add(idPrefix + t.download, course.edition, 'id', 'edition');
+    if (course.reader !== primary && course.reader !== course.edition) add(idPrefix + t.open, course.reader, 'id', 'reader');
+  } else {
+    // The admitted whole-file reader actions supersede dated PDF overlay URLs.
+    // Retain a distinct native HTML entry when one exists.
+    for (const href of [course.learner, course.reader]) if (href && !/\.pdf$/i.test(new URL(safeResourceUrl(href)).pathname)) add(idPrefix + t.open, href, 'id', 'reader');
+  }
   for (const tool of learnerToolsByCourseId[course.id] ?? []) {
     if (tool.state !== 'planned') add(tool.label, tool.href, 'id', 'tool', { labelLanguage: 'id' });
   }
@@ -52,7 +68,9 @@ export function resourceBindings(course, locale) {
     if (item?.status === 'verified') add(idPrefix + t.download + ' ' + name, item.url, 'id', field, { bytes: item.bytes });
   }
   for (const supplement of course.supplements ?? []) {
-    add(supplement.title, supplement.url, 'id', 'companion', { labelLanguage: 'id', supplementId: supplement.id, sha256: supplement.sha256 ?? null });
+    if (actions.some((action) => action.href === supplement.url || action.sha256 === supplement.sha256)) continue;
+    const machineArchive = supplement.resourceType === 'reference' && /(?:backend|sumber)/i.test(supplement.title) && !/HTML|pembaca|paket lengkap/i.test(supplement.title);
+    add(supplement.title, supplement.url, 'id', machineArchive ? 'source-archive' : 'companion', { labelLanguage: 'id', supplementId: supplement.id, sha256: supplement.sha256 ?? null });
   }
   add(t.archive + (locale === 'en' ? ' — Indonesian edition' : ''), course.zenodo, 'id', 'archive');
   add(t.source + (locale === 'en' ? ' — Indonesian edition' : ''), course.repository, 'id', 'repository');
@@ -63,12 +81,13 @@ export function resourceBindings(course, locale) {
 export function renderResourceLinks(course, locale) {
   const t = interfaceCopy[locale];
   const rows = resourceBindings(course, locale);
-  const preferred = rows.filter((row) => row.contentLanguage === locale && !['repository', 'archive'].includes(row.kind));
+  const preferred = rows.filter((row) => row.contentLanguage === locale && !['repository', 'archive', 'source-archive'].includes(row.kind));
   const other = rows.filter((row) => !preferred.includes(row));
   const link = (row) => '<a class="resource-link' + (row.primary ? ' primary' : '') + '" href="' + escapeMarkup(row.href)
     + '" data-content-language="' + row.contentLanguage + '" hreflang="' + row.contentLanguage
-    + '"><span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.kind)
-    + ' · <span lang="' + (row.contentLanguage === 'und' ? locale : row.contentLanguage) + '">' + (row.contentLanguage === 'id' ? 'Bahasa Indonesia' : row.contentLanguage === 'en' ? 'English' : locale === 'id' ? 'metadata bersama' : 'shared metadata') + '</span></small></a>';
+    + '"' + (row.actionId ? ' data-reader-action="' + escapeMarkup(row.actionId) + '"' : '') + '><span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.actionId ? 'PDF' : row.kind)
+    + ' · <span lang="' + (row.contentLanguage === 'und' ? locale : row.contentLanguage) + '">' + (row.contentLanguage === 'id' ? 'Bahasa Indonesia' : row.contentLanguage === 'en' ? 'English' : locale === 'id' ? 'metadata bersama' : 'shared metadata') + '</span>'
+    + (row.offlineAfterDownload ? ' · ' + (locale === 'id' ? 'Luring setelah diunduh' : 'Offline after download') : '') + '</small></a>';
   return (preferred.length ? preferred.map(link).join('') : '<p class="binding-note">' + escapeMarkup(t.noPrimary) + '</p>')
     + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(locale === 'en' ? t.otherLanguage + ' / ' + t.sharedBackend : t.companion + ' / ' + t.source)
       + '</summary><div class="resource-list">' + other.map(link).join('') + '</div></details>' : '');

@@ -1,6 +1,6 @@
 import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, escapeMarkup } from './view.js';
 import { interfaceCopy, fillCopy } from './locales.js';
-import { createEmptyLearnerState, loadLearnerState, saveLearnerState, clearLearnerState, normalizeLearnerState, serializeLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver } from '../learner-state.js';
+import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, loadLearnerState, saveLearnerState, clearLearnerState, normalizeLearnerState, serializeLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver } from '../learner-state.js';
 
 const interfaceLocale = document.documentElement.lang;
 const ui = interfaceCopy[interfaceLocale];
@@ -9,6 +9,7 @@ let storage = null;
 try { storage = window.localStorage; } catch { /* Private browsing or file: restrictions. */ }
 const loaded = loadLearnerState(storage, interfaceCourses);
 let record = loaded.state, evaluated = evaluateLearnerState(interfaceCourses, record);
+let unpersistedChanges = false;
 const normalizeSearch = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase(interfaceLocale);
 
 function updateLanguageLinks() {
@@ -80,6 +81,7 @@ function renderInterface() {
 }
 function saveRecord(next) {
   const saved = saveLearnerState(storage, next, interfaceCourses);
+  unpersistedChanges = !saved.persisted;
   record = saved.state; evaluated = evaluateLearnerState(interfaceCourses, record);
   $('#storage-message').textContent = saved.persisted ? ui.saved : ui.noStorage;
   renderInterface();
@@ -147,7 +149,11 @@ $('#import-progress').addEventListener('change', async (event) => {
 });
 window.addEventListener('hashchange', () => { restoreCourseFragment(true); updateLanguageLinks(); });
 window.addEventListener('popstate', () => { restoreFilters(); renderInterface(); restoreCourseFragment(); updateLanguageLinks(); });
-window.addEventListener('storage', () => {
+window.addEventListener('storage', (event) => {
+  if (!storage || event.storageArea !== storage || (event.key !== null && event.key !== LEARNER_STATE_STORAGE_KEY)) return;
+  // Failed writes leave an intentionally usable in-memory record. Another tab
+  // must not silently discard that record; export remains available to save it.
+  if (unpersistedChanges) return;
   const fresh = loadLearnerState(storage, interfaceCourses); record = fresh.state;
   evaluated = evaluateLearnerState(interfaceCourses, record); renderInterface();
 });

@@ -6,6 +6,10 @@ This interface reads the existing `courses.js`, live publication overlay, delive
 
 One graph: 40 course IDs, 83 prerequisite edges. Locale copy cannot change them. Both routes and both offline maps use the same renderer. Static cards stay available when JavaScript is missing or initialization fails. Local progress is shared between languages on the same origin; export/import supports moving records between origins, devices, and offline files.
 
+The integrated `learner-reader-actions-v1.json` is also consumed at build time without changing it. Its seven receipt-bound CLP PDF actions (4,077 pages) take precedence over dated catalog PDF links. Reader labels are localized, while the actual books stay labeled Indonesian. Whole-file links do not imply chapter anchors or native HTML. Verified self-contained PDFs are labeled usable offline after a separate download. Source/backend archives remain secondary to reader actions. The projection's source hash and all action hashes are included in the interface build receipt.
+
+Cross-tab progress synchronization responds only to this application's local-storage key. If a write fails, in-memory progress is retained rather than discarded by another tab's storage event; export remains available.
+
 ## Build boundaries
 
 `pnpm build` validates the already-admitted learner projection and interface, creates static/offline pages, synchronizes the hosted mirror, and compiles the site. `pnpm build:interface` runs only the bounded multilingual generation and unit tests.
