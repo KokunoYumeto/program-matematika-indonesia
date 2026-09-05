@@ -116,7 +116,12 @@ for (const path of [
 const publicationState = await load('docs/backend/b80/publication-state.json');
 assert.equal(publicationState.current_central_adapter_status, 'public_github_verified');
 assert.equal(publicationState.current_english_source_edition_status, 'public_github_verified');
-assert.equal(publicationState.current_english_shared_projection_status, 'locally_verified_pending_this_increment_publication');
+assert.equal(publicationState.current_english_shared_projection_status, 'public_github_pages_verified');
+assert.equal(publicationState.english_shared_projection.source_commit, '580e95d8ec392163d4bf5dbcd69b2a60c4b39ae3');
+assert.equal(publicationState.english_shared_projection.github_source_and_pages_verified, true);
+assert.equal(publicationState.english_shared_projection.verified_files, 85);
+assert.equal(second.validation.B80.english_shared_projection_public_github_verified, true);
+assert.equal(second.validation.D120.english_shared_projection_public_github_verified, true);
 assert.equal(publicationState.overall_program_backend_complete, false);
 assert.deepEqual(publicationState, await load('docs/backend/b80-en/publication-state.json'));
 

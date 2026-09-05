@@ -330,6 +330,29 @@ export async function buildOriginalIndonesianBilingual() {
     assert.deepEqual(pick(publicRow, ['bytes', 'sha256']), pick(output, ['bytes', 'sha256']));
     assert.equal(publicRow.http_status, 200);
   }
+  const bilingualReadbackPath = `${base}/publication/GITHUB_READBACK_580e95d8ec39.json`;
+  const bilingualReadback = await readJson(bilingualReadbackPath);
+  assert.equal(bilingualReadback.schema, 'original-indonesian-bilingual-public-readback/1');
+  assert.equal(bilingualReadback.state, 'pass');
+  assert.equal(bilingualReadback.source_commit, '580e95d8ec392163d4bf5dbcd69b2a60c4b39ae3');
+  assert.equal(bilingualReadback.base_commit, '5c33f7cecee2c185f8473fb2bd5258eae02b13c1');
+  assert.equal(bilingualReadback.anonymous, true);
+  assert.equal(bilingualReadback.credentials_used, false);
+  assert.equal(bilingualReadback.expected_files, 85);
+  assert.equal(bilingualReadback.verified_files, 85);
+  assert.deepEqual(bilingualReadback.failures, []);
+  assert.equal(bilingualReadback.overall_program_backend_complete, false);
+  const bilingualPagePaths = [
+    'docs/backend/b80-en/B80.html',
+    'docs/backend/b80-en/B80-educator.html',
+    'docs/backend/d120-en/D120.html',
+    'docs/backend/d120-en/D120-educator.html',
+  ];
+  for (const path of bilingualPagePaths) {
+    const row = bilingualReadback.files.find(candidate => candidate.surface === 'pages' && candidate.path === path);
+    assert.ok(row, `Bilingual public receipt omitted ${path}`);
+    assert.equal(row.http_status, 200);
+  }
   const b80PublicationState = {
     schema: 'b80-current-publication-state/1', course_id: 'B80',
     current_central_adapter_status: 'public_github_verified',
@@ -348,7 +371,16 @@ export async function buildOriginalIndonesianBilingual() {
       anonymous_publication_receipt: await fact(`${base}/input/b80/github-publication.json`),
     },
     status_interpretation: 'The older manifest and validation fields are historical pre-publication statements. This current record is derived from the later immutable anonymous public readback and does not rewrite that historical evidence.',
-    current_english_shared_projection_status: 'locally_verified_pending_this_increment_publication',
+    current_english_shared_projection_status: 'public_github_pages_verified',
+    english_shared_projection: {
+      courses: ['B80', 'D120'],
+      source_commit: bilingualReadback.source_commit,
+      base_commit: bilingualReadback.base_commit,
+      readback: await fact(bilingualReadbackPath),
+      github_source_and_pages_verified: true,
+      verified_files: bilingualReadback.verified_files,
+      public_pages: bilingualPagePaths,
+    },
     overall_program_backend_complete: false,
   };
 
@@ -398,13 +430,15 @@ export async function buildOriginalIndonesianBilingual() {
     schema: 'original-indonesian-bilingual-validation/1', state: 'pass',
     policy: sourceLock.policy,
     source_lock: await fact(sourceLockPath),
-    B80: {...b80.counts, stable_identity_parity: true, public_pages: 14, public_anchor_binding: true, central_adapter_public_github_verified: true, english_source_edition_public_github_verified: true},
+    public_readback: await fact(bilingualReadbackPath),
+    B80: {...b80.counts, stable_identity_parity: true, public_pages: 14, public_anchor_binding: true, central_adapter_public_github_verified: true, english_source_edition_public_github_verified: true, english_shared_projection_public_github_verified: true},
     D120: {
       units: 9, exercises: 54, guidance_records: 54, learning_outcomes: 71,
       assessments: 14, criteria: 79, semantic_localizations_available: 581,
       core_localizations_available: 147, access_locators_available: 529,
       localized_fields_used: d120.localizedFields, learner_access_bindings_used: d120.accessBindings,
       stable_identity_parity: true,
+      english_shared_projection_public_github_verified: true,
     },
     outputs: generatedFacts,
     duplicate_course_identities_created: 0,
@@ -435,7 +469,7 @@ export async function buildOriginalIndonesianBilingual() {
     schema: 'original-indonesian-bilingual-manifest/1', state: 'verified',
     course_ids: ['B80', 'D120'], locales: ['id-ID', 'en'],
     policy: sourceLock.policy,
-    inputs: [await fact(sourceLockPath), ...sourceLock.inputs, ...sourceLock.central_inputs],
+    inputs: [await fact(sourceLockPath), ...sourceLock.inputs, ...sourceLock.central_inputs, await fact(bilingualReadbackPath)],
     outputs: [...generatedFacts, ...validationFacts],
     tools,
     counts: {courses_localized: 2, english_learner_views: 2, english_educator_views: 2, interface_tools: 4},
