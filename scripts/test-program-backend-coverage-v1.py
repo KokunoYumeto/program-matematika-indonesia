@@ -22,6 +22,7 @@ INPUTS = {
     'd70': 'backend/course-capsule-v1/adapters/d70-capability-v1/publication/GITHUB_READBACK_2ce9fbb5dacd.json',
     'd80': 'backend/course-capsule-v1/adapters/d80-capability-v1/publication/GITHUB_READBACK_b22cd627901c.json',
     'd100': 'backend/course-capsule-v1/adapters/d100-capability-v1/publication/GITHUB_READBACK_9b9480ff5b2c.json',
+    'd120': 'backend/course-capsule-v1/adapters/d120-capability-v1/publication/GITHUB_READBACK_a42650f4815a.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
@@ -81,6 +82,15 @@ assert len(roles['D100']['learner']['tools']) == 1
 assert roles['D100']['educator']['unit_alignment'] == 'verified'
 assert roles['D100']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['D100']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['D120']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['D120']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(roles['D120']['learner']['tools']) == 1
+assert roles['D120']['educator']['unit_alignment'] == 'verified'
+assert roles['D120']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['D120']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['D120']['dimensions']['source_translation_ledger']['ledger'] == 'not_applicable'
+assert roles['D120']['dimensions']['reproducible_production']['build'] == 'verified'
+assert roles['D120']['dimensions']['reproducible_production']['replay'] == 'verified'
 dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production',
               'accessibility', 'learner', 'educator', 'federation', 'interoperability'}
 for row in inputs['capsules']:
@@ -176,6 +186,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d80_missing_teacher_readback', 'd80', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d80/D80-pengajar.html'])),
         ('d100_nonanonymous', 'd100', lambda value: value.update(anonymous=False)),
         ('d100_missing_teacher_readback', 'd100', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d100/D100-pengajar.html'])),
+        ('d120_nonanonymous', 'd120', lambda value: value.update(anonymous=False)),
+        ('d120_missing_teacher_readback', 'd120', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d120/D120-pengajar.html'])),
     ]
     for name, key, mutate in cases:
         altered = copy.deepcopy(inputs[key])
