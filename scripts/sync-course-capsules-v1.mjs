@@ -46,6 +46,11 @@ const mappings = [
   ['backend/course-capsule-v1/adapters/d100-capability-v1/views/D100-pengajar.html', 'docs/backend/d100/D100-pengajar.html'],
   ['backend/course-capsule-v1/adapters/d100-capability-v1/data/learning-map.json', 'docs/backend/d100/learning-map.json'],
   ['backend/course-capsule-v1/adapters/d100-capability-v1/validation.json', 'docs/backend/d100/validation.json'],
+  ['backend/course-capsule-v1/adapters/d120-capability-v1/views/D120.html', 'docs/backend/d120/D120.html'],
+  ['backend/course-capsule-v1/adapters/d120-capability-v1/views/D120-pengajar.html', 'docs/backend/d120/D120-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/d120-capability-v1/data/learning-map.json', 'docs/backend/d120/learning-map.json'],
+  ['backend/course-capsule-v1/adapters/d120-capability-v1/data/educator-map.json', 'docs/backend/d120/educator-map.json'],
+  ['backend/course-capsule-v1/adapters/d120-capability-v1/validation.json', 'docs/backend/d120/validation.json'],
   ...(existsSync(resolve(project, successorSidecarSchemaSource)) ? [[successorSidecarSchemaSource, 'docs/schema/v1/learner-reader-actions-v1.schema.json']] : []),
   ...(successorSidecarAvailable ? successorSidecarTargets.map((target) => [successorSidecarSource, target]) : []),
 ];
