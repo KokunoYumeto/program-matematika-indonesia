@@ -496,12 +496,13 @@ export const liveCoursePublications = Object.freeze({
   }),
   D10: publication({
     state: 'published',
+    reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D10/reader/',
     edition: 'https://zenodo.org/records/22181780/files/00_READ_FIRST_FONDASI_TEORI_UKURAN_JILID_1_DAN_2_LENGKAP.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22181780',
     repository: 'https://github.com/KokunoYumeto/fremlin-measure-theory-id',
     release: 'https://github.com/KokunoYumeto/fremlin-measure-theory-id/releases/tag/v1.0.0',
     version: 'v1.0.0',
-    note: 'O007 / Fondasi Teori Ukuran telah selesai dan terbuka: 672/672 halaman sumber resmi (Jilid I 102 + Jilid II 570), pembaca reflow 715 halaman, backend lengkap, dan pembaca HTML luring. GitHub dan Zenodo sama-sama mengembalikan tiga aset publik dengan byte dan checksum yang cocok.',
+    note: 'O007 / Fondasi Teori Ukuran telah selesai dan terbuka: 672/672 halaman sumber resmi (Jilid I 102 + Jilid II 570), pembaca reflow 715 halaman, backend lengkap, serta pembaca HTML daring dan luring. GitHub dan Zenodo sama-sama mengembalikan tiga aset publik dengan byte dan checksum yang cocok.',
     progress: {
       unitLabel: 'halaman sumber resmi',
       totalUnits: 672,
@@ -512,7 +513,7 @@ export const liveCoursePublications = Object.freeze({
       totalPages: 672,
       publicPages: 715,
       publicBoundary: '672/672 halaman resmi; Jilid I–II lengkap',
-      updatedAt: '2026-08-31',
+      updatedAt: '2026-09-05',
     },
   }),
   D20: publication({

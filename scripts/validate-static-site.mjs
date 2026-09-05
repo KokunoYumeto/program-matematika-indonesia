@@ -1092,7 +1092,7 @@ assert.equal(learnerDelivery.summary.course_count, learnerDelivery.courses.lengt
 assert.equal(learnerDelivery.summary.online_html_available, learnerDelivery.courses.filter(({ online_html }) => online_html.status !== 'absent').length);
 assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').length);
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
-assert.equal(learnerDelivery.summary.online_html_available, 23);
+assert.equal(learnerDelivery.summary.online_html_available, 24);
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
 assert.equal(learnerDelivery.summary.verified_epub, 1);
 assert.deepEqual(
@@ -1102,6 +1102,15 @@ assert.deepEqual(
 assert.equal(deliveryById.get('C100').portable_html.sha256, 'ee26d6e1228b7b66ca7ea156081c673dd1c8ab8b3488d87f7ee35cc354c091ae');
 assert.equal(deliveryById.get('C100').epub.sha256, '5eb6773cc036015e8eb9e6f1791c6ec2f2b83812f43c8340c66aaafd91b12d99');
 assert.equal(deliveryById.get('D10').portable_html.sha256, 'a0333dca723085e93d472b945a03758b133b05cbe5be3022133088e5c1f5ab00');
+const d10Delivery = deliveryById.get('D10');
+assert.equal(d10Delivery.online_html.status, 'available_unverified');
+assert.equal(d10Delivery.online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D10/reader/');
+assert.equal(d10Delivery.online_html.bytes, 8571);
+assert.equal(d10Delivery.online_html.sha256, '22ad13ef45160fa6bb964d600811b5141a6bcf8d23aac86790ddf652baca6737');
+assert.equal(d10Delivery.online_html.entry_point, 'index.html');
+assert.equal(d10Delivery.online_html.inventory_count, 138);
+assert.equal(d10Delivery.online_html.scope, 'whole_course');
+assert.equal(d10Delivery.online_html.dependency_free, true);
 assert.equal(deliveryById.get('D30').pdf.sha256, 'dda34267df928672e03e04b4c8a36d768aab2d33bc1194b269074da0d2d24e40');
 assert.equal(deliveryById.get('D30').portable_html.sha256, 'e32dba5a896fb847192bbe944e7fd3db4d95f61ee57e33751bbff3108fca214a');
 assert.equal(deliveryById.get('D30').portable_html.entry_point, 'reader/index.html');
@@ -1169,7 +1178,47 @@ for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-co
   ]);
   assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror Sites berbeda dari docs.`);
 }
+for (const name of [
+  'id-ID/courses/D10/D10_READER_MIRROR_MANIFEST_V1.json',
+  'id-ID/courses/D10/D10_READER_MIRROR_RECEIPT_V1.json',
+  'id-ID/courses/D10/README.md',
+  'id-ID/courses/D10/RIGHTS_AND_ATTRIBUTION.md',
+  'id-ID/courses/D10/licenses/CC0-1.0.txt',
+  'id-ID/courses/D10/licenses/Design-Science-License.txt',
+  'id-ID/courses/D10/licenses/MathJax-3.2.2-Apache-2.0.txt',
+]) {
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', name)),
+    readFile(resolve(root, 'public/hub', name)),
+  ]);
+  assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror Sites berbeda dari docs.`);
+}
+const d10MirrorManifest = await readJson('docs/id-ID/courses/D10/D10_READER_MIRROR_MANIFEST_V1.json');
+assert.equal(d10MirrorManifest.schema, 'd10-reader-mirror-manifest-v1');
+assert.equal(d10MirrorManifest.course_id, 'D10');
+assert.equal(d10MirrorManifest.reader.file_count, 138);
+assert.equal(d10MirrorManifest.reader.files.length, 138);
+assert.equal(d10MirrorManifest.reader.bytes, 15_166_155);
+assert.equal(d10MirrorManifest.reader.aggregate_sha256, '2af22c4a76c88ed0b8fe1f01e817f42e7354fb5b02c8c954c5a1731fac98ef53');
+let d10MirrorBytes = 0;
+const d10MirrorAggregate = createHash('sha256');
+for (const row of d10MirrorManifest.reader.files) {
+  assert.ok(!row.path.includes('\\') && !row.path.split('/').includes('..') && !row.path.startsWith('/'), `D10: jalur tidak aman ${row.path}`);
+  const logical = `id-ID/courses/D10/reader/${row.path}`;
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', logical)),
+    readFile(resolve(root, 'public/hub', logical)),
+  ]);
+  assert.equal(docsBytes.length, row.bytes, `${logical}: byte manifest berbeda.`);
+  assert.equal(sha256(docsBytes), row.sha256, `${logical}: hash manifest berbeda.`);
+  assert.deepEqual(hostedBytes, docsBytes, `${logical}: mirror Sites berbeda dari docs.`);
+  d10MirrorBytes += row.bytes;
+  d10MirrorAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
+}
+assert.equal(d10MirrorBytes, d10MirrorManifest.reader.bytes);
+assert.equal(d10MirrorAggregate.digest('hex'), d10MirrorManifest.reader.aggregate_sha256);
 assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
+assert.match(livePublicationsModule, /id-ID\/courses\/D10\/reader\//);
 assert.match(livePublicationsModule, /22192066/);
 assert.match(livePublicationsModule, /22161412/);
 assert.match(livePublicationsModule, /22184259/);
