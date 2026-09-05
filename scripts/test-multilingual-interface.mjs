@@ -204,6 +204,7 @@ assert.ok(!englishBindingExceptions.D70 && !englishBindingExceptions.D80);
 assert.ok(!englishBindingExceptions.D100);
 assert.equal(englishResources.D100[0].kind,'HTML');
 assert.equal(englishResources.D100[0].href,'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/');
+assert.ok(englishResources.D100.some(r=>r.kind==='archive' && r.href==='https://doi.org/10.5281/zenodo.22340270'));
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>r.pages),[504,381,89]);
 assert.equal(englishResources.D100.filter(r=>r.pages).reduce((n,r)=>n+r.pages,0),974);
 assert.deepEqual(englishResources.D100.filter(r=>r.sha256).map(r=>[r.bytes,r.sha256]),[

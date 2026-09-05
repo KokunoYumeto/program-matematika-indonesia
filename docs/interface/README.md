@@ -10,7 +10,7 @@ The integrated `learner-reader-actions-v1.json` is also consumed at build time w
 
 The interface-only `final-editions.json` refreshes A10, A20, A30, B95, C140 and D100 from completed-edition evidence. All 14 linked reader files/entries were anonymously streamed and SHA-256 verified (938,805,819 bytes; eight PDFs totaling 9,886 edition pages). It preserves C140's independent Random supplements and exposes its completed C5 companion; D100 exposes both complete source courses plus the editorial bridge. Only named obsolete checkpoint links are suppressed. Current source/backend downloads remain available through each final edition archive. The older catalog and all backend artifacts remain unchanged; this is a link/presentation correction, not a new translation or backend admission.
 
-No HTML textbook is invented for A20, A30 or B95. D100 now exposes its complete program-hosted English HTML edition; its PDF and packaged HTML downloads remain separate offline-oriented actions. The C140 companion's separately verified offline package is labeled accordingly.
+No HTML textbook is invented for A20, A30 or B95. D100 now exposes its complete program-hosted English HTML edition; its PDF and packaged HTML downloads remain separate offline-oriented actions, and the complete 974-page English edition is preserved in Zenodo record 22340270. The C140 companion's separately verified offline package is labeled accordingly.
 
 Cross-tab progress synchronization responds only to this application's local-storage key. If a write fails, in-memory progress is retained rather than discarded by another tab's storage event; export remains available.
 
