@@ -203,7 +203,13 @@ export const englishResources = {
     englishEdition('Complete English HTML ZIP — unzip; MathJax requires internet', 'https://github.com/KokunoYumeto/brenner-differentialgeometrie-en/releases/download/v2026.09.01-complete/smooth-manifolds-differential-geometry-complete-html-20260901.zip', 'HTML ZIP', { bytes:5609567, sha256:'dcddd62d88553b8db768dbae7ea0e64c7eb43e4b438c3eca37dfea1db41620cd' }),
     englishEdition('Complete English geometry edition archive', 'https://doi.org/10.5281/zenodo.22233733', 'archive'),
   ],
-  D100: [],
+  D100: [
+    englishEdition('Algebraic Geometry Bridge — complete English HTML reader', 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/', 'HTML', { units:60, exercises:1188 }),
+    englishEdition('Algebraic Curves — complete English course — 504 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/01_Algebraic-Curves_en_Units-01-30.pdf', 'PDF', { pages:504, bytes:16029193, sha256:'547a0e8f5185cd133edac64cac42ecb7590947ff74d45efe0eb66db7c0a62b46', offlineAfterDownload:true }),
+    englishEdition('Bundles, Sheaves and Cohomology — complete English course — 381 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/03_Bundles-Sheaves-and-Cohomology_en_Units-01-30.pdf', 'PDF', { pages:381, bytes:2953314, sha256:'dffad20f1945c6f0183414cd88fa29e34e230dac14b7fae429ad09c96be4c0f1', offlineAfterDownload:true }),
+    englishEdition('From Varieties to Schemes — editorial companion — 89 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/05_From-Varieties-to-Schemes_Original-Editorial-Companion_en.pdf', 'PDF', { pages:89, bytes:808762, sha256:'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2', offlineAfterDownload:true }),
+    englishEdition('English source and modular backend', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id', 'repository'),
+  ],
   D70: [
     englishEdition('Methods of Algebra, Volume 1 — complete English book — 457 pages', 'https://zenodo.org/records/22216113/files/methods-of-algebra-volume-1-en.pdf?download=1', 'PDF', { pages:457, bytes:2691212, sha256:'112eef57e92f685e90bdff963f5a01c046a5f7d1eedc88faf316c930be7d4017', offlineAfterDownload:true }),
     englishEdition('Duncan: Representation Theory — selected complete English component — 102 pages', 'https://zenodo.org/records/22216113/files/duncan-representation-theory-en.pdf?download=1', 'PDF', { pages:102, bytes:507750, sha256:'77c0f34dc28457dd750bf67c88857910c2a57ee8f70dd3dccbcca840854cf565', offlineAfterDownload:true, origin:'published-english-component' }),
@@ -224,7 +230,6 @@ export const englishResources = {
   D120: [englishEdition('Traceable Mathematical Work — complete English edition', 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/en/', 'HTML')],
 };
 export const englishBindingExceptions = {
-  D100: 'German originals. No English reader advertised in the scoped public repository/reader check of 2026-09-04.',
   C60: 'English spine is linked. The program-original mastery/solution companion is available in Indonesian; an English companion link was not located.',
   C90: 'English spine is linked. The program-original companion is available in Indonesian; an English companion link was not located.',
   C100: 'English spines are linked. Program-original solutions, connective units, checks, and capstones have no located English binding.',

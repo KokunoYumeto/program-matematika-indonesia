@@ -190,7 +190,7 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools[0].href='backend/d80/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools.pop();},
 ]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
-assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,39);
+assert.equal(Object.values(englishResources).filter(rows=>rows.length).length,40);
 assert.equal(englishResources.B80.find(r=>r.pages).pages,161);
 assert.equal(englishResources.D50.find(r=>r.pages).pages,658);
 assert.ok(!englishBindingExceptions.B80 && !englishBindingExceptions.D50);
@@ -201,6 +201,16 @@ assert.ok(englishResources.D50.find(r=>r.kind==='HTML ZIP').label.includes('Math
 assert.deepEqual(englishResources.D70.filter(r=>r.pages).map(r=>r.pages),[457,102,68,7]);
 assert.equal(englishResources.D80.find(r=>r.pages).pages,820);
 assert.ok(!englishBindingExceptions.D70 && !englishBindingExceptions.D80);
+assert.ok(!englishBindingExceptions.D100);
+assert.equal(englishResources.D100[0].kind,'HTML');
+assert.equal(englishResources.D100[0].href,'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/');
+assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>r.pages),[504,381,89]);
+assert.equal(englishResources.D100.filter(r=>r.pages).reduce((n,r)=>n+r.pages,0),974);
+assert.deepEqual(englishResources.D100.filter(r=>r.sha256).map(r=>[r.bytes,r.sha256]),[
+  [16029193,'547a0e8f5185cd133edac64cac42ecb7590947ff74d45efe0eb66db7c0a62b46'],
+  [2953314,'dffad20f1945c6f0183414cd88fa29e34e230dac14b7fae429ad09c96be4c0f1'],
+  [808762,'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2'],
+]);
 for (const locale of supportedLocales) {
   const tools=resourceBindings(interfaceCourses.find(c=>c.id==='B80'),locale).filter(r=>r.capabilityToolId);
   assert.equal(tools.length,2);
@@ -266,7 +276,7 @@ for (const locale of supportedLocales) {
     if(locale==='id') assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
     else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
   }
-  for(const courseId of ['A10','A20','B80','D50','D70','D80']) {
+  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
     for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
     if(locale==='en') assert.equal(resources.filter(r=>r.primary).length,1);
@@ -435,7 +445,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,20);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
-  for(const courseId of ['A10','A20','B80','D50','D70','D80']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
+  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);
@@ -456,7 +466,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
     assert.ok(Buffer.byteLength(html) < 390000, 'Offline map size budget');
-    assert.ok(gzipSync(html).length < 72000, 'Compressed map size budget');
+    // D100's complete bilingual access block adds one reader and three hash-bound PDFs.
+    assert.ok(gzipSync(html).length < 73000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
