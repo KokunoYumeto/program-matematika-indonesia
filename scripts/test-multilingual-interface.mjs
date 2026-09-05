@@ -209,17 +209,25 @@ assert.equal(englishResources.D80.find(r=>r.pages).pages,820);
 assert.ok(!englishBindingExceptions.D70 && !englishBindingExceptions.D80);
 assert.ok(!englishBindingExceptions.D100);
 assert.equal(englishResources.D100[0].kind,'HTML');
-assert.equal(englishResources.D100[0].href,'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/');
+assert.equal(englishResources.D100[0].origin,'program-mirror');
+assert.equal(englishResources.D100[0].href,'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/');
 assert.deepEqual(englishResources.D100.slice(1,4).map(r=>r.href),[
-  'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/ak.html',
-  'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/bgk.html',
-  'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/companion.html',
+  'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/ak.html',
+  'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/bgk.html',
+  'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/companion.html',
 ]);
 assert.deepEqual(englishResources.D100.slice(1,4).map(r=>[r.units,r.exercises]),[[30,693],[30,495],[32,13]]);
+assert.ok(englishResources.D100.some(r=>r.label.includes('Original English-edition website') && r.href==='https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/'));
+assert.deepEqual(englishResources.D100.slice(0,4).map(r=>[r.bytes,r.sha256]),[
+  [1120,'d316fafa4e8ca49006ad5051d5b950d0029756d63c5642269826d8f0a890f019'],
+  [4915565,'92e0db157501daff37b452d5e77220b66a6c16d99fdd09784364cc752dcd46e5'],
+  [4343251,'cfc5289c2cf05e489d5cfbeb4ba4f7358edfdef81a805642a1dc9d488ca1a3aa'],
+  [1487123,'f49a5bfb33757c63591dd05e794f855938c5f98f1d4e130f67cc1a63aa16d549'],
+]);
 assert.ok(englishResources.D100.some(r=>r.kind==='archive' && r.href==='https://doi.org/10.5281/zenodo.22340270'));
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>r.pages),[504,381,89]);
 assert.equal(englishResources.D100.filter(r=>r.pages).reduce((n,r)=>n+r.pages,0),974);
-assert.deepEqual(englishResources.D100.filter(r=>r.sha256).map(r=>[r.bytes,r.sha256]),[
+assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>[r.bytes,r.sha256]),[
   [16029193,'547a0e8f5185cd133edac64cac42ecb7590947ff74d45efe0eb66db7c0a62b46'],
   [2953314,'dffad20f1945c6f0183414cd88fa29e34e230dac14b7fae429ad09c96be4c0f1'],
   [808762,'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2'],
@@ -523,10 +531,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
     assert.ok(Buffer.byteLength(html) < 400000, 'Offline map size budget');
-    // D100's complete bilingual access block, including its three directly
-    // addressable English HTML readers, plus D10 and C120's hash-bound
-    // capabilities add evidence-bound readers while preserving a compact payload.
-    assert.ok(gzipSync(html).length < 76000, 'Compressed map size budget');
+    // D100's complete bilingual access block now includes four byte-identified
+    // central routes plus the separate edition host. Keep one measured budget
+    // for that additional offline access evidence without dropping any route.
+    assert.ok(gzipSync(html).length < 77000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

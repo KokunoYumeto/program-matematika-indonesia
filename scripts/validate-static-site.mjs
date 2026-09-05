@@ -1190,7 +1190,7 @@ assert.match(standalone, new RegExp(`<strong id="live-completed-role-count">${ef
 assert.match(standalone, /22184259/);
 assert.match(standalone, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP\.pdf/);
 assert.match(standalone, /D40_COMPLETE_ID_20260831\.zip/);
-for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-course-publications.js', 'learner-state.js', 'learner-delivery.js', 'learner-tools.js', 'peta-belajar-luring.html', 'data/learner-delivery-v1.json', 'data/learner-tools-v1.json', 'data/course-capsule-v1/backend-design-policy-v1.json', 'data/course-capsule-v1/public-baseline-v0.62.12.json', 'data/course-capsule-v1/terminology-policy-v1/README.md', 'data/course-capsule-v1/terminology-policy-v1/canonical-register-policy.json', 'data/course-capsule-v1/terminology-policy-v1/checksums.sha256', 'data/v23-adapter-index-v2.json', 'data/modular-backend-pattern-index-v2.json', 'data/feature-adoption-provenance-v1.json', 'data/comparison-evidence-manifest-v1.json', 'data/modular-backend-snapshot-v2-validation-receipt.json', 'schema/v1/learner-delivery-v1.schema.json', 'schema/v1/learner-tools-v1.schema.json', 'schema/v1/v23-adapter-index-v1.schema.json', 'schema/v1/a00-assessment-map-v1.schema.json', 'schema/v2/v23-adapter-index-v2.schema.json', 'schema/v2/modular-backend-pattern-index-v2.schema.json', 'schema/v2/feature-adoption-provenance-v1.schema.json', 'schema/v2/comparison-evidence-manifest-v1.schema.json', 'schema/course-capsule-v1/backend-design-policy-v1.schema.json', 'schema/course-capsule-v1/public-baseline-v1.schema.json', 'schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', 'id-ID/courses/A00/latihan/index.html', 'id-ID/courses/A00/latihan/latihan.css', 'id-ID/courses/A00/latihan/latihan.js', 'id-ID/courses/A00/latihan/assessment-map-v1.json', 'id-ID/courses/A00/latihan/anchor-audit-v1.json', 'id-ID/courses/D40/index.html', 'id-ID/courses/D120/D120_READER_MIRROR_MANIFEST_V1.json', 'id-ID/courses/D120/D120_READER_MIRROR_RECEIPT_V1.json', 'id-ID/courses/D120/README.md', 'id-ID/courses/D120/RIGHTS_AND_ATTRIBUTION.md', 'readers/d40/unit14/index.html', 'backend/judson/C30.html', 'backend/judson/C40.html', 'backend/judson/chapters.json', 'backend/judson/route-evidence.json', 'backend/judson/contribution.md', 'backend/judson/validation.json', 'backend/openlogic/C80.html', 'backend/openlogic/learner-route.json', 'backend/openlogic/validation.json', 'backend/c130/C130.html', 'backend/c130/learner-route.json', 'backend/c130/validation.json', 'backend/c120/C120.html', 'backend/c120/C120-pengajar.html', 'backend/c120/learning-map.json', 'backend/c120/educator-map.json', 'backend/c120/rights-and-terms.json', 'backend/c120/ledger-references.json', 'backend/c120/validation.json', 'backend/d10/D10.html', 'backend/d10/D10-pengajar.html', 'backend/d10/learning-map.json', 'backend/d10/educator-map.json', 'backend/d10/rights-and-terms.json', 'backend/d10/ledger-references.json', 'backend/d10/validation.json', 'backend/d100/D100.html', 'backend/d100/D100-pengajar.html', 'backend/d100/learning-map.json', 'backend/d100/validation.json', 'backend/d120/D120.html', 'backend/d120/D120-pengajar.html', 'backend/d120/learning-map.json', 'backend/d120/educator-map.json', 'backend/d120/validation.json']) {
+for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-course-publications.js', 'learner-state.js', 'learner-delivery.js', 'learner-tools.js', 'peta-belajar-luring.html', 'data/learner-delivery-v1.json', 'data/learner-tools-v1.json', 'data/course-capsule-v1/backend-design-policy-v1.json', 'data/course-capsule-v1/public-baseline-v0.62.12.json', 'data/course-capsule-v1/terminology-policy-v1/README.md', 'data/course-capsule-v1/terminology-policy-v1/canonical-register-policy.json', 'data/course-capsule-v1/terminology-policy-v1/checksums.sha256', 'data/v23-adapter-index-v2.json', 'data/modular-backend-pattern-index-v2.json', 'data/feature-adoption-provenance-v1.json', 'data/comparison-evidence-manifest-v1.json', 'data/modular-backend-snapshot-v2-validation-receipt.json', 'schema/v1/learner-delivery-v1.schema.json', 'schema/v1/learner-tools-v1.schema.json', 'schema/v1/v23-adapter-index-v1.schema.json', 'schema/v1/a00-assessment-map-v1.schema.json', 'schema/v2/v23-adapter-index-v2.schema.json', 'schema/v2/modular-backend-pattern-index-v2.schema.json', 'schema/v2/feature-adoption-provenance-v1.schema.json', 'schema/v2/comparison-evidence-manifest-v1.schema.json', 'schema/course-capsule-v1/backend-design-policy-v1.schema.json', 'schema/course-capsule-v1/public-baseline-v1.schema.json', 'schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', 'id-ID/courses/A00/latihan/index.html', 'id-ID/courses/A00/latihan/latihan.css', 'id-ID/courses/A00/latihan/latihan.js', 'id-ID/courses/A00/latihan/assessment-map-v1.json', 'id-ID/courses/A00/latihan/anchor-audit-v1.json', 'id-ID/courses/D40/index.html', 'id-ID/courses/D120/D120_READER_MIRROR_MANIFEST_V1.json', 'id-ID/courses/D120/D120_READER_MIRROR_RECEIPT_V1.json', 'id-ID/courses/D120/README.md', 'id-ID/courses/D120/RIGHTS_AND_ATTRIBUTION.md', 'en/courses/D100/D100_ENGLISH_READER_MIRROR_MANIFEST_V1.json', 'en/courses/D100/D100_ENGLISH_READER_MIRROR_RECEIPT_V1.json', 'en/courses/D100/README.md', 'en/courses/D100/RIGHTS_AND_ATTRIBUTION.md', 'readers/d40/unit14/index.html', 'backend/judson/C30.html', 'backend/judson/C40.html', 'backend/judson/chapters.json', 'backend/judson/route-evidence.json', 'backend/judson/contribution.md', 'backend/judson/validation.json', 'backend/openlogic/C80.html', 'backend/openlogic/learner-route.json', 'backend/openlogic/validation.json', 'backend/c130/C130.html', 'backend/c130/learner-route.json', 'backend/c130/validation.json', 'backend/c120/C120.html', 'backend/c120/C120-pengajar.html', 'backend/c120/learning-map.json', 'backend/c120/educator-map.json', 'backend/c120/rights-and-terms.json', 'backend/c120/ledger-references.json', 'backend/c120/validation.json', 'backend/d10/D10.html', 'backend/d10/D10-pengajar.html', 'backend/d10/learning-map.json', 'backend/d10/educator-map.json', 'backend/d10/rights-and-terms.json', 'backend/d10/ledger-references.json', 'backend/d10/validation.json', 'backend/d100/D100.html', 'backend/d100/D100-pengajar.html', 'backend/d100/learning-map.json', 'backend/d100/validation.json', 'backend/d120/D120.html', 'backend/d120/D120-pengajar.html', 'backend/d120/learning-map.json', 'backend/d120/educator-map.json', 'backend/d120/validation.json']) {
   const [docsBytes, hostedBytes] = await Promise.all([
     readFile(resolve(root, 'docs', name)),
     readFile(resolve(root, 'public/hub', name)),
@@ -1280,6 +1280,55 @@ for (const row of d120MirrorReceipt.scripts) {
   assert.equal(scriptBytes.length, row.bytes, `${row.path}: byte receipt berbeda.`);
   assert.equal(sha256(scriptBytes), row.sha256, `${row.path}: hash receipt berbeda.`);
 }
+const d100EnglishMirrorManifest = await readJson('docs/en/courses/D100/D100_ENGLISH_READER_MIRROR_MANIFEST_V1.json');
+assert.equal(d100EnglishMirrorManifest.schema, 'd100-english-reader-mirror-manifest-v1');
+assert.equal(d100EnglishMirrorManifest.course_id, 'D100');
+assert.equal(d100EnglishMirrorManifest.locale, 'en');
+assert.equal(d100EnglishMirrorManifest.reader.file_count, 474);
+assert.equal(d100EnglishMirrorManifest.reader.files.length, 474);
+assert.equal(d100EnglishMirrorManifest.reader.bytes, 50_946_101);
+assert.equal(d100EnglishMirrorManifest.reader.aggregate_sha256, 'd9dd8b8c4358e38e7cd05b570899ae211fd24c39e04f746e571d1af92be59508');
+let d100EnglishMirrorBytes = 0;
+const d100EnglishMirrorAggregate = createHash('sha256');
+for (const row of d100EnglishMirrorManifest.reader.files) {
+  assert.ok(!row.path.includes('\\') && !row.path.split('/').includes('..') && !row.path.startsWith('/'), `D100 English: jalur tidak aman ${row.path}`);
+  const logical = `en/courses/D100/reader/${row.path}`;
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', logical)),
+    readFile(resolve(root, 'public/hub', logical)),
+  ]);
+  assert.equal(docsBytes.length, row.bytes, `${logical}: byte manifest berbeda.`);
+  assert.equal(sha256(docsBytes), row.sha256, `${logical}: hash manifest berbeda.`);
+  assert.deepEqual(hostedBytes, docsBytes, `${logical}: mirror Sites berbeda dari docs.`);
+  d100EnglishMirrorBytes += row.bytes;
+  d100EnglishMirrorAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
+}
+assert.equal(d100EnglishMirrorBytes, d100EnglishMirrorManifest.reader.bytes);
+assert.equal(d100EnglishMirrorAggregate.digest('hex'), d100EnglishMirrorManifest.reader.aggregate_sha256);
+const d100EnglishMirrorReceipt = await readJson('docs/en/courses/D100/D100_ENGLISH_READER_MIRROR_RECEIPT_V1.json');
+assert.equal(d100EnglishMirrorReceipt.schema, 'd100-english-reader-mirror-receipt-v1');
+assert.equal(d100EnglishMirrorReceipt.status, 'pass');
+assert.equal(d100EnglishMirrorReceipt.course_id, 'D100');
+assert.equal(d100EnglishMirrorReceipt.locale, 'en');
+assert.equal(d100EnglishMirrorReceipt.destination.file_count, d100EnglishMirrorManifest.reader.file_count);
+assert.equal(d100EnglishMirrorReceipt.destination.bytes, d100EnglishMirrorManifest.reader.bytes);
+assert.equal(d100EnglishMirrorReceipt.destination.aggregate_sha256, d100EnglishMirrorManifest.reader.aggregate_sha256);
+const d100EnglishManifestBytes = await readFile(resolve(root, 'docs/en/courses/D100/D100_ENGLISH_READER_MIRROR_MANIFEST_V1.json'));
+assert.equal(d100EnglishMirrorReceipt.manifest.bytes, d100EnglishManifestBytes.length);
+assert.equal(d100EnglishMirrorReceipt.manifest.sha256, sha256(d100EnglishManifestBytes));
+assert.equal(d100EnglishMirrorReceipt.source.source_commit, '93dbf3b19907e9e13d42c8e342b449ebd0afc635');
+assert.equal(d100EnglishMirrorReceipt.source.source_tree, 'bbad2aaddef6af27eb3563be2e01e252afe0edfc');
+assert.equal(d100EnglishMirrorReceipt.validation.links.external_runtime_dependencies, 0);
+assert.equal(d100EnglishMirrorReceipt.invariants.local_render_dependencies_complete, true);
+assert.equal(d100EnglishMirrorReceipt.invariants.semantic_body_rewritten, false);
+for (const row of d100EnglishMirrorReceipt.scripts) {
+  const scriptBytes = await readFile(resolve(root, row.path));
+  assert.equal(scriptBytes.length, row.bytes, `${row.path}: byte receipt berbeda.`);
+  assert.equal(sha256(scriptBytes), row.sha256, `${row.path}: hash receipt berbeda.`);
+}
+const d100EnglishLanding = await readFile(resolve(root, 'docs/en/index.html'), 'utf8');
+assert.match(d100EnglishLanding, /program-matematika-indonesia\/en\/courses\/D100\/reader\//);
+assert.match(d100EnglishLanding, /algebraic-geometry-bridge-id\/en\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/D10\/reader\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/D120\/reader\//);

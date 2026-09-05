@@ -172,6 +172,10 @@ for (const name of [
   'id-ID/courses/D120/D120_READER_MIRROR_RECEIPT_V1.json',
   'id-ID/courses/D120/README.md',
   'id-ID/courses/D120/RIGHTS_AND_ATTRIBUTION.md',
+  'en/courses/D100/D100_ENGLISH_READER_MIRROR_MANIFEST_V1.json',
+  'en/courses/D100/D100_ENGLISH_READER_MIRROR_RECEIPT_V1.json',
+  'en/courses/D100/README.md',
+  'en/courses/D100/RIGHTS_AND_ATTRIBUTION.md',
   'readers/d40/unit14/index.html',
   'id-ID/courses/C100/index.html',
   'id-ID/courses/C100/reader/index.html',
@@ -318,5 +322,36 @@ for (const row of d120Manifest.reader.files) {
 }
 assert.equal(d120Bytes, d120Manifest.reader.bytes, 'D120: jumlah byte penutupan berbeda.');
 assert.equal(d120Aggregate.digest('hex'), d120Manifest.reader.aggregate_sha256, 'D120: hash agregat penutupan berbeda.');
+
+const d100EnglishRoot = 'en/courses/D100';
+const d100EnglishManifest = JSON.parse(await readFile(
+  resolve(source, d100EnglishRoot, 'D100_ENGLISH_READER_MIRROR_MANIFEST_V1.json'),
+  'utf8',
+));
+assert.equal(d100EnglishManifest.schema, 'd100-english-reader-mirror-manifest-v1');
+assert.equal(d100EnglishManifest.course_id, 'D100');
+assert.equal(d100EnglishManifest.locale, 'en');
+assert.equal(d100EnglishManifest.reader.file_count, 474);
+assert.equal(d100EnglishManifest.reader.files.length, 474);
+assert.equal(d100EnglishManifest.reader.bytes, 50_946_101);
+assert.equal(d100EnglishManifest.reader.aggregate_sha256, 'd9dd8b8c4358e38e7cd05b570899ae211fd24c39e04f746e571d1af92be59508');
+let d100EnglishBytes = 0;
+const d100EnglishAggregate = createHash('sha256');
+for (const row of d100EnglishManifest.reader.files) {
+  assert.ok(!row.path.includes('\\') && !row.path.split('/').includes('..') && !row.path.startsWith('/'), `D100 English: jalur tidak aman ${row.path}`);
+  const logical = `${d100EnglishRoot}/reader/${row.path}`;
+  const [left, right] = await Promise.all([
+    readFile(resolve(source, logical)),
+    readFile(resolve(target, logical)),
+  ]);
+  assert.equal(left.length, row.bytes, `${logical}: byte manifest berbeda.`);
+  assert.equal(sha256(left), row.sha256, `${logical}: hash manifest berbeda.`);
+  assert.equal(right.length, left.length, `${logical}: jumlah byte sinkron berbeda.`);
+  assert.equal(sha256(right), row.sha256, `${logical}: hash sinkron berbeda.`);
+  d100EnglishBytes += row.bytes;
+  d100EnglishAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
+}
+assert.equal(d100EnglishBytes, d100EnglishManifest.reader.bytes, 'D100 English: jumlah byte penutupan berbeda.');
+assert.equal(d100EnglishAggregate.digest('hex'), d100EnglishManifest.reader.aggregate_sha256, 'D100 English: hash agregat penutupan berbeda.');
 
 console.log('Static hub synchronized to public/hub with exact bytes.');

@@ -1,0 +1,107 @@
+/* Independent English reader; native MathML, no downloaded fonts or scripts. */
+:root {
+  color-scheme: light;
+  --paper: #fffefa;
+  --ink: #202731;
+  --muted: #4b5665;
+  --accent: #194f80;
+  --rule: #c9d2dd;
+  --panel: #f1f5fa;
+}
+* { box-sizing: border-box; }
+html {
+  background: #e9edf2;
+  color: var(--ink);
+  font-family: "Noto Serif", "Libertinus Serif", Georgia, serif;
+  font-size: 18px;
+  line-height: 1.65;
+  scroll-padding-top: 1rem;
+}
+body {
+  width: min(100% - 2rem, 58rem);
+  margin: 2rem auto;
+  padding: clamp(1.1rem, 4vw, 3.2rem);
+  background: var(--paper);
+  box-shadow: 0 .3rem 1.6rem rgb(24 35 52 / 10%);
+}
+main, header, footer, nav, details, section, figure { min-width: 0; max-width: 100%; }
+main { overflow-wrap: break-word; }
+h1, h2, h3, h4, h5, h6 { line-height: 1.25; overflow-wrap: anywhere; }
+h1, h2 { color: var(--accent); }
+h1 { font-size: 1.9rem; }
+h2 { margin-top: 2.4rem; font-size: 1.5rem; }
+h3 { font-size: 1.2rem; }
+a { color: var(--accent); overflow-wrap: anywhere; text-underline-offset: .15em; }
+a:hover { text-decoration-thickness: .14em; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.skip-link {
+  position: absolute;
+  top: .5rem;
+  left: -10000px;
+  z-index: 10;
+  padding: .6rem 1rem;
+  background: var(--paper);
+  border: 2px solid var(--accent);
+}
+.skip-link:focus { left: .5rem; }
+.edition-label, .source-provenance, footer { color: var(--muted); font-size: .88rem; }
+.source-provenance { border-top: 1px solid var(--rule); padding-top: .7rem; margin: 2rem 0 3rem; }
+.book-header { border-bottom: 2px solid var(--rule); padding-bottom: 1rem; }
+.contents { background: var(--panel); border: 1px solid var(--rule); padding: 1rem; margin: 1.6rem 0; }
+summary { cursor: pointer; font-weight: bold; }
+#TOC ul { padding-inline-start: 1.5rem; }
+#TOC > ul { padding-inline-start: 1.1rem; }
+#TOC li { margin-block: .4rem; }
+nav a[aria-current="page"] { font-weight: bold; }
+/* The page itself never becomes a horizontal-scroll container for equations. */
+.display-math {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: .7rem .25rem;
+  margin-block: .55rem;
+  overscroll-behavior-x: contain;
+}
+.display-math math[display="block"] { width: max-content; min-width: 100%; margin-block: 0; }
+math { font-family: "STIX Two Math", "Cambria Math", "Latin Modern Math", math; }
+/* Long inline expressions retain their place in prose but scroll within their
+   own line box on narrow screens instead of widening the entire reader. */
+math:not([display="block"]) {
+  display: inline-block;
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  vertical-align: -0.2em;
+}
+img, svg { display: block; max-width: 100%; height: auto; margin: 1.2rem auto; }
+figure { margin-inline: 0; }
+figcaption { color: var(--muted); font-size: .9rem; text-align: center; }
+.definition, .theorem, .lemma, .example, .exercise, .note {
+  margin-block: 1.4rem;
+  padding: 1rem;
+  border-inline-start: .25rem solid var(--accent);
+  background: var(--panel);
+}
+table { display: block; max-width: 100%; overflow-x: auto; border-collapse: collapse; }
+th, td { padding: .45rem .7rem; border: 1px solid var(--rule); }
+code, pre { font-family: ui-monospace, "Cascadia Mono", monospace; }
+code { overflow-wrap: anywhere; }
+pre { max-width: 100%; overflow-x: auto; padding: .8rem; background: var(--panel); }
+blockquote { margin-inline: 1rem; padding-inline-start: 1rem; border-inline-start: 2px solid var(--rule); }
+footer { border-top: 2px solid var(--rule); margin-top: 3rem; padding-top: 1rem; }
+@media (max-width: 42rem) {
+  html { font-size: 16px; }
+  body { width: 100%; margin: 0; padding: 1rem; box-shadow: none; }
+  h1 { font-size: 1.65rem; }
+  .contents { padding: .75rem; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media print {
+  html, body { background: white; }
+  body { width: auto; margin: 0; padding: 0; box-shadow: none; }
+  .skip-link, .book-header nav, footer > p:first-child { display: none; }
+  a { color: inherit; }
+}
