@@ -189,6 +189,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='D70').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools[0].href='backend/d80/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='D10').layers.learner.tools[0].href='backend/d10/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='D10').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D120').layers.learner.tools[0].href='backend/d120/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D120').layers.learner.tools.pop();},
 ]) { const changed=structuredClone(capsules); corrupt(changed); assert.throws(()=>projectCapabilityTools(changed,ids)); }
@@ -277,6 +279,16 @@ for (const locale of supportedLocales) {
   for(const tool of d80Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
     if(locale==='id') assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
+    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+  }
+  const d10Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D10'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(d10Tools.length,1);
+  assert.deepEqual(d10Tools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d10/D10.html',
+  ]);
+  for(const tool of d10Tools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
+    if(locale==='id') assert.ok(tool.note.includes('94')&&tool.note.includes('1.096')&&tool.note.includes('276'));
     else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
   }
   const d100Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D100'),locale).filter(r=>r.capabilityToolId);
@@ -469,7 +481,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,14);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,22);
+  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,23);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   for(const courseId of ['A10','A20','B80','D50','D70','D80','D100']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
@@ -492,9 +504,9 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
-    assert.ok(Buffer.byteLength(html) < 390000, 'Offline map size budget');
-    // D100's complete bilingual access block and evidence-bound common capability
-    // add one reader, three hash-bound PDFs, and one learner/educator route.
+    assert.ok(Buffer.byteLength(html) < 392000, 'Offline map size budget');
+    // D100's complete bilingual access block and D10's hash-bound capability
+    // add evidence-bound readers while preserving a compact offline payload.
     assert.ok(gzipSync(html).length < 75000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
