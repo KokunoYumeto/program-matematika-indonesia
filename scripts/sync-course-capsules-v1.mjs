@@ -58,6 +58,14 @@ const mappings = [
   ['backend/course-capsule-v1/adapters/d120-capability-v1/data/learning-map.json', 'docs/backend/d120/learning-map.json'],
   ['backend/course-capsule-v1/adapters/d120-capability-v1/data/educator-map.json', 'docs/backend/d120/educator-map.json'],
   ['backend/course-capsule-v1/adapters/d120-capability-v1/validation.json', 'docs/backend/d120/validation.json'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/views/C110.html', 'docs/backend/c110/C110.html'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/views/C110-pengajar.html', 'docs/backend/c110/C110-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/data/learning-map.json', 'docs/backend/c110/learning-map.json'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/data/educator-map.json', 'docs/backend/c110/educator-map.json'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/data/translation-alignments.json', 'docs/backend/c110/translation-alignments.json'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/data/rights-and-terms.json', 'docs/backend/c110/rights-and-terms.json'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/data/ledger-references.json', 'docs/backend/c110/ledger-references.json'],
+  ['backend/course-capsule-v1/adapters/c110-capability-v1/validation.json', 'docs/backend/c110/validation.json'],
   ['backend/course-capsule-v1/adapters/c120-capability-v1/views/C120.html', 'docs/backend/c120/C120.html'],
   ['backend/course-capsule-v1/adapters/c120-capability-v1/views/C120-pengajar.html', 'docs/backend/c120/C120-pengajar.html'],
   ['backend/course-capsule-v1/adapters/c120-capability-v1/data/learning-map.json', 'docs/backend/c120/learning-map.json'],
@@ -154,6 +162,24 @@ assert.equal(c120.layers.production.build_status, 'verified');
 assert.equal(c120.layers.production.deterministic_replay_status, 'verified');
 assert.equal(c120.layers.educator.status, 'verified');
 assert.equal(c120.layers.educator.unit_alignment_status, 'verified');
+const c110 = rows.find(({ course_id }) => course_id === 'C110');
+assert.equal(c110.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(c110.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(c110.layers.learner.tools.length, 1);
+assert.equal(c110.layers.learner.tools[0].tool_id, 'c110.open_learner_hub');
+assert.equal(c110.layers.learner.tools[0].href, 'backend/c110/C110.html');
+assert.equal(c110.layers.learner.pdf.status, 'verified');
+assert.equal(c110.layers.learner.pdf.bytes, 8202487);
+assert.equal(c110.layers.learner.pdf.sha256, 'd573b7233d0baa07381e2052a749757885db3a31fbfe695c5a4851ea42d91b6d');
+assert.equal(c110.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(c110.layers.translation.ledger_status, 'verified');
+assert.equal(c110.layers.translation.terminology_status, 'verified');
+assert.equal(c110.layers.translation.rights_status, 'verified');
+assert.equal(c110.layers.translation.corrections_status, 'verified');
+assert.equal(c110.layers.production.build_status, 'verified');
+assert.equal(c110.layers.production.deterministic_replay_status, 'verified');
+assert.equal(c110.layers.educator.status, 'verified');
+assert.equal(c110.layers.educator.unit_alignment_status, 'verified');
 assert.equal(manifest.output.bytes, jsonlBytes.length);
 assert.equal(manifest.output.sha256, sha256(jsonlBytes));
 assert.equal(manifest.projections.course_capsules_json.bytes, jsonBytes.length);
