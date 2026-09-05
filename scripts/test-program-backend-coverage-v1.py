@@ -18,6 +18,7 @@ INPUTS = {
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
     'geometry': 'backend/course-capsule-v1/adapters/geometry-capability-v1/publication/GITHUB_READBACK_a2584b9448c9.json',
     'topology': 'backend/course-capsule-v1/adapters/topology-capability-v1/publication/GITHUB_READBACK_d7141489fe34.json',
+    'c70': 'backend/course-capsule-v1/adapters/c70-capability-v1/publication/GITHUB_READBACK_4eb34c5d866a.json',
     'c110': 'backend/course-capsule-v1/adapters/c110-capability-v1/publication/GITHUB_READBACK_c7ccbcc9a27a.json',
     'c120': 'backend/course-capsule-v1/adapters/c120-capability-v1/publication/GITHUB_READBACK_5cef326a811b.json',
     'd10': 'backend/course-capsule-v1/adapters/d10-capability-v1/publication/GITHUB_READBACK_a290054a4e16.json',
@@ -58,6 +59,17 @@ assert roles['C90']['learner']['relationship'] == 'directly_consumes_adapter_out
 assert len(roles['C90']['learner']['tools']) == 1
 assert roles['C90']['educator']['unit_alignment'] == 'verified'
 assert roles['C90']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['C70']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['C70']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(roles['C70']['learner']['tools']) == 1
+assert roles['C70']['educator']['unit_alignment'] == 'verified'
+assert len(roles['C70']['educator']['resources']) == 4
+assert roles['C70']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['C70']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['C70']['dimensions']['source_translation_ledger']['ledger'] == 'verified'
+assert roles['C70']['dimensions']['terminology']['register'] == 'verified'
+assert roles['C70']['dimensions']['reproducible_production']['build'] == 'verified'
+assert roles['C70']['dimensions']['reproducible_production']['replay'] == 'verified'
 assert roles['C110']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['C110']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['C110']['learner']['tools']) == 1
@@ -211,6 +223,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('geometry_missing_teacher_readback', 'geometry', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/geometry/pengajar.html'])),
         ('topology_nonanonymous', 'topology', lambda value: value.update(anonymous=False)),
         ('topology_missing_teacher_readback', 'topology', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/topology/pengajar.html'])),
+        ('c70_nonanonymous', 'c70', lambda value: value.update(anonymous=False)),
+        ('c70_missing_teacher_readback', 'c70', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/c70/C70-pengajar.html'])),
         ('c110_nonanonymous', 'c110', lambda value: value.update(anonymous=False)),
         ('c110_missing_teacher_readback', 'c110', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/c110/C110-pengajar.html'])),
         ('c120_nonanonymous', 'c120', lambda value: value.update(anonymous=False)),
