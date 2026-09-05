@@ -165,6 +165,7 @@ assert.equal(resourceBindings(interfaceCourses.find(c=>c.id==='D20'),'id').find(
 const capsuleBytes = await readFile(resolve(root,capabilityInput));
 const capsules = JSON.parse(capsuleBytes);
 assert.deepEqual(projectCapabilityTools(capsules,ids),capabilityTools);
+assert.equal(capabilityTools.length,26);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 for (const corrupt of [
@@ -507,7 +508,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
   assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,14);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,25);
+  assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,capabilityTools.length);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   for(const courseId of ['A10','A20','B80','D50','D70','D80','D100']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
@@ -530,11 +531,11 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
-    assert.ok(Buffer.byteLength(html) < 400000, 'Offline map size budget');
+    assert.ok(Buffer.byteLength(html) < 403000, 'Offline map size budget');
     // D100's complete bilingual access block, the central D120 reader, and
-    // C110's hash-bound learner/educator routes add evidence without dropping
-    // any course route. Keep one measured budget for the combined payload.
-    assert.ok(gzipSync(html).length < 77000, 'Compressed map size budget');
+    // C70 and C110's hash-bound learner/educator routes add evidence without
+    // dropping any course route. Keep one measured budget for the combined payload.
+    assert.ok(gzipSync(html).length < 79000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

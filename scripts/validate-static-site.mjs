@@ -1161,9 +1161,9 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound D100 learner/educator capability links. Each new language route
-// has its own separately measured offline/closure budget.
-assert.ok(shellRawBytes <= 203_000, `Shell melewati 203.000 byte: ${shellRawBytes}.`);
+// hash-bound D100 and C70 learner/educator capability links. Each new language
+// route has its own separately measured offline/closure budget.
+assert.ok(shellRawBytes <= 204_000, `Shell melewati 204.000 byte: ${shellRawBytes}.`);
 assert.ok(shellGzipBytes <= 51_000, `Shell gzip melewati 51.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
