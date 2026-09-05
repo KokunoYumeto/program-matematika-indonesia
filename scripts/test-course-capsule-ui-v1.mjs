@@ -136,7 +136,7 @@ for (const [name, fetch] of [
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
   const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
-  assert.equal(adapterCount, 26); // Thirteen 2.3.1, B80, four Lebl, C90, C100, D10, D40, D70, D80, D100 and D120.
+  assert.equal(adapterCount, 27); // Thirteen 2.3.1, B80, four Lebl, C90, C100, C120, D10, D40, D70, D80, D100 and D120.
   const topology=courses.find(c=>c.course_id==='C90');
   assert.equal(topology.layers.interoperability.semantic_adapter.contract_version,'topology-learning-capability/1');
   assert.equal(topology.layers.learner.tools.length,1);
@@ -247,6 +247,24 @@ for (const [name, fetch] of [
   assert.ok(d120.layers.educator.resources.some(r=>r.id==='D120:educator-hub-v1'&&r.status==='verified'));
   assert.equal(d120.layers.learner.capabilities.semantic_html,'verified');
   assert.equal(d120.layers.learner.capabilities.mathml,'available_unverified');
+  const c120=courses.find(c=>c.course_id==='C120');
+  assert.equal(c120.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
+  assert.equal(c120.layers.learner.tools.length,1);
+  assert.equal(c120.layers.learner.tools[0].tool_id,'c120.open_learner_hub');
+  assert.equal(c120.layers.learner.tools[0].href,'backend/c120/C120.html');
+  assert.equal(c120.layers.curriculum.unit_identity_status,'verified');
+  assert.equal(c120.layers.translation.ledger_status,'verified');
+  assert.equal(c120.layers.translation.terminology_status,'verified');
+  assert.equal(c120.layers.translation.rights_status,'verified');
+  assert.equal(c120.layers.translation.corrections_status,'verified');
+  assert.equal(c120.layers.production.build_status,'verified');
+  assert.equal(c120.layers.production.deterministic_replay_status,'verified');
+  assert.equal(c120.layers.educator.status,'verified');
+  assert.equal(c120.layers.educator.unit_alignment_status,'verified');
+  assert.ok(c120.layers.educator.resources.some(r=>r.id==='C120:educator-hub-v1'&&r.status==='verified'));
+  assert.ok(c120.layers.educator.resources.some(r=>r.id==='C120:educator-map-v1'&&r.status==='verified'));
+  assert.equal(c120.layers.learner.capabilities.semantic_html,'available_unverified');
+  assert.equal(c120.layers.learner.capabilities.mathml,'available_unverified');
   for(const role of ['B70','C10','C20','C50']){
     const capsule=courses.find(c=>c.course_id===role);
     assert.equal(capsule.layers.interoperability.semantic_adapter.contract_version,'lebl-learning-capability/1');
@@ -300,7 +318,7 @@ for (const [name, fetch] of [
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { verified: 13, available_unverified: 13, in_progress: 1, unknown: 13 });
+assert.deepEqual(educatorCounts, { verified: 14, available_unverified: 12, in_progress: 1, unknown: 13 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),
