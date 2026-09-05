@@ -90,7 +90,7 @@ const rows = effectiveCourses.map((course) => {
 for (const row of rows) {
   for (const key of ['primary', 'online_html', 'pdf', 'epub', 'portable_html']) {
     const resource = row[key];
-    assert.ok(['verified', 'available_unverified', 'absent', 'not_applicable'].includes(resource.status), `${row.course_id}/${key}: invalid status.`);
+    assert.ok(['verified', 'available_unverified', 'not_yet_produced', 'absent', 'not_applicable'].includes(resource.status), `${row.course_id}/${key}: invalid status.`);
     if (resource.status === 'verified') {
       assert.ok(resource.url && Number.isInteger(resource.bytes) && /^[0-9a-f]{64}$/.test(resource.sha256), `${row.course_id}/${key}: incomplete verified identity.`);
     }
@@ -121,7 +121,7 @@ const sidecar = {
     pdf_is_not_portable_html: true,
     source_archive_is_not_learner_package: true,
     unknown_is_not_verified: true,
-    status_values: ['verified', 'available_unverified', 'absent', 'not_applicable'],
+    status_values: ['verified', 'available_unverified', 'not_yet_produced', 'absent', 'not_applicable'],
   },
   courses: rows,
   summary: {

@@ -10,6 +10,7 @@ export const clpCapabilityValidationInput = 'docs/backend/clp/validation.json';
 export const navigationOverlayInput = 'backend/authority/central-course-surface-navigation-overlay-v1.json';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
+  'b40.open_learner_hub':['B40','course_reader','backend/b40/B40.html'],
   'b80-educator-map-v1':['B80','reference','backend/b80/B80-pengajar.html'],
   'b80-exercise-map-v1':['B80','practice_diagnostic_map','backend/b80/B80.html'],
   'c100-geometry-learning-map-v1':['C100','practice_diagnostic_map','backend/geometry/C100.html'],
@@ -38,7 +39,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // Explicit B80, Lebl, Geometry, Topology, C70, C110, C120, D10, D40, D70, D80, D100 and D120 presentation contracts; no generic auto-admission.
+    // Explicit B40, B80, Lebl, Geometry, Topology, C70, C110, C120, D10, D40, D70, D80, D100 and D120 presentation contracts; no generic auto-admission.
     const expected = contracts[tool.tool_id];
     assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');

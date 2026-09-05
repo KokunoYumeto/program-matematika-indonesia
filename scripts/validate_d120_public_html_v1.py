@@ -25,9 +25,9 @@ from validate_d10_public_html_v1 import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-OWNER_ROOT = REPO_ROOT.parents[1] / "01a0216a-4b9f-7d30-a376-60e4e3859979"
-DEFAULT_SOURCE = OWNER_ROOT / "build" / "html"
-DEFAULT_ARCHIVE = OWNER_ROOT / "release" / "o017-d120-id-2026.08.24-reader-html.zip"
+SOURCE_CACHE_ROOT = REPO_ROOT.parent / "curriculum_logbook" / "d120-reader-v1-stage"
+DEFAULT_SOURCE = SOURCE_CACHE_ROOT / "reader"
+DEFAULT_ARCHIVE = SOURCE_CACHE_ROOT / "o017-d120-id-2026.08.24-reader-html.zip"
 DEFAULT_DESTINATION = REPO_ROOT / "docs" / "id-ID" / "courses" / "D120" / "reader"
 DEFAULT_MANIFEST = (
     REPO_ROOT

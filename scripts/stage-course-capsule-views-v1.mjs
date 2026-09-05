@@ -21,6 +21,8 @@ const mappings=[
   ['backend/course-capsule-v1/adapters/c120-capability-v1/views/C120-pengajar.html','docs/backend/c120/C120-pengajar.html'],
   ['backend/course-capsule-v1/adapters/c70-capability-v1/views/C70.html','docs/backend/c70/C70.html'],
   ['backend/course-capsule-v1/adapters/c70-capability-v1/views/C70-pengajar.html','docs/backend/c70/C70-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/b40-capability-v1/views/B40.html','docs/backend/b40/B40.html'],
+  ['backend/course-capsule-v1/adapters/b40-capability-v1/views/B40-pengajar.html','docs/backend/b40/B40-pengajar.html'],
 ];
 
 const rows=[];
@@ -33,5 +35,5 @@ for(const [source,target] of mappings){
   assert.deepEqual(readback,payload,`${target}: staged view differs from adapter source.`);
   rows.push({source,target,bytes:payload.length,sha256:sha256(payload)});
 }
-assert.equal(rows.length,14);
+assert.equal(rows.length,16);
 console.log(JSON.stringify({status:'pass',mode:'raw-views-only',files:rows},null,2));

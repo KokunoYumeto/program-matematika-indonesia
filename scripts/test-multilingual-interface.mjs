@@ -214,7 +214,7 @@ const clpValidationBytes=await readFile(resolve(root,clpCapabilityValidationInpu
 const clpProjected=projectClpCapabilityTools(JSON.parse(clpCapabilityBytes),JSON.parse(clpValidationBytes),ids);
 for(const tool of clpProjected) tool.evidence={path:clpCapabilityValidationInput,bytes:clpValidationBytes.length,sha256:createHash('sha256').update(clpValidationBytes).digest('hex')};
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected],capabilityTools);
-assert.equal(capabilityTools.length,30);
+assert.equal(capabilityTools.length,31);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 assert.deepEqual(capabilityToolSupplementSources,[{path:clpCapabilityInput,bytes:clpCapabilityBytes.length,sha256:createHash('sha256').update(clpCapabilityBytes).digest('hex')}]);
@@ -296,6 +296,16 @@ assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>[r.bytes,r.sha2
   [808762,'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2'],
 ]);
 for (const locale of supportedLocales) {
+  const b40Tools=resourceBindings(interfaceCourses.find(c=>c.id==='B40'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(b40Tools.length,1);
+  assert.deepEqual(b40Tools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/b40/B40.html',
+  ]);
+  for(const tool of b40Tools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('3.541')&&tool.note.includes('13.999')&&tool.note.includes('1.037'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
+  }
   const tools=resourceBindings(interfaceCourses.find(c=>c.id==='B80'),locale).filter(r=>r.capabilityToolId);
   assert.equal(tools.length,2);
   for(const tool of tools) {
@@ -632,7 +642,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(Buffer.byteLength(html) < 455000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 90000, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 90500, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

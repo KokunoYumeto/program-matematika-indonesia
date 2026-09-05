@@ -1090,7 +1090,7 @@ assert.doesNotMatch(app, /liveCoursePublications\[/);
 
 const deliveryById = new Map(learnerDelivery.courses.map((row) => [row.course_id, row]));
 for (const row of learnerDelivery.courses) {
-  assert.ok(['verified', 'available_unverified', 'absent', 'not_applicable'].includes(row.portable_html.status));
+  assert.ok(['verified', 'available_unverified', 'not_yet_produced', 'absent', 'not_applicable'].includes(row.portable_html.status));
   if (row.portable_html.status === 'verified') {
     assert.match(row.portable_html.format, /zip\+html/);
     assert.equal(row.portable_html.dependency_free, true);

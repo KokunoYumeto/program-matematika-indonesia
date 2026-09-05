@@ -54,6 +54,7 @@ const normalizeStatus = (status) => ({
   absent: 'not_yet_produced',
   verified: 'verified',
   available_unverified: 'available_unverified',
+  not_yet_produced: 'not_yet_produced',
   not_applicable: 'not_applicable',
   in_progress: 'in_progress',
   unknown: 'unknown',

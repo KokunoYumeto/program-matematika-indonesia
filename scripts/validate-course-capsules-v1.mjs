@@ -101,7 +101,7 @@ for (const operation of nativePackages.operations) {
   }
   assert.equal(fact.sha256, operation.artifact_sha256, 'Native package artifact/evidence hash mismatch.');
 }
-const normalizedStatus = (status) => ({ absent: 'not_yet_produced', verified: 'verified', available_unverified: 'available_unverified', not_applicable: 'not_applicable', in_progress: 'in_progress', unknown: 'unknown' }[status] ?? 'unknown');
+const normalizedStatus = (status) => ({ absent: 'not_yet_produced', verified: 'verified', available_unverified: 'available_unverified', not_yet_produced: 'not_yet_produced', not_applicable: 'not_applicable', in_progress: 'in_progress', unknown: 'unknown' }[status] ?? 'unknown');
 const clean = (value) => Object.fromEntries(Object.entries(value).filter(([, item]) => item !== undefined && item !== null));
 const manifest = JSON.parse(manifestBytes.toString('utf8'));
 assert.equal(learnerTools.schema_id, 'interlanguage/program-matematika-indonesia/learner-tools/v1');
