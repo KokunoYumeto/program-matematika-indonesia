@@ -52,6 +52,12 @@ assert len(roles['B40']['learner']['tools']) == 1
 assert roles['B40']['educator']['unit_alignment'] == 'verified'
 assert roles['B40']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['B40']['common_adapter']['zenodo_preservation'] == 'not_established'
+clp_route_path = INPUTS['clpRoutes']
+clp_route_bytes = (ROOT / clp_route_path).read_bytes()
+clp_route_identity = {
+    'bytes': len(clp_route_bytes),
+    'sha256': hashlib.sha256(clp_route_bytes).hexdigest(),
+}
 for role in ('B20', 'B30', 'B50', 'B60'):
     assert roles[role]['common_adapter']['contract'] == '2.3.1'
     assert roles[role]['learner']['relationship'] == (
@@ -61,6 +67,12 @@ for role in ('B20', 'B30', 'B50', 'B60'):
     assert len(roles[role]['learner']['tools']) == 1
     assert roles[role]['learner']['tools'][0]['href'] == '../backend/clp/' + role + '.html'
     assert roles[role]['dimensions']['learner']['central_tools'] == 1
+    same_locator = [
+        row for row in roles[role]['common_adapter']['local_evidence']
+        if row.get('locator') == clp_route_path
+    ]
+    assert len(same_locator) == 1
+    assert {key: same_locator[0][key] for key in ('bytes', 'sha256')} == clp_route_identity
 for role in ('B70', 'C10', 'C20', 'C50'):
     assert roles[role]['common_adapter']['contract'] == 'lebl-learning-capability/1'
     assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
