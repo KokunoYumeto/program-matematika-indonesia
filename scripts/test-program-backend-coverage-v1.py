@@ -54,7 +54,10 @@ assert roles['B40']['common_adapter']['github_public_evidence'] == 'new_anonymou
 assert roles['B40']['common_adapter']['zenodo_preservation'] == 'not_established'
 for role in ('B20', 'B30', 'B50', 'B60'):
     assert roles[role]['common_adapter']['contract'] == '2.3.1'
-    assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+    assert roles[role]['learner']['relationship'] == (
+        'central_view_consumes_verified_route_projection_'
+        'pdf_runtime_adapter_consumption_not_claimed'
+    )
     assert len(roles[role]['learner']['tools']) == 1
     assert roles[role]['learner']['tools'][0]['href'] == '../backend/clp/' + role + '.html'
     assert roles[role]['dimensions']['learner']['central_tools'] == 1
