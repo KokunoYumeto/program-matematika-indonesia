@@ -650,7 +650,7 @@ for (const course of courses) {
   }
 }
 
-const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B20', 'B30', 'B50', 'B70', 'B95', 'C10', 'C20', 'C50', 'C90', 'C100', 'C140', 'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D100'];
+const liveOverlayRequiredRoleIds = ['A10', 'A20', 'A30', 'B20', 'B30', 'B50', 'B70', 'B95', 'C10', 'C20', 'C50', 'C90', 'C100', 'C140', 'D10', 'D20', 'D30', 'D40', 'D50', 'D60', 'D70', 'D100', 'D120'];
 for (const id of liveOverlayRequiredRoleIds) {
   assert.ok(liveCoursePublications[id], `${id}: baris lama belum memiliki overlay publikasi langsung.`);
 }
@@ -1139,7 +1139,18 @@ assert.equal(d40Delivery.portable_html.sha256, 'a370bba5ddb54081387a484a304b24af
 assert.equal(d40Delivery.portable_html.entry_point, 'reader/html/index.html');
 assert.equal(d40Delivery.portable_html.inventory_count, 273);
 assert.equal(deliveryById.get('D80').portable_html.sha256, '064dc97e9ae58217622a768f1a989eb316892a607d219211f4be17e6cf44d03c');
-assert.equal(deliveryById.get('D120').portable_html.sha256, 'c47fb636c821d574cc987a39d512f608bc4796fe2c737d8d7d02b5d0540df7e9');
+const d120Delivery = deliveryById.get('D120');
+assert.equal(d120Delivery.online_html.status, 'available_unverified');
+assert.equal(d120Delivery.online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D120/reader/');
+assert.equal(d120Delivery.online_html.bytes, 36_311);
+assert.equal(d120Delivery.online_html.sha256, '91875291e302741f442fa98ebecc9539ac3de43b4dbfdb07ea34bb559f978a42');
+assert.equal(d120Delivery.online_html.entry_point, 'index.html');
+assert.equal(d120Delivery.online_html.inventory_count, 60);
+assert.equal(d120Delivery.online_html.scope, 'whole_course');
+assert.equal(d120Delivery.online_html.dependency_free, true);
+assert.equal(d120Delivery.portable_html.sha256, 'c47fb636c821d574cc987a39d512f608bc4796fe2c737d8d7d02b5d0540df7e9');
+assert.equal(effectiveCoursesById.get('D120').reader, d120Delivery.online_html.url);
+assert.ok(effectiveCoursesById.get('D120').supplements.some(({ id, url }) => id === 'd120-owner-html-reader' && url === 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/'));
 
 const styles = stylesBytes.toString('utf8');
 assert.match(styles, /\.card-action \{[^}]*min-height: 44px/s);
@@ -1179,7 +1190,7 @@ assert.match(standalone, new RegExp(`<strong id="live-completed-role-count">${ef
 assert.match(standalone, /22184259/);
 assert.match(standalone, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP\.pdf/);
 assert.match(standalone, /D40_COMPLETE_ID_20260831\.zip/);
-for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-course-publications.js', 'learner-state.js', 'learner-delivery.js', 'learner-tools.js', 'peta-belajar-luring.html', 'data/learner-delivery-v1.json', 'data/learner-tools-v1.json', 'data/course-capsule-v1/backend-design-policy-v1.json', 'data/course-capsule-v1/public-baseline-v0.62.12.json', 'data/course-capsule-v1/terminology-policy-v1/README.md', 'data/course-capsule-v1/terminology-policy-v1/canonical-register-policy.json', 'data/course-capsule-v1/terminology-policy-v1/checksums.sha256', 'data/v23-adapter-index-v2.json', 'data/modular-backend-pattern-index-v2.json', 'data/feature-adoption-provenance-v1.json', 'data/comparison-evidence-manifest-v1.json', 'data/modular-backend-snapshot-v2-validation-receipt.json', 'schema/v1/learner-delivery-v1.schema.json', 'schema/v1/learner-tools-v1.schema.json', 'schema/v1/v23-adapter-index-v1.schema.json', 'schema/v1/a00-assessment-map-v1.schema.json', 'schema/v2/v23-adapter-index-v2.schema.json', 'schema/v2/modular-backend-pattern-index-v2.schema.json', 'schema/v2/feature-adoption-provenance-v1.schema.json', 'schema/v2/comparison-evidence-manifest-v1.schema.json', 'schema/course-capsule-v1/backend-design-policy-v1.schema.json', 'schema/course-capsule-v1/public-baseline-v1.schema.json', 'schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', 'id-ID/courses/A00/latihan/index.html', 'id-ID/courses/A00/latihan/latihan.css', 'id-ID/courses/A00/latihan/latihan.js', 'id-ID/courses/A00/latihan/assessment-map-v1.json', 'id-ID/courses/A00/latihan/anchor-audit-v1.json', 'id-ID/courses/D40/index.html', 'readers/d40/unit14/index.html', 'backend/judson/C30.html', 'backend/judson/C40.html', 'backend/judson/chapters.json', 'backend/judson/route-evidence.json', 'backend/judson/contribution.md', 'backend/judson/validation.json', 'backend/openlogic/C80.html', 'backend/openlogic/learner-route.json', 'backend/openlogic/validation.json', 'backend/c130/C130.html', 'backend/c130/learner-route.json', 'backend/c130/validation.json', 'backend/c120/C120.html', 'backend/c120/C120-pengajar.html', 'backend/c120/learning-map.json', 'backend/c120/educator-map.json', 'backend/c120/rights-and-terms.json', 'backend/c120/ledger-references.json', 'backend/c120/validation.json', 'backend/d10/D10.html', 'backend/d10/D10-pengajar.html', 'backend/d10/learning-map.json', 'backend/d10/educator-map.json', 'backend/d10/rights-and-terms.json', 'backend/d10/ledger-references.json', 'backend/d10/validation.json', 'backend/d100/D100.html', 'backend/d100/D100-pengajar.html', 'backend/d100/learning-map.json', 'backend/d100/validation.json', 'backend/d120/D120.html', 'backend/d120/D120-pengajar.html', 'backend/d120/learning-map.json', 'backend/d120/educator-map.json', 'backend/d120/validation.json']) {
+for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-course-publications.js', 'learner-state.js', 'learner-delivery.js', 'learner-tools.js', 'peta-belajar-luring.html', 'data/learner-delivery-v1.json', 'data/learner-tools-v1.json', 'data/course-capsule-v1/backend-design-policy-v1.json', 'data/course-capsule-v1/public-baseline-v0.62.12.json', 'data/course-capsule-v1/terminology-policy-v1/README.md', 'data/course-capsule-v1/terminology-policy-v1/canonical-register-policy.json', 'data/course-capsule-v1/terminology-policy-v1/checksums.sha256', 'data/v23-adapter-index-v2.json', 'data/modular-backend-pattern-index-v2.json', 'data/feature-adoption-provenance-v1.json', 'data/comparison-evidence-manifest-v1.json', 'data/modular-backend-snapshot-v2-validation-receipt.json', 'schema/v1/learner-delivery-v1.schema.json', 'schema/v1/learner-tools-v1.schema.json', 'schema/v1/v23-adapter-index-v1.schema.json', 'schema/v1/a00-assessment-map-v1.schema.json', 'schema/v2/v23-adapter-index-v2.schema.json', 'schema/v2/modular-backend-pattern-index-v2.schema.json', 'schema/v2/feature-adoption-provenance-v1.schema.json', 'schema/v2/comparison-evidence-manifest-v1.schema.json', 'schema/course-capsule-v1/backend-design-policy-v1.schema.json', 'schema/course-capsule-v1/public-baseline-v1.schema.json', 'schema/course-capsule-v1/v2/canonical-terminology-register-policy-v1.schema.json', 'schema/course-capsule-v1/v2/terminology-concept-record-v1.schema.json', 'id-ID/courses/A00/latihan/index.html', 'id-ID/courses/A00/latihan/latihan.css', 'id-ID/courses/A00/latihan/latihan.js', 'id-ID/courses/A00/latihan/assessment-map-v1.json', 'id-ID/courses/A00/latihan/anchor-audit-v1.json', 'id-ID/courses/D40/index.html', 'id-ID/courses/D120/D120_READER_MIRROR_MANIFEST_V1.json', 'id-ID/courses/D120/D120_READER_MIRROR_RECEIPT_V1.json', 'id-ID/courses/D120/README.md', 'id-ID/courses/D120/RIGHTS_AND_ATTRIBUTION.md', 'readers/d40/unit14/index.html', 'backend/judson/C30.html', 'backend/judson/C40.html', 'backend/judson/chapters.json', 'backend/judson/route-evidence.json', 'backend/judson/contribution.md', 'backend/judson/validation.json', 'backend/openlogic/C80.html', 'backend/openlogic/learner-route.json', 'backend/openlogic/validation.json', 'backend/c130/C130.html', 'backend/c130/learner-route.json', 'backend/c130/validation.json', 'backend/c120/C120.html', 'backend/c120/C120-pengajar.html', 'backend/c120/learning-map.json', 'backend/c120/educator-map.json', 'backend/c120/rights-and-terms.json', 'backend/c120/ledger-references.json', 'backend/c120/validation.json', 'backend/d10/D10.html', 'backend/d10/D10-pengajar.html', 'backend/d10/learning-map.json', 'backend/d10/educator-map.json', 'backend/d10/rights-and-terms.json', 'backend/d10/ledger-references.json', 'backend/d10/validation.json', 'backend/d100/D100.html', 'backend/d100/D100-pengajar.html', 'backend/d100/learning-map.json', 'backend/d100/validation.json', 'backend/d120/D120.html', 'backend/d120/D120-pengajar.html', 'backend/d120/learning-map.json', 'backend/d120/educator-map.json', 'backend/d120/validation.json']) {
   const [docsBytes, hostedBytes] = await Promise.all([
     readFile(resolve(root, 'docs', name)),
     readFile(resolve(root, 'public/hub', name)),
@@ -1225,8 +1236,54 @@ for (const row of d10MirrorManifest.reader.files) {
 }
 assert.equal(d10MirrorBytes, d10MirrorManifest.reader.bytes);
 assert.equal(d10MirrorAggregate.digest('hex'), d10MirrorManifest.reader.aggregate_sha256);
+const d120MirrorManifest = await readJson('docs/id-ID/courses/D120/D120_READER_MIRROR_MANIFEST_V1.json');
+assert.equal(d120MirrorManifest.schema, 'd120-reader-mirror-manifest-v1');
+assert.equal(d120MirrorManifest.course_id, 'D120');
+assert.equal(d120MirrorManifest.reader.file_count, 60);
+assert.equal(d120MirrorManifest.reader.files.length, 60);
+assert.equal(d120MirrorManifest.reader.bytes, 2_844_307);
+assert.equal(d120MirrorManifest.reader.aggregate_sha256, '4de6db10967c07574defa85e18cfabc2dec3c1019b415ef0fe5179524d6e8f6f');
+let d120MirrorBytes = 0;
+const d120MirrorAggregate = createHash('sha256');
+for (const row of d120MirrorManifest.reader.files) {
+  assert.ok(!row.path.includes('\\') && !row.path.split('/').includes('..') && !row.path.startsWith('/'), `D120: jalur tidak aman ${row.path}`);
+  const logical = `id-ID/courses/D120/reader/${row.path}`;
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', logical)),
+    readFile(resolve(root, 'public/hub', logical)),
+  ]);
+  assert.equal(docsBytes.length, row.bytes, `${logical}: byte manifest berbeda.`);
+  assert.equal(sha256(docsBytes), row.sha256, `${logical}: hash manifest berbeda.`);
+  assert.deepEqual(hostedBytes, docsBytes, `${logical}: mirror Sites berbeda dari docs.`);
+  d120MirrorBytes += row.bytes;
+  d120MirrorAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
+}
+assert.equal(d120MirrorBytes, d120MirrorManifest.reader.bytes);
+assert.equal(d120MirrorAggregate.digest('hex'), d120MirrorManifest.reader.aggregate_sha256);
+const d120MirrorReceipt = await readJson('docs/id-ID/courses/D120/D120_READER_MIRROR_RECEIPT_V1.json');
+assert.equal(d120MirrorReceipt.schema, 'd120-reader-mirror-receipt-v1');
+assert.equal(d120MirrorReceipt.status, 'pass');
+assert.equal(d120MirrorReceipt.course_id, 'D120');
+assert.equal(d120MirrorReceipt.destination.file_count, d120MirrorManifest.reader.file_count);
+assert.equal(d120MirrorReceipt.destination.bytes, d120MirrorManifest.reader.bytes);
+assert.equal(d120MirrorReceipt.destination.aggregate_sha256, d120MirrorManifest.reader.aggregate_sha256);
+const d120ManifestBytes = await readFile(resolve(root, 'docs/id-ID/courses/D120/D120_READER_MIRROR_MANIFEST_V1.json'));
+assert.equal(d120MirrorReceipt.manifest.bytes, d120ManifestBytes.length);
+assert.equal(d120MirrorReceipt.manifest.sha256, sha256(d120ManifestBytes));
+assert.equal(d120MirrorReceipt.source.archive_bytes, 787_617);
+assert.equal(d120MirrorReceipt.source.archive_sha256, 'c47fb636c821d574cc987a39d512f608bc4796fe2c737d8d7d02b5d0540df7e9');
+assert.equal(d120MirrorReceipt.validation.links.external_runtime_dependencies, 0);
+assert.equal(d120MirrorReceipt.invariants.local_render_dependencies_complete, true);
+assert.equal(d120MirrorReceipt.invariants.semantic_body_rewritten, false);
+for (const row of d120MirrorReceipt.scripts) {
+  const scriptBytes = await readFile(resolve(root, row.path));
+  assert.equal(scriptBytes.length, row.bytes, `${row.path}: byte receipt berbeda.`);
+  assert.equal(sha256(scriptBytes), row.sha256, `${row.path}: hash receipt berbeda.`);
+}
 assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/D10\/reader\//);
+assert.match(livePublicationsModule, /id-ID\/courses\/D120\/reader\//);
+assert.match(livePublicationsModule, /kerja-matematika-yang-dapat-ditelusuri-id\//);
 assert.match(livePublicationsModule, /22192066/);
 assert.match(livePublicationsModule, /22161412/);
 assert.match(livePublicationsModule, /22184259/);

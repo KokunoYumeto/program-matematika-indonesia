@@ -139,8 +139,9 @@ export function resourceBindings(course, locale) {
     if (actions.some((action) => action.href === supplement.url || action.sha256 === supplement.sha256)) continue;
     if (rows.some(row => row.href === safeResourceUrl(supplement.url))) continue;
     const machineArchive = supplement.resourceType === 'reference' && /(?:backend|sumber)/i.test(supplement.title) && !/HTML|pembaca|paket lengkap/i.test(supplement.title);
-    add(supplement.title, supplement.url, 'id', machineArchive ? 'source-archive' : 'companion', { labelLanguage: 'id', supplementId: supplement.id, sha256: supplement.sha256 ?? null,
-      accessRole:machineArchive ? 'source-package' : 'companion', authorityRole:'program-edition', relationToSource:machineArchive ? 'supports' : 'companion-to' });
+    const hostedReader = supplement.resourceType === 'course-reader';
+    add(supplement.title, supplement.url, 'id', machineArchive ? 'source-archive' : hostedReader ? 'reader' : 'companion', { labelLanguage: 'id', supplementId: supplement.id, sha256: supplement.sha256 ?? null, ...(supplement.origin ? { origin:supplement.origin } : {}),
+      accessRole:machineArchive ? 'source-package' : hostedReader ? 'hosted-reader' : 'companion', authorityRole:'program-edition', relationToSource:machineArchive ? 'supports' : hostedReader ? 'mirrors' : 'companion-to' });
   }
   add(t.archive + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.archive ?? course.zenodo, 'id', 'archive', {accessRole:'preservation-record', authorityRole:'program-edition', relationToSource:'preserves'});
   add(t.source + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.repository ?? course.repository, 'id', 'repository', {accessRole:'repository', authorityRole:'program-edition', relationToSource:'supports'});

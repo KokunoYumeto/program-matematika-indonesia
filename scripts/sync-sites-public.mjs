@@ -168,6 +168,10 @@ for (const name of [
   'id-ID/courses/D10/licenses/CC0-1.0.txt',
   'id-ID/courses/D10/licenses/Design-Science-License.txt',
   'id-ID/courses/D10/licenses/MathJax-3.2.2-Apache-2.0.txt',
+  'id-ID/courses/D120/D120_READER_MIRROR_MANIFEST_V1.json',
+  'id-ID/courses/D120/D120_READER_MIRROR_RECEIPT_V1.json',
+  'id-ID/courses/D120/README.md',
+  'id-ID/courses/D120/RIGHTS_AND_ATTRIBUTION.md',
   'readers/d40/unit14/index.html',
   'id-ID/courses/C100/index.html',
   'id-ID/courses/C100/reader/index.html',
@@ -284,5 +288,35 @@ for (const row of d10Manifest.reader.files) {
 }
 assert.equal(d10Bytes, d10Manifest.reader.bytes, 'D10: jumlah byte penutupan berbeda.');
 assert.equal(d10Aggregate.digest('hex'), d10Manifest.reader.aggregate_sha256, 'D10: hash agregat penutupan berbeda.');
+
+const d120Root = 'id-ID/courses/D120';
+const d120Manifest = JSON.parse(await readFile(
+  resolve(source, d120Root, 'D120_READER_MIRROR_MANIFEST_V1.json'),
+  'utf8',
+));
+assert.equal(d120Manifest.schema, 'd120-reader-mirror-manifest-v1');
+assert.equal(d120Manifest.course_id, 'D120');
+assert.equal(d120Manifest.reader.file_count, 60);
+assert.equal(d120Manifest.reader.files.length, 60);
+assert.equal(d120Manifest.reader.bytes, 2_844_307);
+assert.equal(d120Manifest.reader.aggregate_sha256, '4de6db10967c07574defa85e18cfabc2dec3c1019b415ef0fe5179524d6e8f6f');
+let d120Bytes = 0;
+const d120Aggregate = createHash('sha256');
+for (const row of d120Manifest.reader.files) {
+  assert.ok(!row.path.includes('\\') && !row.path.split('/').includes('..') && !row.path.startsWith('/'), `D120: jalur tidak aman ${row.path}`);
+  const logical = `${d120Root}/reader/${row.path}`;
+  const [left, right] = await Promise.all([
+    readFile(resolve(source, logical)),
+    readFile(resolve(target, logical)),
+  ]);
+  assert.equal(left.length, row.bytes, `${logical}: byte manifest berbeda.`);
+  assert.equal(sha256(left), row.sha256, `${logical}: hash manifest berbeda.`);
+  assert.equal(right.length, left.length, `${logical}: jumlah byte sinkron berbeda.`);
+  assert.equal(sha256(right), row.sha256, `${logical}: hash sinkron berbeda.`);
+  d120Bytes += row.bytes;
+  d120Aggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
+}
+assert.equal(d120Bytes, d120Manifest.reader.bytes, 'D120: jumlah byte penutupan berbeda.');
+assert.equal(d120Aggregate.digest('hex'), d120Manifest.reader.aggregate_sha256, 'D120: hash agregat penutupan berbeda.');
 
 console.log('Static hub synchronized to public/hub with exact bytes.');

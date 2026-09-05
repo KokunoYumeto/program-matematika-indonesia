@@ -783,6 +783,21 @@ export const liveCoursePublications = Object.freeze({
       updatedAt: '2026-09-01T21:53:28.731162+02:00',
     },
   }),
+  D120: publication({
+    reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D120/reader/',
+    additionalSupplements: [
+      {
+        id: 'd120-owner-html-reader',
+        title: 'Pembaca HTML asli edisi D120',
+        resourceType: 'course-reader',
+        state: 'complete',
+        scope: 'Pembaca HTML lengkap sembilan unit pada repositori edisi; dipertahankan sebagai rute asli selain salinan pusat byte-identik.',
+        license: 'CC BY-SA 4.0; hak komponen dipertahankan',
+        url: 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/',
+        zenodo: 'https://doi.org/10.5281/zenodo.22073823',
+      },
+    ],
+  }),
 });
 
 export function materializeLiveCourses(authorityCourses, overlay = liveCoursePublications) {
