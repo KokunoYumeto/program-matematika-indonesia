@@ -21,6 +21,7 @@ INPUTS = {
     'd40': 'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
     'd70': 'backend/course-capsule-v1/adapters/d70-capability-v1/publication/GITHUB_READBACK_2ce9fbb5dacd.json',
     'd80': 'backend/course-capsule-v1/adapters/d80-capability-v1/publication/GITHUB_READBACK_b22cd627901c.json',
+    'd100': 'backend/course-capsule-v1/adapters/d100-capability-v1/publication/GITHUB_READBACK_9b9480ff5b2c.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
@@ -74,6 +75,12 @@ assert len(roles['D80']['learner']['tools']) == 1
 assert roles['D80']['educator']['unit_alignment'] == 'verified'
 assert roles['D80']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['D80']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['D100']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['D100']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(roles['D100']['learner']['tools']) == 1
+assert roles['D100']['educator']['unit_alignment'] == 'verified'
+assert roles['D100']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['D100']['common_adapter']['zenodo_preservation'] == 'not_established'
 dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production',
               'accessibility', 'learner', 'educator', 'federation', 'interoperability'}
 for row in inputs['capsules']:
@@ -167,6 +174,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d70_missing_teacher_readback', 'd70', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d70/D70-pengajar.html'])),
         ('d80_nonanonymous', 'd80', lambda value: value.update(anonymous=False)),
         ('d80_missing_teacher_readback', 'd80', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d80/D80-pengajar.html'])),
+        ('d100_nonanonymous', 'd100', lambda value: value.update(anonymous=False)),
+        ('d100_missing_teacher_readback', 'd100', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d100/D100-pengajar.html'])),
     ]
     for name, key, mutate in cases:
         altered = copy.deepcopy(inputs[key])
