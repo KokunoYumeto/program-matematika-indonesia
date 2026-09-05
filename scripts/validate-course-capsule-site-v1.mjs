@@ -594,7 +594,14 @@ assert.match(b50.layers.learner.primary.url, /records\/22184443\//);
 assert.equal(c100.layers.learner.primary.format, 'text/html');
 assert.equal(d20.layers.learner.primary.format, 'text/html');
 assert.equal(d90.layers.learner.primary.format, 'application/pdf');
-assert.equal(d90.layers.learner.online_html.status, 'not_yet_produced');
+assert.equal(d90.layers.learner.online_html.status, 'available_unverified');
+assert.equal(d90.layers.learner.online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/readers/d90/original-02/');
+assert.equal(d90.layers.learner.online_html.format, 'text/html');
+assert.equal(d90.layers.learner.online_html.entry_point, 'index.html');
+assert.equal(d90.layers.learner.online_html.scope, 'other');
+assert.equal(d90.layers.learner.online_html.inventory_count, 1);
+assert.equal(d90.layers.learner.online_html.bytes, 190680);
+assert.equal(d90.layers.learner.online_html.sha256, 'd867f4551cf05e531cc6f53336a55b9ba3ee0dfffbc4acede425e1bceae82a24');
 
 assert.deepEqual(judsonValidation.admitted_courses, ['C30', 'C40']);
 assert.equal(judsonValidation.state, 'pass');

@@ -6,7 +6,7 @@ import { courses as canonicalCourses } from '../docs/courses.js';
 import { syncReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { syncFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
 import { syncCapabilityTools, capabilityInput } from './interface-capability-tools.mjs';
-import { supportedLocales, interfaceCopy, topicCopy, siteOrigin, englishBindingExceptions } from '../docs/interface/locales.js';
+import { supportedLocales, localeMetadata, interfaceCopy, topicCopy, siteOrigin, englishBindingExceptions } from '../docs/interface/locales.js';
 import { supplementalReaders } from '../docs/interface/supplemental-readers.js';
 
 const interfaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -47,17 +47,18 @@ if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved mod
 function renderDocument(locale, offline, paired = false) {
   const t = interfaceCopy[locale], esc = escapeMarkup;
   const languageLinks = supportedLocales.map((code) => {
-    const href = paired ? '../' + code + '/learning-map-paired.html' : offline ? siteOrigin + code + '/' : '../' + code + '/';
-    return '<a data-locale-link="' + code + '" data-locale-base="' + href + '" href="' + href + '" lang="' + code + '" hreflang="' + code + '"' + (code === locale ? ' aria-current="page"' : '') + '>' + (code === 'id' ? 'Bahasa Indonesia' : 'English') + '</a>';
+    const meta = localeMetadata[code];
+    const href = paired ? '../' + meta.routeSegment + '/learning-map-paired.html' : offline ? siteOrigin + meta.routeSegment + '/' : '../' + meta.routeSegment + '/';
+    return '<a data-locale-link="' + code + '" data-locale-base="' + href + '" href="' + href + '" lang="' + meta.languageTag + '" hreflang="' + meta.languageTag + '"' + (code === locale ? ' aria-current="page"' : '') + '>' + esc(meta.label) + '</a>';
   }).join('');
   const options = interfaceCourses.map((course) => '<option value="' + course.id + '">' + course.id + ' — ' + esc(coursePresentation(course, locale).title) + '</option>').join('');
   const claimForm = (kind) => '<div class="claim-form"><label for="' + kind + '-course">' + t[kind] + '</label><select id="' + kind + '-course">' + options + '</select><button id="add-' + kind + '" type="button">' + t.add + '</button></div>';
-  const canonical = siteOrigin + locale + '/';
-  return '<!doctype html>\n<html lang="' + locale + '">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+  const canonical = siteOrigin + localeMetadata[locale].routeSegment + '/';
+  return '<!doctype html>\n<html lang="' + localeMetadata[locale].languageTag + '">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
     + '<title>' + esc(t.title) + '</title>\n<meta name="description" content="' + esc(t.description) + '">\n<meta name="theme-color" content="#15302e">\n'
     + '<link rel="canonical" href="' + canonical + '">\n'
     + '<link rel="alternate" type="application/json" title="Learner access manifest" href="' + siteOrigin + 'interface/learner-access-manifest.json">\n'
-    + supportedLocales.map((code) => '<link rel="alternate" hreflang="' + code + '" href="' + siteOrigin + code + '/">').join('\n')
+    + supportedLocales.map((code) => '<link rel="alternate" hreflang="' + localeMetadata[code].languageTag + '" href="' + siteOrigin + localeMetadata[code].routeSegment + '/">').join('\n')
     + '\n<link rel="alternate" hreflang="x-default" href="' + siteOrigin + '">\n'
     + '<meta property="og:title" content="' + esc(t.title) + '">\n<meta property="og:description" content="' + esc(t.description) + '">\n'
     + '<meta property="og:type" content="website">\n<meta property="og:url" content="' + canonical + '">\n'
@@ -84,14 +85,15 @@ function renderDocument(locale, offline, paired = false) {
     + '<p id="empty-state" hidden>' + t.none + '</p><div class="course-grid" id="course-grid">' + interfaceCourses.map((c) => renderCourseCard(c, locale)).join('\n') + '</div></section>'
     + '<section id="about"><h2>' + t.about + '</h2><p>' + t.aboutText + '</p><p class="footnote">' + t.bindingNote + '</p>'
     + (locale === 'en' ? '<details><summary>English resource-binding exceptions</summary><p>These are missing link bindings, not a claim that Indonesian translation is unfinished. English upstream spines do not include the program’s original Indonesian supplements.</p><ul>' + Object.entries(englishBindingExceptions).map(([id, note]) => '<li><a href="#course-' + id + '">' + id + '</a> — ' + esc(note) + '</li>').join('') + '</ul></details>' : '')
-    + '</section></main><footer><nav><a href="' + siteOrigin + 'backend/index.html">' + t.sharedBackend + '</a><a href="' + siteOrigin + '">' + t.legacy + '</a><a href="https://github.com/KokunoYumeto/program-matematika-indonesia">GitHub</a></nav><p>' + t.footer + '</p></footer>'
+    + '</section></main><footer><nav><a href="' + siteOrigin + 'backend/index.html">' + t.sharedBackend + '</a><a href="https://kokunoyumeto.github.io/OpenLogic-translations/">' + (locale === 'en' ? 'Open Logic translations — choose a language' : 'Terjemahan Open Logic — pilih bahasa') + '</a><a href="' + siteOrigin + '">' + t.legacy + '</a><a href="https://github.com/KokunoYumeto/program-matematika-indonesia">GitHub</a></nav><p>' + t.footer + '</p></footer>'
     + (offline ? '<script>\n' + inlineScript + '\n</script>' : '<script type="module" src="../interface/app.js"></script>') + '\n</body>\n</html>\n';
 }
 const outputFiles = [];
 for (const locale of supportedLocales) {
-  await mkdir(resolve(interfaceRoot, 'docs', locale), { recursive: true });
+  const routeSegment = localeMetadata[locale].routeSegment;
+  await mkdir(resolve(interfaceRoot, 'docs', routeSegment), { recursive: true });
   for (const [file, offline, paired] of [['index.html', false, false], ['learning-map.html', true, false], ['learning-map-paired.html', true, true]]) {
-    const relative = 'docs/' + locale + '/' + file;
+    const relative = 'docs/' + routeSegment + '/' + file;
     const bytes = Buffer.from(renderDocument(locale, offline, paired));
     await writeFile(resolve(interfaceRoot, relative), bytes);
     outputFiles.push({ path: relative, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
@@ -101,6 +103,7 @@ const learnerAccessManifest = {
   schema_name: 'learner-access-presentation', schema_version: '1.0.0',
   authority_note: 'Presentation sidecar only; canonical edition, rights, provenance, and translation records remain authoritative in the modular backend.',
   locale_route_template: '/{interface_locale}/', supported_interface_locales: supportedLocales,
+  locale_metadata: localeMetadata,
   access_roles: learnerAccessRoles,
   invariants: [
     'interface_locale_does_not_imply_content_language',
@@ -116,7 +119,7 @@ outputFiles.push({path:'docs/interface/learner-access-manifest.json', bytes:lear
 const receipt = {
   schema: 'multilingual-interface-build/v1', locales: supportedLocales, canonicalCourseCount: interfaceCourses.length,
   canonicalEdgeCount: interfaceCourses.reduce((n, c) => n + c.prerequisites.length, 0),
-  inputs: await Promise.all(['docs/interface/supplemental-readers.js', ...new Set(supplementalReaders.map(row=>row.evidenceFile)), 'docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
+  inputs: await Promise.all(['backend/authority/central-reader-navigation-v1.json', 'docs/interface/supplemental-readers.js', ...new Set(supplementalReaders.map(row=>row.evidenceFile)), 'docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
     const bytes = await readFile(resolve(interfaceRoot, path));
     return { path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
   })),

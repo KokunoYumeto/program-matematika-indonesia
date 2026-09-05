@@ -1,10 +1,5 @@
 #!/usr/bin/env python3
-"""Stage the complete D10 v1.0.0 offline HTML reader into the central site.
-
-The semantic reader is copied byte-for-byte from the frozen public source and
-is never rewritten.  Generated mirror metadata lives beside, not inside, the
-reader closure so the 138-file native identity remains independently replayable.
-"""
+"""Stage D10 with its frozen body and a deterministic central navigation shell."""
 
 from __future__ import annotations
 
@@ -20,12 +15,16 @@ from validate_d10_public_html_v1 import (
     DEFAULT_MANIFEST,
     DEFAULT_PACKAGE_ROOT,
     DEFAULT_SOURCE,
+    CENTRAL_PROGRAM_HREF,
     EXPECTED_ARCHIVE_BYTES,
     EXPECTED_ARCHIVE_SHA256,
     aggregate_sha256,
+    centralized_payload,
+    expected_destination_inventory,
     inventory,
     sha256_file,
     validate,
+    validate_destination_overlay,
     validate_expected_reader_identity,
     validate_local_links,
     validate_native_manifest,
@@ -61,16 +60,24 @@ def deterministic_json_bytes(value: object) -> bytes:
 
 def safe_replace_reader(source: Path, destination: Path) -> str:
     source_facts = inventory(source)
+    expected_facts = expected_destination_inventory(source)
     validate_expected_reader_identity(source_facts)
     if destination.exists():
         destination_facts = inventory(destination)
-        if destination_facts == source_facts:
-            return "already_byte_exact"
+        if destination_facts == expected_facts:
+            return "already_navigation_exact"
         # Only replace a prior artifact owned by this deterministic staging lane.
         if not DEFAULT_MANIFEST.is_file():
             raise ValueError(
                 "destination differs from source and has no prior D10 mirror manifest; "
                 "refusing to overwrite an unproven directory"
+            )
+        prior = json.loads(DEFAULT_MANIFEST.read_text(encoding="utf-8"))
+        if prior.get("reader", {}).get("files") != [
+            fact.as_dict() for fact in destination_facts
+        ]:
+            raise ValueError(
+                "existing D10 destination is not bound by its prior mirror manifest"
             )
 
     destination.parent.mkdir(parents=True, exist_ok=True)
@@ -84,10 +91,10 @@ def safe_replace_reader(source: Path, destination: Path) -> str:
             source_path = source / Path(*fact.path.split("/"))
             target_path = temporary / Path(*fact.path.split("/"))
             target_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source_path, target_path)
+            target_path.write_bytes(centralized_payload(fact.path, source_path.read_bytes()))
         staged_facts = inventory(temporary)
-        if staged_facts != source_facts:
-            raise ValueError("temporary D10 reader copy is not byte-identical to source")
+        if staged_facts != expected_facts:
+            raise ValueError("temporary D10 reader navigation projection differs")
         if destination.exists():
             destination.rename(backup)
         temporary.rename(destination)
@@ -100,7 +107,7 @@ def safe_replace_reader(source: Path, destination: Path) -> str:
         if temporary.exists():
             shutil.rmtree(temporary)
         raise
-    return "copied_byte_exact"
+    return "copied_with_navigation_overlay"
 
 
 def copy_licences(package_root: Path) -> list[dict[str, object]]:
@@ -149,14 +156,15 @@ def build_manifest(
     archive: Path,
     licences: list[dict[str, object]],
 ) -> dict[str, object]:
-    facts = inventory(destination)
-    native_manifest = validate_native_manifest(destination, facts)
+    facts, transformations = validate_destination_overlay(source, destination)
+    source_facts = inventory(source)
+    native_manifest = validate_native_manifest(source, source_facts)
     links = validate_local_links(destination, facts)
     return {
         "schema": "d10-reader-mirror-manifest-v1",
         "course_id": "D10",
         "locale": "id-ID",
-        "status": "complete-public-reader-mirror",
+        "status": "complete-public-reader-with-navigation-overlay",
         "source_authority": {
             "release": "v1.0.0",
             "repository_url": SOURCE_REPOSITORY_URL,
@@ -182,8 +190,27 @@ def build_manifest(
             "aggregate_sha256": aggregate_sha256(facts),
             "files": [fact.as_dict() for fact in facts],
         },
+        "central_navigation_overlay": {
+            "program_home_href": CENTRAL_PROGRAM_HREF,
+            "placement": [
+                "after_skip_link",
+                "root_contents_closure_after_main_open",
+                "before_footer_close",
+            ],
+            "scope": "every_html_document",
+            "root_contents_links_added": [
+                "pendahuluan-umum/index.html",
+                "konkordansi/index.html",
+                "referensi/index.html",
+            ],
+            "transformed_file_count": len(transformations),
+            "transformations": transformations,
+            "mathematical_body_rewritten": False,
+        },
         "validation": {
-            "source_destination_byte_identity": inventory(source) == facts,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
+            "source_files_byte_preserved": len(source_facts) - len(transformations),
             "unsafe_paths": 0,
             "symlinks": 0,
             "local_links": links,
@@ -206,6 +233,7 @@ def build_manifest(
             "validation_command": "python -B scripts/validate_d10_public_html_v1.py",
             "network_required": False,
             "semantic_body_rewritten": False,
+            "navigation_shell_added": True,
         },
     }
 
@@ -225,7 +253,7 @@ def build_receipt(
         "status": "pass",
         "course_id": "D10",
         "locale": "id-ID",
-        "staging_operation": "idempotent_byte_exact_stage_or_verify",
+        "staging_operation": "idempotent_stage_or_verify_with_navigation_overlay",
         "source": {
             "public_archive_url": SOURCE_ARCHIVE_URL,
             "archive_bytes": archive.stat().st_size,
@@ -259,12 +287,16 @@ def build_receipt(
         ],
         "validation": validation,
         "invariants": {
-            "source_destination_byte_identity": True,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
             "native_reader_closure_preserved": True,
             "component_licences_preserved": True,
             "local_render_dependencies_complete": True,
             "portable_subdirectory_links": True,
             "network_required_to_render_math": False,
+            "every_reader_entrypoint_links_to_program_home": True,
+            "every_reader_html_document_links_to_program_home": True,
+            "every_reader_html_document_is_inbound_reachable_from_contents": True,
             "semantic_body_rewritten": False,
         },
     }
@@ -304,7 +336,7 @@ def main() -> int:
         source_facts = inventory(source)
         validate_expected_reader_identity(source_facts)
         validate_native_manifest(source, source_facts)
-        validate_local_links(source, source_facts)
+        validate_local_links(source, source_facts, require_program_navigation=False)
         staging_action = safe_replace_reader(source, destination)
         licences = copy_licences(package_root)
 

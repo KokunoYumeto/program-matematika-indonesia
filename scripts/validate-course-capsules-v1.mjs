@@ -604,7 +604,7 @@ assert.equal(c80Adapter.mapping_scope, 'reversible_native_course_route_adapter')
 assert.deepEqual(c80Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
 assert.equal(c80Adapter.evidence[0].sha256, '01974670c902a50d3e0166214f665286e0030a270a781a56413976be52ca4b01');
 assert.equal(c80Adapter.evidence[1].sha256, '2a86c41e92f9c9ef7e215448967998504bd4c16e7ba8e680d795d155aebef9a7');
-assert.equal(c80Adapter.evidence[2].sha256, '4774d889bf52244ef22181b0c90cfa2826ee4da401193d8229d2ac67181be6bc');
+assert.equal(c80Adapter.evidence[2].sha256, 'bdb7b1d7d2c8803dae9d3bc2ef83701abeacb18f306fb324a2b3f376d1c97efc');
 assert.equal(byId.C80.layers.learner.tools.length, 1);
 assert.equal(byId.C80.layers.learner.tools[0].href, 'backend/openlogic/C80.html');
 assert.equal(byId.C80.layers.learner.tools[0].primary, true);
@@ -643,7 +643,11 @@ assert.equal(d100.layers.interoperability.semantic_adapter.evidence[3].sha256, '
 assert.equal(d100.layers.learner.tools.length, 1);
 assert.equal(d100.layers.learner.tools[0].tool_id, 'd100.open_learner_hub');
 assert.equal(d100.layers.learner.tools[0].href, 'backend/d100/D100.html');
-assert.equal(d100.layers.learner.tools[0].page.sha256, 'c06be44747a4767271e26c55c0b6bc747645a7800d9414899b2e9c9b0bf6be3b');
+assert.deepEqual(
+  d100.layers.learner.tools[0].page,
+  overrides.learner_tools.D100[0].page,
+  'D100 learner page must match the current hosted-page authority rather than a raw adapter intermediate.',
+);
 assert.equal(d100.layers.learner.tools[0].resource.sha256, '0d18bd6ee321c95c6263b27928038461c0e6f87300b643604ffdc9e1e6f3774f');
 assert.equal(d100.layers.learner.tools[0].evidence.sha256, '1927526a963058115ff6356cccd1ef358c5103c653b393de2cb5610578db3d42');
 assert.equal(d100.layers.curriculum.unit_identity_status, 'verified');

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Stage the complete D120 reader into the central site without rewriting it."""
+"""Stage D120 with its frozen body and a deterministic central navigation shell."""
 
 from __future__ import annotations
 
@@ -16,14 +16,18 @@ from validate_d120_public_html_v1 import (
     DEFAULT_MANIFEST,
     DEFAULT_RECEIPT,
     DEFAULT_SOURCE,
+    CENTRAL_PROGRAM_HREF,
     EXPECTED_ARCHIVE_BYTES,
     EXPECTED_ARCHIVE_SHA256,
     REPO_ROOT,
     aggregate_sha256,
+    centralized_payload,
+    expected_destination_inventory,
     inventory,
     release_manifest,
     sha256_file,
     validate,
+    validate_destination_overlay,
     validate_frozen_identity,
     validate_links,
     validate_receipt,
@@ -47,10 +51,11 @@ def json_bytes(value: object) -> bytes:
 
 def stage_reader(source: Path, destination: Path, manifest_path: Path) -> str:
     source_facts = inventory(source)
+    expected_facts = expected_destination_inventory(source)
     if destination.exists():
         destination_facts = inventory(destination)
-        if destination_facts == source_facts:
-            return "already_byte_exact"
+        if destination_facts == expected_facts:
+            return "already_navigation_exact"
         if not manifest_path.is_file():
             raise ValueError("existing D120 destination differs and has no lane-owned manifest")
         prior = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -68,9 +73,9 @@ def stage_reader(source: Path, destination: Path, manifest_path: Path) -> str:
             source_path = source.joinpath(*fact.path.split("/"))
             target_path = temporary.joinpath(*fact.path.split("/"))
             target_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source_path, target_path)
-        if inventory(temporary) != source_facts:
-            raise ValueError("temporary D120 reader copy is not byte-identical")
+            target_path.write_bytes(centralized_payload(fact.path, source_path.read_bytes()))
+        if inventory(temporary) != expected_facts:
+            raise ValueError("temporary D120 reader navigation projection differs")
         if destination.exists():
             destination.rename(backup)
         temporary.rename(destination)
@@ -84,18 +89,19 @@ def stage_reader(source: Path, destination: Path, manifest_path: Path) -> str:
         if temporary.exists():
             shutil.rmtree(temporary)
         raise
-    return "copied_byte_exact"
+    return "copied_with_navigation_overlay"
 
 
 def build_manifest(source: Path, destination: Path, archive: Path) -> dict[str, object]:
     release = release_manifest(archive)
-    facts = validate_frozen_identity(destination, release)
+    validate_frozen_identity(source, release)
+    facts, transformations = validate_destination_overlay(source, destination)
     links = validate_links(destination, facts)
     return {
         "schema": "d120-reader-mirror-manifest-v1",
         "course_id": "D120",
         "locale": "id-ID",
-        "status": "complete-local-reader-mirror",
+        "status": "complete-central-reader-with-navigation-overlay",
         "source_authority": {
             "release": "2026.08.24",
             "repository_url": SOURCE_REPOSITORY,
@@ -122,8 +128,18 @@ def build_manifest(source: Path, destination: Path, archive: Path) -> dict[str, 
             "aggregate_sha256": aggregate_sha256(facts),
             "files": [fact.as_dict() for fact in facts],
         },
+        "central_navigation_overlay": {
+            "program_home_href": CENTRAL_PROGRAM_HREF,
+            "placement": ["after_skip_link", "before_body_close"],
+            "scope": "every_html_document",
+            "transformed_file_count": len(transformations),
+            "transformations": transformations,
+            "mathematical_body_rewritten": False,
+        },
         "validation": {
-            "source_destination_byte_identity": inventory(source) == facts,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
+            "source_files_byte_preserved": len(inventory(source)) - len(transformations),
             "unsafe_paths": 0,
             "symlinks": 0,
             "local_links": links,
@@ -142,6 +158,7 @@ def build_manifest(source: Path, destination: Path, archive: Path) -> dict[str, 
             "validation_command": "python -B scripts/validate_d120_public_html_v1.py",
             "network_required": False,
             "semantic_body_rewritten": False,
+            "navigation_shell_added": True,
         },
     }
 
@@ -161,7 +178,7 @@ def build_receipt(
         "status": "pass",
         "course_id": "D120",
         "locale": "id-ID",
-        "operation": "idempotent_byte_exact_stage_or_verify",
+        "operation": "idempotent_stage_or_verify_with_navigation_overlay",
         "source": {
             "repository": SOURCE_REPOSITORY,
             "zenodo": SOURCE_ZENODO,
@@ -196,11 +213,14 @@ def build_receipt(
         ],
         "validation": validation,
         "invariants": {
-            "source_destination_byte_identity": True,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
             "release_manifest_closure_preserved": True,
             "component_rights_preserved": True,
             "local_render_dependencies_complete": True,
             "portable_subdirectory_links": True,
+            "every_reader_entrypoint_links_to_program_home": True,
+            "every_reader_html_document_links_to_program_home": True,
             "semantic_body_rewritten": False,
         },
     }
@@ -230,7 +250,7 @@ def main() -> int:
             raise ValueError("frozen D120 archive identity changed")
         release = release_manifest(archive)
         source_facts = validate_frozen_identity(source, release)
-        validate_links(source, source_facts)
+        validate_links(source, source_facts, require_program_navigation=False)
         action = stage_reader(source, destination, manifest_path)
         manifest = build_manifest(source, destination, archive)
         manifest_path.parent.mkdir(parents=True, exist_ok=True)

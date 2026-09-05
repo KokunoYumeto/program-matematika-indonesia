@@ -56,5 +56,25 @@ export const supplementalReaders = [
     "contentLanguage": "id",
     "bytes": 7309181,
     "sha256": "58f73b309e6421dcc687638fe9ae0727de2dd311a022bb0e593bc31070d5f360"
+  },
+  {
+    "courseId": "D90",
+    "id": "D90:original-02-central-html",
+    "href": "https://kokunoyumeto.github.io/program-matematika-indonesia/readers/d90/original-02/",
+    "labels": {
+      "id": "Tranche Original-02 — HTML pusat",
+      "en": "Original-02 tranche — central HTML"
+    },
+    "notes": {
+      "id": "Pendamping parsial untuk materi Original-02. Ini bukan pembaca lengkap mata kuliah D90; gunakan sumber utama dan tautan asli untuk cakupan penuh.",
+      "en": "A partial companion for the Original-02 material. This is not the complete D90 course reader; use the primary resource and original-source links for full coverage."
+    },
+    "kind": "companion",
+    "format": "HTML",
+    "offlineAfterDownload": false,
+    "evidenceFile": "docs/interface/evidence/d90-central-original-02.json",
+    "contentLanguage": "id",
+    "bytes": 190680,
+    "sha256": "d867f4551cf05e531cc6f53336a55b9ba3ee0dfffbc4acede425e1bceae82a24"
   }
 ];

@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {learnerToolsByCourseId} from '../docs/learner-tools.js';
 
 export const capabilityInput = 'docs/data/course-capsule-v1/course-capsules.json';
+export const navigationOverlayInput = 'backend/authority/central-course-surface-navigation-overlay-v1.json';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
   'b80-educator-map-v1':['B80','reference','backend/b80/B80-pengajar.html'],
@@ -62,9 +63,22 @@ export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));
   const tools = projectCapabilityTools(JSON.parse(bytes), courseIds);
   const facts = [...new Map(tools.flatMap(t=>[t.page,t.resource,t.evidence]).map(f=>[f.path,f])).values()];
+  const overlay = JSON.parse(await readFile(resolve(root,navigationOverlayInput),'utf8'));
+  assert.equal(overlay.schema,'central-course-surface-navigation-overlay-v1');
+  assert.equal(overlay.status,'pass');
+  const overlayByPath = new Map(overlay.files.map(row=>[row.document,row]));
   for (const fact of facts) {
     const data = await readFile(resolve(root,fact.path));
-    assert.equal(data.length,fact.bytes,fact.path); assert.equal(hash(data),fact.sha256,fact.path);
+    if (data.length===fact.bytes && hash(data)===fact.sha256) continue;
+    // Course-capsule page facts bind the admitted semantic body. The central
+    // navigation layer is an independently hash-bound, exactly reversible
+    // presentation overlay. Accept a changed hosted HTML page only when the
+    // overlay receipt binds both the original fact and the current bytes.
+    const row=overlayByPath.get(fact.path);
+    assert.ok(row, fact.path+' changed outside the central navigation overlay');
+    assert.deepEqual(row.source_body,fact,fact.path+' source-body identity drift');
+    assert.deepEqual(row.hosted_surface,{path:fact.path,bytes:data.length,sha256:hash(data)},fact.path+' hosted overlay identity drift');
+    assert.equal(row.source_body_replay_exact,true,fact.path+' overlay is not reversible');
   }
   const source = {path:capabilityInput, bytes:bytes.length, sha256:hash(bytes)};
   await writeFile(resolve(root,'docs/interface/capability-tools.js'),

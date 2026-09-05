@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the byte-exact D10 public HTML mirror.
+"""Validate the D10 public HTML mirror plus its central navigation shell.
 
 This validator is deliberately limited to the D10 reader subtree.  It checks
 the native release manifest, source/destination byte identity, safe paths,
@@ -30,6 +30,19 @@ EXPECTED_HTML_FILES = 98
 EXPECTED_NATIVE_MANIFEST_BYTES = 13_343
 EXPECTED_NATIVE_MANIFEST_SHA256 = (
     "5d7af8820f9c423b0f95a2cf3696963bdcfad2405ef668dd8a2f566d583267a4"
+)
+CENTRAL_PROGRAM_HREF = "../../../../id/#course-D10"
+PROGRAM_NAVIGATION_MARKER = 'data-program-navigation="v1"'
+SKIP_LINK = '<a class="skip-link" href="#isi">Lewati ke isi utama</a>'
+MAIN_ANCHOR = '<main id="isi">'
+ROOT_CONTENTS_MARKER = 'data-reader-frontmatter-navigation="v1"'
+ROOT_CONTENTS_NAVIGATION = (
+    '<nav data-reader-frontmatter-navigation="v1" '
+    'aria-label="Bagian awal dan penutup pembaca">'
+    '<a href="pendahuluan-umum/index.html">Pendahuluan umum</a> · '
+    '<a href="konkordansi/index.html">Konkordansi Jilid 1</a> · '
+    '<a href="referensi/index.html">Referensi Jilid 1</a>'
+    '</nav>'
 )
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -148,6 +161,103 @@ def fact_map(facts: list[FileFact]) -> dict[str, FileFact]:
     return {fact.path: fact for fact in facts}
 
 
+def program_home_href(relative: str) -> str:
+    depth = len(PurePosixPath(relative).parent.parts)
+    return "../" * depth + CENTRAL_PROGRAM_HREF
+
+
+def reader_contents_href(relative: str) -> str | None:
+    depth = len(PurePosixPath(relative).parent.parts)
+    return None if depth == 0 else "../" * depth
+
+
+def navigation_fragments(relative: str) -> tuple[str, str]:
+    href = program_home_href(relative)
+    contents_href = reader_contents_href(relative)
+    contents = (
+        f' · <a data-reader-contents href="{contents_href}">Daftar isi pembaca</a>'
+        if contents_href is not None
+        else ""
+    )
+    navigation = (
+        '<nav data-program-navigation="v1" aria-label="Navigasi program">'
+        f'<a data-program-home href="{href}">← Kembali ke Program Matematika</a>'
+        f'{contents}</nav>'
+    )
+    program_return = (
+        f'<p data-program-return><a data-program-home href="{href}">'
+        '← Kembali ke Program Matematika</a></p>'
+    )
+    return navigation, program_return
+
+
+def centralized_payload(relative: str, source_bytes: bytes) -> bytes:
+    if not relative.endswith(".html"):
+        return source_bytes
+    text = source_bytes.decode("utf-8")
+    navigation, program_return = navigation_fragments(relative)
+    if PROGRAM_NAVIGATION_MARKER in text or 'data-program-return' in text:
+        raise ValueError("D10 source unexpectedly contains central navigation")
+    if text.count(SKIP_LINK) != 1 or text.count("</footer>") != 1:
+        raise ValueError("D10 central navigation injection anchors changed")
+    text = text.replace(SKIP_LINK, SKIP_LINK + "\n" + navigation, 1)
+    if relative == "index.html":
+        if ROOT_CONTENTS_MARKER in text or text.count(MAIN_ANCHOR) != 1:
+            raise ValueError("D10 root contents-navigation anchor changed")
+        text = text.replace(
+            MAIN_ANCHOR,
+            MAIN_ANCHOR + "\n" + ROOT_CONTENTS_NAVIGATION,
+            1,
+        )
+    text = text.replace("</footer>", program_return + "\n</footer>", 1)
+    return text.encode("utf-8")
+
+
+def expected_destination_inventory(source: Path) -> list[FileFact]:
+    rows: list[FileFact] = []
+    for fact in inventory(source):
+        data = source.joinpath(*fact.path.split("/")).read_bytes()
+        target = centralized_payload(fact.path, data)
+        rows.append(FileFact(fact.path, len(target), hashlib.sha256(target).hexdigest()))
+    return rows
+
+
+def validate_destination_overlay(source: Path, destination: Path) -> tuple[list[FileFact], list[dict[str, object]]]:
+    expected = expected_destination_inventory(source)
+    actual = inventory(destination)
+    if actual != expected:
+        raise ValueError("D10 central reader differs from the deterministic navigation-overlay projection")
+    source_map = fact_map(inventory(source))
+    target_map = fact_map(actual)
+    transformations = []
+    for relative in sorted(path for path in source_map if path.endswith(".html")):
+        source_fact = source_map[relative]
+        target_fact = target_map[relative]
+        transformations.append({
+            "path": relative,
+            "operation": (
+                "add_central_program_navigation_and_root_contents_closure"
+                if relative == "index.html"
+                else "add_central_program_navigation"
+            ),
+            "program_home_href": program_home_href(relative),
+            "root_contents_links": (
+                [
+                    "pendahuluan-umum/index.html",
+                    "konkordansi/index.html",
+                    "referensi/index.html",
+                ]
+                if relative == "index.html"
+                else []
+            ),
+            "source_bytes": source_fact.bytes,
+            "source_sha256": source_fact.sha256,
+            "target_bytes": target_fact.bytes,
+            "target_sha256": target_fact.sha256,
+        })
+    return actual, transformations
+
+
 def validate_expected_reader_identity(facts: list[FileFact]) -> None:
     count = len(facts)
     byte_count = sum(fact.bytes for fact in facts)
@@ -230,13 +340,19 @@ def _resolve_reference(root: Path, source_file: Path, raw_url: str) -> tuple[Pat
     return resolved, unquote(parsed.fragment)
 
 
-def validate_local_links(root: Path, facts: list[FileFact]) -> dict[str, object]:
+def validate_local_links(
+    root: Path,
+    facts: list[FileFact],
+    *,
+    require_program_navigation: bool = True,
+) -> dict[str, object]:
     html_parsers: dict[Path, ReaderHTMLParser] = {}
     local_reference_count = 0
     external_reference_count = 0
     fragment_reference_count = 0
     css_reference_count = 0
     scripts: list[str] = []
+    program_navigation_files: list[str] = []
 
     for fact in facts:
         path = root / PurePosixPath(fact.path)
@@ -246,8 +362,36 @@ def validate_local_links(root: Path, facts: list[FileFact]) -> dict[str, object]
             parser.close()
             if parser.html_langs != ["id-ID"]:
                 raise ValueError(f"{fact.path}: expected exactly html lang=id-ID")
+            expected_home = program_home_href(fact.path)
+            if require_program_navigation:
+                program_links = sum(raw_url.strip() == expected_home for _key, raw_url in parser.references)
+                if program_links < 2 or PROGRAM_NAVIGATION_MARKER not in path.read_text(encoding="utf-8"):
+                    raise ValueError(f"{fact.path}: lacks top-and-bottom program navigation")
+                expected_contents = reader_contents_href(fact.path)
+                if expected_contents is not None and not any(
+                    raw_url.strip() == expected_contents for _key, raw_url in parser.references
+                ):
+                    raise ValueError(f"{fact.path}: lacks a reader-contents return link")
+                program_navigation_files.append(fact.path)
+                if fact.path == "index.html":
+                    root_links = {
+                        raw_url.strip() for _key, raw_url in parser.references
+                    }
+                    required_root_links = {
+                        "pendahuluan-umum/index.html",
+                        "konkordansi/index.html",
+                        "referensi/index.html",
+                    }
+                    if not required_root_links.issubset(root_links):
+                        raise ValueError(
+                            "index.html: missing front-matter/closing-section inbound links"
+                        )
+                    if ROOT_CONTENTS_MARKER not in path.read_text(encoding="utf-8"):
+                        raise ValueError("index.html: missing root contents-navigation marker")
             html_parsers[path.resolve()] = parser
             for key, raw_url in parser.references:
+                if raw_url.strip() == expected_home:
+                    continue
                 parsed = urlsplit(raw_url.strip())
                 if parsed.scheme or parsed.netloc or raw_url.strip().startswith("//"):
                     external_reference_count += 1
@@ -283,7 +427,11 @@ def validate_local_links(root: Path, facts: list[FileFact]) -> dict[str, object]
 
     # Fragment checks need every target page's anchor set, which is now cached.
     for source_path, parser in html_parsers.items():
+        source_relative = source_path.relative_to(root).as_posix()
+        expected_home = program_home_href(source_relative)
         for _key, raw_url in parser.references:
+            if raw_url.strip() == expected_home:
+                continue
             fragment = unquote(urlsplit(raw_url.strip()).fragment)
             if not fragment or raw_url.strip().startswith("#"):
                 continue
@@ -331,6 +479,12 @@ def validate_local_links(root: Path, facts: list[FileFact]) -> dict[str, object]
         "local_mathjax_script": "_static/mathjax/tex-chtml.js",
         "local_mathjax_fonts": font_count,
         "portable_subdirectory_links": True,
+        "program_navigation_href": CENTRAL_PROGRAM_HREF if require_program_navigation else None,
+        "program_navigation_files": program_navigation_files,
+        "program_navigation_files_checked": len(program_navigation_files),
+        "every_html_document_links_to_program_home": (
+            not require_program_navigation or len(program_navigation_files) == len(html_parsers)
+        ),
     }
 
 
@@ -403,24 +557,9 @@ def validate(
     manifest_path: Path | None,
 ) -> dict[str, object]:
     source_facts = inventory(source)
-    destination_facts = inventory(destination)
     validate_expected_reader_identity(source_facts)
-    validate_expected_reader_identity(destination_facts)
-    if source_facts != destination_facts:
-        source_map = fact_map(source_facts)
-        destination_map = fact_map(destination_facts)
-        missing = sorted(set(source_map) - set(destination_map))
-        extra = sorted(set(destination_map) - set(source_map))
-        changed = sorted(
-            path
-            for path in set(source_map) & set(destination_map)
-            if source_map[path] != destination_map[path]
-        )
-        raise ValueError(
-            f"source/destination closure mismatch; missing={missing}, extra={extra}, "
-            f"changed={changed}"
-        )
-    native_manifest = validate_native_manifest(destination, destination_facts)
+    destination_facts, transformations = validate_destination_overlay(source, destination)
+    native_manifest = validate_native_manifest(source, source_facts)
     links = validate_local_links(destination, destination_facts)
     licences = validate_component_licences(package_root, destination)
     result: dict[str, object] = {
@@ -430,7 +569,8 @@ def validate(
             "bytes": sum(fact.bytes for fact in destination_facts),
             "html_files": sum(fact.path.endswith(".html") for fact in destination_facts),
             "aggregate_sha256": aggregate_sha256(destination_facts),
-            "source_destination_byte_identity": True,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
         },
         "native_manifest": native_manifest,
         "links": links,
@@ -440,6 +580,12 @@ def validate(
     }
     if manifest_path is not None:
         result["mirror_manifest"] = validate_manifest_file(manifest_path, destination_facts)
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        overlay = manifest.get("central_navigation_overlay")
+        if not isinstance(overlay, dict) or overlay.get("transformations") != transformations:
+            raise ValueError("D10 central navigation overlay binding changed")
+        if overlay.get("program_home_href") != CENTRAL_PROGRAM_HREF:
+            raise ValueError("D10 central program-home route changed")
     return result
 
 

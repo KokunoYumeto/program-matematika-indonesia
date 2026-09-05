@@ -1,8 +1,8 @@
 import assert from 'node:assert/strict';
 import { createHash } from 'node:crypto';
-import { readFile } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
-import { basename, dirname, resolve } from 'node:path';
+import { basename, dirname, relative, resolve, sep } from 'node:path';
 import { gzipSync } from 'node:zlib';
 import { courses, nextCourseIdsById, program, topics } from '../docs/courses.js';
 import { learnerDeliveryByCourseId, learnerDeliveryRows } from '../docs/learner-delivery.js';
@@ -25,6 +25,23 @@ const readOptionalJson = async (relative) => {
 };
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const escapeRegex = (value) => value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+const centralNavigationOverlay = await readJson('backend/authority/central-course-surface-navigation-overlay-v1.json');
+assert.equal(centralNavigationOverlay.schema, 'central-course-surface-navigation-overlay-v1');
+assert.equal(centralNavigationOverlay.status, 'pass');
+const centralNavigationOverlayByPath = new Map(centralNavigationOverlay.files.map(row => [row.document, row]));
+const assertBaseOrCentralNavigationIdentity = async (identity, message) => {
+  const bytes = await readFile(resolve(root, identity.path));
+  if (bytes.length === identity.bytes && sha256(bytes) === identity.sha256) return;
+  const row = centralNavigationOverlayByPath.get(identity.path);
+  assert.ok(row, `${message}: ${identity.path} changed outside the central navigation overlay.`);
+  assert.deepEqual(row.source_body, identity, `${message}: ${identity.path} source-body identity drift.`);
+  assert.deepEqual(
+    row.hosted_surface,
+    {path: identity.path, bytes: bytes.length, sha256: sha256(bytes)},
+    `${message}: ${identity.path} hosted-overlay identity drift.`,
+  );
+  assert.equal(row.source_body_replay_exact, true, `${message}: ${identity.path} overlay is not reversible.`);
+};
 const effectiveCourses = materializeLiveCourses(courses);
 const effectiveCoursesById = new Map(effectiveCourses.map((course) => [course.id, course]));
 const effectiveNextCourseIdsById = deriveNextCourseIdsById(effectiveCourses);
@@ -469,9 +486,7 @@ assert.equal(a00LearnerTool.state, 'verified');
 assert.equal(a00LearnerTool.primary, false);
 assert.equal(a00LearnerTool.machine_data_is_learner_destination, false);
 for (const identity of [a00LearnerTool.page, a00LearnerTool.resource, a00LearnerTool.evidence]) {
-  const bytes = await readFile(resolve(root, identity.path));
-  assert.equal(bytes.length, identity.bytes, `Identitas learner-tool berubah untuk ${identity.path}.`);
-  assert.equal(sha256(bytes), identity.sha256, `SHA-256 learner-tool berubah untuk ${identity.path}.`);
+  await assertBaseOrCentralNavigationIdentity(identity, 'Identitas learner-tool berubah');
 }
 for (const [courseId, toolId, href] of [
   ['C30', 'judson-c30-chapter-map-v1', 'backend/judson/C30.html'],
@@ -486,9 +501,7 @@ for (const [courseId, toolId, href] of [
   assert.equal(tool.state, 'verified');
   assert.equal(tool.machine_data_is_learner_destination, false);
   for (const identity of [tool.page, tool.resource, tool.evidence]) {
-    const bytes = await readFile(resolve(root, identity.path));
-    assert.equal(bytes.length, identity.bytes, `Identitas learner-tool berubah untuk ${identity.path}.`);
-    assert.equal(sha256(bytes), identity.sha256, `SHA-256 learner-tool berubah untuk ${identity.path}.`);
+    await assertBaseOrCentralNavigationIdentity(identity, 'Identitas learner-tool berubah');
   }
 }
 assert.equal(a00AssessmentMap.$schema, JSON.parse(a00AssessmentSchemaBytes.toString('utf8')).$id);
@@ -830,7 +843,7 @@ assert.equal(effectiveCoursesById.get('D40').supplements[0].sha256, 'a370bba5ddb
 assert.equal(effectiveCoursesById.get('D40').supplements[1].id, 'dionne-unit14-source');
 assert.equal(effectiveCoursesById.get('D40').supplements[1].bytes, 12141309);
 assert.equal(effectiveCoursesById.get('D40').supplements[1].sha256, '248b65a225e96f0a342ab2f6288aa303d28bfd2a8e108db14f7e125ef5401f0e');
-assert.equal(sha256(d40ReaderIndexBytes), 'c6785811f86cb96cc3d9a2ce81e094c511937f6d304ba78bab0973928ebcbbcf');
+assert.equal(sha256(d40ReaderIndexBytes), 'a7059a30fa4b991a4a1580e5bf7892d3e508619e5e66f507a13be0c51674bad7');
 assert.match(d40Landing, /edisi lengkap publik/);
 assert.match(d40Landing, /679 halaman/);
 assert.match(d40Landing, /22184259/);
@@ -1083,7 +1096,7 @@ for (const row of learnerDelivery.courses) {
 const legacyReaderCandidatesRejectedByDeliveryAuthority = effectiveCourses
   .filter((course) => (course.learner || course.reader) && deliveryById.get(course.id)?.online_html.status === 'absent')
   .map(({ id }) => id);
-assert.deepEqual(legacyReaderCandidatesRejectedByDeliveryAuthority, ['D90']);
+assert.deepEqual(legacyReaderCandidatesRejectedByDeliveryAuthority, []);
 assert.equal(
   learnerDelivery.summary.online_html_available,
   effectiveCourses.filter((course) => course.learner || course.reader).length - legacyReaderCandidatesRejectedByDeliveryAuthority.length,
@@ -1092,7 +1105,7 @@ assert.equal(learnerDelivery.summary.course_count, learnerDelivery.courses.lengt
 assert.equal(learnerDelivery.summary.online_html_available, learnerDelivery.courses.filter(({ online_html }) => online_html.status !== 'absent').length);
 assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').length);
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
-assert.equal(learnerDelivery.summary.online_html_available, 24);
+assert.equal(learnerDelivery.summary.online_html_available, 25);
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
 assert.equal(learnerDelivery.summary.verified_epub, 1);
 assert.deepEqual(
@@ -1101,20 +1114,20 @@ assert.deepEqual(
 );
 assert.equal(deliveryById.get('C100').portable_html.sha256, 'ee26d6e1228b7b66ca7ea156081c673dd1c8ab8b3488d87f7ee35cc354c091ae');
 assert.equal(deliveryById.get('C100').epub.sha256, '5eb6773cc036015e8eb9e6f1791c6ec2f2b83812f43c8340c66aaafd91b12d99');
-assert.equal(deliveryById.get('C100').online_html.status, 'verified');
+assert.equal(deliveryById.get('C100').online_html.status, 'available_unverified');
 assert.equal(deliveryById.get('C100').online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/reader/');
-assert.equal(deliveryById.get('C100').online_html.bytes, 3_994_608);
-assert.equal(deliveryById.get('C100').online_html.sha256, '1d3b49bc17a5956164d25b53ef6a2e79939a44f066fa87d84d00a66cca6da7ca');
+assert.equal(deliveryById.get('C100').online_html.bytes, 3_994_893);
+assert.equal(deliveryById.get('C100').online_html.sha256, 'e20cb2b22e2b3e2691c68cba0ba71352ec81db954d41a98c7bacac6d31708add');
 assert.equal(deliveryById.get('C100').online_html.entry_point, 'index.html');
 assert.equal(deliveryById.get('C100').online_html.inventory_count, 2);
 assert.equal(deliveryById.get('C100').online_html.scope, 'whole_course');
 assert.equal(deliveryById.get('C100').online_html.dependency_free, true);
 assert.equal(deliveryById.get('D10').portable_html.sha256, 'a0333dca723085e93d472b945a03758b133b05cbe5be3022133088e5c1f5ab00');
 const d10Delivery = deliveryById.get('D10');
-assert.equal(d10Delivery.online_html.status, 'verified');
+assert.equal(d10Delivery.online_html.status, 'available_unverified');
 assert.equal(d10Delivery.online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D10/reader/');
-assert.equal(d10Delivery.online_html.bytes, 8571);
-assert.equal(d10Delivery.online_html.sha256, '22ad13ef45160fa6bb964d600811b5141a6bcf8d23aac86790ddf652baca6737');
+assert.equal(d10Delivery.online_html.bytes, 9125);
+assert.equal(d10Delivery.online_html.sha256, 'fae1f5c9cd051c57235702014e789e22f17d3d3a6ed5226886f0fd0a7c196989');
 assert.equal(d10Delivery.online_html.entry_point, 'index.html');
 assert.equal(d10Delivery.online_html.inventory_count, 138);
 assert.equal(d10Delivery.online_html.scope, 'whole_course');
@@ -1138,12 +1151,19 @@ assert.equal(d40Delivery.portable_html.url, 'https://zenodo.org/records/22184259
 assert.equal(d40Delivery.portable_html.sha256, 'a370bba5ddb54081387a484a304b24af92691c3bc167db964c486625a79add59');
 assert.equal(d40Delivery.portable_html.entry_point, 'reader/html/index.html');
 assert.equal(d40Delivery.portable_html.inventory_count, 273);
+const d90Delivery = deliveryById.get('D90');
+assert.equal(d90Delivery.online_html.status, 'available_unverified');
+assert.equal(d90Delivery.online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/readers/d90/original-02/');
+assert.equal(d90Delivery.online_html.bytes, 190_680);
+assert.equal(d90Delivery.online_html.sha256, 'd867f4551cf05e531cc6f53336a55b9ba3ee0dfffbc4acede425e1bceae82a24');
+assert.equal(d90Delivery.online_html.inventory_count, 1);
+assert.equal(d90Delivery.online_html.scope, 'other');
 assert.equal(deliveryById.get('D80').portable_html.sha256, '064dc97e9ae58217622a768f1a989eb316892a607d219211f4be17e6cf44d03c');
 const d120Delivery = deliveryById.get('D120');
 assert.equal(d120Delivery.online_html.status, 'available_unverified');
 assert.equal(d120Delivery.online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D120/reader/');
-assert.equal(d120Delivery.online_html.bytes, 36_311);
-assert.equal(d120Delivery.online_html.sha256, '91875291e302741f442fa98ebecc9539ac3de43b4dbfdb07ea34bb559f978a42');
+assert.equal(d120Delivery.online_html.bytes, 36_596);
+assert.equal(d120Delivery.online_html.sha256, 'f2481c51f99b7760d155849447693639184c316f316da7d05d2acf9167ef7d3d');
 assert.equal(d120Delivery.online_html.entry_point, 'index.html');
 assert.equal(d120Delivery.online_html.inventory_count, 60);
 assert.equal(d120Delivery.online_html.scope, 'whole_course');
@@ -1161,8 +1181,8 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound D100 and C70 learner/educator capability links. Each new language
-// route has its own separately measured offline/closure budget.
+// hash-bound D100, C110, and C70 learner/educator capability links. Each new language route
+// has its own separately measured offline/closure budget.
 assert.ok(shellRawBytes <= 204_000, `Shell melewati 204.000 byte: ${shellRawBytes}.`);
 assert.ok(shellGzipBytes <= 51_000, `Shell gzip melewati 51.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
@@ -1225,8 +1245,8 @@ assert.equal(d10MirrorManifest.schema, 'd10-reader-mirror-manifest-v1');
 assert.equal(d10MirrorManifest.course_id, 'D10');
 assert.equal(d10MirrorManifest.reader.file_count, 138);
 assert.equal(d10MirrorManifest.reader.files.length, 138);
-assert.equal(d10MirrorManifest.reader.bytes, 15_166_155);
-assert.equal(d10MirrorManifest.reader.aggregate_sha256, '2af22c4a76c88ed0b8fe1f01e817f42e7354fb5b02c8c954c5a1731fac98ef53');
+assert.equal(d10MirrorManifest.reader.bytes, 15_200_659);
+assert.equal(d10MirrorManifest.reader.aggregate_sha256, 'fd696ff163ab6fae09bfaafc33e7d764829d39d9b997524c99d0aaf0ac55ab97');
 let d10MirrorBytes = 0;
 const d10MirrorAggregate = createHash('sha256');
 for (const row of d10MirrorManifest.reader.files) {
@@ -1249,8 +1269,8 @@ assert.equal(d120MirrorManifest.schema, 'd120-reader-mirror-manifest-v1');
 assert.equal(d120MirrorManifest.course_id, 'D120');
 assert.equal(d120MirrorManifest.reader.file_count, 60);
 assert.equal(d120MirrorManifest.reader.files.length, 60);
-assert.equal(d120MirrorManifest.reader.bytes, 2_844_307);
-assert.equal(d120MirrorManifest.reader.aggregate_sha256, '4de6db10967c07574defa85e18cfabc2dec3c1019b415ef0fe5179524d6e8f6f');
+assert.equal(d120MirrorManifest.reader.bytes, 2_848_112);
+assert.equal(d120MirrorManifest.reader.aggregate_sha256, '3efa09a24fa3cf90a5fb643d9e0b5d02bbc83b57d5ca2cf189b232e9142ef2b4');
 let d120MirrorBytes = 0;
 const d120MirrorAggregate = createHash('sha256');
 for (const row of d120MirrorManifest.reader.files) {
@@ -1294,8 +1314,8 @@ assert.equal(d100EnglishMirrorManifest.course_id, 'D100');
 assert.equal(d100EnglishMirrorManifest.locale, 'en');
 assert.equal(d100EnglishMirrorManifest.reader.file_count, 474);
 assert.equal(d100EnglishMirrorManifest.reader.files.length, 474);
-assert.equal(d100EnglishMirrorManifest.reader.bytes, 50_946_101);
-assert.equal(d100EnglishMirrorManifest.reader.aggregate_sha256, 'd9dd8b8c4358e38e7cd05b570899ae211fd24c39e04f746e571d1af92be59508');
+assert.equal(d100EnglishMirrorManifest.reader.bytes, 50_947_956);
+assert.equal(d100EnglishMirrorManifest.reader.aggregate_sha256, '882f8f9109b6d9fcd606554de1dae55ac03e3c4d7f0d252eec4c1822fff1dc29');
 let d100EnglishMirrorBytes = 0;
 const d100EnglishMirrorAggregate = createHash('sha256');
 for (const row of d100EnglishMirrorManifest.reader.files) {
@@ -1398,8 +1418,8 @@ assert.match(d30Landing, /22182655/);
 assert.match(d30Landing, /measure-theoretic-probability-stochastic-processes-id/);
 assert.doesNotMatch(d30Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
-assert.equal(c100ReaderBytes.length, c100RouteManifest.reader.source_html.bytes);
-assert.equal(sha256(c100ReaderBytes), c100RouteManifest.reader.source_html.sha256);
+assert.equal(c100ReaderBytes.length, c100RouteManifest.reader.hosted_html.bytes);
+assert.equal(sha256(c100ReaderBytes), c100RouteManifest.reader.hosted_html.sha256);
 assert.equal(c100ReaderStyleBytes.length, c100RouteManifest.reader.source_style.bytes);
 assert.equal(sha256(c100ReaderStyleBytes), c100RouteManifest.reader.source_style.sha256);
 assert.equal(c100SolutionBytes.length, c100RouteManifest.reader.solution_pdf.bytes);
@@ -1418,6 +1438,31 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
   const wrapper = await readFile(resolve(root, `docs/id-ID/courses/C100/units/bab-${chapter}/index.html`), 'utf8');
   assert.ok(wrapper.includes(`rel="canonical" href="${unit.central_url}"`), `${unit.id}: URL kanonis C100 tidak cocok.`);
   assert.ok(wrapper.includes(`reader/#${unit.id}`), `${unit.id}: fragmen pembaca C100 hilang.`);
+}
+
+const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
+assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
+const docsRoot = resolve(root, 'docs');
+const collectHtml = async (directory, exclusions = [], current = directory) => {
+  const excluded = exclusions.map((value) => resolve(directory, ...value.split('/')));
+  const rows = [];
+  for (const entry of await readdir(current, { withFileTypes: true })) {
+    const path = resolve(current, entry.name);
+    if (excluded.some((item) => path === item || path.startsWith(`${item}${sep}`))) continue;
+    if (entry.isDirectory()) rows.push(...await collectHtml(directory, exclusions, path));
+    else if (entry.isFile() && entry.name.toLowerCase().endsWith('.html')) rows.push(path);
+  }
+  return rows;
+};
+const allDocsHtml = await collectHtml(docsRoot);
+assert.equal(allDocsHtml.length, centralNavigation.summary.classified_html_documents, 'Penutupan HTML docs berubah dari kontrak navigasi.');
+for (const path of allDocsHtml) {
+  const logical = relative(docsRoot, path).split(sep).join('/');
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(path),
+    readFile(resolve(root, 'public', 'hub', ...logical.split('/'))),
+  ]);
+  assert.deepEqual(hostedBytes, docsBytes, `${logical}: HTML Sites berbeda dari docs.`);
 }
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);

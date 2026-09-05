@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the byte-exact D100 English reader mirror in the central site."""
+"""Validate the D100 English reader plus its central navigation shell."""
 
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlsplit
 
 from validate_d10_public_html_v1 import (
+    FileFact,
     aggregate_sha256,
     fact_map,
     inventory,
@@ -52,6 +53,31 @@ EXPECTED_ENTRYPOINTS = {
     "bgk.html": (4_343_251, "cfc5289c2cf05e489d5cfbeb4ba4f7358edfdef81a805642a1dc9d488ca1a3aa"),
     "companion.html": (1_487_123, "f49a5bfb33757c63591dd05e794f855938c5f98f1d4e130f67cc1a63aa16d549"),
 }
+CENTRAL_PROGRAM_HREF = "../../../#course-D100"
+CENTRAL_PROGRAM_LABEL = "Full mathematics program"
+PROGRAM_NAVIGATION_MARKER = 'data-program-navigation="v1"'
+PROGRAM_RETURN = (
+    f'<p class="program-return"><a data-program-home href="{CENTRAL_PROGRAM_HREF}">'
+    f'← {CENTRAL_PROGRAM_LABEL}</a></p>'
+)
+SKIP_LINK = '<a class="skip-link" href="#main-content">Skip to main content</a>'
+NAVIGATION_HTML_PATHS = frozenset(EXPECTED_ENTRYPOINTS)
+NAVIGATION_CSS_PATH = "reader.css"
+NAVIGATION_CSS = """
+
+/* Central-program navigation shell; the mathematical reader body is unchanged. */
+.program-navigation {
+  margin: 0 0 1.25rem;
+  padding: .7rem .9rem;
+  border: 1px solid var(--rule);
+  border-radius: .35rem;
+  background: var(--panel);
+  font-family: system-ui, sans-serif;
+  font-size: .9rem;
+}
+.program-navigation a, .program-return a { font-weight: 700; }
+@media print { .program-navigation, .program-return { display: none; } }
+"""
 HEX_SHA256 = re.compile(r"^[0-9a-f]{64}$")
 
 
@@ -62,6 +88,68 @@ def sha256_bytes(data: bytes) -> str:
 def git_blob_sha1(data: bytes) -> str:
     header = f"blob {len(data)}\0".encode("ascii")
     return hashlib.sha1(header + data).hexdigest()
+
+
+def centralized_payload(relative: str, source_bytes: bytes) -> bytes:
+    """Add only the central-site navigation shell to frozen reader bytes."""
+    if relative in NAVIGATION_HTML_PATHS:
+        text = source_bytes.decode("utf-8")
+        if PROGRAM_NAVIGATION_MARKER in text or PROGRAM_RETURN in text:
+            raise ValueError(f"D100 English source unexpectedly contains central navigation: {relative}")
+        if text.count(SKIP_LINK) != 1 or text.count("</footer>") != 1:
+            raise ValueError(f"D100 English navigation injection anchors changed: {relative}")
+        contents = (
+            ' · <a data-reader-contents href="index.html">Algebraic Geometry reader home</a>'
+            if relative != "index.html"
+            else ""
+        )
+        navigation = (
+            '<nav class="program-navigation" data-program-navigation="v1" aria-label="Program navigation">'
+            f'<a data-program-home href="{CENTRAL_PROGRAM_HREF}">← {CENTRAL_PROGRAM_LABEL}</a>'
+            f'{contents}</nav>'
+        )
+        text = text.replace(SKIP_LINK, SKIP_LINK + "\n" + navigation, 1)
+        text = text.replace("</footer>", PROGRAM_RETURN + "\n</footer>", 1)
+        return text.encode("utf-8")
+    if relative == NAVIGATION_CSS_PATH:
+        text = source_bytes.decode("utf-8")
+        marker = "/* Central-program navigation shell;"
+        if marker in text:
+            raise ValueError("D100 English source unexpectedly contains central navigation CSS")
+        return (text.rstrip("\r\n") + NAVIGATION_CSS).encode("utf-8")
+    return source_bytes
+
+
+def expected_destination_inventory(source: Path) -> list[FileFact]:
+    rows: list[FileFact] = []
+    for fact in inventory(source):
+        data = source.joinpath(*fact.path.split("/")).read_bytes()
+        target = centralized_payload(fact.path, data)
+        rows.append(FileFact(fact.path, len(target), sha256_bytes(target)))
+    return rows
+
+
+def validate_destination_overlay(source: Path, destination: Path) -> tuple[list[FileFact], list[dict[str, object]]]:
+    source_facts = inventory(source)
+    destination_facts = inventory(destination)
+    expected = expected_destination_inventory(source)
+    if destination_facts != expected:
+        raise ValueError("D100 English central reader differs from the deterministic navigation-overlay projection")
+    source_by_path = fact_map(source_facts)
+    destination_by_path = fact_map(destination_facts)
+    transformations: list[dict[str, object]] = []
+    for relative in sorted((*NAVIGATION_HTML_PATHS, NAVIGATION_CSS_PATH)):
+        before = source_by_path[relative]
+        after = destination_by_path[relative]
+        transformations.append({
+            "path": relative,
+            "operation": "add_central_program_navigation" if relative.endswith(".html") else "add_central_navigation_styles",
+            "source_bytes": before.bytes,
+            "source_sha256": before.sha256,
+            "target_bytes": after.bytes,
+            "target_sha256": after.sha256,
+        })
+    return destination_facts, transformations
 
 
 def read_json(path: Path, context: str) -> dict[str, object]:
@@ -215,7 +303,12 @@ def local_target(root: Path, current_file: Path, raw_url: str) -> tuple[Path | N
     return target, unquote(parsed.fragment) if parsed.fragment else None, False
 
 
-def validate_links(root: Path, facts: list[object]) -> dict[str, object]:
+def validate_links(
+    root: Path,
+    facts: list[object],
+    *,
+    require_program_navigation: bool = False,
+) -> dict[str, object]:
     by_path = fact_map(facts)
     html_parsers: dict[str, D120HTMLParser] = {}
     for fact in facts:
@@ -230,14 +323,25 @@ def validate_links(root: Path, facts: list[object]) -> dict[str, object]:
     external_references = 0
     external_runtime: list[dict[str, str]] = []
     runtime_references = 0
+    program_navigation_files: list[str] = []
     for relative, parser in html_parsers.items():
         current = root.joinpath(*relative.split("/"))
+        program_links = sum(
+            value.strip() == CENTRAL_PROGRAM_HREF
+            for _kind, value in parser.references
+        )
+        if require_program_navigation:
+            if program_links < 2:
+                raise ValueError(f"D100 English reader lacks top-and-bottom program navigation: {relative}")
+            program_navigation_files.append(relative)
         for kind, value in parser.runtime_references:
             if is_external_runtime_url(value):
                 external_runtime.append({"file": relative, "kind": kind, "url": value})
             elif value.strip() and not value.lower().startswith("data:"):
                 runtime_references += 1
         for _kind, value in parser.references:
+            if value.strip() == CENTRAL_PROGRAM_HREF:
+                continue
             target, fragment, external = local_target(root, current, value)
             if external:
                 external_references += 1
@@ -286,6 +390,12 @@ def validate_links(root: Path, facts: list[object]) -> dict[str, object]:
         "external_references_observed": external_references,
         "external_runtime_dependencies": 0,
         "portable_subdirectory_links": True,
+        "program_navigation_href": CENTRAL_PROGRAM_HREF if require_program_navigation else None,
+        "program_navigation_files": sorted(program_navigation_files),
+        "program_navigation_files_checked": len(program_navigation_files),
+        "every_html_document_links_to_program_home": (
+            not require_program_navigation or len(program_navigation_files) == len(html_parsers)
+        ),
     }
 
 
@@ -296,10 +406,8 @@ def validate(
 ) -> dict[str, object]:
     source_facts, public_manifest, _source_inventory = validate_source_inventory(source)
     git_tree = validate_pinned_git_tree(source, source_facts)
-    destination_facts = inventory(destination)
-    if destination_facts != source_facts:
-        raise ValueError("D100 English central mirror is not byte-identical to its pinned source")
-    links = validate_links(destination, destination_facts)
+    destination_facts, transformations = validate_destination_overlay(source, destination)
+    links = validate_links(destination, destination_facts, require_program_navigation=True)
     manifest = read_json(manifest_path, "D100 English central mirror manifest")
     if manifest.get("schema") != "d100-english-reader-mirror-manifest-v1":
         raise ValueError("D100 English central mirror manifest schema changed")
@@ -309,11 +417,16 @@ def validate(
     if not isinstance(reader, dict) or reader.get("files") != [fact.as_dict() for fact in destination_facts]:
         raise ValueError("D100 English central mirror manifest file closure changed")
     if (
-        reader.get("file_count") != EXPECTED_FILES
-        or reader.get("bytes") != EXPECTED_BYTES
-        or reader.get("aggregate_sha256") != EXPECTED_AGGREGATE_SHA256
+        reader.get("file_count") != len(destination_facts)
+        or reader.get("bytes") != sum(fact.bytes for fact in destination_facts)
+        or reader.get("aggregate_sha256") != aggregate_sha256(destination_facts)
     ):
         raise ValueError("D100 English central mirror manifest aggregate changed")
+    overlay = manifest.get("central_navigation_overlay")
+    if not isinstance(overlay, dict) or overlay.get("transformations") != transformations:
+        raise ValueError("D100 English central navigation overlay binding changed")
+    if overlay.get("program_home_href") != CENTRAL_PROGRAM_HREF:
+        raise ValueError("D100 English central program-home route changed")
     source_authority = manifest.get("source_authority")
     if not isinstance(source_authority, dict) or source_authority.get("source_commit") != SOURCE_COMMIT or source_authority.get("source_tree") != SOURCE_TREE:
         raise ValueError("D100 English central mirror source authority changed")
@@ -327,7 +440,9 @@ def validate(
         raise ValueError("D100 English source HTML-tree closure changed")
     return {
         "status": "pass",
-        "source_destination_byte_identity": True,
+        "source_destination_byte_identity": False,
+        "source_destination_navigation_overlay": True,
+        "transformed_files": len(transformations),
         "reader": {
             "file_count": len(destination_facts),
             "bytes": sum(fact.bytes for fact in destination_facts),
@@ -356,12 +471,13 @@ def validate_receipt(
     destination_row = receipt.get("destination")
     if not isinstance(destination_row, dict):
         raise ValueError("D100 English central mirror receipt lacks destination facts")
+    destination_facts = inventory(destination)
     if destination_row != {
         "path": destination.relative_to(REPO_ROOT).as_posix(),
         "entrypoint": destination.joinpath("index.html").relative_to(REPO_ROOT).as_posix(),
-        "file_count": EXPECTED_FILES,
-        "bytes": EXPECTED_BYTES,
-        "aggregate_sha256": EXPECTED_AGGREGATE_SHA256,
+        "file_count": len(destination_facts),
+        "bytes": sum(fact.bytes for fact in destination_facts),
+        "aggregate_sha256": aggregate_sha256(destination_facts),
     }:
         raise ValueError("D100 English central mirror receipt destination changed")
     manifest_row = receipt.get("manifest")
@@ -385,14 +501,16 @@ def validate_receipt(
     source_row = receipt.get("source")
     if not isinstance(source_row, dict) or source_row.get("source_commit") != SOURCE_COMMIT or source_row.get("source_tree") != SOURCE_TREE:
         raise ValueError("D100 English central mirror receipt source binding changed")
-    if inventory(source) != inventory(destination):
-        raise ValueError("D100 English source and central mirror diverged after receipt creation")
+    validate_destination_overlay(source, destination)
     if receipt.get("invariants") != {
-        "source_destination_byte_identity": True,
+        "source_destination_byte_identity": False,
+        "source_destination_navigation_overlay": True,
         "source_inventory_closure_preserved": True,
         "component_rights_preserved": True,
         "local_render_dependencies_complete": True,
         "portable_subdirectory_links": True,
+        "every_reader_entrypoint_links_to_program_home": True,
+        "every_reader_html_document_links_to_program_home": True,
         "semantic_body_rewritten": False,
     }:
         raise ValueError("D100 English central mirror receipt invariants changed")

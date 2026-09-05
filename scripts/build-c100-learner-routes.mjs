@@ -5,7 +5,8 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const owner = resolve(project, '..', 'foundations-of-geometry-id');
+const workspace = resolve(project, '..', '..', '..');
+const owner = resolve(workspace, '04_mirrors', 'id', 'foundations-of-geometry-id');
 const docs = resolve(project, 'docs');
 const routeRoot = resolve(docs, 'id-ID', 'courses', 'C100');
 const readerRoot = resolve(routeRoot, 'reader');
@@ -22,6 +23,10 @@ const EXPECTED = {
   receipt: { bytes: 6883, sha256: '7217c1ca89d398447adc23e108fa40aa5ceef1622d605bdd48f2bf9518dc6a14' },
   solutions: { bytes: 2698925, sha256: '01b618884353905e5be06ac7c85249f2aa0b127687a7e93038f5b65d5fddcdc7' },
 };
+const programHomeHref = '../../../../id/#course-C100';
+const skipLink = '<a class="skip-link" href="#main-content">Lewati ke konten utama</a>';
+const programNavigation = '<nav data-program-navigation="v1" aria-label="Navigasi program"><a data-program-home href="../../../../id/#course-C100">← Kembali ke Program Matematika</a></nav>';
+const programReturn = '<p data-program-return><a data-program-home href="../../../../id/#course-C100">← Kembali ke Program Matematika</a></p>';
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const verify = (name, bytes) => {
   assert.equal(bytes.length, EXPECTED[name].bytes, `${name}: jumlah byte otoritas berubah.`);
@@ -50,8 +55,24 @@ const readOwnerOrMaterialized = async (ownerPath, materializedPath) => {
     return readFile(materializedPath);
   }
 };
+const readSourceHtml = async () => {
+  try {
+    return await readFile(sourceHtml);
+  } catch (error) {
+    if (error?.code !== 'ENOENT') throw error;
+    const hosted = (await readFile(resolve(readerRoot, 'index.html'))).toString('utf8');
+    assert.equal(hosted.split(programNavigation).length - 1, 1, 'C100 hosted fallback must contain exactly one program-navigation shell.');
+    assert.equal(hosted.split(programReturn).length - 1, 1, 'C100 hosted fallback must contain exactly one program-return shell.');
+    return Buffer.from(
+      hosted
+        .replace(`${skipLink}\n${programNavigation}`, skipLink)
+        .replace(`${programReturn}\n</footer>`, '</footer>'),
+      'utf8',
+    );
+  }
+};
 const [htmlBytes, styleBytes, solutionBytes, unitBytes, pilotManifestBytes] = await Promise.all([
-  readOwnerOrMaterialized(sourceHtml, resolve(readerRoot, 'index.html')),
+  readSourceHtml(),
   readOwnerOrMaterialized(sourceStyle, resolve(readerRoot, 'style.css')),
   readOwnerOrMaterialized(sourceSolutionPdf, solutionRoute),
   readFile(resolve(pilotRoot, 'units.jsonl')),
@@ -60,6 +81,17 @@ const [htmlBytes, styleBytes, solutionBytes, unitBytes, pilotManifestBytes] = aw
 verify('html', htmlBytes);
 verify('style', styleBytes);
 verify('solutions', solutionBytes);
+const sourceHtmlText = htmlBytes.toString('utf8');
+assert.equal(sourceHtmlText.includes('data-program-navigation="v1"'), false, 'C100 source reader unexpectedly contains the central navigation shell.');
+assert.equal(sourceHtmlText.split(skipLink).length - 1, 1, 'C100 source reader skip-link anchor changed.');
+assert.equal(sourceHtmlText.split('</footer>').length - 1, 1, 'C100 source reader footer anchor changed.');
+const hostedHtmlBytes = Buffer.from(
+  sourceHtmlText
+    .replace(skipLink, `${skipLink}\n${programNavigation}`)
+    .replace('</footer>', `${programReturn}\n</footer>`),
+  'utf8',
+);
+const hostedHtml = { bytes: hostedHtmlBytes.length, sha256: sha256(hostedHtmlBytes) };
 const pilotManifest = JSON.parse(pilotManifestBytes.toString('utf8'));
 const receiptFact = pilotManifest.input_authority.find(({ role }) => role === 'complete_open_course_publication_receipt');
 assert.deepEqual(
@@ -93,9 +125,9 @@ assert.equal(topLevel.length, 21, 'C100 harus memiliki Prakata dan 20 bab tingka
 const chapters = topLevel.filter(({ stable_unit_id: id }) => /\.ch\d{2}$/.test(id));
 assert.equal(chapters.length, 20);
 
-// Preserve the validated semantic reader byte-for-byte.  The landing and unit
-// wrappers carry current completion/navigation context without rewriting it.
-await writeBytes(resolve(readerRoot, 'index.html'), htmlBytes);
+// Preserve the validated semantic body while adding only the central site's
+// deterministic, removable program-navigation shell.
+await writeBytes(resolve(readerRoot, 'index.html'), hostedHtmlBytes);
 await writeBytes(resolve(readerRoot, 'style.css'), styleBytes);
 await writeBytes(solutionRoute, solutionBytes);
 
@@ -116,7 +148,7 @@ const chapterList = chapters.map((unit) => {
 
 const courseHtml = `<!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>C100 — Bidang Euklides dan Kerabatnya | Program Matematika Indonesia</title><meta name="description" content="Kursus geometri Bahasa Indonesia lengkap: pembaca HTML semantik, PDF, solusi, EPUB, dan pendamping enam unit."><link rel="canonical" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/"><style>${commonStyle}</style></head>
-<body><main><nav aria-label="Jejak navigasi"><a href="../../../">Program Matematika Indonesia</a> › <span aria-current="page">C100</span></nav>
+<body><main><nav aria-label="Jejak navigasi"><a data-program-home href="../../../id/#course-C100">Program Matematika Indonesia</a> › <span aria-current="page">C100</span></nav>
 <p class="meta">C100 · Geometri &amp; Topologi · edisi publik lengkap</p><h1>Bidang Euklides dan Kerabatnya</h1>
 <p class="lede">Sebuah pengantar geometri Euklides, netral, hiperbolik, afin, proyektif, sferis, dan konstruksi—dengan Prakata, 20 bab, 253 latihan induk, seluruh 32 subbagian latihan, 247 petunjuk, dan 253 solusi.</p>
 <div class="actions"><a class="button primary" href="reader/">Mulai membaca HTML</a><a class="button download" href="https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1">Unduh PDF</a><a class="button download" href="solutions/SOLUSI_DAN_PENGUASAAN_ID_BAB01_20.pdf">Buka solusi utama</a><a class="button" href="https://doi.org/10.5281/zenodo.22102628">DOI / semua berkas</a><a class="button" href="https://github.com/KokunoYumeto/bidang-euklides-dan-kerabatnya-id">Repositori edisi</a><a class="button" href="https://github.com/KokunoYumeto/bidang-euklides-dan-kerabatnya-id/releases/tag/2026.08.25-complete-course-a11y-ch20-portable">Rilis GitHub lengkap</a></div>
@@ -132,7 +164,7 @@ for (const unit of chapters) {
   const slug = `bab-${String(chapter).padStart(2, '0')}`;
   const unitHtml = `<!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bab ${String(chapter).padStart(2, '0')} — ${esc(unit.title)} | Bidang Euklides dan Kerabatnya</title><meta name="description" content="Pintu masuk pelajar untuk ${esc(unit.title)}."><link rel="canonical" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/units/${slug}/"><style>${commonStyle}</style></head>
-<body><main><nav aria-label="Jejak navigasi"><a href="../../../../../">Program Matematika Indonesia</a> › <a href="../../">C100 — Geometri</a> › <span aria-current="page">Bab ${String(chapter).padStart(2, '0')}</span></nav>
+<body><main><nav aria-label="Jejak navigasi"><a data-program-home href="../../../../../id/#course-C100">Program Matematika Indonesia</a> › <a href="../../">C100 — Geometri</a> › <span aria-current="page">Bab ${String(chapter).padStart(2, '0')}</span></nav>
 <p class="meta">${esc(unit.stable_unit_id)}</p><h1>Bab ${String(chapter).padStart(2, '0')}: ${esc(unit.title)}</h1><p class="lede">Buka langsung bab ini dalam pembaca HTML lengkap. Rumus disajikan sebagai MathML, petunjuk tertaut dari latihan, dan gambar memiliki uraian alternatif statis.</p>
 <div class="actions"><a class="button primary" href="../../reader/#${esc(unit.stable_unit_id)}">Baca bab ini</a><a class="button download" href="https://zenodo.org/records/22102628/files/BIDANG_EUKLIDES_DAN_KERABATNYA_ID_SPINE_COMPLETE.pdf?download=1">PDF lengkap</a><a class="button download" href="../../solutions/SOLUSI_DAN_PENGUASAAN_ID_BAB01_20.pdf">Solusi</a></div><p><a href="../../">← Kembali ke daftar 20 bab</a></p>
 </main></body></html>\n`;
@@ -152,6 +184,15 @@ const routeManifest = {
   reader: {
     url: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/reader/',
     source_html: EXPECTED.html,
+    hosted_html: hostedHtml,
+    central_navigation_overlay: {
+      program_home_href: programHomeHref,
+      source_bytes: EXPECTED.html.bytes,
+      source_sha256: EXPECTED.html.sha256,
+      hosted_bytes: hostedHtml.bytes,
+      hosted_sha256: hostedHtml.sha256,
+      mathematical_body_rewritten: false,
+    },
     source_style: EXPECTED.style,
     solution_pdf: {
       ...EXPECTED.solutions,
@@ -180,4 +221,4 @@ const routeManifest = {
   }),
 };
 await writeText(resolve(docs, 'data', 'unit-route-C100-v2.1.json'), `${JSON.stringify(routeManifest, null, 2)}\n`);
-console.log(JSON.stringify({ result: 'pass', course: 'C100', units: units.length, chapter_wrappers: chapters.length, reader_html_sha256: EXPECTED.html.sha256, solution_pdf_sha256: EXPECTED.solutions.sha256 }));
+console.log(JSON.stringify({ result: 'pass', course: 'C100', units: units.length, chapter_wrappers: chapters.length, source_reader_sha256: EXPECTED.html.sha256, hosted_reader_sha256: hostedHtml.sha256, solution_pdf_sha256: EXPECTED.solutions.sha256 }));

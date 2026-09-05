@@ -15,6 +15,7 @@ from validate_d100_english_public_html_v1 import (
     DEFAULT_MANIFEST,
     DEFAULT_RECEIPT,
     DEFAULT_SOURCE,
+    CENTRAL_PROGRAM_HREF,
     EXPECTED_AGGREGATE_SHA256,
     EXPECTED_BYTES,
     EXPECTED_FILES,
@@ -26,9 +27,12 @@ from validate_d100_english_public_html_v1 import (
     SOURCE_COMMIT,
     SOURCE_TREE,
     aggregate_sha256,
+    centralized_payload,
+    expected_destination_inventory,
     inventory,
     sha256_file,
     validate,
+    validate_destination_overlay,
     validate_links,
     validate_pinned_git_tree,
     validate_receipt,
@@ -49,10 +53,11 @@ def json_bytes(value: object) -> bytes:
 
 def stage_reader(source: Path, destination: Path, manifest_path: Path) -> str:
     source_facts = inventory(source)
+    expected_facts = expected_destination_inventory(source)
     if destination.exists():
         destination_facts = inventory(destination)
-        if destination_facts == source_facts:
-            return "already_byte_exact"
+        if destination_facts == expected_facts:
+            return "already_navigation_exact"
         if not manifest_path.is_file():
             raise ValueError("existing D100 English destination differs and has no lane-owned manifest")
         prior = json.loads(manifest_path.read_text(encoding="utf-8"))
@@ -70,9 +75,9 @@ def stage_reader(source: Path, destination: Path, manifest_path: Path) -> str:
             source_path = source.joinpath(*fact.path.split("/"))
             target_path = temporary.joinpath(*fact.path.split("/"))
             target_path.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copyfile(source_path, target_path)
-        if inventory(temporary) != source_facts:
-            raise ValueError("temporary D100 English reader copy is not byte-identical")
+            target_path.write_bytes(centralized_payload(fact.path, source_path.read_bytes()))
+        if inventory(temporary) != expected_facts:
+            raise ValueError("temporary D100 English reader navigation projection differs")
         if destination.exists():
             destination.rename(backup)
         temporary.rename(destination)
@@ -86,21 +91,19 @@ def stage_reader(source: Path, destination: Path, manifest_path: Path) -> str:
         if temporary.exists():
             shutil.rmtree(temporary)
         raise
-    return "copied_byte_exact"
+    return "copied_with_navigation_overlay"
 
 
 def build_manifest(source: Path, destination: Path) -> dict[str, object]:
     facts, public_manifest, _source_inventory = validate_source_inventory(source)
     git_tree = validate_pinned_git_tree(source, facts)
-    destination_facts = inventory(destination)
-    if destination_facts != facts:
-        raise ValueError("D100 English destination differs before manifest construction")
-    links = validate_links(destination, destination_facts)
+    destination_facts, transformations = validate_destination_overlay(source, destination)
+    links = validate_links(destination, destination_facts, require_program_navigation=True)
     return {
         "schema": "d100-english-reader-mirror-manifest-v1",
         "course_id": "D100",
         "locale": "en",
-        "status": "complete-local-reader-mirror",
+        "status": "complete-central-reader-with-navigation-overlay",
         "title": "Algebraic Geometry: Curves, Sheaves and Schemes — Independent English Edition",
         "source_authority": {
             "repository_url": SOURCE_REPOSITORY,
@@ -131,14 +134,28 @@ def build_manifest(source: Path, destination: Path) -> dict[str, object]:
                 "reader/bgk.html",
                 "reader/companion.html",
             ],
-            "file_count": EXPECTED_FILES,
-            "bytes": EXPECTED_BYTES,
+            "file_count": len(destination_facts),
+            "bytes": sum(fact.bytes for fact in destination_facts),
             "html_routes": 4,
-            "aggregate_sha256": EXPECTED_AGGREGATE_SHA256,
+            "aggregate_sha256": aggregate_sha256(destination_facts),
             "files": [fact.as_dict() for fact in destination_facts],
         },
+        "central_navigation_overlay": {
+            "program_home_href": CENTRAL_PROGRAM_HREF,
+            "placement": ["after_skip_link", "before_footer_close"],
+            "html_entrypoints": sorted(
+                str(row["path"])
+                for row in transformations
+                if str(row["path"]).endswith(".html")
+            ),
+            "transformed_file_count": len(transformations),
+            "transformations": transformations,
+            "mathematical_body_rewritten": False,
+        },
         "validation": {
-            "source_destination_byte_identity": inventory(source) == destination_facts,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
+            "source_files_byte_preserved": len(facts) - len(transformations),
             "source_inventory_closure_preserved": True,
             "unsafe_paths": 0,
             "symlinks": 0,
@@ -155,7 +172,7 @@ def build_manifest(source: Path, destination: Path) -> dict[str, object]:
         },
         "provenance": {
             "model": "OpenAI Codex gpt-5.6-sol, Ultra.",
-            "operation": "byte-preserved central hosting of an already completed English edition",
+            "operation": "central hosting of an already completed English edition with a deterministic program-navigation shell",
             "source_authorship_preserved": True,
             "endorsement_claimed": False,
         },
@@ -164,6 +181,7 @@ def build_manifest(source: Path, destination: Path) -> dict[str, object]:
             "validation_command": "python -B scripts/validate_d100_english_public_html_v1.py",
             "network_required": False,
             "semantic_body_rewritten": False,
+            "navigation_shell_added": True,
         },
     }
 
@@ -182,7 +200,7 @@ def build_receipt(
         "status": "pass",
         "course_id": "D100",
         "locale": "en",
-        "operation": "idempotent_byte_exact_stage_or_verify",
+        "operation": "idempotent_stage_or_verify_with_navigation_overlay",
         "source": {
             "repository": SOURCE_REPOSITORY,
             "hosted_reader": SOURCE_HOSTED_READER,
@@ -222,11 +240,14 @@ def build_receipt(
         ],
         "validation": validation,
         "invariants": {
-            "source_destination_byte_identity": True,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
             "source_inventory_closure_preserved": True,
             "component_rights_preserved": True,
             "local_render_dependencies_complete": True,
             "portable_subdirectory_links": True,
+            "every_reader_entrypoint_links_to_program_home": True,
+            "every_reader_html_document_links_to_program_home": True,
             "semantic_body_rewritten": False,
         },
     }

@@ -65,7 +65,7 @@ const expected = new Map([
   [paths.openLogicAdmission, { bytes: 13623, sha256: '2a86c41e92f9c9ef7e215448967998504bd4c16e7ba8e680d795d155aebef9a7' }],
   [paths.openLogicManifest, { bytes: 22315, sha256: '01974670c902a50d3e0166214f665286e0030a270a781a56413976be52ca4b01' }],
   [paths.openLogicRoute, { bytes: 2485, sha256: 'e4a859bae966c0cc6272a814273c882b79cb7136f83ae83c147559c530921414' }],
-  [paths.openLogicValidation, { bytes: 2867, sha256: '4774d889bf52244ef22181b0c90cfa2826ee4da401193d8229d2ac67181be6bc' }],
+  [paths.openLogicValidation, { bytes: 2867, sha256: 'bdb7b1d7d2c8803dae9d3bc2ef83701abeacb18f306fb324a2b3f376d1c97efc' }],
   [paths.c130Admission, { bytes: 4889, sha256: 'b311ab7d2a6a86af40174d051fbd8ef273a8536b34f0af77b76e5a1ce9b3397e' }],
   [paths.c130Manifest, { bytes: 22488, sha256: 'cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239' }],
   [paths.c130Route, { bytes: 9930, sha256: '8114562c963295577d8f845719061febed5993b5cbbe5fc4beb8ba235d7fd709' }],

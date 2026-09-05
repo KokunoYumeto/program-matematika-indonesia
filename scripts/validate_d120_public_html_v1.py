@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate the byte-exact D120 central HTML reader mirror."""
+"""Validate D120's frozen reader body plus its central navigation shell."""
 
 from __future__ import annotations
 
@@ -13,6 +13,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import unquote, urlsplit
 
 from validate_d10_public_html_v1 import (
+    FileFact,
     ReaderHTMLParser,
     aggregate_sha256,
     css_urls,
@@ -54,6 +55,9 @@ EXPECTED_READER_BYTES = 2_844_307
 EXPECTED_HTML_FILES = 11
 EXPECTED_ENTRYPOINT_BYTES = 36_311
 EXPECTED_ENTRYPOINT_SHA256 = "91875291e302741f442fa98ebecc9539ac3de43b4dbfdb07ea34bb559f978a42"
+CENTRAL_PROGRAM_HREF = "../../../../id/#course-D120"
+PROGRAM_NAVIGATION_MARKER = 'data-program-navigation="v1"'
+SKIP_LINK = '<a class="o017-skip-link" href="#quarto-document-content">Langsung ke isi utama</a>'
 CSS_IMPORT_RE = re.compile(
     r"@import\s+(?:url\(\s*)?(['\"]?)([^'\"\)\s;]+)\1\s*\)?",
     re.IGNORECASE,
@@ -113,6 +117,82 @@ class D120HTMLParser(ReaderHTMLParser):
 
 def sha256_bytes(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
+
+
+def program_home_href(relative: str) -> str:
+    depth = len(PurePosixPath(relative).parent.parts)
+    return "../" * depth + CENTRAL_PROGRAM_HREF
+
+
+def reader_contents_href(relative: str) -> str | None:
+    depth = len(PurePosixPath(relative).parent.parts)
+    return None if depth == 0 else "../" * depth
+
+
+def navigation_fragments(relative: str) -> tuple[str, str]:
+    href = program_home_href(relative)
+    contents_href = reader_contents_href(relative)
+    contents = (
+        f' · <a data-reader-contents href="{contents_href}">Daftar isi pembaca</a>'
+        if contents_href is not None
+        else ""
+    )
+    navigation = (
+        '<nav data-program-navigation="v1" aria-label="Navigasi program">'
+        f'<a data-program-home href="{href}">← Kembali ke Program Matematika</a>'
+        f'{contents}</nav>'
+    )
+    program_return = (
+        f'<p data-program-return><a data-program-home href="{href}">'
+        '← Kembali ke Program Matematika</a></p>'
+    )
+    return navigation, program_return
+
+
+def centralized_payload(relative: str, source_bytes: bytes) -> bytes:
+    if not relative.endswith(".html"):
+        return source_bytes
+    text = source_bytes.decode("utf-8")
+    navigation, program_return = navigation_fragments(relative)
+    if PROGRAM_NAVIGATION_MARKER in text or 'data-program-return' in text:
+        raise ValueError("D120 source unexpectedly contains central navigation")
+    if text.count(SKIP_LINK) != 1 or text.count("</body>") != 1:
+        raise ValueError("D120 central navigation injection anchors changed")
+    text = text.replace(SKIP_LINK, SKIP_LINK + "\n" + navigation, 1)
+    text = text.replace("</body>", program_return + "\n</body>", 1)
+    return text.encode("utf-8")
+
+
+def expected_destination_inventory(source: Path) -> list[FileFact]:
+    rows: list[FileFact] = []
+    for fact in inventory(source):
+        data = source.joinpath(*fact.path.split("/")).read_bytes()
+        target = centralized_payload(fact.path, data)
+        rows.append(FileFact(fact.path, len(target), sha256_bytes(target)))
+    return rows
+
+
+def validate_destination_overlay(source: Path, destination: Path) -> tuple[list[FileFact], list[dict[str, object]]]:
+    expected = expected_destination_inventory(source)
+    actual = inventory(destination)
+    if actual != expected:
+        raise ValueError("D120 central reader differs from the deterministic navigation-overlay projection")
+    source_map = fact_map(inventory(source))
+    target_map = fact_map(actual)
+    transformations = []
+    for relative in sorted(path for path in source_map if path.endswith(".html")):
+        source_fact = source_map[relative]
+        target_fact = target_map[relative]
+        transformations.append({
+            "path": relative,
+            "operation": "add_central_program_navigation",
+            "program_home_href": program_home_href(relative),
+            "source_bytes": source_fact.bytes,
+            "source_sha256": source_fact.sha256,
+            "target_bytes": target_fact.bytes,
+            "target_sha256": target_fact.sha256,
+        })
+    return actual, transformations
 
 
 def release_manifest(archive: Path) -> dict[str, object]:
@@ -212,12 +292,18 @@ def resolve_local(root: Path, source_file: Path, raw_url: str) -> tuple[Path, st
     return target, unquote(parsed.fragment)
 
 
-def validate_links(root: Path, facts: list[object]) -> dict[str, object]:
+def validate_links(
+    root: Path,
+    facts: list[object],
+    *,
+    require_program_navigation: bool = True,
+) -> dict[str, object]:
     parsers: dict[Path, ReaderHTMLParser] = {}
     local_refs = 0
     fragments = 0
     external_refs = 0
     css_refs = 0
+    program_navigation_files: list[str] = []
     for fact in facts:
         path = root / PurePosixPath(fact.path)
         if fact.path.endswith(".html"):
@@ -226,6 +312,17 @@ def validate_links(root: Path, facts: list[object]) -> dict[str, object]:
             parser.close()
             if parser.html_langs != ["id-ID"]:
                 raise ValueError(f"{fact.path}: expected exactly html lang=id-ID")
+            expected_home = program_home_href(fact.path)
+            if require_program_navigation:
+                program_links = sum(raw_url.strip() == expected_home for _key, raw_url in parser.references)
+                if program_links < 2 or PROGRAM_NAVIGATION_MARKER not in path.read_text(encoding="utf-8"):
+                    raise ValueError(f"{fact.path}: lacks top-and-bottom program navigation")
+                expected_contents = reader_contents_href(fact.path)
+                if expected_contents is not None and not any(
+                    raw_url.strip() == expected_contents for _key, raw_url in parser.references
+                ):
+                    raise ValueError(f"{fact.path}: lacks a reader-contents return link")
+                program_navigation_files.append(fact.path)
             external_runtime = [
                 (kind, url)
                 for kind, url in parser.runtime_references
@@ -253,7 +350,11 @@ def validate_links(root: Path, facts: list[object]) -> dict[str, object]:
                 css_refs += 1
 
     for source_path, parser in parsers.items():
+        source_relative = source_path.relative_to(root).as_posix()
+        expected_home = program_home_href(source_relative)
         for _key, raw_url in parser.references:
+            if raw_url.strip() == expected_home:
+                continue
             parsed = urlsplit(raw_url.strip())
             if parsed.scheme or parsed.netloc or raw_url.strip().startswith("//"):
                 external_refs += 1
@@ -283,15 +384,19 @@ def validate_links(root: Path, facts: list[object]) -> dict[str, object]:
         "external_references_observed": external_refs,
         "external_runtime_dependencies": 0,
         "portable_subdirectory_links": True,
+        "program_navigation_href": CENTRAL_PROGRAM_HREF if require_program_navigation else None,
+        "program_navigation_files": program_navigation_files,
+        "program_navigation_files_checked": len(program_navigation_files),
+        "every_html_document_links_to_program_home": (
+            not require_program_navigation or len(program_navigation_files) == len(parsers)
+        ),
     }
 
 
 def validate(source: Path, destination: Path, archive: Path, mirror_manifest: Path) -> dict[str, object]:
     release = release_manifest(archive)
     source_facts = validate_frozen_identity(source, release)
-    destination_facts = validate_frozen_identity(destination, release)
-    if source_facts != destination_facts:
-        raise ValueError("D120 source and central destination are not byte-identical")
+    destination_facts, transformations = validate_destination_overlay(source, destination)
     links = validate_links(destination, destination_facts)
     if not mirror_manifest.is_file():
         raise ValueError("D120 central mirror manifest is missing")
@@ -301,12 +406,17 @@ def validate(source: Path, destination: Path, archive: Path, mirror_manifest: Pa
     reader = data.get("reader", {})
     if reader.get("file_count") != EXPECTED_READER_FILES:
         raise ValueError("D120 central mirror manifest count changed")
-    if reader.get("bytes") != EXPECTED_READER_BYTES:
+    if reader.get("bytes") != sum(fact.bytes for fact in destination_facts):
         raise ValueError("D120 central mirror manifest bytes changed")
     if reader.get("aggregate_sha256") != aggregate_sha256(destination_facts):
         raise ValueError("D120 central mirror manifest aggregate changed")
     if reader.get("files") != [fact.as_dict() for fact in destination_facts]:
         raise ValueError("D120 central mirror manifest file inventory changed")
+    overlay = data.get("central_navigation_overlay")
+    if not isinstance(overlay, dict) or overlay.get("transformations") != transformations:
+        raise ValueError("D120 central navigation overlay binding changed")
+    if overlay.get("program_home_href") != CENTRAL_PROGRAM_HREF:
+        raise ValueError("D120 central program-home route changed")
     return {
         "status": "pass",
         "reader": {
@@ -314,7 +424,8 @@ def validate(source: Path, destination: Path, archive: Path, mirror_manifest: Pa
             "bytes": sum(fact.bytes for fact in destination_facts),
             "html_files": sum(fact.path.endswith(".html") for fact in destination_facts),
             "aggregate_sha256": aggregate_sha256(destination_facts),
-            "source_destination_byte_identity": True,
+            "source_destination_byte_identity": False,
+            "source_destination_navigation_overlay": True,
         },
         "archive": {
             "bytes": archive.stat().st_size,
@@ -350,7 +461,7 @@ def validate_receipt(
         or receipt.get("status") != "pass"
         or receipt.get("course_id") != "D120"
         or receipt.get("locale") != "id-ID"
-        or receipt.get("operation") != "idempotent_byte_exact_stage_or_verify"
+        or receipt.get("operation") != "idempotent_stage_or_verify_with_navigation_overlay"
     ):
         raise ValueError("D120 mirror receipt identity changed")
     facts = inventory(destination)
@@ -392,11 +503,14 @@ def validate_receipt(
     if receipt.get("validation") != validation:
         raise ValueError("D120 mirror receipt validation result changed")
     if receipt.get("invariants") != {
-        "source_destination_byte_identity": True,
+        "source_destination_byte_identity": False,
+        "source_destination_navigation_overlay": True,
         "release_manifest_closure_preserved": True,
         "component_rights_preserved": True,
         "local_render_dependencies_complete": True,
         "portable_subdirectory_links": True,
+        "every_reader_entrypoint_links_to_program_home": True,
+        "every_reader_html_document_links_to_program_home": True,
         "semantic_body_rewritten": False,
     }:
         raise ValueError("D120 mirror receipt invariants changed")

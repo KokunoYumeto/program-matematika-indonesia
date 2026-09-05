@@ -1,4 +1,4 @@
-"""C100 native capability projection. Native inputs and reader bytes are immutable."""
+"""C100 native capability projection with a removable central navigation shell."""
 from __future__ import annotations
 
 import csv
@@ -22,6 +22,18 @@ NATIVE_PATHS = ['backend/catalog-v0.json', 'backend/schema-v0.json',
                 'backend/unit-order-v0.csv', 'backend/exercise-hints-v0.csv',
                 'backend/figure-descriptions-id-v0.csv', '00_control/TERMINOLOGY.csv']
 NATIVE_PATHS += [f'backend/concepts-ch{n:02d}-id-v0.csv' for n in range(1, 21)]
+PROGRAM_NAVIGATION = ('\n<nav data-program-navigation="v1" aria-label="Navigasi program">'
+                      '<a data-program-home href="../../../../id/#course-C100">← Kembali ke Program Matematika</a></nav>')
+PROGRAM_RETURN = ('<p data-program-return><a data-program-home href="../../../../id/#course-C100">'
+                  '← Kembali ke Program Matematika</a></p>\n')
+
+
+def reader_source_projection(data):
+    """Remove only the documented central shell before checking frozen source bytes."""
+    text = data.decode('utf-8')
+    assert text.count(PROGRAM_NAVIGATION) == 1
+    assert text.count(PROGRAM_RETURN) == 1
+    return text.replace(PROGRAM_NAVIGATION, '', 1).replace(PROGRAM_RETURN, '', 1).encode('utf-8')
 
 
 def encoded(value):
@@ -99,7 +111,10 @@ def read_inputs(root=ROOT):
     for expected in lock['native_files']:
         assert fact(expected['path'], (folder / expected['path']).read_bytes()) == expected, expected['path']
     for expected in lock['central_dependencies']:
-        assert fact(expected['path'], (root / expected['path']).read_bytes()) == expected, expected['path']
+        data = (root / expected['path']).read_bytes()
+        if Path(expected['path']) == READER:
+            data = reader_source_projection(data)
+        assert fact(expected['path'], data) == expected, expected['path']
     # Independently bind companion assets to the already locked pilot's facts.
     accessibility=load_json(root / PILOT / 'rights_accessibility.json')['accessibility']
     for path,prefix in [(READER_STYLE,'reader_style'),(SOLUTION_PDF,'solution_pdf')]:

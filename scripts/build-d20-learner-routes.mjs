@@ -42,7 +42,7 @@ const unitLinks = proposal.units.map((unit) => `<li><a href="units/${esc(unit.sl
 const courseHtml = `<!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>D20 — Analisis Fungsional | Program Matematika Indonesia</title><meta name="description" content="Pintu masuk pelajar untuk 17 bab HTML Bahasa Indonesia Analisis Fungsional."><link rel="canonical" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/"><style>${commonStyle}</style></head>
 <body><main>
-<nav aria-label="Jejak navigasi"><a href="../../../">Program Matematika Indonesia</a> › <span aria-current="page">D20</span></nav>
+<nav aria-label="Jejak navigasi"><a data-program-home href="../../../id/#course-D20">Program Matematika Indonesia</a> › <span aria-current="page">D20</span></nav>
 <h1>Analisis Fungsional</h1>
 <p class="lede">Edisi Bahasa Indonesia untuk fondasi pascasarjana awal: ruang bernorma, Banach dan Hilbert, operator terbatas, dualitas, teori kompak, dan teori spektral.</p>
 <p>Ini adalah indeks pelajar yang mengarahkan ke pembaca HTML publik yang sebenarnya. Teks buku tidak disalin ke hub; setiap bab tetap berada di repositori pemiliknya.</p>
@@ -59,7 +59,7 @@ for (const unit of proposal.units) {
     : '<span class="meta">Pendamping publik tidak tersedia untuk bab ini.</span>';
   const unitHtml = `<!doctype html>
 <html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Bab ${String(unit.order).padStart(2, '0')} — ${esc(unit.title)} | Analisis Fungsional</title><meta name="description" content="Indeks pelajar untuk ${esc(unit.title)}."><link rel="canonical" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/units/${esc(unit.slug)}/"><style>${commonStyle}</style></head>
-<body><main><nav aria-label="Jejak navigasi"><a href="../../../../../">Program Matematika Indonesia</a> › <a href="../../">D20 — Analisis Fungsional</a> › <span aria-current="page">Bab ${String(unit.order).padStart(2, '0')}</span></nav>
+<body><main><nav aria-label="Jejak navigasi"><a data-program-home href="../../../../../id/#course-D20">Program Matematika Indonesia</a> › <a href="../../">D20 — Analisis Fungsional</a> › <span aria-current="page">Bab ${String(unit.order).padStart(2, '0')}</span></nav>
 <p class="meta">${esc(unit.id)}</p><h1>Bab ${String(unit.order).padStart(2, '0')}: ${esc(unit.title)}</h1>
 <p class="lede">Buka pembaca bab yang dipelihara oleh edisi kanonik. Halaman indeks ini tidak menggantikan pembaca dan tidak menyalin isi buku.</p>
 <div class="actions"><a class="button primary" href="${esc(unit.html_url)}">Buka pembaca HTML bab ↗</a>${companion}<a class="button secondary" href="${esc(owner.pdf_fallback)}">PDF lengkap ↗</a></div>
