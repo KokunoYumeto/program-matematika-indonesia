@@ -636,8 +636,8 @@ assert.deepEqual(
   d100.layers.interoperability.semantic_adapter.evidence.map(({ kind }) => kind),
   ['central_adapter_manifest', 'deterministic_validation_receipt', 'native_metadata_intake', 'verified_english_public_release'],
 );
-assert.equal(d100.layers.interoperability.semantic_adapter.evidence[0].sha256, '6011416dbc28fec6bbe1fb9a27e94fb938753739fa9934f2de687ee5ee2c7135');
-assert.equal(d100.layers.interoperability.semantic_adapter.evidence[1].sha256, 'd84909369297f2a4e1c630c95c807c91f02f717b064e1016ce6873306aa9ad23');
+assert.equal(d100.layers.interoperability.semantic_adapter.evidence[0].sha256, '366be8e27f2b543353b7705b8a03a5137fbfbe95e2f465b1726e30325dc935ca');
+assert.equal(d100.layers.interoperability.semantic_adapter.evidence[1].sha256, '1927526a963058115ff6356cccd1ef358c5103c653b393de2cb5610578db3d42');
 assert.equal(d100.layers.interoperability.semantic_adapter.evidence[2].sha256, '0f4e4a84eec9078164c4195b6e920ec9d31b54704806ef5e4add18f88aee963c');
 assert.equal(d100.layers.interoperability.semantic_adapter.evidence[3].sha256, 'f7f36ad8ac8a003816060685d39dca45d977dbc10cc4e6c6b6de07b9707bbdbe');
 assert.equal(d100.layers.learner.tools.length, 1);
@@ -645,14 +645,14 @@ assert.equal(d100.layers.learner.tools[0].tool_id, 'd100.open_learner_hub');
 assert.equal(d100.layers.learner.tools[0].href, 'backend/d100/D100.html');
 assert.equal(d100.layers.learner.tools[0].page.sha256, 'c06be44747a4767271e26c55c0b6bc747645a7800d9414899b2e9c9b0bf6be3b');
 assert.equal(d100.layers.learner.tools[0].resource.sha256, '0d18bd6ee321c95c6263b27928038461c0e6f87300b643604ffdc9e1e6f3774f');
-assert.equal(d100.layers.learner.tools[0].evidence.sha256, 'd84909369297f2a4e1c630c95c807c91f02f717b064e1016ce6873306aa9ad23');
+assert.equal(d100.layers.learner.tools[0].evidence.sha256, '1927526a963058115ff6356cccd1ef358c5103c653b393de2cb5610578db3d42');
 assert.equal(d100.layers.curriculum.unit_identity_status, 'verified');
 assert.equal(d100.layers.translation.ledger_status, 'verified');
 assert.equal(d100.layers.translation.terminology_status, 'verified');
 assert.equal(d100.layers.translation.rights_status, 'verified');
 assert.equal(d100.layers.translation.corrections_status, 'verified');
-assert.equal(d100.layers.production.build_status, 'verified');
-assert.equal(d100.layers.production.deterministic_replay_status, 'verified');
+assert.equal(d100.layers.production.build_status, 'available_unverified');
+assert.equal(d100.layers.production.deterministic_replay_status, 'available_unverified');
 assert.equal(d100.layers.educator.status, 'verified');
 assert.equal(d100.layers.educator.unit_alignment_status, 'verified');
 assert.ok(d100.layers.educator.resources.some(resource => resource.id === 'D100:educator-hub-en-v1' && resource.status === 'verified'));

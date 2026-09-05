@@ -206,8 +206,8 @@ for (const [name, fetch] of [
   assert.equal(d100.layers.translation.terminology_status,'verified');
   assert.equal(d100.layers.translation.rights_status,'verified');
   assert.equal(d100.layers.translation.corrections_status,'verified');
-  assert.equal(d100.layers.production.build_status,'verified');
-  assert.equal(d100.layers.production.deterministic_replay_status,'verified');
+  assert.equal(d100.layers.production.build_status,'available_unverified');
+  assert.equal(d100.layers.production.deterministic_replay_status,'available_unverified');
   assert.equal(d100.layers.educator.status,'verified');
   assert.equal(d100.layers.educator.unit_alignment_status,'verified');
   assert.ok(d100.layers.educator.resources.some(r=>r.id==='D100:educator-hub-en-v1'&&r.status==='verified'));

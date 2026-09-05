@@ -90,7 +90,7 @@ assert.ok(validation.negative_fixtures.every(row => row.state === 'rejected'));
 assert.deepEqual(validation.isolated_two_build_byte_identity, {
   byte_identical: true,
   file_count: 11,
-  tree_sha256: '0f0073a6dcdc1b6448ddabfc76a148b56f1e08556bd3c4dcae1263527623bcb6',
+  tree_sha256: '463de8649239980e67e5cf446a5ca63bac87d1caaac9640cbfd475b541723808',
 });
 
 assert.equal(capabilities.schema, 'd100-capability-summary/1');
@@ -188,11 +188,17 @@ overrides.semantic_adapters.D100 = {
 };
 
 const oldNative = overrides.native_capabilities.D100 ?? {};
+const admittedEvidenceLocators = new Set(evidence.map(row => row.locator));
+const legacyTerminologyLocator = 'backend/course-capsule-v1/authority/native-terminology-qa/unib-teori-bilangan-20260831/terminology_concordance.json';
 for (const key of ['terminology', 'corrections']) {
   const locators = (oldNative[key]?.evidence ?? []).map(row => row.locator);
+  const isCurrentD100Evidence = locators.length === admittedEvidenceLocators.size
+    && new Set(locators).size === admittedEvidenceLocators.size
+    && locators.every(locator => admittedEvidenceLocators.has(locator));
   assert.ok(
     locators.length === 0
-      || locators.every(locator => locator === 'backend/course-capsule-v1/authority/native-terminology-qa/unib-teori-bilangan-20260831/terminology_concordance.json'),
+      || locators.every(locator => locator === legacyTerminologyLocator)
+      || isCurrentD100Evidence,
     `Preserve unexpected current D100 ${key} evidence`,
   );
 }
@@ -203,11 +209,12 @@ for (const capability of [
   'terminology',
   'translation_rights',
   'corrections',
-  'build',
-  'deterministic_replay',
   'educator_unit_alignment',
 ]) {
   overrides.native_capabilities.D100[capability] = {status: 'verified', evidence};
+}
+for (const capability of ['build', 'deterministic_replay']) {
+  overrides.native_capabilities.D100[capability] = {status: 'available_unverified', evidence};
 }
 
 const scope = 'English en-v1.0.0 capability view: 60 source-course aggregates, 32 separate companion units, 1,201 exercises, exact solution provenance, and a 57-item concentrated mastery route.';
@@ -264,14 +271,8 @@ overrides.educator_evidence.D100 = {
   bytes: teacher.bytes,
   sha256: teacher.sha256,
   features: [
-    'prerequisite_diagnostics',
-    'lesson_sequences',
     'exercise_bank',
-    'staged_hints_answers_solutions',
-    'assessment_blueprints',
     'solution_provenance',
-    'remix_selectors',
-    'accessibility_accommodations',
   ],
   resources,
 };

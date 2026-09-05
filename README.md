@@ -6,7 +6,7 @@
 
 [Latest preserved multilingual map / peta multibahasa terbaru](https://doi.org/10.5281/zenodo.22059707) · [Latest interface release](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/latest)
 
-**Lebl course tools:** Differential Equations, Real Analysis I–II and Complex Analysis now offer exercise navigation, teacher-plan export and terminology tools from both interfaces. The tools and linked books retain their actual Indonesian language; this is not new English translation. The unchanged reproducible Lebl packet is inside the combined download and [available separately on GitHub](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.8/LEBL_NATIVE_LEARNING_CAPABILITY_V1.zip). Its 5,932 overlapping unit records, 2,203 exercises and 827 terms are indexes, not counts of additional translated pages. Native source IDs and solution-evidence limits are preserved. The common backend has 18 validated adapter roles and 22 without bindings; the whole integration is not claimed complete.
+**Lebl course tools:** Differential Equations, Real Analysis I–II and Complex Analysis now offer exercise navigation, teacher-plan export and terminology tools from both interfaces. The tools and linked books retain their actual Indonesian language; this is not new English translation. The unchanged reproducible Lebl packet is inside the combined download and [available separately on GitHub](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.8/LEBL_NATIVE_LEARNING_CAPABILITY_V1.zip). Its 5,932 overlapping unit records, 2,203 exercises and 827 terms are indexes, not counts of additional translated pages. Native source IDs and solution-evidence limits are preserved. The common backend has 24 validated adapter roles and 16 without bindings; the whole integration is not claimed complete.
 
 **Read our hosted copy and visit the original source.** The language-independent policy is to provide both for every course in every available language. All 40 cards already show original book/course links prominently in both interfaces and offline maps; hosted-reader coverage is expanding course by course. Original Indonesian, English, German, Chinese, and future-language material keeps its actual language and attribution. A00, A10, and A20 now have complete program-hosted original-English HTML mirrors while their OpenStax publisher pages remain separate prominent actions. These links identify the listed spines/components, not the origins of every added companion. Existing readers, downloads, citations and corpus ownership are preserved.
 
@@ -45,7 +45,7 @@ Produksi berlangsung secara terdistribusi: 40 peran kurikulum dikerjakan melalui
 |---|---:|
 | Peran kurikulum dengan korpus atau spesifikasi terpilih | 40/40 |
 | Peran dengan edisi lengkap publik | 35 |
-| Peran yang masih diproduksi | 5: A20, A30, B95, C140, D100 |
+| Peran yang masih diproduksi | 3: A30, B95, C140 |
 | Keluarga implementasi native yang dibandingkan | 33 |
 | Ikatan peran adapter kontrak 2.3.1 yang diterima | 9 peran melalui 8 paket: A00, B10, C30, C40, C80, C130, D20, D60, D110 |
 | Keluarga yang belum mempunyai adapter 2.3.1 dengan replay publik lengkap | 28 |
@@ -76,7 +76,7 @@ Situs publik dibangun langsung dari folder [`docs`](docs). Tidak ada akun, pelac
 
 ## Snapshot Zenodo aktif
 
-Snapshot publik terbaru selalu tersedia melalui [lineage konsep Zenodo 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Setiap versi mempertahankan situs belajar sebagai tautan pertama dan menempatkan JSON, CSV, skema, serta paket backend sebagai lampiran mesin sekunder. Lampiran publik mencakup catatan metode dan temuan, indeks pola 33 keluarga, skema kapsul dan kosakata kapabilitas, inventaris adapter, receipt validasi/readback, serta artefak belajar luring. Snapshot sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama dapat direproduksi. A20 kini tercatat sebagai edisi final; overlay langsung masih mencatat A30, B95, C140, dan D100 sebagai produksi sementara penutupan solusi, migrasi backend per-korpus, dan rekonsiliasi bukti edisi berlanjut.
+Snapshot publik terbaru selalu tersedia melalui [lineage konsep Zenodo 10.5281/zenodo.22059707](https://doi.org/10.5281/zenodo.22059707). Setiap versi mempertahankan situs belajar sebagai tautan pertama dan menempatkan JSON, CSV, skema, serta paket backend sebagai lampiran mesin sekunder. Lampiran publik mencakup catatan metode dan temuan, indeks pola 33 keluarga, skema kapsul dan kosakata kapabilitas, inventaris adapter, receipt validasi/readback, serta artefak belajar luring. Snapshot sengaja berstatus pekerjaan berjalan: 40 dari 40 peran sudah memiliki korpus terpilih atau spesifikasi asli yang dibekukan dan backend bersama dapat direproduksi. A20 dan D100 kini tercatat sebagai edisi final; overlay langsung masih mencatat A30, B95, dan C140 sebagai produksi sementara penutupan solusi, migrasi backend per-korpus, dan rekonsiliasi bukti edisi berlanjut.
 
 Zenodo adalah jalur preservasi mandiri, bukan sekadar salinan GitHub. Setiap perubahan keadaan kanon yang material memperoleh versi baru pada lineage konsep yang sama; GitHub dan Zenodo tetap dua rute publik independen.
 
