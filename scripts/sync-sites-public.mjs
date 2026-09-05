@@ -3,12 +3,21 @@ import { cp, mkdir, readFile, readdir, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, relative, resolve, sep } from 'node:path';
+import { localeMetadata } from '../docs/interface/locales.js';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const source = resolve(project, 'docs');
 const publicRoot = resolve(project, 'public');
 const target = resolve(publicRoot, 'hub');
 assert.ok(target.startsWith(`${publicRoot}${sep}`), 'Target sinkronisasi keluar dari public/.');
+const approvedInterfaceRoots = new Set([
+  'interface',
+  ...Object.values(localeMetadata).map(({ routeSegment }) => routeSegment),
+]);
+for (const [locale, { routeSegment }] of Object.entries(localeMetadata)) {
+  const localeRoot = resolve(source, routeSegment);
+  assert.equal(dirname(localeRoot).toLowerCase(), source.toLowerCase(), `Rute locale keluar atau bersarang: ${locale}`);
+}
 
 await rm(target, { recursive: true, force: true });
 await mkdir(target, { recursive: true });
@@ -32,6 +41,7 @@ const approvedDataFiles = new Set([
   'data/learner-read-model.json',
   'data/learner-delivery-v1.json',
   'data/learner-tools-v1.json',
+  'data/CENTRAL_READER_NAVIGATION_PUBLIC_READBACK_V1.json',
   'data/modular-backend-pattern-index-v1.json',
   'data/modular-backend-pattern-index-v2.json',
   // The successor projection is intentionally confined to this versioned
@@ -107,7 +117,7 @@ await cp(source, target, {
     // pages contain navigation and links only; owner-native prose remains on
     // the canonical course reader.
     if (name === 'id-ID' || name.startsWith('id-ID/')) return true;
-    if (['id', 'en', 'interface'].some((part) => name === part || name.startsWith(part + '/'))) return true;
+    if ([...approvedInterfaceRoots].some((part) => name === part || name.startsWith(part + '/'))) return true;
     // Preserve the exact registered central checkpoint/companion closures.
     // Other owner-native reader trees remain outside this generated Sites mirror.
     if (approvedReaderParents.has(name) || approvedReaderPrefixes.some((prefix) => name.startsWith(prefix))) return true;
@@ -116,6 +126,47 @@ await cp(source, target, {
 });
 
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
+for (const [locale, { routeSegment }] of Object.entries(localeMetadata)) {
+  for (const file of ['index.html', 'learning-map.html', 'learning-map-paired.html']) {
+    const logical = `${routeSegment}/${file}`;
+    const [left, right] = await Promise.all([
+      readFile(resolve(source, logical)),
+      readFile(resolve(target, logical)),
+    ]);
+    assert.equal(right.length, left.length, `${locale}/${file}: jumlah byte locale berbeda.`);
+    assert.equal(sha256(right), sha256(left), `${locale}/${file}: hash locale berbeda.`);
+  }
+}
+const centralNavigationOverlay = JSON.parse(await readFile(
+  resolve(project, 'backend/authority/central-course-surface-navigation-overlay-v1.json'),
+  'utf8',
+));
+assert.equal(centralNavigationOverlay.schema, 'central-course-surface-navigation-overlay-v1');
+assert.equal(centralNavigationOverlay.status, 'pass');
+const centralNavigationOverlayByPath = new Map(
+  centralNavigationOverlay.files.map((row) => [row.document, row]),
+);
+const assertManifestBoundHostedIdentity = (logical, manifestRow, docsBytes, hostedBytes, label) => {
+  const fullPath = `docs/${logical}`;
+  if (docsBytes.length === manifestRow.bytes && sha256(docsBytes) === manifestRow.sha256) {
+    assert.deepEqual(hostedBytes, docsBytes, `${label}: mirror Sites berbeda dari docs.`);
+    return;
+  }
+  const overlayRow = centralNavigationOverlayByPath.get(fullPath);
+  assert.ok(overlayRow, `${label}: berubah di luar overlay navigasi pusat.`);
+  assert.deepEqual(
+    overlayRow.source_body,
+    {path:fullPath, bytes:manifestRow.bytes, sha256:manifestRow.sha256},
+    `${label}: identitas badan sumber overlay berbeda.`,
+  );
+  assert.deepEqual(
+    overlayRow.hosted_surface,
+    {path:fullPath, bytes:docsBytes.length, sha256:sha256(docsBytes)},
+    `${label}: identitas permukaan terhosting berbeda.`,
+  );
+  assert.equal(overlayRow.source_body_replay_exact, true, `${label}: overlay tidak reversibel.`);
+  assert.deepEqual(hostedBytes, docsBytes, `${label}: mirror Sites berbeda dari docs.`);
+};
 for (const name of [
   'index.html',
   'styles.css',
@@ -304,10 +355,7 @@ for (const row of d10Manifest.reader.files) {
     readFile(resolve(source, logical)),
     readFile(resolve(target, logical)),
   ]);
-  assert.equal(left.length, row.bytes, `${logical}: byte manifest berbeda.`);
-  assert.equal(sha256(left), row.sha256, `${logical}: hash manifest berbeda.`);
-  assert.equal(right.length, left.length, `${logical}: jumlah byte sinkron berbeda.`);
-  assert.equal(sha256(right), row.sha256, `${logical}: hash sinkron berbeda.`);
+  assertManifestBoundHostedIdentity(logical, row, left, right, logical);
   d10Bytes += row.bytes;
   d10Aggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
 }
@@ -334,10 +382,7 @@ for (const row of d120Manifest.reader.files) {
     readFile(resolve(source, logical)),
     readFile(resolve(target, logical)),
   ]);
-  assert.equal(left.length, row.bytes, `${logical}: byte manifest berbeda.`);
-  assert.equal(sha256(left), row.sha256, `${logical}: hash manifest berbeda.`);
-  assert.equal(right.length, left.length, `${logical}: jumlah byte sinkron berbeda.`);
-  assert.equal(sha256(right), row.sha256, `${logical}: hash sinkron berbeda.`);
+  assertManifestBoundHostedIdentity(logical, row, left, right, logical);
   d120Bytes += row.bytes;
   d120Aggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
 }
@@ -365,10 +410,7 @@ for (const row of d100EnglishManifest.reader.files) {
     readFile(resolve(source, logical)),
     readFile(resolve(target, logical)),
   ]);
-  assert.equal(left.length, row.bytes, `${logical}: byte manifest berbeda.`);
-  assert.equal(sha256(left), row.sha256, `${logical}: hash manifest berbeda.`);
-  assert.equal(right.length, left.length, `${logical}: jumlah byte sinkron berbeda.`);
-  assert.equal(sha256(right), row.sha256, `${logical}: hash sinkron berbeda.`);
+  assertManifestBoundHostedIdentity(logical, row, left, right, logical);
   d100EnglishBytes += row.bytes;
   d100EnglishAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
 }

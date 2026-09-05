@@ -1,9 +1,13 @@
 import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, escapeMarkup } from './view.js';
-import { interfaceCopy, fillCopy } from './locales.js';
+import { interfaceCopy, localeMetadata, fillCopy } from './locales.js';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, loadLearnerState, saveLearnerState, clearLearnerState, normalizeLearnerState, serializeLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver } from '../learner-state.js';
 
-const interfaceLocale = document.documentElement.lang;
+const documentLanguageTag = String(document.documentElement.lang || '').toLowerCase();
+const interfaceLocale = document.documentElement.dataset.interfaceLocale
+  ?? Object.keys(localeMetadata).find((locale) => localeMetadata[locale].languageTag.toLowerCase() === documentLanguageTag);
+if (!interfaceLocale || !interfaceCopy[interfaceLocale]) throw new Error('Unknown interface locale');
 const ui = interfaceCopy[interfaceLocale];
+const interfaceLanguageTag = localeMetadata[interfaceLocale].languageTag;
 const $ = (selector) => document.querySelector(selector);
 let storage = null;
 try { storage = window.localStorage; } catch { /* Private browsing or file: restrictions. */ }
@@ -11,7 +15,7 @@ const loaded = loadLearnerState(storage, interfaceCourses);
 let record = loaded.state, evaluated = evaluateLearnerState(interfaceCourses, record);
 let unpersistedChanges = false;
 let viewFragment = navigationFragment(location.hash);
-const normalizeSearch = (value) => value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLocaleLowerCase(interfaceLocale);
+const normalizeSearch = (value) => value.toLocaleLowerCase(interfaceLanguageTag).normalize('NFD').replace(/\p{M}/gu, '');
 
 function navigationFragment(value) {
   return ['#top', '#katalog', '#progress', '#about'].includes(value) || interfaceCourses.some(course => value === '#course-' + course.id) ? value : '';
@@ -59,7 +63,7 @@ function filteredRows() {
     if (filter.topic !== 'all' && String(interfaceTopics.indexOf(course.topic)) !== filter.topic) return false;
     if (filter.show === 'completed' && state !== 'completed') return false;
     if (filter.show === 'eligible' && !['eligible', 'eligible_with_waiver'].includes(state)) return false;
-    if (filter.show === 'offline' && !resourceBindings(course, interfaceLocale).some((r) => r.kind === 'portable_html' && r.contentLanguage === interfaceLocale)) return false;
+    if (filter.show === 'offline' && !resourceBindings(course, interfaceLocale).some((r) => r.accessRole === 'offline-copy' && r.contentLanguage.toLowerCase() === interfaceLanguageTag.toLowerCase())) return false;
     return !query || normalizeSearch([course.id, c.title, c.topic, c.purpose].join(' ')).includes(query);
   });
 }
@@ -85,10 +89,10 @@ function renderInterface() {
   $('#progress-summary').textContent = fillCopy(ui.progressSummary, { done: counts.completed ?? 0, ready: (counts.eligible ?? 0) + (counts.eligible_with_waiver ?? 0), blocked: counts.blocked ?? 0 });
   const claims = [];
   for (const [field, kind] of [['placementClaims', 'placement'], ['equivalenceClaims', 'equivalence']]) {
-    for (const claim of record[field]) claims.push('<li>' + ui[kind] + ': ' + claim.courseId + ' <button data-remove-claim="' + kind + '" data-id="' + claim.courseId + '">' + ui.remove + '</button></li>');
+    for (const claim of record[field]) claims.push('<li>' + escapeMarkup(ui[kind]) + ': ' + escapeMarkup(claim.courseId) + ' <button data-remove-claim="' + escapeMarkup(kind) + '" data-id="' + escapeMarkup(claim.courseId) + '">' + escapeMarkup(ui.remove) + '</button></li>');
   }
-  for (const row of record.waivers) claims.push('<li>' + ui.waiver + ': ' + row.targetCourseId + ' ← ' + row.prerequisiteCourseId + ' <button data-remove-waiver="' + row.targetCourseId + '" data-prereq="' + row.prerequisiteCourseId + '">' + ui.remove + '</button></li>');
-  $('#claims').innerHTML = claims.length ? '<ul>' + claims.join('') + '</ul>' : '<p>' + ui.noClaims + '</p>';
+  for (const row of record.waivers) claims.push('<li>' + escapeMarkup(ui.waiver) + ': ' + escapeMarkup(row.targetCourseId) + ' ← ' + escapeMarkup(row.prerequisiteCourseId) + ' <button data-remove-waiver="' + escapeMarkup(row.targetCourseId) + '" data-prereq="' + escapeMarkup(row.prerequisiteCourseId) + '">' + escapeMarkup(ui.remove) + '</button></li>');
+  $('#claims').innerHTML = claims.length ? '<ul>' + claims.join('') + '</ul>' : '<p>' + escapeMarkup(ui.noClaims) + '</p>';
 }
 function saveRecord(next) {
   const saved = saveLearnerState(storage, next, interfaceCourses);
@@ -98,14 +102,14 @@ function saveRecord(next) {
   renderInterface();
 }
 function restoreCourseFragment(focus = false) {
-  const match = viewFragment.match(/^#course-([A-D]\d{2,3})$/);
-  if (!match || !interfaceCourses.some((c) => c.id === match[1])) return;
-  if (!$('#course-' + match[1])) {
+  const courseId = viewFragment.startsWith('#course-') ? viewFragment.slice('#course-'.length) : '';
+  if (!courseId || !interfaceCourses.some((c) => c.id === courseId)) return;
+  if (!$('#course-' + courseId)) {
     $('#search').value = ''; for (const selector of ['#topic', '#level', '#show']) $(selector).value = 'all';
     storeFilters(true); renderInterface();
   }
   requestAnimationFrame(() => {
-    const card = $('#course-' + match[1]);
+    const card = $('#course-' + courseId);
     card?.scrollIntoView({ block: 'start' });
     if (focus) card?.focus({ preventScroll: true });
   });

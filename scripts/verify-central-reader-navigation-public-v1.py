@@ -42,9 +42,12 @@ class NavigationParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.navigation_markers = 0
         self.surface_navigation_markers = 0
+        self.surface_navigation_placements: list[str] = []
         self.home_links: list[dict[str, str]] = []
+        self.program_root_links: list[dict[str, str]] = []
         self.contents_links: list[dict[str, str]] = []
         self.surface_contents_links: list[dict[str, str]] = []
+        self._surface_placement = ""
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -52,18 +55,28 @@ class NavigationParser(HTMLParser):
             self.navigation_markers += 1
         if tag.lower() == "nav" and values.get("data-central-surface-navigation") == "v1":
             self.surface_navigation_markers += 1
+            self._surface_placement = values.get("data-placement", "")
+            self.surface_navigation_placements.append(self._surface_placement)
         if tag.lower() != "a":
             return
         row = {
             "href": values.get("href", ""),
             "course_id": values.get("data-course-id", ""),
+            "interface_locale": values.get("data-interface-locale", ""),
+            "placement": self._surface_placement,
         }
         if "data-program-home" in values:
             self.home_links.append(row)
+        if "data-program-root" in values:
+            self.program_root_links.append(row)
         if "data-reader-contents" in values:
             self.contents_links.append(row)
         if "data-course-surface-contents" in values:
             self.surface_contents_links.append(row)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() == "nav" and self._surface_placement:
+            self._surface_placement = ""
 
 
 def sha256_bytes(payload: bytes) -> str:
@@ -169,6 +182,111 @@ def resolved_anchor(document_url: str, href: str) -> str:
     return canonical_url(urljoin(document_url, href))
 
 
+def central_overlay_result(
+    nav: NavigationParser,
+    public_url: str,
+    row: dict[str, object],
+) -> dict[str, object]:
+    expected_home_keys = {
+        tuple(key.split(":", 1)) for key in dict(row.get("home_urls", {}))
+    }
+    marked_home_links = [link for link in nav.home_links if link["placement"]]
+    actual_home_keys = {
+        (link["interface_locale"], link["course_id"])
+        for link in marked_home_links
+    }
+    home_results = []
+    for key, home_url in sorted(dict(row.get("home_urls", {})).items()):
+        interface_locale, course_id = key.split(":", 1)
+        expected_home = canonical_url(str(home_url))
+        placements = sorted(
+            link["placement"]
+            for link in nav.home_links
+            if link["course_id"] == course_id
+            and link["interface_locale"] == interface_locale
+            and resolved_anchor(public_url, link["href"]) == expected_home
+        )
+        home_results.append({
+            "interface_locale": interface_locale,
+            "course_id": course_id,
+            "expected_url": str(home_url),
+            "exact_matches": len(placements),
+            "placements": placements,
+            "required_exact_matches": 2,
+        })
+    program_root_results = []
+    expected_root_locales = set(dict(row.get("program_root_urls", {})))
+    marked_root_links = [link for link in nav.program_root_links if link["placement"]]
+    actual_root_locales = {link["interface_locale"] for link in marked_root_links}
+    for interface_locale, root_url in sorted(
+        dict(row.get("program_root_urls", {})).items()
+    ):
+        expected_root = canonical_url(str(root_url))
+        placements = sorted(
+            link["placement"]
+            for link in nav.program_root_links
+            if link["interface_locale"] == interface_locale
+            and resolved_anchor(public_url, link["href"]) == expected_root
+        )
+        program_root_results.append({
+            "interface_locale": interface_locale,
+            "expected_url": str(root_url),
+            "exact_matches": len(placements),
+            "placements": placements,
+            "required_exact_matches": 2,
+        })
+    contents_results = []
+    expected_contents_urls = {
+        canonical_url(str(contents_url)) for contents_url in row.get("contents_urls", [])
+    }
+    marked_contents_links = [
+        link for link in nav.surface_contents_links if link["placement"]
+    ]
+    actual_contents_urls = {
+        resolved_anchor(public_url, link["href"]) for link in marked_contents_links
+    }
+    for contents_url in list(row.get("contents_urls", [])):
+        expected_contents = canonical_url(str(contents_url))
+        placements = sorted(
+            link["placement"]
+            for link in nav.surface_contents_links
+            if resolved_anchor(public_url, link["href"]) == expected_contents
+        )
+        contents_results.append({
+            "expected_url": str(contents_url),
+            "exact_matches": len(placements),
+            "placements": placements,
+            "required_exact_matches": 2,
+        })
+    passed = (
+        nav.surface_navigation_markers == 2
+        and sorted(nav.surface_navigation_placements) == ["bottom", "top"]
+        and actual_home_keys == expected_home_keys
+        and len(marked_home_links) == 2 * len(expected_home_keys)
+        and all(item["placements"] == ["bottom", "top"] for item in home_results)
+        and actual_root_locales == expected_root_locales
+        and len(marked_root_links) == 2 * len(expected_root_locales)
+        and all(
+            item["placements"] == ["bottom", "top"]
+            for item in program_root_results
+        )
+        and actual_contents_urls == expected_contents_urls
+        and len(marked_contents_links) == 2 * len(expected_contents_urls)
+        and all(item["placements"] == ["bottom", "top"] for item in contents_results)
+    )
+    return {
+        "surface_navigation_markers": nav.surface_navigation_markers,
+        "surface_navigation_placements": nav.surface_navigation_placements,
+        "course_return_key_set_exact": actual_home_keys == expected_home_keys,
+        "course_returns": home_results,
+        "program_root_locale_set_exact": actual_root_locales == expected_root_locales,
+        "program_root_returns": program_root_results,
+        "related_surface_set_exact": actual_contents_urls == expected_contents_urls,
+        "related_surface_links": contents_results,
+        "pass": passed,
+    }
+
+
 def check_one(row: dict[str, object], commit: str, timeout: int) -> dict[str, object]:
     path = ROOT / str(row["document"])
     payload = path.read_bytes()
@@ -203,93 +321,50 @@ def check_one(row: dict[str, object], commit: str, timeout: int) -> dict[str, ob
         if status == 200:
             nav = parse_navigation(actual)
             if row["role"] == "reader":
-                expected_home = canonical_url(str(row["home_url"]))
+                expected_home = canonical_url(str(row["native_home_url"]))
                 home_matches = sum(
                     resolved_anchor(public_url, link["href"]) == expected_home
-                    for link in nav.home_links
+                    for link in nav.home_links if not link["placement"]
                 )
                 contents_required = bool(row["contents_required"])
-                expected_contents = canonical_url(str(row["contents_url"]))
+                expected_contents = canonical_url(str(row["native_contents_url"]))
                 contents_matches = sum(
                     resolved_anchor(public_url, link["href"]) == expected_contents
                     for link in nav.contents_links
                 )
+                central = central_overlay_result(nav, public_url, row)
                 result["navigation"] = {
-                    "program_home_links": len(nav.home_links),
-                    "program_home_exact_matches": home_matches,
-                    "required_program_home_matches": 2,
+                    "native_program_home_exact_matches": home_matches,
+                    "required_native_program_home_matches": 2,
                     "contents_links": len(nav.contents_links),
                     "contents_exact_matches": contents_matches,
                     "contents_required": contents_required,
-                    "pass": home_matches >= 2 and (not contents_required or contents_matches >= 1),
+                    "central_overlay": central,
+                    "pass": home_matches >= 2 and (not contents_required or contents_matches >= 1) and central["pass"],
                 }
             elif row["role"] == "gateway":
-                expected_home = canonical_url(str(row["home_url"]))
+                expected_home = canonical_url(str(row["native_home_url"]))
                 home_matches = sum(
                     resolved_anchor(public_url, link["href"]) == expected_home
-                    for link in nav.home_links
+                    for link in nav.home_links if not link["placement"]
                 )
+                central = central_overlay_result(nav, public_url, row)
                 result["navigation"] = {
-                    "program_home_links": len(nav.home_links),
-                    "program_home_exact_matches": home_matches,
-                    "required_program_home_matches": 1,
-                    "pass": home_matches >= 1,
+                    "native_program_home_exact_matches": home_matches,
+                    "required_native_program_home_matches": 1,
+                    "central_overlay": central,
+                    "pass": home_matches >= 1 and central["pass"],
                 }
             elif row["role"] == "course_surface":
-                home_results = []
-                for course_id, home_url in sorted(dict(row["home_urls"]).items()):
-                    expected_home = canonical_url(str(home_url))
-                    matches = sum(
-                        link["course_id"] == course_id
-                        and resolved_anchor(public_url, link["href"]) == expected_home
-                        for link in nav.home_links
-                    )
-                    home_results.append({
-                        "course_id": course_id,
-                        "expected_url": str(home_url),
-                        "exact_matches": matches,
-                        "required_exact_matches": 2,
-                    })
-                contents_results = []
-                for contents_url in list(row["contents_urls"]):
-                    expected_contents = canonical_url(str(contents_url))
-                    matches = sum(
-                        resolved_anchor(public_url, link["href"]) == expected_contents
-                        for link in nav.surface_contents_links
-                    )
-                    contents_results.append({
-                        "expected_url": str(contents_url),
-                        "exact_matches": matches,
-                        "required_exact_matches": 2,
-                    })
-                result["navigation"] = {
-                    "surface_navigation_markers": nav.surface_navigation_markers,
-                    "course_returns": home_results,
-                    "related_surface_links": contents_results,
-                    "pass": (
-                        nav.surface_navigation_markers == 2
-                        and all(item["exact_matches"] == 2 for item in home_results)
-                        and all(item["exact_matches"] == 2 for item in contents_results)
-                    ),
-                }
+                result["navigation"] = central_overlay_result(nav, public_url, row)
             elif row["role"] == "generic":
                 navigation_required = bool(row["navigation_required"])
-                expected_target = canonical_url(str(row.get("target_url", "")))
-                matches = sum(
-                    not link["course_id"]
-                    and resolved_anchor(public_url, link["href"]) == expected_target
-                    for link in nav.home_links
-                ) if navigation_required else 0
+                central = central_overlay_result(nav, public_url, row) if navigation_required else None
                 result["navigation"] = {
                     "navigation_required": navigation_required,
                     "surface_navigation_markers": nav.surface_navigation_markers,
-                    "program_home_exact_matches": matches,
-                    "required_program_home_matches": 2 if navigation_required else 0,
-                    "pass": (
-                        nav.surface_navigation_markers == 2 and matches == 2
-                        if navigation_required
-                        else nav.surface_navigation_markers == 0
-                    ),
+                    "central_overlay": central,
+                    "pass": central["pass"] if navigation_required else nav.surface_navigation_markers == 0,
                 }
             if isinstance(result.get("navigation"), dict) and not result["navigation"]["pass"]:
                 result["exact"] = False
@@ -318,6 +393,18 @@ def course_article(text: str, course_id: str) -> str:
     if len(matches) != 1:
         raise ValueError(f"expected exactly one public course-{course_id} card")
     return matches[0]
+
+
+def resolved_anchor_urls(text: str, document_url: str) -> set[str]:
+    return {
+        canonical_url(urljoin(document_url, match.group(1) or match.group(2)))
+        for match in re.finditer(
+            r'<a\b[^>]*\bhref=(?:"([^"]*)"|\'([^\']*)\')',
+            text,
+            flags=re.IGNORECASE,
+        )
+        if (match.group(1) or match.group(2))
+    }
 
 
 def main() -> int:
@@ -355,6 +442,18 @@ def main() -> int:
     contract = json.loads(CONTRACT_PATH.read_text(encoding="utf-8"))
     site_origin = str(contract["site_origin"])
     interfaces = contract["interfaces"]
+    program_root_urls = {
+        str(interface_locale): str(interface["public_url"])
+        for interface_locale, interface in interfaces.items()
+    }
+
+    def course_home_urls(course_ids: list[str]) -> dict[str, str]:
+        return {
+            str(interface_locale) + ":" + str(course_id): str(interface["public_url"]) + "#course-" + str(course_id)
+            for interface_locale, interface in interfaces.items()
+            for course_id in course_ids
+        }
+
     rows: list[dict[str, object]] = []
     local_path_rows: dict[str, dict[str, object]] = {}
 
@@ -372,7 +471,7 @@ def main() -> int:
     for reader in contract["readers"]:
         root = ROOT / str(reader["root"])
         root_url = str(reader["public_root"])
-        home_url = str(interfaces[reader["locale"]]["public_url"]) + "#" + str(reader["course_fragment"])
+        native_home_url = str(interfaces[reader["locale"]]["public_url"]) + "#" + str(reader["course_fragment"])
         root_index = (root / "index.html").resolve()
         for path in configured_html(root):
             document = path.relative_to(ROOT).as_posix()
@@ -382,16 +481,19 @@ def main() -> int:
                 "locale": reader["locale"],
                 "document": document,
                 "public_url": public_url_for_document(path, site_origin),
-                "home_url": home_url,
-                "contents_url": root_url,
+                "native_home_url": native_home_url,
+                "native_contents_url": root_url,
                 "contents_required": path.resolve() != root_index,
+                "home_urls": course_home_urls([str(reader["course_id"])]),
+                "program_root_urls": program_root_urls,
+                "contents_urls": [] if path.resolve() == root_index else [root_url],
             }
             rows.append(row)
             local_path_rows[document] = row
 
     for gateway in contract["gateways"]:
         root = ROOT / str(gateway["root"])
-        home_url = str(interfaces[gateway["locale"]]["public_url"]) + "#course-" + str(gateway["course_id"])
+        native_home_url = str(interfaces[gateway["locale"]]["public_url"]) + "#course-" + str(gateway["course_id"])
         for path in configured_html(root, gateway.get("exclude_subtrees")):
             document = path.relative_to(ROOT).as_posix()
             row = {
@@ -400,7 +502,10 @@ def main() -> int:
                 "locale": gateway["locale"],
                 "document": document,
                 "public_url": public_url_for_document(path, site_origin),
-                "home_url": home_url,
+                "native_home_url": native_home_url,
+                "home_urls": course_home_urls([str(gateway["course_id"])]),
+                "program_root_urls": program_root_urls,
+                "contents_urls": [],
             }
             rows.append(row)
             local_path_rows[document] = row
@@ -411,10 +516,7 @@ def main() -> int:
         for surface in group["documents"]:
             path = root / str(surface["path"])
             document = path.relative_to(ROOT).as_posix()
-            home_urls = {
-                str(course_id): str(interfaces[locale]["public_url"]) + "#course-" + str(course_id)
-                for course_id in surface["course_ids"]
-            }
+            home_urls = course_home_urls([str(value) for value in surface["course_ids"]])
             contents_urls = [
                 public_url_for_document(root / str(relative), site_origin)
                 for relative in surface.get("contents_paths", [])
@@ -427,6 +529,7 @@ def main() -> int:
                 "document": document,
                 "public_url": public_url_for_document(path, site_origin),
                 "home_urls": home_urls,
+                "program_root_urls": program_root_urls,
                 "contents_urls": contents_urls,
             }
             rows.append(row)
@@ -444,9 +547,9 @@ def main() -> int:
             "navigation_required": navigation_required,
         }
         if navigation_required:
-            row["target_url"] = public_url_for_document(
-                ROOT / str(surface["target_document"]), site_origin
-            )
+            row["home_urls"] = {}
+            row["program_root_urls"] = program_root_urls
+            row["contents_urls"] = []
         rows.append(row)
         local_path_rows[document] = row
 
@@ -504,17 +607,54 @@ def main() -> int:
         })
 
     inbound_checks: list[dict[str, object]] = []
+    interface_documents = {
+        str(interface["document"]) for interface in interfaces.values()
+    }
     for reader in contract["readers"]:
         landing_document = str(reader["landing_document"])
         landing_result = by_document[landing_document]
         landing_text = (ROOT / landing_document).read_text(encoding="utf-8") if landing_result["exact"] else ""
+        landing_scope = (
+            course_article(landing_text, str(reader["course_id"]))
+            if landing_document in interface_documents and landing_text
+            else landing_text
+        )
+        landing_urls = resolved_anchor_urls(
+            landing_scope, str(local_path_rows[landing_document]["public_url"])
+        )
         for suffix in reader["landing_required_paths"]:
             expected_url = str(reader["public_root"]) + str(suffix)
             inbound_checks.append({
+                "kind": "reader",
                 "course_id": reader["course_id"],
                 "landing_document": landing_document,
                 "reader_url": expected_url,
-                "present": expected_url in landing_text,
+                "present": canonical_url(expected_url) in landing_urls,
+            })
+
+    for gateway in contract["gateways"]:
+        root = ROOT / str(gateway["root"])
+        candidates = configured_html(root, gateway.get("exclude_subtrees"))
+        gateway_index = root / Path(*str(gateway["entry_path"]).split("/"))
+        if gateway_index not in candidates:
+            raise ValueError(f"{root}: declared gateway entry is outside the registered closure")
+        gateway_document = gateway_index.relative_to(ROOT).as_posix()
+        gateway_url = str(local_path_rows[gateway_document]["public_url"])
+        for locale, interface in sorted(interfaces.items()):
+            landing_document = str(interface["document"])
+            landing_result = by_document[landing_document]
+            landing_text = (ROOT / landing_document).read_text(encoding="utf-8") if landing_result["exact"] else ""
+            article = course_article(landing_text, str(gateway["course_id"])) if landing_text else ""
+            landing_urls = resolved_anchor_urls(
+                article, str(local_path_rows[landing_document]["public_url"])
+            )
+            inbound_checks.append({
+                "kind": "gateway",
+                "course_id": gateway["course_id"],
+                "interface_locale": locale,
+                "landing_document": landing_document,
+                "gateway_url": gateway_url,
+                "present": canonical_url(gateway_url) in landing_urls,
             })
 
     external_results: list[dict[str, object]] = []
@@ -553,7 +693,7 @@ def main() -> int:
         and all(row["pass"] for row in interface_checks)
         and all(row["present"] for row in inbound_checks)
         and all(row["pass"] for row in external_results)
-        and len(inbound_checks) == 10
+        and bool(inbound_checks)
         and len(interface_checks) == len(interfaces)
     )
     receipt = {
@@ -597,14 +737,15 @@ def main() -> int:
             "local_html_endpoints": len(results),
             "local_exact": len(results) - len(failures),
             "local_failures": len(failures),
-            "landing_to_reader_links": len(inbound_checks),
+            "landing_to_reader_links": sum(row["kind"] == "reader" for row in inbound_checks),
+            "landing_to_gateway_links": sum(row["kind"] == "gateway" for row in inbound_checks),
             "localized_course_cards": sum(row["course_cards"] for row in interface_checks),
             "hosted_reader_groups": sum(row["hosted_reader_groups"] for row in interface_checks),
             "authoritative_original_groups": sum(row["authoritative_original_groups"] for row in interface_checks),
             "external_reciprocal_hubs": len(external_results),
         },
         "interface_checks": interface_checks,
-        "landing_to_reader_checks": inbound_checks,
+        "inbound_navigation_checks": inbound_checks,
         "external_hubs": external_results,
         "local_endpoints": results,
         "first_failures": failures[:10],

@@ -8,7 +8,7 @@ import vm from 'node:vm';
 import { courses as canonicalCourses } from '../docs/courses.js';
 import { interfaceCourses, interfaceTopics, coursePresentation, resourceBindings, renderCourseCard, renderResourceLinks, safeResourceUrl, isOriginalSource, contentLanguageName, learnerAccessProjection, learnerAccessRoles } from '../docs/interface/view.js';
 import { additionalOriginalSources } from '../docs/interface/original-sources.js';
-import { supportedLocales, localeMetadata, interfaceCopy, englishResources, englishBindingExceptions, siteOrigin } from '../docs/interface/locales.js';
+import { supportedLocales, localeMetadata, interfaceCopy, englishResources, englishBindingExceptions, localeFallbackChain, localizedTopic, siteOrigin } from '../docs/interface/locales.js';
 import { verifiedReaderActions, readerActionSource } from '../docs/interface/reader-actions.js';
 import { projectReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { finalEditions, finalEditionSource } from '../docs/interface/final-editions.js';
@@ -20,6 +20,16 @@ import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerStat
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
+assert.deepEqual(supportedLocales, Object.keys(localeMetadata));
+assert.equal(new Set(Object.values(localeMetadata).map(row=>row.routeSegment)).size, supportedLocales.length);
+assert.equal(new Set(Object.values(localeMetadata).map(row=>row.languageTag)).size, supportedLocales.length);
+for (const locale of supportedLocales) {
+  assert.ok(interfaceCopy[locale]);
+  assert.equal(localeFallbackChain(locale)[0], locale);
+  assert.ok(localeMetadata[locale].navigation.aria);
+  assert.ok(localeMetadata[locale].navigation.programRoot ?? localeMetadata[locale].navigation.program_root);
+  for (const topic of interfaceTopics) assert.ok(localizedTopic(topic, locale));
+}
 for (const course of interfaceCourses) for (const locale of supportedLocales) {
   const bindings = resourceBindings(course, locale);
   assert.ok(bindings.length);
@@ -49,18 +59,47 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
   }
   const projection=learnerAccessProjection(course,locale);
   assert.equal(projection.course_id,course.id); assert.equal(projection.interface_locale,locale);
+  assert.equal(projection.locale_route,siteOrigin+localeMetadata[locale].routeSegment+'/#course-'+course.id);
   assert.equal(projection.authoritative_original.status,'available');
   assert.equal(projection.authoritative_original.resources.length,sources.length);
-  const hosted=bindings.filter(row=>row.contentLanguage===locale&&row.accessRole==='hosted-reader');
+  const hosted=bindings.filter(row=>row.contentLanguage.toLowerCase()===localeMetadata[locale].languageTag.toLowerCase()&&row.accessRole==='hosted-reader');
   assert.equal(projection.program_hosted_reader.status,hosted.length?'available':'not-yet-hosted');
   assert.equal(projection.program_hosted_reader.resources.length,hosted.length);
   if(!hosted.length) assert.ok(visible.includes(interfaceCopy[locale].noHostedReader));
 }
+const centralNavigation=JSON.parse(await readFile(resolve(root,'backend/authority/central-reader-navigation-v1.json'),'utf8'));
+assert.deepEqual(Object.keys(centralNavigation.interfaces).sort(),[...supportedLocales].sort());
+for(const locale of supportedLocales){
+  const interfaceAuthority=centralNavigation.interfaces[locale];
+  assert.equal(interfaceAuthority.route_segment,localeMetadata[locale].routeSegment);
+  assert.equal(interfaceAuthority.language_tag,localeMetadata[locale].languageTag);
+  assert.equal(interfaceAuthority.label,localeMetadata[locale].label);
+  assert.equal(interfaceAuthority.fallback_locale,localeMetadata[locale].fallbackLocale);
+  assert.equal(interfaceAuthority.navigation.aria,localeMetadata[locale].navigation.aria);
+  assert.equal(interfaceAuthority.navigation.lead,localeMetadata[locale].navigation.lead);
+  assert.equal(interfaceAuthority.navigation.program_root,localeMetadata[locale].navigation.programRoot ?? localeMetadata[locale].navigation.program_root);
+  assert.equal(interfaceAuthority.navigation.related_page,localeMetadata[locale].navigation.relatedPage ?? localeMetadata[locale].navigation.related_page);
+}
+for (const gateway of centralNavigation.gateways) {
+  const gatewayDocument = gateway.root + '/' + gateway.entry_path;
+  await readFile(resolve(root, gatewayDocument));
+  const logical = gatewayDocument.slice('docs/'.length);
+  const gatewayUrl = new URL(gateway.entry_path === 'index.html' ? logical.slice(0, -'index.html'.length) : logical, siteOrigin).href;
+  for (const locale of supportedLocales) {
+    const bindings = resourceBindings(interfaceCourses.find(course => course.id === gateway.course_id), locale);
+    assert.equal(bindings.filter(row => row.href === gatewayUrl).length, 1, locale + '/course-' + gateway.course_id + ': gateway must be reachable from its course card');
+  }
+}
+const languageRoot=await readFile(resolve(root,'docs/index.html'),'utf8');
+for(const locale of supportedLocales){
+  assert.ok(languageRoot.includes('data-interface-locale="'+locale+'"'));
+  assert.ok(languageRoot.includes('href="'+localeMetadata[locale].routeSegment+'/"'));
+}
 assert.notEqual(contentLanguageName('zh','en'),'shared metadata');
 assert.notEqual(contentLanguageName('de','id'),'metadata bersama');
 assert.ok(contentLanguageName('bn','en'));
-assert.throws(()=>coursePresentation(interfaceCourses[0],'pt-BR'),/Unsupported interface locale/);
-assert.throws(()=>resourceBindings(interfaceCourses[0],'pt-BR'),/Unsupported interface locale/);
+assert.throws(()=>coursePresentation(interfaceCourses[0],'__unsupported_locale__'),/Unsupported interface locale/);
+assert.throws(()=>resourceBindings(interfaceCourses[0],'__unsupported_locale__'),/Unsupported interface locale/);
 assert.equal(isOriginalSource({origin:'published-translation'}),false);
 assert.equal(isOriginalSource({origin:'published-english-component'}),false);
 assert.equal(isOriginalSource({origin:'program-mirror'}),false);
@@ -222,13 +261,21 @@ const navigationContract=JSON.parse(await readFile(resolve(root,'backend/authori
 const d100Navigation=navigationContract.readers.find(row=>row.course_id==='D100'&&row.locale==='en');
 assert.ok(d100Navigation);
 const d100CentralResources=englishResources.D100.filter(row=>row.origin==='program-mirror'&&row.href.startsWith(d100Navigation.public_root));
+const d100BoundResources=resourceBindings(interfaceCourses.find(course=>course.id==='D100'),'en')
+  .filter(row=>row.origin==='program-mirror'&&row.href.startsWith(d100Navigation.public_root));
 assert.deepEqual(d100CentralResources.map(row=>row.href),d100Navigation.landing_required_paths.map(path=>d100Navigation.public_root+path));
+assert.deepEqual(d100BoundResources.map(row=>row.href),d100CentralResources.map(row=>row.href));
 assert.deepEqual(d100CentralResources.slice(1).map(r=>[r.units,r.exercises]),[[30,693],[30,495],[32,13]]);
 assert.ok(englishResources.D100.some(r=>r.label.includes('Original English-edition website') && r.href==='https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/'));
 for (let index=0;index<d100CentralResources.length;index+=1) {
   const suffix=d100Navigation.landing_required_paths[index]||'index.html';
   const local=await readFile(resolve(root,d100Navigation.root,suffix));
-  assert.deepEqual([d100CentralResources[index].bytes,d100CentralResources[index].sha256],[local.length,createHash('sha256').update(local).digest('hex')]);
+  assert.deepEqual(
+    [d100BoundResources[index].sourceBodyBytes,d100BoundResources[index].sourceBodySha256],
+    [d100CentralResources[index].bytes,d100CentralResources[index].sha256],
+  );
+  assert.deepEqual([d100BoundResources[index].bytes,d100BoundResources[index].sha256],[local.length,createHash('sha256').update(local).digest('hex')]);
+  assert.equal(d100BoundResources[index].hostedNavigationOverlay,'v1');
 }
 assert.ok(englishResources.D100.some(r=>r.kind==='archive' && r.href==='https://doi.org/10.5281/zenodo.22340270'));
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>r.pages),[504,381,89]);
@@ -243,8 +290,8 @@ for (const locale of supportedLocales) {
   assert.equal(tools.length,2);
   for(const tool of tools) {
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('14') && tool.note.includes('75') && tool.note.includes('4'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('14') && tool.note.includes('75') && tool.note.includes('4'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
     assert.ok(!tool.note.includes('72 latihan inti'));
   }
   for(const role of ['B70','C10','C20','C50']){
@@ -260,8 +307,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of geometryTools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('939')&&tool.note.includes('491'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('939')&&tool.note.includes('491'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const topologyTools=resourceBindings(interfaceCourses.find(c=>c.id==='C90'),locale).filter(r=>r.capabilityToolId);
   assert.equal(topologyTools.length,1);
@@ -270,8 +317,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of topologyTools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('1.227')&&tool.note.includes('4.908'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('1.227')&&tool.note.includes('4.908'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const d40Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D40'),locale).filter(r=>r.capabilityToolId);
   assert.equal(d40Tools.length,1);
@@ -280,8 +327,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of d40Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('68')&&tool.note.includes('14')&&tool.note.includes('130'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('68')&&tool.note.includes('14')&&tool.note.includes('130'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const d70Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D70'),locale).filter(r=>r.capabilityToolId);
   assert.equal(d70Tools.length,1);
@@ -290,8 +337,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of d70Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('716')&&tool.note.includes('54')&&tool.note.includes('20'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('716')&&tool.note.includes('54')&&tool.note.includes('20'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const d80Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D80'),locale).filter(r=>r.capabilityToolId);
   assert.equal(d80Tools.length,1);
@@ -300,8 +347,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of d80Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const d10Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D10'),locale).filter(r=>r.capabilityToolId);
   assert.equal(d10Tools.length,1);
@@ -310,8 +357,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of d10Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('94')&&tool.note.includes('1.096')&&tool.note.includes('276'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('94')&&tool.note.includes('1.096')&&tool.note.includes('276'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const d100Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D100'),locale).filter(r=>r.capabilityToolId);
   assert.equal(d100Tools.length,1);
@@ -320,7 +367,7 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of d100Tools){
     assert.equal(tool.contentLanguage,'en'); assert.equal(tool.labelLanguage,'en'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.match(tool.note,/Kapabilitas berbahasa Inggris/);
+    if(tool.contentLanguage!==localeMetadata[locale].languageTag) assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
     else {
       assert.ok(tool.note.includes('60 source-course aggregates'));
       assert.ok(tool.note.includes('1,041 source exercises'));
@@ -334,8 +381,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of d120Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('Sembilan unit')&&tool.note.includes('54')&&tool.note.includes('71'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('Sembilan unit')&&tool.note.includes('54')&&tool.note.includes('71'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const c120Tools=resourceBindings(interfaceCourses.find(c=>c.id==='C120'),locale).filter(r=>r.capabilityToolId);
   assert.equal(c120Tools.length,1);
@@ -344,8 +391,8 @@ for (const locale of supportedLocales) {
   ]);
   for(const tool of c120Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
-    if(locale==='id') assert.ok(tool.note.includes('Dua puluh enam unit')&&tool.note.includes('4.105')&&tool.note.includes('141'));
-    else assert.match(tool.note,/Indonesian-language capability.*source-specific scope/);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('Dua puluh enam unit')&&tool.note.includes('4.105')&&tool.note.includes('141'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   for(const courseId of ['A10','A20','B80','D50','D70','D80','D100']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
@@ -387,7 +434,8 @@ for(const locale of supportedLocales) {
   const geo=resourceBindings(interfaceCourses.find(r=>r.id==='D100'),locale).filter(r=>r.editionResourceId);
   const d100Edition=editionInput.editions.find(e=>e.courseId==='D100');
   assert.equal(geo.length,6); assert.equal(geo.reduce((n,r)=>n+(d100Edition.resources.find(e=>e.id===r.editionResourceId)?.pages??0),0),975);
-  assert.ok(!resourceBindings(interfaceCourses.find(r=>r.id==='B95'),locale).some(r=>r.href.includes('/id-ID/courses/B95/')));
+  const b95Gateway=resourceBindings(interfaceCourses.find(r=>r.id==='B95'),locale).filter(r=>r.href===siteOrigin+'id-ID/courses/B95/');
+  assert.equal(b95Gateway.length,1); assert.equal(b95Gateway[0].accessRole,'tool');
   for(const id of ['A20','A30','B95']) assert.ok(!resourceBindings(interfaceCourses.find(r=>r.id===id),locale).some(r=>r.editionResourceId && r.format !== 'PDF'));
 }
 const actionBytes = await readFile(resolve(root, readerActionInput));
@@ -450,7 +498,8 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
 // No browser, screenshot, network, or user-visible window is launched.
 function executeOffline(html, locale, sharedStorage = new Map(), options = {}) {
   const nodes = new Map(), documentEvents = new Map(), windowEvents = new Map();
-  let address = new URL(options.url ?? 'https://example.test/hub/' + locale + '/?level=C#course-C30');
+  const localeRoute = localeMetadata[locale].routeSegment;
+  let address = new URL(options.url ?? 'https://example.test/hub/' + localeRoute + '/?level=C#course-C30');
   const historyRows = [address.href];
   const fakeNode = (id, value = '') => ({
     id, value, innerHTML: '', textContent: '', hidden: false, disabled: false, checked: false, dataset: {}, files: [],
@@ -464,10 +513,10 @@ function executeOffline(html, locale, sharedStorage = new Map(), options = {}) {
   assert.deepEqual(localeLinks.map(link => link.id), supportedLocales, 'Use actual generated language anchors');
   const classNames = new Set();
   const doc = {
-    documentElement: { lang: locale, classList: { add: (name) => classNames.add(name) } },
+    documentElement: { lang: localeMetadata[locale].languageTag, dataset: { interfaceLocale: locale }, classList: { add: (name) => classNames.add(name) } },
     querySelector(selector) {
       if (nodes.has(selector)) return nodes.get(selector);
-      if (/^#course-[A-D]\d{2,3}$/.test(selector) && nodes.get('#course-grid').innerHTML.includes('id="' + selector.slice(1) + '"')) return fakeNode(selector);
+      if (selector.startsWith('#course-') && interfaceCourses.some(course => selector === '#course-' + course.id) && nodes.get('#course-grid').innerHTML.includes('id="' + selector.slice(1) + '"')) return fakeNode(selector);
       return null;
     },
     querySelectorAll: (selector) => selector === '[data-locale-link]' ? localeLinks : [],
@@ -513,7 +562,7 @@ assert.equal(receipt.final_presentation_navigation.output_identities_are_post_na
 for (const locale of supportedLocales) for (const file of ['index.html', 'learning-map.html', 'learning-map-paired.html']) {
   const meta=localeMetadata[locale];
   const html = await readFile(resolve(root, 'docs', meta.routeSegment, file), 'utf8');
-  assert.ok(html.includes('<html lang="' + meta.languageTag + '">'));
+  assert.ok(html.includes('<html lang="' + meta.languageTag + '" data-interface-locale="' + locale + '">'));
   const staticHtml = html.replace(/<script[\s\S]*?<\/script>/g, '');
   const cardIds = [...staticHtml.matchAll(/<article class="course-card" id="course-([^"]+)"/g)].map((m) => m[1]);
   assert.deepEqual(cardIds, ids, locale + '/' + file + ' static coverage');
@@ -528,20 +577,40 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);
-  for (const code of supportedLocales) assert.ok(html.includes('data-locale-link="' + code + '"'));
+  for (const code of supportedLocales) {
+    const target = localeMetadata[code];
+    const base = file === 'learning-map-paired.html'
+      ? '../' + target.routeSegment + '/learning-map-paired.html'
+      : file === 'learning-map.html'
+        ? siteOrigin + target.routeSegment + '/'
+        : '../' + target.routeSegment + '/';
+    const current = code === locale ? ' aria-current="page"' : '';
+    const anchor = '<a data-locale-link="' + code + '" data-locale-base="' + base + '" href="' + base
+      + '" lang="' + target.languageTag + '" hreflang="' + target.languageTag + '"' + current + '>';
+    assert.equal(html.split(anchor).length - 1, 1, locale + '/' + file + ': exact reciprocal locale anchor ' + code);
+    assert.ok(html.includes('<link rel="alternate" hreflang="' + target.languageTag + '" href="' + siteOrigin + target.routeSegment + '/">'));
+  }
   assert.ok(html.includes('hreflang="x-default"'));
-  assert.ok(html.includes('No') || locale === 'id');
+  const hasCourseWithoutHostedReader = interfaceCourses.some(course => !resourceBindings(course, locale).some(
+    row => row.accessRole === 'hosted-reader' && row.contentLanguage.toLowerCase() === meta.languageTag.toLowerCase(),
+  ));
+  assert.equal(staticHtml.includes(interfaceCopy[locale].noHostedReader), hasCourseWithoutHostedReader);
   for (const match of staticHtml.matchAll(/(?:src|href)="([^"]+)"/g)) {
     if (match[1].startsWith('#')) continue;
     if (/^https:\/\//.test(match[1])) continue;
     if (file === 'learning-map-paired.html') {
       assert.ok(
         match[1] === 'index.html'
+        || supportedLocales.some(code => match[1] === '../' + localeMetadata[code].routeSegment + '/index.html')
         || supportedLocales.some(code => match[1] === '../' + localeMetadata[code].routeSegment + '/learning-map-paired.html'),
         'Only the program return and paired language anchors may be relative',
       );
     } else if(file==='learning-map.html') {
-      assert.equal(match[1],'index.html','Standalone document may only link relatively to its program entry point.');
+      assert.ok(
+        match[1] === 'index.html'
+        || supportedLocales.some(code => match[1] === '../' + localeMetadata[code].routeSegment + '/index.html'),
+        'Standalone document may only link relatively to a registered program entry point.',
+      );
     } else assert.equal(file, 'index.html', 'Standalone document must have no relative dependency: ' + match[1]);
     const target = resolve(root, 'docs', meta.routeSegment, match[1], match[1].endsWith('/') ? 'index.html' : '');
     await readFile(target);
@@ -550,11 +619,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
-    assert.ok(Buffer.byteLength(html) < 406000, 'Offline map size budget');
-    // D100's complete bilingual access block, the central D120 reader, and
-    // C70 and C110's hash-bound learner/educator routes add evidence without
-    // dropping any course route. Keep one measured budget for the combined payload.
-    assert.ok(gzipSync(html).length < 79000, 'Compressed map size budget');
+    assert.ok(Buffer.byteLength(html) < 450000, 'Offline map size budget');
+    // The multilingual interface, central gateway closure, and the bounded
+    // source/hosted identity map remain under measured raw and gzip budgets.
+    assert.ok(gzipSync(html).length < 90000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
@@ -582,9 +650,11 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     run.documentEvents.get('change')({ target: { matches: () => true, dataset: { completion: 'A00' }, checked: true } });
     const stored = JSON.parse(run.sharedStorage.get(LEARNER_STATE_STORAGE_KEY));
     assert.ok(stored.completedCourseIds.includes('A00'));
-    const otherLocale = locale === 'id' ? 'en' : 'id';
-    const otherHtml = await readFile(resolve(root, 'docs', otherLocale, 'learning-map.html'), 'utf8');
-    const next = executeOffline(otherHtml, otherLocale, run.sharedStorage, { url: 'https://example.test/hub/' + otherLocale + '/' });
+    const otherLocale = supportedLocales.find(code => code !== locale);
+    assert.ok(otherLocale, 'At least one alternate locale is configured');
+    const otherRoute = localeMetadata[otherLocale].routeSegment;
+    const otherHtml = await readFile(resolve(root, 'docs', otherRoute, 'learning-map.html'), 'utf8');
+    const next = executeOffline(otherHtml, otherLocale, run.sharedStorage, { url: 'https://example.test/hub/' + otherRoute + '/' });
     assert.ok(next.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'), 'Progress crosses locales');
     next.nodes.get('#show').value = 'completed';
     next.nodes.get('#show').events.get('change')();
@@ -598,7 +668,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     next.documentEvents.get('change')({ target: { matches: () => true, dataset: { completion: 'A00' }, checked: true } });
     assert.equal(next.nodes.get('#result-count').focused, true, 'Completing an eligible card restores focus to results');
     for (const base of ['file:///C:/Learning%20folder/Matematika%20%E6%95%B0%E5%AD%A6/docs/', 'https://example.test/unpacked/docs/']) {
-      const fileUrl = base + locale + '/' + file;
+      const fileUrl = base + meta.routeSegment + '/' + file;
       const unknown = executeOffline(html, locale, new Map(), { url: fileUrl + '?progress=QUERY_SENTINEL#completedCourseIds=FRAGMENT_SENTINEL', failHistory: true });
       for (const action of [() => {}, () => unknown.windowEvents.get('hashchange')(), () => unknown.windowEvents.get('popstate')()]) {
         action();
@@ -611,7 +681,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
       const offline = executeOffline(html, locale, new Map(), { noStorage: true, failHistory: true, url: fileUrl + '?level=C&progress=private&claims=private#course-C30' });
       for (const link of offline.localeLinks) {
         const actual = new URL(link.href);
-        const expected = file === 'learning-map-paired.html' ? base + link.id + '/learning-map-paired.html' : siteOrigin + link.id + '/';
+        const expectedRoute = localeMetadata[link.id].routeSegment;
+        const expected = file === 'learning-map-paired.html' ? base + expectedRoute + '/learning-map-paired.html' : siteOrigin + expectedRoute + '/';
         assert.equal(actual.origin + actual.pathname, new URL(expected).origin + new URL(expected).pathname);
         assert.equal(actual.search, '?level=C');
         assert.equal(actual.hash, '#course-C30');
@@ -638,13 +709,13 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
         assert.ok(!link.href.includes('placement') && !link.href.includes('waiver') && !link.href.includes('completedCourseIds'));
       }
     }
-    const quota = executeOffline(html, locale, new Map(), { failWrites: true, url: 'https://example.test/' + locale + '/' });
+    const quota = executeOffline(html, locale, new Map(), { failWrites: true, url: 'https://example.test/' + meta.routeSegment + '/' });
     quota.documentEvents.get('change')({ target: { matches: () => true, dataset: { completion: 'A00' }, checked: true } });
     for (const event of [{ key: 'unrelated-preference', storageArea: quota.fakeStorage }, { key: LEARNER_STATE_STORAGE_KEY, storageArea: quota.fakeStorage }, { key: null, storageArea: quota.fakeStorage }]) {
       quota.windowEvents.get('storage')(event);
       assert.ok(quota.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'), 'Failed-write progress survives cross-tab events');
     }
-    const sync = executeOffline(html, locale, new Map(), { url: 'https://example.test/' + locale + '/' });
+    const sync = executeOffline(html, locale, new Map(), { url: 'https://example.test/' + meta.routeSegment + '/' });
     sync.sharedStorage.set(LEARNER_STATE_STORAGE_KEY, JSON.stringify(setCourseCompletion(createEmptyLearnerState(), canonicalCourses, 'A00', true)));
     sync.windowEvents.get('storage')({ key: 'unrelated-preference', storageArea: sync.fakeStorage });
     assert.ok(!sync.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'));

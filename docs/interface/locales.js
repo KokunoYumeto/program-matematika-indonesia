@@ -2,10 +2,23 @@
 // Adding a locale starts here: its stable route segment, language tag, visible
 // label, and complete interface copy are data, not branches in the renderer.
 export const localeMetadata = Object.freeze({
-  id: Object.freeze({ routeSegment: 'id', languageTag: 'id', label: 'Bahasa Indonesia' }),
-  en: Object.freeze({ routeSegment: 'en', languageTag: 'en', label: 'English' }),
+  id: Object.freeze({
+    routeSegment: 'id', languageTag: 'id', label: 'Bahasa Indonesia', fallbackLocale: null,
+    coursePresentationLocale: 'id', bindingExceptions: null,
+    navigation: Object.freeze({
+      aria: 'Navigasi Program Matematika', lead: 'Program:',
+      programRoot: 'Beranda Program Matematika', relatedPage: 'Buka halaman terkait',
+    }),
+  }),
+  en: Object.freeze({
+    routeSegment: 'en', languageTag: 'en', label: 'English', fallbackLocale: 'id',
+    coursePresentationLocale: 'en', bindingExceptions: 'en',
+    navigation: Object.freeze({
+      aria: 'Mathematics Program navigation', lead: 'Program:',
+      programRoot: 'Mathematics Program home', relatedPage: 'Open related page',
+    }),
+  }),
 });
-export const supportedLocales = Object.freeze(Object.keys(localeMetadata));
 export const siteOrigin = 'https://kokunoyumeto.github.io/program-matematika-indonesia/';
 export const interfaceCopy = {
   id: {
@@ -25,14 +38,15 @@ export const interfaceCopy = {
     open: 'Buka bahan belajar', download: 'Unduh', source: 'Sumber & repositori', archive: 'Arsip DOI',
     companion: 'Bahan tambahan', sharedBackend: 'Indeks modular bersama',
     hostedReader: 'Pembaca yang dihosting program', authoritativeOriginal: 'Sumber asli otoritatif',
+    courseGateway: 'Gerbang HTML mata kuliah — rute pusat',
     noHostedReader: 'Belum ada pembaca yang dihosting program untuk bahasa antarmuka ini. Sumber asli dan bahan dalam bahasa lain tetap tersedia.',
     noAuthoritativeOriginal: 'Belum ada sumber asli otoritatif yang dipetakan. Status ini tidak berarti bahwa sumber asli tidak ada.',
     originalLanguage: 'Bahasa bahan', bindingNote: 'Untuk setiap bahasa, kebijakan program adalah menyediakan salinan baca yang dihosting program dan tautan sumber asli yang menonjol. Sumber tetap ditampilkan dalam bahasa sebenarnya; cakupan mirror lokal belum lengkap. Tautan sumber buku tidak mencakup pendamping orisinal program, dan status katalog adalah snapshot publikasi, bukan kemajuan terjemahan saat ini.',
     noPrimary: 'Tautan edisi untuk bahasa ini belum dipetakan. Bahan bahasa lain tetap tersedia di bawah.',
     otherLanguage: 'Bahan dalam bahasa lain', offlineMap: 'Unduh peta ini — satu berkas HTML',
     offlineHelp: 'Peta, pencarian, prasyarat, dan catatan lokal dapat digunakan tanpa internet. Buku yang ditautkan perlu diunduh terpisah; tautan eksternal memerlukan internet.',
-    offlineBundle: 'Kedua bahasa — halaman unduhan ZIP',
-    standaloneHelp: 'Tombol bahasa pada berkas tunggal membuka situs daring. Untuk berpindah bahasa tanpa internet, unduh ZIP kedua bahasa, ekstrak seluruh isinya, lalu buka START-HERE.html.',
+    offlineBundle: 'Semua bahasa tersedia — halaman unduhan ZIP',
+    standaloneHelp: 'Tombol bahasa pada berkas tunggal membuka situs daring. Untuk berpindah bahasa tanpa internet, unduh ZIP multibahasa, ekstrak seluruh isinya, lalu buka START-HERE.html.',
     pairedHelp: 'Tombol bahasa memakai berkas lokal. Pertahankan susunan folder setelah mengekstrak ZIP. Browser dapat menyimpan catatan terpisah untuk tiap berkas; gunakan unduh/pulihkan catatan untuk memindahkannya.',
     noJs: 'Semua 40 mata kuliah dan tautannya dapat digunakan tanpa JavaScript. Pencarian dan catatan kemajuan memerlukan JavaScript.',
     progressHelp: 'Catatan disimpan hanya di browser ini, tidak dikirim ke server. Bahasa yang berbeda memakai catatan yang sama pada situs ini. Ini catatan pribadi, bukan sertifikasi.',
@@ -47,7 +61,13 @@ export const interfaceCopy = {
     importError: 'Berkas catatan tidak valid; catatan saat ini tidak diubah.',
     about: 'Tentang peta ini', aboutText: 'Satu kurikulum, beberapa bahasa. Identitas mata kuliah, prasyarat, dan provenance memakai backend yang sama; antarmuka hanya memilih teks dan bahan belajar sesuai bahasa.',
     legacy: 'Antarmuka sebelumnya', skip: 'Langsung ke mata kuliah', nav: 'Navigasi utama',
-    statusLanguage: 'Bahasa Indonesia', english: 'English', footer: 'Disusun dengan OpenAI Codex atas instruksi pengguna. Kredit penulis dan lisensi tetap melekat pada setiap edisi.',
+    statusLanguage: 'Bahasa Indonesia', english: 'English', pageUnit: 'halaman',
+    readerRoles: { textbook: 'Buku teks', problembook: 'Buku soal dan penyelesaian', combined_textbook_problembook: 'Buku gabungan teks dan soal' },
+    offlineAfterDownload: 'Luring setelah diunduh', sharedMetadata: 'metadata bersama',
+    otherLanguageCapability: 'Kapabilitas dalam bahasa lain. Buka alat tertaut untuk cakupan, bukti, dan batas khusus sumbernya.',
+    otherResourcesSummary: 'Bahan tambahan / sumber / backend',
+    openLogicHub: 'Terjemahan Open Logic — pilih bahasa',
+    footer: 'Disusun dengan OpenAI Codex atas instruksi pengguna. Kredit penulis dan lisensi tetap melekat pada setiap edisi.',
   },
   en: {
     title: 'Mathematics Program — Open Learning Path', shortTitle: 'Mathematics Program',
@@ -66,14 +86,15 @@ export const interfaceCopy = {
     open: 'Open learning material', download: 'Download', source: 'Source & repository', archive: 'DOI archive',
     companion: 'Additional material', sharedBackend: 'Shared modular index',
     hostedReader: 'Program-hosted reader', authoritativeOriginal: 'Authoritative original source',
+    courseGateway: 'Course HTML gateway — central route',
     noHostedReader: 'No program-hosted reader is available yet for this interface language. The authoritative original and materials in other languages remain available.',
     noAuthoritativeOriginal: 'No authoritative original source has been mapped yet. This does not mean that no original source exists.',
     originalLanguage: 'Material language', bindingNote: 'For every language, the program policy is to provide a program-hosted readable copy and a prominent original-source link. Sources remain labeled in their actual languages; local mirror coverage is not yet complete. Book-source links do not include program-original companions, and catalog snapshots do not measure current translation progress.',
     noPrimary: 'An edition link for this language has not yet been mapped. Other-language materials remain available below.',
     otherLanguage: 'Material in another language', offlineMap: 'Download this map — one HTML file',
     offlineHelp: 'The map, search, prerequisites, and local progress work without internet. Linked books must be downloaded separately; external links need a connection.',
-    offlineBundle: 'Both languages — ZIP download page',
-    standaloneHelp: 'Language buttons in a single-file download open the online site. To switch languages without internet, download the bilingual ZIP, extract everything, then open START-HERE.html.',
+    offlineBundle: 'All available languages — ZIP download page',
+    standaloneHelp: 'Language buttons in a single-file download open the online site. To switch languages without internet, download the multilingual ZIP, extract everything, then open START-HERE.html.',
     pairedHelp: 'Language buttons use local files. Keep the folder layout after extracting the ZIP. Browsers may store progress separately for each file; use download/restore progress to move your record.',
     noJs: 'All 40 courses and their links work without JavaScript. Search and progress records require JavaScript.',
     progressHelp: 'Records stay in this browser and are not sent to a server. Languages share the same record on this site. This is a personal record, not certification.',
@@ -88,9 +109,49 @@ export const interfaceCopy = {
     importError: 'Invalid progress file; your current record was not changed.',
     about: 'About this map', aboutText: 'One curriculum, several languages. Course identities, prerequisites, and provenance share one backend; the interface selects the appropriate text and learning materials.',
     legacy: 'Previous interface', skip: 'Skip to courses', nav: 'Main navigation',
-    statusLanguage: 'Bahasa Indonesia', english: 'English', footer: 'Prepared with OpenAI Codex on instructions of the user. Author credits and licenses remain attached to each edition.',
+    statusLanguage: 'Bahasa Indonesia', english: 'English', pageUnit: 'pages',
+    readerRoles: { textbook: 'Textbook', problembook: 'Problems and solutions', combined_textbook_problembook: 'Combined textbook and problems' },
+    offlineAfterDownload: 'Offline after download', sharedMetadata: 'shared metadata',
+    otherLanguageCapability: 'Capability in another language. Open the linked tool for its source-specific scope, evidence, and limitations.',
+    otherResourcesSummary: 'Other-language material / source / backend',
+    openLogicHub: 'Open Logic translations — choose a language',
+    bindingExceptionsTitle: 'English resource-binding exceptions',
+    bindingExceptionsText: 'These are missing link bindings, not a claim that Indonesian translation is unfinished. English upstream spines do not include the program’s original Indonesian supplements.',
+    footer: 'Prepared with OpenAI Codex on instructions of the user. Author credits and licenses remain attached to each edition.',
   },
 };
+function validateLocaleRegistry() {
+  const locales = Object.keys(localeMetadata);
+  const routeSegments = new Set();
+  const languageTags = new Set();
+  const reservedRoots = new Set(['interface', 'backend', 'readers', 'assets', 'data', 'schemas', 'sources', 'releases']);
+  for (const locale of locales) {
+    const metadata = localeMetadata[locale];
+    const copy = interfaceCopy[locale];
+    if (!copy || !metadata.navigation) throw new Error('Incomplete localized interface bundle: ' + locale);
+    if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(metadata.routeSegment) || reservedRoots.has(metadata.routeSegment.toLowerCase())) {
+      throw new Error('Unsafe or reserved locale route segment: ' + locale);
+    }
+    const routeKey = metadata.routeSegment.toLowerCase();
+    if (routeSegments.has(routeKey)) throw new Error('Duplicate locale route segment: ' + metadata.routeSegment);
+    routeSegments.add(routeKey);
+    let canonicalTag;
+    try { [canonicalTag] = Intl.getCanonicalLocales(metadata.languageTag); }
+    catch { throw new Error('Invalid locale language tag: ' + locale); }
+    const tagKey = canonicalTag.toLowerCase();
+    if (languageTags.has(tagKey)) throw new Error('Duplicate locale language tag: ' + metadata.languageTag);
+    languageTags.add(tagKey);
+    for (const key of ['aria', 'lead', 'programRoot', 'relatedPage']) {
+      if (!metadata.navigation[key]) throw new Error('Incomplete navigation copy: ' + locale + '.' + key);
+    }
+    for (const key of ['title', 'description', 'catalog', 'hostedReader', 'authoritativeOriginal', 'otherLanguageCapability']) {
+      if (!copy[key]) throw new Error('Incomplete interface copy: ' + locale + '.' + key);
+    }
+  }
+  for (const locale of locales) localeFallbackChain(locale);
+  return locales;
+}
+export const supportedLocales = Object.freeze(validateLocaleRegistry());
 export const topicCopy = {
   'Fondasi & Kalkulus': 'Foundations & calculus', 'Diskrit & Logika': 'Discrete mathematics & logic',
   'Aljabar': 'Algebra', 'Komputasi & Optimisasi': 'Computing & optimization',
@@ -253,6 +314,42 @@ export const englishBindingExceptions = {
   D60: 'English donors are linked. Program-original mastery, assessment, solution, lab, and capstone layers have no located English binding.',
   D90: 'English spine is linked. Program-original completion and assessment layers have no located English binding.',
 };
+export const courseCopyByLocale = Object.freeze({ en: englishCourseCopy });
+export const topicCopyByLocale = Object.freeze({ en: topicCopy });
+export function localeFallbackChain(locale) {
+  if (!Object.hasOwn(localeMetadata, locale) || !Object.hasOwn(interfaceCopy, locale)) {
+    throw new Error('Unsupported interface locale without a complete localized bundle: ' + locale);
+  }
+  const chain = [];
+  const seen = new Set();
+  let current = locale;
+  while (current !== null) {
+    if (seen.has(current)) throw new Error('Locale fallback cycle: ' + [...chain, current].join(' -> '));
+    if (!Object.hasOwn(localeMetadata, current) || !Object.hasOwn(interfaceCopy, current)) {
+      throw new Error('Incomplete locale fallback metadata: ' + current);
+    }
+    seen.add(current);
+    chain.push(current);
+    current = localeMetadata[current].fallbackLocale;
+  }
+  return chain;
+}
+export function localizedValue(values, locale) {
+  for (const candidate of localeFallbackChain(locale)) {
+    if (values && Object.hasOwn(values, candidate) && values[candidate] !== undefined && values[candidate] !== null) {
+      return values[candidate];
+    }
+  }
+  throw new Error('Missing localized value for ' + locale);
+}
+export function localizedTopic(topic, locale) {
+  for (const candidate of localeFallbackChain(locale)) {
+    if (candidate === 'id') return topic;
+    const value = topicCopyByLocale[candidate]?.[topic];
+    if (value) return value;
+  }
+  throw new Error('Missing localized topic for ' + locale + ': ' + topic);
+}
 export function fillCopy(template, values) {
   return template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
 }

@@ -20,10 +20,13 @@ class NavigationParser(HTMLParser):
         super().__init__(convert_charrefs=True)
         self.navigation_markers = 0
         self.surface_navigation_markers = 0
+        self.surface_navigation_placements: list[str] = []
         self.home_links: list[dict[str, str]] = []
+        self.program_root_links: list[dict[str, str]] = []
         self.contents_links: list[dict[str, str]] = []
         self.surface_contents_links: list[dict[str, str]] = []
         self._active: list[dict[str, str]] = []
+        self._surface_placement = ""
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
@@ -31,15 +34,23 @@ class NavigationParser(HTMLParser):
             self.navigation_markers += 1
         if tag.lower() == "nav" and values.get("data-central-surface-navigation") == "v1":
             self.surface_navigation_markers += 1
+            self._surface_placement = values.get("data-placement", "")
+            self.surface_navigation_placements.append(self._surface_placement)
         if tag.lower() != "a":
             return
         row = {
             "href": values.get("href", ""),
             "text": "",
             "course_id": values.get("data-course-id", ""),
+            "interface_locale": values.get("data-interface-locale", ""),
+            "placement": self._surface_placement,
+            "course_card": "1" if "data-course-card" in values else "",
         }
         if "data-program-home" in values:
             self.home_links.append(row)
+            self._active.append(row)
+        elif "data-program-root" in values:
+            self.program_root_links.append(row)
             self._active.append(row)
         elif "data-reader-contents" in values:
             self.contents_links.append(row)
@@ -55,6 +66,8 @@ class NavigationParser(HTMLParser):
     def handle_endtag(self, tag: str) -> None:
         if tag.lower() == "a" and self._active:
             self._active.pop()
+        elif tag.lower() == "nav" and self._surface_placement:
+            self._surface_placement = ""
 
 
 def load_json(path: Path) -> dict[str, object]:
@@ -137,11 +150,99 @@ def article_targets(document: Path, article: str, site_origin: str) -> set[Path]
     return targets
 
 
+def validate_central_overlay(
+    path: Path,
+    parser: NavigationParser,
+    course_ids: list[str],
+    interfaces: dict[str, object],
+    contents_paths: list[Path] | None = None,
+) -> None:
+    if parser.surface_navigation_markers != 2 or sorted(
+        parser.surface_navigation_placements
+    ) != ["bottom", "top"]:
+        raise ValueError(f"{path}: expected exact top and bottom central navigation")
+
+    expected_card_keys = {
+        (interface_locale, course_id)
+        for interface_locale in interfaces
+        for course_id in course_ids
+    }
+    marked_home_links = [
+        link
+        for link in parser.home_links
+        if link["course_id"] and link["course_card"] and link["placement"]
+    ]
+    actual_card_keys = {
+        (link["interface_locale"], link["course_id"])
+        for link in marked_home_links
+    }
+    if actual_card_keys != expected_card_keys:
+        raise ValueError(f"{path}: localized course-card return set changed")
+    if len(marked_home_links) != 2 * len(expected_card_keys):
+        raise ValueError(f"{path}: localized course-card return multiplicity changed")
+    for interface_locale, course_id in sorted(expected_card_keys):
+        interface_document = ROOT / Path(*interfaces[interface_locale]["document"].split("/"))
+        matches: list[str] = []
+        for link in marked_home_links:
+            if (link["interface_locale"], link["course_id"]) != (
+                interface_locale,
+                course_id,
+            ):
+                continue
+            target, fragment = resolve_href(path, link["href"])
+            if target == interface_document.resolve() and fragment == f"course-{course_id}":
+                matches.append(link["placement"])
+            if not link["text"].strip():
+                raise ValueError(f"{path}: course-card return link has no visible label")
+        if sorted(matches) != ["bottom", "top"]:
+            raise ValueError(
+                f"{path}: {interface_locale}/course-{course_id} needs exact top/bottom returns"
+            )
+
+    expected_root_locales = set(interfaces)
+    central_root_links = [link for link in parser.program_root_links if link["placement"]]
+    if {link["interface_locale"] for link in central_root_links} != expected_root_locales:
+        raise ValueError(f"{path}: localized program-root return set changed")
+    if len(central_root_links) != 2 * len(expected_root_locales):
+        raise ValueError(f"{path}: localized program-root return multiplicity changed")
+    for interface_locale, interface in sorted(interfaces.items()):
+        target_document = (ROOT / Path(*interface["document"].split("/"))).resolve()
+        matches: list[str] = []
+        for link in central_root_links:
+            if link["interface_locale"] != interface_locale:
+                continue
+            target, fragment = resolve_href(path, link["href"])
+            if target == target_document and not fragment:
+                matches.append(link["placement"])
+            if not link["text"].strip():
+                raise ValueError(f"{path}: program-root return link has no visible label")
+        if sorted(matches) != ["bottom", "top"]:
+            raise ValueError(
+                f"{path}: {interface_locale} program root needs exact top/bottom returns"
+            )
+
+    expected_contents = {item.resolve() for item in (contents_paths or [])}
+    actual_contents: dict[Path, int] = {}
+    for link in parser.surface_contents_links:
+        target, fragment = resolve_href(path, link["href"])
+        if fragment:
+            raise ValueError(f"{path}: central related-page link unexpectedly has a fragment")
+        actual_contents[target] = actual_contents.get(target, 0) + 1
+        if not link["text"].strip():
+            raise ValueError(f"{path}: central related-page link has no visible label")
+    if set(actual_contents) != expected_contents or any(
+        count != 2 for count in actual_contents.values()
+    ):
+        raise ValueError(f"{path}: central related-page top/bottom closure changed")
+
+
 def main() -> int:
     try:
         contract = load_json(CONTRACT)
         if contract.get("schema") != "central-reader-navigation-v1":
             raise ValueError("central navigation contract schema changed")
+        if contract.get("policy", {}).get("return_locale_policy") != "all_registered_interfaces":
+            raise ValueError("central navigation must return to all registered interfaces")
         interfaces = contract.get("interfaces")
         readers = contract.get("readers")
         gateways = contract.get("gateways")
@@ -162,6 +263,26 @@ def main() -> int:
             route_segments.add(interface["route_segment"])
             if not interface.get("language_tag") or not interface.get("label"):
                 raise ValueError(f"{locale}: locale metadata is incomplete")
+            if set(interface.get("navigation", {})) != {"aria", "lead", "program_root", "related_page"}:
+                raise ValueError(f"{locale}: locale navigation copy is incomplete")
+            fallback = interface.get("fallback_locale")
+            if fallback is not None and fallback not in interfaces:
+                raise ValueError(f"{locale}: fallback locale is not registered")
+        for locale in interfaces:
+            seen: set[str] = set()
+            current: str | None = locale
+            while current is not None:
+                if current in seen:
+                    raise ValueError(f"{locale}: locale fallback cycle")
+                seen.add(current)
+                current = interfaces[current].get("fallback_locale")
+        root_text = (ROOT / "docs" / "index.html").read_text(encoding="utf-8")
+        if root_text.count("<!-- GENERATED-INTERFACE-LOCALES-START -->") != 1 or root_text.count("<!-- GENERATED-INTERFACE-LOCALES-END -->") != 1:
+            raise ValueError("program root lacks the generated locale chooser boundary")
+        for locale, interface in interfaces.items():
+            route = re.escape(interface["route_segment"] + "/")
+            if not re.search(rf'<a\b[^>]*href="{route}"[^>]*data-interface-locale="{re.escape(locale)}"', root_text):
+                raise ValueError(f"program root does not expose locale {locale}")
         if len(readers) != summary.get("reader_roots") or len(gateways) != summary.get("gateway_roots") or len(course_surfaces) != summary.get("course_surface_roots") or len(generic_surfaces) != summary.get("generic_html_documents") or len(reciprocal_hubs) != summary.get("reciprocal_hubs"):
             raise ValueError("central navigation root counts disagree with the declared summary")
 
@@ -220,9 +341,12 @@ def main() -> int:
                 parser = html_parser(path)
                 if parser.navigation_markers != 1:
                     raise ValueError(f"{path}: expected exactly one program-navigation marker")
-                if len(parser.home_links) < 2:
+                native_home_links = [
+                    link for link in parser.home_links if not link["placement"]
+                ]
+                if len(native_home_links) < 2:
                     raise ValueError(f"{path}: top and bottom program-home links are required")
-                for link in parser.home_links:
+                for link in native_home_links:
                     target, fragment = resolve_href(path, link["href"])
                     if target != interface_document.resolve() or fragment != row["course_fragment"]:
                         raise ValueError(f"{path}: program-home link does not return to its course card")
@@ -237,13 +361,33 @@ def main() -> int:
                             raise ValueError(f"{path}: reader-contents link misses its root index")
                         if not link["text"].strip():
                             raise ValueError(f"{path}: reader-contents link has no visible label")
+                validate_central_overlay(
+                    path,
+                    parser,
+                    [course_id],
+                    interfaces,
+                    [] if resolved_path == root_index else [reader_root / "index.html"],
+                )
 
             landing = ROOT / Path(*row["landing_document"].split("/"))
             landing_text = landing.read_text(encoding="utf-8")
+            landing_scope = (
+                course_article(landing, course_id)
+                if landing.resolve() == interface_document.resolve()
+                else landing_text
+            )
+            landing_targets = article_targets(
+                landing, landing_scope, contract["site_origin"]
+            )
             for suffix in row["landing_required_paths"]:
-                expected_url = row["public_root"] + suffix
-                if expected_url not in landing_text:
-                    raise ValueError(f"{landing}: missing inbound reader link {expected_url}")
+                expected_target = (
+                    reader_root / (suffix if suffix else "index.html")
+                ).resolve()
+                if expected_target not in landing_targets:
+                    raise ValueError(
+                        f"{landing}: missing scoped inbound reader link "
+                        f"{row['public_root'] + suffix}"
+                    )
 
             card_key = (locale, course_id)
             if card_key not in course_cards_checked:
@@ -262,15 +406,12 @@ def main() -> int:
                 "contents_links_required": len(html_files) - 1,
             })
 
-        discovered = set()
-        for base in (ROOT / "docs" / "en" / "courses", ROOT / "docs" / "id-ID" / "courses"):
-            if base.is_dir():
-                for path in base.rglob("*.html"):
-                    if "reader" in path.relative_to(base).parts:
-                        discovered.add(path.resolve())
-        legacy = ROOT / "docs" / "readers"
-        if legacy.is_dir():
-            discovered.update(path.resolve() for path in legacy.rglob("*.html"))
+        discovered = {
+            path.resolve()
+            for path in (ROOT / "docs").rglob("*.html")
+            if "reader" in path.relative_to(ROOT / "docs").parts
+            or path.relative_to(ROOT / "docs").parts[0] == "readers"
+        }
         if discovered != configured_reader_files:
             missing = sorted(path.relative_to(ROOT).as_posix() for path in discovered - configured_reader_files)
             extra = sorted(path.relative_to(ROOT).as_posix() for path in configured_reader_files - discovered)
@@ -290,20 +431,27 @@ def main() -> int:
                 raise ValueError(
                     f"{row['root']}: gateway HTML count {len(html_files)} != {row['html_documents']}"
                 )
+            entry_path = (gateway_root / Path(*row["entry_path"].split("/"))).resolve()
+            if entry_path not in {path.resolve() for path in html_files}:
+                raise ValueError(f"{row['root']}: gateway entry_path is outside the registered HTML closure")
             for path in html_files:
                 resolved_path = path.resolve()
                 if resolved_path in configured_gateway_files or resolved_path in configured_reader_files:
                     raise ValueError(f"gateway file appears under another registered root: {path}")
                 configured_gateway_files.add(resolved_path)
                 parser = html_parser(path)
-                if not parser.home_links:
+                native_home_links = [
+                    link for link in parser.home_links if not link["placement"]
+                ]
+                if not native_home_links:
                     raise ValueError(f"{path}: gateway lacks data-program-home")
-                for link in parser.home_links:
+                for link in native_home_links:
                     target, fragment = resolve_href(path, link["href"])
                     if target != interface_document.resolve() or fragment != f"course-{course_id}":
                         raise ValueError(f"{path}: gateway program-home link is not course-scoped")
                     if not link["text"].strip():
                         raise ValueError(f"{path}: gateway program-home link has no label")
+                validate_central_overlay(path, parser, [course_id], interfaces)
             gateway_results.append({
                 "course_id": course_id,
                 "root": row["root"],
@@ -331,7 +479,6 @@ def main() -> int:
                     f"{group['root']}: course-surface closure changed; "
                     f"unregistered={sorted(actual - declared)}, stale={sorted(declared - actual)}"
                 )
-            interface_document = ROOT / Path(*interfaces[locale]["document"].split("/"))
             for document in documents:
                 path = root / Path(*document["path"].split("/"))
                 resolved_path = path.resolve()
@@ -346,30 +493,60 @@ def main() -> int:
                 surface_outbound[resolved_path] = article_targets(
                     path, path.read_text(encoding="utf-8"), contract["site_origin"]
                 )
-                if parser.surface_navigation_markers != 2:
+                if parser.surface_navigation_markers != 2 or sorted(parser.surface_navigation_placements) != ["bottom", "top"]:
                     raise ValueError(f"{path}: expected top and bottom course-surface navigation")
-                marked_home_links = [link for link in parser.home_links if link["course_id"]]
-                if set(link["course_id"] for link in marked_home_links) != set(ids):
-                    raise ValueError(f"{path}: course-scoped return-link set changed")
-                for course_id in ids:
-                    matches = 0
+                marked_home_links = [
+                    link for link in parser.home_links if link["course_id"] and link["course_card"]
+                ]
+                expected_card_keys = {
+                    (interface_locale, course_id)
+                    for interface_locale in interfaces
+                    for course_id in ids
+                }
+                actual_card_keys = {
+                    (link["interface_locale"], link["course_id"])
+                    for link in marked_home_links
+                }
+                if actual_card_keys != expected_card_keys:
+                    raise ValueError(f"{path}: localized course-card return set changed")
+                for interface_locale, course_id in sorted(expected_card_keys):
+                    interface_document = ROOT / Path(*interfaces[interface_locale]["document"].split("/"))
+                    matches = []
                     for link in marked_home_links:
-                        if link["course_id"] != course_id:
+                        if (link["interface_locale"], link["course_id"]) != (interface_locale, course_id):
                             continue
                         target, fragment = resolve_href(path, link["href"])
                         if target == interface_document.resolve() and fragment == f"course-{course_id}":
-                            matches += 1
+                            matches.append(link["placement"])
                         if not link["text"].strip():
                             raise ValueError(f"{path}: course return link has no visible label")
-                    if matches != 2:
-                        raise ValueError(f"{path}: course-{course_id} needs exact top/bottom returns")
+                    if sorted(matches) != ["bottom", "top"]:
+                        raise ValueError(
+                            f"{path}: {interface_locale}/course-{course_id} needs exact top/bottom returns"
+                        )
                     article = course_article(interface_document, course_id)
-                    key = (locale, course_id)
+                    key = (interface_locale, course_id)
                     surface_docs_by_course.setdefault(key, set()).add(resolved_path)
                     interface_outbound_by_course.setdefault(
                         key,
                         article_targets(interface_document, article, contract["site_origin"]),
                     )
+                expected_root_locales = set(interfaces)
+                if {link["interface_locale"] for link in parser.program_root_links} != expected_root_locales:
+                    raise ValueError(f"{path}: localized program-root return set changed")
+                for interface_locale, interface in sorted(interfaces.items()):
+                    target_document = (ROOT / Path(*interface["document"].split("/"))).resolve()
+                    matches = []
+                    for link in parser.program_root_links:
+                        if link["interface_locale"] != interface_locale:
+                            continue
+                        target, fragment = resolve_href(path, link["href"])
+                        if target == target_document and not fragment:
+                            matches.append(link["placement"])
+                        if not link["text"].strip():
+                            raise ValueError(f"{path}: program-root link has no visible label")
+                    if sorted(matches) != ["bottom", "top"]:
+                        raise ValueError(f"{path}: {interface_locale} program root needs exact top/bottom returns")
 
                 contents_paths = document.get("contents_paths", [])
                 if not isinstance(contents_paths, list) or len(contents_paths) != len(set(contents_paths)):
@@ -425,14 +602,13 @@ def main() -> int:
             configured_generic_files.add(resolved_path)
             parser = html_parser(path)
             if row["navigation_required"]:
-                if parser.surface_navigation_markers != 2:
-                    raise ValueError(f"{path}: generic surface needs top/bottom program returns")
+                validate_central_overlay(path, parser, [], interfaces)
                 target_document = (ROOT / Path(*row["target_document"].split("/"))).resolve()
-                unscoped = [link for link in parser.home_links if not link["course_id"]]
+                unscoped = parser.program_root_links
                 matches = 0
                 for link in unscoped:
                     target, fragment = resolve_href(path, link["href"])
-                    if target == target_document and not fragment:
+                    if target == target_document and not fragment and link["placement"] in {"top", "bottom"}:
                         matches += 1
                     if not link["text"].strip():
                         raise ValueError(f"{path}: generic program-return link has no label")
@@ -481,6 +657,14 @@ def main() -> int:
             raise ValueError("complete HTML closure disagrees with the declared summary")
         if localized_card_count != summary.get("localized_course_cards"):
             raise ValueError("localized card closure disagrees with the declared summary")
+        navigation_overlay_documents = (
+            reader_html_documents
+            + gateway_html_documents
+            + course_surface_html_documents
+            + sum(bool(row["navigation_required"]) for row in generic_surfaces)
+        )
+        if navigation_overlay_documents != summary.get("navigation_overlay_documents"):
+            raise ValueError("navigation overlay closure disagrees with the declared summary")
 
         result = {
             "status": "pass",
@@ -493,6 +677,7 @@ def main() -> int:
             "course_surface_html_documents": course_surface_html_documents,
             "generic_html_documents": len(configured_generic_files),
             "classified_html_documents": classified_html_documents,
+            "navigation_overlay_documents": navigation_overlay_documents,
             "localized_course_cards_with_original_sources": localized_card_count,
             "reciprocal_hubs": len(reciprocal_hubs),
             "readers": reader_results,

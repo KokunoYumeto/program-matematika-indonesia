@@ -17,6 +17,8 @@ import re
 import sys
 from pathlib import Path
 
+from central_surface_navigation_overlay_v1 import strip_central_surface_overlay
+
 
 ROOT = Path(__file__).resolve().parents[1]
 LOCK_PATH = ROOT / "backend" / "authority" / "central-reader-navigation-legacy-source-lock-v1.json"
@@ -170,7 +172,8 @@ def main() -> int:
                 )
             for path in html_files:
                 relative = path.relative_to(ROOT).as_posix()
-                current = path.read_bytes()
+                current_hosted = path.read_bytes()
+                current = strip_central_surface_overlay(current_hosted, relative)
                 locked = prior_rows.get(relative)
                 if locked is None:
                     if prior is not None:
@@ -194,7 +197,7 @@ def main() -> int:
                             raise ValueError(f"legacy navigation replay changed: {relative}")
                     else:
                         raise ValueError(f"legacy reader is neither frozen source nor hosted projection: {relative}")
-                if current != hosted:
+                if current_hosted != hosted:
                     writes.append((path, hosted))
                 if locked is None:
                     rows.append({

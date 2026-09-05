@@ -9,7 +9,7 @@ const read = (relative) => readFile(resolve(root, relative));
 const json = async (relative) => JSON.parse((await read(relative)).toString('utf8'));
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 
-const [legacyBytes, d20Bytes, c100, aggregate, c100PilotUnits, readerBytes, styleBytes, solutionBytes, landing] = await Promise.all([
+const [legacyBytes, d20Bytes, c100, aggregate, c100PilotUnits, readerHostedBytes, styleBytes, solutionBytes, landing] = await Promise.all([
   read('docs/data/unit-route-v2.1.json'),
   read('docs/data/unit-route-D20-v2.1.json'),
   json('docs/data/unit-route-C100-v2.1.json'),
@@ -20,6 +20,20 @@ const [legacyBytes, d20Bytes, c100, aggregate, c100PilotUnits, readerBytes, styl
   read('docs/id-ID/courses/C100/solutions/SOLUSI_DAN_PENGUASAAN_ID_BAB01_20.pdf'),
   read('docs/id-ID/courses/C100/index.html'),
 ]);
+const stripCentralSurfaceNavigation = (bytes, logical) => {
+  const text = bytes.toString('utf8');
+  const marker = 'data-central-surface-navigation="v1"';
+  const markerCount = text.split(marker).length - 1;
+  assert.ok(markerCount === 0 || markerCount === 2, `${logical}: malformed central overlay count`);
+  const top = /\n<nav data-central-surface-navigation="v1" data-placement="top" aria-label="[^"]+">[\s\S]*?<\/nav>/g;
+  const bottom = /<nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="[^"]+">[\s\S]*?<\/nav>\n/g;
+  const topMatches = [...text.matchAll(top)].length;
+  const bottomMatches = [...text.matchAll(bottom)].length;
+  assert.equal(topMatches, markerCount / 2, `${logical}: central top overlay is not removable`);
+  assert.equal(bottomMatches, markerCount / 2, `${logical}: central bottom overlay is not removable`);
+  return Buffer.from(text.replace(top, '').replace(bottom, ''));
+};
+const readerBytes = stripCentralSurfaceNavigation(readerHostedBytes, 'docs/id-ID/courses/C100/reader/index.html');
 assert.deepEqual(legacyBytes, d20Bytes, 'Legacy unit-route-v2.1.json must remain byte-identical to D20 v1.');
 const d20 = JSON.parse(d20Bytes.toString('utf8'));
 assert.equal(d20.schema_id, 'program-matematika-indonesia/unit-route-v2.1/v1');

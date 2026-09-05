@@ -29,6 +29,10 @@ from validate_d10_public_html_v1 import (
     validate_local_links,
     validate_native_manifest,
 )
+from central_surface_navigation_overlay_v1 import (
+    inventory_without_central_surface_overlay,
+    remove_central_surface_overlays_in_tree,
+)
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -63,9 +67,12 @@ def safe_replace_reader(source: Path, destination: Path) -> str:
     expected_facts = expected_destination_inventory(source)
     validate_expected_reader_identity(source_facts)
     if destination.exists():
-        destination_facts = inventory(destination)
+        destination_facts = inventory_without_central_surface_overlay(
+            destination, inventory(destination)
+        )
         if destination_facts == expected_facts:
-            return "already_navigation_exact"
+            stripped = remove_central_surface_overlays_in_tree(destination)
+            return f"already_navigation_exact_central_overlays_removed_{stripped}"
         # Only replace a prior artifact owned by this deterministic staging lane.
         if not DEFAULT_MANIFEST.is_file():
             raise ValueError(

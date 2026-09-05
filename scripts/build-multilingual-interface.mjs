@@ -6,13 +6,86 @@ import { courses as canonicalCourses } from '../docs/courses.js';
 import { syncReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { syncFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
 import { syncCapabilityTools, capabilityInput } from './interface-capability-tools.mjs';
-import { supportedLocales, localeMetadata, interfaceCopy, topicCopy, siteOrigin, englishBindingExceptions } from '../docs/interface/locales.js';
+import { supportedLocales, localeMetadata, interfaceCopy, localizedTopic, siteOrigin, englishBindingExceptions } from '../docs/interface/locales.js';
 import { supplementalReaders } from '../docs/interface/supplemental-readers.js';
 
 const interfaceRoot = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const docsRoot = resolve(interfaceRoot, 'docs');
+const localeRoots = new Map();
+for (const locale of supportedLocales) {
+  const routeSegment = localeMetadata[locale].routeSegment;
+  const localeRoot = resolve(docsRoot, routeSegment);
+  if (dirname(localeRoot).toLowerCase() !== docsRoot.toLowerCase()) {
+    throw new Error('Locale route escapes or nests outside the docs root: ' + locale);
+  }
+  const key = localeRoot.toLowerCase();
+  if (localeRoots.has(key)) throw new Error('Locale routes collide: ' + localeRoots.get(key) + ' and ' + locale);
+  localeRoots.set(key, locale);
+}
 await syncReaderActions(interfaceRoot, canonicalCourses.map((course) => course.id));
 await syncFinalEditions(interfaceRoot, canonicalCourses.map((course) => course.id));
 const capabilityFiles = await syncCapabilityTools(interfaceRoot, canonicalCourses.map((course) => course.id));
+const centralNavigationContractBytes = await readFile(resolve(interfaceRoot, 'backend/authority/central-reader-navigation-v1.json'));
+const centralNavigationOverlayBytes = await readFile(resolve(interfaceRoot, 'backend/authority/central-course-surface-navigation-overlay-v1.json'));
+const centralNavigationContract = JSON.parse(centralNavigationContractBytes);
+const centralNavigationOverlay = JSON.parse(centralNavigationOverlayBytes);
+if (centralNavigationContract.schema !== 'central-reader-navigation-v1' || centralNavigationOverlay.schema !== 'central-course-surface-navigation-overlay-v1' || centralNavigationOverlay.status !== 'pass') {
+  throw new Error('Central hosted-surface authority is incomplete');
+}
+const hostedIdentityDocuments = new Set([
+  ...centralNavigationContract.course_surfaces.flatMap(group => group.documents.map(row => group.root + '/' + row.path)),
+  ...centralNavigationContract.readers.flatMap(reader => reader.landing_required_paths.map(suffix => reader.root + '/' + (suffix || 'index.html'))),
+  ...centralNavigationContract.gateways.map(gateway => gateway.root + '/' + gateway.entry_path),
+]);
+const hostedSurfaceIdentities = {};
+for (const row of centralNavigationOverlay.files) {
+  // Interface/generic documents embed this module in their offline forms.
+  // Excluding those presentation pages prevents a self-referential hash cycle;
+  // only course-scoped learner destinations need runtime source/hosted mapping.
+  if (!hostedIdentityDocuments.has(row.document)) continue;
+  if (!row.document.startsWith('docs/')) throw new Error('Hosted surface escapes docs: ' + row.document);
+  const logical = row.document.slice('docs/'.length);
+  const route = logical === 'index.html' ? '' : logical.endsWith('/index.html') ? logical.slice(0, -'index.html'.length) : logical;
+  const urls = new Set([new URL(route, siteOrigin).href, new URL(logical, siteOrigin).href]);
+  const identity = { sourceBody: row.source_body, hostedSurface: row.hosted_surface };
+  for (const url of urls) {
+    if (hostedSurfaceIdentities[url] && JSON.stringify(hostedSurfaceIdentities[url]) !== JSON.stringify(identity)) {
+      throw new Error('Conflicting hosted-surface identity: ' + url);
+    }
+    hostedSurfaceIdentities[url] = identity;
+  }
+}
+const overlayDocuments = new Set(centralNavigationOverlay.files.map(row => row.document));
+for (const document of hostedIdentityDocuments) {
+  if (!overlayDocuments.has(document)) throw new Error('Hosted identity document is absent from the navigation overlay: ' + document);
+}
+const hostedSurfaceIdentityModulePath = 'docs/interface/hosted-surface-identities.js';
+const hostedSurfaceIdentityModuleBytes = Buffer.from(
+  '// Generated from the reversible central navigation overlay; do not hand-edit.\n'
+  + 'export const hostedSurfaceIdentities = Object.freeze(' + JSON.stringify(hostedSurfaceIdentities) + ');\n',
+);
+await writeFile(resolve(interfaceRoot, hostedSurfaceIdentityModulePath), hostedSurfaceIdentityModuleBytes);
+const centralGatewayResources = centralNavigationContract.gateways.map((gateway) => {
+  if (!gateway.root.startsWith('docs/') || gateway.entry_path.includes('..') || gateway.entry_path.startsWith('/')) {
+    throw new Error('Unsafe central gateway entry: ' + gateway.course_id);
+  }
+  const logical = gateway.root.slice('docs/'.length).replace(/\/$/u, '') + '/' + gateway.entry_path;
+  const href = new URL(gateway.entry_path === 'index.html' ? logical.slice(0, -'index.html'.length) : logical, siteOrigin).href;
+  return {
+    courseId: gateway.course_id,
+    contentLanguage: centralNavigationContract.interfaces[gateway.locale].language_tag,
+    href,
+  };
+});
+if (new Set(centralGatewayResources.map(row => row.courseId + '\0' + row.href)).size !== centralGatewayResources.length) {
+  throw new Error('Duplicate central gateway resource');
+}
+const centralGatewayModulePath = 'docs/interface/central-gateway-resources.js';
+const centralGatewayModuleBytes = Buffer.from(
+  '// Generated from backend/authority/central-reader-navigation-v1.json; do not hand-edit.\n'
+  + 'export const centralGatewayResources = Object.freeze(' + JSON.stringify(centralGatewayResources) + ');\n',
+);
+await writeFile(resolve(interfaceRoot, centralGatewayModulePath), centralGatewayModuleBytes);
 const { interfaceCourses, interfaceTopics, coursePresentation, renderCourseCard, escapeMarkup, resourceBindings, learnerAccessProjection, learnerAccessRoles } = await import('../docs/interface/view.js');
 const { capabilityTools: admittedCapabilityTools } = await import('../docs/interface/capability-tools.js');
 const read = (path) => readFile(resolve(interfaceRoot, path), 'utf8');
@@ -26,6 +99,7 @@ const stripImports = (code) => code.replace(/^import[\s\S]*?from ['"][^'"]+['"];
 const capabilityRuntimeTools = admittedCapabilityTools.map((tool) => ({
   courseId: tool.courseId,
   contentLanguage: tool.contentLanguage,
+  labelLanguage: tool.labelLanguage ?? tool.contentLanguage,
   href: tool.href,
   label: tool.label,
   limitations: tool.limitations,
@@ -39,13 +113,14 @@ const sources = [
   // still hash-bound below. No course source or backend is changed.
   'const authorityCourses = ' + JSON.stringify(interfaceCourses) + ';\nconst topics = ' + JSON.stringify(interfaceTopics) + ';\nconst materializeLiveCourses = rows => rows;',
   await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
-  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
+  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read(hostedSurfaceIdentityModulePath), await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
 
 function renderDocument(locale, offline, paired = false) {
   const t = interfaceCopy[locale], esc = escapeMarkup;
+  const localeConfig = localeMetadata[locale];
   const languageLinks = supportedLocales.map((code) => {
     const meta = localeMetadata[code];
     const href = paired ? '../' + meta.routeSegment + '/learning-map-paired.html' : offline ? siteOrigin + meta.routeSegment + '/' : '../' + meta.routeSegment + '/';
@@ -54,7 +129,14 @@ function renderDocument(locale, offline, paired = false) {
   const options = interfaceCourses.map((course) => '<option value="' + course.id + '">' + course.id + ' — ' + esc(coursePresentation(course, locale).title) + '</option>').join('');
   const claimForm = (kind) => '<div class="claim-form"><label for="' + kind + '-course">' + t[kind] + '</label><select id="' + kind + '-course">' + options + '</select><button id="add-' + kind + '" type="button">' + t.add + '</button></div>';
   const canonical = siteOrigin + localeMetadata[locale].routeSegment + '/';
-  return '<!doctype html>\n<html lang="' + localeMetadata[locale].languageTag + '">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
+  const bindingExceptionSets = { en: englishBindingExceptions };
+  const exceptionRows = localeConfig.bindingExceptions ? bindingExceptionSets[localeConfig.bindingExceptions] : null;
+  if (localeConfig.bindingExceptions && !exceptionRows) throw new Error('Unknown binding-exception set: ' + localeConfig.bindingExceptions);
+  const exceptions = exceptionRows
+    ? '<details><summary>' + esc(t.bindingExceptionsTitle) + '</summary><p>' + esc(t.bindingExceptionsText) + '</p><ul>'
+      + Object.entries(exceptionRows).map(([id, note]) => '<li><a href="#course-' + id + '">' + id + '</a> — ' + esc(note) + '</li>').join('') + '</ul></details>'
+    : '';
+  return '<!doctype html>\n<html lang="' + localeConfig.languageTag + '" data-interface-locale="' + locale + '">\n<head>\n<meta charset="utf-8">\n<meta name="viewport" content="width=device-width, initial-scale=1">\n'
     + '<title>' + esc(t.title) + '</title>\n<meta name="description" content="' + esc(t.description) + '">\n<meta name="theme-color" content="#15302e">\n'
     + '<link rel="canonical" href="' + canonical + '">\n'
     + '<link rel="alternate" type="application/json" title="Learner access manifest" href="' + siteOrigin + 'interface/learner-access-manifest.json">\n'
@@ -78,31 +160,58 @@ function renderDocument(locale, offline, paired = false) {
     + '<div id="claims"></div><p id="storage-message" role="status"></p><div class="progress-actions"><button id="export-progress" type="button">' + t.exportProgress + '</button><label>' + t.importProgress + '<input id="import-progress" type="file" accept=".json,application/json"></label><button id="clear-progress" type="button">' + t.resetProgress + '</button></div></details>'
     + '<section id="katalog" aria-labelledby="catalog-title"><h2 id="catalog-title">' + t.catalog + '</h2><p class="no-js-note">' + t.noJs + '</p>'
     + '<div class="filters js-only"><label>' + t.search + '<input type="search" id="search" placeholder="' + esc(t.placeholder) + '" autocomplete="off"></label>'
-    + '<label>' + t.topic + '<select id="topic"><option value="all">' + t.allTopics + '</option>' + interfaceTopics.map((topic, i) => '<option value="' + i + '">' + esc(locale === 'id' ? topic : topicCopy[topic]) + '</option>').join('') + '</select></label>'
+    + '<label>' + t.topic + '<select id="topic"><option value="all">' + t.allTopics + '</option>' + interfaceTopics.map((topic, i) => '<option value="' + i + '">' + esc(localizedTopic(topic, locale)) + '</option>').join('') + '</select></label>'
     + '<label>' + t.level + '<select id="level"><option value="all">' + t.allLevels + '</option>' + Object.entries(t.levels).map(([key, value]) => '<option value="' + key + '">' + key + ' · ' + value + '</option>').join('') + '</select></label>'
     + '<label>' + t.filter + '<select id="show"><option value="all">' + t.all + '</option><option value="eligible">' + t.eligible + '</option><option value="completed">' + t.completed + '</option><option value="offline">' + t.offline + '</option></select></label></div>'
     + '<div class="filter-footer js-only"><p id="result-count" role="status" aria-live="polite" tabindex="-1"></p><button id="reset-filters" type="button">' + t.clear + '</button></div>'
     + '<p id="empty-state" hidden>' + t.none + '</p><div class="course-grid" id="course-grid">' + interfaceCourses.map((c) => renderCourseCard(c, locale)).join('\n') + '</div></section>'
     + '<section id="about"><h2>' + t.about + '</h2><p>' + t.aboutText + '</p><p class="footnote">' + t.bindingNote + '</p>'
-    + (locale === 'en' ? '<details><summary>English resource-binding exceptions</summary><p>These are missing link bindings, not a claim that Indonesian translation is unfinished. English upstream spines do not include the program’s original Indonesian supplements.</p><ul>' + Object.entries(englishBindingExceptions).map(([id, note]) => '<li><a href="#course-' + id + '">' + id + '</a> — ' + esc(note) + '</li>').join('') + '</ul></details>' : '')
-    + '</section></main><footer><nav><a href="' + siteOrigin + 'backend/index.html">' + t.sharedBackend + '</a><a href="https://kokunoyumeto.github.io/OpenLogic-translations/">' + (locale === 'en' ? 'Open Logic translations — choose a language' : 'Terjemahan Open Logic — pilih bahasa') + '</a><a href="' + siteOrigin + '">' + t.legacy + '</a><a href="https://github.com/KokunoYumeto/program-matematika-indonesia">GitHub</a></nav><p>' + t.footer + '</p></footer>'
+    + exceptions
+    + '</section></main><footer><nav><a href="' + siteOrigin + 'backend/index.html">' + t.sharedBackend + '</a><a href="https://kokunoyumeto.github.io/OpenLogic-translations/">' + t.openLogicHub + '</a><a href="' + siteOrigin + '">' + t.legacy + '</a><a href="https://github.com/KokunoYumeto/program-matematika-indonesia">GitHub</a></nav><p>' + t.footer + '</p></footer>'
     + (offline ? '<script>\n' + inlineScript + '\n</script>' : '<script type="module" src="../interface/app.js"></script>') + '\n</body>\n</html>\n';
 }
-const outputFiles = [];
+const outputFiles = [{
+  path: hostedSurfaceIdentityModulePath,
+  bytes: hostedSurfaceIdentityModuleBytes.length,
+  sha256: createHash('sha256').update(hostedSurfaceIdentityModuleBytes).digest('hex'),
+}, {
+  path: centralGatewayModulePath,
+  bytes: centralGatewayModuleBytes.length,
+  sha256: createHash('sha256').update(centralGatewayModuleBytes).digest('hex'),
+}];
 for (const locale of supportedLocales) {
   const routeSegment = localeMetadata[locale].routeSegment;
-  await mkdir(resolve(interfaceRoot, 'docs', routeSegment), { recursive: true });
+  await mkdir(resolve(docsRoot, routeSegment), { recursive: true });
   for (const [file, offline, paired] of [['index.html', false, false], ['learning-map.html', true, false], ['learning-map-paired.html', true, true]]) {
     const relative = 'docs/' + routeSegment + '/' + file;
     const bytes = Buffer.from(renderDocument(locale, offline, paired));
-    await writeFile(resolve(interfaceRoot, relative), bytes);
+    await writeFile(resolve(docsRoot, routeSegment, file), bytes);
     outputFiles.push({ path: relative, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') });
   }
 }
+const rootLocaleStart = '<!-- GENERATED-INTERFACE-LOCALES-START -->';
+const rootLocaleEnd = '<!-- GENERATED-INTERFACE-LOCALES-END -->';
+const rootIndexPath = resolve(interfaceRoot, 'docs/index.html');
+const rootIndexSource = await readFile(rootIndexPath, 'utf8');
+const rootLocaleLinks = supportedLocales.map((locale) => {
+  const meta = localeMetadata[locale];
+  return '      <a href="' + meta.routeSegment + '/" hreflang="' + meta.languageTag + '" lang="' + meta.languageTag
+    + '" data-interface-locale="' + locale + '">' + escapeMarkup(meta.label) + '</a>';
+}).join('\n');
+const rootLocalePattern = new RegExp(rootLocaleStart + '[\\s\\S]*?' + rootLocaleEnd);
+if (!rootLocalePattern.test(rootIndexSource)) throw new Error('Root locale chooser markers are missing');
+const rootIndexTarget = rootIndexSource.replace(rootLocalePattern, rootLocaleStart + '\n' + rootLocaleLinks + '\n      ' + rootLocaleEnd);
+await writeFile(rootIndexPath, rootIndexTarget, 'utf8');
+const rootLocaleChooser = {
+  path: 'docs/index.html',
+  locales: supportedLocales,
+  bytes: Buffer.byteLength(rootIndexTarget),
+  sha256: createHash('sha256').update(rootIndexTarget).digest('hex'),
+};
 const learnerAccessManifest = {
   schema_name: 'learner-access-presentation', schema_version: '1.0.0',
   authority_note: 'Presentation sidecar only; canonical edition, rights, provenance, and translation records remain authoritative in the modular backend.',
-  locale_route_template: '/{interface_locale}/', supported_interface_locales: supportedLocales,
+  locale_route_template: '/{route_segment}/', supported_interface_locales: supportedLocales,
   locale_metadata: localeMetadata,
   access_roles: learnerAccessRoles,
   invariants: [
@@ -119,11 +228,12 @@ outputFiles.push({path:'docs/interface/learner-access-manifest.json', bytes:lear
 const receipt = {
   schema: 'multilingual-interface-build/v1', locales: supportedLocales, canonicalCourseCount: interfaceCourses.length,
   canonicalEdgeCount: interfaceCourses.reduce((n, c) => n + c.prerequisites.length, 0),
-  inputs: await Promise.all(['backend/authority/central-reader-navigation-v1.json', 'docs/interface/supplemental-readers.js', ...new Set(supplementalReaders.map(row=>row.evidenceFile)), 'docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
+  inputs: await Promise.all(['backend/authority/central-reader-navigation-v1.json', 'backend/authority/central-course-surface-navigation-overlay-v1.json', hostedSurfaceIdentityModulePath, centralGatewayModulePath, 'docs/interface/supplemental-readers.js', ...new Set(supplementalReaders.map(row=>row.evidenceFile)), 'docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
     const bytes = await readFile(resolve(interfaceRoot, path));
     return { path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
   })),
   outputs: outputFiles,
+  rootLocaleChooser,
   resourceBindingScope: 'Presentation/resource URLs only; no corpus or backend mutation.',
   learnerAccessContract: {
     schema: learnerAccessManifest.schema_name + '/' + learnerAccessManifest.schema_version,

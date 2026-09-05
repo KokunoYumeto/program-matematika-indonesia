@@ -15,7 +15,11 @@ const overlay=JSON.parse(overlayBytes);
 assert.equal(receipt.schema,'multilingual-interface-build/v1');
 assert.equal(overlay.status,'pass');
 assert.equal(overlay.schema,'central-course-surface-navigation-overlay-v1');
-assert.equal(receipt.outputs.length,7,'Multilingual interface output closure changed.');
+assert.equal(receipt.outputs.length,receipt.locales.length*3+3,'Multilingual interface output closure changed.');
+const generationOverlayInput=receipt.inputs.find(row=>row.path===overlayPath);
+assert.ok(generationOverlayInput,'Generation overlay input is missing.');
+receipt.generation_input_navigation_overlay=generationOverlayInput;
+receipt.inputs=receipt.inputs.map(row=>row.path===overlayPath?fact(overlayPath,overlayBytes):row);
 receipt.outputs=await Promise.all(receipt.outputs.map(async row=>{
   const bytes=await readFile(resolve(root,row.path));
   return fact(row.path,bytes);

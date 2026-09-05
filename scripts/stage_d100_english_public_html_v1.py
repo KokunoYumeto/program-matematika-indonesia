@@ -38,6 +38,10 @@ from validate_d100_english_public_html_v1 import (
     validate_receipt,
     validate_source_inventory,
 )
+from central_surface_navigation_overlay_v1 import (
+    inventory_without_central_surface_overlay,
+    remove_central_surface_overlays_in_tree,
+)
 
 
 SOURCE_REPOSITORY = "https://github.com/KokunoYumeto/algebraic-geometry-bridge-id"
@@ -55,9 +59,12 @@ def stage_reader(source: Path, destination: Path, manifest_path: Path) -> str:
     source_facts = inventory(source)
     expected_facts = expected_destination_inventory(source)
     if destination.exists():
-        destination_facts = inventory(destination)
+        destination_facts = inventory_without_central_surface_overlay(
+            destination, inventory(destination)
+        )
         if destination_facts == expected_facts:
-            return "already_navigation_exact"
+            stripped = remove_central_surface_overlays_in_tree(destination)
+            return f"already_navigation_exact_central_overlays_removed_{stripped}"
         if not manifest_path.is_file():
             raise ValueError("existing D100 English destination differs and has no lane-owned manifest")
         prior = json.loads(manifest_path.read_text(encoding="utf-8"))

@@ -843,7 +843,14 @@ assert.equal(effectiveCoursesById.get('D40').supplements[0].sha256, 'a370bba5ddb
 assert.equal(effectiveCoursesById.get('D40').supplements[1].id, 'dionne-unit14-source');
 assert.equal(effectiveCoursesById.get('D40').supplements[1].bytes, 12141309);
 assert.equal(effectiveCoursesById.get('D40').supplements[1].sha256, '248b65a225e96f0a342ab2f6288aa303d28bfd2a8e108db14f7e125ef5401f0e');
-assert.equal(sha256(d40ReaderIndexBytes), 'a7059a30fa4b991a4a1580e5bf7892d3e508619e5e66f507a13be0c51674bad7');
+await assertBaseOrCentralNavigationIdentity(
+  {
+    path: 'docs/readers/d40/unit14/index.html',
+    bytes: 6544,
+    sha256: 'a7059a30fa4b991a4a1580e5bf7892d3e508619e5e66f507a13be0c51674bad7',
+  },
+  'D40 current reader index identity',
+);
 assert.match(d40Landing, /edisi lengkap publik/);
 assert.match(d40Landing, /679 halaman/);
 assert.match(d40Landing, /22184259/);
@@ -1256,8 +1263,10 @@ for (const row of d10MirrorManifest.reader.files) {
     readFile(resolve(root, 'docs', logical)),
     readFile(resolve(root, 'public/hub', logical)),
   ]);
-  assert.equal(docsBytes.length, row.bytes, `${logical}: byte manifest berbeda.`);
-  assert.equal(sha256(docsBytes), row.sha256, `${logical}: hash manifest berbeda.`);
+  await assertBaseOrCentralNavigationIdentity(
+    {path:`docs/${logical}`, bytes:row.bytes, sha256:row.sha256},
+    `${logical}: identitas manifest berbeda`,
+  );
   assert.deepEqual(hostedBytes, docsBytes, `${logical}: mirror Sites berbeda dari docs.`);
   d10MirrorBytes += row.bytes;
   d10MirrorAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
@@ -1280,8 +1289,10 @@ for (const row of d120MirrorManifest.reader.files) {
     readFile(resolve(root, 'docs', logical)),
     readFile(resolve(root, 'public/hub', logical)),
   ]);
-  assert.equal(docsBytes.length, row.bytes, `${logical}: byte manifest berbeda.`);
-  assert.equal(sha256(docsBytes), row.sha256, `${logical}: hash manifest berbeda.`);
+  await assertBaseOrCentralNavigationIdentity(
+    {path:`docs/${logical}`, bytes:row.bytes, sha256:row.sha256},
+    `${logical}: identitas manifest berbeda`,
+  );
   assert.deepEqual(hostedBytes, docsBytes, `${logical}: mirror Sites berbeda dari docs.`);
   d120MirrorBytes += row.bytes;
   d120MirrorAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
@@ -1325,8 +1336,10 @@ for (const row of d100EnglishMirrorManifest.reader.files) {
     readFile(resolve(root, 'docs', logical)),
     readFile(resolve(root, 'public/hub', logical)),
   ]);
-  assert.equal(docsBytes.length, row.bytes, `${logical}: byte manifest berbeda.`);
-  assert.equal(sha256(docsBytes), row.sha256, `${logical}: hash manifest berbeda.`);
+  await assertBaseOrCentralNavigationIdentity(
+    {path:`docs/${logical}`, bytes:row.bytes, sha256:row.sha256},
+    `${logical}: identitas manifest berbeda`,
+  );
   assert.deepEqual(hostedBytes, docsBytes, `${logical}: mirror Sites berbeda dari docs.`);
   d100EnglishMirrorBytes += row.bytes;
   d100EnglishMirrorAggregate.update(`${row.sha256}\t${row.bytes}\t${row.path}\n`, 'utf8');
@@ -1418,8 +1431,13 @@ assert.match(d30Landing, /22182655/);
 assert.match(d30Landing, /measure-theoretic-probability-stochastic-processes-id/);
 assert.doesNotMatch(d30Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
-assert.equal(c100ReaderBytes.length, c100RouteManifest.reader.hosted_html.bytes);
-assert.equal(sha256(c100ReaderBytes), c100RouteManifest.reader.hosted_html.sha256);
+await assertBaseOrCentralNavigationIdentity(
+  {
+    path: 'docs/id-ID/courses/C100/reader/index.html',
+    ...c100RouteManifest.reader.hosted_html,
+  },
+  'C100 hosted reader identity',
+);
 assert.equal(c100ReaderStyleBytes.length, c100RouteManifest.reader.source_style.bytes);
 assert.equal(sha256(c100ReaderStyleBytes), c100RouteManifest.reader.source_style.sha256);
 assert.equal(c100SolutionBytes.length, c100RouteManifest.reader.solution_pdf.bytes);

@@ -48,6 +48,19 @@ def href_between(source: Path, target: Path, fragment: str = "") -> str:
     return relative + (f"#{fragment}" if fragment else "")
 
 
+def configured_html(root: Path, exclusions: list[str] | None = None) -> list[Path]:
+    excluded = {
+        (root / Path(*value.split("/"))).resolve() for value in (exclusions or [])
+    }
+    rows: list[Path] = []
+    for path in sorted(root.rglob("*.html"), key=lambda item: item.as_posix()):
+        resolved = path.resolve()
+        if any(resolved == item or resolved.is_relative_to(item) for item in excluded):
+            continue
+        rows.append(path)
+    return rows
+
+
 def strip_owned_overlay(text: str, logical: str) -> str:
     marker_count = text.count(MARKER)
     if marker_count not in (0, 2):
@@ -61,41 +74,37 @@ def strip_owned_overlay(text: str, logical: str) -> str:
 
 def navigation_markup(
     source: Path,
-    targets: list[tuple[Path, str | None]],
+    course_targets: list[tuple[Path, str, str, str]],
+    program_targets: list[tuple[Path, str, str]],
     contents: list[Path],
-    locale: str,
+    navigation_copy: dict[str, str],
     placement: str,
 ) -> str:
-    aria = "Navigasi Program Matematika" if locale == "id" else "Mathematics Program navigation"
-    lead = "Program:" if locale == "id" else "Program:"
     links: list[str] = []
-    for target, course_id in targets:
-        fragment = f"course-{course_id}" if course_id else ""
-        href = href_between(source, target, fragment)
-        if course_id:
-            label = (
-                f"Kembali ke kartu mata kuliah {course_id}"
-                if locale == "id"
-                else f"Back to course {course_id}"
-            )
-            course_attr = f' data-course-id="{html.escape(course_id)}"'
-        else:
-            label = "Kembali ke Program Matematika" if locale == "id" else "Back to the Mathematics Program"
-            course_attr = ""
+    for target, course_id, interface_locale, interface_label in course_targets:
+        href = href_between(source, target, f"course-{course_id}")
+        label = f"{interface_label} — {course_id}"
         links.append(
-            f'<a data-program-home{course_attr} href="{html.escape(href)}">'
+            f'<a data-program-home data-course-card data-course-id="{html.escape(course_id)}" '
+            f'data-interface-locale="{html.escape(interface_locale)}" href="{html.escape(href)}">'
             f'{html.escape(label)}</a>'
+        )
+    for target, interface_locale, label in program_targets:
+        href = href_between(source, target)
+        links.append(
+            f'<a data-program-root data-interface-locale="{html.escape(interface_locale)}" '
+            f'href="{html.escape(href)}">{html.escape(label)}</a>'
         )
     for target in contents:
         href = href_between(source, target)
-        label = "Buka halaman terkait" if locale == "id" else "Open related page"
+        label = navigation_copy["related_page"]
         links.append(
             f'<a data-course-surface-contents href="{html.escape(href)}">'
             f'{html.escape(label)}</a>'
         )
     return (
         f'<nav data-central-surface-navigation="v1" data-placement="{placement}" '
-        f'aria-label="{html.escape(aria)}"><span>{html.escape(lead)}</span> '
+        f'aria-label="{html.escape(navigation_copy["aria"])}"><span>{html.escape(navigation_copy["lead"])}</span> '
         + " · ".join(links)
         + "</nav>"
     )
@@ -104,9 +113,10 @@ def navigation_markup(
 def inject_overlay(
     logical: str,
     payload: bytes,
-    targets: list[tuple[Path, str | None]],
+    course_targets: list[tuple[Path, str, str, str]],
+    program_targets: list[tuple[Path, str, str]],
     contents: list[Path],
-    locale: str,
+    navigation_copy: dict[str, str],
 ) -> tuple[bytes, bytes]:
     text = payload.decode("utf-8")
     source_text = strip_owned_overlay(text, logical)
@@ -115,8 +125,8 @@ def inject_overlay(
     if len(body_open) != 1 or len(body_close) != 1 or body_open[0].end() >= body_close[0].start():
         raise ValueError(f"{logical}: expected one well-ordered body element")
     path = ROOT / logical
-    top = navigation_markup(path, targets, contents, locale, "top")
-    bottom = navigation_markup(path, targets, contents, locale, "bottom")
+    top = navigation_markup(path, course_targets, program_targets, contents, navigation_copy, "top")
+    bottom = navigation_markup(path, course_targets, program_targets, contents, navigation_copy, "bottom")
     target_text = (
         source_text[: body_open[0].end()]
         + "\n"
@@ -137,21 +147,56 @@ def main() -> int:
         contract_payload = CONTRACT_PATH.read_bytes()
         contract = json.loads(contract_payload.decode("utf-8"))
         interfaces = contract["interfaces"]
-        course_ids: set[str] = set()
-        for interface in interfaces.values():
+        course_ids_by_locale: dict[str, set[str]] = {}
+        for locale, interface in interfaces.items():
             document = ROOT / interface["document"]
-            course_ids.update(
+            course_ids_by_locale[locale] = set(
                 re.findall(
                     r'<article\b[^>]*\bid="course-([A-Z][0-9]+)"',
                     document.read_text(encoding="utf-8"),
                     flags=re.IGNORECASE,
                 )
             )
-        if len(course_ids) != 40:
-            raise ValueError("localized course-card authority does not expose 40 course IDs")
+            if len(course_ids_by_locale[locale]) != 40:
+                raise ValueError(f"{locale}: localized course-card authority does not expose 40 course IDs")
+            navigation_copy = interface.get("navigation")
+            required_copy = {"aria", "lead", "program_root", "related_page"}
+            if not isinstance(navigation_copy, dict) or set(navigation_copy) != required_copy:
+                raise ValueError(f"{locale}: navigation copy is incomplete")
+        course_sets = list(course_ids_by_locale.values())
+        if any(row != course_sets[0] for row in course_sets[1:]):
+            raise ValueError("localized course-card sets differ")
+        course_ids = course_sets[0]
+
+        def course_targets(ids: list[str]) -> list[tuple[Path, str, str, str]]:
+            return [
+                (
+                    ROOT / interface["document"], course_id,
+                    interface_locale, interface["label"],
+                )
+                for interface_locale, interface in sorted(interfaces.items())
+                for course_id in ids
+            ]
+
+        def program_targets() -> list[tuple[Path, str, str]]:
+            return [
+                (
+                    ROOT / interface["document"], interface_locale,
+                    interface["navigation"]["program_root"],
+                )
+                for interface_locale, interface in sorted(interfaces.items())
+            ]
 
         specifications: list[dict[str, object]] = []
-        declared_course_paths: set[str] = set()
+        declared_overlay_paths: set[str] = set()
+
+        def register(specification: dict[str, object]) -> None:
+            logical = str(specification["logical"])
+            if logical in declared_overlay_paths:
+                raise ValueError(f"document appears in two overlay roles: {logical}")
+            declared_overlay_paths.add(logical)
+            specifications.append(specification)
+
         for surface in contract["course_surfaces"]:
             root = ROOT / surface["root"]
             declared = {document["path"] for document in surface["documents"]}
@@ -165,47 +210,97 @@ def main() -> int:
                     f"{surface['root']}: course-surface closure changed; "
                     f"missing={sorted(actual - declared)}, stale={sorted(declared - actual)}"
                 )
-            interface_target = ROOT / interfaces[surface["locale"]]["document"]
             for document in surface["documents"]:
                 logical = (Path(surface["root"]) / document["path"]).as_posix()
-                if logical in declared_course_paths:
-                    raise ValueError(f"duplicate course-surface document: {logical}")
-                declared_course_paths.add(logical)
                 ids = list(document["course_ids"])
                 if not ids or len(ids) != len(set(ids)) or not set(ids).issubset(course_ids):
                     raise ValueError(f"{logical}: invalid course-card binding {ids}")
                 contents_paths = list(document.get("contents_paths", []))
                 if len(contents_paths) != len(set(contents_paths)) or not set(contents_paths).issubset(declared):
                     raise ValueError(f"{logical}: invalid section-contents binding {contents_paths}")
-                specifications.append({
+                register({
                     "logical": logical,
+                    "role": "course_surface",
                     "locale": surface["locale"],
                     "state": surface["state"],
                     "course_ids": ids,
-                    "targets": [(interface_target, course_id) for course_id in ids],
+                    "course_targets": course_targets(ids),
+                    "program_targets": program_targets(),
                     "contents": [root / value for value in contents_paths],
+                })
+
+        for gateway in contract["gateways"]:
+            root = ROOT / gateway["root"]
+            html_files = configured_html(root, gateway.get("exclude_subtrees"))
+            if len(html_files) != gateway["html_documents"]:
+                raise ValueError(
+                    f"{gateway['root']}: gateway closure changed; "
+                    f"{len(html_files)} != {gateway['html_documents']}"
+                )
+            ids = [gateway["course_id"]]
+            for path in html_files:
+                logical = path.relative_to(ROOT).as_posix()
+                register({
+                    "logical": logical,
+                    "role": "gateway",
+                    "locale": gateway["locale"],
+                    "state": gateway["state"],
+                    "course_ids": ids,
+                    "course_targets": course_targets(ids),
+                    "program_targets": program_targets(),
+                    "contents": [],
+                })
+
+        for reader in contract["readers"]:
+            root = ROOT / reader["root"]
+            html_files = configured_html(root)
+            if len(html_files) != reader["html_documents"]:
+                raise ValueError(
+                    f"{reader['root']}: reader closure changed; "
+                    f"{len(html_files)} != {reader['html_documents']}"
+                )
+            root_index = (root / "index.html").resolve()
+            if root_index not in {path.resolve() for path in html_files}:
+                raise ValueError(f"{reader['root']}: reader index.html is missing")
+            ids = [reader["course_id"]]
+            for path in html_files:
+                logical = path.relative_to(ROOT).as_posix()
+                register({
+                    "logical": logical,
+                    "role": "reader",
+                    "locale": reader["locale"],
+                    "state": reader["state"],
+                    "course_ids": ids,
+                    "course_targets": course_targets(ids),
+                    "program_targets": program_targets(),
+                    "contents": [] if path.resolve() == root_index else [root / "index.html"],
                 })
 
         for surface in contract["generic_surfaces"]:
             if not surface["navigation_required"]:
                 continue
             logical = surface["document"]
-            if logical in declared_course_paths:
-                raise ValueError(f"generic surface overlaps a course surface: {logical}")
-            specifications.append({
+            register({
                 "logical": logical,
+                "role": "generic",
                 "locale": surface["locale"],
                 "state": surface["state"],
                 "course_ids": [],
-                "targets": [(ROOT / surface["target_document"], None)],
+                "course_targets": [],
+                "program_targets": program_targets(),
                 "contents": [],
             })
 
-        expected = int(contract["summary"]["course_surface_html_documents"]) + sum(
-            bool(row["navigation_required"]) for row in contract["generic_surfaces"]
+        expected = (
+            int(contract["summary"]["course_surface_html_documents"])
+            + int(contract["summary"]["gateway_html_documents"])
+            + int(contract["summary"]["reader_html_documents"])
+            + sum(bool(row["navigation_required"]) for row in contract["generic_surfaces"])
         )
         if len(specifications) != expected:
             raise ValueError(f"overlay scope {len(specifications)} != expected {expected}")
+        if expected != int(contract["summary"]["navigation_overlay_documents"]):
+            raise ValueError("overlay scope disagrees with the declared summary")
 
         writes: list[tuple[Path, bytes]] = []
         rows: list[dict[str, object]] = []
@@ -217,19 +312,22 @@ def main() -> int:
             source_payload, target_payload = inject_overlay(
                 logical,
                 path.read_bytes(),
-                specification["targets"],
+                specification["course_targets"],
+                specification["program_targets"],
                 specification["contents"],
-                str(specification["locale"]),
+                interfaces[str(specification["locale"])]["navigation"],
             )
             writes.append((path, target_payload))
             rows.append({
                 "document": logical,
+                "role": specification["role"],
                 "state": specification["state"],
                 "locale": specification["locale"],
                 "course_ids": specification["course_ids"],
                 "source_body": fact(logical, source_payload),
                 "hosted_surface": fact(logical, target_payload),
-                "program_return_links_per_placement": len(specification["targets"]),
+                "course_card_return_links_per_placement": len(specification["course_targets"]),
+                "program_root_return_links_per_placement": len(specification["program_targets"]),
                 "section_contents_links_per_placement": len(specification["contents"]),
                 "placements": ["top", "bottom"],
                 "source_body_replay_exact": True,
@@ -256,6 +354,10 @@ def main() -> int:
                 "course_surface_html_documents": int(
                     contract["summary"]["course_surface_html_documents"]
                 ),
+                "gateway_roots": len(contract["gateways"]),
+                "gateway_html_documents": int(contract["summary"]["gateway_html_documents"]),
+                "reader_roots": len(contract["readers"]),
+                "reader_html_documents": int(contract["summary"]["reader_html_documents"]),
                 "generic_html_documents_with_overlay": sum(
                     bool(row["navigation_required"])
                     for row in contract["generic_surfaces"]
@@ -266,6 +368,8 @@ def main() -> int:
                 "top_and_bottom_return_navigation": True,
                 "course_returns_are_card_scoped": True,
                 "shared_surfaces_link_every_served_course": True,
+                "every_course_scoped_surface_links_every_interface_locale": True,
+                "course_card_and_program_root_are_distinct_links": True,
                 "overlay_is_exactly_removable": True,
                 "mathematical_body_rewritten": False,
             },
@@ -279,6 +383,8 @@ def main() -> int:
         print(json.dumps({
             "status": "pass",
             "course_surface_html_documents": contract["summary"]["course_surface_html_documents"],
+            "gateway_html_documents": contract["summary"]["gateway_html_documents"],
+            "reader_html_documents": contract["summary"]["reader_html_documents"],
             "generic_html_documents_with_overlay": sum(
                 bool(row["navigation_required"]) for row in contract["generic_surfaces"]
             ),

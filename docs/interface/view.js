@@ -2,12 +2,17 @@ import { courses as authorityCourses, topics } from '../courses.js';
 import { materializeLiveCourses } from '../live-course-publications.js';
 import { learnerDeliveryByCourseId } from '../learner-delivery.js';
 import { learnerToolsByCourseId } from '../learner-tools.js';
-import { interfaceCopy, topicCopy, englishCourseCopy, englishResources, siteOrigin } from './locales.js';
+import {
+  interfaceCopy, localeMetadata, courseCopyByLocale, englishResources, siteOrigin,
+  localeFallbackChain, localizedTopic, localizedValue,
+} from './locales.js';
 import { verifiedReaderActions } from './reader-actions.js';
 import { finalEditions } from './final-editions.js';
 import { capabilityTools } from './capability-tools.js';
 import { supplementalReaders } from './supplemental-readers.js';
 import { additionalOriginalSources } from './original-sources.js';
+import { hostedSurfaceIdentities } from './hosted-surface-identities.js';
+import { centralGatewayResources } from './central-gateway-resources.js';
 
 // Final links are a presentation overlay, not a replacement backend or corpus.
 export const interfaceCourses = materializeLiveCourses(authorityCourses).map(course => {
@@ -33,13 +38,16 @@ export function safeResourceUrl(value) {
   return url.href;
 }
 export function coursePresentation(course, locale) {
-  if (locale === 'id') return { title: course.title, purpose: course.purpose, outcome: course.outcome, topic: course.topic };
-  if (locale === 'en') {
-    const copy = englishCourseCopy[course.id];
-    if (!copy || !topicCopy[course.topic]) throw new Error('Missing English presentation: ' + course.id);
-    return { title: copy[0], purpose: copy[1], outcome: copy[2], topic: topicCopy[course.topic] };
+  const presentationLocale = localeMetadata[locale]?.coursePresentationLocale;
+  if (!presentationLocale) throw new Error('Unsupported interface locale without a complete localized bundle: ' + locale);
+  for (const candidate of localeFallbackChain(presentationLocale)) {
+    if (candidate === 'id') {
+      return { title: course.title, purpose: course.purpose, outcome: course.outcome, topic: localizedTopic(course.topic, locale) };
+    }
+    const copy = courseCopyByLocale[candidate]?.[course.id];
+    if (copy) return { title: copy[0], purpose: copy[1], outcome: copy[2], topic: localizedTopic(course.topic, locale) };
   }
-  throw new Error('Unsupported interface locale without a complete localized bundle: ' + locale);
+  throw new Error('Missing localized presentation: ' + locale + ' ' + course.id);
 }
 export const learnerAccessRoles = Object.freeze([
   'hosted-reader', 'authoritative-original', 'offline-copy', 'companion', 'tool',
@@ -50,11 +58,27 @@ const isProgramOriginalCourse = (courseId) => (additionalOriginalSources[courseI
 export function resourceBindings(course, locale) {
   const t = interfaceCopy[locale];
   if (!t) throw new Error('Unsupported interface locale without a complete localized bundle: ' + locale);
+  const interfaceLanguageTag = localeMetadata[locale].languageTag;
   const rows = [];
   const add = (label, href, contentLanguage, kind = 'link', extra = {}) => {
     if (!href) return;
     const normalizedHref = safeResourceUrl(href);
-    const candidate = { label, labelLanguage: locale, href: normalizedHref, contentLanguage, kind, ...extra };
+    const candidate = { label, labelLanguage: interfaceLanguageTag, href: normalizedHref, contentLanguage, kind, ...extra };
+    const navigationIdentity = hostedSurfaceIdentities[normalizedHref];
+    if (navigationIdentity) {
+      const { sourceBody, hostedSurface } = navigationIdentity;
+      if (candidate.bytes !== undefined && ![sourceBody.bytes, hostedSurface.bytes].includes(candidate.bytes)) {
+        throw new Error('Hosted resource byte identity is outside the central navigation authority: ' + course.id + ' ' + normalizedHref);
+      }
+      if (candidate.sha256 !== undefined && ![sourceBody.sha256, hostedSurface.sha256].includes(candidate.sha256)) {
+        throw new Error('Hosted resource hash identity is outside the central navigation authority: ' + course.id + ' ' + normalizedHref);
+      }
+      candidate.sourceBodyBytes = sourceBody.bytes;
+      candidate.sourceBodySha256 = sourceBody.sha256;
+      candidate.bytes = hostedSurface.bytes;
+      candidate.sha256 = hostedSurface.sha256;
+      candidate.hostedNavigationOverlay = 'v1';
+    }
     if (!learnerAccessRoleSet.has(candidate.accessRole)) throw new Error('Missing or invalid learner access role: ' + course.id + ' ' + normalizedHref);
     const existing = rows.find((row) => row.href === normalizedHref && row.accessRole === candidate.accessRole);
     if (existing) return;
@@ -71,23 +95,21 @@ export function resourceBindings(course, locale) {
     const {label,href,contentLanguage,kind,...facts} = row;
     add(label, href, contentLanguage, kind, { ...facts, labelLanguage:'en', primary: locale === 'en' && rows.length === 0 });
   }
-  const idPrefix = locale === 'en' ? 'Bahasa Indonesia — ' : '';
+  const idPrefix = locale === 'id' ? '' : contentLanguageName('id', locale) + ' — ';
   const finalEdition = finalEditions.find(row => row.courseId === course.id);
   if (finalEdition) for (const row of finalEdition.resources) {
-    const pages = row.pages ? ' — ' + row.pages + (locale === 'id' ? ' halaman' : ' pages') : '';
-    add(idPrefix + row.labels[locale] + pages, row.href, 'id', row.kind,
+    const pages = row.pages ? ' — ' + row.pages + ' ' + t.pageUnit : '';
+    add(idPrefix + localizedValue(row.labels, locale) + pages, row.href, 'id', row.kind,
       {editionResourceId:row.id, format:row.format, bytes:row.bytes, sha256:row.sha256,
         offlineAfterDownload:row.offlineAfterDownload, primary:locale === 'id' && row.primary,
         accessRole:row.kind === 'portable_html' ? 'offline-copy' : row.kind === 'reader' ? 'hosted-reader' : 'companion',
         authorityRole:'program-edition', relationToSource:isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of'});
   }
   const actions = verifiedReaderActions.filter((action) => action.courseId === course.id);
-  const actionNames = locale === 'id'
-    ? { textbook: 'Buku teks', problembook: 'Buku soal dan penyelesaian', combined_textbook_problembook: 'Buku gabungan teks dan soal' }
-    : { textbook: 'Textbook', problembook: 'Problems and solutions', combined_textbook_problembook: 'Combined textbook and problems' };
+  const actionNames = t.readerRoles;
   for (const action of actions) {
     const { label: sourceLabel, ...metadata } = action;
-    add(idPrefix + actionNames[action.role] + ' — ' + action.pages + (locale === 'id' ? ' halaman' : ' pages'), action.href, 'id', action.role === 'problembook' ? 'companion' : 'reader',
+    add(idPrefix + actionNames[action.role] + ' — ' + action.pages + ' ' + t.pageUnit, action.href, 'id', action.role === 'problembook' ? 'companion' : 'reader',
       { ...metadata, labelLanguage: locale, primary: locale === 'id' && action.surfaceRole === 'default_primary',
         accessRole:action.role === 'problembook' ? 'companion' : 'hosted-reader', authorityRole:'program-edition',
         relationToSource:isProgramOriginalCourse(course.id) ? 'original-work' : 'translation-of' });
@@ -109,23 +131,18 @@ export function resourceBindings(course, locale) {
     if (tool.state !== 'planned') add(tool.label, tool.href, 'id', 'tool', { labelLanguage: 'id', accessRole:'tool', authorityRole:'program-edition', relationToSource:'supports' });
   }
   for (const tool of capabilityTools.filter(row=>row.courseId===course.id)) {
-    const englishCapability = tool.contentLanguage === 'en';
-    const note = englishCapability
-      ? (locale === 'id'
-          ? 'Kapabilitas berbahasa Inggris. Buka alat tertaut untuk cakupan, bukti, dan batas khusus sumbernya.'
-          : tool.scope.replace(/[.\s]+$/u, '') + '. ' + tool.limitations.join(' '))
-      : (locale === 'id'
-          ? tool.scope.replace(/[.\s]+$/u, '') + '. ' + tool.limitations.join(' ')
-          : 'Indonesian-language capability. Open the linked tool for its source-specific scope, evidence and limitations.');
-    add(tool.label, tool.href, tool.contentLanguage, 'tool', {labelLanguage:englishCapability?'en':'id', capabilityToolId:tool.tool_id,
+    const note = tool.contentLanguage.toLowerCase() === interfaceLanguageTag.toLowerCase()
+      ? tool.scope.replace(/[.\s]+$/u, '') + '. ' + tool.limitations.join(' ')
+      : t.otherLanguageCapability;
+    add(tool.label, tool.href, tool.contentLanguage, 'tool', {labelLanguage:tool.labelLanguage ?? tool.contentLanguage, capabilityToolId:tool.tool_id,
       bytes:tool.page.bytes, sha256:tool.page.sha256, primary:false, scope:tool.scope, limitations:tool.limitations,
       note, accessRole:'tool', authorityRole:'program-edition', relationToSource:'supports'});
   }
   const delivery = learnerDeliveryByCourseId[course.id];
   for (const row of supplementalReaders.filter(item => item.courseId === course.id)) {
-    add(idPrefix + row.labels[locale], row.href, row.contentLanguage, row.kind, {
+    add(idPrefix + localizedValue(row.labels, locale), row.href, row.contentLanguage, row.kind, {
       supplementalReaderId: row.id, format: row.format, bytes: row.bytes, sha256: row.sha256,
-      primary: false, offlineAfterDownload: row.offlineAfterDownload, note: row.notes[locale],
+      primary: false, offlineAfterDownload: row.offlineAfterDownload, note: localizedValue(row.notes, locale),
       accessRole:row.offlineAfterDownload ? 'offline-copy' : 'companion', authorityRole:'program-edition',
       relationToSource:row.offlineAfterDownload ? 'offline-copy-of' : 'companion-to',
     });
@@ -143,12 +160,21 @@ export function resourceBindings(course, locale) {
     add(supplement.title, supplement.url, 'id', machineArchive ? 'source-archive' : hostedReader ? 'reader' : 'companion', { labelLanguage: 'id', supplementId: supplement.id, sha256: supplement.sha256 ?? null, ...(supplement.origin ? { origin:supplement.origin } : {}),
       accessRole:machineArchive ? 'source-package' : hostedReader ? 'hosted-reader' : 'companion', authorityRole:'program-edition', relationToSource:machineArchive ? 'supports' : hostedReader ? 'mirrors' : 'companion-to' });
   }
-  add(t.archive + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.archive ?? course.zenodo, 'id', 'archive', {accessRole:'preservation-record', authorityRole:'program-edition', relationToSource:'preserves'});
-  add(t.source + (locale === 'en' ? ' — Indonesian edition' : ''), finalEdition?.repository ?? course.repository, 'id', 'repository', {accessRole:'repository', authorityRole:'program-edition', relationToSource:'supports'});
+  const editionSuffix = locale === 'id' ? '' : ' — ' + contentLanguageName('id', locale);
+  add(t.archive + editionSuffix, finalEdition?.archive ?? course.zenodo, 'id', 'archive', {accessRole:'preservation-record', authorityRole:'program-edition', relationToSource:'preserves'});
+  add(t.source + editionSuffix, finalEdition?.repository ?? course.repository, 'id', 'repository', {accessRole:'repository', authorityRole:'program-edition', relationToSource:'supports'});
   // These indices are shared metadata, not an English translation of course prose.
   add(t.sharedBackend, 'backend/index.html', 'und', 'backend', {accessRole:'backend', authorityRole:'program-edition', relationToSource:'indexes'});
   for (const source of additionalOriginalSources[course.id] ?? []) {
     add(source.label, source.href, source.contentLanguage, 'HTML', {...source, labelLanguage:source.contentLanguage, primary:false});
+  }
+  for (const gateway of centralGatewayResources.filter(row => row.courseId === course.id)) {
+    const normalizedHref = safeResourceUrl(gateway.href);
+    if (!rows.some(row => row.href === normalizedHref)) {
+      add(t.courseGateway, normalizedHref, gateway.contentLanguage, 'gateway', {
+        accessRole:'tool', authorityRole:'program-navigation', relationToSource:'navigates-to', primary:false,
+      });
+    }
   }
   return rows;
 }
@@ -156,20 +182,22 @@ export function isOriginalSource(row) {
   return row.accessRole === 'authoritative-original' || ['upstream-original', 'program-original'].includes(row.origin);
 }
 export function contentLanguageName(code, locale) {
-  if (code === 'und') return locale === 'id' ? 'metadata bersama' : 'shared metadata';
+  if (code === 'und') return interfaceCopy[locale].sharedMetadata;
   if (code === 'id') return 'Bahasa Indonesia';
   if (code === 'en') return 'English';
-  try { return new Intl.DisplayNames([locale], {type:'language'}).of(code) ?? code; }
+  try { return new Intl.DisplayNames([localeMetadata[locale].languageTag], {type:'language'}).of(code) ?? code; }
   catch { return code; }
 }
 export function renderResourceLinks(course, locale) {
   const t = interfaceCopy[locale];
   const rows = resourceBindings(course, locale);
-  const hostedReaders = rows.filter((row) => row.contentLanguage === locale && row.accessRole === 'hosted-reader');
-  const offlineCopies = rows.filter((row) => row.contentLanguage === locale && row.accessRole === 'offline-copy');
+  const interfaceLanguageTag = localeMetadata[locale].languageTag.toLowerCase();
+  const inInterfaceLanguage = (row) => row.contentLanguage.toLowerCase() === interfaceLanguageTag;
+  const hostedReaders = rows.filter((row) => inInterfaceLanguage(row) && row.accessRole === 'hosted-reader');
+  const offlineCopies = rows.filter((row) => inInterfaceLanguage(row) && row.accessRole === 'offline-copy');
   const hosted = [...hostedReaders, ...offlineCopies];
   const originals = rows.filter(row => row.accessRole === 'authoritative-original');
-  const preferred = rows.filter((row) => row.contentLanguage === locale && !hosted.includes(row) && !originals.includes(row)
+  const preferred = rows.filter((row) => inInterfaceLanguage(row) && !hosted.includes(row) && !originals.includes(row)
     && !['repository', 'preservation-record', 'source-package', 'backend'].includes(row.accessRole));
   const other = rows.filter((row) => !hosted.includes(row) && !preferred.includes(row) && !originals.includes(row));
   const link = (row) => '<a class="resource-link' + (row.primary ? ' primary' : '') + '" href="' + escapeMarkup(row.href)
@@ -181,15 +209,15 @@ export function renderResourceLinks(course, locale) {
     + (row.supplementalReaderId ? ' data-supplemental-reader="' + escapeMarkup(row.supplementalReaderId) + '"' : '')
     + (isOriginalSource(row) ? ' data-original-source="' + row.origin + '"' : '')
     + '>'
-    + '<span lang="' + row.labelLanguage + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
-    + ' · <span lang="' + (['en','id'].includes(row.contentLanguage) ? row.contentLanguage : locale) + '">' + escapeMarkup(contentLanguageName(row.contentLanguage, locale)) + '</span>'
-    + (row.offlineAfterDownload ? ' · ' + (locale === 'id' ? 'Luring setelah diunduh' : 'Offline after download') : '') + '</small></a>'
-    + (row.note ? '<p class="footnote" lang="'+locale+'">'+escapeMarkup(row.note)+'</p>' : '');
+    + '<span lang="' + escapeMarkup(row.labelLanguage) + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
+    + ' · <span lang="' + escapeMarkup(row.contentLanguage === 'und' ? interfaceLanguageTag : row.contentLanguage) + '">' + escapeMarkup(contentLanguageName(row.contentLanguage, locale)) + '</span>'
+    + (row.offlineAfterDownload ? ' · ' + t.offlineAfterDownload : '') + '</small></a>'
+    + (row.note ? '<p class="footnote" lang="'+escapeMarkup(localeMetadata[locale].languageTag)+'">'+escapeMarkup(row.note)+'</p>' : '');
   const group = (role, title, body) => '<section class="resource-group" data-access-group="' + role + '"><h4>' + escapeMarkup(title) + '</h4>' + body + '</section>';
   return group('hosted-reader', t.hostedReader, (hostedReaders.length ? '' : '<p class="binding-note">' + escapeMarkup(t.noHostedReader) + '</p>') + hosted.map(link).join(''))
     + group('authoritative-original', t.authoritativeOriginal, originals.length ? originals.map(link).join('') : '<p class="binding-note">' + escapeMarkup(t.noAuthoritativeOriginal) + '</p>')
     + preferred.map(link).join('')
-    + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(locale === 'en' ? t.otherLanguage + ' / ' + t.sharedBackend : t.companion + ' / ' + t.source)
+    + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(t.otherResourcesSummary)
       + '</summary><div class="resource-list">' + other.map(link).join('') + '</div></details>' : '');
 }
 export function learnerAccessProjection(course, locale) {
@@ -200,12 +228,16 @@ export function learnerAccessProjection(course, locale) {
     media_type: row.format ?? (row.actionId ? 'PDF' : row.kind), url: row.href,
     label: row.label, label_language: row.labelLanguage, primary: Boolean(row.primary),
     offline_after_download: Boolean(row.offlineAfterDownload), bytes: row.bytes ?? null, sha256: row.sha256 ?? null,
+    source_body_bytes: row.sourceBodyBytes ?? null,
+    source_body_sha256: row.sourceBodySha256 ?? null,
+    hosted_navigation_overlay: row.hostedNavigationOverlay ?? null,
   });
-  const hosted = rows.filter(row => row.contentLanguage === locale && row.accessRole === 'hosted-reader').map(normalize);
+  const interfaceLanguageTag = localeMetadata[locale].languageTag.toLowerCase();
+  const hosted = rows.filter(row => row.contentLanguage.toLowerCase() === interfaceLanguageTag && row.accessRole === 'hosted-reader').map(normalize);
   const originals = rows.filter(row => row.accessRole === 'authoritative-original').map(normalize);
-  const offline = rows.filter(row => row.contentLanguage === locale && row.accessRole === 'offline-copy').map(normalize);
+  const offline = rows.filter(row => row.contentLanguage.toLowerCase() === interfaceLanguageTag && row.accessRole === 'offline-copy').map(normalize);
   return {
-    course_id: course.id, interface_locale: locale, locale_route: siteOrigin + locale + '/#course-' + course.id,
+    course_id: course.id, interface_locale: locale, locale_route: siteOrigin + localeMetadata[locale].routeSegment + '/#course-' + course.id,
     program_hosted_reader: {status: hosted.length ? 'available' : 'not-yet-hosted', resources: hosted},
     authoritative_original: {status: originals.length ? 'available' : 'unavailable', resources: originals},
     offline_copies: offline,
