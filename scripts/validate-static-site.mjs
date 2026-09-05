@@ -1103,7 +1103,7 @@ assert.equal(deliveryById.get('C100').portable_html.sha256, 'ee26d6e1228b7b66ca7
 assert.equal(deliveryById.get('C100').epub.sha256, '5eb6773cc036015e8eb9e6f1791c6ec2f2b83812f43c8340c66aaafd91b12d99');
 assert.equal(deliveryById.get('D10').portable_html.sha256, 'a0333dca723085e93d472b945a03758b133b05cbe5be3022133088e5c1f5ab00');
 const d10Delivery = deliveryById.get('D10');
-assert.equal(d10Delivery.online_html.status, 'available_unverified');
+assert.equal(d10Delivery.online_html.status, 'verified');
 assert.equal(d10Delivery.online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D10/reader/');
 assert.equal(d10Delivery.online_html.bytes, 8571);
 assert.equal(d10Delivery.online_html.sha256, '22ad13ef45160fa6bb964d600811b5141a6bcf8d23aac86790ddf652baca6737');
