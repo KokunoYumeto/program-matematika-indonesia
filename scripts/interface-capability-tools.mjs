@@ -15,6 +15,7 @@ const contracts = {
   'd40.open_learner_hub':['D40','course_reader','backend/d40/D40.html'],
   'd70.open_learner_hub':['D70','course_reader','backend/d70/D70.html'],
   'd80.open_learner_hub':['D80','course_reader','backend/d80/D80.html'],
+  'd100.open_learner_hub':['D100','course_reader','backend/d100/D100.html'],
 };
 for(const role of ['B70','C10','C20','C50']) for(const [suffix,kind,file] of [
   ['exercise-map','practice_diagnostic_map',role+'.html'],
@@ -29,7 +30,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // Explicit B80, Lebl, Geometry, Topology, D40, D70 and D80 presentation contracts; no generic auto-admission.
+    // Explicit B80, Lebl, Geometry, Topology, D40, D70, D80 and D100 presentation contracts; no generic auto-admission.
     const expected = contracts[tool.tool_id];
     assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');
@@ -45,7 +46,8 @@ export function projectCapabilityTools(capsules, courseIds) {
       assert.ok(Number.isSafeInteger(fact.bytes) && fact.bytes>0);
       assert.match(fact.sha256, /^[a-f0-9]{64}$/);
     }
-    result.push({courseId:capsule.course_id, contentLanguage:'id', ...tool});
+    const contentLanguage = capsule.course_id === 'D100' ? 'en' : 'id';
+    result.push({courseId:capsule.course_id, contentLanguage, ...tool});
   }
   assert.deepEqual([...matchedLegacy].sort(),Object.values(learnerToolsByCourseId).flat().map(t=>t.tool_id).sort());
   assert.deepEqual(result.map(t=>t.tool_id).sort(),Object.keys(contracts).sort());

@@ -109,10 +109,15 @@ export function resourceBindings(course, locale) {
     if (tool.state !== 'planned') add(tool.label, tool.href, 'id', 'tool', { labelLanguage: 'id', accessRole:'tool', authorityRole:'program-edition', relationToSource:'supports' });
   }
   for (const tool of capabilityTools.filter(row=>row.courseId===course.id)) {
-    const note = locale === 'id'
-      ? tool.scope.replace(/[.\s]+$/u, '') + '. ' + tool.limitations.join(' ')
-      : 'Indonesian-language capability. Open the linked tool for its source-specific scope, evidence and limitations.';
-    add(tool.label, tool.href, tool.contentLanguage, 'tool', {labelLanguage:'id', capabilityToolId:tool.tool_id,
+    const englishCapability = tool.contentLanguage === 'en';
+    const note = englishCapability
+      ? (locale === 'id'
+          ? 'Kapabilitas berbahasa Inggris. Buka alat tertaut untuk cakupan, bukti, dan batas khusus sumbernya.'
+          : tool.scope.replace(/[.\s]+$/u, '') + '. ' + tool.limitations.join(' '))
+      : (locale === 'id'
+          ? tool.scope.replace(/[.\s]+$/u, '') + '. ' + tool.limitations.join(' ')
+          : 'Indonesian-language capability. Open the linked tool for its source-specific scope, evidence and limitations.');
+    add(tool.label, tool.href, tool.contentLanguage, 'tool', {labelLanguage:englishCapability?'en':'id', capabilityToolId:tool.tool_id,
       bytes:tool.page.bytes, sha256:tool.page.sha256, primary:false, scope:tool.scope, limitations:tool.limitations,
       note, accessRole:'tool', authorityRole:'program-edition', relationToSource:'supports'});
   }

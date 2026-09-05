@@ -42,6 +42,10 @@ const mappings = [
   ['backend/course-capsule-v1/adapters/d80-capability-v1/views/D80-pengajar.html', 'docs/backend/d80/D80-pengajar.html'],
   ['backend/course-capsule-v1/adapters/d80-capability-v1/data/learning-map.json', 'docs/backend/d80/learning-map.json'],
   ['backend/course-capsule-v1/adapters/d80-capability-v1/validation.json', 'docs/backend/d80/validation.json'],
+  ['backend/course-capsule-v1/adapters/d100-capability-v1/views/D100.html', 'docs/backend/d100/D100.html'],
+  ['backend/course-capsule-v1/adapters/d100-capability-v1/views/D100-pengajar.html', 'docs/backend/d100/D100-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/d100-capability-v1/data/learning-map.json', 'docs/backend/d100/learning-map.json'],
+  ['backend/course-capsule-v1/adapters/d100-capability-v1/validation.json', 'docs/backend/d100/validation.json'],
   ...(existsSync(resolve(project, successorSidecarSchemaSource)) ? [[successorSidecarSchemaSource, 'docs/schema/v1/learner-reader-actions-v1.schema.json']] : []),
   ...(successorSidecarAvailable ? successorSidecarTargets.map((target) => [successorSidecarSource, target]) : []),
 ];
@@ -70,10 +74,10 @@ assert.deepEqual(rows, lines, 'Public JSON and canonical JSONL differ.');
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
 const layerNames = ['curriculum', 'translation', 'production', 'learner', 'educator', 'federation', 'interoperability'];
 for (const row of rows) assert.deepEqual(Object.keys(row.layers).sort(), [...layerNames].sort(), `${row.course_id}: seven-layer contract drift.`);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 36);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 37);
 assert.deepEqual(
   rows.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id),
-  ['A30', 'B95', 'C140', 'D100'],
+  ['A30', 'B95', 'C140'],
 );
 const d40 = rows.find(({ course_id }) => course_id === 'D40');
 assert.equal(d40.course.state, 'published');
@@ -96,23 +100,38 @@ assert.equal(c130.layers.interoperability.semantic_adapter.mapping_scope, 'rever
 assert.equal(c130.layers.learner.tools.length, 1);
 assert.equal(c130.layers.learner.tools[0].href, 'backend/c130/C130.html');
 assert.equal(c130.layers.learner.tools[0].primary, true);
-for (const id of ['A10', 'D100']) {
+for (const id of ['A10']) {
   const row = rows.find(({ course_id }) => course_id === id);
   assert.equal(row.layers.translation.terminology_status, 'in_progress');
   assert.equal(row.layers.translation.corrections_status, 'in_progress');
 }
+const d100 = rows.find(({ course_id }) => course_id === 'D100');
+assert.equal(d100.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(d100.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(d100.layers.learner.tools.length, 1);
+assert.equal(d100.layers.learner.tools[0].tool_id, 'd100.open_learner_hub');
+assert.equal(d100.layers.learner.tools[0].href, 'backend/d100/D100.html');
+assert.equal(d100.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(d100.layers.translation.ledger_status, 'verified');
+assert.equal(d100.layers.translation.terminology_status, 'verified');
+assert.equal(d100.layers.translation.rights_status, 'verified');
+assert.equal(d100.layers.translation.corrections_status, 'verified');
+assert.equal(d100.layers.production.build_status, 'verified');
+assert.equal(d100.layers.production.deterministic_replay_status, 'verified');
+assert.equal(d100.layers.educator.status, 'verified');
+assert.equal(d100.layers.educator.unit_alignment_status, 'verified');
 assert.equal(manifest.output.bytes, jsonlBytes.length);
 assert.equal(manifest.output.sha256, sha256(jsonlBytes));
 assert.equal(manifest.projections.course_capsules_json.bytes, jsonBytes.length);
 assert.equal(manifest.projections.course_capsules_json.sha256, sha256(jsonBytes));
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(manifest.summary.published_count, 36);
-assert.equal(manifest.summary.production_count, 4);
+assert.equal(manifest.summary.published_count, 37);
+assert.equal(manifest.summary.production_count, 3);
 assert.equal(receipt.state, 'pass');
 assert.equal(receipt.checks.schema_instances, 40);
 assert.equal(receipt.checks.seven_layer_rows, 40);
-assert.equal(receipt.checks.published_count, 36);
-assert.equal(receipt.checks.production_count, 4);
+assert.equal(receipt.checks.published_count, 37);
+assert.equal(receipt.checks.production_count, 3);
 assert.deepEqual(receipt.peer_replay, { byte_identical: true, compared: true });
 assert.deepEqual(receipt.artifacts.course_capsules_jsonl, {
   bytes: jsonlBytes.length,

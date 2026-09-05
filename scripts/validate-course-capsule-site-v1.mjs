@@ -40,6 +40,10 @@ const logicalFiles = [
   'backend/d70/D70-pengajar.html',
   'backend/d70/learning-map.json',
   'backend/d70/validation.json',
+  'backend/d100/D100.html',
+  'backend/d100/D100-pengajar.html',
+  'backend/d100/learning-map.json',
+  'backend/d100/validation.json',
   'data/course-capsule-v1/course-capsules.jsonl',
   'data/course-capsule-v1/course-capsules.json',
   'data/course-capsule-v1/manifest.json',
@@ -104,8 +108,8 @@ const clpSuccessorIndex = JSON.parse(docsBytes['data/clp-successor/v0.62.17/v23-
 const clpSuccessorAuthority = await readFile(resolve(project, 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json'));
 assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'], clpSuccessorAuthority, 'CLP successor public index differs from its authority.');
 const expectedLiveAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
-const expectedCapabilityAdapterRoles = ['B70', 'B80', 'C10', 'C20', 'C50', 'C90', 'C100', 'D40', 'D70', 'D80'];
-const expectedCapabilityPackageCount = 7;
+const expectedCapabilityAdapterRoles = ['B70', 'B80', 'C10', 'C20', 'C50', 'C90', 'C100', 'D40', 'D70', 'D80', 'D100'];
+const expectedCapabilityPackageCount = 8;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedLiveAdapterRoles), 'Live successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -179,9 +183,9 @@ const mainHtml = await readFile(resolve(project, 'docs/index.html'), 'utf8');
 assert.equal(rows.length, 40);
 assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 36);
-assert.equal(rows.filter(({ course }) => course.state === 'production').length, 4);
-assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 25);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 37);
+assert.equal(rows.filter(({ course }) => course.state === 'production').length, 3);
+assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 26);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -197,17 +201,18 @@ assert.equal(b80.layers.learner.tools.length,2);
 assert.equal(b80.layers.educator.resources.length,1);
 assert.equal(JSON.parse(docsBytes['backend/b80/validation.json']).state,'pass');
 assert.equal(JSON.parse(docsBytes['backend/d70/validation.json']).result,'PASS');
+assert.equal(JSON.parse(docsBytes['backend/d100/validation.json']).state,'pass');
 assert.equal(rows.filter((row) => Object.keys(row.layers).sort().join(',') === 'curriculum,educator,federation,interoperability,learner,production,translation').length, 40);
 assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy.public_access_required).length, 40);
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 15);
-assert.equal(authorityToolIds.length, 25);
+assert.equal(Object.keys(authorityToolsByCourse).length, 16);
+assert.equal(authorityToolIds.length, 26);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
-assert.equal(manifest.summary.published_count, 36);
-assert.equal(manifest.summary.production_count, 4);
+assert.equal(manifest.summary.published_count, 37);
+assert.equal(manifest.summary.production_count, 3);
 assert.equal(manifest.design_policy.profile, 'thin_format_neutral_zero_copy');
 assert.equal(manifest.design_policy.authority.sha256, sha256(authorityDesignPolicyBytes));
 assert.equal(manifest.design_policy.schema.sha256, sha256(authorityDesignPolicySchemaBytes));
@@ -495,13 +500,13 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: 83,
     prerequisite_dag_visited: 40,
-    published_rows: 36,
-    production_rows: 4,
-    educator_rows: 25,
+    published_rows: 37,
+    production_rows: 3,
+    educator_rows: 26,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,
-    course_learning_capability_roles: 4,
+    course_learning_capability_roles: 5,
     snapshot_v2_public_role_bindings: 9,
     snapshot_v2_pending_role_bindings: 0,
     judson_course_views: 2,
