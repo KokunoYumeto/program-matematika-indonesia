@@ -174,6 +174,7 @@ for (const name of [
   'id-ID/courses/D120/RIGHTS_AND_ATTRIBUTION.md',
   'en/courses/D100/D100_ENGLISH_READER_MIRROR_MANIFEST_V1.json',
   'en/courses/D100/D100_ENGLISH_READER_MIRROR_RECEIPT_V1.json',
+  'en/courses/D100/D100_ENGLISH_READER_PUBLIC_READBACK_V1.json',
   'en/courses/D100/README.md',
   'en/courses/D100/RIGHTS_AND_ATTRIBUTION.md',
   'readers/d40/unit14/index.html',
