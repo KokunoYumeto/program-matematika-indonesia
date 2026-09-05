@@ -7,6 +7,7 @@
   },
   "scripts": {
     "build:clp-capability": "node scripts/build-clp-family-capability-v1.mjs && node scripts/test-clp-family-capability-v1.mjs",
+    "build:original-indonesian-bilingual": "node scripts/intake-original-indonesian-bilingual-v1.mjs && node scripts/build-original-indonesian-bilingual-v1.mjs && node scripts/test-original-indonesian-bilingual-v1.mjs",
     "build:backend-coverage": "node scripts/build-program-backend-coverage-v1.mjs && python -B scripts/test-program-backend-coverage-v1.py",
     "admit:c70-capability": "node scripts/admit-c70-capability-v1.mjs",
     "admit:b40-capability": "node scripts/admit-b40-capability-v1.mjs",
@@ -14,8 +15,8 @@
     "apply:surface-navigation": "python -B scripts/apply-central-course-surface-navigation-v1.py",
     "stage:capsule-views": "node scripts/stage-course-capsule-views-v1.mjs",
     "refresh:capsule-page-identities": "node scripts/refresh-course-capsule-hosted-page-identities-v1.mjs",
-    "build:interface": "npm run build:clp-capability && npm run apply:surface-navigation && node scripts/build-multilingual-interface.mjs && npm run apply:surface-navigation && node scripts/finalize-multilingual-interface-receipt-v1.mjs && npm run refresh:capsule-page-identities && node scripts/test-multilingual-interface.mjs && python -B scripts/validate-central-reader-navigation-v1.py",
-    "stage:reader-navigation": "python -B scripts/stage_d10_public_html_v1.py && python -B scripts/validate_d10_public_html_v1.py && python -B scripts/stage_d120_public_html_v1.py && python -B scripts/validate_d120_public_html_v1.py && python -B scripts/stage_d100_english_public_html_v1.py && python -B scripts/validate_d100_english_public_html_v1.py && python -B scripts/apply-central-legacy-reader-navigation-v1.py && node scripts/build-v21-learner-routes.mjs",
+    "build:interface": "npm run build:clp-capability && npm run build:original-indonesian-bilingual && npm run apply:surface-navigation && node scripts/build-multilingual-interface.mjs && npm run apply:surface-navigation && node scripts/finalize-multilingual-interface-receipt-v1.mjs && npm run refresh:capsule-page-identities && node scripts/test-multilingual-interface.mjs && python -B scripts/validate-central-reader-navigation-v1.py",
+    "stage:reader-navigation": "npm run build:original-indonesian-bilingual && python -B scripts/stage_d10_public_html_v1.py && python -B scripts/validate_d10_public_html_v1.py && python -B scripts/stage_d120_public_html_v1.py && python -B scripts/validate_d120_public_html_v1.py && python -B scripts/stage_d100_english_public_html_v1.py && python -B scripts/validate_d100_english_public_html_v1.py && python -B scripts/apply-central-legacy-reader-navigation-v1.py && node scripts/build-v21-learner-routes.mjs",
     "validate:reader-navigation": "node scripts/validate-v21-learner-routes.mjs && python -B scripts/validate-central-reader-navigation-v1.py",
     "build:reader-navigation": "npm run stage:reader-navigation && npm run apply:surface-navigation && npm run validate:reader-navigation",
     "verify:reader-navigation:public": "python -B scripts/verify-central-reader-navigation-public-v1.py",

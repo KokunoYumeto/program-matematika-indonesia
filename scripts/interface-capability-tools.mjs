@@ -7,6 +7,8 @@ import {learnerToolsByCourseId} from '../docs/learner-tools.js';
 export const capabilityInput = 'docs/data/course-capsule-v1/course-capsules.json';
 export const clpCapabilityInput = 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json';
 export const clpCapabilityValidationInput = 'docs/backend/clp/validation.json';
+export const originalIndonesianBilingualManifestInput = 'backend/course-capsule-v1/localizations/original-indonesian-bilingual-v1/manifest.json';
+export const originalIndonesianBilingualValidationInput = 'backend/course-capsule-v1/localizations/original-indonesian-bilingual-v1/validation.json';
 export const navigationOverlayInput = 'backend/authority/central-course-surface-navigation-overlay-v1.json';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
@@ -113,15 +115,70 @@ export function projectClpCapabilityTools(source, validation, courseIds) {
   }
   return result;
 }
+export function projectOriginalIndonesianBilingualTools(manifest, validation, courseIds) {
+  assert.equal(manifest.schema, 'original-indonesian-bilingual-manifest/1');
+  assert.equal(manifest.state, 'verified');
+  assert.deepEqual(manifest.course_ids, ['B80', 'D120']);
+  assert.deepEqual(manifest.locales, ['id-ID', 'en']);
+  assert.deepEqual(manifest.counts, {
+    courses_localized: 2,
+    english_learner_views: 2,
+    english_educator_views: 2,
+    interface_tools: 4,
+  });
+  assert.equal(validation.schema, 'original-indonesian-bilingual-validation/1');
+  assert.equal(validation.state, 'pass');
+  assert.equal(validation.duplicate_course_identities_created, 0);
+  assert.equal(validation.producer_files_changed, false);
+  assert.equal(validation.textbook_bodies_copied, false);
+  assert.equal(validation.B80.stable_identity_parity, true);
+  assert.equal(validation.B80.central_adapter_public_github_verified, true);
+  assert.equal(validation.B80.english_source_edition_public_github_verified, true);
+  assert.equal(validation.D120.stable_identity_parity, true);
+  assert.equal(validation.D120.localized_fields_used, 339);
+  assert.equal(validation.D120.learner_access_bindings_used, 117);
+  assert.ok(manifest.course_ids.every(courseId => courseIds.includes(courseId)));
+  const outputByPath = new Map(manifest.outputs.map(row => [row.path, row]));
+  assert.equal(outputByPath.size, manifest.outputs.length);
+  const expected = [
+    ['B80', 'b80-exercise-map-en-v1', 'practice_diagnostic_map', 'backend/b80-en/B80.html'],
+    ['B80', 'b80-educator-map-en-v1', 'reference', 'backend/b80-en/B80-educator.html'],
+    ['D120', 'd120.open_learner_hub.en', 'course_reader', 'backend/d120-en/D120.html'],
+    ['D120', 'd120.open_educator_hub.en', 'reference', 'backend/d120-en/D120-educator.html'],
+  ];
+  assert.equal(manifest.tools.length, expected.length);
+  for (let index = 0; index < expected.length; index += 1) {
+    const tool = manifest.tools[index];
+    assert.deepEqual([tool.courseId, tool.tool_id, tool.action_kind, tool.href], expected[index]);
+    assert.equal(tool.contentLanguage, 'en');
+    assert.equal(tool.labelLanguage, 'en');
+    assert.equal(tool.state, 'verified');
+    assert.equal(tool.primary, false);
+    assert.equal(tool.machine_data_is_learner_destination, false);
+    assert.ok(tool.label && tool.scope && tool.limitations.length);
+    for (const fact of [tool.page, tool.resource, tool.evidence]) {
+      assert.deepEqual(outputByPath.get(fact.path), fact);
+      assert.match(fact.path, /^docs\/backend\/(b80|d120)-en\/[a-zA-Z0-9.-]+$/);
+      assert.ok(Number.isSafeInteger(fact.bytes) && fact.bytes > 0);
+      assert.match(fact.sha256, /^[a-f0-9]{64}$/);
+    }
+  }
+  return structuredClone(manifest.tools);
+}
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));
   const clpBytes = await readFile(resolve(root, clpCapabilityInput));
   const clpValidationBytes = await readFile(resolve(root, clpCapabilityValidationInput));
+  const originalManifestBytes = await readFile(resolve(root, originalIndonesianBilingualManifestInput));
+  const originalValidationBytes = await readFile(resolve(root, originalIndonesianBilingualValidationInput));
   const clpValidation = JSON.parse(clpValidationBytes);
   const clpTools = projectClpCapabilityTools(JSON.parse(clpBytes), clpValidation, courseIds);
   const clpEvidence = {path:clpCapabilityValidationInput,bytes:clpValidationBytes.length,sha256:hash(clpValidationBytes)};
   for(const tool of clpTools) tool.evidence=clpEvidence;
-  const tools = [...projectCapabilityTools(JSON.parse(bytes), courseIds), ...clpTools];
+  const originalTools = projectOriginalIndonesianBilingualTools(
+    JSON.parse(originalManifestBytes), JSON.parse(originalValidationBytes), courseIds,
+  );
+  const tools = [...projectCapabilityTools(JSON.parse(bytes), courseIds), ...clpTools, ...originalTools];
   const facts = [...new Map(tools.flatMap(t=>[t.page,t.resource,t.evidence]).map(f=>[f.path,f])).values()];
   const overlay = JSON.parse(await readFile(resolve(root,navigationOverlayInput),'utf8'));
   assert.equal(overlay.schema,'central-course-surface-navigation-overlay-v1');
@@ -141,7 +198,10 @@ export async function syncCapabilityTools(root, courseIds) {
     assert.equal(row.source_body_replay_exact,true,fact.path+' overlay is not reversible');
   }
   const source = {path:capabilityInput, bytes:bytes.length, sha256:hash(bytes)};
-  const supplementSources = [{path:clpCapabilityInput,bytes:clpBytes.length,sha256:hash(clpBytes)}];
+  const supplementSources = [
+    {path:clpCapabilityInput,bytes:clpBytes.length,sha256:hash(clpBytes)},
+    {path:originalIndonesianBilingualManifestInput,bytes:originalManifestBytes.length,sha256:hash(originalManifestBytes)},
+  ];
   await writeFile(resolve(root,'docs/interface/capability-tools.js'),
     '// Generated read-only projection of admitted native capabilities; not a backend admission.\n'
     + 'export const capabilityToolSource = '+JSON.stringify(source)+';\n'

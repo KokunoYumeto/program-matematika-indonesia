@@ -15,7 +15,16 @@ import { finalEditions, finalEditionSource } from '../docs/interface/final-editi
 import { validateFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
 import {capabilityTools, capabilityToolSource, capabilityToolSupplementSources} from '../docs/interface/capability-tools.js';
 import {supplementalReaders} from '../docs/interface/supplemental-readers.js';
-import {projectCapabilityTools, projectClpCapabilityTools, capabilityInput, clpCapabilityInput, clpCapabilityValidationInput} from './interface-capability-tools.mjs';
+import {
+  projectCapabilityTools,
+  projectClpCapabilityTools,
+  projectOriginalIndonesianBilingualTools,
+  capabilityInput,
+  clpCapabilityInput,
+  clpCapabilityValidationInput,
+  originalIndonesianBilingualManifestInput,
+  originalIndonesianBilingualValidationInput,
+} from './interface-capability-tools.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -213,11 +222,29 @@ const clpCapabilityBytes=await readFile(resolve(root,clpCapabilityInput));
 const clpValidationBytes=await readFile(resolve(root,clpCapabilityValidationInput));
 const clpProjected=projectClpCapabilityTools(JSON.parse(clpCapabilityBytes),JSON.parse(clpValidationBytes),ids);
 for(const tool of clpProjected) tool.evidence={path:clpCapabilityValidationInput,bytes:clpValidationBytes.length,sha256:createHash('sha256').update(clpValidationBytes).digest('hex')};
-assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected],capabilityTools);
-assert.equal(capabilityTools.length,31);
+const originalManifestBytes=await readFile(resolve(root,originalIndonesianBilingualManifestInput));
+const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
+const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
+assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
+assert.equal(capabilityTools.length,35);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
-assert.deepEqual(capabilityToolSupplementSources,[{path:clpCapabilityInput,bytes:clpCapabilityBytes.length,sha256:createHash('sha256').update(clpCapabilityBytes).digest('hex')}]);
+assert.deepEqual(capabilityToolSupplementSources,[
+  {path:clpCapabilityInput,bytes:clpCapabilityBytes.length,sha256:createHash('sha256').update(clpCapabilityBytes).digest('hex')},
+  {path:originalIndonesianBilingualManifestInput,bytes:originalManifestBytes.length,sha256:createHash('sha256').update(originalManifestBytes).digest('hex')},
+]);
+for(const mutate of [
+  value=>{value.tools[0].href='backend/b80/B80.html';},
+  value=>{value.tools[2].contentLanguage='id';},
+  value=>{value.outputs.pop();},
+]){
+  const changed=structuredClone(JSON.parse(originalManifestBytes)); mutate(changed);
+  assert.throws(()=>projectOriginalIndonesianBilingualTools(changed,JSON.parse(originalValidationBytes),ids));
+}
+{
+  const changed=structuredClone(JSON.parse(originalValidationBytes)); changed.D120.localized_fields_used=338;
+  assert.throws(()=>projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),changed,ids));
+}
 for(const courseId of ['B20','B30','B50','B60']){
   const tool=capabilityTools.find(row=>row.courseId===courseId&&row.tool_id===courseId.toLowerCase()+'-clp-family-reader-routes-v1');
   assert.ok(tool); assert.equal(tool.state,'verified'); assert.equal(tool.contentLanguage,'id');
@@ -307,12 +334,24 @@ for (const locale of supportedLocales) {
     else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const tools=resourceBindings(interfaceCourses.find(c=>c.id==='B80'),locale).filter(r=>r.capabilityToolId);
-  assert.equal(tools.length,2);
-  for(const tool of tools) {
+  assert.equal(tools.length,4);
+  const b80IdTools=tools.filter(tool=>tool.contentLanguage==='id');
+  const b80EnTools=tools.filter(tool=>tool.contentLanguage==='en');
+  assert.equal(b80IdTools.length,2); assert.equal(b80EnTools.length,2);
+  assert.deepEqual(b80EnTools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/b80-en/B80.html',
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/b80-en/B80-educator.html',
+  ]);
+  for(const tool of b80IdTools) {
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
     if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('14') && tool.note.includes('75') && tool.note.includes('4'));
     else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
     assert.ok(!tool.note.includes('72 latihan inti'));
+  }
+  for(const tool of b80EnTools) {
+    assert.equal(tool.labelLanguage,'en'); assert.equal(tool.primary,false);
+    if(localeMetadata[locale].languageTag==='en') assert.ok(tool.note.includes('14') && tool.note.includes('75'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   for(const role of ['B70','C10','C20','C50']){
     const leblTools=resourceBindings(interfaceCourses.find(c=>c.id===role),locale).filter(r=>r.capabilityToolId);
@@ -395,13 +434,20 @@ for (const locale of supportedLocales) {
     }
   }
   const d120Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D120'),locale).filter(r=>r.capabilityToolId);
-  assert.equal(d120Tools.length,1);
+  assert.equal(d120Tools.length,3);
   assert.deepEqual(d120Tools.map(tool=>tool.href),[
     'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d120/D120.html',
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d120-en/D120.html',
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d120-en/D120-educator.html',
   ]);
-  for(const tool of d120Tools){
+  for(const tool of d120Tools.filter(tool=>tool.contentLanguage==='id')){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
     if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('Sembilan unit')&&tool.note.includes('54')&&tool.note.includes('71'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
+  }
+  for(const tool of d120Tools.filter(tool=>tool.contentLanguage==='en')){
+    assert.equal(tool.labelLanguage,'en'); assert.equal(tool.primary,false);
+    if(localeMetadata[locale].languageTag==='en') assert.ok(tool.note.includes('Nine')||tool.note.includes('Fourteen'));
     else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const c120Tools=resourceBindings(interfaceCourses.find(c=>c.id==='C120'),locale).filter(r=>r.capabilityToolId);
@@ -638,11 +684,12 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   sizes.push({ locale, file, bytes: Buffer.byteLength(html), gzipBytes: gzipSync(html).length });
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
-    // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
-    assert.ok(Buffer.byteLength(html) < 455000, 'Offline map size budget');
+    // Preserve a compact payload while retaining typed access roles,
+    // evidence-bound mirrors, and the four bilingual B80/D120 backend tools.
+    assert.ok(Buffer.byteLength(html) < 465000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 90500, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 93000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

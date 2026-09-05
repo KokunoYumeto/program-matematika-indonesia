@@ -1225,6 +1225,27 @@ for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-co
   assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror Sites berbeda dari docs.`);
 }
 
+for (const name of [
+  'backend/b80-en/B80.html',
+  'backend/b80-en/B80-educator.html',
+  'backend/b80-en/learning-map.json',
+  'backend/b80-en/educator-map.json',
+  'backend/b80-en/validation.json',
+  'backend/b80-en/publication-state.json',
+  'backend/b80/publication-state.json',
+  'backend/d120-en/D120.html',
+  'backend/d120-en/D120-educator.html',
+  'backend/d120-en/learning-map.json',
+  'backend/d120-en/educator-map.json',
+  'backend/d120-en/validation.json',
+]) {
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', name)),
+    readFile(resolve(root, 'public/hub', name)),
+  ]);
+  assert.deepEqual(hostedBytes, docsBytes, `${name}: English original-course backend mirror differs from docs.`);
+}
+
 for (const name of ['backend/c110/C110.html', 'backend/c110/C110-pengajar.html', 'backend/c110/learning-map.json', 'backend/c110/educator-map.json', 'backend/c110/translation-alignments.json', 'backend/c110/rights-and-terms.json', 'backend/c110/ledger-references.json', 'backend/c110/validation.json']) {
   const [docsBytes, hostedBytes] = await Promise.all([
     readFile(resolve(root, 'docs', name)),
