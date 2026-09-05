@@ -35,6 +35,7 @@ PATHS = subprocess.check_output(
         "scripts/test-program-backend-coverage-v1.py",
         "backend/course-capsule-v1/generated/program-backend-coverage-v1.json",
         "backend/course-capsule-v1/validation/PROGRAM_BACKEND_COVERAGE_VALIDATION.json",
+        "backend/course-capsule-v1/validation/SITE_VALIDATION_RECEIPT.json",
         "docs/backend/coverage.html",
         "docs/backend/index.html",
         "docs/backend/program-backend-coverage.json",
