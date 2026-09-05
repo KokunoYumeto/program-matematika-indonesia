@@ -5,6 +5,8 @@ import {createHash} from 'node:crypto';
 import {learnerToolsByCourseId} from '../docs/learner-tools.js';
 
 export const capabilityInput = 'docs/data/course-capsule-v1/course-capsules.json';
+export const clpCapabilityInput = 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json';
+export const clpCapabilityValidationInput = 'docs/backend/clp/validation.json';
 export const navigationOverlayInput = 'backend/authority/central-course-surface-navigation-overlay-v1.json';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
@@ -59,9 +61,66 @@ export function projectCapabilityTools(capsules, courseIds) {
   assert.deepEqual(result.map(t=>t.tool_id).sort(),Object.keys(contracts).sort());
   return result;
 }
+export function projectClpCapabilityTools(source, validation, courseIds) {
+  assert.equal(source.schema_id, 'interlanguage/learner-reader-actions/v1');
+  assert.equal(source.status, 'verified_route_evidence_projection');
+  assert.deepEqual(source.summary, {
+    action_count:7, bytes:35639691, chapter_or_unit_routes_claimed:false,
+    course_count:4, native_html_claimed:false, pages:4077,
+    route_granularity:'whole_file_only', verified_action_count:7,
+  });
+  assert.equal(validation.schema, 'clp-family-capability-validation/1');
+  assert.equal(validation.state, 'pass');
+  assert.deepEqual(validation.source, {
+    path:clpCapabilityInput,
+    bytes:Buffer.byteLength(JSON.stringify(source, null, 2) + '\n'),
+    sha256:hash(Buffer.from(JSON.stringify(source, null, 2) + '\n')),
+  });
+  const expectedCourses=['B20','B30','B50','B60'];
+  assert.ok(expectedCourses.every(courseId=>courseIds.includes(courseId)));
+  const result=[];
+  for(const courseId of expectedCourses){
+    const actions=source.actions.filter(row=>row.course_id===courseId);
+    assert.ok(actions.length>0);
+    for(const action of actions){
+      assert.equal(action.state,'verified');
+      assert.equal(action.route_granularity,'whole_file_only');
+      assert.equal(action.format,'application/pdf');
+      assert.equal(action.license,'CC BY-NC-SA 4.0');
+    }
+    const pages=actions.reduce((sum,row)=>sum+row.pages,0);
+    const files=actions.length;
+    result.push({
+      courseId, contentLanguage:'id', action_kind:'course_reader',
+      evidence:null,
+      href:`backend/clp/${courseId}.html`,
+      label:`${courseId} · Rute baca keluarga CLP`,
+      limitations:[
+        'Tampilan hanya memproyeksikan rute PDF seluruh berkas yang telah diverifikasi.',
+        'Jangkar bab atau unit dan pembaca HTML native tidak diklaim.',
+        'Unduhan awal memerlukan jaringan; setiap PDF dapat dibaca luring setelah diunduh.',
+        'Isi buku, identitas native, lisensi, dan bukti publik tetap berada pada edisi sumber.',
+      ],
+      machine_data_is_learner_destination:false,
+      page:validation.outputs.course_entry_source_bodies[courseId],
+      primary:false,
+      resource:validation.outputs.learning_map,
+      scope:`${files} PDF seluruh berkas, ${pages.toLocaleString('id-ID')} halaman; identitas byte, SHA-256, lisensi, dan rekaman publik dipertahankan`,
+      state:'verified',
+      tool_id:`${courseId.toLowerCase()}-clp-family-reader-routes-v1`,
+    });
+  }
+  return result;
+}
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));
-  const tools = projectCapabilityTools(JSON.parse(bytes), courseIds);
+  const clpBytes = await readFile(resolve(root, clpCapabilityInput));
+  const clpValidationBytes = await readFile(resolve(root, clpCapabilityValidationInput));
+  const clpValidation = JSON.parse(clpValidationBytes);
+  const clpTools = projectClpCapabilityTools(JSON.parse(clpBytes), clpValidation, courseIds);
+  const clpEvidence = {path:clpCapabilityValidationInput,bytes:clpValidationBytes.length,sha256:hash(clpValidationBytes)};
+  for(const tool of clpTools) tool.evidence=clpEvidence;
+  const tools = [...projectCapabilityTools(JSON.parse(bytes), courseIds), ...clpTools];
   const facts = [...new Map(tools.flatMap(t=>[t.page,t.resource,t.evidence]).map(f=>[f.path,f])).values()];
   const overlay = JSON.parse(await readFile(resolve(root,navigationOverlayInput),'utf8'));
   assert.equal(overlay.schema,'central-course-surface-navigation-overlay-v1');
@@ -81,9 +140,11 @@ export async function syncCapabilityTools(root, courseIds) {
     assert.equal(row.source_body_replay_exact,true,fact.path+' overlay is not reversible');
   }
   const source = {path:capabilityInput, bytes:bytes.length, sha256:hash(bytes)};
+  const supplementSources = [{path:clpCapabilityInput,bytes:clpBytes.length,sha256:hash(clpBytes)}];
   await writeFile(resolve(root,'docs/interface/capability-tools.js'),
     '// Generated read-only projection of admitted native capabilities; not a backend admission.\n'
     + 'export const capabilityToolSource = '+JSON.stringify(source)+';\n'
+    + 'export const capabilityToolSupplementSources = '+JSON.stringify(supplementSources)+';\n'
     + 'export const capabilityToolFiles = '+JSON.stringify(facts)+';\n'
     + 'export const capabilityTools = '+JSON.stringify(tools)+';\n');
   return facts;

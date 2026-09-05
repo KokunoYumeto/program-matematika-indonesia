@@ -5,7 +5,7 @@ import { createHash } from 'node:crypto';
 import { courses as canonicalCourses } from '../docs/courses.js';
 import { syncReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { syncFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
-import { syncCapabilityTools, capabilityInput } from './interface-capability-tools.mjs';
+import { syncCapabilityTools, capabilityInput, clpCapabilityInput, clpCapabilityValidationInput } from './interface-capability-tools.mjs';
 import { supportedLocales, localeMetadata, interfaceCopy, localizedTopic, siteOrigin, englishBindingExceptions } from '../docs/interface/locales.js';
 import { supplementalReaders } from '../docs/interface/supplemental-readers.js';
 
@@ -228,7 +228,7 @@ outputFiles.push({path:'docs/interface/learner-access-manifest.json', bytes:lear
 const receipt = {
   schema: 'multilingual-interface-build/v1', locales: supportedLocales, canonicalCourseCount: interfaceCourses.length,
   canonicalEdgeCount: interfaceCourses.reduce((n, c) => n + c.prerequisites.length, 0),
-  inputs: await Promise.all(['backend/authority/central-reader-navigation-v1.json', 'backend/authority/central-course-surface-navigation-overlay-v1.json', hostedSurfaceIdentityModulePath, centralGatewayModulePath, 'docs/interface/supplemental-readers.js', ...new Set(supplementalReaders.map(row=>row.evidenceFile)), 'docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
+  inputs: await Promise.all(['backend/authority/central-reader-navigation-v1.json', 'backend/authority/central-course-surface-navigation-overlay-v1.json', hostedSurfaceIdentityModulePath, centralGatewayModulePath, 'docs/interface/supplemental-readers.js', ...new Set(supplementalReaders.map(row=>row.evidenceFile)), 'docs/courses.js', 'docs/live-course-publications.js', 'docs/learner-state.js', 'docs/learner-delivery.js', 'docs/learner-tools.js', readerActionInput, finalEditionInput, capabilityInput, clpCapabilityInput, clpCapabilityValidationInput, 'docs/interface/capability-tools.js', 'scripts/interface-capability-tools.mjs', ...capabilityFiles.map(f=>f.path), 'docs/interface/final-editions.js', 'scripts/interface-final-editions.mjs', 'docs/interface/reader-actions.js', 'docs/interface/locales.js', 'docs/interface/view.js', 'docs/interface/app.js', 'docs/interface/styles.css', 'scripts/build-multilingual-interface.mjs', 'scripts/interface-reader-actions.mjs'].map(async (path) => {
     const bytes = await readFile(resolve(interfaceRoot, path));
     return { path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
   })),

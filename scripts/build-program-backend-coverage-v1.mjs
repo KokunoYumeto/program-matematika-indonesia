@@ -8,6 +8,8 @@ const sources={
   capsules:'backend/course-capsule-v1/generated/course-capsules.json',
   families:'backend/course-capsule-v1/authority/clp-family-v231/modular-backend-pattern-index-v2.1.json',
   published:'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
+  clpRoutes:'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
+  clpView:'docs/backend/clp/validation.json',
   b80:'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
   lebl:'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
   geometry:'backend/course-capsule-v1/adapters/geometry-capability-v1/publication/GITHUB_READBACK_a2584b9448c9.json',
@@ -26,6 +28,13 @@ const bytes=Object.fromEntries(await Promise.all(Object.entries(sources).map(asy
 const data=Object.fromEntries(Object.entries(bytes).map(([key,value])=>[key,JSON.parse(value)]));
 assert.equal(data.capsules.length,40);assert.equal(data.families.families.length,33);
 assert.equal(data.b80.state,'pass');
+assert.equal(data.clpRoutes.status,'verified_route_evidence_projection');
+assert.equal(data.clpRoutes.summary.action_count,7);assert.equal(data.clpRoutes.summary.course_count,4);
+assert.equal(data.clpRoutes.summary.pages,4077);assert.equal(data.clpRoutes.summary.bytes,35639691);
+assert.equal(data.clpRoutes.summary.route_granularity,'whole_file_only');
+assert.equal(data.clpRoutes.summary.native_html_claimed,false);assert.equal(data.clpRoutes.summary.chapter_or_unit_routes_claimed,false);
+assert.equal(data.clpView.state,'pass');
+assert.deepEqual(data.clpView.source,{path:sources.clpRoutes,bytes:bytes.clpRoutes.length,sha256:sha256(bytes.clpRoutes)});
 assert.equal(new Set(data.capsules.map(row=>row.course_id)).size,40,'Duplicate course role.');
 assert.equal(data.b80.anonymous,true);assert.equal(data.b80.credentials_used,false);
 assert.equal(data.lebl.state,'pass');assert.equal(data.lebl.anonymous,true);assert.equal(data.lebl.credentials_used,false);
@@ -41,6 +50,14 @@ assert.equal(data.d80.state,'pass');assert.equal(data.d80.anonymous,true);assert
 assert.equal(data.d100.state,'pass');assert.equal(data.d100.anonymous,true);assert.equal(data.d100.credentials_used,false);
 assert.equal(data.d120.state,'pass');assert.equal(data.d120.anonymous,true);assert.equal(data.d120.credentials_used,false);
 const leblRoles=['B70','C10','C20','C50'];
+const clpRoles=['B20','B30','B50','B60'];
+const clpActionsByRole=new Map(clpRoles.map(role=>[role,data.clpRoutes.actions.filter(action=>action.course_id===role)]));
+for(const role of clpRoles){
+  const actions=clpActionsByRole.get(role);assert.ok(actions.length>0);
+  for(const action of actions){assert.equal(action.state,'verified');assert.equal(action.route_granularity,'whole_file_only');}
+  const page=data.clpView.outputs.course_entry_source_bodies[role];
+  assert.deepEqual(page.path,`docs/backend/clp/${role}.html`);assert.match(page.sha256,/^[a-f0-9]{64}$/);assert.ok(page.bytes>0);
+}
 for(const filename of [...leblRoles.flatMap(role=>[role+'.html',role+'-pengajar.html']),'istilah.html','learning-map.json','validation.json','filters.js']){
   assert.ok(data.lebl.files.some(row=>row.surface==='pages'&&row.path==='docs/backend/lebl/'+filename&&row.http_status===200&&row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)),filename);
 }
@@ -100,6 +117,8 @@ const rows=data.capsules.map(capsule=>{
     assert.equal(packet.public_replay_status,'published_public_asset_readback_verified');
     assert.equal(packet.native_family_id,family.native_family_id);
   }
+  const centralTools=capsule.layers.learner.tools.map(tool=>({label:tool.label,href:'../'+tool.href}));
+  if(clpRoles.includes(role))centralTools.push({label:`${role} · Rute baca keluarga CLP`,href:`../backend/clp/${role}.html`});
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
@@ -108,9 +127,9 @@ const rows=data.capsules.map(capsule=>{
       local_evidence:adapter.evidence??[],
       public_package:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
         central_record:`https://doi.org/${data.published.snapshot.central_release_record_doi}`} : null},
-    learner:{tools:capsule.layers.learner.tools.map(tool=>({label:tool.label,href:'../'+tool.href})),
+    learner:{tools:centralTools,
       unit_identity:capsule.layers.curriculum.unit_identity_status,
-      relationship:['B80','C70','C110','C120','D10','D40','D70','D80','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)?'directly_consumes_adapter_outputs':publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
+      relationship:clpRoles.includes(role)||['B80','C70','C110','C120','D10','D40','D70','D80','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)?'directly_consumes_adapter_outputs':publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources},
     dimensions:{
       curriculum:{course_graph:capsule.layers.curriculum.status,unit_identity:capsule.layers.curriculum.unit_identity_status},
@@ -118,7 +137,7 @@ const rows=data.capsules.map(capsule=>{
       terminology:{register:capsule.layers.translation.terminology_status},
       reproducible_production:{build:capsule.layers.production.build_status,replay:capsule.layers.production.deterministic_replay_status},
       accessibility:{semantic_html:capsule.layers.learner.capabilities.semantic_html,mathml:capsule.layers.learner.capabilities.mathml},
-      learner:{delivery:capsule.layers.learner.status,central_tools:capsule.layers.learner.tools.length},
+      learner:{delivery:capsule.layers.learner.status,central_tools:centralTools.length},
       educator:{materials:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status},
       federation:{references:capsule.layers.federation.status,component_rights:capsule.layers.federation.components.map(row=>({id:row.id,status:row.rights_status}))},
       interoperability:{adapter:adapter.status,contract:adapter.contract_version??null},
@@ -151,7 +170,7 @@ const statuses={verified:'Diverifikasi',available_unverified:'Ada; belum diverif
 const dimensionNames={curriculum:'Kurikulum dan unit',source_translation_ledger:'Ledger sumber/penerjemahan',terminology:'Istilah',reproducible_production:'Produksi yang dapat diulang',accessibility:'Aksesibilitas',learner:'Pelajar',educator:'Pengajar',federation:'Federasi komponen',interoperability:'Pertukaran data'};
 const details=row=>`<h3>Sembilan bidang kemampuan</h3><dl>${Object.entries(row.dimensions).map(([key,values])=>`<dt>${dimensionNames[key]}</dt><dd>${Object.entries(values).map(([name,value])=>`${esc(name)}: ${Array.isArray(value)?value.map(item=>`${esc(item.id)} — ${esc(statuses[item.status]??item.status)}`).join('; '):esc(statuses[value]??value??'Belum terbukti')}`).join('<br>')}</dd>`).join('')}</dl><h3>Pekerjaan tersisa</h3><ul>${row.next_required_work.map(text=>`<li>${esc(text)}</li>`).join('')}</ul><p>Backend lengkap: belum terbukti.</p>${row.common_adapter.public_package?`<p><a href="${esc(row.common_adapter.public_package.url)}">Paket adapter</a> · <a href="${esc(row.common_adapter.public_package.central_record)}">Rekaman pusat historis</a></p>`:''}<details><summary>Desain asli: temuan audit terdahulu</summary><p lang="en">${esc(row.native_design_audit.pattern)}</p><ul lang="en">${row.native_design_audit.recommended_reuse.map(text=>`<li>${esc(text)}</li>`).join('')}</ul><p>Temuan historis berikut harus diperiksa ulang sebelum dianggap masih berlaku:</p><ul lang="en">${row.native_design_audit.limitations.map(text=>`<li>${esc(text)}</li>`).join('')}</ul>${row.role_id==='B80'?'<p>Integrasi B80 sekarang menambahkan pertukaran reversibel serta tampilan pelajar/pengajar bersama.</p>':''}</details>`;
 const htmlRows=rows.map(row=>`<tr id="role-${row.role_id}"><th scope="row"><a href="../id/#course-${row.role_id}">${row.role_id} · ${esc(row.title)}</a><small>${esc(row.native_family_name)}</small></th><td>${esc(statuses[row.common_adapter.status]??row.common_adapter.status)}<small>${esc(row.common_adapter.contract??'Belum ada kontrak bersama')}</small></td><td>${row.learner.tools.map(tool=>`<p><a href="${esc(tool.href)}">${esc(tool.label)}</a></p>`).join('')||'<span>Belum ada alat pusat terindeks</span>'}</td><td>${esc(statuses[row.educator.status]??row.educator.status)}${row.educator.resources.map(resource=>`<p><a href="${esc(resource.url)}">${esc(resource.title)}</a></p>`).join('')}</td><td><details><summary>Bukti dan pekerjaan berikutnya</summary>${details(row)}<p>Identitas unit: ${esc(statuses[row.learner.unit_identity]??row.learner.unit_identity)}. Keselarasan pengajar: ${esc(statuses[row.educator.unit_alignment]??row.educator.unit_alignment)}.</p><p>Zenodo: ${row.common_adapter.zenodo_preservation==='frozen_public_readback'?'readback rilis tercatat':row.role_id==='B80'?'pelestarian ditugaskan; belum diverifikasi':'bukti adapter belum tersedia'}.</p></details></td></tr>`).join('\n');
-const html=`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cakupan backend 40 peran</title><style>body{font:16px/1.5 system-ui;color:#183a35;background:#f5f5ed;margin:0}main{max-width:1400px;margin:auto;padding:28px}a{color:#086b63;text-underline-offset:3px}h1{font-size:2rem}small{display:block;color:#506660;margin-top:6px}.table{overflow:auto}table{border-collapse:collapse;width:100%;background:white}th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid #cad6d0}thead{background:#e0eae3}th{min-width:220px}td{min-width:170px}p{max-width:90ch}details p{min-width:200px}dt{font-weight:650;margin-top:1rem}dd{margin-left:0}h3{font-size:1rem}a:focus-visible,summary:focus-visible{outline:3px solid #cf8728;outline-offset:3px}</style></head><body><main><nav><a href="index.html">Pusat belajar dan mengajar</a> · <a href="../id/">Program</a></nav><h1>Cakupan backend: 40 peran</h1><p>${summary.locally_validated_adapter_roles} peran mempunyai adapter bersama yang telah diuji; ${summary.roles_without_validated_common_adapter} belum. Ini <strong>bukan</strong> persentase penerjemahan buku, dan tidak berarti backend lengkap untuk semua peran yang sudah mempunyai adapter.</p><p>Readback GitHub tercatat untuk ${summary.github_evidenced_roles} peran; readback pelestarian Zenodo tercatat untuk ${summary.zenodo_evidenced_roles}. Increment B80, Lebl, Geometry, Topology, C70, C110, C120, D10, D40, D70, D80, D100, dan D120 sudah dapat dipakai di web; bukti pelestarian Zenodo tetap dihitung terpisah. Tanggal matriks: 5 September 2026. Temuan desain asli dan bukti rilis terdahulu bukan pemeriksaan ulang seluruh buku hari ini. “Belum terbukti” berarti bukti integrasi pusat belum cukup, bukan berarti pekerjaan asli tidak ada atau terjemahan belum selesai.</p><div class="table" role="region" aria-label="Cakupan semua peran" tabindex="0"><table><caption>Adapter, penggunaan oleh pelajar, dan bahan pengajar per peran</caption><thead><tr><th>Peran dan keluarga native</th><th>Adapter bersama</th><th>Alat pelajar</th><th>Bahan pengajar</th><th>Batas bukti</th></tr></thead><tbody>${htmlRows}</tbody></table></div><p><a href="program-backend-coverage.json">Matriks terbuka dengan identitas bukti</a></p></main></body></html>\n`;
+const html=`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cakupan backend 40 peran</title><style>body{font:16px/1.5 system-ui;color:#183a35;background:#f5f5ed;margin:0}main{max-width:1400px;margin:auto;padding:28px}a{color:#086b63;text-underline-offset:3px}h1{font-size:2rem}small{display:block;color:#506660;margin-top:6px}.table{overflow:auto}table{border-collapse:collapse;width:100%;background:white}th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid #cad6d0}thead{background:#e0eae3}th{min-width:220px}td{min-width:170px}p{max-width:90ch}details p{min-width:200px}dt{font-weight:650;margin-top:1rem}dd{margin-left:0}h3{font-size:1rem}a:focus-visible,summary:focus-visible{outline:3px solid #cf8728;outline-offset:3px}</style></head><body><main><nav><a href="index.html">Pusat belajar dan mengajar</a> · <a href="../id/">Program</a></nav><h1>Cakupan backend: 40 peran</h1><p>${summary.locally_validated_adapter_roles} peran mempunyai adapter bersama yang telah diuji; ${summary.roles_without_validated_common_adapter} belum. Ini <strong>bukan</strong> persentase penerjemahan buku, dan tidak berarti backend lengkap untuk semua peran yang sudah mempunyai adapter.</p><p>Readback GitHub tercatat untuk ${summary.github_evidenced_roles} peran; readback pelestarian Zenodo tercatat untuk ${summary.zenodo_evidenced_roles}. Increment CLP, B80, Lebl, Geometry, Topology, C70, C110, C120, D10, D40, D70, D80, D100, dan D120 sudah dapat dipakai di web; bukti pelestarian Zenodo tetap dihitung terpisah. Tanggal matriks: 5 September 2026. Temuan desain asli dan bukti rilis terdahulu bukan pemeriksaan ulang seluruh buku hari ini. “Belum terbukti” berarti bukti integrasi pusat belum cukup, bukan berarti pekerjaan asli tidak ada atau terjemahan belum selesai.</p><div class="table" role="region" aria-label="Cakupan semua peran" tabindex="0"><table><caption>Adapter, penggunaan oleh pelajar, dan bahan pengajar per peran</caption><thead><tr><th>Peran dan keluarga native</th><th>Adapter bersama</th><th>Alat pelajar</th><th>Bahan pengajar</th><th>Batas bukti</th></tr></thead><tbody>${htmlRows}</tbody></table></div><p><a href="program-backend-coverage.json">Matriks terbuka dengan identitas bukti</a></p></main></body></html>\n`;
 for(const [path,content]of [['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',json(model)],['docs/backend/program-backend-coverage.json',json(model)],['docs/backend/coverage.html',html]]){
   await mkdir(dirname(resolve(root,path)),{recursive:true});await writeFile(resolve(root,path),content);
 }

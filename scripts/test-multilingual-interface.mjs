@@ -13,9 +13,9 @@ import { verifiedReaderActions, readerActionSource } from '../docs/interface/rea
 import { projectReaderActions, readerActionInput } from './interface-reader-actions.mjs';
 import { finalEditions, finalEditionSource } from '../docs/interface/final-editions.js';
 import { validateFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
-import {capabilityTools, capabilityToolSource} from '../docs/interface/capability-tools.js';
+import {capabilityTools, capabilityToolSource, capabilityToolSupplementSources} from '../docs/interface/capability-tools.js';
 import {supplementalReaders} from '../docs/interface/supplemental-readers.js';
-import {projectCapabilityTools, capabilityInput} from './interface-capability-tools.mjs';
+import {projectCapabilityTools, projectClpCapabilityTools, capabilityInput, clpCapabilityInput, clpCapabilityValidationInput} from './interface-capability-tools.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
@@ -209,10 +209,20 @@ assert.equal(resourceBindings(interfaceCourses.find(c=>c.id==='B10'),'id').find(
 assert.equal(resourceBindings(interfaceCourses.find(c=>c.id==='D20'),'id').find(row=>row.primary).href,'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/D20/');
 const capsuleBytes = await readFile(resolve(root,capabilityInput));
 const capsules = JSON.parse(capsuleBytes);
-assert.deepEqual(projectCapabilityTools(capsules,ids),capabilityTools);
-assert.equal(capabilityTools.length,26);
+const clpCapabilityBytes=await readFile(resolve(root,clpCapabilityInput));
+const clpValidationBytes=await readFile(resolve(root,clpCapabilityValidationInput));
+const clpProjected=projectClpCapabilityTools(JSON.parse(clpCapabilityBytes),JSON.parse(clpValidationBytes),ids);
+for(const tool of clpProjected) tool.evidence={path:clpCapabilityValidationInput,bytes:clpValidationBytes.length,sha256:createHash('sha256').update(clpValidationBytes).digest('hex')};
+assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected],capabilityTools);
+assert.equal(capabilityTools.length,30);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
+assert.deepEqual(capabilityToolSupplementSources,[{path:clpCapabilityInput,bytes:clpCapabilityBytes.length,sha256:createHash('sha256').update(clpCapabilityBytes).digest('hex')}]);
+for(const courseId of ['B20','B30','B50','B60']){
+  const tool=capabilityTools.find(row=>row.courseId===courseId&&row.tool_id===courseId.toLowerCase()+'-clp-family-reader-routes-v1');
+  assert.ok(tool); assert.equal(tool.state,'verified'); assert.equal(tool.contentLanguage,'id');
+  assert.equal(tool.page.path,'docs/backend/clp/'+courseId+'.html');
+}
 for (const corrupt of [
   c=>{c.find(r=>r.course_id==='B80').locale='en';},
   c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].state='planned';},
@@ -619,7 +629,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
-    assert.ok(Buffer.byteLength(html) < 450000, 'Offline map size budget');
+    assert.ok(Buffer.byteLength(html) < 455000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
     assert.ok(gzipSync(html).length < 90000, 'Compressed map size budget');

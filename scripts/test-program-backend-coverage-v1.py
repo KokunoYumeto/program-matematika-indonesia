@@ -14,6 +14,8 @@ INPUTS = {
     'capsules': 'backend/course-capsule-v1/generated/course-capsules.json',
     'families': 'backend/course-capsule-v1/authority/clp-family-v231/modular-backend-pattern-index-v2.1.json',
     'published': 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
+    'clpRoutes': 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
+    'clpView': 'docs/backend/clp/validation.json',
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
     'geometry': 'backend/course-capsule-v1/adapters/geometry-capability-v1/publication/GITHUB_READBACK_a2584b9448c9.json',
@@ -43,6 +45,12 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters'])
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
+for role in ('B20', 'B30', 'B50', 'B60'):
+    assert roles[role]['common_adapter']['contract'] == '2.3.1'
+    assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+    assert len(roles[role]['learner']['tools']) == 1
+    assert roles[role]['learner']['tools'][0]['href'] == '../backend/clp/' + role + '.html'
+    assert roles[role]['dimensions']['learner']['central_tools'] == 1
 for role in ('B70', 'C10', 'C20', 'C50'):
     assert roles[role]['common_adapter']['contract'] == 'lebl-learning-capability/1'
     assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
@@ -214,6 +222,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('missing_role', 'capsules', lambda value: value.pop()),
         ('duplicate_family_role', 'families', lambda value: value['families'][1]['roles'].append('A00')),
         ('missing_public_packet', 'published', lambda value: value['packages'].clear()),
+        ('clp_route_count', 'clpRoutes', lambda value: value['summary'].update(action_count=6)),
+        ('clp_view_not_pass', 'clpView', lambda value: value.update(state='fail')),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('b80_nonanonymous', 'b80', lambda value: value.update(anonymous=False)),
         ('b80_missing_teacher_readback', 'b80', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/b80/B80-pengajar.html'])),
