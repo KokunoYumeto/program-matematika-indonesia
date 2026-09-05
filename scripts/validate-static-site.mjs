@@ -1101,6 +1101,14 @@ assert.deepEqual(
 );
 assert.equal(deliveryById.get('C100').portable_html.sha256, 'ee26d6e1228b7b66ca7ea156081c673dd1c8ab8b3488d87f7ee35cc354c091ae');
 assert.equal(deliveryById.get('C100').epub.sha256, '5eb6773cc036015e8eb9e6f1791c6ec2f2b83812f43c8340c66aaafd91b12d99');
+assert.equal(deliveryById.get('C100').online_html.status, 'verified');
+assert.equal(deliveryById.get('C100').online_html.url, 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/C100/reader/');
+assert.equal(deliveryById.get('C100').online_html.bytes, 3_994_608);
+assert.equal(deliveryById.get('C100').online_html.sha256, '1d3b49bc17a5956164d25b53ef6a2e79939a44f066fa87d84d00a66cca6da7ca');
+assert.equal(deliveryById.get('C100').online_html.entry_point, 'index.html');
+assert.equal(deliveryById.get('C100').online_html.inventory_count, 2);
+assert.equal(deliveryById.get('C100').online_html.scope, 'whole_course');
+assert.equal(deliveryById.get('C100').online_html.dependency_free, true);
 assert.equal(deliveryById.get('D10').portable_html.sha256, 'a0333dca723085e93d472b945a03758b133b05cbe5be3022133088e5c1f5ab00');
 const d10Delivery = deliveryById.get('D10');
 assert.equal(d10Delivery.online_html.status, 'verified');
