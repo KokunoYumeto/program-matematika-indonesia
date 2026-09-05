@@ -205,6 +205,9 @@ export const englishResources = {
   ],
   D100: [
     englishEdition('Algebraic Geometry Bridge — complete English HTML reader', 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/', 'HTML', { units:60, exercises:1188 }),
+    englishEdition('Algebraic Curves — open complete English HTML reader', 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/ak.html', 'HTML', { units:30, exercises:693 }),
+    englishEdition('Bundles, Sheaves and Cohomology — open complete English HTML reader', 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/bgk.html', 'HTML', { units:30, exercises:495 }),
+    englishEdition('From Varieties to Schemes — open English HTML companion', 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/companion.html', 'HTML', { units:32, exercises:13 }),
     englishEdition('Algebraic Curves — complete English course — 504 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/01_Algebraic-Curves_en_Units-01-30.pdf', 'PDF', { pages:504, bytes:16029193, sha256:'547a0e8f5185cd133edac64cac42ecb7590947ff74d45efe0eb66db7c0a62b46', offlineAfterDownload:true }),
     englishEdition('Bundles, Sheaves and Cohomology — complete English course — 381 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/03_Bundles-Sheaves-and-Cohomology_en_Units-01-30.pdf', 'PDF', { pages:381, bytes:2953314, sha256:'dffad20f1945c6f0183414cd88fa29e34e230dac14b7fae429ad09c96be4c0f1', offlineAfterDownload:true }),
     englishEdition('From Varieties to Schemes — editorial companion — 89 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/05_From-Varieties-to-Schemes_Original-Editorial-Companion_en.pdf', 'PDF', { pages:89, bytes:808762, sha256:'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2', offlineAfterDownload:true }),

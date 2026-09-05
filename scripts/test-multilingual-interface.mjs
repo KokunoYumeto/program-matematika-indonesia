@@ -210,6 +210,12 @@ assert.ok(!englishBindingExceptions.D70 && !englishBindingExceptions.D80);
 assert.ok(!englishBindingExceptions.D100);
 assert.equal(englishResources.D100[0].kind,'HTML');
 assert.equal(englishResources.D100[0].href,'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/');
+assert.deepEqual(englishResources.D100.slice(1,4).map(r=>r.href),[
+  'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/ak.html',
+  'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/bgk.html',
+  'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/companion.html',
+]);
+assert.deepEqual(englishResources.D100.slice(1,4).map(r=>[r.units,r.exercises]),[[30,693],[30,495],[32,13]]);
 assert.ok(englishResources.D100.some(r=>r.kind==='archive' && r.href==='https://doi.org/10.5281/zenodo.22340270'));
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>r.pages),[504,381,89]);
 assert.equal(englishResources.D100.filter(r=>r.pages).reduce((n,r)=>n+r.pages,0),974);
@@ -516,8 +522,9 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles, evidence-bound mirrors, and tools.
-    assert.ok(Buffer.byteLength(html) < 394000, 'Offline map size budget');
-    // D100's complete bilingual access block plus D10 and C120's hash-bound
+    assert.ok(Buffer.byteLength(html) < 400000, 'Offline map size budget');
+    // D100's complete bilingual access block, including its three directly
+    // addressable English HTML readers, plus D10 and C120's hash-bound
     // capabilities add evidence-bound readers while preserving a compact payload.
     assert.ok(gzipSync(html).length < 76000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
