@@ -33,6 +33,8 @@ PATHS = subprocess.check_output(
         "--",
         "scripts/build-program-backend-coverage-v1.mjs",
         "scripts/test-program-backend-coverage-v1.py",
+        "backend/authority/central-course-surface-navigation-overlay-v1.json",
+        "backend/course-capsule-v1/adapters/d90-capability-v1/publication/GITHUB_READBACK_1ec3ed4846c8.json",
         "backend/course-capsule-v1/generated/program-backend-coverage-v1.json",
         "backend/course-capsule-v1/validation/PROGRAM_BACKEND_COVERAGE_VALIDATION.json",
         "backend/course-capsule-v1/validation/SITE_VALIDATION_RECEIPT.json",
