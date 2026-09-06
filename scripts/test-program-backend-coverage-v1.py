@@ -45,6 +45,10 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters'])
+assert model['summary']['locally_validated_adapter_roles'] == 31
+assert model['summary']['roles_without_validated_common_adapter'] == 9
+assert model['summary']['locally_represented_families'] == 24
+assert model['summary']['github_evidenced_roles'] == 30
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
@@ -141,6 +145,18 @@ assert len(roles['D80']['learner']['tools']) == 1
 assert roles['D80']['educator']['unit_alignment'] == 'verified'
 assert roles['D80']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['D80']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['D90']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['D90']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(roles['D90']['learner']['tools']) == 1
+assert roles['D90']['educator']['unit_alignment'] == 'verified'
+assert roles['D90']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['D90']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['D90']['dimensions']['source_translation_ledger']['ledger'] == 'verified'
+assert roles['D90']['dimensions']['terminology']['register'] == 'verified'
+assert roles['D90']['dimensions']['reproducible_production']['build'] == 'verified'
+assert roles['D90']['dimensions']['reproducible_production']['replay'] == 'verified'
+assert roles['D90']['dimensions']['accessibility']['semantic_html'] == 'verified'
+assert roles['D90']['dimensions']['accessibility']['mathml'] == 'verified'
 assert roles['D10']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D10']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D10']['learner']['tools']) == 1

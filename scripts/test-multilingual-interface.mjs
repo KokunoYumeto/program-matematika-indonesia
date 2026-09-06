@@ -226,7 +226,7 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-assert.equal(capabilityTools.length,35);
+assert.equal(capabilityTools.length,36);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 assert.deepEqual(capabilityToolSupplementSources,[
@@ -272,6 +272,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='D70').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools[0].href='backend/d80/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D80').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='D90').layers.learner.tools[0].href='backend/d90/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='D90').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D10').layers.learner.tools[0].href='backend/d10/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D10').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D120').layers.learner.tools[0].href='backend/d120/learning-map.json';},
@@ -407,6 +409,16 @@ for (const locale of supportedLocales) {
   for(const tool of d80Tools){
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
     if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('146')&&tool.note.includes('2')&&tool.note.includes('jembatan mandiri'));
+    else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
+  }
+  const d90Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D90'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(d90Tools.length,1);
+  assert.deepEqual(d90Tools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d90/D90.html',
+  ]);
+  for(const tool of d90Tools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('4.877')&&tool.note.includes('438')&&tool.note.includes('54'));
     else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const d10Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D10'),locale).filter(r=>r.capabilityToolId);
@@ -685,8 +697,8 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
-    // evidence-bound mirrors, and the four bilingual B80/D120 backend tools.
-    assert.ok(Buffer.byteLength(html) < 465000, 'Offline map size budget');
+    // evidence-bound mirrors, the bilingual B80/D120 tools, and the D90 route.
+    assert.ok(Buffer.byteLength(html) < 466000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
     assert.ok(gzipSync(html).length < 93000, 'Compressed map size budget');

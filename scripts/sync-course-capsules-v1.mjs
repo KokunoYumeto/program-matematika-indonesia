@@ -50,6 +50,17 @@ const mappings = [
   ['backend/course-capsule-v1/adapters/d120-capability-v1/data/learning-map.json', 'docs/backend/d120/learning-map.json'],
   ['backend/course-capsule-v1/adapters/d120-capability-v1/data/educator-map.json', 'docs/backend/d120/educator-map.json'],
   ['backend/course-capsule-v1/adapters/d120-capability-v1/validation.json', 'docs/backend/d120/validation.json'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/views/D90.html', 'docs/backend/d90/D90.html'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/views/D90-pengajar.html', 'docs/backend/d90/D90-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/views/capabilities.json', 'docs/backend/d90/capabilities.json'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/data/learner-map.json', 'docs/backend/d90/learning-map.json'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/data/educator-map.json', 'docs/backend/d90/educator-map.json'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/data/public-evidence.json', 'docs/backend/d90/public-evidence.json'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/data/claim-boundary.json', 'docs/backend/d90/claim-boundary.json'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/data/rights-index.jsonl', 'docs/backend/d90/data/rights-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/data/corrections-index.jsonl', 'docs/backend/d90/data/corrections-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/data/terms-index.jsonl', 'docs/backend/d90/data/terms-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/d90-capability-v1/validation.json', 'docs/backend/d90/validation.json'],
   ['backend/course-capsule-v1/adapters/c110-capability-v1/data/learning-map.json', 'docs/backend/c110/learning-map.json'],
   ['backend/course-capsule-v1/adapters/c110-capability-v1/data/educator-map.json', 'docs/backend/c110/educator-map.json'],
   ['backend/course-capsule-v1/adapters/c110-capability-v1/data/translation-alignments.json', 'docs/backend/c110/translation-alignments.json'],
@@ -154,6 +165,33 @@ assert.equal(d100.layers.production.build_status, 'available_unverified');
 assert.equal(d100.layers.production.deterministic_replay_status, 'available_unverified');
 assert.equal(d100.layers.educator.status, 'verified');
 assert.equal(d100.layers.educator.unit_alignment_status, 'verified');
+const d90 = rows.find(({ course_id }) => course_id === 'D90');
+assert.equal(d90.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(d90.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(d90.layers.learner.tools.length, 1);
+assert.equal(d90.layers.learner.tools[0].tool_id, 'd90.open_learner_hub');
+assert.equal(d90.layers.learner.tools[0].href, 'backend/d90/D90.html');
+assert.equal(d90.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(d90.layers.translation.ledger_status, 'verified');
+assert.equal(d90.layers.translation.terminology_status, 'verified');
+assert.equal(d90.layers.translation.rights_status, 'verified');
+assert.equal(d90.layers.translation.corrections_status, 'verified');
+assert.equal(d90.layers.production.build_status, 'verified');
+assert.equal(d90.layers.production.deterministic_replay_status, 'verified');
+assert.equal(d90.layers.educator.status, 'verified');
+assert.equal(d90.layers.educator.unit_alignment_status, 'verified');
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:educator-hub-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:educator-map-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:terms-index-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:rights-index-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:corrections-index-v1' && status === 'verified'));
+assert.equal(d90.layers.learner.pdf.status, 'verified');
+assert.equal(d90.layers.learner.pdf.sha256, '9deefecf469c9f2aace26bc8ccdedc552debbe9874ae035badaf5cffee0f80e5');
+assert.equal(d90.layers.learner.epub.status, 'verified');
+assert.equal(d90.layers.learner.epub.sha256, '1bb882a75209adb220de4ee6c6cf92355b5402538c88050e807dc161fa5d9321');
+assert.equal(d90.layers.learner.capabilities.semantic_html, 'verified');
+assert.equal(d90.layers.learner.capabilities.mathml, 'verified');
+assert.equal(d90.layers.learner.capabilities.print_profile, 'verified');
 const c120 = rows.find(({ course_id }) => course_id === 'C120');
 assert.equal(c120.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(c120.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');

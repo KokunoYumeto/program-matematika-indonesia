@@ -51,6 +51,17 @@ const logicalFiles = [
   'backend/d70/D70-pengajar.html',
   'backend/d70/learning-map.json',
   'backend/d70/validation.json',
+  'backend/d90/D90.html',
+  'backend/d90/D90-pengajar.html',
+  'backend/d90/capabilities.json',
+  'backend/d90/learning-map.json',
+  'backend/d90/educator-map.json',
+  'backend/d90/public-evidence.json',
+  'backend/d90/claim-boundary.json',
+  'backend/d90/data/rights-index.jsonl',
+  'backend/d90/data/corrections-index.jsonl',
+  'backend/d90/data/terms-index.jsonl',
+  'backend/d90/validation.json',
   'backend/d10/D10.html',
   'backend/d10/D10-pengajar.html',
   'backend/d10/learning-map.json',
@@ -156,8 +167,8 @@ const clpSuccessorIndex = JSON.parse(docsBytes['data/clp-successor/v0.62.17/v23-
 const clpSuccessorAuthority = await readFile(resolve(project, 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json'));
 assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'], clpSuccessorAuthority, 'CLP successor public index differs from its authority.');
 const expectedLiveAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
-const expectedCapabilityAdapterRoles = ['B40', 'B70', 'B80', 'C10', 'C20', 'C50', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D40', 'D70', 'D80', 'D100', 'D120'];
-const expectedCapabilityPackageCount = 14;
+const expectedCapabilityAdapterRoles = ['B40', 'B70', 'B80', 'C10', 'C20', 'C50', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
+const expectedCapabilityPackageCount = 15;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedLiveAdapterRoles), 'Live successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -259,6 +270,12 @@ const d120Validation = JSON.parse(docsBytes['backend/d120/validation.json']);
 const d120LearningMap = JSON.parse(docsBytes['backend/d120/learning-map.json']);
 const d120EducatorMap = JSON.parse(docsBytes['backend/d120/educator-map.json']);
 assert.equal(d120Validation.state,'pass');
+const d90Validation = JSON.parse(docsBytes['backend/d90/validation.json']);
+const d90LearningMap = JSON.parse(docsBytes['backend/d90/learning-map.json']);
+const d90EducatorMap = JSON.parse(docsBytes['backend/d90/educator-map.json']);
+const d90Capabilities = JSON.parse(docsBytes['backend/d90/capabilities.json']);
+const d90PublicEvidence = JSON.parse(docsBytes['backend/d90/public-evidence.json']);
+const d90ClaimBoundary = JSON.parse(docsBytes['backend/d90/claim-boundary.json']);
 const c120Validation = JSON.parse(docsBytes['backend/c120/validation.json']);
 const c120LearningMap = JSON.parse(docsBytes['backend/c120/learning-map.json']);
 const c120EducatorMap = JSON.parse(docsBytes['backend/c120/educator-map.json']);
@@ -296,8 +313,8 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 22);
-assert.equal(authorityToolIds.length, 32);
+assert.equal(Object.keys(authorityToolsByCourse).length, 23);
+assert.equal(authorityToolIds.length, 33);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
 assert.equal(manifest.summary.published_count, 37);
@@ -689,6 +706,58 @@ assert.equal(d90.layers.learner.online_html.scope, 'other');
 assert.equal(d90.layers.learner.online_html.inventory_count, 1);
 assert.equal(d90.layers.learner.online_html.bytes, 190680);
 assert.equal(d90.layers.learner.online_html.sha256, 'd867f4551cf05e531cc6f53336a55b9ba3ee0dfffbc4acede425e1bceae82a24');
+assert.equal(d90.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(d90.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(d90.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'd90.open_learner_hub', href: 'backend/d90/D90.html' },
+]);
+assert.equal(d90.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(d90.layers.translation.ledger_status, 'verified');
+assert.equal(d90.layers.translation.terminology_status, 'verified');
+assert.equal(d90.layers.translation.rights_status, 'verified');
+assert.equal(d90.layers.translation.corrections_status, 'verified');
+assert.equal(d90.layers.production.build_status, 'verified');
+assert.equal(d90.layers.production.deterministic_replay_status, 'verified');
+assert.equal(d90.layers.educator.status, 'verified');
+assert.equal(d90.layers.educator.unit_alignment_status, 'verified');
+assert.equal(d90.layers.educator.resources.length, 6);
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:educator-hub-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:educator-map-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:terms-index-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:rights-index-v1' && status === 'verified'));
+assert.ok(d90.layers.educator.resources.some(({ id, status }) => id === 'D90:corrections-index-v1' && status === 'verified'));
+assert.equal(d90.layers.learner.pdf.status, 'verified');
+assert.equal(d90.layers.learner.pdf.bytes, 1671254);
+assert.equal(d90.layers.learner.pdf.sha256, '9deefecf469c9f2aace26bc8ccdedc552debbe9874ae035badaf5cffee0f80e5');
+assert.equal(d90.layers.learner.epub.status, 'verified');
+assert.equal(d90.layers.learner.epub.bytes, 379901);
+assert.equal(d90.layers.learner.epub.sha256, '1bb882a75209adb220de4ee6c6cf92355b5402538c88050e807dc161fa5d9321');
+assert.equal(d90.layers.learner.capabilities.semantic_html, 'verified');
+assert.equal(d90.layers.learner.capabilities.mathml, 'verified');
+assert.equal(d90.layers.learner.capabilities.print_profile, 'verified');
+assert.equal(d90Validation.result, 'pass');
+assert.equal(d90Validation.counts.native_records, 4877);
+assert.equal(d90Validation.counts.original03_surfaces, 438);
+assert.equal(d90Validation.counts.staged_relations, 312);
+assert.equal(d90Validation.negative_fixtures.length, 13);
+assert.equal(d90LearningMap.prompt_chains.length, 54);
+assert.equal(d90LearningMap.practice_chains.length, 32);
+assert.equal(d90LearningMap.assessment_containers.length, 54);
+assert.equal(d90LearningMap.labs.length, 2);
+assert.equal(d90LearningMap.capstone.milestones.length, 7);
+assert.equal(d90EducatorMap.rubrics.length, 7);
+assert.equal(d90Capabilities.counts.component_rights, 93);
+assert.equal(d90Capabilities.counts.corrections, 248);
+assert.equal(d90Capabilities.counts.terms, 127);
+assert.equal(docsBytes['backend/d90/data/rights-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 93);
+assert.equal(docsBytes['backend/d90/data/corrections-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 248);
+assert.equal(docsBytes['backend/d90/data/terms-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 127);
+assert.equal(d90PublicEvidence.accessibility.html.mathml_count, 4535);
+assert.equal(d90PublicEvidence.accessibility.epub.mathml_count, 4535);
+assert.equal(d90PublicEvidence.accessibility.wcag_conformance_claimed, false);
+assert.equal(d90ClaimBoundary.content_bodies_copied, false);
+assert.equal(d90ClaimBoundary.reversible_exchange_claimed, false);
+assert.equal(d90ClaimBoundary.public_state_changed, false);
 
 assert.deepEqual(judsonValidation.admitted_courses, ['C30', 'C40']);
 assert.equal(judsonValidation.state, 'pass');
@@ -834,7 +903,7 @@ const receipt = {
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,
-    course_learning_capability_roles: 11,
+    course_learning_capability_roles: 12,
     snapshot_v2_public_role_bindings: 9,
     snapshot_v2_pending_role_bindings: 0,
     judson_course_views: 2,

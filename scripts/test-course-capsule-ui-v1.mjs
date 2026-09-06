@@ -136,7 +136,7 @@ for (const [name, fetch] of [
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
   const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
-  assert.equal(adapterCount, 30); // Prior 29 verified adapters plus B40 Linear Algebra.
+  assert.equal(adapterCount, 31); // Public baseline 30 plus the locally admitted D90 tranche.
   const topology=courses.find(c=>c.course_id==='C90');
   assert.equal(topology.layers.interoperability.semantic_adapter.contract_version,'topology-learning-capability/1');
   assert.equal(topology.layers.learner.tools.length,1);
@@ -195,6 +195,29 @@ for (const [name, fetch] of [
   assert.ok(d80.layers.educator.resources.some(r=>r.id==='D80:educator-hub-v1'&&r.status==='verified'));
   assert.equal(d80.layers.learner.capabilities.mathml,'available_unverified');
   assert.equal(d80.layers.learner.capabilities.semantic_html,'verified');
+  const d90=courses.find(c=>c.course_id==='D90');
+  assert.equal(d90.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
+  assert.equal(d90.layers.learner.tools.length,1);
+  assert.equal(d90.layers.learner.tools[0].tool_id,'d90.open_learner_hub');
+  assert.equal(d90.layers.learner.tools[0].href,'backend/d90/D90.html');
+  assert.equal(d90.layers.curriculum.unit_identity_status,'verified');
+  assert.equal(d90.layers.translation.ledger_status,'verified');
+  assert.equal(d90.layers.translation.terminology_status,'verified');
+  assert.equal(d90.layers.translation.rights_status,'verified');
+  assert.equal(d90.layers.translation.corrections_status,'verified');
+  assert.equal(d90.layers.production.build_status,'verified');
+  assert.equal(d90.layers.production.deterministic_replay_status,'verified');
+  assert.equal(d90.layers.educator.status,'verified');
+  assert.equal(d90.layers.educator.unit_alignment_status,'verified');
+  assert.ok(d90.layers.educator.resources.some(r=>r.id==='D90:native-educator-observation'&&r.status==='available_unverified'));
+  assert.ok(d90.layers.educator.resources.some(r=>r.id==='D90:educator-hub-v1'&&r.status==='verified'));
+  assert.ok(d90.layers.educator.resources.some(r=>r.id==='D90:educator-map-v1'&&r.status==='verified'));
+  assert.equal(d90.layers.learner.pdf.status,'verified');
+  assert.equal(d90.layers.learner.pdf.sha256,'9deefecf469c9f2aace26bc8ccdedc552debbe9874ae035badaf5cffee0f80e5');
+  assert.equal(d90.layers.learner.epub.status,'verified');
+  assert.equal(d90.layers.learner.epub.sha256,'1bb882a75209adb220de4ee6c6cf92355b5402538c88050e807dc161fa5d9321');
+  assert.equal(d90.layers.learner.capabilities.semantic_html,'verified');
+  assert.equal(d90.layers.learner.capabilities.mathml,'verified');
   const d100=courses.find(c=>c.course_id==='D100');
   assert.equal(d100.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
   assert.equal(d100.layers.learner.tools.length,1);
@@ -380,7 +403,7 @@ for (const [name, fetch] of [
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { verified: 17, available_unverified: 11, in_progress: 1, unknown: 11 });
+assert.deepEqual(educatorCounts, { verified: 18, available_unverified: 10, in_progress: 1, unknown: 11 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),

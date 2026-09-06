@@ -137,7 +137,7 @@ const rows=data.capsules.map(capsule=>{
       unit_identity:capsule.layers.curriculum.unit_identity_status,
       relationship:clpRoles.includes(role)
         ?'central_view_consumes_verified_route_projection_pdf_runtime_adapter_consumption_not_claimed'
-        :['B40','B80','C70','C110','C120','D10','D40','D70','D80','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)
+        :['B40','B80','C70','C110','C120','D10','D40','D70','D80','D90','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)
           ?'directly_consumes_adapter_outputs'
           :publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources},

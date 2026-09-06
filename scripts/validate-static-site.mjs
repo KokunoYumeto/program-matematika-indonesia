@@ -1114,7 +1114,11 @@ assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.cou
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
 assert.equal(learnerDelivery.summary.online_html_available, 25);
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
-assert.equal(learnerDelivery.summary.verified_epub, 1);
+assert.equal(learnerDelivery.summary.verified_epub, 2);
+assert.deepEqual(
+  [...learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').map(({ course_id }) => course_id)].sort(),
+  ['C100', 'D90'],
+);
 assert.deepEqual(
   [...learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').map(({ course_id }) => course_id)].sort(),
   ['C100', 'D10', 'D30', 'D40', 'D120', 'D80'].sort(),
@@ -1188,9 +1192,9 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound D100, C110, and C70 learner/educator capability links. Each new language route
+// hash-bound D100, C110, C70, and D90 learner/educator capability links. Each new language route
 // has its own separately measured offline/closure budget.
-assert.ok(shellRawBytes <= 204_000, `Shell melewati 204.000 byte: ${shellRawBytes}.`);
+assert.ok(shellRawBytes <= 205_000, `Shell melewati 205.000 byte: ${shellRawBytes}.`);
 assert.ok(shellGzipBytes <= 51_000, `Shell gzip melewati 51.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
