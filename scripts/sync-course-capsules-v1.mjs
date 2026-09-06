@@ -312,13 +312,25 @@ assert.deepEqual(receipt.artifacts.manifest_json, {
   sha256: sha256(manifestBytes),
 });
 
-for (const [, target, sourceBytes] of sourceEntries) {
+for (const [source, target, sourceBytes] of sourceEntries) {
+  let publicPayload = sourceBytes;
+  if (target === 'docs/backend/d90/D90-pengajar.html') {
+    const original = sourceBytes.toString('utf8');
+    assert.equal(original.split('../data/').length - 1, 4, `${source}: expected four adapter-relative governance links.`);
+    const projected = original
+      .replace('../data/rights-index.jsonl', 'data/rights-index.jsonl')
+      .replace('../data/corrections-index.jsonl', 'data/corrections-index.jsonl')
+      .replace('../data/terms-index.jsonl', 'data/terms-index.jsonl')
+      .replace('../data/claim-boundary.json', 'claim-boundary.json');
+    assert.equal(projected.includes('../data/'), false, `${target}: adapter-relative governance link survived projection.`);
+    publicPayload = Buffer.from(projected, 'utf8');
+  }
   const targetPath = resolve(project, target);
   await mkdir(dirname(targetPath), { recursive: true });
-  await writeFile(targetPath, sourceBytes);
+  await writeFile(targetPath, publicPayload);
   const publicBytes = await readFile(targetPath);
-  assert.equal(publicBytes.length, sourceBytes.length, `${target}: byte count drift.`);
-  assert.equal(sha256(publicBytes), sha256(sourceBytes), `${target}: hash drift.`);
+  assert.equal(publicBytes.length, publicPayload.length, `${target}: byte count drift.`);
+  assert.equal(sha256(publicBytes), sha256(publicPayload), `${target}: hash drift.`);
 }
 
 const escapeHtml = (value) => String(value ?? '')

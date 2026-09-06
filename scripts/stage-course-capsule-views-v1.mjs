@@ -29,13 +29,27 @@ const mappings=[
 
 const rows=[];
 for(const [source,target] of mappings){
-  const payload=await readFile(resolve(root,source));
+  const sourcePayload=await readFile(resolve(root,source));
+  let payload=sourcePayload;
+  let projection='byte-identical';
+  if(target==='docs/backend/d90/D90-pengajar.html'){
+    const original=sourcePayload.toString('utf8');
+    assert.equal(original.split('../data/').length-1,4,`${source}: expected four adapter-relative governance links.`);
+    const projected=original
+      .replace('../data/rights-index.jsonl','data/rights-index.jsonl')
+      .replace('../data/corrections-index.jsonl','data/corrections-index.jsonl')
+      .replace('../data/terms-index.jsonl','data/terms-index.jsonl')
+      .replace('../data/claim-boundary.json','claim-boundary.json');
+    assert.equal(projected.includes('../data/'),false,`${target}: adapter-relative governance link survived projection.`);
+    payload=Buffer.from(projected,'utf8');
+    projection='public-directory-link-depth';
+  }
   const targetPath=resolve(root,target);
   await mkdir(dirname(targetPath),{recursive:true});
   await writeFile(targetPath,payload);
   const readback=await readFile(targetPath);
   assert.deepEqual(readback,payload,`${target}: staged view differs from adapter source.`);
-  rows.push({source,target,bytes:payload.length,sha256:sha256(payload)});
+  rows.push({source,target,projection,source_bytes:sourcePayload.length,source_sha256:sha256(sourcePayload),bytes:payload.length,sha256:sha256(payload)});
 }
 assert.equal(rows.length,18);
-console.log(JSON.stringify({status:'pass',mode:'raw-views-only',files:rows},null,2));
+console.log(JSON.stringify({status:'pass',mode:'source-bound-public-projections',files:rows},null,2));
