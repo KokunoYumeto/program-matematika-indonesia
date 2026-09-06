@@ -298,7 +298,10 @@ export const englishResources = {
   ],
   D60: [english('Roberts: Algebraic Topology', 'https://github.com/DavidMichaelRoberts/AlgebraicTopology2019/raw/master/Notes.pdf', 'PDF'), english('Fomberg: Algebraic Topology', 'https://yp.srht.site/notes/math/algebraic_topology.pdf', 'PDF')],
   D90: [english('Habring: Convex Optimization', 'https://arxiv.org/pdf/2607.11664', 'PDF')],
-  D110: [english('Mathematics in Lean', 'https://leanprover-community.github.io/mathematics_in_lean/')],
+  D110: [
+    englishMirror('Program-hosted original English HTML reader', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D110/', 'HTML', { sourceRevision:'dd6d752fedb14082f557913c2dccb2d4851e5173', htmlFiles:16, externalCoreDependencies:0 }),
+    english('Authoritative original — Mathematics in Lean', 'https://leanprover-community.github.io/mathematics_in_lean/'),
+  ],
   D120: [englishEdition('Traceable Mathematical Work — complete English edition', 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/en/', 'HTML')],
 };
 export const englishBindingExceptions = {

@@ -25,7 +25,13 @@ from validate_d10_public_html_v1 import (
 
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-SOURCE_CACHE_ROOT = REPO_ROOT.parent / "curriculum_logbook" / "d120-reader-v1-stage"
+SOURCE_CACHE_ROOT = (
+    REPO_ROOT.parent
+    / "curriculum_logbook"
+    / "public-source-cache"
+    / "D120"
+    / "o017-2026.08.24"
+)
 DEFAULT_SOURCE = SOURCE_CACHE_ROOT / "reader"
 DEFAULT_ARCHIVE = SOURCE_CACHE_ROOT / "o017-d120-id-2026.08.24-reader-html.zip"
 DEFAULT_DESTINATION = REPO_ROOT / "docs" / "id-ID" / "courses" / "D120" / "reader"

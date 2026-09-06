@@ -78,6 +78,8 @@ for (const course of interfaceCourses) for (const locale of supportedLocales) {
 }
 const centralNavigation=JSON.parse(await readFile(resolve(root,'backend/authority/central-reader-navigation-v1.json'),'utf8'));
 assert.deepEqual(Object.keys(centralNavigation.interfaces).sort(),[...supportedLocales].sort());
+assert.match(centralNavigation.policy.universal_access_slots,/Every course in every registered language interface/);
+assert.match(centralNavigation.policy.universal_access_slots,/public-byte gates pass/);
 for(const locale of supportedLocales){
   const interfaceAuthority=centralNavigation.interfaces[locale];
   assert.equal(interfaceAuthority.route_segment,localeMetadata[locale].routeSegment);
@@ -161,6 +163,22 @@ assert.equal(a20MirrorEvidence.source.publisher_url,a20English.find(r=>r.origin=
 assert.equal(a20MirrorEvidence.program_mirror.offline_zip_sha256,a20English.find(r=>r.kind==='HTML ZIP').sha256);
 assert.equal(a20MirrorEvidence.public_verification.pages_files_verified,4094);
 assert.equal(a20MirrorEvidence.public_verification.all_exact,true);
+const d110English=resourceBindings(interfaceCourses.find(c=>c.id==='D110'),'en');
+assert.equal(d110English.filter(r=>r.primary).length,1);
+assert.equal(d110English.find(r=>r.primary).origin,'program-mirror');
+assert.equal(d110English.find(r=>r.primary).accessRole,'hosted-reader');
+assert.equal(d110English.find(r=>r.origin==='upstream-original').href,'https://leanprover-community.github.io/mathematics_in_lean/');
+assert.ok(renderResourceLinks(interfaceCourses.find(c=>c.id==='D110'),'en').split('<details class="resource-details">')[0].includes('Authoritative original source'));
+const d110MirrorEvidence=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/d110-original-english-mirror.json'),'utf8'));
+assert.ok(['admitted_pending_release','published_and_anonymously_verified'].includes(d110MirrorEvidence.status));
+assert.equal(d110MirrorEvidence.work_kind,'presentation_mirror_of_original_source');
+assert.equal(d110MirrorEvidence.program_mirror.reader_url,d110English.find(r=>r.primary).href);
+assert.equal(d110MirrorEvidence.source.publisher_url,d110English.find(r=>r.origin==='upstream-original').href);
+assert.equal(d110MirrorEvidence.source.source_revision,'dd6d752fedb14082f557913c2dccb2d4851e5173');
+assert.equal(d110MirrorEvidence.closure.html_files,16);
+assert.equal(d110MirrorEvidence.closure.external_core_dependencies,0);
+assert.equal(d110MirrorEvidence.interface_contract.program_reader_is_primary_for_english,true);
+assert.equal(d110MirrorEvidence.interface_contract.original_publisher_link_is_prominent,true);
 for (const id of ['B80','D120']) {
   const idBindings=resourceBindings(interfaceCourses.find(c=>c.id===id),'id');
   const dualRoleUrl=idBindings.find(row=>row.origin==='program-original').href;
@@ -472,7 +490,7 @@ for (const locale of supportedLocales) {
     if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('Dua puluh enam unit')&&tool.note.includes('4.105')&&tool.note.includes('141'));
     else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
-  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100']) {
+  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100','D110']) {
     const resources=resourceBindings(interfaceCourses.find(c=>c.id===courseId),locale);
     for(const target of englishResources[courseId]) assert.equal(resources.filter(r=>r.href===target.href && r.contentLanguage==='en').length,1);
     if(locale==='en') assert.equal(resources.filter(r=>r.primary).length,1);
@@ -651,7 +669,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,capabilityTools.length);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
   for (const row of supplementalReaders) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
-  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
+  for(const courseId of ['A10','A20','B80','D50','D70','D80','D100','D110']) for(const row of englishResources[courseId]) assert.ok(staticHtml.includes(row.href.replaceAll('&','&amp;')));
   const elementIds = [...staticHtml.matchAll(/\bid="([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(elementIds).size, elementIds.length, 'No duplicate DOM ids');
   for (const match of staticHtml.matchAll(/href="#([^"]+)"/g)) assert.ok(elementIds.includes(match[1]), 'Resolvable fragment: ' + match[1]);
@@ -698,10 +716,11 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors, the bilingual B80/D120 tools, and the D90 route.
-    assert.ok(Buffer.byteLength(html) < 466000, 'Offline map size budget');
+    // The measured union peaks below 469 KiB raw and 94 KiB compressed.
+    assert.ok(Buffer.byteLength(html) < 470000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 93000, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 94000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
@@ -804,4 +823,5 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(sync.nodes.get('#course-grid').innerHTML.includes('data-completion="A00" checked'), 'Matching persisted progress event still synchronizes');
   }
 }
-console.log(JSON.stringify({ status: 'pass', courses: ids.length, edges: 83, locales: supportedLocales, tests: ['graph-identity','explicit-language-bindings','static-40-course-catalogs','all-internal-fragments','safe-https-links','offline-script-execution','search-and-reset','course-history','shared-progress','storage-unavailable','receipt-hashes','rendered-language-anchors','paired-static-local-closure','standalone-online-fallback','file-and-unicode-paths','history-rejection-current-view','navigation-no-progress-data','isolated-progress-import'], sizes }));
+await import('./validate-federated-hosted-reader-navigation-v1.mjs');
+console.log(JSON.stringify({ status: 'pass', courses: ids.length, edges: 83, locales: supportedLocales, tests: ['graph-identity','explicit-language-bindings','static-40-course-catalogs','all-internal-fragments','safe-https-links','offline-script-execution','search-and-reset','course-history','shared-progress','storage-unavailable','receipt-hashes','rendered-language-anchors','paired-static-local-closure','standalone-online-fallback','file-and-unicode-paths','history-rejection-current-view','navigation-no-progress-data','isolated-progress-import','federated-hosted-reader-navigation-registry'], sizes }));

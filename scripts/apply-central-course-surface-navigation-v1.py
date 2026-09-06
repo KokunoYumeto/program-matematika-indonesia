@@ -259,12 +259,59 @@ def main() -> int:
                     f"{reader['root']}: reader closure changed; "
                     f"{len(html_files)} != {reader['html_documents']}"
                 )
-            root_index = (root / "index.html").resolve()
-            if root_index not in {path.resolve() for path in html_files}:
-                raise ValueError(f"{reader['root']}: reader index.html is missing")
+            declared = {
+                path.relative_to(root).as_posix(): path.resolve() for path in html_files
+            }
+            closure = reader.get("navigation_closure")
+            if reader["html_documents"] > 1 and not isinstance(closure, dict):
+                raise ValueError(
+                    f"{reader['root']}: multi-page reader lacks navigation_closure"
+                )
+            closure = closure or {
+                "entry_path": "index.html",
+                "contents_paths": ["index.html"],
+                "overlay_links": {},
+            }
+            if set(closure) != {"entry_path", "contents_paths", "overlay_links"}:
+                raise ValueError(f"{reader['root']}: invalid reader navigation_closure")
+            entry_relative = closure["entry_path"]
+            contents_relatives = closure["contents_paths"]
+            overlay_links = closure["overlay_links"]
+            if (
+                not isinstance(entry_relative, str)
+                or entry_relative not in declared
+                or not isinstance(contents_relatives, list)
+                or not contents_relatives
+                or len(contents_relatives) != len(set(contents_relatives))
+                or entry_relative not in contents_relatives
+                or not set(contents_relatives).issubset(declared)
+                or not isinstance(overlay_links, dict)
+            ):
+                raise ValueError(f"{reader['root']}: invalid reader closure paths")
+            for source, targets in overlay_links.items():
+                if (
+                    source not in declared
+                    or not isinstance(targets, list)
+                    or not targets
+                    or len(targets) != len(set(targets))
+                    or not set(targets).issubset(declared)
+                    or source in targets
+                ):
+                    raise ValueError(
+                        f"{reader['root']}: invalid reader overlay link map for {source!r}"
+                    )
             ids = [reader["course_id"]]
             for path in html_files:
                 logical = path.relative_to(ROOT).as_posix()
+                relative = path.relative_to(root).as_posix()
+                related_relatives = (
+                    [] if relative in contents_relatives else list(contents_relatives)
+                )
+                related_relatives.extend(overlay_links.get(relative, []))
+                if len(related_relatives) != len(set(related_relatives)):
+                    raise ValueError(
+                        f"{reader['root']}: duplicate reader overlay target for {relative}"
+                    )
                 register({
                     "logical": logical,
                     "role": "reader",
@@ -273,7 +320,7 @@ def main() -> int:
                     "course_ids": ids,
                     "course_targets": course_targets(ids),
                     "program_targets": program_targets(),
-                    "contents": [] if path.resolve() == root_index else [root / "index.html"],
+                    "contents": [root / value for value in related_relatives],
                 })
 
         for surface in contract["generic_surfaces"]:

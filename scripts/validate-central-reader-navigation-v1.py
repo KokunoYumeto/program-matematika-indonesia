@@ -150,6 +150,21 @@ def article_targets(document: Path, article: str, site_origin: str) -> set[Path]
     return targets
 
 
+def graph_reachable(
+    graph: dict[Path, set[Path]], starts: set[Path]
+) -> set[Path]:
+    """Return the complete directed closure within an already bounded graph."""
+    reachable = set(starts)
+    frontier = list(starts)
+    while frontier:
+        current = frontier.pop()
+        for target in graph.get(current, set()):
+            if target not in reachable:
+                reachable.add(target)
+                frontier.append(target)
+    return reachable
+
+
 def validate_central_overlay(
     path: Path,
     parser: NavigationParser,
@@ -319,6 +334,11 @@ def main() -> int:
         for row in readers:
             course_id = row["course_id"]
             locale = row["locale"]
+            source_navigation = row.get("source_navigation", "native-plus-central")
+            if source_navigation not in {"native-plus-central", "central-overlay-only"}:
+                raise ValueError(
+                    f"{row['root']}: unsupported source-navigation mode {source_navigation!r}"
+                )
             if row["course_fragment"] != f"course-{course_id}":
                 raise ValueError(f"{row['root']}: course fragment is not bound to {course_id}")
             reader_root = ROOT / Path(*row["root"].split("/"))
@@ -330,44 +350,128 @@ def main() -> int:
                 raise ValueError(
                     f"{row['root']}: HTML count {len(html_files)} != {row['html_documents']}"
                 )
-            root_index = (reader_root / "index.html").resolve()
-            if root_index not in {path.resolve() for path in html_files}:
-                raise ValueError(f"{row['root']}: index.html is missing")
+            declared_by_relative = {
+                path.relative_to(reader_root).as_posix(): path.resolve()
+                for path in html_files
+            }
+            declared_reader_files = set(declared_by_relative.values())
+            closure = row.get("navigation_closure")
+            if len(html_files) > 1 and not isinstance(closure, dict):
+                raise ValueError(
+                    f"{row['root']}: multi-page reader lacks navigation_closure"
+                )
+            closure = closure or {
+                "entry_path": "index.html",
+                "contents_paths": ["index.html"],
+                "overlay_links": {},
+            }
+            if set(closure) != {"entry_path", "contents_paths", "overlay_links"}:
+                raise ValueError(f"{row['root']}: invalid reader navigation_closure")
+            entry_relative = closure["entry_path"]
+            contents_relatives = closure["contents_paths"]
+            overlay_links = closure["overlay_links"]
+            if (
+                not isinstance(entry_relative, str)
+                or entry_relative not in declared_by_relative
+                or not isinstance(contents_relatives, list)
+                or not contents_relatives
+                or len(contents_relatives) != len(set(contents_relatives))
+                or entry_relative not in contents_relatives
+                or not set(contents_relatives).issubset(declared_by_relative)
+                or not isinstance(overlay_links, dict)
+            ):
+                raise ValueError(f"{row['root']}: invalid reader closure paths")
+            for source, targets in overlay_links.items():
+                if (
+                    source not in declared_by_relative
+                    or not isinstance(targets, list)
+                    or not targets
+                    or len(targets) != len(set(targets))
+                    or not set(targets).issubset(declared_by_relative)
+                    or source in targets
+                ):
+                    raise ValueError(
+                        f"{row['root']}: invalid reader overlay link map for {source!r}"
+                    )
+            entry_path = declared_by_relative[entry_relative]
+            contents_paths = {
+                declared_by_relative[value] for value in contents_relatives
+            }
+            reader_outbound: dict[Path, set[Path]] = {}
             for path in html_files:
                 resolved_path = path.resolve()
                 if resolved_path in configured_reader_files:
                     raise ValueError(f"reader file appears under two contract roots: {path}")
                 configured_reader_files.add(resolved_path)
                 parser = html_parser(path)
-                if parser.navigation_markers != 1:
-                    raise ValueError(f"{path}: expected exactly one program-navigation marker")
+                reader_outbound[resolved_path] = article_targets(
+                    path, path.read_text(encoding="utf-8"), contract["site_origin"]
+                ) & declared_reader_files
                 native_home_links = [
                     link for link in parser.home_links if not link["placement"]
                 ]
-                if len(native_home_links) < 2:
-                    raise ValueError(f"{path}: top and bottom program-home links are required")
-                for link in native_home_links:
-                    target, fragment = resolve_href(path, link["href"])
-                    if target != interface_document.resolve() or fragment != row["course_fragment"]:
-                        raise ValueError(f"{path}: program-home link does not return to its course card")
-                    if not link["text"].strip():
-                        raise ValueError(f"{path}: program-home link has no visible label")
-                if resolved_path != root_index:
-                    if not parser.contents_links:
-                        raise ValueError(f"{path}: non-root reader page lacks a contents link")
-                    for link in parser.contents_links:
+                native_contents_links = [
+                    link for link in parser.contents_links if not link["placement"]
+                ]
+                if source_navigation == "native-plus-central":
+                    if parser.navigation_markers != 1:
+                        raise ValueError(f"{path}: expected exactly one program-navigation marker")
+                    if len(native_home_links) < 2:
+                        raise ValueError(f"{path}: top and bottom program-home links are required")
+                    for link in native_home_links:
                         target, fragment = resolve_href(path, link["href"])
-                        if target != root_index or fragment:
-                            raise ValueError(f"{path}: reader-contents link misses its root index")
+                        if target != interface_document.resolve() or fragment != row["course_fragment"]:
+                            raise ValueError(f"{path}: program-home link does not return to its course card")
                         if not link["text"].strip():
-                            raise ValueError(f"{path}: reader-contents link has no visible label")
+                            raise ValueError(f"{path}: program-home link has no visible label")
+                    if resolved_path != entry_path:
+                        if not native_contents_links:
+                            raise ValueError(f"{path}: non-root reader page lacks a contents link")
+                        for link in native_contents_links:
+                            target, fragment = resolve_href(path, link["href"])
+                            if target != entry_path or fragment:
+                                raise ValueError(f"{path}: reader-contents link misses its declared entry")
+                            if not link["text"].strip():
+                                raise ValueError(f"{path}: reader-contents link has no visible label")
+                else:
+                    if parser.navigation_markers or native_home_links or native_contents_links:
+                        raise ValueError(
+                            f"{path}: central-overlay-only reader contains an undeclared native program shell"
+                        )
+                relative = path.relative_to(reader_root).as_posix()
+                expected_contents = (
+                    [] if relative in contents_relatives else list(contents_paths)
+                )
+                expected_contents.extend(
+                    declared_by_relative[value]
+                    for value in overlay_links.get(relative, [])
+                )
+                if len(expected_contents) != len(set(expected_contents)):
+                    raise ValueError(
+                        f"{row['root']}: duplicate reader overlay target for {relative}"
+                    )
                 validate_central_overlay(
                     path,
                     parser,
                     [course_id],
                     interfaces,
-                    [] if resolved_path == root_index else [reader_root / "index.html"],
+                    expected_contents,
                 )
+
+            reachable = graph_reachable(reader_outbound, {entry_path})
+            if reachable != declared_reader_files:
+                missing = sorted(
+                    path.relative_to(reader_root.resolve()).as_posix()
+                    for path in declared_reader_files - reachable
+                )
+                raise ValueError(
+                    f"{row['root']}: declared entry cannot reach reader closure {missing}"
+                )
+            for path in declared_reader_files - {entry_path}:
+                if not reader_outbound[path] & contents_paths:
+                    raise ValueError(
+                        f"{path}: non-entry reader page cannot return directly to declared contents"
+                    )
 
             landing = ROOT / Path(*row["landing_document"].split("/"))
             landing_text = landing.read_text(encoding="utf-8")
@@ -404,18 +508,25 @@ def main() -> int:
                 "html_documents": len(html_files),
                 "program_home_links_minimum": 2 * len(html_files),
                 "contents_links_required": len(html_files) - 1,
+                "entry_path": entry_relative,
+                "declared_contents_paths": len(contents_paths),
+                "entry_reachable_documents": len(reachable),
+                "non_entry_contents_returns": len(html_files) - 1,
             })
 
-        discovered = {
+        convention_discovered = {
             path.resolve()
             for path in (ROOT / "docs").rglob("*.html")
             if "reader" in path.relative_to(ROOT / "docs").parts
             or path.relative_to(ROOT / "docs").parts[0] == "readers"
         }
-        if discovered != configured_reader_files:
-            missing = sorted(path.relative_to(ROOT).as_posix() for path in discovered - configured_reader_files)
-            extra = sorted(path.relative_to(ROOT).as_posix() for path in configured_reader_files - discovered)
-            raise ValueError(f"reader-root registry is not closed; unregistered={missing}, stale={extra}")
+        unregistered_convention_readers = convention_discovered - configured_reader_files
+        if unregistered_convention_readers:
+            missing = sorted(
+                path.relative_to(ROOT).as_posix()
+                for path in unregistered_convention_readers
+            )
+            raise ValueError(f"reader-root registry is not closed; unregistered={missing}")
 
         gateway_results = []
         configured_gateway_files: set[Path] = set()
@@ -432,14 +543,82 @@ def main() -> int:
                     f"{row['root']}: gateway HTML count {len(html_files)} != {row['html_documents']}"
                 )
             entry_path = (gateway_root / Path(*row["entry_path"].split("/"))).resolve()
-            if entry_path not in {path.resolve() for path in html_files}:
+            declared_by_relative = {
+                path.relative_to(gateway_root).as_posix(): path.resolve()
+                for path in html_files
+            }
+            declared_gateway_files = set(declared_by_relative.values())
+            if entry_path not in declared_gateway_files:
                 raise ValueError(f"{row['root']}: gateway entry_path is outside the registered HTML closure")
+            closure = row.get("navigation_closure")
+            if len(html_files) > 1 and not isinstance(closure, dict):
+                raise ValueError(
+                    f"{row['root']}: multi-page gateway lacks navigation_closure"
+                )
+            if closure is None:
+                closure = {
+                    "contents_paths": [row["entry_path"]],
+                    "documents": [
+                        {"path": row["entry_path"], "contents_paths": []}
+                    ],
+                }
+            if set(closure) != {"contents_paths", "documents"}:
+                raise ValueError(f"{row['root']}: invalid gateway navigation_closure")
+            contents_relatives = closure["contents_paths"]
+            documents = closure["documents"]
+            if (
+                not isinstance(contents_relatives, list)
+                or not contents_relatives
+                or len(contents_relatives) != len(set(contents_relatives))
+                or row["entry_path"] not in contents_relatives
+                or not set(contents_relatives).issubset(declared_by_relative)
+                or not isinstance(documents, list)
+            ):
+                raise ValueError(f"{row['root']}: invalid gateway closure paths")
+            document_map: dict[str, list[str]] = {}
+            for document in documents:
+                if not isinstance(document, dict) or set(document) != {
+                    "path",
+                    "contents_paths",
+                }:
+                    raise ValueError(f"{row['root']}: invalid gateway document closure row")
+                relative = document["path"]
+                targets = document["contents_paths"]
+                if (
+                    not isinstance(relative, str)
+                    or relative in document_map
+                    or relative not in declared_by_relative
+                    or not isinstance(targets, list)
+                    or len(targets) != len(set(targets))
+                    or not set(targets).issubset(contents_relatives)
+                    or relative in targets
+                ):
+                    raise ValueError(
+                        f"{row['root']}: invalid gateway contents mapping for {relative!r}"
+                    )
+                document_map[relative] = targets
+            if set(document_map) != set(declared_by_relative):
+                raise ValueError(f"{row['root']}: gateway per-document closure changed")
+            if document_map[row["entry_path"]]:
+                raise ValueError(f"{row['root']}: gateway entry must not return to itself")
+            for relative in set(document_map) - {row["entry_path"]}:
+                if not document_map[relative]:
+                    raise ValueError(
+                        f"{row['root']}/{relative}: non-entry gateway page lacks a declared contents return"
+                    )
+            contents_paths = {
+                declared_by_relative[value] for value in contents_relatives
+            }
+            gateway_outbound: dict[Path, set[Path]] = {}
             for path in html_files:
                 resolved_path = path.resolve()
                 if resolved_path in configured_gateway_files or resolved_path in configured_reader_files:
                     raise ValueError(f"gateway file appears under another registered root: {path}")
                 configured_gateway_files.add(resolved_path)
                 parser = html_parser(path)
+                gateway_outbound[resolved_path] = article_targets(
+                    path, path.read_text(encoding="utf-8"), contract["site_origin"]
+                ) & declared_gateway_files
                 native_home_links = [
                     link for link in parser.home_links if not link["placement"]
                 ]
@@ -452,11 +631,36 @@ def main() -> int:
                     if not link["text"].strip():
                         raise ValueError(f"{path}: gateway program-home link has no label")
                 validate_central_overlay(path, parser, [course_id], interfaces)
+                relative = path.relative_to(gateway_root).as_posix()
+                required_returns = {
+                    declared_by_relative[value] for value in document_map[relative]
+                }
+                if not required_returns.issubset(gateway_outbound[resolved_path]):
+                    missing = sorted(
+                        target.relative_to(gateway_root.resolve()).as_posix()
+                        for target in required_returns - gateway_outbound[resolved_path]
+                    )
+                    raise ValueError(
+                        f"{path}: gateway lacks declared direct contents returns {missing}"
+                    )
+            reachable = graph_reachable(gateway_outbound, {entry_path})
+            if reachable != declared_gateway_files:
+                missing = sorted(
+                    path.relative_to(gateway_root.resolve()).as_posix()
+                    for path in declared_gateway_files - reachable
+                )
+                raise ValueError(
+                    f"{row['root']}: gateway entry cannot reach declared closure {missing}"
+                )
             gateway_results.append({
                 "course_id": course_id,
                 "root": row["root"],
                 "state": row["state"],
                 "html_documents": len(html_files),
+                "entry_path": row["entry_path"],
+                "declared_contents_paths": len(contents_paths),
+                "entry_reachable_documents": len(reachable),
+                "non_entry_contents_returns": len(html_files) - 1,
             })
 
         course_surface_results = []

@@ -215,6 +215,7 @@ const learnerAccessManifest = {
   locale_metadata: localeMetadata,
   access_roles: learnerAccessRoles,
   invariants: [
+    'every_course_in_every_registered_interface_has_distinct_hosted_and_authoritative_original_slots',
     'interface_locale_does_not_imply_content_language',
     'authoritative_original_remains_prominent_when_a_hosted_reader_exists',
     'missing_hosted_reader_is_explicit_and_never_fabricated',
@@ -260,5 +261,7 @@ const a10MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/inter
 receipt.inputs.push({path:'docs/interface/evidence/a10-original-english-mirror.json', bytes:a10MirrorEvidenceBytes.length, sha256:createHash('sha256').update(a10MirrorEvidenceBytes).digest('hex')});
 const a20MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/evidence/a20-original-english-mirror.json'));
 receipt.inputs.push({path:'docs/interface/evidence/a20-original-english-mirror.json', bytes:a20MirrorEvidenceBytes.length, sha256:createHash('sha256').update(a20MirrorEvidenceBytes).digest('hex')});
+const d110MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/evidence/d110-original-english-mirror.json'));
+receipt.inputs.push({path:'docs/interface/evidence/d110-original-english-mirror.json', bytes:d110MirrorEvidenceBytes.length, sha256:createHash('sha256').update(d110MirrorEvidenceBytes).digest('hex')});
 await writeFile(resolve(interfaceRoot, 'docs/interface/build-receipt.json'), JSON.stringify(receipt, null, 2) + '\n');
 console.log(JSON.stringify({ locales: supportedLocales, courses: receipt.canonicalCourseCount, edges: receipt.canonicalEdgeCount, outputs: outputFiles }));

@@ -584,10 +584,65 @@ for (const [id, expected] of Object.entries(leblFamily)) {
   assert.equal(capsule.layers.learner.pdf.bytes, expected.bytes);
   assert.equal(capsule.layers.learner.pdf.sha256, expected.sha256);
 }
-for (const id of ['A00', 'B10', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110']) {
+for (const id of ['A00', 'A10', 'B10', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110']) {
   assert.equal(byId[id].layers.interoperability.semantic_adapter.status, 'verified');
   assert.equal(byId[id].layers.interoperability.semantic_adapter.contract_version, '2.3.1');
 }
+const a10Adapter = byId.A10.layers.interoperability.semantic_adapter;
+assert.equal(a10Adapter.mapping_scope, 'capsule_only');
+assert.deepEqual(
+  a10Adapter.evidence,
+  [
+    {
+      kind: 'central_adapter_manifest',
+      locator: 'backend/v2.3/extensions/a10-elementary-algebra-v0.1.0/manifest.json',
+      verified_date: '2026-09-06',
+      bytes: 17637,
+      sha256: '1c093469693cd25bafd33e5ddcf0d43db415de6632baa6c823769b7777a1f9d6',
+    },
+    {
+      kind: 'package_seal',
+      locator: 'backend/v2.3/extensions/a10-elementary-algebra-v0.1.0/seal.json',
+      verified_date: '2026-09-06',
+      bytes: 13518,
+      sha256: '9634b05ffaa0d4d68502cbea88fc2dd5da999bff38a6e2cf69c71f7f8a3ae63e',
+    },
+    {
+      kind: 'deterministic_generic_validation_receipt',
+      locator: 'backend/v2.3/builds/a10-elementary-algebra-v0.1.0/GENERIC_VALIDATION_REPORT.json',
+      verified_date: '2026-09-06',
+      bytes: 2082,
+      sha256: 'cdee34977fbd9240394249a35cf1ad3fcd80979824d916f807da75aee52c84ba',
+    },
+    {
+      kind: 'a10_semantic_validation_receipt',
+      locator: 'backend/v2.3/builds/a10-elementary-algebra-v0.1.0/VALIDATION_REPORT.json',
+      verified_date: '2026-09-06',
+      bytes: 5597,
+      sha256: '73da48ae51fb43410668e833ebe540171371ad7d1d3c01df2072c90a5e72ba23',
+    },
+    {
+      kind: 'public_release_authority',
+      locator: 'backend/v2.3/authorities/A10_ELEMENTARY_ALGEBRA_PUBLIC_RELEASE_AUTHORITY_20260906.json',
+      verified_date: '2026-09-06',
+      bytes: 50883,
+      sha256: '5ae589b75842923a0ebc530d649498bec9bb962ae0d14ab1cb44a9aedb573678',
+    },
+  ],
+);
+for (const evidence of a10Adapter.evidence) {
+  const bytes = await readFile(resolve(project, evidence.locator));
+  assert.equal(bytes.length, evidence.bytes, `A10/${evidence.kind}: evidence byte-count drift.`);
+  assert.equal(sha256(bytes), evidence.sha256, `A10/${evidence.kind}: evidence SHA-256 drift.`);
+}
+assert.equal(byId.A10.layers.curriculum.unit_identity_status, 'unknown');
+assert.equal(byId.A10.layers.translation.ledger_status, 'unknown');
+assert.equal(byId.A10.layers.translation.terminology_status, 'in_progress');
+assert.equal(byId.A10.layers.translation.rights_status, 'unknown');
+assert.equal(byId.A10.layers.translation.corrections_status, 'in_progress');
+assert.equal(byId.A10.layers.production.build_status, 'unknown');
+assert.equal(byId.A10.layers.production.deterministic_replay_status, 'unknown');
+assert.equal(byId.A10.layers.educator.unit_alignment_status, 'unknown');
 for (const id of ['C30', 'C40']) {
   const adapter = byId[id].layers.interoperability.semantic_adapter;
   assert.equal(adapter.mapping_scope, 'reversible_native_two_course_chapter_route_adapter');

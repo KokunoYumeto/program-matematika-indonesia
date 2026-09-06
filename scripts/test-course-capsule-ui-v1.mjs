@@ -10,6 +10,7 @@ const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const html = await readFile(resolve(project, 'docs/backend/index.html'), 'utf8');
 const source = await readFile(resolve(project, 'docs/backend/backend.js'), 'utf8');
 const courses = JSON.parse(await readFile(resolve(project, 'docs/data/course-capsule-v1/course-capsules.json'), 'utf8'));
+const integrationOverrides = JSON.parse(await readFile(resolve(project, 'backend/course-capsule-v1/authority/integration-overrides-v1.json'), 'utf8'));
 const catalogUrl = '../data/course-capsule-v1/course-capsules.json';
 const canonicalReaderActionsUrl = '../data/course-capsule-v1/learner-reader-actions-v1.json';
 const canonicalReaderActions = JSON.parse(await readFile(resolve(project, 'docs/data/course-capsule-v1/learner-reader-actions-v1.json'), 'utf8'));
@@ -136,7 +137,30 @@ for (const [name, fetch] of [
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
   }
   const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
-  assert.equal(adapterCount, 31); // Public baseline 30 plus the locally admitted D90 tranche.
+  const expectedAdapterCount = Object.values(integrationOverrides.semantic_adapters)
+    .filter((adapter) => ['verified', 'legacy_verified', 'available_unverified'].includes(adapter.status)).length;
+  assert.equal(adapterCount, expectedAdapterCount);
+  const a10 = courses.find(course => course.course_id === 'A10');
+  assert.equal(a10.layers.interoperability.semantic_adapter.status, 'verified');
+  assert.equal(a10.layers.interoperability.semantic_adapter.contract_version, '2.3.1');
+  assert.equal(a10.layers.interoperability.semantic_adapter.mapping_scope, 'capsule_only');
+  assert.deepEqual(
+    a10.layers.interoperability.semantic_adapter.evidence.map(({ kind }) => kind),
+    [
+      'central_adapter_manifest',
+      'package_seal',
+      'deterministic_generic_validation_receipt',
+      'a10_semantic_validation_receipt',
+      'public_release_authority',
+    ],
+  );
+  assert.equal(a10.layers.curriculum.unit_identity_status, 'unknown');
+  assert.equal(a10.layers.translation.ledger_status, 'unknown');
+  assert.equal(a10.layers.translation.terminology_status, 'in_progress');
+  assert.equal(a10.layers.translation.rights_status, 'unknown');
+  assert.equal(a10.layers.translation.corrections_status, 'in_progress');
+  assert.equal(a10.layers.production.build_status, 'unknown');
+  assert.equal(a10.layers.production.deterministic_replay_status, 'unknown');
   const topology=courses.find(c=>c.course_id==='C90');
   assert.equal(topology.layers.interoperability.semantic_adapter.contract_version,'topology-learning-capability/1');
   assert.equal(topology.layers.learner.tools.length,1);
