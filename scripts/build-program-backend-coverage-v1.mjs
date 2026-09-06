@@ -15,6 +15,7 @@ const sources={
   a30Validation:'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json',
   a30Public:'backend/course-capsule-v1/adapters/a30-capability-v1/data/public-evidence.json',
   a30NativeReadback:'backend/course-capsule-v1/adapters/a30-capability-v1/input/public-native-readback.json',
+  a30Integration:'backend/course-capsule-v1/adapters/a30-capability-v1/publication/GITHUB_READBACK_74b208108a25.json',
   b40:'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
   b80:'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
   lebl:'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -82,6 +83,26 @@ assert.equal(data.a30Public.indonesian_reader.sha256,'3cfd5294b91252cc766992f158
 assert.equal(data.a30NativeReadback.schema,'a30-native-public-readback/1');assert.equal(data.a30NativeReadback.course_id,'A30');
 assert.equal(data.a30NativeReadback.state,'pass');assert.equal(data.a30NativeReadback.anonymous,true);assert.equal(data.a30NativeReadback.credentials_used,false);assert.deepEqual(data.a30NativeReadback.failures,[]);
 assert.equal(data.a30NativeReadback.github_release.assets.length,7);assert.equal(data.a30NativeReadback.zenodo.assets.length,7);assert.equal(data.a30NativeReadback.zenodo.access_right,'open');
+assert.equal(data.a30Integration.schema,'a30-integration-public-readback/1');assert.equal(data.a30Integration.state,'pass');
+assert.equal(data.a30Integration.source_commit,'74b208108a258916eb160ac5b8d3b72f2844809b');
+assert.equal(data.a30Integration.base_commit,'1edaf095c63b79b1f2d83fa6062f13bbdf2e4203');
+assert.equal(data.a30Integration.anonymous,true);assert.equal(data.a30Integration.credentials_used,false);
+assert.equal(data.a30Integration.expected_files,13);assert.equal(data.a30Integration.verified_files,13);assert.deepEqual(data.a30Integration.failures,[]);
+for(const [surface,path,key] of [
+  ['source',sources.a30Manifest,'a30Manifest'],['source',sources.a30Validation,'a30Validation'],
+  ['source',sources.a30Public,'a30Public'],['source',sources.a30NativeReadback,'a30NativeReadback'],
+  ['source','backend/course-capsule-v1/adapters/a30-capability-v1/views/A30.html',null],
+  ['source','backend/course-capsule-v1/adapters/a30-capability-v1/views/A30-pengajar.html',null],
+  ['source','docs/backend/a30/A30.html',null],['source','docs/backend/a30/A30-pengajar.html',null],
+  ['source','backend/course-capsule-v1/generated/program-backend-coverage-v1.json',null],
+  ['source','backend/course-capsule-v1/validation/SITE_VALIDATION_RECEIPT.json',null],
+  ['pages','docs/backend/a30/A30.html',null],['pages','docs/backend/a30/A30-pengajar.html',null],
+  ['pages','docs/backend/coverage.html',null]
+]){
+  const row=data.a30Integration.files.find(item=>item.surface===surface&&item.path===path);
+  assert.ok(row,`A30 integration readback missing ${surface} ${path}`);assert.equal(row.http_status,200);
+  if(key){assert.equal(row.bytes,bytes[key].length);assert.equal(row.sha256,sha256(bytes[key]));}
+}
 assert.equal(data.b40.anonymous,true);assert.equal(data.b40.credentials_used,false);
 assert.equal(data.b80.anonymous,true);assert.equal(data.b80.credentials_used,false);
 assert.equal(data.lebl.state,'pass');assert.equal(data.lebl.anonymous,true);assert.equal(data.lebl.credentials_used,false);
@@ -261,7 +282,7 @@ const rows=data.capsules.map(capsule=>{
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
-      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
+      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A30'?'new_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
       zenodo_preservation:publicRow?'frozen_public_readback':role==='D50'?'new_embedded_successor_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established',
       local_evidence:adapter.evidence??[],
       public_package:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
@@ -310,7 +331,7 @@ const summary={roles:40,native_families:33,locally_validated_adapter_roles:integ
   overall_program_backend_complete:false};
 assert.equal(summary.locally_validated_adapter_roles+summary.roles_without_validated_common_adapter,40);
 const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-07',scope:'Backend integration, not textbook translation progress.',
-  evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. A30 has complete anonymous native GitHub/Zenodo release readback, but its central programme GitHub publication/readback is not yet established, so it remains outside the central GitHub-evidence count. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
+  evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. A30 has complete anonymous native GitHub/Zenodo release readback plus a central integration readback covering ten source/derived files and three changed Pages routes. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
   evidence:Object.entries(sources).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),summary,roles:rows};
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const statuses={verified:'Diverifikasi',available_unverified:'Ada; belum diverifikasi',not_yet_produced:'Belum dibuat',unknown:'Belum terbukti',in_progress:'Dikerjakan'};
