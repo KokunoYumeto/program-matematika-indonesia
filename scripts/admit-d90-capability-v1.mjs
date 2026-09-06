@@ -257,7 +257,18 @@ const publicMappings = [
   [`${base}/validation.json`, 'docs/backend/d90/validation.json'],
 ];
 for (const [source, target] of publicMappings) {
-  const bytes = await readFile(resolve(root, source));
+  let bytes = await readFile(resolve(root, source));
+  if (target === 'docs/backend/d90/D90-pengajar.html') {
+    const original = bytes.toString('utf8');
+    assert.equal((original.match(/\.\.\/data\//g) ?? []).length, 4);
+    const projected = original
+      .replace('../data/rights-index.jsonl', 'data/rights-index.jsonl')
+      .replace('../data/corrections-index.jsonl', 'data/corrections-index.jsonl')
+      .replace('../data/terms-index.jsonl', 'data/terms-index.jsonl')
+      .replace('../data/claim-boundary.json', 'claim-boundary.json');
+    assert.equal(projected.includes('../data/'), false);
+    bytes = Buffer.from(projected, 'utf8');
+  }
   await mkdir(dirname(resolve(root, target)), {recursive: true});
   await writeFile(resolve(root, target), bytes);
   assert.deepEqual(await identity(target), {
