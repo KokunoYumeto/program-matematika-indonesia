@@ -13,6 +13,7 @@ export const navigationOverlayInput = 'backend/authority/central-course-surface-
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
   'a20.open_learner_hub':['A20','course_reader','backend/a20/A20.html'],
+  'a30.open_learner_hub':['A30','course_reader','backend/a30/A30.html'],
   'b40.open_learner_hub':['B40','course_reader','backend/b40/B40.html'],
   'b80-educator-map-v1':['B80','reference','backend/b80/B80-pengajar.html'],
   'b80-exercise-map-v1':['B80','practice_diagnostic_map','backend/b80/B80.html'],
@@ -46,7 +47,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // Explicit A20, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D30, D40, D70, D80, D90, D100 and D120 presentation contracts; no generic auto-admission.
+    // Explicit A20, A30, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D30, D40, D70, D80, D90, D100 and D120 presentation contracts; no generic auto-admission.
     const expected = contracts[tool.tool_id];
     assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');

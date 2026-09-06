@@ -17,6 +17,10 @@ INPUTS = {
     'clpRoutes': 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
     'clpView': 'docs/backend/clp/validation.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
+    'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
+    'a30Validation': 'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json',
+    'a30Public': 'backend/course-capsule-v1/adapters/a30-capability-v1/data/public-evidence.json',
+    'a30NativeReadback': 'backend/course-capsule-v1/adapters/a30-capability-v1/input/public-native-readback.json',
     'b40': 'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -53,14 +57,14 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters']) + 1
-assert model['summary']['locally_validated_adapter_roles'] == 37
-assert model['summary']['roles_without_validated_common_adapter'] == 3
-assert model['summary']['locally_represented_families'] == 30
+assert model['summary']['locally_validated_adapter_roles'] == 38
+assert model['summary']['roles_without_validated_common_adapter'] == 2
+assert model['summary']['locally_represented_families'] == 31
 assert model['summary']['github_evidenced_roles'] == 36
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
-} == {'A30', 'B95', 'C140'}
+} == {'B95', 'C140'}
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -133,6 +137,58 @@ assert roles['A20']['dimensions']['accessibility'] == {
     'mathml': 'not_yet_produced',
     'semantic_html': 'not_yet_produced',
 }
+assert roles['A30']['common_adapter']['status'] == 'verified'
+assert roles['A30']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['A30']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_220680_native_records_87_modules_7250_'
+    'exercise_problem_identities_4183_solution_identities_497_concepts_'
+    '513_terms_703_corrections_1875_component_rights_and_segment_state_'
+    'asymmetry_with_3067_unsupported_solution_cases_preserved'
+)
+assert roles['A30']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['A30']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['A30']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert roles['A30']['learner']['tools'] == [{
+    'href': '../backend/a30/A30.html',
+    'label': 'A30 · Prakalkulus dan Trigonometri',
+}]
+assert roles['A30']['educator']['unit_alignment'] == 'verified'
+assert len(roles['A30']['educator']['resources']) == 12
+assert roles['A30']['dimensions']['source_translation_ledger'] == {
+    'corrections': 'verified',
+    'ledger': 'verified',
+}
+assert roles['A30']['dimensions']['terminology']['register'] == 'verified'
+assert roles['A30']['dimensions']['reproducible_production'] == {
+    'build': 'verified',
+    'replay': 'verified',
+}
+assert roles['A30']['dimensions']['accessibility'] == {
+    'mathml': 'not_yet_produced',
+    'semantic_html': 'not_yet_produced',
+}
+for key, schema in (
+    ('a30Manifest', 'a30-capability-manifest/1'),
+    ('a30Validation', 'a30-capability-validation/1'),
+    ('a30Public', 'a30-public-evidence/1'),
+    ('a30NativeReadback', 'a30-native-public-readback/1'),
+):
+    assert inputs[key]['schema'] == schema
+for key in ('a30Manifest', 'a30Validation', 'a30Public', 'a30NativeReadback'):
+    payload = (ROOT / INPUTS[key]).read_bytes()
+    assert any(row['path'] == INPUTS[key] and row['bytes'] == len(payload)
+               and row['sha256'] == hashlib.sha256(payload).hexdigest()
+               for row in model['evidence'])
+assert inputs['a30Validation']['result'] == 'pass'
+assert inputs['a30NativeReadback']['anonymous'] is True
+assert inputs['a30NativeReadback']['credentials_used'] is False
+assert inputs['a30Public']['repository']['url'] == 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id'
+assert inputs['a30Public']['repository']['tag'] == 'v1.0.0'
+assert inputs['a30Public']['zenodo']['access_right'] == 'open'
+assert len(inputs['a30Public']['github_release']['assets']) == 7
+assert len(inputs['a30Public']['zenodo']['assets']) == 7
+assert inputs['a30Public']['indonesian_reader']['bytes'] == 305654938
+assert inputs['a30Public']['indonesian_reader']['sha256'] == '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e'
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['B40']['learner']['tools']) == 1
@@ -478,6 +534,10 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
         ('a20_missing_teacher_readback', 'a20', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/a20/A20-pengajar.html'])),
+        ('a30_manifest_contract', 'a30Manifest', lambda value: value.update(contract='wrong-contract/0')),
+        ('a30_validation_not_pass', 'a30Validation', lambda value: value.update(result='FAIL')),
+        ('a30_native_nonanonymous', 'a30NativeReadback', lambda value: value.update(anonymous=False)),
+        ('a30_public_asset_omission', 'a30Public', lambda value: value['github_release']['assets'].pop()),
         ('b40_nonanonymous', 'b40', lambda value: value.update(anonymous=False)),
         ('b40_missing_teacher_readback', 'b40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/b40/B40-pengajar.html'])),
         ('b80_nonanonymous', 'b80', lambda value: value.update(anonymous=False)),

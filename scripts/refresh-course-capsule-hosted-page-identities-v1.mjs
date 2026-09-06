@@ -42,8 +42,9 @@ for(const [courseId,tools] of Object.entries(overrides.learner_tools??{}).sort((
     pagePaths.add(hosted.path);
   }
 }
-assert.equal(toolCount,32,'Integration learner-tool closure changed.');
-assert.equal(pagePaths.size,29,'Integration hosted-page closure changed.');
+// A30 adds one admitted learner tool and one centrally overlaid hosted page.
+assert.equal(toolCount,33,'Integration learner-tool closure changed.');
+assert.equal(pagePaths.size,30,'Integration hosted-page closure changed.');
 
 const hostedPathForUrl=url=>{
   if(typeof url!=='string'||!url.startsWith(programPagesPrefix))return null;
@@ -74,8 +75,9 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
     await refreshEducatorFact(courseId,`educator_resource:${resource.id}`,resource,resource.url);
   }
 }
-assert.equal(educatorFactCount,44,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,22,'Integration educator hosted-page closure changed.');
+// A30 contributes its educator evidence and resource over one new hosted page.
+assert.equal(educatorFactCount,46,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,23,'Integration educator hosted-page closure changed.');
 
 const nextBytes=Buffer.from(JSON.stringify(overrides,null,2)+'\n');
 await writeFile(resolve(root,overridePath),nextBytes);

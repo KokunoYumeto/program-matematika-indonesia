@@ -146,10 +146,10 @@ assert.deepEqual(rows, lines, 'Public JSON and canonical JSONL differ.');
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
 const layerNames = ['curriculum', 'translation', 'production', 'learner', 'educator', 'federation', 'interoperability'];
 for (const row of rows) assert.deepEqual(Object.keys(row.layers).sort(), [...layerNames].sort(), `${row.course_id}: seven-layer contract drift.`);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 37);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 38);
 assert.deepEqual(
   rows.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id),
-  ['A30', 'B95', 'C140'],
+  ['B95', 'C140'],
 );
 const d40 = rows.find(({ course_id }) => course_id === 'D40');
 assert.equal(d40.course.state, 'published');
@@ -177,6 +177,30 @@ for (const id of ['A10']) {
   assert.equal(row.layers.translation.terminology_status, 'in_progress');
   assert.equal(row.layers.translation.corrections_status, 'in_progress');
 }
+const a30 = rows.find(({ course_id }) => course_id === 'A30');
+assert.equal(a30.course.state, 'published');
+assert.equal(a30.course_native.version, '1.0.0');
+assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+assert.equal(a30.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(a30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(a30.layers.learner.tools.length, 1);
+assert.equal(a30.layers.learner.tools[0].tool_id, 'a30.open_learner_hub');
+assert.equal(a30.layers.learner.tools[0].href, 'backend/a30/A30.html');
+assert.equal(a30.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(a30.layers.translation.ledger_status, 'verified');
+assert.equal(a30.layers.translation.terminology_status, 'verified');
+assert.equal(a30.layers.translation.rights_status, 'verified');
+assert.equal(a30.layers.translation.corrections_status, 'verified');
+assert.equal(a30.layers.production.build_status, 'verified');
+assert.equal(a30.layers.production.deterministic_replay_status, 'verified');
+assert.equal(a30.layers.educator.status, 'verified');
+assert.equal(a30.layers.educator.unit_alignment_status, 'verified');
+assert.equal(a30.layers.learner.pdf.status, 'verified');
+assert.equal(a30.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
+assert.equal(a30.layers.learner.online_html.status, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.mathml, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.print_profile, 'verified');
 const d100 = rows.find(({ course_id }) => course_id === 'D100');
 assert.equal(d100.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(d100.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
@@ -288,13 +312,13 @@ assert.equal(manifest.output.sha256, sha256(jsonlBytes));
 assert.equal(manifest.projections.course_capsules_json.bytes, jsonBytes.length);
 assert.equal(manifest.projections.course_capsules_json.sha256, sha256(jsonBytes));
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(manifest.summary.published_count, 37);
-assert.equal(manifest.summary.production_count, 3);
+assert.equal(manifest.summary.published_count, 38);
+assert.equal(manifest.summary.production_count, 2);
 assert.equal(receipt.state, 'pass');
 assert.equal(receipt.checks.schema_instances, 40);
 assert.equal(receipt.checks.seven_layer_rows, 40);
-assert.equal(receipt.checks.published_count, 37);
-assert.equal(receipt.checks.production_count, 3);
+assert.equal(receipt.checks.published_count, 38);
+assert.equal(receipt.checks.production_count, 2);
 assert.deepEqual(receipt.peer_replay, { byte_identical: true, compared: true });
 assert.deepEqual(receipt.artifacts.course_capsules_jsonl, {
   bytes: jsonlBytes.length,

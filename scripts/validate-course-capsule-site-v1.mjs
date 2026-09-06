@@ -50,6 +50,26 @@ const logicalFiles = [
   'backend/a20/public-native-readback.json',
   'backend/a20/source-lock.json',
   'backend/a20/validation.json',
+  'backend/a30/A30.html',
+  'backend/a30/A30-pengajar.html',
+  'backend/a30/capabilities.json',
+  'backend/a30/claim-boundary.json',
+  'backend/a30/data/concept-index.jsonl',
+  'backend/a30/data/corrections-index.jsonl',
+  'backend/a30/data/exercise-index.jsonl',
+  'backend/a30/data/chapter-index.jsonl',
+  'backend/a30/data/module-index.jsonl',
+  'backend/a30/data/native-record-ledger.json',
+  'backend/a30/data/pedagogical-relation-index.jsonl',
+  'backend/a30/data/rights-index.jsonl',
+  'backend/a30/data/segment-state-summary.json',
+  'backend/a30/data/terms-index.jsonl',
+  'backend/a30/educator-map.json',
+  'backend/a30/learning-map.json',
+  'backend/a30/public-evidence.json',
+  'backend/a30/public-native-readback.json',
+  'backend/a30/source-lock.json',
+  'backend/a30/validation.json',
   'backend/b80/B80.html',
   'backend/b80/B80-pengajar.html',
   'backend/b80/learning-map.json',
@@ -232,8 +252,8 @@ assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.jso
 // roles without rewriting that history.
 const expectedFrozenSuccessorAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
 const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10', 'D50'];
-const expectedCapabilityAdapterRoles = ['A20', 'B40', 'B70', 'B80', 'B90', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
-const expectedCapabilityPackageCount = 19;
+const expectedCapabilityAdapterRoles = ['A20', 'A30', 'B40', 'B70', 'B80', 'B90', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
+const expectedCapabilityPackageCount = 20;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedFrozenSuccessorAdapterRoles), 'Frozen successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -307,9 +327,9 @@ const mainHtml = await readFile(resolve(project, 'docs/index.html'), 'utf8');
 assert.equal(rows.length, 40);
 assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 37);
-assert.equal(rows.filter(({ course }) => course.state === 'production').length, 3);
-assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 32);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 38);
+assert.equal(rows.filter(({ course }) => course.state === 'production').length, 2);
+assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 33);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -335,6 +355,17 @@ const a20PublicEvidence = JSON.parse(docsBytes['backend/a20/public-evidence.json
 const a20PublicNativeReadback = JSON.parse(docsBytes['backend/a20/public-native-readback.json']);
 const a20ClaimBoundary = JSON.parse(docsBytes['backend/a20/claim-boundary.json']);
 const a20SourceLock = JSON.parse(docsBytes['backend/a20/source-lock.json']);
+const a30 = rows.find(row => row.course_id === 'A30');
+const a30Validation = JSON.parse(docsBytes['backend/a30/validation.json']);
+const a30Capabilities = JSON.parse(docsBytes['backend/a30/capabilities.json']);
+const a30LearningMap = JSON.parse(docsBytes['backend/a30/learning-map.json']);
+const a30EducatorMap = JSON.parse(docsBytes['backend/a30/educator-map.json']);
+const a30PublicEvidence = JSON.parse(docsBytes['backend/a30/public-evidence.json']);
+const a30PublicNativeReadback = JSON.parse(docsBytes['backend/a30/public-native-readback.json']);
+const a30ClaimBoundary = JSON.parse(docsBytes['backend/a30/claim-boundary.json']);
+const a30SourceLock = JSON.parse(docsBytes['backend/a30/source-lock.json']);
+const a30AdapterManifest = JSON.parse(await readFile(resolve(project, 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json')));
+const a30AdapterValidationBytes = await readFile(resolve(project, 'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json'));
 const d10Validation = JSON.parse(docsBytes['backend/d10/validation.json']);
 const d10LearningMap = JSON.parse(docsBytes['backend/d10/learning-map.json']);
 const d10EducatorMap = JSON.parse(docsBytes['backend/d10/educator-map.json']);
@@ -411,12 +442,12 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 27);
-assert.equal(authorityToolIds.length, 37);
+assert.equal(Object.keys(authorityToolsByCourse).length, 28);
+assert.equal(authorityToolIds.length, 38);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
-assert.equal(manifest.summary.published_count, 37);
-assert.equal(manifest.summary.production_count, 3);
+assert.equal(manifest.summary.published_count, 38);
+assert.equal(manifest.summary.production_count, 2);
 assert.equal(manifest.design_policy.profile, 'thin_format_neutral_zero_copy');
 assert.equal(manifest.design_policy.authority.sha256, sha256(authorityDesignPolicyBytes));
 assert.equal(manifest.design_policy.schema.sha256, sha256(authorityDesignPolicySchemaBytes));
@@ -596,6 +627,222 @@ assert.equal(docsBytes['backend/a20/data/pedagogical-relation-index.jsonl'].toSt
 assert.equal(docsBytes['backend/a20/data/rights-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 17);
 assert.equal(docsBytes['backend/a20/data/corrections-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 1614);
 assert.equal(docsBytes['backend/a20/data/terms-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 340);
+assert.equal(a30.course.state, 'published');
+assert.equal(a30.course_native.status, 'available_unverified');
+assert.equal(a30.course_native.version, '1.0.0');
+assert.equal(a30.course_native.repository, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
+assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+assert.equal(a30.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(a30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(
+  a30.layers.interoperability.semantic_adapter.mapping_scope,
+  'zero_copy_projection_of_220680_native_records_87_modules_7250_exercise_problem_identities_4183_solution_identities_497_concepts_513_terms_703_corrections_1875_component_rights_and_segment_state_asymmetry_with_3067_unsupported_solution_cases_preserved',
+);
+assert.deepEqual(a30.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'a30.open_learner_hub', href: 'backend/a30/A30.html' },
+]);
+assert.equal(a30.layers.learner.tools[0].page.path, 'docs/backend/a30/A30.html');
+assert.equal(a30.layers.learner.tools[0].resource.path, 'docs/backend/a30/learning-map.json');
+assert.equal(a30.layers.learner.tools[0].evidence.path, 'docs/backend/a30/validation.json');
+assert.equal(a30.layers.learner.pdf.status, 'verified');
+assert.equal(a30.layers.learner.pdf.bytes, 305654938);
+assert.equal(a30.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
+assert.equal(a30.layers.learner.online_html.status, 'not_yet_produced');
+assert.equal(a30.layers.learner.portable_html.status, 'not_yet_produced');
+assert.equal(a30.layers.learner.epub.status, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.mathml, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.chapter_downloads, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.print_profile, 'verified');
+assert.equal(a30.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(a30.layers.translation.ledger_status, 'verified');
+assert.equal(a30.layers.translation.terminology_status, 'verified');
+assert.equal(a30.layers.translation.rights_status, 'verified');
+assert.equal(a30.layers.translation.corrections_status, 'verified');
+assert.equal(a30.layers.production.build_status, 'verified');
+assert.equal(a30.layers.production.deterministic_replay_status, 'verified');
+assert.equal(a30.layers.educator.status, 'verified');
+assert.equal(a30.layers.educator.unit_alignment_status, 'verified');
+assert.deepEqual(a30.layers.educator.resources.map(({ id, status }) => ({ id, status })), [
+  { id: 'A30:educator-hub-v1', status: 'verified' },
+  { id: 'A30:educator-map-v1', status: 'verified' },
+  { id: 'A30:chapter-index-v1', status: 'verified' },
+  { id: 'A30:module-index-v1', status: 'verified' },
+  { id: 'A30:exercise-index-v1', status: 'verified' },
+  { id: 'A30:concept-index-v1', status: 'verified' },
+  { id: 'A30:relation-index-v1', status: 'verified' },
+  { id: 'A30:terms-index-v1', status: 'verified' },
+  { id: 'A30:rights-index-v1', status: 'verified' },
+  { id: 'A30:corrections-index-v1', status: 'verified' },
+  { id: 'A30:segment-state-summary-v1', status: 'verified' },
+  { id: 'A30:native-record-ledger-v1', status: 'verified' },
+]);
+assert.equal(a30Validation.schema, 'a30-capability-validation/1');
+assert.equal(a30Validation.result, 'pass');
+assert.equal(a30Validation.course_id, 'A30');
+for (const [key, expected] of Object.entries({
+  native_records: 220680,
+  chapters: 12,
+  modules: 87,
+  units: 26965,
+  segments: 149955,
+  relations: 37974,
+  exercises: 7250,
+  problems: 7250,
+  solution_identities: 4183,
+  unsupported_exercises: 3067,
+  concepts: 497,
+  terms: 513,
+  corrections: 703,
+  component_rights: 1875,
+  pdf_pages: 3165,
+})) assert.equal(a30Validation.counts[key], expected, `A30 validation count drift: ${key}`);
+assert.deepEqual(a30Validation.checks.solution_identity_boundary_preserved, { with_solution_identity: 4183, without_native_solution_support: 3067 });
+assert.equal(a30Validation.checks.source_target_and_body_text_absent, true);
+assert.equal(a30Validation.checks.standalone_raw_replay_not_claimed, true);
+assert.equal(a30Validation.checks.final_derivative_git_commit_or_tree_not_claimed, true);
+assert.equal(a30Validation.checks.public_source_receipt_state, 'pass');
+assert.equal(a30Validation.checks.public_source_assets, 7);
+assert.equal(a30Validation.checks.public_zenodo_assets, 7);
+assert.equal(a30Validation.checks.two_run_build_identity.file_count, 49);
+assert.equal(a30Validation.checks.two_run_build_identity.tree_sha256, '51b3c1cf9f3709a540fe59c9df63b186968ceb6c41fccce265c504bf970244cd');
+assert.equal(a30Capabilities.schema, 'a30-capabilities/1');
+assert.equal(a30Capabilities.contract, 'course-learning-capability/1');
+assert.equal(a30Capabilities.native_role_id, 'R002');
+assert.deepEqual(a30Capabilities.curriculum_graph.prerequisite_course_ids, ['A20']);
+assert.deepEqual(a30Capabilities.curriculum_graph.native_prerequisite_ids, []);
+assert.equal(a30Capabilities.curriculum_graph.prerequisite_authority, 'central_curriculum_overlay');
+assert.equal(a30Capabilities.learner_delivery.module_navigation, true);
+assert.equal(a30Capabilities.learner_delivery.partial_solution_identity_coverage, true);
+assert.equal(a30Capabilities.learner_delivery.exercise_pdf_destinations_indexed, false);
+assert.equal(a30Capabilities.learner_delivery.indonesian_semantic_html, false);
+assert.equal(a30Capabilities.educator_delivery.module_selector, true);
+assert.equal(a30Capabilities.educator_delivery.official_teacher_manual, false);
+assert.equal(a30Capabilities.federation.stable_native_ids_preserved, true);
+assert.equal(a30Capabilities.federation.body_content_embedded, false);
+assert.equal(a30Capabilities.federation.source_or_target_text_embedded, false);
+assert.equal(a30Capabilities.federation.source_companion_required_for_full_replay, true);
+assert.equal(a30Capabilities.federation.standalone_raw_replay_claimed, false);
+assert.equal(a30LearningMap.schema, 'a30-learner-map/1');
+assert.equal(a30LearningMap.modules.length, 87);
+assert.equal(a30LearningMap.chapters.length, 12);
+assert.equal(a30LearningMap.exercise_identity_count, 7250);
+assert.equal(a30LearningMap.solution_identity_count, 4183);
+assert.equal(a30LearningMap.unsupported_exercise_count, 3067);
+assert.equal(a30LearningMap.indonesian_reader.pdf_pages, 3165);
+assert.equal(a30LearningMap.indonesian_reader.module_page_routes, true);
+assert.equal(a30LearningMap.indonesian_reader.exercise_pdf_destinations_indexed, false);
+assert.equal(a30LearningMap.body_content_embedded, false);
+assert.equal(a30LearningMap.source_or_target_text_embedded, false);
+assert.equal(a30EducatorMap.schema, 'a30-educator-map/1');
+assert.equal(a30EducatorMap.selectable_modules.length, 87);
+assert.equal(a30EducatorMap.chapter_summaries.length, 12);
+assert.equal(a30EducatorMap.exercise_identity_count, 7250);
+assert.equal(a30EducatorMap.solution_identity_count, 4183);
+assert.equal(a30EducatorMap.unsupported_exercise_count, 3067);
+assert.equal(a30EducatorMap.official_teacher_manual_claimed, false);
+assert.equal(a30EducatorMap.solution_bodies_embedded, false);
+assert.equal(a30EducatorMap.body_content_embedded, false);
+assert.equal(a30EducatorMap.source_or_target_text_embedded, false);
+assert.equal(a30PublicEvidence.schema, 'a30-public-evidence/1');
+assert.equal(a30PublicEvidence.anonymous_readback, true);
+assert.equal(a30PublicEvidence.credentials_used, false);
+assert.equal(a30PublicEvidence.repository.tag, 'v1.0.0');
+assert.equal(a30PublicEvidence.repository.final_derivative_revision_proved, false);
+assert.equal(a30PublicEvidence.indonesian_reader.pdf_pages, 3165);
+assert.equal(a30PublicEvidence.indonesian_reader.semantic_html, false);
+assert.equal(a30PublicEvidence.indonesian_reader.mathml, false);
+assert.equal(a30PublicEvidence.zenodo.record_id, 22290180);
+assert.equal(a30PublicEvidence.zenodo.concept_id, 22059757);
+assert.equal(a30PublicEvidence.zenodo.access_right, 'open');
+assert.equal(a30PublicNativeReadback.schema, 'a30-native-public-readback/1');
+assert.equal(a30PublicNativeReadback.state, 'pass');
+assert.equal(a30PublicNativeReadback.anonymous, true);
+assert.equal(a30PublicNativeReadback.credentials_used, false);
+assert.deepEqual(a30PublicNativeReadback.failures, []);
+assert.equal(a30PublicNativeReadback.native_backend.records, 220680);
+assert.equal(a30PublicNativeReadback.native_backend.modules, 87);
+assert.equal(a30PublicNativeReadback.native_backend.chapters, 12);
+assert.equal(a30PublicNativeReadback.native_backend.pages, 3165);
+assert.equal(a30PublicNativeReadback.repository.public, true);
+assert.equal(a30PublicNativeReadback.repository.tag, 'v1.0.0');
+assert.equal(a30PublicNativeReadback.github_release.assets.length, 7);
+assert.equal(a30PublicNativeReadback.zenodo.assets.length, 7);
+assert.equal(a30PublicNativeReadback.zenodo.access_right, 'open');
+assert.equal(a30SourceLock.native_export.record_count, 220680);
+assert.equal(a30SourceLock.native_export.jsonl_sha256, '4f2f51457adde0516c17b1633327a3bfbbf273a67925514bbb6c390f5e58a054');
+assert.equal(a30SourceLock.native_export.source_companion_required_for_full_replay, true);
+assert.equal(a30SourceLock.native_export.standalone_full_raw_replay_claimed, false);
+assert.equal(a30SourceLock.indonesian_release.complete_public_edition, true);
+assert.equal(a30SourceLock.indonesian_release.final_derivative_revision_proved, false);
+assert.equal(a30SourceLock.indonesian_release.zenodo_record_id, 22290180);
+assert.equal(a30SourceLock.upstream_source.commit, '789b54099106b071d1d32bfcee454fed72eb4768');
+assert.equal(a30SourceLock.upstream_source.tree, '05b39123f698772482c0c33a43fa2d2d4ea562ae');
+assert.equal(a30ClaimBoundary.schema, 'a30-claim-boundary/1');
+for (const key of ['native_bodies_copied', 'all_exercises_claimed_solved', 'native_course_prerequisites_invented', 'exhaustive_exercise_pdf_destinations_claimed', 'final_derivative_git_revision_claimed', 'indonesian_semantic_html_claimed', 'indonesian_mathml_claimed', 'epub_claimed', 'portable_offline_html_claimed', 'pdf_ua_claimed', 'wcag_conformance_claimed', 'interactive_labs_claimed', 'learning_runtime_claimed', 'official_teacher_manual_claimed', 'standalone_raw_replay_claimed', 'reversible_exchange_claimed', 'public_access_state_changed']) assert.equal(a30ClaimBoundary[key], false, `A30 claim-boundary drift: ${key}`);
+for (const key of ['source_segment_text_copied', 'target_segment_text_copied', 'term_source_text_copied', 'term_target_text_copied', 'correction_source_or_target_text_copied', 'exercise_or_problem_bodies_copied', 'solution_bodies_copied', 'learner_result_instances']) assert.equal(a30ClaimBoundary[key], 0, `A30 zero-copy boundary drift: ${key}`);
+assert.equal(a30ClaimBoundary.unsupported_exercises_preserved, 3067);
+assert.equal(a30ClaimBoundary.central_a20_prerequisite_is_overlay, true);
+assert.equal(a30ClaimBoundary.segment_state_asymmetry_preserved, true);
+assert.equal(docsBytes['backend/a30/data/chapter-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 12);
+assert.equal(docsBytes['backend/a30/data/module-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 87);
+assert.equal(docsBytes['backend/a30/data/exercise-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 7250);
+assert.equal(docsBytes['backend/a30/data/concept-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 497);
+assert.equal(docsBytes['backend/a30/data/pedagogical-relation-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 37974);
+assert.equal(docsBytes['backend/a30/data/rights-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 1875);
+assert.equal(docsBytes['backend/a30/data/corrections-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 703);
+assert.equal(docsBytes['backend/a30/data/terms-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 513);
+const a30PublicMappings = [
+  ['views/A30.html', 'backend/a30/A30.html'],
+  ['views/A30-pengajar.html', 'backend/a30/A30-pengajar.html'],
+  ['views/capabilities.json', 'backend/a30/capabilities.json'],
+  ['data/learner-map.json', 'backend/a30/learning-map.json'],
+  ['data/educator-map.json', 'backend/a30/educator-map.json'],
+  ['data/public-evidence.json', 'backend/a30/public-evidence.json'],
+  ['data/claim-boundary.json', 'backend/a30/claim-boundary.json'],
+  ['data/native-record-ledger.json', 'backend/a30/data/native-record-ledger.json'],
+  ['data/chapter-index.jsonl', 'backend/a30/data/chapter-index.jsonl'],
+  ['data/module-index.jsonl', 'backend/a30/data/module-index.jsonl'],
+  ['data/exercise-index.jsonl', 'backend/a30/data/exercise-index.jsonl'],
+  ['data/concept-index.jsonl', 'backend/a30/data/concept-index.jsonl'],
+  ['data/pedagogical-relation-index.jsonl', 'backend/a30/data/pedagogical-relation-index.jsonl'],
+  ['data/terms-index.jsonl', 'backend/a30/data/terms-index.jsonl'],
+  ['data/corrections-index.jsonl', 'backend/a30/data/corrections-index.jsonl'],
+  ['data/rights-index.jsonl', 'backend/a30/data/rights-index.jsonl'],
+  ['data/segment-state-summary.json', 'backend/a30/data/segment-state-summary.json'],
+  ['input/source-lock.json', 'backend/a30/source-lock.json'],
+  ['input/public-native-readback.json', 'backend/a30/public-native-readback.json'],
+  ['validation.json', 'backend/a30/validation.json'],
+];
+for (const [adapterPath, publicPath] of a30PublicMappings) {
+  const expected = a30AdapterManifest.outputs.find(({ path }) => path === adapterPath);
+  if (adapterPath !== 'validation.json') assert.ok(expected, `A30 adapter manifest does not bind ${adapterPath}.`);
+  const sealedBytes = await readFile(resolve(project, 'backend/course-capsule-v1/adapters/a30-capability-v1', adapterPath));
+  let adapterBytes = sealedBytes;
+  if (adapterPath === 'views/A30-pengajar.html') adapterBytes = Buffer.from(sealedBytes.toString('utf8').replaceAll('../data/', 'data/'), 'utf8');
+  const expectedSource = { path: 'docs/' + publicPath, bytes: adapterBytes.length, sha256: sha256(adapterBytes) };
+  const observedHosted = identity('docs/' + publicPath, docsBytes[publicPath]);
+  if (adapterPath === 'views/A30.html' || adapterPath === 'views/A30-pengajar.html') {
+    const overlay = centralNavigationOverlay.files.find(({ document }) => document === 'docs/' + publicPath);
+    assert.ok(overlay, `${publicPath}: hosted navigation overlay is missing.`);
+    assert.deepEqual(overlay.source_body, expectedSource, `${publicPath}: navigation overlay does not bind the sealed adapter source body.`);
+    assert.deepEqual(overlay.hosted_surface, observedHosted, `${publicPath}: hosted navigation-overlay identity drift.`);
+    assert.equal(overlay.source_body_replay_exact, true);
+    assert.deepEqual(overlay.placements, ['top', 'bottom']);
+    assert.equal(overlay.program_root_return_links_per_placement, 2);
+    assert.equal(overlay.course_card_return_links_per_placement, 2);
+    assert.equal(overlay.authoritative_original_links_per_placement, 1);
+  } else {
+    assert.deepEqual(observedHosted, expectedSource, `${publicPath}: public A30 byte identity differs from the sealed adapter.`);
+  }
+  if (expected) assert.equal(expected.bytes, sealedBytes.length, `${adapterPath}: A30 sealed output byte drift.`);
+}
+assert.deepEqual(docsBytes['backend/a30/validation.json'], a30AdapterValidationBytes, 'Public A30 validation receipt differs from the sealed adapter.');
+for (const a30Page of [docsBytes['backend/a30/A30.html'].toString('utf8'), docsBytes['backend/a30/A30-pengajar.html'].toString('utf8')]) {
+  assert.match(a30Page, /<html lang="id">/);
+  assert.match(a30Page, /https:\/\/zenodo\.org\/records\/22290180/);
+  assert.doesNotMatch(a30Page, /<script\b/i);
+}
 const d30 = rows.find(({ course_id }) => course_id === 'D30');
 assert.equal(d30.course.state, 'published');
 assert.equal(d30.layers.interoperability.semantic_adapter.status, 'verified');
@@ -1245,13 +1492,13 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: 83,
     prerequisite_dag_visited: 40,
-    published_rows: 37,
-    production_rows: 3,
-    educator_rows: 32,
+    published_rows: 38,
+    production_rows: 2,
+    educator_rows: 33,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,
-    course_learning_capability_roles: 15,
+    course_learning_capability_roles: rows.filter(({ layers }) => layers.interoperability.semantic_adapter.contract_version === 'course-learning-capability/1').length,
     snapshot_v2_public_role_bindings: 9,
     snapshot_v2_pending_role_bindings: 0,
     judson_course_views: 2,

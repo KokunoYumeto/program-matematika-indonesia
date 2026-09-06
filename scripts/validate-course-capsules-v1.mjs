@@ -378,13 +378,93 @@ while (queue.length) {
 }
 assert.equal(visited, 40, 'Prerequisite graph contains a cycle.');
 
-assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 37);
-assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 3);
+assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 38);
+assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 2);
 assert.deepEqual(
   capsules.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id),
-  ['A30', 'B95', 'C140'],
-  'The exact three-role production set drifted.',
+  ['B95', 'C140'],
+  'The exact two-role production set drifted.',
 );
+const a30 = byId.A30;
+assert.equal(a30.course.state, 'published');
+assert.equal(a30.course_native.status, 'available_unverified');
+assert.equal(a30.course_native.version, '1.0.0');
+assert.equal(a30.course_native.repository, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
+assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+const a30Adapter = a30.layers.interoperability.semantic_adapter;
+assert.equal(a30Adapter.status, 'verified');
+assert.equal(a30Adapter.contract_version, 'course-learning-capability/1');
+assert.equal(a30Adapter.mapping_scope, 'zero_copy_projection_of_220680_native_records_87_modules_7250_exercise_problem_identities_4183_solution_identities_497_concepts_513_terms_703_corrections_1875_component_rights_and_segment_state_asymmetry_with_3067_unsupported_solution_cases_preserved');
+assert.deepEqual(a30Adapter.evidence.map(({ kind }) => kind), [
+  'central_adapter_manifest',
+  'deterministic_validation_receipt',
+  'native_source_lock',
+  'anonymous_native_public_readback',
+  'verified_native_public_release',
+  'native_record_ledger',
+  'chapter_identity_index',
+  'module_identity_index',
+  'exercise_solution_identity_index',
+  'concept_index',
+  'pedagogical_relation_index',
+  'component_rights_index',
+  'correction_index',
+  'terminology_index',
+  'segment_state_summary',
+]);
+for (const evidence of a30Adapter.evidence) {
+  const bytes = await readFile(resolve(project, evidence.locator));
+  assert.equal(bytes.length, evidence.bytes, `A30 ${evidence.kind} byte-count drift.`);
+  assert.equal(sha256(bytes), evidence.sha256, `A30 ${evidence.kind} SHA-256 drift.`);
+}
+const a30AdapterManifest = JSON.parse(await readFile(resolve(project, a30Adapter.evidence[0].locator), 'utf8'));
+const a30AdapterValidation = JSON.parse(await readFile(resolve(project, a30Adapter.evidence[1].locator), 'utf8'));
+assert.equal(a30AdapterManifest.schema, 'a30-capability-manifest/1');
+assert.equal(a30AdapterManifest.course_id, 'A30');
+assert.equal(a30AdapterManifest.contract, 'course-learning-capability/1');
+assert.equal(a30AdapterManifest.projection.native_ids_preserved, true);
+assert.equal(a30AdapterManifest.projection.source_or_target_text_copied, false);
+assert.equal(a30AdapterManifest.projection.native_bodies_copied, false);
+assert.equal(a30AdapterManifest.outputs.length, 48);
+assert.equal(a30AdapterManifest.canonical_jsonl_sha256, '4f2f51457adde0516c17b1633327a3bfbbf273a67925514bbb6c390f5e58a054');
+assert.equal(a30AdapterManifest.counts.native_records, 220680);
+assert.equal(a30AdapterManifest.counts.modules, 87);
+assert.equal(a30AdapterManifest.counts.exercises, 7250);
+assert.equal(a30AdapterManifest.counts.solution_identities, 4183);
+assert.equal(a30AdapterManifest.counts.unsupported_exercises, 3067);
+assert.equal(a30AdapterManifest.counts.component_rights, 1875);
+assert.equal(a30AdapterManifest.public_release.complete, true);
+assert.equal(a30AdapterManifest.public_release.tag, 'v1.0.0');
+assert.equal(a30AdapterManifest.public_release.final_derivative_revision_proved, false);
+assert.equal(a30AdapterValidation.schema, 'a30-capability-validation/1');
+assert.equal(a30AdapterValidation.result, 'pass');
+assert.equal(a30AdapterValidation.negative_fixtures.length, 27);
+assert.ok(a30AdapterValidation.negative_fixtures.every(({ result }) => result === 'rejected'));
+assert.equal(a30AdapterValidation.checks.two_run_build_identity.file_count, 49);
+assert.equal(a30AdapterValidation.checks.two_run_build_identity.tree_sha256, '51b3c1cf9f3709a540fe59c9df63b186968ceb6c41fccce265c504bf970244cd');
+assert.equal(a30.layers.learner.tools.length, 1);
+assert.equal(a30.layers.learner.tools[0].tool_id, 'a30.open_learner_hub');
+assert.equal(a30.layers.learner.tools[0].href, 'backend/a30/A30.html');
+assert.deepEqual(a30.layers.learner.tools[0].page, overrides.learner_tools.A30[0].page);
+assert.equal(a30.layers.learner.pdf.status, 'verified');
+assert.equal(a30.layers.learner.pdf.bytes, 305654938);
+assert.equal(a30.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
+assert.equal(a30.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.mathml, 'not_yet_produced');
+assert.equal(a30.layers.learner.capabilities.print_profile, 'verified');
+assert.equal(a30.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(a30.layers.translation.ledger_status, 'verified');
+assert.equal(a30.layers.translation.terminology_status, 'verified');
+assert.equal(a30.layers.translation.rights_status, 'verified');
+assert.equal(a30.layers.translation.corrections_status, 'verified');
+assert.equal(a30.layers.production.build_status, 'verified');
+assert.equal(a30.layers.production.deterministic_replay_status, 'verified');
+assert.equal(a30.layers.educator.status, 'verified');
+assert.equal(a30.layers.educator.unit_alignment_status, 'verified');
+assert.equal(a30.layers.educator.resources.length, 12);
+assert.equal(a30.layers.federation.zero_copy, true);
+assert.equal(a30.layers.interoperability.native_identity_preserved, true);
+assert.equal(a30.layers.interoperability.mapping_scope, 'course_level_without_content_copy');
 const d30 = byId.D30;
 assert.equal(d30.course.state, 'published');
 assert.equal(d30.course_native.status, 'verified');
@@ -873,8 +953,8 @@ assert.equal(manifest.schema_version, '1.0.0');
 assert.deepEqual(manifest.output, identity('generated/course-capsules.jsonl', jsonlBytes));
 assert.deepEqual(manifest.projections.course_capsules_json, identity('generated/course-capsules.json', jsonBytes));
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(manifest.summary.published_count, 37);
-assert.equal(manifest.summary.production_count, 3);
+assert.equal(manifest.summary.published_count, 38);
+assert.equal(manifest.summary.production_count, 2);
 assert.equal(manifest.summary.prerequisite_edge_count, 83);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
@@ -937,8 +1017,8 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: edges.length,
     prerequisite_dag_visited: visited,
-    published_count: 37,
-    production_count: 3,
+    published_count: 38,
+    production_count: 2,
     public_access_policy_rows: 40,
     educator_course_count: educatorCourses.length,
     educator_resource_count: capsules.reduce((count, capsule) => count + capsule.layers.educator.resources.length, 0),

@@ -100,49 +100,50 @@ export const liveCoursePublications = Object.freeze({
     },
   }),
   A30: publication({
-    "state": "production",
-    "edition": "https://zenodo.org/records/22184511/files/OpenStax-Precalculus-2e-id-ID-0.1.0-alpha.67-reader.pdf?download=1",
-    "zenodo": "https://doi.org/10.5281/zenodo.22184511",
+    "state": "published",
+    "edition": "https://zenodo.org/records/22290180/files/OpenStax-Precalculus-2e-id-ID-1.0.0-reader.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22290180",
     "repository": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id",
-    "version": "0.1.0-alpha.67-reader.1",
-    "note": "Edisi kerja alpha.67-reader.1 terbuka: 67 dari 87 modul berurutan, sampai m49436, dalam PDF 2.031 halaman. Produksi dan integrasi modul berikutnya masih berlangsung; paket sumber dan backend bukan pembaca HTML luring.",
+    "version": "1.0.0",
+    "note": "Edisi Bahasa Indonesia lengkap dan terverifikasi publik: 87/87 modul sampai m50414, pembaca PDF 3.165 halaman, sumber sunting, dan backend native deterministik. Pembaca tetap berbasis PDF; HTML semantik, MathML, EPUB, dan paket HTML luring tidak diklaim.",
     "progress": {
       "unitLabel": "modul OpenStax",
       "totalUnits": 87,
       "translationBearingUnits": 87,
-      "canonicalUnits": 67,
-      "publicUnits": 67,
-      "publicPages": 2031,
-      "publicBoundary": "67/87 modul berurutan; sampai m49436; berikutnya m49437",
-      "updatedAt": "2026-08-31"
+      "integrationReadyUnits": 87,
+      "canonicalUnits": 87,
+      "publicUnits": 87,
+      "publicPages": 3165,
+      "publicBoundary": "edisi lengkap 87/87 modul; sampai m50414",
+      "updatedAt": "2026-09-04T00:00:00Z"
     },
-    "release": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id/releases/tag/v0.1.0-alpha.67-reader.1",
+    "release": "https://github.com/KokunoYumeto/openstax-precalculus-2e-id/releases/tag/v1.0.0",
     "verification": {
-      "readerBytes": 208753713,
-      "readerSha256": "afbf64d4acd37e70cc1d468fcb6b79ee10fd6ff367b9fa79a9862fb5ec7c2dff",
-      "backendRecords": 174567,
+      "readerBytes": 305654938,
+      "readerSha256": "3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e",
+      "backendRecords": 220680,
       "publicAssets": 7
     },
     "additionalSupplements": [
       {
         "id": "a30-current-native-backend",
-        "title": "Backend native edisi kerja",
+        "title": "Backend native edisi lengkap",
         "resourceType": "reference",
         "state": "complete",
-        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
-        "url": "https://zenodo.org/records/22184511/files/precalculus-2e-id-ID-0.1.0-alpha.67-reader.1-backend-core.zip?download=1",
-        "bytes": 75074717,
-        "sha256": "d109ee3a1fac0868f000fd86a4f3aea4d77f414f4697f9ca7c2855c5b13e4e4f"
+        "scope": "Paket backend native edisi lengkap; memerlukan paket sumber pendamping untuk replay raw penuh dan bukan pembaca HTML luring.",
+        "url": "https://zenodo.org/records/22290180/files/precalculus-2e-id-ID-1.0.0-backend-core.zip?download=1",
+        "bytes": 97424500,
+        "sha256": "7c0d63a13a0cd3246fdb58a5faabd3f4f75e2f37a005581ff8ff97d14329fa91"
       },
       {
         "id": "a30-current-source",
-        "title": "Sumber sunting edisi kerja",
+        "title": "Sumber sunting edisi lengkap",
         "resourceType": "reference",
         "state": "complete",
-        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
-        "url": "https://zenodo.org/records/22184511/files/precalculus-2e-id-ID-0.1.0-alpha.67-reader.1-source-core.zip?download=1",
-        "bytes": 74521202,
-        "sha256": "0ed4c1997c0347ed17fa0ebf36f90a2f7eb321ead608b86285076e9f32334845"
+        "scope": "Paket sumber sunting edisi lengkap; bukan pembaca HTML luring.",
+        "url": "https://zenodo.org/records/22290180/files/precalculus-2e-id-ID-1.0.0-source-core.zip?download=1",
+        "bytes": 96797004,
+        "sha256": "04d364ad89005a13999ea27c1398e043ac56886af88d9a7add70aee3ae0d6126"
       }
     ]
   }),
