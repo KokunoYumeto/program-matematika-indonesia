@@ -32,6 +32,7 @@ INPUTS = {
     'd90': 'backend/course-capsule-v1/adapters/d90-capability-v1/publication/GITHUB_READBACK_1ec3ed4846c8.json',
     'd100': 'backend/course-capsule-v1/adapters/d100-capability-v1/publication/GITHUB_READBACK_9b9480ff5b2c.json',
     'd120': 'backend/course-capsule-v1/adapters/d120-capability-v1/publication/GITHUB_READBACK_a42650f4815a.json',
+    'd50Publication': 'backend/v2.3/admissions/d50-smooth-manifolds-v0.1.0/publication/PUBLICATION_BINDING_v0.63.21.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
@@ -46,11 +47,11 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     row['layers']['interoperability']['semantic_adapter']['status'] in ('verified', 'legacy_verified')
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
-assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters'])
+assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters']) + 1
 assert model['summary']['locally_validated_adapter_roles'] == 34
 assert model['summary']['roles_without_validated_common_adapter'] == 6
 assert model['summary']['locally_represented_families'] == 27
-assert model['summary']['github_evidenced_roles'] == 32
+assert model['summary']['github_evidenced_roles'] == 33
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -180,15 +181,23 @@ for dimension in ('curriculum', 'source_translation_ledger', 'terminology', 'rep
 assert roles['D50']['common_adapter']['status'] == 'verified'
 assert roles['D50']['common_adapter']['contract'] == '2.3.1'
 assert roles['D50']['common_adapter']['mapping_scope'].startswith('zero_copy_projection_of_6912_owner_native_rows')
-assert roles['D50']['common_adapter']['github_public_evidence'] == 'not_established'
-assert roles['D50']['common_adapter']['zenodo_preservation'] == 'not_established'
-assert roles['D50']['common_adapter']['public_package'] is None
+assert roles['D50']['common_adapter']['github_public_evidence'] == 'new_anonymous_release_asset_readback'
+assert roles['D50']['common_adapter']['zenodo_preservation'] == 'new_embedded_successor_readback'
+assert roles['D50']['common_adapter']['public_package'] == {
+    'url': inputs['d50Publication']['github']['asset_url'],
+    'bytes': 15385668,
+    'sha256': 'dedcc369a482295677ee2763690b92c08fddec85cb40fe89f4542b833138052d',
+    'central_record': 'https://doi.org/10.5281/zenodo.22542577',
+    'zenodo_container': 'peta-belajar-multilingual-v0.63.21.zip',
+    'zenodo_member': 'backend/v2.3/packages/program-matematika-indonesia-backend-v2.3.1-d50-smooth-manifolds-adapter-v0.1.0.zip',
+}
 assert [row['kind'] for row in roles['D50']['common_adapter']['local_evidence']] == [
     'central_adapter_manifest',
     'central_admission_validation',
     'sealed_zero_copy_adapter_package',
     'fail_closed_negative_probe_report',
     'independent_package_audit',
+    'central_publication_binding',
 ]
 assert roles['D50']['learner']['relationship'] == 'no_common_adapter_consumption_proven'
 assert roles['D50']['learner']['tools'] == []
@@ -366,6 +375,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d100_missing_teacher_readback', 'd100', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d100/D100-pengajar.html'])),
         ('d120_nonanonymous', 'd120', lambda value: value.update(anonymous=False)),
         ('d120_missing_teacher_readback', 'd120', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d120/D120-pengajar.html'])),
+        ('d50_publication_access_downgrade', 'd50Publication', lambda value: value['zenodo'].update(access='restricted')),
+        ('d50_publication_asset_hash_change', 'd50Publication', lambda value: value['adapter'].update(sha256='0' * 64)),
+        ('d50_publication_authenticated_readback', 'd50Publication', lambda value: value['github'].update(anonymous_asset_readback='authenticated_only')),
     ]
     for name, key, mutate in cases:
         altered = copy.deepcopy(inputs[key])
