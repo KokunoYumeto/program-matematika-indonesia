@@ -42,6 +42,33 @@ const assertBaseOrCentralNavigationIdentity = async (identity, message) => {
   );
   assert.equal(row.source_body_replay_exact, true, `${message}: ${identity.path} overlay is not reversible.`);
 };
+const assertMirrorOrCentralNavigationIdentity = async (mirrorPath, documentPath, message) => {
+  const [documentBytes, mirrorBytes] = await Promise.all([
+    readFile(resolve(root, documentPath)),
+    readFile(resolve(root, mirrorPath)),
+  ]);
+  if (mirrorBytes.equals(documentBytes)) return;
+  const row = centralNavigationOverlayByPath.get(documentPath);
+  assert.ok(row, `${message}: ${documentPath} changed outside the central navigation overlay.`);
+  const documentFact = {path: documentPath, bytes: documentBytes.length, sha256: sha256(documentBytes)};
+  const mirrorFact = {path: documentPath, bytes: mirrorBytes.length, sha256: sha256(mirrorBytes)};
+  const sameFact = (left, right) => (
+    left.path === right.path && left.bytes === right.bytes && left.sha256 === right.sha256
+  );
+  const docsAreHosted = (
+    sameFact(row.source_body, mirrorFact)
+    && sameFact(row.hosted_surface, documentFact)
+  );
+  const mirrorIsHosted = (
+    sameFact(row.source_body, documentFact)
+    && sameFact(row.hosted_surface, mirrorFact)
+  );
+  assert.ok(
+    docsAreHosted || mirrorIsHosted,
+    `${message}: ${documentPath} does not match either side of the reversible overlay.`,
+  );
+  assert.equal(row.source_body_replay_exact, true, `${message}: ${documentPath} overlay is not reversible.`);
+};
 const effectiveCourses = materializeLiveCourses(courses);
 const effectiveCoursesById = new Map(effectiveCourses.map((course) => [course.id, course]));
 const effectiveNextCourseIdsById = deriveNextCourseIdsById(effectiveCourses);
@@ -1268,11 +1295,11 @@ for (const name of [
   'backend/d120-en/educator-map.json',
   'backend/d120-en/validation.json',
 ]) {
-  const [docsBytes, hostedBytes] = await Promise.all([
-    readFile(resolve(root, 'docs', name)),
-    readFile(resolve(root, 'public/hub', name)),
-  ]);
-  assert.deepEqual(hostedBytes, docsBytes, `${name}: English original-course backend mirror differs from docs.`);
+  await assertMirrorOrCentralNavigationIdentity(
+    `public/hub/${name}`,
+    `docs/${name}`,
+    `${name}: English original-course backend mirror differs from docs`,
+  );
 }
 
 for (const name of ['backend/c110/C110.html', 'backend/c110/C110-pengajar.html', 'backend/c110/learning-map.json', 'backend/c110/educator-map.json', 'backend/c110/translation-alignments.json', 'backend/c110/rights-and-terms.json', 'backend/c110/ledger-references.json', 'backend/c110/validation.json']) {
@@ -1526,11 +1553,11 @@ const allDocsHtml = await collectHtml(docsRoot);
 assert.equal(allDocsHtml.length, centralNavigation.summary.classified_html_documents, 'Penutupan HTML docs berubah dari kontrak navigasi.');
 for (const path of allDocsHtml) {
   const logical = relative(docsRoot, path).split(sep).join('/');
-  const [docsBytes, hostedBytes] = await Promise.all([
-    readFile(path),
-    readFile(resolve(root, 'public', 'hub', ...logical.split('/'))),
-  ]);
-  assert.deepEqual(hostedBytes, docsBytes, `${logical}: HTML Sites berbeda dari docs.`);
+  await assertMirrorOrCentralNavigationIdentity(
+    `public/hub/${logical}`,
+    `docs/${logical}`,
+    `${logical}: HTML Sites berbeda dari docs`,
+  );
 }
 
 const blankTargets = [...html.matchAll(/<a\b[^>]*target="_blank"[^>]*>/g)].map(([tag]) => tag);
