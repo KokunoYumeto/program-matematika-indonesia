@@ -17,6 +17,8 @@ const mappings=[
   ['backend/course-capsule-v1/adapters/d120-capability-v1/views/D120-pengajar.html','docs/backend/d120/D120-pengajar.html'],
   ['backend/course-capsule-v1/adapters/d90-capability-v1/views/D90.html','docs/backend/d90/D90.html'],
   ['backend/course-capsule-v1/adapters/d90-capability-v1/views/D90-pengajar.html','docs/backend/d90/D90-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60.html','docs/backend/c60/C60.html'],
+  ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60-pengajar.html','docs/backend/c60/C60-pengajar.html'],
   ['backend/course-capsule-v1/adapters/c110-capability-v1/views/C110.html','docs/backend/c110/C110.html'],
   ['backend/course-capsule-v1/adapters/c110-capability-v1/views/C110-pengajar.html','docs/backend/c110/C110-pengajar.html'],
   ['backend/course-capsule-v1/adapters/c120-capability-v1/views/C120.html','docs/backend/c120/C120.html'],
@@ -51,5 +53,5 @@ for(const [source,target] of mappings){
   assert.deepEqual(readback,payload,`${target}: staged view differs from adapter source.`);
   rows.push({source,target,projection,source_bytes:sourcePayload.length,source_sha256:sha256(sourcePayload),bytes:payload.length,sha256:sha256(payload)});
 }
-assert.equal(rows.length,18);
+assert.equal(rows.length,20);
 console.log(JSON.stringify({status:'pass',mode:'source-bound-public-projections',files:rows},null,2));

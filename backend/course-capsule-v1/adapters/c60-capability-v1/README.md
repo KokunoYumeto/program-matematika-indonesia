@@ -1,0 +1,5 @@
+# C60 common capability adapter
+
+A deterministic, zero-copy `course-learning-capability/1` projection of the public R014 Indonesian number-theory and cryptology backend. It binds current public main `66df945d1e5281bfc4758b733c13ac9254f00410`, proves the native backend/source unchanged from release commit `11e27180632af3b90202ad38c063807c0d057766`, and independently replays the existing reversible migration receipt.
+
+The adapter preserves all 5,272 native IDs in a hash-only index, routes all 548 unit IDs and all 223 concepts to the public reflowable reader, and projects five chapter units containing the 101 native exercise identities. Every hint/check/solution support object is truthfully `not_present` with label `source_has_none`; no textbook bodies, invented exercises, solutions, assessments, learner results, live execution, accessibility conformance, or full offline dependency closure are claimed. Rights remain component-specific, and 239 terms plus 141 corrections remain source-locked.

@@ -219,6 +219,29 @@ for (const [name, fetch] of [
   assert.ok(d80.layers.educator.resources.some(r=>r.id==='D80:educator-hub-v1'&&r.status==='verified'));
   assert.equal(d80.layers.learner.capabilities.mathml,'available_unverified');
   assert.equal(d80.layers.learner.capabilities.semantic_html,'verified');
+  const c60=courses.find(c=>c.course_id==='C60');
+  assert.equal(c60.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
+  assert.equal(c60.layers.learner.tools.length,1);
+  assert.equal(c60.layers.learner.tools[0].tool_id,'c60.open_learner_hub');
+  assert.equal(c60.layers.learner.tools[0].href,'backend/c60/C60.html');
+  assert.equal(c60.layers.curriculum.unit_identity_status,'verified');
+  assert.equal(c60.layers.translation.ledger_status,'verified');
+  assert.equal(c60.layers.translation.terminology_status,'verified');
+  assert.equal(c60.layers.translation.rights_status,'verified');
+  assert.equal(c60.layers.translation.corrections_status,'verified');
+  assert.equal(c60.layers.production.build_status,'verified');
+  assert.equal(c60.layers.production.deterministic_replay_status,'verified');
+  assert.equal(c60.layers.educator.status,'verified');
+  assert.equal(c60.layers.educator.unit_alignment_status,'verified');
+  assert.equal(c60.layers.educator.resources.length,7);
+  assert.ok(c60.layers.educator.resources.some(r=>r.id==='C60:educator-hub-v1'&&r.status==='verified'));
+  assert.ok(c60.layers.educator.resources.some(r=>r.id==='C60:native-id-index-v1'&&r.status==='verified'));
+  assert.equal(c60.layers.learner.pdf.status,'verified');
+  assert.equal(c60.layers.learner.pdf.sha256,'1ded3c6844b656347259b464bf21526fdc32dc2246c73ac58ab76ed28688eefc');
+  assert.equal(c60.layers.learner.epub.status,'not_yet_produced');
+  assert.equal(c60.layers.learner.portable_html.status,'not_yet_produced');
+  assert.equal(c60.layers.learner.capabilities.semantic_html,'verified');
+  assert.equal(c60.layers.learner.capabilities.mathml,'verified');
   const d90=courses.find(c=>c.course_id==='D90');
   assert.equal(d90.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
   assert.equal(d90.layers.learner.tools.length,1);
@@ -386,7 +409,7 @@ for (const [name, fetch] of [
   assert.equal(b80.layers.educator.unit_alignment_status,'verified');
   assert.equal(b80.layers.learner.tools.length,2);
   assert.equal(b80.layers.educator.resources[0].id,'B80:educator-map-v1');
-  for (const [value, count] of [['published', 37], ['production', 3], ['educator', 29], ['adapter', adapterCount]]) {
+  for (const [value, count] of [['published', 37], ['production', 3], ['educator', 30], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
     assert.equal(visibleCount(), count);
@@ -420,14 +443,14 @@ for (const [name, fetch] of [
   assert.match(f.element('#course-grid').innerHTML, /Tidak ada mata kuliah/);
   f.fire(f.element('#reset-filters'), 'click');
   assert.equal(visibleCount(), 40);
-  for (const [name, count] of Object.entries({ total: 40, published: 37, production: 3, educator: 29 })) {
+  for (const [name, count] of Object.entries({ total: 40, published: 37, production: 3, educator: 30 })) {
     assert.equal(Number(f.element('#summary-' + name).textContent), count);
     assert.match(html, new RegExp(`<strong id="summary-${name}">${count}</strong>`));
   }
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { verified: 18, available_unverified: 10, in_progress: 1, unknown: 11 });
+assert.deepEqual(educatorCounts, { verified: 19, available_unverified: 10, in_progress: 1, unknown: 10 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),

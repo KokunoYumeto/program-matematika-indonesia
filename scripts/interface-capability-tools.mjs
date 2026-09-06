@@ -18,6 +18,7 @@ const contracts = {
   'c100-geometry-learning-map-v1':['C100','practice_diagnostic_map','backend/geometry/C100.html'],
   'c100-geometry-educator-map-v1':['C100','reference','backend/geometry/pengajar.html'],
   'c90-topology-course-map-v1':['C90','reference','backend/topology/C90.html'],
+  'c60.open_learner_hub':['C60','course_reader','backend/c60/C60.html'],
   'c70.open_learner_hub':['C70','course_reader','backend/c70/C70.html'],
   'c110.open_learner_hub':['C110','course_reader','backend/c110/C110.html'],
   'c120.open_learner_hub':['C120','course_reader','backend/c120/C120.html'],
@@ -42,7 +43,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // Explicit B40, B80, Lebl, Geometry, Topology, C70, C110, C120, D10, D40, D70, D80, D90, D100 and D120 presentation contracts; no generic auto-admission.
+    // Explicit B40, B80, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D40, D70, D80, D90, D100 and D120 presentation contracts; no generic auto-admission.
     const expected = contracts[tool.tool_id];
     assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');

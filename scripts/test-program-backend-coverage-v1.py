@@ -46,10 +46,14 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters'])
-assert model['summary']['locally_validated_adapter_roles'] == 32
-assert model['summary']['roles_without_validated_common_adapter'] == 8
-assert model['summary']['locally_represented_families'] == 25
+assert model['summary']['locally_validated_adapter_roles'] == 33
+assert model['summary']['roles_without_validated_common_adapter'] == 7
+assert model['summary']['locally_represented_families'] == 26
 assert model['summary']['github_evidenced_roles'] == 31
+assert {
+    role for role, row in roles.items()
+    if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
+} == {'A20', 'A30', 'B90', 'B95', 'C140', 'D30', 'D50'}
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -151,6 +155,19 @@ assert roles['C120']['dimensions']['source_translation_ledger']['ledger'] == 've
 assert roles['C120']['dimensions']['terminology']['register'] == 'verified'
 assert roles['C120']['dimensions']['reproducible_production']['build'] == 'verified'
 assert roles['C120']['dimensions']['reproducible_production']['replay'] == 'verified'
+assert roles['C60']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['C60']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(roles['C60']['learner']['tools']) == 1
+assert roles['C60']['educator']['unit_alignment'] == 'verified'
+assert len(roles['C60']['educator']['resources']) == 7
+assert roles['C60']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['C60']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['C60']['dimensions']['source_translation_ledger']['ledger'] == 'verified'
+assert roles['C60']['dimensions']['terminology']['register'] == 'verified'
+assert roles['C60']['dimensions']['reproducible_production']['build'] == 'verified'
+assert roles['C60']['dimensions']['reproducible_production']['replay'] == 'verified'
+assert roles['C60']['dimensions']['accessibility']['semantic_html'] == 'verified'
+assert roles['C60']['dimensions']['accessibility']['mathml'] == 'verified'
 assert roles['D40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D40']['learner']['tools']) == 1

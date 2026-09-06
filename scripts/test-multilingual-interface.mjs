@@ -244,7 +244,7 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-assert.equal(capabilityTools.length,36);
+assert.equal(capabilityTools.length,37);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 assert.deepEqual(capabilityToolSupplementSources,[
@@ -284,6 +284,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='C100').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='C90').layers.learner.tools[0].href='backend/topology/learning-map.json';},
   c=>{c.find(r=>r.course_id==='C90').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='C60').layers.learner.tools[0].href='backend/c60/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='C60').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D40').layers.learner.tools[0].href='backend/d40/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D40').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D70').layers.learner.tools[0].href='backend/d70/learning-map.json';},
@@ -717,7 +719,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors, the bilingual B80/D120 tools, and the D90 route.
     // The measured union peaks below 469 KiB raw and 94 KiB compressed.
-    assert.ok(Buffer.byteLength(html) < 470000, 'Offline map size budget');
+    assert.ok(Buffer.byteLength(html) < 471000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
     assert.ok(gzipSync(html).length < 94000, 'Compressed map size budget');
