@@ -321,6 +321,8 @@ def check_one(row: dict[str, object], commit: str, timeout: int) -> dict[str, ob
         if status == 200:
             nav = parse_navigation(actual)
             if row["role"] == "reader":
+                source_navigation = str(row["source_navigation"])
+                native_navigation_required = source_navigation == "native-plus-central"
                 expected_home = canonical_url(str(row["native_home_url"]))
                 home_matches = sum(
                     resolved_anchor(public_url, link["href"]) == expected_home
@@ -334,13 +336,20 @@ def check_one(row: dict[str, object], commit: str, timeout: int) -> dict[str, ob
                 )
                 central = central_overlay_result(nav, public_url, row)
                 result["navigation"] = {
+                    "source_navigation": source_navigation,
                     "native_program_home_exact_matches": home_matches,
-                    "required_native_program_home_matches": 2,
+                    "required_native_program_home_matches": 2 if native_navigation_required else 0,
                     "contents_links": len(nav.contents_links),
                     "contents_exact_matches": contents_matches,
-                    "contents_required": contents_required,
+                    "native_contents_required": contents_required and native_navigation_required,
                     "central_overlay": central,
-                    "pass": home_matches >= 2 and (not contents_required or contents_matches >= 1) and central["pass"],
+                    "pass": central["pass"] and (
+                        not native_navigation_required
+                        or (
+                            home_matches >= 2
+                            and (not contents_required or contents_matches >= 1)
+                        )
+                    ),
                 }
             elif row["role"] == "gateway":
                 expected_home = canonical_url(str(row["native_home_url"]))
@@ -471,10 +480,27 @@ def main() -> int:
     for reader in contract["readers"]:
         root = ROOT / str(reader["root"])
         root_url = str(reader["public_root"])
+        source_navigation = str(reader.get("source_navigation", "native-plus-central"))
+        if source_navigation not in {"native-plus-central", "central-overlay-only"}:
+            raise ValueError(
+                f"{reader['root']}: unsupported source-navigation mode {source_navigation!r}"
+            )
         native_home_url = str(interfaces[reader["locale"]]["public_url"]) + "#" + str(reader["course_fragment"])
         root_index = (root / "index.html").resolve()
+        closure = reader.get("navigation_closure") or {
+            "entry_path": "index.html",
+            "contents_paths": ["index.html"],
+            "overlay_links": {},
+        }
+        overlay_links = dict(closure["overlay_links"])
         for path in configured_html(root):
             document = path.relative_to(ROOT).as_posix()
+            relative = path.relative_to(root).as_posix()
+            contents_urls = [] if path.resolve() == root_index else [root_url]
+            contents_urls.extend(
+                urljoin(root_url, str(target))
+                for target in overlay_links.get(relative, [])
+            )
             row = {
                 "role": "reader",
                 "course_id": reader["course_id"],
@@ -484,9 +510,10 @@ def main() -> int:
                 "native_home_url": native_home_url,
                 "native_contents_url": root_url,
                 "contents_required": path.resolve() != root_index,
+                "source_navigation": source_navigation,
                 "home_urls": course_home_urls([str(reader["course_id"])]),
                 "program_root_urls": program_root_urls,
-                "contents_urls": [] if path.resolve() == root_index else [root_url],
+                "contents_urls": contents_urls,
             }
             rows.append(row)
             local_path_rows[document] = row
