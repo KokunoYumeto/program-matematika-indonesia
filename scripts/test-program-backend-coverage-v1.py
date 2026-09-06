@@ -53,14 +53,14 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters']) + 1
-assert model['summary']['locally_validated_adapter_roles'] == 37
-assert model['summary']['roles_without_validated_common_adapter'] == 3
-assert model['summary']['locally_represented_families'] == 30
-assert model['summary']['github_evidenced_roles'] == 36
+assert model['summary']['locally_validated_adapter_roles'] == 40
+assert model['summary']['roles_without_validated_common_adapter'] == 0
+assert model['summary']['locally_represented_families'] == 33
+assert model['summary']['github_evidenced_roles'] == 39
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
-} == {'A30', 'B95', 'C140'}
+} == set()
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -458,6 +458,28 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
+    # The current generator has an optional, additive gap-admission overlay.
+    # Reproduce that bounded input closure in the isolated replay; otherwise
+    # the sandbox would silently exercise the historical 37-role matrix.
+    optional_roots = [
+        'backend/course-capsule-v1/validation/20260907',
+        'backend/course-capsule-v1/adapters/a30-v231',
+        'backend/course-capsule-v1/adapters/b95-v231',
+        'backend/course-capsule-v1/adapters/c140-v231',
+        'backend/v2.3/specs',
+        'backend/v2.3/validation/20260907',
+        'docs/backend/a30',
+        'docs/backend/b95',
+        'docs/backend/c140',
+    ]
+    for root_path in optional_roots:
+        for source in (ROOT / root_path).rglob('*'):
+            if not source.is_file():
+                continue
+            relative = source.relative_to(ROOT)
+            target = sandbox / relative
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(source.read_bytes())
 
     def run():
         return subprocess.run(['node', GENERATOR], cwd=sandbox, capture_output=True, text=True)

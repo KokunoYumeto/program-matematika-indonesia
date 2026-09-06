@@ -378,12 +378,12 @@ while (queue.length) {
 }
 assert.equal(visited, 40, 'Prerequisite graph contains a cycle.');
 
-assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 37);
-assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 3);
+assert.equal(capsules.filter(({ course }) => course.state === 'published').length, 40);
+assert.equal(capsules.filter(({ course }) => course.state === 'production').length, 0);
 assert.deepEqual(
   capsules.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id),
-  ['A30', 'B95', 'C140'],
-  'The exact three-role production set drifted.',
+  [],
+  'The production-role set drifted after common-adapter admission.',
 );
 const d30 = byId.D30;
 assert.equal(d30.course.state, 'published');
@@ -873,8 +873,8 @@ assert.equal(manifest.schema_version, '1.0.0');
 assert.deepEqual(manifest.output, identity('generated/course-capsules.jsonl', jsonlBytes));
 assert.deepEqual(manifest.projections.course_capsules_json, identity('generated/course-capsules.json', jsonBytes));
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(manifest.summary.published_count, 37);
-assert.equal(manifest.summary.production_count, 3);
+assert.equal(manifest.summary.published_count, 40);
+assert.equal(manifest.summary.production_count, 0);
 assert.equal(manifest.summary.prerequisite_edge_count, 83);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
@@ -937,8 +937,8 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: edges.length,
     prerequisite_dag_visited: visited,
-    published_count: 37,
-    production_count: 3,
+    published_count: capsules.filter(({ course }) => course.state === 'published').length,
+    production_count: capsules.filter(({ course }) => course.state === 'production').length,
     public_access_policy_rows: 40,
     educator_course_count: educatorCourses.length,
     educator_resource_count: capsules.reduce((count, capsule) => count + capsule.layers.educator.resources.length, 0),

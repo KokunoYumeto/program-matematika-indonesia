@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { mkdir,readFile,writeFile } from 'node:fs/promises';
-import { dirname,resolve } from 'node:path';
+import { dirname,isAbsolute,relative,resolve,sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { json,sha256 } from './native-catalog-exchange-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -32,8 +32,20 @@ const sources={
   d100:'backend/course-capsule-v1/adapters/d100-capability-v1/publication/GITHUB_READBACK_9b9480ff5b2c.json',
   d120:'backend/course-capsule-v1/adapters/d120-capability-v1/publication/GITHUB_READBACK_a42650f4815a.json',
   d50Publication:'backend/v2.3/admissions/d50-smooth-manifolds-v0.1.0/publication/PUBLICATION_BINDING_v0.63.21.json',
+  // Optional, additive evidence for the three gap adapters.  This is deliberately
+  // separate from the frozen v23 index: a missing file means that the historical
+  // matrix is emitted unchanged, while a present file must pass all local identity
+  // checks before it can affect the rows below.
+  gapAdmission:'backend/course-capsule-v1/validation/20260907/GAP_ADMISSION.json',
 };
-const bytes=Object.fromEntries(await Promise.all(Object.entries(sources).map(async([key,path])=>[key,await readFile(resolve(root,path))])));
+const readOptional=async path=>{
+  try{return await readFile(resolve(root,path));}
+  catch(error){if(error?.code==='ENOENT')return null;throw error;}
+};
+const requiredSources=Object.entries(sources).filter(([key])=>key!=='gapAdmission');
+const bytes=Object.fromEntries(await Promise.all(requiredSources.map(async([key,path])=>[key,await readFile(resolve(root,path))])));
+const gapAdmissionBytes=await readOptional(sources.gapAdmission);
+if(gapAdmissionBytes)bytes.gapAdmission=gapAdmissionBytes;
 const data=Object.fromEntries(Object.entries(bytes).map(([key,value])=>[key,JSON.parse(value)]));
 assert.equal(data.capsules.length,40);assert.equal(data.families.families.length,33);
 assert.equal(data.b40.state,'pass');
@@ -162,14 +174,96 @@ for(const filename of ['D100.html','D100-pengajar.html','learning-map.json','val
 for(const filename of ['D120.html','D120-pengajar.html','learning-map.json','educator-map.json','validation.json']){
   assert.ok(data.d120.files.some(row=>row.surface==='pages'&&row.path==='docs/backend/d120/'+filename&&row.http_status===200&&row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)),filename);
 }
+/*
+ * The historical coverage matrix intentionally reads a frozen adapter index.
+ * A30/B95/C140 are admitted through a separate, additive evidence file instead
+ * of mutating that index. Validate every local identity before overlaying the
+ * corresponding capsule fragment. The admission file is optional so this file
+ * remains a valid replay of the historical matrix before the new gate is sealed.
+ */
+const gapOverlay=new Map();
+const localPath=(path,label)=>{
+  assert.equal(typeof path,'string',`${label}: path missing`);
+  const absolute=resolve(root,path);
+  const escaped=relative(root,absolute);
+  assert.ok(!isAbsolute(escaped)&&escaped!=='..'&&!escaped.startsWith(`..${sep}`),`${label}: path escapes repository`);
+  return absolute;
+};
+const readBoundIdentity=async(identity,label)=>{
+  assert.ok(identity&&typeof identity==='object',`${label}: identity missing`);
+  const buffer=await readFile(localPath(identity.path,label));
+  assert.equal(buffer.length,identity.bytes,`${label}: byte count`);
+  assert.equal(sha256(buffer),identity.sha256,`${label}: SHA-256`);
+  return buffer;
+};
+const deepMerge=(base,patch)=>{
+  if(!patch||typeof patch!=='object'||Array.isArray(patch))return patch;
+  const result={...(base&&typeof base==='object'&&!Array.isArray(base)?base:{})};
+  for(const [key,value] of Object.entries(patch))result[key]=value&&typeof value==='object'&&!Array.isArray(value)
+    ?deepMerge(result[key],value):value;
+  return result;
+};
+if(data.gapAdmission){
+  const admission=data.gapAdmission;
+  assert.ok(['gap-admission/1','program-matematika-indonesia/gap-admission/1'].includes(admission.schema),'Gap admission schema');
+  assert.equal(admission.status,'pass','Gap admission status');
+  for(const role of ['A30','B95','C140']){
+    const entry=admission.roles?.[role];
+    assert.ok(entry,`Gap admission missing ${role}`);
+    const packageInfo=entry.package??{};
+    const validationInfo=entry.validation??entry.twin;
+    const manifestPath=packageInfo.manifest?.path??packageInfo.manifest_path??(String(packageInfo.path??'').endsWith('.json')?packageInfo.path:`${String(packageInfo.path??'').replace(/[\\/]$/,'')}/manifest.json`);
+    const manifestBytes=await readFile(localPath(manifestPath,`${role} package manifest`));
+    const manifestSha=packageInfo.manifest?.sha256??packageInfo.manifest_sha256??validationInfo?.manifest_sha256??validationInfo?.package_manifest_sha256;
+    if(manifestSha)assert.equal(sha256(manifestBytes),manifestSha,`${role}: package manifest SHA-256`);
+    if(packageInfo.manifest?.bytes!==undefined)assert.equal(manifestBytes.length,packageInfo.manifest.bytes,`${role}: package manifest bytes`);
+    const manifest=JSON.parse(manifestBytes);
+    assert.equal(manifest.package_id,packageInfo.package_id,`${role}: package id`);
+    const validationBytes=await readBoundIdentity(validationInfo,`${role} twin validation`);
+    const validation=JSON.parse(validationBytes);
+    assert.equal(String(validation.status).toUpperCase(),'PASS',`${role}: twin validation`);
+    assert.equal(validation.package_id,manifest.package_id,`${role}: twin package id`);
+    assert.equal(validation.deterministic_ab?.byte_identical,true,`${role}: deterministic twin`);
+    if(validationInfo.manifest_sha256||validationInfo.package_manifest_sha256)assert.equal(validation.manifest.sha256,validationInfo.manifest_sha256??validationInfo.package_manifest_sha256,`${role}: manifest identity in twin`);
+    if(validationInfo.payload_sha256)assert.equal(validation.manifest_payload.sha256,validationInfo.payload_sha256,`${role}: payload identity in twin`);
+    if(packageInfo.bytes!==undefined)assert.equal(validation.manifest_payload.bytes,packageInfo.bytes,`${role}: payload bytes`);
+    if(packageInfo.sha256)assert.equal(validation.manifest_payload.sha256,packageInfo.sha256,`${role}: payload SHA-256`);
+    const specInfo=entry.spec;
+    const specBytes=await readBoundIdentity(specInfo,`${role} evidence spec`);
+    const pages=[];
+    const declaredPages=[...(entry.pages??entry.learner_pages??[])];
+    if(entry.learner_tools)for(const key of ['page','resource','evidence'])if(entry.learner_tools[key]?.path)declaredPages.push(entry.learner_tools[key]);
+    const seenPages=new Set();
+    for(const page of declaredPages) {
+      if(seenPages.has(page.path))continue;
+      seenPages.add(page.path);
+      const pageBytes=await readBoundIdentity(page,`${role} learner page ${page.path}`);
+      if(page.http_status!==undefined)assert.equal(page.http_status,200,`${role} learner page status`);
+      pages.push({...page,bytes:pageBytes.length,sha256:sha256(pageBytes)});
+    }
+    let patch=entry.capsule_patch??{};
+    const adapterPatch=entry.adapter??entry.common_adapter;
+    if(adapterPatch)patch=deepMerge(patch,{layers:{interoperability:{semantic_adapter:adapterPatch}}});
+    if(entry.learner)patch=deepMerge(patch,{layers:{learner:entry.learner}});
+    if(entry.learner_tools)patch=deepMerge(patch,{layers:{learner:{status:entry.learner_tools.state??'verified',tools:[entry.learner_tools]}}});
+    if(entry.course_native)patch=deepMerge(patch,{course_native:entry.course_native});
+    if(entry.course_truth)patch=deepMerge(patch,{course_native:entry.course_truth,layers:{production:{status:entry.course_truth.state??'published',release_status:'verified',edition:entry.course_truth.edition,repository:entry.course_truth.repository,zenodo:entry.course_truth.zenodo}}});
+    if(entry.production)patch=deepMerge(patch,{layers:{production:entry.production}});
+    gapOverlay.set(role,{entry,manifest,validation,specBytes,pages,patch});
+  }
+}
+const effectiveCapsules=data.capsules.map(capsule=>{
+  const overlay=gapOverlay.get(capsule.course_id);
+  return overlay?deepMerge(capsule,overlay.patch):capsule;
+});
 const familyByRole=new Map();
 for(const family of data.families.families)for(const role of family.roles){assert.ok(!familyByRole.has(role));familyByRole.set(role,family);}
 assert.equal(familyByRole.size,40);
 const frozenPublished=new Map(data.published.adapters.map(row=>[row.role_id,row]));
 const frozenPackages=new Map(data.published.packages.map(row=>[row.package_id,row]));
 assert.equal(frozenPublished.size,data.published.adapters.length,'Duplicate published role.');
-const rows=data.capsules.map(capsule=>{
-  const role=capsule.course_id,family=familyByRole.get(role),adapter=capsule.layers.interoperability.semantic_adapter;
+const rows=effectiveCapsules.map(capsule=>{
+  const role=capsule.course_id,family=familyByRole.get(role),adapter=capsule.layers.interoperability.semantic_adapter,gap=gapOverlay.get(role);
   assert.ok(family);
   if(role==='D30'){
     assert.equal(adapter.status,'verified');assert.equal(adapter.contract_version,data.d30Manifest.contract);
@@ -206,13 +300,17 @@ const rows=data.capsules.map(capsule=>{
   }
   const centralTools=capsule.layers.learner.tools.map(tool=>({label:tool.label,href:'../'+tool.href}));
   if(clpRoles.includes(role))centralTools.push({label:`${role} · Rute baca keluarga CLP`,href:`../backend/clp/${role}.html`});
+  if(gap&&centralTools.length===0&&gap.pages.length>0)centralTools.push({label:`${role} · Bukti adapter v2.3.1`,href:'../'+gap.pages[0].path});
+  const gapGithubEvidence=gap?(gap.entry.public?.github_public_evidence??'local_admission_twin_readback'):null;
+  const gapZenodoEvidence=gap?(gap.entry.public?.zenodo_preservation??'not_yet_published'):null;
+  const gapPackage=gap?.entry.public_package??null;
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
-      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
-      zenodo_preservation:publicRow?'frozen_public_readback':role==='D50'?'new_embedded_successor_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established',
+      github_public_evidence:gapGithubEvidence??(publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established'),
+      zenodo_preservation:gapZenodoEvidence??(publicRow?'frozen_public_readback':role==='D50'?'new_embedded_successor_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established'),
       local_evidence:adapter.evidence??[],
-      public_package:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
+      public_package:gapPackage?gapPackage:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
         central_record:`https://doi.org/${data.published.snapshot.central_release_record_doi}`} : role==='D50'?{
         url:data.d50Publication.github.asset_url,bytes:data.d50Publication.adapter.bytes,sha256:data.d50Publication.adapter.sha256,
         central_record:`https://doi.org/${data.d50Publication.zenodo.doi}`,
@@ -222,7 +320,7 @@ const rows=data.capsules.map(capsule=>{
       unit_identity:capsule.layers.curriculum.unit_identity_status,
       relationship:clpRoles.includes(role)
         ?'central_view_consumes_verified_route_projection_pdf_runtime_adapter_consumption_not_claimed'
-        :['A20','B40','B80','B90','C60','C70','C110','C120','D10','D30','D40','D70','D80','D90','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)
+        :['A20','A30','B40','B80','B90','B95','C60','C70','C110','C120','C140','D10','D30','D40','D70','D80','D90','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)
           ?'directly_consumes_adapter_outputs'
           :publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources},
@@ -259,14 +357,16 @@ const summary={roles:40,native_families:33,locally_validated_adapter_roles:integ
 assert.equal(summary.locally_validated_adapter_roles+summary.roles_without_validated_common_adapter,40);
 const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-06',scope:'Backend integration, not textbook translation progress.',
   evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
-  evidence:Object.entries(sources).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),summary,roles:rows};
+  evidence:Object.entries(sources).filter(([key])=>bytes[key]).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),summary,roles:rows};
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const statuses={verified:'Diverifikasi',available_unverified:'Ada; belum diverifikasi',not_yet_produced:'Belum dibuat',unknown:'Belum terbukti',in_progress:'Dikerjakan'};
 const dimensionNames={curriculum:'Kurikulum dan unit',source_translation_ledger:'Ledger sumber/penerjemahan',terminology:'Istilah',reproducible_production:'Produksi yang dapat diulang',accessibility:'Aksesibilitas',learner:'Pelajar',educator:'Pengajar',federation:'Federasi komponen',interoperability:'Pertukaran data'};
 const details=row=>`<h3>Sembilan bidang kemampuan</h3><dl>${Object.entries(row.dimensions).map(([key,values])=>`<dt>${dimensionNames[key]}</dt><dd>${Object.entries(values).map(([name,value])=>`${esc(name)}: ${Array.isArray(value)?value.map(item=>`${esc(item.id)} — ${esc(statuses[item.status]??item.status)}`).join('; '):esc(statuses[value]??value??'Belum terbukti')}`).join('<br>')}</dd>`).join('')}</dl><h3>Pekerjaan tersisa</h3><ul>${row.next_required_work.map(text=>`<li>${esc(text)}</li>`).join('')}</ul><p>Backend lengkap: belum terbukti.</p>${row.common_adapter.public_package?`<p><a href="${esc(row.common_adapter.public_package.url)}">Paket adapter</a> · <a href="${esc(row.common_adapter.public_package.central_record)}">Rekaman pusat historis</a></p>`:''}<details><summary>Desain asli: temuan audit terdahulu</summary><p lang="en">${esc(row.native_design_audit.pattern)}</p><ul lang="en">${row.native_design_audit.recommended_reuse.map(text=>`<li>${esc(text)}</li>`).join('')}</ul><p>Temuan historis berikut harus diperiksa ulang sebelum dianggap masih berlaku:</p><ul lang="en">${row.native_design_audit.limitations.map(text=>`<li>${esc(text)}</li>`).join('')}</ul>${row.role_id==='B80'?'<p>Integrasi B80 sekarang menambahkan pertukaran reversibel serta tampilan pelajar/pengajar bersama.</p>':''}</details>`;
 const htmlRows=rows.map(row=>`<tr id="role-${row.role_id}"><th scope="row"><a href="../id/#course-${row.role_id}">${row.role_id} · ${esc(row.title)}</a><small>${esc(row.native_family_name)}</small></th><td>${esc(statuses[row.common_adapter.status]??row.common_adapter.status)}<small>${esc(row.common_adapter.contract??'Belum ada kontrak bersama')}</small></td><td>${row.learner.tools.map(tool=>`<p><a href="${esc(tool.href)}">${esc(tool.label)}</a></p>`).join('')||'<span>Belum ada alat pusat terindeks</span>'}</td><td>${esc(statuses[row.educator.status]??row.educator.status)}${row.educator.resources.map(resource=>`<p><a href="${esc(resource.url)}">${esc(resource.title)}</a></p>`).join('')}</td><td><details><summary>Bukti dan pekerjaan berikutnya</summary>${details(row)}<p>Identitas unit: ${esc(statuses[row.learner.unit_identity]??row.learner.unit_identity)}. Keselarasan pengajar: ${esc(statuses[row.educator.unit_alignment]??row.educator.unit_alignment)}.</p><p>Zenodo: ${row.common_adapter.zenodo_preservation==='frozen_public_readback'?'readback rilis tercatat':row.common_adapter.zenodo_preservation==='new_embedded_successor_readback'?'adapter tersimpan sebagai anggota tepat dalam navigator penerus yang dibaca balik secara anonim':row.role_id==='B80'?'pelestarian ditugaskan; belum diverifikasi':'bukti adapter belum tersedia'}.</p></details></td></tr>`).join('\n');
 const html=`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cakupan backend 40 peran</title><style>body{font:16px/1.5 system-ui;color:#183a35;background:#f5f5ed;margin:0}main{max-width:1400px;margin:auto;padding:28px}a{color:#086b63;text-underline-offset:3px}h1{font-size:2rem}small{display:block;color:#506660;margin-top:6px}.table{overflow:auto}table{border-collapse:collapse;width:100%;background:white}th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid #cad6d0}thead{background:#e0eae3}th{min-width:220px}td{min-width:170px}p{max-width:90ch}details p{min-width:200px}dt{font-weight:650;margin-top:1rem}dd{margin-left:0}h3{font-size:1rem}a:focus-visible,summary:focus-visible{outline:3px solid #cf8728;outline-offset:3px}</style></head><body><main><nav><a href="index.html">Pusat belajar dan mengajar</a> · <a href="../id/">Program</a></nav><h1>Cakupan backend: 40 peran</h1><p>${summary.locally_validated_adapter_roles} peran mempunyai adapter bersama yang telah diuji; ${summary.roles_without_validated_common_adapter} belum. Ini <strong>bukan</strong> persentase penerjemahan buku, dan tidak berarti backend lengkap untuk semua peran yang sudah mempunyai adapter.</p><p>Readback GitHub tercatat untuk ${summary.github_evidenced_roles} peran; readback pelestarian Zenodo tercatat untuk ${summary.zenodo_evidenced_roles}. Increment A20, CLP, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D30, D40, D70, D80, D90, D100, dan D120 sudah dapat dipakai di web; bukti pelestarian Zenodo tetap dihitung terpisah. Tanggal matriks: 6 September 2026. Temuan desain asli dan bukti rilis terdahulu bukan pemeriksaan ulang seluruh buku hari ini. “Belum terbukti” berarti bukti integrasi pusat belum cukup, bukan berarti pekerjaan asli tidak ada atau terjemahan belum selesai.</p><div class="table" role="region" aria-label="Cakupan semua peran" tabindex="0"><table><caption>Adapter, penggunaan oleh pelajar, dan bahan pengajar per peran</caption><thead><tr><th>Peran dan keluarga native</th><th>Adapter bersama</th><th>Alat pelajar</th><th>Bahan pengajar</th><th>Batas bukti</th></tr></thead><tbody>${htmlRows}</tbody></table></div><p><a href="program-backend-coverage.json">Matriks terbuka dengan identitas bukti</a></p></main></body></html>\n`;
-for(const [path,content]of [['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',json(model)],['docs/backend/program-backend-coverage.json',json(model)],['docs/backend/coverage.html',html]]){
+const centralNavigation=placement=>`<nav data-central-surface-navigation="v1" data-placement="${placement}" aria-label="Navigasi Program Matematika"><span>Program:</span> <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a></nav>`;
+const navigableHtml=html.replace('<body>','<body>\n'+centralNavigation('top')).replace('</body>','\n'+centralNavigation('bottom')+'\n</body>');
+for(const [path,content]of [['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',json(model)],['docs/backend/program-backend-coverage.json',json(model)],['docs/backend/coverage.html',navigableHtml]]){
   await mkdir(dirname(resolve(root,path)),{recursive:true});await writeFile(resolve(root,path),content);
 }
 console.log(JSON.stringify({state:'pass',...summary}));

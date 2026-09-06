@@ -466,7 +466,7 @@ for (const [name, fetch] of [
   assert.equal(b80.layers.educator.unit_alignment_status,'verified');
   assert.equal(b80.layers.learner.tools.length,2);
   assert.equal(b80.layers.educator.resources[0].id,'B80:educator-map-v1');
-  for (const [value, count] of [['published', 37], ['production', 3], ['educator', 32], ['adapter', adapterCount]]) {
+for (const [value, count] of [['published', 40], ['production', 0], ['educator', 32], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
     assert.equal(visibleCount(), count);
@@ -500,7 +500,7 @@ for (const [name, fetch] of [
   assert.match(f.element('#course-grid').innerHTML, /Tidak ada mata kuliah/);
   f.fire(f.element('#reset-filters'), 'click');
   assert.equal(visibleCount(), 40);
-  for (const [name, count] of Object.entries({ total: 40, published: 37, production: 3, educator: 32 })) {
+for (const [name, count] of Object.entries({ total: 40, published: 40, production: 0, educator: 32 })) {
     assert.equal(Number(f.element('#summary-' + name).textContent), count);
     assert.match(html, new RegExp(`<strong id="summary-${name}">${count}</strong>`));
   }
