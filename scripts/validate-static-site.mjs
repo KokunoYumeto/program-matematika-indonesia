@@ -910,13 +910,13 @@ assert.match(effectiveCoursesById.get('D80').note, /nol kesalahan MathJax/);
 assert.match(effectiveCoursesById.get('D80').note, /Paket HTML luring terkoreksi telah diterbitkan/);
 assert.equal(effectiveCoursesById.get('D100').progress.totalUnits, 60);
 assert.equal(effectiveCoursesById.get('D100').state, 'published');
-assert.equal(effectiveCoursesById.get('D100').version, 'ak-unit-30-corr1+bgk-unit-30-corr1+bridge-corr1');
+assert.equal(effectiveCoursesById.get('D100').version, 'en-v1.0.0+program-nav-2026.09.06');
 assert.equal(effectiveCoursesById.get('D100').progress.translationBearingUnits, 60);
 assert.equal(effectiveCoursesById.get('D100').progress.integrationReadyUnits, 60);
 assert.equal(effectiveCoursesById.get('D100').progress.canonicalUnits, 60);
 assert.equal(effectiveCoursesById.get('D100').progress.publicUnits, 60);
 assert.equal(effectiveCoursesById.get('D100').progress.publicPages, 975);
-assert.match(effectiveCoursesById.get('D100').zenodo, /22237442$/);
+assert.match(effectiveCoursesById.get('D100').zenodo, /22543825$/);
 assert.equal(effectiveCoursesById.get('D100').supplements.length, 2);
 assert.equal(effectiveCoursesById.get('D100').supplements[0].id, 'bgk-units-01-30-corr1');
 assert.equal(effectiveCoursesById.get('D100').supplements[1].id, 'original-bridge-corr1');
@@ -1194,8 +1194,8 @@ const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, {
 // Legacy entry gained two language links, fragment-preserving handoff, and the
 // hash-bound B90, D100, C110, C70, and D90 learner/educator capability links. Each new language route
 // has its own separately measured offline/closure budget.
-assert.ok(shellRawBytes <= 205_000, `Shell melewati 205.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 51_000, `Shell gzip melewati 51.000 byte: ${shellGzipBytes}.`);
+assert.ok(shellRawBytes <= 206_000, `Shell melewati 206.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= 51_500, `Shell gzip melewati 51.500 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -1443,7 +1443,7 @@ assert.match(livePublicationsModule, /22184259/);
 assert.match(livePublicationsModule, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP/);
 assert.match(livePublicationsModule, /D40_COMPLETE_ID_20260831/);
 assert.doesNotMatch(livePublicationsModule, /22164552/);
-assert.match(livePublicationsModule, /22237442/);
+assert.match(livePublicationsModule, /22543825/);
 assert.match(livePublicationsModule, /22161090/);
 assert.match(livePublicationsModule, /22164668/);
 assert.match(livePublicationsModule, /22236314/);

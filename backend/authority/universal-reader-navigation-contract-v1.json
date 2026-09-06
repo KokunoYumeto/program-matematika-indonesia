@@ -1,0 +1,102 @@
+{
+  "schema_name": "universal-reader-navigation-contract",
+  "schema_version": "1.1.0",
+  "effective_date": "2026-09-06",
+  "purpose": "Make every learner-facing resource reachable from the program, make the program reachable from every hosted reader, and preserve a prominent route to every authoritative original.",
+  "scope": {
+    "courses": "all-current-and-future-course-roles",
+    "languages": "all-current-and-future-language-namespaces",
+    "current_language_namespaces": [
+      "en",
+      "id"
+    ],
+    "hosts": [
+      "central-program-pages",
+      "program-controlled-github-pages",
+      "program-controlled-zenodo-records"
+    ],
+    "html_documents": "every-published-learner-html-document-not-only-the-landing-page",
+    "offline_copies": "downloadable-html-must-use-absolute-https-navigation-targets"
+  },
+  "namespace_contract": {
+    "pattern": "/{language_id}/",
+    "language_id_rule": "stable-BCP47-compatible-language-slug",
+    "course_anchor_pattern": "#course-{course_id}",
+    "current_examples": {
+      "english": "/en/#course-D100",
+      "indonesian": "/id/#course-D100"
+    },
+    "future_languages": "add-a-sibling-language-namespace-without-changing-existing-course-or-resource-identities"
+  },
+  "typed_relations": [
+    {
+      "relation": "program-to-hosted-copy",
+      "requirement": "Each central course card exposes every admitted learner-facing hosted copy as a human-readable link."
+    },
+    {
+      "relation": "program-to-authoritative-original",
+      "requirement": "Each central course card exposes authoritative originals separately from hosted copies, mirrors, repositories, and preservation records."
+    },
+    {
+      "relation": "hosted-copy-to-program",
+      "requirement": "Every hosted HTML document links directly to the course anchor for every currently supported central interface language."
+    },
+    {
+      "relation": "hosted-copy-to-authoritative-original",
+      "requirement": "Every hosted HTML document links prominently to every authoritative-original URL bound to that course."
+    }
+  ],
+  "html_navigation": {
+    "required": true,
+    "placement": "one required landmark immediately after body start; a second bottom landmark is permitted and encouraged for long documents when its placement is declared and validated",
+    "landmark_cardinality": {
+      "federated_hosted_html": {
+        "count": 1,
+        "placements": ["prominent-top"]
+      },
+      "central_program_hosted_html": {
+        "count": 2,
+        "placements": ["top", "bottom"]
+      }
+    },
+    "landmark": "nav",
+    "accessible_name_required": true,
+    "visible_without_scrolling_to-document-end": true,
+    "absolute_https_links_required": "central-language course anchors and authoritative-original targets must use absolute HTTPS; lineage-local contents or next/previous links may remain relative for portable closure",
+    "required_targets": [
+      "every-supported-central-language-course-anchor",
+      "every-bound-authoritative-original"
+    ],
+    "idempotence_marker": "one stable lineage-owned marker per declared placement on each qualifying navigation landmark; the exact id, data attribute, class, and permitted placement set are bound by that lineage's deterministic tool and publication receipt rather than imposed retroactively on all readers",
+    "content_integrity": "navigation-insertion-must-not-change-mathematical-prose-formulas-figures-exercises-solutions-or-existing-reader-navigation",
+    "offline_behavior": "links-remain-usable-when-the-html-is-opened-from-a-local-file-or-offline-bundle-once-connectivity-returns"
+  },
+  "central_interface": {
+    "human_facing_entry_required": true,
+    "json_may_not_be_the_only_learner_entrypoint": true,
+    "language_switch_preserves_course_context_when_a_matching_projection_exists": true,
+    "hosted_copy_and_original_source_must_remain_distinct": true,
+    "all_admitted_reader_formats_remain_discoverable": true
+  },
+  "non_html_formats": {
+    "central_discoverability_required": true,
+    "source-and-program-relations_required_in-machine-metadata": true,
+    "embedded-navigation": "PDF-and-EPUB-builds-must-carry-program-and-authoritative-original-links-when-generated-or-reissued; historical-immutable-releases-remain-valid-and-are-not-silently-rewritten"
+  },
+  "validation_gates": {
+    "public_access": "anonymous-HTTP-readback-must-succeed",
+    "html_inventory": "enumerate-the-exact-published-HTML-inventory-for-each-controlled-repository-or-record",
+    "central_targets": "every-required-central-course-anchor-must-be-a-clickable-link",
+    "original_targets": "every-bound-authoritative-original-must-be-a-clickable-link",
+    "nested_documents": "validate-every-published-HTML-document-not-a-single-landing-page-sample",
+    "idempotence": "a second transformation run must produce zero byte difference; public conformance is detected semantically as exactly one accessible nav landmark per declared placement containing every required central and authoritative-original target, while each lineage receipt binds its concrete marker and placement set",
+    "content_preservation": "all-non-navigation-content-and-all-unmodified-release-files-must-retain-their-bound-identities",
+    "receipt": "persist-repository-or-record-commit-version-inventory-byte-count-hash-and-anonymous-readback-evidence"
+  },
+  "authority_boundaries": {
+    "navigation_does_not_replace_source_authority": true,
+    "central_catalog_does_not_claim_authorship_of_originals": true,
+    "mirrors_and_originals_remain_separately_labelled": true,
+    "public_access_must_not_be_reduced": true
+  }
+}

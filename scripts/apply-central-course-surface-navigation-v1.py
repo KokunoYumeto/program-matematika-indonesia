@@ -10,10 +10,12 @@ import os
 import re
 import sys
 from pathlib import Path
+from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT_PATH = ROOT / "backend" / "authority" / "central-reader-navigation-v1.json"
+ACCESS_MANIFEST_PATH = ROOT / "docs" / "interface" / "learner-access-manifest.json"
 RECEIPT_PATH = (
     ROOT
     / "backend"
@@ -74,26 +76,34 @@ def strip_owned_overlay(text: str, logical: str) -> str:
 
 def navigation_markup(
     source: Path,
-    course_targets: list[tuple[Path, str, str, str]],
-    program_targets: list[tuple[Path, str, str]],
+    course_targets: list[tuple[str, str, str, str]],
+    program_targets: list[tuple[str, str, str]],
+    original_targets: list[tuple[str, str, str]],
     contents: list[Path],
     navigation_copy: dict[str, str],
     placement: str,
 ) -> str:
     links: list[str] = []
-    for target, course_id, interface_locale, interface_label in course_targets:
-        href = href_between(source, target, f"course-{course_id}")
+    for href, course_id, interface_locale, interface_label in course_targets:
         label = f"{interface_label} — {course_id}"
         links.append(
             f'<a data-program-home data-course-card data-course-id="{html.escape(course_id)}" '
             f'data-interface-locale="{html.escape(interface_locale)}" href="{html.escape(href)}">'
             f'{html.escape(label)}</a>'
         )
-    for target, interface_locale, label in program_targets:
-        href = href_between(source, target)
+    for href, interface_locale, label in program_targets:
         links.append(
             f'<a data-program-root data-interface-locale="{html.escape(interface_locale)}" '
             f'href="{html.escape(href)}">{html.escape(label)}</a>'
+        )
+    for course_id, href, label in original_targets:
+        parsed = urlsplit(href)
+        if parsed.scheme != "https" or not parsed.netloc:
+            raise ValueError(f"{course_id}: authoritative original is not absolute HTTPS")
+        links.append(
+            f'<a data-authoritative-original data-original-source="authoritative-original" '
+            f'data-course-id="{html.escape(course_id)}" href="{html.escape(href)}">'
+            f'{html.escape(navigation_copy["original_source"])} — {html.escape(label)}</a>'
         )
     for target in contents:
         href = href_between(source, target)
@@ -113,8 +123,9 @@ def navigation_markup(
 def inject_overlay(
     logical: str,
     payload: bytes,
-    course_targets: list[tuple[Path, str, str, str]],
-    program_targets: list[tuple[Path, str, str]],
+    course_targets: list[tuple[str, str, str, str]],
+    program_targets: list[tuple[str, str, str]],
+    original_targets: list[tuple[str, str, str]],
     contents: list[Path],
     navigation_copy: dict[str, str],
 ) -> tuple[bytes, bytes]:
@@ -125,8 +136,14 @@ def inject_overlay(
     if len(body_open) != 1 or len(body_close) != 1 or body_open[0].end() >= body_close[0].start():
         raise ValueError(f"{logical}: expected one well-ordered body element")
     path = ROOT / logical
-    top = navigation_markup(path, course_targets, program_targets, contents, navigation_copy, "top")
-    bottom = navigation_markup(path, course_targets, program_targets, contents, navigation_copy, "bottom")
+    top = navigation_markup(
+        path, course_targets, program_targets, original_targets, contents,
+        navigation_copy, "top",
+    )
+    bottom = navigation_markup(
+        path, course_targets, program_targets, original_targets, contents,
+        navigation_copy, "bottom",
+    )
     target_text = (
         source_text[: body_open[0].end()]
         + "\n"
@@ -146,7 +163,11 @@ def main() -> int:
     try:
         contract_payload = CONTRACT_PATH.read_bytes()
         contract = json.loads(contract_payload.decode("utf-8"))
+        access_manifest_payload = ACCESS_MANIFEST_PATH.read_bytes()
+        access_manifest = json.loads(access_manifest_payload.decode("utf-8"))
         interfaces = contract["interfaces"]
+        if set(access_manifest["supported_interface_locales"]) != set(interfaces):
+            raise ValueError("learner access manifest locale set changed")
         course_ids_by_locale: dict[str, set[str]] = {}
         for locale, interface in interfaces.items():
             document = ROOT / interface["document"]
@@ -160,7 +181,9 @@ def main() -> int:
             if len(course_ids_by_locale[locale]) != 40:
                 raise ValueError(f"{locale}: localized course-card authority does not expose 40 course IDs")
             navigation_copy = interface.get("navigation")
-            required_copy = {"aria", "lead", "program_root", "related_page"}
+            required_copy = {
+                "aria", "lead", "program_root", "related_page", "original_source",
+            }
             if not isinstance(navigation_copy, dict) or set(navigation_copy) != required_copy:
                 raise ValueError(f"{locale}: navigation copy is incomplete")
         course_sets = list(course_ids_by_locale.values())
@@ -168,23 +191,64 @@ def main() -> int:
             raise ValueError("localized course-card sets differ")
         course_ids = course_sets[0]
 
-        def course_targets(ids: list[str]) -> list[tuple[Path, str, str, str]]:
+        def course_targets(ids: list[str]) -> list[tuple[str, str, str, str]]:
             return [
                 (
-                    ROOT / interface["document"], course_id,
+                    f'{interface["public_url"]}#course-{course_id}', course_id,
                     interface_locale, interface["label"],
                 )
                 for interface_locale, interface in sorted(interfaces.items())
                 for course_id in ids
             ]
 
-        def program_targets() -> list[tuple[Path, str, str]]:
+        def program_targets() -> list[tuple[str, str, str]]:
             return [
                 (
-                    ROOT / interface["document"], interface_locale,
+                    interface["public_url"], interface_locale,
                     interface["navigation"]["program_root"],
                 )
                 for interface_locale, interface in sorted(interfaces.items())
+            ]
+
+        def original_targets(
+            ids: list[str], surface_locale: str,
+        ) -> list[tuple[str, str, str]]:
+            targets: dict[tuple[str, str], str] = {}
+            for course_id in ids:
+                projections = access_manifest["courses"].get(course_id)
+                if not isinstance(projections, dict):
+                    raise ValueError(f"{course_id}: learner access projection is missing")
+                preferred_labels: dict[str, str] = {}
+                for interface_locale in interfaces:
+                    projection = projections.get(interface_locale)
+                    resources = projection.get("authoritative_original", {}).get("resources", []) \
+                        if isinstance(projection, dict) else []
+                    if not resources:
+                        raise ValueError(
+                            f"{course_id}/{interface_locale}: authoritative original is missing"
+                        )
+                    for resource in resources:
+                        href = resource.get("url")
+                        label = resource.get("label")
+                        if not isinstance(href, str) or not isinstance(label, str) or not label:
+                            raise ValueError(
+                                f"{course_id}/{interface_locale}: malformed authoritative original"
+                            )
+                        parsed = urlsplit(href)
+                        if parsed.scheme != "https" or not parsed.netloc:
+                            raise ValueError(
+                                f"{course_id}/{interface_locale}: original must use HTTPS"
+                            )
+                        key = (course_id, href)
+                        targets.setdefault(key, label)
+                        if interface_locale == surface_locale:
+                            preferred_labels[href] = label
+                for key in [item for item in targets if item[0] == course_id]:
+                    if key[1] in preferred_labels:
+                        targets[key] = preferred_labels[key[1]]
+            return [
+                (course_id, href, label)
+                for (course_id, href), label in sorted(targets.items())
             ]
 
         specifications: list[dict[str, object]] = []
@@ -226,6 +290,7 @@ def main() -> int:
                     "course_ids": ids,
                     "course_targets": course_targets(ids),
                     "program_targets": program_targets(),
+                    "original_targets": original_targets(ids, surface["locale"]),
                     "contents": [root / value for value in contents_paths],
                 })
 
@@ -248,6 +313,7 @@ def main() -> int:
                     "course_ids": ids,
                     "course_targets": course_targets(ids),
                     "program_targets": program_targets(),
+                    "original_targets": original_targets(ids, gateway["locale"]),
                     "contents": [],
                 })
 
@@ -320,6 +386,7 @@ def main() -> int:
                     "course_ids": ids,
                     "course_targets": course_targets(ids),
                     "program_targets": program_targets(),
+                    "original_targets": original_targets(ids, reader["locale"]),
                     "contents": [root / value for value in related_relatives],
                 })
 
@@ -335,6 +402,7 @@ def main() -> int:
                 "course_ids": [],
                 "course_targets": [],
                 "program_targets": program_targets(),
+                "original_targets": [],
                 "contents": [],
             })
 
@@ -361,6 +429,7 @@ def main() -> int:
                 path.read_bytes(),
                 specification["course_targets"],
                 specification["program_targets"],
+                specification["original_targets"],
                 specification["contents"],
                 interfaces[str(specification["locale"])]["navigation"],
             )
@@ -375,6 +444,9 @@ def main() -> int:
                 "hosted_surface": fact(logical, target_payload),
                 "course_card_return_links_per_placement": len(specification["course_targets"]),
                 "program_root_return_links_per_placement": len(specification["program_targets"]),
+                "authoritative_original_links_per_placement": len(
+                    specification["original_targets"]
+                ),
                 "section_contents_links_per_placement": len(specification["contents"]),
                 "placements": ["top", "bottom"],
                 "source_body_replay_exact": True,
@@ -394,6 +466,10 @@ def main() -> int:
                 "script": fact(
                     Path(__file__).resolve().relative_to(ROOT).as_posix(),
                     Path(__file__).resolve().read_bytes(),
+                ),
+                "learner_access_manifest": fact(
+                    ACCESS_MANIFEST_PATH.relative_to(ROOT).as_posix(),
+                    access_manifest_payload,
                 ),
             },
             "scope": {
@@ -416,6 +492,8 @@ def main() -> int:
                 "course_returns_are_card_scoped": True,
                 "shared_surfaces_link_every_served_course": True,
                 "every_course_scoped_surface_links_every_interface_locale": True,
+                "course_and_program_links_are_absolute_https": True,
+                "every_course_scoped_surface_links_every_authoritative_original": True,
                 "course_card_and_program_root_are_distinct_links": True,
                 "overlay_is_exactly_removable": True,
                 "mathematical_body_rewritten": False,

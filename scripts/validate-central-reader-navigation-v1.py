@@ -6,6 +6,7 @@ from __future__ import annotations
 import json
 import re
 import sys
+from html import unescape
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
@@ -13,6 +14,8 @@ from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
 CONTRACT = ROOT / "backend" / "authority" / "central-reader-navigation-v1.json"
+ACCESS_MANIFEST = ROOT / "docs" / "interface" / "learner-access-manifest.json"
+SITE_ORIGIN = json.loads(CONTRACT.read_text(encoding="utf-8"))["site_origin"]
 
 
 class NavigationParser(HTMLParser):
@@ -25,6 +28,7 @@ class NavigationParser(HTMLParser):
         self.program_root_links: list[dict[str, str]] = []
         self.contents_links: list[dict[str, str]] = []
         self.surface_contents_links: list[dict[str, str]] = []
+        self.original_links: list[dict[str, str]] = []
         self._active: list[dict[str, str]] = []
         self._surface_placement = ""
 
@@ -45,6 +49,7 @@ class NavigationParser(HTMLParser):
             "interface_locale": values.get("data-interface-locale", ""),
             "placement": self._surface_placement,
             "course_card": "1" if "data-course-card" in values else "",
+            "original_source": "1" if "data-original-source" in values else "",
         }
         if "data-program-home" in values:
             self.home_links.append(row)
@@ -57,6 +62,9 @@ class NavigationParser(HTMLParser):
             self._active.append(row)
         elif "data-course-surface-contents" in values:
             self.surface_contents_links.append(row)
+            self._active.append(row)
+        elif "data-authoritative-original" in values and self._surface_placement:
+            self.original_links.append(row)
             self._active.append(row)
 
     def handle_data(self, data: str) -> None:
@@ -83,10 +91,25 @@ def html_parser(path: Path) -> NavigationParser:
 
 def resolve_href(source: Path, href: str) -> tuple[Path, str]:
     parsed = urlsplit(href.strip())
-    if parsed.scheme or parsed.netloc or href.strip().startswith("//"):
-        raise ValueError(f"navigation target must be a local site route: {source} -> {href!r}")
-    decoded = unquote(parsed.path)
-    target = (source.parent / decoded).resolve()
+    if href.strip().startswith("//"):
+        raise ValueError(f"navigation target cannot be protocol-relative: {source} -> {href!r}")
+    if parsed.scheme or parsed.netloc:
+        site = urlsplit(SITE_ORIGIN)
+        prefix = site.path.rstrip("/") + "/"
+        decoded_path = unquote(parsed.path)
+        if (
+            parsed.scheme.lower() != "https"
+            or parsed.scheme.lower() != site.scheme.lower()
+            or parsed.netloc.lower() != site.netloc.lower()
+            or not decoded_path.startswith(prefix)
+        ):
+            raise ValueError(f"navigation target is outside the central site: {source} -> {href!r}")
+        logical = decoded_path[len(prefix) :]
+        target = (ROOT / "docs" / Path(*logical.split("/"))).resolve()
+        decoded = logical
+    else:
+        decoded = unquote(parsed.path)
+        target = (source.parent / decoded).resolve()
     if decoded.endswith("/") or target.is_dir():
         target = target / "index.html"
     if not target.is_relative_to(ROOT.resolve()):
@@ -104,6 +127,26 @@ def course_article(document: Path, course_id: str) -> str:
     if len(matches) != 1:
         raise ValueError(f"{document}: expected exactly one course-{course_id} card")
     return matches[0]
+
+
+def article_original_urls(article: str) -> set[str]:
+    urls: set[str] = set()
+    for anchor in re.findall(r"<a\b[^>]*>", article, flags=re.IGNORECASE):
+        if not re.search(r"\bdata-original-source(?:\s*=|\s|>)", anchor, flags=re.IGNORECASE):
+            continue
+        match = re.search(
+            r"\bhref\s*=\s*(?:\"([^\"]*)\"|'([^']*)')",
+            anchor,
+            flags=re.IGNORECASE,
+        )
+        if match is None:
+            raise ValueError("authoritative-original anchor lacks href")
+        href = unescape(match.group(1) if match.group(1) is not None else match.group(2))
+        parsed = urlsplit(href)
+        if parsed.scheme != "https" or not parsed.netloc:
+            raise ValueError(f"authoritative-original URL must be absolute HTTPS: {href!r}")
+        urls.add(parsed.geturl())
+    return urls
 
 
 def configured_html(root: Path, exclusions: list[str] | None = None) -> list[Path]:
@@ -165,11 +208,50 @@ def graph_reachable(
     return reachable
 
 
+def validate_original_overlay(
+    path: Path,
+    parser: NavigationParser,
+    course_ids: list[str],
+    original_urls_by_course: dict[str, set[str]],
+) -> None:
+    expected_original_keys = {
+        (course_id, href)
+        for course_id in course_ids
+        for href in original_urls_by_course[course_id]
+    }
+    actual_original_keys = {
+        (link["course_id"], urlsplit(link["href"]).geturl())
+        for link in parser.original_links
+    }
+    if actual_original_keys != expected_original_keys:
+        raise ValueError(f"{path}: authoritative-original return set changed")
+    if len(parser.original_links) != 2 * len(expected_original_keys):
+        raise ValueError(f"{path}: authoritative-original multiplicity changed")
+    for course_id, href in sorted(expected_original_keys):
+        placements: list[str] = []
+        for link in parser.original_links:
+            if (link["course_id"], urlsplit(link["href"]).geturl()) != (course_id, href):
+                continue
+            parsed = urlsplit(link["href"])
+            if parsed.scheme != "https" or not parsed.netloc:
+                raise ValueError(f"{path}: authoritative-original link is not absolute HTTPS")
+            if not link["original_source"]:
+                raise ValueError(f"{path}: authoritative-original marker is missing")
+            if not link["text"].strip():
+                raise ValueError(f"{path}: authoritative-original link has no visible label")
+            placements.append(link["placement"])
+        if sorted(placements) != ["bottom", "top"]:
+            raise ValueError(
+                f"{path}: {course_id} original {href} needs exact top/bottom links"
+            )
+
+
 def validate_central_overlay(
     path: Path,
     parser: NavigationParser,
     course_ids: list[str],
     interfaces: dict[str, object],
+    original_urls_by_course: dict[str, set[str]],
     contents_paths: list[Path] | None = None,
 ) -> None:
     if parser.surface_navigation_markers != 2 or sorted(
@@ -204,6 +286,8 @@ def validate_central_overlay(
                 course_id,
             ):
                 continue
+            if urlsplit(link["href"]).scheme != "https":
+                raise ValueError(f"{path}: course-card return link is not absolute HTTPS")
             target, fragment = resolve_href(path, link["href"])
             if target == interface_document.resolve() and fragment == f"course-{course_id}":
                 matches.append(link["placement"])
@@ -226,6 +310,8 @@ def validate_central_overlay(
         for link in central_root_links:
             if link["interface_locale"] != interface_locale:
                 continue
+            if urlsplit(link["href"]).scheme != "https":
+                raise ValueError(f"{path}: program-root return link is not absolute HTTPS")
             target, fragment = resolve_href(path, link["href"])
             if target == target_document and not fragment:
                 matches.append(link["placement"])
@@ -235,6 +321,8 @@ def validate_central_overlay(
             raise ValueError(
                 f"{path}: {interface_locale} program root needs exact top/bottom returns"
             )
+
+    validate_original_overlay(path, parser, course_ids, original_urls_by_course)
 
     expected_contents = {item.resolve() for item in (contents_paths or [])}
     actual_contents: dict[Path, int] = {}
@@ -278,7 +366,9 @@ def main() -> int:
             route_segments.add(interface["route_segment"])
             if not interface.get("language_tag") or not interface.get("label"):
                 raise ValueError(f"{locale}: locale metadata is incomplete")
-            if set(interface.get("navigation", {})) != {"aria", "lead", "program_root", "related_page"}:
+            if set(interface.get("navigation", {})) != {
+                "aria", "lead", "program_root", "original_source", "related_page",
+            }:
                 raise ValueError(f"{locale}: locale navigation copy is incomplete")
             fallback = interface.get("fallback_locale")
             if fallback is not None and fallback not in interfaces:
@@ -301,7 +391,11 @@ def main() -> int:
         if len(readers) != summary.get("reader_roots") or len(gateways) != summary.get("gateway_roots") or len(course_surfaces) != summary.get("course_surface_roots") or len(generic_surfaces) != summary.get("generic_html_documents") or len(reciprocal_hubs) != summary.get("reciprocal_hubs"):
             raise ValueError("central navigation root counts disagree with the declared summary")
 
+        access_manifest = load_json(ACCESS_MANIFEST)
+        if set(access_manifest.get("supported_interface_locales", [])) != set(interfaces):
+            raise ValueError("learner access manifest locale set changed")
         localized_card_count = 0
+        original_urls_by_course: dict[str, set[str]] = {}
         interface_course_sets: list[set[str]] = []
         for locale, interface in sorted(interfaces.items()):
             document = ROOT / Path(*interface["document"].split("/"))
@@ -316,11 +410,29 @@ def main() -> int:
                     raise ValueError(f"{document}: course-{course_id} lacks its hosted-reader group")
                 if 'data-access-group="authoritative-original"' not in article or 'data-original-source=' not in article:
                     raise ValueError(f"{document}: course-{course_id} lacks a prominent original-source link")
+                card_originals = article_original_urls(article)
+                projection = access_manifest.get("courses", {}).get(course_id, {}).get(locale)
+                manifest_originals = {
+                    urlsplit(resource["url"]).geturl()
+                    for resource in (
+                        projection.get("authoritative_original", {}).get("resources", [])
+                        if isinstance(projection, dict) else []
+                    )
+                    if resource.get("access_role") == "authoritative-original"
+                    and isinstance(resource.get("url"), str)
+                }
+                if not manifest_originals or card_originals != manifest_originals:
+                    raise ValueError(
+                        f"{document}: course-{course_id} original-source manifest/card mismatch"
+                    )
+                original_urls_by_course.setdefault(course_id, set()).update(card_originals)
                 localized_card_count += 1
         if len(interface_course_sets) != len(interfaces) or any(
             item != interface_course_sets[0] for item in interface_course_sets[1:]
         ):
             raise ValueError("localized interfaces do not expose the same 40 course IDs")
+        if set(original_urls_by_course) != interface_course_sets[0]:
+            raise ValueError("authoritative-original course coverage is incomplete")
         for hub in reciprocal_hubs:
             public_url = hub["public_url"]
             for locale in hub["linked_from_locales"]:
@@ -455,6 +567,7 @@ def main() -> int:
                     parser,
                     [course_id],
                     interfaces,
+                    original_urls_by_course,
                     expected_contents,
                 )
 
@@ -630,7 +743,9 @@ def main() -> int:
                         raise ValueError(f"{path}: gateway program-home link is not course-scoped")
                     if not link["text"].strip():
                         raise ValueError(f"{path}: gateway program-home link has no label")
-                validate_central_overlay(path, parser, [course_id], interfaces)
+                validate_central_overlay(
+                    path, parser, [course_id], interfaces, original_urls_by_course
+                )
                 relative = path.relative_to(gateway_root).as_posix()
                 required_returns = {
                     declared_by_relative[value] for value in document_map[relative]
@@ -719,6 +834,8 @@ def main() -> int:
                     for link in marked_home_links:
                         if (link["interface_locale"], link["course_id"]) != (interface_locale, course_id):
                             continue
+                        if urlsplit(link["href"]).scheme != "https":
+                            raise ValueError(f"{path}: course return link is not absolute HTTPS")
                         target, fragment = resolve_href(path, link["href"])
                         if target == interface_document.resolve() and fragment == f"course-{course_id}":
                             matches.append(link["placement"])
@@ -744,6 +861,8 @@ def main() -> int:
                     for link in parser.program_root_links:
                         if link["interface_locale"] != interface_locale:
                             continue
+                        if urlsplit(link["href"]).scheme != "https":
+                            raise ValueError(f"{path}: program-root link is not absolute HTTPS")
                         target, fragment = resolve_href(path, link["href"])
                         if target == target_document and not fragment:
                             matches.append(link["placement"])
@@ -770,6 +889,7 @@ def main() -> int:
                     count != 2 for count in actual_contents.values()
                 ):
                     raise ValueError(f"{path}: section-contents top/bottom closure changed")
+                validate_original_overlay(path, parser, ids, original_urls_by_course)
             course_surface_results.append({
                 "root": group["root"],
                 "locale": locale,
@@ -806,7 +926,9 @@ def main() -> int:
             configured_generic_files.add(resolved_path)
             parser = html_parser(path)
             if row["navigation_required"]:
-                validate_central_overlay(path, parser, [], interfaces)
+                validate_central_overlay(
+                    path, parser, [], interfaces, original_urls_by_course
+                )
                 target_document = (ROOT / Path(*row["target_document"].split("/"))).resolve()
                 unscoped = parser.program_root_links
                 matches = 0

@@ -18,6 +18,9 @@ const manifestBytes = await readFile(resolve(root, manifestPath));
 const receiptBytes = await readFile(resolve(root, receiptPath));
 const manifest = JSON.parse(manifestBytes);
 const receipt = JSON.parse(receiptBytes);
+const supportedInterfaceLocales = [...new Set(manifest.supported_interface_locales ?? [])].sort();
+assert.ok(supportedInterfaceLocales.length > 0, 'The interface locale registry is empty.');
+assert.equal(receipt.schema_version, '1.1.0', 'The universal navigation registry requires a v1.1 live audit receipt.');
 const surfaces = extractFederatedHostedHtmlSurfaces(manifest);
 const semanticSha256 = sha256(stableJsonBytes(federatedSurfaceProjection(surfaces)));
 assert.equal(semanticSha256, receipt.source_manifest.semantic_projection_sha256,
@@ -28,14 +31,22 @@ assert.equal(observations.size, surfaces.length);
 const rows = surfaces.map((surface) => {
   const observation = observations.get(surface.url);
   assert.ok(observation, `Audit receipt is missing ${surface.url}`);
-  const requiredTargets = [...new Set(surface.manifest_bindings.flatMap((binding) => [
-    `${CENTRAL_PROGRAM_ORIGIN}${binding.interface_locale}/`,
-    `${CENTRAL_PROGRAM_ORIGIN}${binding.interface_locale}/#course-${binding.course_id}`,
-  ]))].sort();
+  const requiredTargets = [...new Set(surface.course_ids.flatMap((courseId) =>
+    supportedInterfaceLocales.map((locale) =>
+      `${CENTRAL_PROGRAM_ORIGIN}${locale}/#course-${courseId}`)))].sort();
+  const observedTargets = new Set(
+    observation.navigation_observation.central_program_backlink_targets.map(({ href }) => href),
+  );
+  const missingCentralTargets = requiredTargets.filter((target) => !observedTargets.has(target));
+  const state = observation.http_observation.status === 200
+    && observation.navigation_observation.navigation_marker_count === 1
+    && missingCentralTargets.length === 0
+    && observation.navigation_observation.missing_authoritative_original_targets.length === 0
+    ? 'verified' : 'remediation-required';
   return {
     surface_id: `fhr-${sha256(Buffer.from(surface.url, 'utf8')).slice(0, 16)}`,
     course_ids: surface.course_ids,
-    interface_locales: surface.interface_locales,
+    interface_locales: supportedInterfaceLocales,
     content_languages: surface.content_languages,
     url: surface.url,
     custodian: observation.custodian,
@@ -47,6 +58,10 @@ const rows = surfaces.map((surface) => {
     manifest_bindings: surface.manifest_bindings,
     authoritative_original_urls: surface.authoritative_original_urls,
     required_central_return_targets: requiredTargets,
+    required_authoritative_original_targets: observation.navigation_observation.required_authoritative_original_targets,
+    missing_central_return_targets: missingCentralTargets,
+    missing_authoritative_original_targets: observation.navigation_observation.missing_authoritative_original_targets,
+    navigation_marker_count: observation.navigation_observation.navigation_marker_count,
     http_observation: observation.http_observation,
     backlink_targets_observed: observation.navigation_observation.central_program_backlink_targets,
     contents_or_start_observation: {
@@ -56,18 +71,21 @@ const rows = surfaces.map((surface) => {
       anchor_count: observation.navigation_observation.anchor_count,
       same_site_anchor_count: observation.navigation_observation.same_site_anchor_count,
     },
-    state: observation.state,
-    remediation: observation.remediation,
+    state,
+    remediation: state === 'verified' ? null : (
+      observation.remediation
+      ?? 'Add the missing central-language course and authoritative-original links.'
+    ),
     checked_at: receipt.checked_at_finished,
     source_method: receipt.source_method.kind,
-    central_navigation_validated: false,
-    validation_scope: 'federated-observation-only',
+    central_navigation_validated: state === 'verified',
+    validation_scope: 'federated-public-navigation-contract',
   };
 });
 
 const registry = {
   schema_name: 'federated-hosted-reader-navigation-registry',
-  schema_version: '1.0.0',
+  schema_version: '1.1.0',
   generated_at: receipt.checked_at_finished,
   authority_note: 'Current presentation/access registry for program-controlled hosted HTML surfaces outside the central Pages origin. It does not claim that remediation-required readers have a program return link, and it never replaces authoritative-original source bindings.',
   central_program_origin: CENTRAL_PROGRAM_ORIGIN,
@@ -85,11 +103,12 @@ const registry = {
     checked_at_finished: receipt.checked_at_finished,
     source_method: receipt.source_method,
   },
+  navigation_contract: receipt.navigation_contract,
   policy: {
     universal_scope: 'Apply the same hosted-copy plus prominent authoritative-original plus reciprocal central-program navigation contract to every current and future course and language namespace.',
-    truthful_state: 'A surface is verified only when the dated response is HTTP 200 and exposes at least one clickable central-program backlink. HTTP availability alone is insufficient.',
-    external_scope: 'These off-origin surfaces are federated observations, not documents validated by the central-reader-navigation overlay.',
-    remediation_rule: 'A remediation-required row stays explicit until a new dated audit proves a clickable central course or language-program return link.',
+    truthful_state: 'A surface is verified only when the dated response is HTTP 200, contains exactly one idempotent navigation landmark, and exposes every required central course and authoritative-original link. HTTP availability alone is insufficient.',
+    external_scope: 'These off-origin surfaces are validated through the federated public-navigation contract and remain distinct from the central-reader byte overlay.',
+    remediation_rule: 'A remediation-required row stays explicit until a new dated audit proves the complete required link set.',
     no_live_build_dependency: 'Normal builds and offline tests consume this frozen receipt; they do not fetch the network.',
     authoritative_original_separation: 'Hosted-reader rows and authoritative-original URLs remain distinct typed relations even when both are available for one course.',
   },

@@ -7,7 +7,8 @@ export const localeMetadata = Object.freeze({
     coursePresentationLocale: 'id', bindingExceptions: null,
     navigation: Object.freeze({
       aria: 'Navigasi Program Matematika', lead: 'Program:',
-      programRoot: 'Beranda Program Matematika', relatedPage: 'Buka halaman terkait',
+      programRoot: 'Beranda Program Matematika', originalSource: 'Sumber asli',
+      relatedPage: 'Buka halaman terkait',
     }),
   }),
   en: Object.freeze({
@@ -15,7 +16,8 @@ export const localeMetadata = Object.freeze({
     coursePresentationLocale: 'en', bindingExceptions: 'en',
     navigation: Object.freeze({
       aria: 'Mathematics Program navigation', lead: 'Program:',
-      programRoot: 'Mathematics Program home', relatedPage: 'Open related page',
+      programRoot: 'Mathematics Program home', originalSource: 'Original source',
+      relatedPage: 'Open related page',
     }),
   }),
 });
@@ -141,7 +143,7 @@ function validateLocaleRegistry() {
     const tagKey = canonicalTag.toLowerCase();
     if (languageTags.has(tagKey)) throw new Error('Duplicate locale language tag: ' + metadata.languageTag);
     languageTags.add(tagKey);
-    for (const key of ['aria', 'lead', 'programRoot', 'relatedPage']) {
+    for (const key of ['aria', 'lead', 'programRoot', 'originalSource', 'relatedPage']) {
       if (!metadata.navigation[key]) throw new Error('Incomplete navigation copy: ' + locale + '.' + key);
     }
     for (const key of ['title', 'description', 'catalog', 'hostedReader', 'authoritativeOriginal', 'otherLanguageCapability']) {
@@ -279,7 +281,7 @@ export const englishResources = {
     englishEdition('Algebraic Curves — complete English course — 504 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/01_Algebraic-Curves_en_Units-01-30.pdf', 'PDF', { pages:504, bytes:16029193, sha256:'547a0e8f5185cd133edac64cac42ecb7590947ff74d45efe0eb66db7c0a62b46', offlineAfterDownload:true }),
     englishEdition('Bundles, Sheaves and Cohomology — complete English course — 381 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/03_Bundles-Sheaves-and-Cohomology_en_Units-01-30.pdf', 'PDF', { pages:381, bytes:2953314, sha256:'dffad20f1945c6f0183414cd88fa29e34e230dac14b7fae429ad09c96be4c0f1', offlineAfterDownload:true }),
     englishEdition('From Varieties to Schemes — editorial companion — 89 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/05_From-Varieties-to-Schemes_Original-Editorial-Companion_en.pdf', 'PDF', { pages:89, bytes:808762, sha256:'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2', offlineAfterDownload:true }),
-    englishEdition('Complete English edition archive — 974 pages', 'https://doi.org/10.5281/zenodo.22340270', 'archive'),
+    englishEdition('Complete bilingual edition archive — 974 pages with universal reader navigation', 'https://doi.org/10.5281/zenodo.22543825', 'archive'),
     englishEdition('English source and modular backend', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id', 'repository'),
   ],
   D70: [

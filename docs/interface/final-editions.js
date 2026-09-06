@@ -1,5 +1,5 @@
 // Generated presentation bindings; corpus/backend authority remains unchanged.
-export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":16015,"sha256":"bb59e199b735fc05c5eff696694e059845ab06b23c80ca430b4c1b1f55987eba"};
+export const finalEditionSource = {"path":"docs/interface/final-editions.json","bytes":18287,"sha256":"b9f3aecb3a959e1200da6bde746602168b48796f1e06659edd8b5c26a71ec9c1"};
 export const finalEditions = [
   {
     "courseId": "A10",
@@ -16,7 +16,7 @@ export const finalEditions = [
           "en": "Complete textbook"
         },
         "contentLanguage": "id",
-        "kind": "reader",
+        "kind": "portable_html",
         "format": "PDF",
         "primary": true,
         "offlineAfterDownload": true,
@@ -151,7 +151,7 @@ export const finalEditions = [
         "kind": "reader",
         "format": "HTML",
         "primary": true,
-        "offlineAfterDownload": false,
+        "offlineAfterDownload": true,
         "pages": null,
         "bytes": 24947,
         "sha256": "055bca74a3068a619ef9fb01dd3038c0e1b5b33da0b9de6f84337710047b48bb",
@@ -192,10 +192,10 @@ export const finalEditions = [
           "en": "Read the complete C5 companion — 146 solved problems"
         },
         "contentLanguage": "id",
-        "kind": "companion",
+        "kind": "portable_html",
         "format": "HTML",
         "primary": false,
-        "offlineAfterDownload": false,
+        "offlineAfterDownload": true,
         "pages": null,
         "bytes": 21723,
         "sha256": "3fe7d9cad39af310b797acbf5b4e7936067f3b1fbe0e6743860f0a4e1d00f406",
@@ -232,8 +232,8 @@ export const finalEditions = [
   },
   {
     "courseId": "D100",
-    "version": "ak-unit-30-corr1+bgk-unit-30-corr1+bridge-corr1",
-    "archive": "https://doi.org/10.5281/zenodo.22237442",
+    "version": "en-v1.0.0+program-nav-2026.09.06",
+    "archive": "https://doi.org/10.5281/zenodo.22543825",
     "repository": "https://github.com/KokunoYumeto/algebraic-geometry-bridge-id",
     "supersededSupplementIds": [
       "bgk-units-01-06"
@@ -241,7 +241,7 @@ export const finalEditions = [
     "resources": [
       {
         "id": "D100:curves-pdf",
-        "href": "https://zenodo.org/api/records/22237442/files/01_Kurva-Aljabar_id-ID_Units-01-30_corr1.pdf/content",
+        "href": "https://zenodo.org/api/records/22543825/files/01_Kurva-Aljabar_id-ID_Units-01-30_corr1.pdf/content",
         "labels": {
           "id": "Kurva Aljabar — 30 unit lengkap",
           "en": "Algebraic Curves — all 30 units"
@@ -257,16 +257,16 @@ export const finalEditions = [
         "evidence": {
           "anonymous_http_status": 200,
           "actual_sha256": "5af87fd1fd4b85c76bc4fa83e655bdb47d859700a3e57b2d4e7c0ca9c4cf5421",
-          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
-          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
+          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       },
       {
         "id": "D100:curves-html",
-        "href": "https://zenodo.org/api/records/22237442/files/02_Kurva-Aljabar_id-ID_Units-01-30_corr1.html/content",
+        "href": "https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/",
         "labels": {
-          "id": "Unduh HTML Kurva Aljabar lengkap",
-          "en": "Download complete Algebraic Curves HTML"
+          "id": "Baca Kurva Aljabar — 30 unit lengkap",
+          "en": "Read Algebraic Curves — all 30 units"
         },
         "contentLanguage": "id",
         "kind": "reader",
@@ -274,18 +274,40 @@ export const finalEditions = [
         "primary": false,
         "offlineAfterDownload": false,
         "pages": null,
-        "bytes": 23773577,
-        "sha256": "ea23c11b6a710a058e9d782eea1a7e0f2971a1551606f6cd51fc45209e9f87b5",
+        "bytes": 23808146,
+        "sha256": "d9aebfade01203e7b0c20cf468d544365f6a51fcf994ba8419ee28e93ec83b89",
         "evidence": {
           "anonymous_http_status": 200,
-          "actual_sha256": "ea23c11b6a710a058e9d782eea1a7e0f2971a1551606f6cd51fc45209e9f87b5",
-          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
-          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+          "actual_sha256": "d9aebfade01203e7b0c20cf468d544365f6a51fcf994ba8419ee28e93ec83b89",
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-github-pages-03c200124d1470027b9164e275f9bb078bc07a6a.json",
+          "source_receipt_sha256": "7c3741065ae0f88f389441fe656f9872300435839fa151107e827c100cc292d6"
+        }
+      },
+      {
+        "id": "D100:curves-html-download",
+        "href": "https://zenodo.org/api/records/22543825/files/02_Kurva-Aljabar_id-ID_Units-01-30_corr1.html/content",
+        "labels": {
+          "id": "Unduh HTML Kurva Aljabar lengkap",
+          "en": "Download complete Algebraic Curves HTML"
+        },
+        "contentLanguage": "id",
+        "kind": "portable_html",
+        "format": "HTML",
+        "primary": false,
+        "offlineAfterDownload": true,
+        "pages": null,
+        "bytes": 23775120,
+        "sha256": "c956521f3173889099771eebc8815a613d736ea685d4b11ea266710271af777b",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "c956521f3173889099771eebc8815a613d736ea685d4b11ea266710271af777b",
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
+          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       },
       {
         "id": "D100:bgk-pdf",
-        "href": "https://zenodo.org/api/records/22237442/files/01_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.pdf/content",
+        "href": "https://zenodo.org/api/records/22543825/files/01_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.pdf/content",
         "labels": {
           "id": "Bundel, Berkas, dan Kohomologi — 30 unit lengkap",
           "en": "Bundles, Sheaves and Cohomology — all 30 units"
@@ -301,35 +323,57 @@ export const finalEditions = [
         "evidence": {
           "anonymous_http_status": 200,
           "actual_sha256": "34fb81e572f60e20e4dadff9f5040da7abf9882bbf5cf64a425a03297428a436",
-          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
-          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
+          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       },
       {
         "id": "D100:bgk-html",
-        "href": "https://zenodo.org/api/records/22237442/files/02_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.html/content",
+        "href": "https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/bgk/",
+        "labels": {
+          "id": "Baca Bundel, Berkas, dan Kohomologi — 30 unit lengkap",
+          "en": "Read Bundles, Sheaves and Cohomology — all 30 units"
+        },
+        "contentLanguage": "id",
+        "kind": "reader",
+        "format": "HTML",
+        "primary": false,
+        "offlineAfterDownload": false,
+        "pages": null,
+        "bytes": 6839675,
+        "sha256": "8f27972340bbe1dddd45294db6a637c64656cfa1b27d4bd4d54632c84ec3e886",
+        "evidence": {
+          "anonymous_http_status": 200,
+          "actual_sha256": "8f27972340bbe1dddd45294db6a637c64656cfa1b27d4bd4d54632c84ec3e886",
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-github-pages-03c200124d1470027b9164e275f9bb078bc07a6a.json",
+          "source_receipt_sha256": "7c3741065ae0f88f389441fe656f9872300435839fa151107e827c100cc292d6"
+        }
+      },
+      {
+        "id": "D100:bgk-html-download",
+        "href": "https://zenodo.org/api/records/22543825/files/02_Bundel-Berkas-dan-Kohomologi_id-ID_Units-01-30_corr1.html/content",
         "labels": {
           "id": "Unduh HTML Bundel, Berkas, dan Kohomologi lengkap",
           "en": "Download complete Bundles, Sheaves and Cohomology HTML"
         },
         "contentLanguage": "id",
-        "kind": "companion",
+        "kind": "portable_html",
         "format": "HTML",
         "primary": false,
-        "offlineAfterDownload": false,
+        "offlineAfterDownload": true,
         "pages": null,
-        "bytes": 6837686,
-        "sha256": "1805fb6325a12d0400999d5fab5bd4fe101174e088a7a2e54fa47ffb32ce243e",
+        "bytes": 6839229,
+        "sha256": "a37e060ed1ea3c30860380cc07ccdbc269dc1b115c865fe5b9d063382217414f",
         "evidence": {
           "anonymous_http_status": 200,
-          "actual_sha256": "1805fb6325a12d0400999d5fab5bd4fe101174e088a7a2e54fa47ffb32ce243e",
-          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
-          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+          "actual_sha256": "a37e060ed1ea3c30860380cc07ccdbc269dc1b115c865fe5b9d063382217414f",
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
+          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       },
       {
         "id": "D100:bridge-pdf",
-        "href": "https://zenodo.org/api/records/22237442/files/01_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1.pdf/content",
+        "href": "https://zenodo.org/api/records/22543825/files/01_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1.pdf/content",
         "labels": {
           "id": "Pendamping: dari varietas ke skema",
           "en": "Companion: from varieties to schemes"
@@ -345,13 +389,13 @@ export const finalEditions = [
         "evidence": {
           "anonymous_http_status": 200,
           "actual_sha256": "ed54f440409b2aa7beb5a1ff24be0e54de7845576f3f4d06e88fd58c9feb2131",
-          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
-          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
+          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       },
       {
         "id": "D100:bridge-html",
-        "href": "https://zenodo.org/api/records/22237442/files/02_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1_html.zip/content",
+        "href": "https://zenodo.org/api/records/22543825/files/02_Pendamping-Editorial-Varietas-ke-Skema_id-ID_corr1_html.zip/content",
         "labels": {
           "id": "Unduh paket HTML pendamping",
           "en": "Download the companion HTML package"
@@ -360,15 +404,15 @@ export const finalEditions = [
         "kind": "portable_html",
         "format": "HTML ZIP",
         "primary": false,
-        "offlineAfterDownload": false,
+        "offlineAfterDownload": true,
         "pages": null,
         "bytes": 2784305,
         "sha256": "487c13991626f0e2c524d5c455930b83b6b242d54d8915087edf4823f1303bdc",
         "evidence": {
           "anonymous_http_status": 200,
           "actual_sha256": "487c13991626f0e2c524d5c455930b83b6b242d54d8915087edf4823f1303bdc",
-          "source_receipt": "qa/ORIGINAL_BRIDGE_CORR1_ZENODO_PUBLICATION.json",
-          "source_receipt_sha256": "b6e5d3f80dcb13a7201c31c75f0a03b462eb408b281089d34224dfe084402cab"
+          "source_receipt": "backend/authority/federated-navigation-publications/d100-zenodo-22543825.json",
+          "source_receipt_sha256": "0aa2218072ebba22c56d0ff732e29c30f62f5fb40bfaf5cd5859e78ac5168a4e"
         }
       }
     ]

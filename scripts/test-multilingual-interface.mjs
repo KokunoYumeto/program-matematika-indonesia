@@ -89,6 +89,7 @@ for(const locale of supportedLocales){
   assert.equal(interfaceAuthority.navigation.aria,localeMetadata[locale].navigation.aria);
   assert.equal(interfaceAuthority.navigation.lead,localeMetadata[locale].navigation.lead);
   assert.equal(interfaceAuthority.navigation.program_root,localeMetadata[locale].navigation.programRoot ?? localeMetadata[locale].navigation.program_root);
+  assert.equal(interfaceAuthority.navigation.original_source,localeMetadata[locale].navigation.originalSource ?? localeMetadata[locale].navigation.original_source);
   assert.equal(interfaceAuthority.navigation.related_page,localeMetadata[locale].navigation.relatedPage ?? localeMetadata[locale].navigation.related_page);
 }
 for (const gateway of centralNavigation.gateways) {
@@ -336,7 +337,7 @@ for (let index=0;index<d100CentralResources.length;index+=1) {
   assert.deepEqual([d100BoundResources[index].bytes,d100BoundResources[index].sha256],[local.length,createHash('sha256').update(local).digest('hex')]);
   assert.equal(d100BoundResources[index].hostedNavigationOverlay,'v1');
 }
-assert.ok(englishResources.D100.some(r=>r.kind==='archive' && r.href==='https://doi.org/10.5281/zenodo.22340270'));
+assert.ok(englishResources.D100.some(r=>r.kind==='archive' && r.href==='https://doi.org/10.5281/zenodo.22543825'));
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>r.pages),[504,381,89]);
 assert.equal(englishResources.D100.filter(r=>r.pages).reduce((n,r)=>n+r.pages,0),974);
 assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>[r.bytes,r.sha256]),[
@@ -505,7 +506,7 @@ assert.equal(finalEditionSource.bytes, editionBytes.length);
 assert.equal(finalEditionSource.sha256, createHash('sha256').update(editionBytes).digest('hex'));
 assert.deepEqual(finalEditions.map(r=>r.courseId), ['A10','A20','A30','B95','C140','D100']);
 const finalResources = finalEditions.flatMap(r=>r.resources);
-assert.equal(finalResources.length,14);
+assert.equal(finalResources.length,16);
 assert.equal(finalResources.reduce((n,r)=>n+(r.pages??0),0),9886);
 for (const corrupt of [
   input=>{input.editions[0].courseId='Z999';},
@@ -531,7 +532,7 @@ for(const locale of supportedLocales) {
   for(const id of ['random-mathematical-statistics-html','random-mathematical-statistics-pdf','random-mathematical-statistics-doi']) assert.ok(stats.some(r=>r.supplementId===id));
   const geo=resourceBindings(interfaceCourses.find(r=>r.id==='D100'),locale).filter(r=>r.editionResourceId);
   const d100Edition=editionInput.editions.find(e=>e.courseId==='D100');
-  assert.equal(geo.length,6); assert.equal(geo.reduce((n,r)=>n+(d100Edition.resources.find(e=>e.id===r.editionResourceId)?.pages??0),0),975);
+  assert.equal(geo.length,8); assert.equal(geo.reduce((n,r)=>n+(d100Edition.resources.find(e=>e.id===r.editionResourceId)?.pages??0),0),975);
   const b95Gateway=resourceBindings(interfaceCourses.find(r=>r.id==='B95'),locale).filter(r=>r.href===siteOrigin+'id-ID/courses/B95/');
   assert.equal(b95Gateway.length,1); assert.equal(b95Gateway[0].accessRole,'tool');
   for(const id of ['A20','A30','B95']) assert.ok(!resourceBindings(interfaceCourses.find(r=>r.id===id),locale).some(r=>r.editionResourceId && r.format !== 'PDF'));
@@ -666,7 +667,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   assert.deepEqual(cardIds, ids, locale + '/' + file + ' static coverage');
   assert.equal([...staticHtml.matchAll(/data-reader-action="([^"]+)"/g)].length, 7, 'Seven verified CLP actions visible in static markup');
   for (const action of verifiedReaderActions) assert.ok(staticHtml.includes(action.href.replaceAll('&', '&amp;')));
-  assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,14);
+  assert.equal([...staticHtml.matchAll(/data-edition-resource="([^"]+)"/g)].length,finalResources.length);
   for (const resource of finalResources) assert.ok(staticHtml.includes(resource.href.replaceAll('&','&amp;')));
   assert.equal([...staticHtml.matchAll(/data-capability-tool="([^"]+)"/g)].length,capabilityTools.length);
   assert.equal([...staticHtml.matchAll(/data-supplemental-reader="([^"]+)"/g)].length,supplementalReaders.length);
@@ -718,11 +719,13 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors, the bilingual B80/D120 tools, and the D90 route.
-    // The measured union peaks below 469 KiB raw and 94 KiB compressed.
-    assert.ok(Buffer.byteLength(html) < 469 * 1024, 'Offline map size budget');
+    // The measured union peaks below 478 KB raw and 95.1 KB compressed after
+    // combining the B90 capability, distinct live/downloadable D100 routes,
+    // and the universal authoritative-original navigation closure.
+    assert.ok(Buffer.byteLength(html) < 478000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 94 * 1024, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 95100, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
