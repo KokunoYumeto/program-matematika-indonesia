@@ -16,6 +16,7 @@ INPUTS = {
     'published': 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
     'clpRoutes': 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
     'clpView': 'docs/backend/clp/validation.json',
+    'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
     'b40': 'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -52,7 +53,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 36
 assert model['summary']['roles_without_validated_common_adapter'] == 4
 assert model['summary']['locally_represented_families'] == 29
-assert model['summary']['github_evidenced_roles'] == 34
+assert model['summary']['github_evidenced_roles'] == 35
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -91,7 +92,7 @@ assert roles['A20']['common_adapter']['mapping_scope'] == (
     'problem_identities_5238_solution_identities_236_concepts_340_terms_1614_'
     'corrections_and_17_component_rights_with_2971_unsolved_exercises_preserved'
 )
-assert roles['A20']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['A20']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['A20']['common_adapter']['zenodo_preservation'] == 'not_established'
 assert roles['A20']['common_adapter']['public_package'] is None
 assert [row['kind'] for row in roles['A20']['common_adapter']['local_evidence']] == [
@@ -412,6 +413,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('clp_route_count', 'clpRoutes', lambda value: value['summary'].update(action_count=6)),
         ('clp_view_not_pass', 'clpView', lambda value: value.update(state='fail')),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
+        ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
+        ('a20_missing_teacher_readback', 'a20', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/a20/A20-pengajar.html'])),
         ('b40_nonanonymous', 'b40', lambda value: value.update(anonymous=False)),
         ('b40_missing_teacher_readback', 'b40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/b40/B40-pengajar.html'])),
         ('b80_nonanonymous', 'b80', lambda value: value.update(anonymous=False)),
