@@ -25,6 +25,7 @@ INPUTS = {
     'c110': 'backend/course-capsule-v1/adapters/c110-capability-v1/publication/GITHUB_READBACK_c7ccbcc9a27a.json',
     'c120': 'backend/course-capsule-v1/adapters/c120-capability-v1/publication/GITHUB_READBACK_5cef326a811b.json',
     'c60': 'backend/course-capsule-v1/adapters/c60-capability-v1/publication/GITHUB_READBACK_306c9e080f89.json',
+    'b90': 'backend/course-capsule-v1/adapters/b90-capability-v1/publication/GITHUB_READBACK_37dfd587bac2.json',
     'd10': 'backend/course-capsule-v1/adapters/d10-capability-v1/publication/GITHUB_READBACK_a290054a4e16.json',
     'd40': 'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
     'd70': 'backend/course-capsule-v1/adapters/d70-capability-v1/publication/GITHUB_READBACK_2ce9fbb5dacd.json',
@@ -51,7 +52,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 35
 assert model['summary']['roles_without_validated_common_adapter'] == 5
 assert model['summary']['locally_represented_families'] == 28
-assert model['summary']['github_evidenced_roles'] == 33
+assert model['summary']['github_evidenced_roles'] == 34
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -177,8 +178,9 @@ assert roles['B90']['common_adapter']['mapping_scope'] == (
     '91_concepts_119_terms_152_corrections_and_4_component_rights_with_explicit_'
     'answer_supplement_exclusion'
 )
-assert roles['B90']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['B90']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['B90']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['B90']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert roles['B90']['learner']['tools'] == [{
     'href': '../backend/b90/B90.html',
     'label': 'B90 · Probabilitas Berbasis Kalkulus',
@@ -383,6 +385,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('c120_missing_teacher_readback', 'c120', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/c120/C120-pengajar.html'])),
         ('c60_nonanonymous', 'c60', lambda value: value.update(anonymous=False)),
         ('c60_missing_teacher_readback', 'c60', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/c60/C60-pengajar.html'])),
+        ('b90_nonanonymous', 'b90', lambda value: value.update(anonymous=False)),
+        ('b90_missing_teacher_readback', 'b90', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/b90/B90-pengajar.html'])),
         ('d40_nonanonymous', 'd40', lambda value: value.update(anonymous=False)),
         ('d40_missing_teacher_readback', 'd40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d40/D40-pengajar.html'])),
         ('d70_nonanonymous', 'd70', lambda value: value.update(anonymous=False)),
