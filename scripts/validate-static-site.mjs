@@ -1304,6 +1304,82 @@ for (const name of [
   assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror B90 Sites berbeda dari docs.`);
 }
 
+const d30PublicSurfacePaths = [
+  'backend/d30/D30.html',
+  'backend/d30/D30-pengajar.html',
+  'backend/d30/capabilities.json',
+  'backend/d30/learning-map.json',
+  'backend/d30/learner-map.json',
+  'backend/d30/educator-map.json',
+  'backend/d30/public-evidence.json',
+  'backend/d30/claim-boundary.json',
+  'backend/d30/data/rights-index.jsonl',
+  'backend/d30/data/corrections-index.jsonl',
+  'backend/d30/data/terms-index.jsonl',
+  'backend/d30/data/relations-index.jsonl',
+  'backend/d30/validation.json',
+];
+for (const name of d30PublicSurfacePaths) {
+  await assertMirrorOrCentralNavigationIdentity(
+    `public/hub/${name}`,
+    `docs/${name}`,
+    `${name}: D30 Sites mirror differs from docs`,
+  );
+}
+
+const [
+  d30LearnerHub,
+  d30EducatorHub,
+  d30Capabilities,
+  d30LearningMap,
+  d30LearnerMap,
+  d30EducatorMap,
+  d30PublicEvidence,
+  d30ClaimBoundary,
+  d30Validation,
+] = await Promise.all([
+  readFile(resolve(root, 'docs/backend/d30/D30.html'), 'utf8'),
+  readFile(resolve(root, 'docs/backend/d30/D30-pengajar.html'), 'utf8'),
+  readJson('docs/backend/d30/capabilities.json'),
+  readJson('docs/backend/d30/learning-map.json'),
+  readJson('docs/backend/d30/learner-map.json'),
+  readJson('docs/backend/d30/educator-map.json'),
+  readJson('docs/backend/d30/public-evidence.json'),
+  readJson('docs/backend/d30/claim-boundary.json'),
+  readJson('docs/backend/d30/validation.json'),
+]);
+const d30NativeReader = 'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/';
+const d30OriginalSources = [
+  'https://www.randomservices.org/random/',
+  'https://continuous-time-mcs.quantecon.org/',
+  'https://gordanz.github.io/stochastic-book/',
+];
+assert.match(d30LearnerHub, /href="D30-pengajar\.html"/);
+assert.match(d30EducatorHub, /href="D30\.html"/);
+for (const surface of [d30LearnerHub, d30EducatorHub]) {
+  assert.match(surface, new RegExp(escapeRegex(d30NativeReader)));
+  for (const source of d30OriginalSources) assert.match(surface, new RegExp(escapeRegex(source)));
+}
+assert.equal(d30Capabilities.course_id, 'D30');
+assert.equal(d30Capabilities.contract, 'course-learning-capability/1');
+assert.equal(d30Capabilities.zero_copy.native_bodies_embedded, false);
+assert.equal(d30Capabilities.access.public_reader, d30NativeReader);
+assert.deepEqual(d30Capabilities.access.authoritative_originals.map(({url}) => url), d30OriginalSources);
+assert.equal(d30LearningMap.units.length, 57);
+assert.equal(d30LearnerMap.units.length, 57);
+assert.equal(d30EducatorMap.units.length, 57);
+for (const unit of d30LearnerMap.units) {
+  assert.equal(unit.body_embedded, false, `${unit.native_id}: D30 learner projection copied a native body.`);
+  assert.match(unit.reader_url, /^https:\/\/kokunoyumeto\.github\.io\/measure-theoretic-probability-stochastic-processes-id\//);
+  assert.match(unit.original_url, /^https:\/\//);
+}
+assert.equal(d30PublicEvidence.reader, d30NativeReader);
+assert.deepEqual(d30PublicEvidence.authoritative_originals.map(({url}) => url), d30OriginalSources);
+assert.ok(d30ClaimBoundary.admitted.includes('public reader and original-source routes'));
+assert.equal(d30Validation.result, 'PASS');
+assert.equal(d30Validation.checks.public_reader_original_links, true);
+assert.equal(d30Validation.checks.authoritative_originals_visible, true);
+
 for (const name of [
   'backend/a20/A20.html',
   'backend/a20/A20-pengajar.html',
@@ -1587,6 +1663,22 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
+assert.equal(centralNavigation.summary.course_surface_roots, 25);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 65);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 340);
+assert.equal(centralNavigation.summary.classified_html_documents, 343);
+assert.deepEqual(
+  centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/d30'),
+  {
+    root: 'docs/backend/d30',
+    locale: 'id',
+    state: 'current-course-capability',
+    documents: [
+      {path: 'D30.html', course_ids: ['D30'], contents_paths: ['D30-pengajar.html']},
+      {path: 'D30-pengajar.html', course_ids: ['D30'], contents_paths: ['D30.html']},
+    ],
+  },
+);
 const docsRoot = resolve(root, 'docs');
 const collectHtml = async (directory, exclusions = [], current = directory) => {
   const excluded = exclusions.map((value) => resolve(directory, ...value.split('/')));

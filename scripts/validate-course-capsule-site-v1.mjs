@@ -117,6 +117,19 @@ const logicalFiles = [
   'backend/d10/rights-and-terms.json',
   'backend/d10/ledger-references.json',
   'backend/d10/validation.json',
+  'backend/d30/D30.html',
+  'backend/d30/D30-pengajar.html',
+  'backend/d30/capabilities.json',
+  'backend/d30/learning-map.json',
+  'backend/d30/learner-map.json',
+  'backend/d30/educator-map.json',
+  'backend/d30/public-evidence.json',
+  'backend/d30/claim-boundary.json',
+  'backend/d30/data/rights-index.jsonl',
+  'backend/d30/data/corrections-index.jsonl',
+  'backend/d30/data/terms-index.jsonl',
+  'backend/d30/data/relations-index.jsonl',
+  'backend/d30/validation.json',
   'backend/d100/D100.html',
   'backend/d100/D100-pengajar.html',
   'backend/d100/learning-map.json',
@@ -219,8 +232,8 @@ assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.jso
 // roles without rewriting that history.
 const expectedFrozenSuccessorAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
 const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10', 'D50'];
-const expectedCapabilityAdapterRoles = ['A20', 'B40', 'B70', 'B80', 'B90', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
-const expectedCapabilityPackageCount = 18;
+const expectedCapabilityAdapterRoles = ['A20', 'B40', 'B70', 'B80', 'B90', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
+const expectedCapabilityPackageCount = 19;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedFrozenSuccessorAdapterRoles), 'Frozen successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -326,7 +339,19 @@ const d10Validation = JSON.parse(docsBytes['backend/d10/validation.json']);
 const d10LearningMap = JSON.parse(docsBytes['backend/d10/learning-map.json']);
 const d10EducatorMap = JSON.parse(docsBytes['backend/d10/educator-map.json']);
 const d10RightsAndTerms = JSON.parse(docsBytes['backend/d10/rights-and-terms.json']);
-const d10LedgerReferences = JSON.parse(docsBytes['backend/d10/ledger-references.json']);
+  const d10LedgerReferences = JSON.parse(docsBytes['backend/d10/ledger-references.json']);
+const d30Html = docsBytes['backend/d30/D30.html'].toString('utf8');
+const d30EducatorHtml = docsBytes['backend/d30/D30-pengajar.html'].toString('utf8');
+const d30Capabilities = JSON.parse(docsBytes['backend/d30/capabilities.json']);
+const d30LearningMap = JSON.parse(docsBytes['backend/d30/learning-map.json']);
+const d30LearnerMap = JSON.parse(docsBytes['backend/d30/learner-map.json']);
+const d30EducatorMap = JSON.parse(docsBytes['backend/d30/educator-map.json']);
+const d30PublicEvidence = JSON.parse(docsBytes['backend/d30/public-evidence.json']);
+const d30ClaimBoundary = JSON.parse(docsBytes['backend/d30/claim-boundary.json']);
+const d30Validation = JSON.parse(docsBytes['backend/d30/validation.json']);
+const d30AdapterManifest = JSON.parse(await readFile(resolve(project, 'backend/course-capsule-v1/adapters/d30-capability-v1/manifest.json')));
+const d30AdapterValidationBytes = await readFile(resolve(project, 'backend/course-capsule-v1/adapters/d30-capability-v1/validation.json'));
+const centralNavigationOverlay = JSON.parse(await readFile(resolve(project, 'backend/authority/central-course-surface-navigation-overlay-v1.json')));
 const d120Validation = JSON.parse(docsBytes['backend/d120/validation.json']);
 const d120LearningMap = JSON.parse(docsBytes['backend/d120/learning-map.json']);
 const d120EducatorMap = JSON.parse(docsBytes['backend/d120/educator-map.json']);
@@ -386,8 +411,8 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 26);
-assert.equal(authorityToolIds.length, 36);
+assert.equal(Object.keys(authorityToolsByCourse).length, 27);
+assert.equal(authorityToolIds.length, 37);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
 assert.equal(manifest.summary.published_count, 37);
@@ -571,6 +596,127 @@ assert.equal(docsBytes['backend/a20/data/pedagogical-relation-index.jsonl'].toSt
 assert.equal(docsBytes['backend/a20/data/rights-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 17);
 assert.equal(docsBytes['backend/a20/data/corrections-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 1614);
 assert.equal(docsBytes['backend/a20/data/terms-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 340);
+const d30 = rows.find(({ course_id }) => course_id === 'D30');
+assert.equal(d30.course.state, 'published');
+assert.equal(d30.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(d30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(d30.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'd30.open_learner_hub', href: 'backend/d30/D30.html' },
+]);
+assert.equal(d30.layers.learner.tools[0].page.path, 'docs/backend/d30/D30.html');
+assert.equal(d30.layers.learner.tools[0].resource.path, 'docs/backend/d30/learning-map.json');
+assert.equal(d30.layers.learner.tools[0].evidence.path, 'docs/backend/d30/validation.json');
+assert.equal(d30.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(d30.layers.translation.ledger_status, 'verified');
+assert.equal(d30.layers.translation.terminology_status, 'verified');
+assert.equal(d30.layers.translation.rights_status, 'verified');
+assert.equal(d30.layers.translation.corrections_status, 'verified');
+assert.equal(d30.layers.production.build_status, 'verified');
+assert.equal(d30.layers.production.deterministic_replay_status, 'verified');
+assert.equal(d30.layers.educator.status, 'verified');
+assert.equal(d30.layers.educator.unit_alignment_status, 'verified');
+assert.deepEqual(d30.layers.educator.resources.map(({ id, status }) => ({ id, status })), [
+  { id: 'D30:native-educator-observation', status: 'available_unverified' },
+  { id: 'D30:educator-hub-v1', status: 'verified' },
+  { id: 'D30:educator-map-v1', status: 'verified' },
+  { id: 'D30:terms-index-v1', status: 'verified' },
+  { id: 'D30:rights-index-v1', status: 'verified' },
+  { id: 'D30:corrections-index-v1', status: 'verified' },
+  { id: 'D30:relations-index-v1', status: 'verified' },
+]);
+assert.equal(d30.layers.educator.resources[0].url, 'https://zenodo.org/records/22182655');
+assert.equal(d30.layers.learner.primary.url, 'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/');
+assert.equal(d30.layers.learner.pdf.sha256, 'dda34267df928672e03e04b4c8a36d768aab2d33bc1194b269074da0d2d24e40');
+assert.equal(d30.layers.learner.portable_html.sha256, 'e32dba5a896fb847192bbe944e7fd3db4d95f61ee57e33751bbff3108fca214a');
+assert.equal(d30.layers.learner.capabilities.semantic_html, 'verified');
+assert.equal(d30.layers.learner.capabilities.mathml, 'available_unverified');
+assert.equal(d30AdapterManifest.course_id, 'D30');
+assert.equal(d30AdapterManifest.contract, 'course-learning-capability/1');
+assert.equal(d30AdapterManifest.zero_copy, true);
+assert.equal(d30AdapterManifest.native_bodies_copied, false);
+assert.equal(d30AdapterManifest.component_rights_preserved, true);
+assert.equal(d30AdapterManifest.public_state_changed, false);
+const d30PublicMappings = [
+  ['views/D30.html', 'backend/d30/D30.html'],
+  ['views/D30-pengajar.html', 'backend/d30/D30-pengajar.html'],
+  ['data/capabilities.json', 'backend/d30/capabilities.json'],
+  ['data/learning-map.json', 'backend/d30/learning-map.json'],
+  ['data/learner-map.json', 'backend/d30/learner-map.json'],
+  ['data/educator-map.json', 'backend/d30/educator-map.json'],
+  ['data/public-evidence.json', 'backend/d30/public-evidence.json'],
+  ['data/claim-boundary.json', 'backend/d30/claim-boundary.json'],
+  ['data/rights-index.jsonl', 'backend/d30/data/rights-index.jsonl'],
+  ['data/corrections-index.jsonl', 'backend/d30/data/corrections-index.jsonl'],
+  ['data/terms-index.jsonl', 'backend/d30/data/terms-index.jsonl'],
+  ['data/relations-index.jsonl', 'backend/d30/data/relations-index.jsonl'],
+];
+for (const [adapterPath, publicPath] of d30PublicMappings) {
+  const expected = d30AdapterManifest.outputs.find(({ path }) => path === adapterPath);
+  assert.ok(expected, `D30 adapter manifest does not bind ${adapterPath}.`);
+  const expectedSource = { path: 'docs/' + publicPath, bytes: expected.bytes, sha256: expected.sha256 };
+  const observedHosted = identity('docs/' + publicPath, docsBytes[publicPath]);
+  if (adapterPath.startsWith('views/')) {
+    const overlay = centralNavigationOverlay.files.find(({ document }) => document === 'docs/' + publicPath);
+    assert.ok(overlay, `${publicPath}: hosted navigation overlay is missing.`);
+    assert.deepEqual(overlay.source_body, expectedSource, `${publicPath}: navigation overlay does not bind the sealed adapter source body.`);
+    assert.deepEqual(overlay.hosted_surface, observedHosted, `${publicPath}: hosted navigation-overlay identity drift.`);
+    assert.equal(overlay.source_body_replay_exact, true);
+    assert.deepEqual(overlay.placements, ['top', 'bottom']);
+    assert.equal(overlay.program_root_return_links_per_placement, 2);
+    assert.equal(overlay.course_card_return_links_per_placement, 2);
+    assert.equal(overlay.authoritative_original_links_per_placement, 3);
+  } else {
+    assert.deepEqual(observedHosted, expectedSource, `${publicPath}: public D30 byte identity differs from the sealed adapter.`);
+  }
+}
+assert.deepEqual(docsBytes['backend/d30/validation.json'], d30AdapterValidationBytes, 'Public D30 validation receipt differs from the sealed adapter.');
+assert.equal(d30Validation.result, 'PASS');
+assert.equal(Object.values(d30Validation.checks).every(Boolean), true);
+assert.equal(d30Validation.counts.entities, 2538);
+assert.equal(d30Validation.counts.segments, 6333);
+assert.equal(d30Validation.counts.relations, 3256);
+assert.equal(d30Validation.counts.high_level_units, 57);
+assert.equal(d30Validation.counts.exercise_surfaces, 122);
+assert.equal(d30Validation.counts.prerequisite_routes, 142);
+assert.equal(d30Validation.counts.labs, 5);
+assert.equal(d30Validation.counts.mastery_problems, 36);
+assert.equal(d30Validation.counts.assessment_forms, 2);
+assert.equal(d30Validation.negative_fixtures.length, 6);
+assert.equal(d30LearningMap.units.length, 57);
+assert.equal(d30LearningMap.labs.length, 5);
+assert.equal(d30LearningMap.prerequisite_routes.length, 142);
+assert.equal(d30LearningMap.artifacts.length, 6);
+assert.equal(d30LearningMap.sources.length, 42);
+assert.equal(d30LearnerMap.units.length, 57);
+assert.equal(d30EducatorMap.units.length, 57);
+assert.equal(d30EducatorMap.assessment.forms, 2);
+assert.equal(d30EducatorMap.assessment.common_outcomes, 26);
+assert.equal(d30Capabilities.counts.terms, 249);
+assert.equal(d30Capabilities.counts.corrections, 489);
+assert.equal(d30Capabilities.rights.component_specific, true);
+assert.equal(d30Capabilities.rights.blanket_license_claimed, false);
+assert.equal(d30PublicEvidence.record_id, 22182655);
+assert.equal(d30PublicEvidence.content_commit, 'd0111bc20dc813f5fde12eb715be4cf6dd5a94bd');
+assert.equal(d30PublicEvidence.content_tree, '4bc91cba4fad7cbfbd284267be3d07cafb36251e');
+assert.equal(d30PublicEvidence.files.length, 6);
+assert.equal(d30PublicEvidence.all_public_sha256_exact, true);
+assert.ok(d30ClaimBoundary.not_claimed.includes('copied native bodies'));
+assert.equal(docsBytes['backend/d30/data/rights-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 42);
+assert.equal(docsBytes['backend/d30/data/corrections-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 489);
+assert.equal(docsBytes['backend/d30/data/terms-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 249);
+assert.equal(docsBytes['backend/d30/data/relations-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 3256);
+for (const d30Page of [d30Html, d30EducatorHtml]) {
+  assert.match(d30Page, /<html lang="id">/);
+  assert.match(d30Page, /href="\/en\/"/);
+  assert.match(d30Page, /href="\/id\/"/);
+  assert.match(d30Page, /https:\/\/kokunoyumeto\.github\.io\/measure-theoretic-probability-stochastic-processes-id\//);
+  assert.match(d30Page, /https:\/\/github\.com\/KokunoYumeto\/measure-theoretic-probability-stochastic-processes-id\/tree\/d0111bc20dc813f5fde12eb715be4cf6dd5a94bd/);
+  assert.match(d30Page, /https:\/\/zenodo\.org\/records\/22182655/);
+  assert.match(d30Page, /https:\/\/www\.randomservices\.org\/random\//);
+  assert.match(d30Page, /https:\/\/continuous-time-mcs\.quantecon\.org\//);
+  assert.match(d30Page, /https:\/\/gordanz\.github\.io\/stochastic-book\//);
+  assert.doesNotMatch(d30Page, /<script\b/i);
+}
 const d40 = rows.find(({ course_id }) => course_id === 'D40');
 assert.equal(d40.course.state, 'published');
 assert.equal(d40.course_native.repository, undefined);
@@ -1105,7 +1251,7 @@ const receipt = {
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,
-    course_learning_capability_roles: 14,
+    course_learning_capability_roles: 15,
     snapshot_v2_public_role_bindings: 9,
     snapshot_v2_pending_role_bindings: 0,
     judson_course_views: 2,

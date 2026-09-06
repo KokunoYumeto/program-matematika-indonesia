@@ -22,6 +22,9 @@ const sources={
   c60:'backend/course-capsule-v1/adapters/c60-capability-v1/publication/GITHUB_READBACK_306c9e080f89.json',
   b90:'backend/course-capsule-v1/adapters/b90-capability-v1/publication/GITHUB_READBACK_37dfd587bac2.json',
   d10:'backend/course-capsule-v1/adapters/d10-capability-v1/publication/GITHUB_READBACK_a290054a4e16.json',
+  d30Manifest:'backend/course-capsule-v1/adapters/d30-capability-v1/manifest.json',
+  d30Validation:'backend/course-capsule-v1/adapters/d30-capability-v1/validation.json',
+  d30Public:'backend/course-capsule-v1/adapters/d30-capability-v1/data/public-evidence.json',
   d40:'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
   d70:'backend/course-capsule-v1/adapters/d70-capability-v1/publication/GITHUB_READBACK_2ce9fbb5dacd.json',
   d80:'backend/course-capsule-v1/adapters/d80-capability-v1/publication/GITHUB_READBACK_b22cd627901c.json',
@@ -61,6 +64,25 @@ assert.equal(data.b90.state,'pass');assert.equal(data.b90.anonymous,true);assert
 assert.equal(data.b90.source_commit,'37dfd587bac231dc985f6185f6a6c7e48122f856');
 assert.equal(data.b90.base_commit,'47d42078b05e57705a2185ed531a3ea82f0490b6');
 assert.equal(data.d10.state,'pass');assert.equal(data.d10.anonymous,true);assert.equal(data.d10.credentials_used,false);
+assert.equal(data.d30Manifest.schema,'d30-capability-manifest/1');
+assert.equal(data.d30Manifest.course_id,'D30');assert.equal(data.d30Manifest.contract,'course-learning-capability/1');
+assert.equal(data.d30Manifest.zero_copy,true);assert.equal(data.d30Manifest.native_bodies_copied,false);
+assert.equal(data.d30Manifest.component_rights_preserved,true);assert.equal(data.d30Manifest.public_state_changed,false);
+assert.equal(data.d30Validation.schema,'d30-capability-validation/1');
+assert.equal(data.d30Validation.course_id,'D30');assert.equal(data.d30Validation.contract,data.d30Manifest.contract);
+assert.equal(data.d30Validation.result,'PASS');assert.ok(Object.values(data.d30Validation.checks).every(Boolean));
+assert.deepEqual(data.d30Validation.counts,data.d30Manifest.counts);
+assert.deepEqual(data.d30Validation.manifest,{path:'manifest.json',bytes:bytes.d30Manifest.length,sha256:sha256(bytes.d30Manifest)});
+assert.equal(data.d30Public.schema,'d30-public-evidence/1');
+assert.equal(data.d30Public.anonymous_reader_byte_readback,true);assert.equal(data.d30Public.all_public_sha256_exact,true);
+assert.equal(data.d30Public.repository,'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id');
+assert.equal(data.d30Public.reader,'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/');
+assert.equal(data.d30Public.doi,'10.5281/zenodo.22182655');assert.equal(data.d30Public.concept_doi,'10.5281/zenodo.22059941');
+assert.equal(data.d30Public.content_commit,data.d30Manifest.native_release.commit);
+assert.equal(data.d30Public.content_tree,data.d30Manifest.native_release.tree);
+assert.equal(data.d30Public.files.length,6);assert.ok(data.d30Public.files.every(row=>row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)&&row.url.startsWith('https://zenodo.org/')));
+const d30PublicOutput=data.d30Manifest.outputs.find(row=>row.path==='data/public-evidence.json');
+assert.deepEqual(d30PublicOutput,{path:'data/public-evidence.json',bytes:bytes.d30Public.length,sha256:sha256(bytes.d30Public)});
 assert.equal(data.d40.state,'pass');assert.equal(data.d40.anonymous,true);assert.equal(data.d40.credentials_used,false);
 assert.equal(data.d70.state,'pass');assert.equal(data.d70.anonymous,true);assert.equal(data.d70.credentials_used,false);
 assert.equal(data.d80.state,'pass');assert.equal(data.d80.anonymous,true);assert.equal(data.d80.credentials_used,false);
@@ -149,6 +171,30 @@ assert.equal(frozenPublished.size,data.published.adapters.length,'Duplicate publ
 const rows=data.capsules.map(capsule=>{
   const role=capsule.course_id,family=familyByRole.get(role),adapter=capsule.layers.interoperability.semantic_adapter;
   assert.ok(family);
+  if(role==='D30'){
+    assert.equal(adapter.status,'verified');assert.equal(adapter.contract_version,data.d30Manifest.contract);
+    assert.equal(adapter.mapping_scope,'zero_copy_projection_of_2538_entities_6333_segments_3256_relations_57_high_level_surfaces_5_labs_36_solved_mastery_problems_and_2_equivalent_assessments');
+    for(const [kind,path,key] of [
+      ['central_adapter_manifest',sources.d30Manifest,'d30Manifest'],
+      ['deterministic_validation_receipt',sources.d30Validation,'d30Validation'],
+      ['verified_native_public_release',sources.d30Public,'d30Public'],
+    ]){
+      const evidence=adapter.evidence.find(row=>row.kind===kind&&row.locator===path);
+      assert.ok(evidence,`D30 missing exact ${kind} evidence`);
+      assert.equal(evidence.bytes,bytes[key].length);assert.equal(evidence.sha256,sha256(bytes[key]));
+    }
+    assert.equal(capsule.course_native.repository,data.d30Public.repository);
+    assert.equal(capsule.course_native.zenodo,`https://doi.org/${data.d30Public.doi}`);
+    assert.equal(capsule.layers.production.repository,data.d30Public.repository);
+    assert.equal(capsule.layers.production.zenodo,`https://doi.org/${data.d30Public.doi}`);
+    assert.equal(capsule.layers.production.release_status,'verified');
+    assert.equal(capsule.layers.learner.online_html.url,data.d30Public.reader);
+    assert.equal(capsule.layers.learner.primary.url,data.d30Public.reader);
+    const pdf=data.d30Public.files.find(row=>row.filename==='00_PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_38.pdf');
+    const portable=data.d30Public.files.find(row=>row.filename==='PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_38.zip');
+    assert.ok(pdf&&portable);assert.equal(capsule.layers.learner.pdf.sha256,pdf.sha256);assert.equal(capsule.layers.learner.pdf.bytes,pdf.bytes);
+    assert.equal(capsule.layers.learner.portable_html.sha256,portable.sha256);assert.equal(capsule.layers.learner.portable_html.bytes,portable.bytes);
+  }
   const integrated=['verified','legacy_verified'].includes(adapter.status);
   const publicRow=frozenPublished.get(role);
   const packet=publicRow?frozenPackages.get(publicRow.adapter_package_id):null;
@@ -163,7 +209,7 @@ const rows=data.capsules.map(capsule=>{
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
-      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
+      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
       zenodo_preservation:publicRow?'frozen_public_readback':role==='D50'?'new_embedded_successor_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established',
       local_evidence:adapter.evidence??[],
       public_package:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
@@ -176,7 +222,7 @@ const rows=data.capsules.map(capsule=>{
       unit_identity:capsule.layers.curriculum.unit_identity_status,
       relationship:clpRoles.includes(role)
         ?'central_view_consumes_verified_route_projection_pdf_runtime_adapter_consumption_not_claimed'
-        :['A20','B40','B80','B90','C60','C70','C110','C120','D10','D40','D70','D80','D90','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)
+        :['A20','B40','B80','B90','C60','C70','C110','C120','D10','D30','D40','D70','D80','D90','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)
           ?'directly_consumes_adapter_outputs'
           :publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources},
@@ -212,14 +258,14 @@ const summary={roles:40,native_families:33,locally_validated_adapter_roles:integ
   overall_program_backend_complete:false};
 assert.equal(summary.locally_validated_adapter_roles+summary.roles_without_validated_common_adapter,40);
 const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-06',scope:'Backend integration, not textbook translation progress.',
-  evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
+  evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
   evidence:Object.entries(sources).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),summary,roles:rows};
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const statuses={verified:'Diverifikasi',available_unverified:'Ada; belum diverifikasi',not_yet_produced:'Belum dibuat',unknown:'Belum terbukti',in_progress:'Dikerjakan'};
 const dimensionNames={curriculum:'Kurikulum dan unit',source_translation_ledger:'Ledger sumber/penerjemahan',terminology:'Istilah',reproducible_production:'Produksi yang dapat diulang',accessibility:'Aksesibilitas',learner:'Pelajar',educator:'Pengajar',federation:'Federasi komponen',interoperability:'Pertukaran data'};
 const details=row=>`<h3>Sembilan bidang kemampuan</h3><dl>${Object.entries(row.dimensions).map(([key,values])=>`<dt>${dimensionNames[key]}</dt><dd>${Object.entries(values).map(([name,value])=>`${esc(name)}: ${Array.isArray(value)?value.map(item=>`${esc(item.id)} — ${esc(statuses[item.status]??item.status)}`).join('; '):esc(statuses[value]??value??'Belum terbukti')}`).join('<br>')}</dd>`).join('')}</dl><h3>Pekerjaan tersisa</h3><ul>${row.next_required_work.map(text=>`<li>${esc(text)}</li>`).join('')}</ul><p>Backend lengkap: belum terbukti.</p>${row.common_adapter.public_package?`<p><a href="${esc(row.common_adapter.public_package.url)}">Paket adapter</a> · <a href="${esc(row.common_adapter.public_package.central_record)}">Rekaman pusat historis</a></p>`:''}<details><summary>Desain asli: temuan audit terdahulu</summary><p lang="en">${esc(row.native_design_audit.pattern)}</p><ul lang="en">${row.native_design_audit.recommended_reuse.map(text=>`<li>${esc(text)}</li>`).join('')}</ul><p>Temuan historis berikut harus diperiksa ulang sebelum dianggap masih berlaku:</p><ul lang="en">${row.native_design_audit.limitations.map(text=>`<li>${esc(text)}</li>`).join('')}</ul>${row.role_id==='B80'?'<p>Integrasi B80 sekarang menambahkan pertukaran reversibel serta tampilan pelajar/pengajar bersama.</p>':''}</details>`;
 const htmlRows=rows.map(row=>`<tr id="role-${row.role_id}"><th scope="row"><a href="../id/#course-${row.role_id}">${row.role_id} · ${esc(row.title)}</a><small>${esc(row.native_family_name)}</small></th><td>${esc(statuses[row.common_adapter.status]??row.common_adapter.status)}<small>${esc(row.common_adapter.contract??'Belum ada kontrak bersama')}</small></td><td>${row.learner.tools.map(tool=>`<p><a href="${esc(tool.href)}">${esc(tool.label)}</a></p>`).join('')||'<span>Belum ada alat pusat terindeks</span>'}</td><td>${esc(statuses[row.educator.status]??row.educator.status)}${row.educator.resources.map(resource=>`<p><a href="${esc(resource.url)}">${esc(resource.title)}</a></p>`).join('')}</td><td><details><summary>Bukti dan pekerjaan berikutnya</summary>${details(row)}<p>Identitas unit: ${esc(statuses[row.learner.unit_identity]??row.learner.unit_identity)}. Keselarasan pengajar: ${esc(statuses[row.educator.unit_alignment]??row.educator.unit_alignment)}.</p><p>Zenodo: ${row.common_adapter.zenodo_preservation==='frozen_public_readback'?'readback rilis tercatat':row.common_adapter.zenodo_preservation==='new_embedded_successor_readback'?'adapter tersimpan sebagai anggota tepat dalam navigator penerus yang dibaca balik secara anonim':row.role_id==='B80'?'pelestarian ditugaskan; belum diverifikasi':'bukti adapter belum tersedia'}.</p></details></td></tr>`).join('\n');
-const html=`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cakupan backend 40 peran</title><style>body{font:16px/1.5 system-ui;color:#183a35;background:#f5f5ed;margin:0}main{max-width:1400px;margin:auto;padding:28px}a{color:#086b63;text-underline-offset:3px}h1{font-size:2rem}small{display:block;color:#506660;margin-top:6px}.table{overflow:auto}table{border-collapse:collapse;width:100%;background:white}th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid #cad6d0}thead{background:#e0eae3}th{min-width:220px}td{min-width:170px}p{max-width:90ch}details p{min-width:200px}dt{font-weight:650;margin-top:1rem}dd{margin-left:0}h3{font-size:1rem}a:focus-visible,summary:focus-visible{outline:3px solid #cf8728;outline-offset:3px}</style></head><body><main><nav><a href="index.html">Pusat belajar dan mengajar</a> · <a href="../id/">Program</a></nav><h1>Cakupan backend: 40 peran</h1><p>${summary.locally_validated_adapter_roles} peran mempunyai adapter bersama yang telah diuji; ${summary.roles_without_validated_common_adapter} belum. Ini <strong>bukan</strong> persentase penerjemahan buku, dan tidak berarti backend lengkap untuk semua peran yang sudah mempunyai adapter.</p><p>Readback GitHub tercatat untuk ${summary.github_evidenced_roles} peran; readback pelestarian Zenodo tercatat untuk ${summary.zenodo_evidenced_roles}. Increment A20, CLP, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D40, D70, D80, D90, D100, dan D120 sudah dapat dipakai di web; bukti pelestarian Zenodo tetap dihitung terpisah. Tanggal matriks: 6 September 2026. Temuan desain asli dan bukti rilis terdahulu bukan pemeriksaan ulang seluruh buku hari ini. “Belum terbukti” berarti bukti integrasi pusat belum cukup, bukan berarti pekerjaan asli tidak ada atau terjemahan belum selesai.</p><div class="table" role="region" aria-label="Cakupan semua peran" tabindex="0"><table><caption>Adapter, penggunaan oleh pelajar, dan bahan pengajar per peran</caption><thead><tr><th>Peran dan keluarga native</th><th>Adapter bersama</th><th>Alat pelajar</th><th>Bahan pengajar</th><th>Batas bukti</th></tr></thead><tbody>${htmlRows}</tbody></table></div><p><a href="program-backend-coverage.json">Matriks terbuka dengan identitas bukti</a></p></main></body></html>\n`;
+const html=`<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cakupan backend 40 peran</title><style>body{font:16px/1.5 system-ui;color:#183a35;background:#f5f5ed;margin:0}main{max-width:1400px;margin:auto;padding:28px}a{color:#086b63;text-underline-offset:3px}h1{font-size:2rem}small{display:block;color:#506660;margin-top:6px}.table{overflow:auto}table{border-collapse:collapse;width:100%;background:white}th,td{padding:14px;text-align:left;vertical-align:top;border-bottom:1px solid #cad6d0}thead{background:#e0eae3}th{min-width:220px}td{min-width:170px}p{max-width:90ch}details p{min-width:200px}dt{font-weight:650;margin-top:1rem}dd{margin-left:0}h3{font-size:1rem}a:focus-visible,summary:focus-visible{outline:3px solid #cf8728;outline-offset:3px}</style></head><body><main><nav><a href="index.html">Pusat belajar dan mengajar</a> · <a href="../id/">Program</a></nav><h1>Cakupan backend: 40 peran</h1><p>${summary.locally_validated_adapter_roles} peran mempunyai adapter bersama yang telah diuji; ${summary.roles_without_validated_common_adapter} belum. Ini <strong>bukan</strong> persentase penerjemahan buku, dan tidak berarti backend lengkap untuk semua peran yang sudah mempunyai adapter.</p><p>Readback GitHub tercatat untuk ${summary.github_evidenced_roles} peran; readback pelestarian Zenodo tercatat untuk ${summary.zenodo_evidenced_roles}. Increment A20, CLP, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D30, D40, D70, D80, D90, D100, dan D120 sudah dapat dipakai di web; bukti pelestarian Zenodo tetap dihitung terpisah. Tanggal matriks: 6 September 2026. Temuan desain asli dan bukti rilis terdahulu bukan pemeriksaan ulang seluruh buku hari ini. “Belum terbukti” berarti bukti integrasi pusat belum cukup, bukan berarti pekerjaan asli tidak ada atau terjemahan belum selesai.</p><div class="table" role="region" aria-label="Cakupan semua peran" tabindex="0"><table><caption>Adapter, penggunaan oleh pelajar, dan bahan pengajar per peran</caption><thead><tr><th>Peran dan keluarga native</th><th>Adapter bersama</th><th>Alat pelajar</th><th>Bahan pengajar</th><th>Batas bukti</th></tr></thead><tbody>${htmlRows}</tbody></table></div><p><a href="program-backend-coverage.json">Matriks terbuka dengan identitas bukti</a></p></main></body></html>\n`;
 for(const [path,content]of [['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',json(model)],['docs/backend/program-backend-coverage.json',json(model)],['docs/backend/coverage.html',html]]){
   await mkdir(dirname(resolve(root,path)),{recursive:true});await writeFile(resolve(root,path),content);
 }

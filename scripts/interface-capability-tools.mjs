@@ -29,6 +29,7 @@ const contracts = {
   'd70.open_learner_hub':['D70','course_reader','backend/d70/D70.html'],
   'd80.open_learner_hub':['D80','course_reader','backend/d80/D80.html'],
   'd90.open_learner_hub':['D90','course_reader','backend/d90/D90.html'],
+  'd30.open_learner_hub':['D30','course_reader','backend/d30/D30.html'],
   'd100.open_learner_hub':['D100','course_reader','backend/d100/D100.html'],
   'd120.open_learner_hub':['D120','course_reader','backend/d120/D120.html'],
 };
@@ -45,7 +46,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // Explicit A20, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D40, D70, D80, D90, D100 and D120 presentation contracts; no generic auto-admission.
+    // Explicit A20, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D30, D40, D70, D80, D90, D100 and D120 presentation contracts; no generic auto-admission.
     const expected = contracts[tool.tool_id];
     assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');

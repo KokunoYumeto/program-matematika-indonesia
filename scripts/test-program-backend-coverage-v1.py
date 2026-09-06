@@ -28,6 +28,9 @@ INPUTS = {
     'c60': 'backend/course-capsule-v1/adapters/c60-capability-v1/publication/GITHUB_READBACK_306c9e080f89.json',
     'b90': 'backend/course-capsule-v1/adapters/b90-capability-v1/publication/GITHUB_READBACK_37dfd587bac2.json',
     'd10': 'backend/course-capsule-v1/adapters/d10-capability-v1/publication/GITHUB_READBACK_a290054a4e16.json',
+    'd30Manifest': 'backend/course-capsule-v1/adapters/d30-capability-v1/manifest.json',
+    'd30Validation': 'backend/course-capsule-v1/adapters/d30-capability-v1/validation.json',
+    'd30Public': 'backend/course-capsule-v1/adapters/d30-capability-v1/data/public-evidence.json',
     'd40': 'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
     'd70': 'backend/course-capsule-v1/adapters/d70-capability-v1/publication/GITHUB_READBACK_2ce9fbb5dacd.json',
     'd80': 'backend/course-capsule-v1/adapters/d80-capability-v1/publication/GITHUB_READBACK_b22cd627901c.json',
@@ -50,14 +53,14 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters']) + 1
-assert model['summary']['locally_validated_adapter_roles'] == 36
-assert model['summary']['roles_without_validated_common_adapter'] == 4
-assert model['summary']['locally_represented_families'] == 29
-assert model['summary']['github_evidenced_roles'] == 35
+assert model['summary']['locally_validated_adapter_roles'] == 37
+assert model['summary']['roles_without_validated_common_adapter'] == 3
+assert model['summary']['locally_represented_families'] == 30
+assert model['summary']['github_evidenced_roles'] == 36
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
-} == {'A30', 'B95', 'C140', 'D30'}
+} == {'A30', 'B95', 'C140'}
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -317,6 +320,66 @@ assert roles['D10']['dimensions']['source_translation_ledger']['ledger'] == 'ver
 assert roles['D10']['dimensions']['terminology']['register'] == 'verified'
 assert roles['D10']['dimensions']['reproducible_production']['build'] == 'verified'
 assert roles['D10']['dimensions']['reproducible_production']['replay'] == 'verified'
+d30 = roles['D30']
+d30_capsule = next(row for row in inputs['capsules'] if row['course_id'] == 'D30')
+assert d30['common_adapter']['status'] == 'verified'
+assert d30['common_adapter']['contract'] == 'course-learning-capability/1'
+assert d30['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_2538_entities_6333_segments_3256_relations_'
+    '57_high_level_surfaces_5_labs_36_solved_mastery_problems_and_2_equivalent_assessments'
+)
+assert d30['common_adapter']['github_public_evidence'] == 'native_anonymous_source_and_pages_readback'
+assert d30['common_adapter']['zenodo_preservation'] == 'not_established'
+assert d30['common_adapter']['public_package'] is None
+assert d30['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert len(d30['learner']['tools']) == 1
+assert d30['learner']['tools'][0]['href'] == '../backend/d30/D30.html'
+assert d30['educator']['unit_alignment'] == 'verified'
+assert {'D30:native-educator-observation', 'D30:educator-hub-v1'} <= {
+    row['id'] for row in d30['educator']['resources']
+}
+assert d30['dimensions']['source_translation_ledger'] == {
+    'corrections': 'verified',
+    'ledger': 'verified',
+}
+assert d30['dimensions']['terminology']['register'] == 'verified'
+assert d30['dimensions']['reproducible_production'] == {
+    'build': 'verified',
+    'replay': 'verified',
+}
+assert d30['dimensions']['accessibility'] == {
+    'mathml': 'available_unverified',
+    'semantic_html': 'verified',
+}
+for kind, key in (
+    ('central_adapter_manifest', 'd30Manifest'),
+    ('deterministic_validation_receipt', 'd30Validation'),
+    ('verified_native_public_release', 'd30Public'),
+):
+    path = INPUTS[key]
+    payload = (ROOT / path).read_bytes()
+    found = [row for row in d30['common_adapter']['local_evidence']
+             if row['kind'] == kind and row['locator'] == path]
+    assert len(found) == 1
+    assert found[0]['bytes'] == len(payload)
+    assert found[0]['sha256'] == hashlib.sha256(payload).hexdigest()
+public = inputs['d30Public']
+assert public['content_commit'] == inputs['d30Manifest']['native_release']['commit']
+assert public['content_tree'] == inputs['d30Manifest']['native_release']['tree']
+assert d30_capsule['course_native']['repository'] == public['repository']
+assert d30_capsule['course_native']['zenodo'] == 'https://doi.org/' + public['doi']
+assert d30_capsule['layers']['production']['repository'] == public['repository']
+assert d30_capsule['layers']['production']['zenodo'] == 'https://doi.org/' + public['doi']
+assert d30_capsule['layers']['production']['release_status'] == 'verified'
+assert d30_capsule['layers']['learner']['online_html']['url'] == public['reader']
+assert d30_capsule['layers']['learner']['primary']['url'] == public['reader']
+public_files = {row['filename']: row for row in public['files']}
+for layer, filename in (
+    ('pdf', '00_PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_38.pdf'),
+    ('portable_html', 'PROBABILITAS_TEORI_UKURAN_PROSES_STOKASTIK_ID_READER_CHECKPOINT_38.zip'),
+):
+    assert d30_capsule['layers']['learner'][layer]['bytes'] == public_files[filename]['bytes']
+    assert d30_capsule['layers']['learner'][layer]['sha256'] == public_files[filename]['sha256']
 assert roles['D100']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D100']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D100']['learner']['tools']) == 1
@@ -445,6 +508,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d90_missing_teacher_readback', 'd90', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d90/D90-pengajar.html'])),
         ('d10_nonanonymous', 'd10', lambda value: value.update(anonymous=False)),
         ('d10_missing_teacher_readback', 'd10', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d10/D10-pengajar.html'])),
+        ('d30_manifest_contract', 'd30Manifest', lambda value: value.update(contract='wrong-contract/0')),
+        ('d30_validation_not_pass', 'd30Validation', lambda value: value.update(result='FAIL')),
+        ('d30_public_file_omission', 'd30Public', lambda value: value['files'].pop()),
         ('d100_nonanonymous', 'd100', lambda value: value.update(anonymous=False)),
         ('d100_missing_teacher_readback', 'd100', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d100/D100-pengajar.html'])),
         ('d120_nonanonymous', 'd120', lambda value: value.update(anonymous=False)),

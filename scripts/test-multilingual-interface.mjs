@@ -245,9 +245,42 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-assert.equal(capabilityTools.length,39);
+assert.equal(capabilityTools.length,40);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
+const d30CapabilityTool=capabilityTools.find(row=>row.courseId==='D30'&&row.tool_id==='d30.open_learner_hub');
+assert.ok(d30CapabilityTool);
+assert.equal(d30CapabilityTool.contentLanguage,'id');
+assert.equal(d30CapabilityTool.labelLanguage??d30CapabilityTool.contentLanguage,'id');
+assert.deepEqual(
+  [d30CapabilityTool.page.path,d30CapabilityTool.resource.path,d30CapabilityTool.evidence.path],
+  ['docs/backend/d30/D30.html','docs/backend/d30/learning-map.json','docs/backend/d30/validation.json'],
+);
+for(const fact of [d30CapabilityTool.page,d30CapabilityTool.resource,d30CapabilityTool.evidence]){
+  const bytes=await readFile(resolve(root,fact.path));
+  assert.deepEqual([bytes.length,createHash('sha256').update(bytes).digest('hex')],[fact.bytes,fact.sha256],fact.path);
+}
+const d30EducatorResource=capsules.find(row=>row.course_id==='D30').layers.educator.resources.find(row=>row.id==='D30:educator-hub-v1');
+assert.ok(d30EducatorResource&&d30EducatorResource.status==='verified');
+const d30LearnerHub=await readFile(resolve(root,'docs/backend/d30/D30.html'),'utf8');
+const d30EducatorHub=await readFile(resolve(root,'docs/backend/d30/D30-pengajar.html'),'utf8');
+assert.deepEqual(
+  [Buffer.byteLength(d30EducatorHub),createHash('sha256').update(d30EducatorHub).digest('hex')],
+  [d30EducatorResource.bytes,d30EducatorResource.sha256],
+);
+for(const hub of [d30LearnerHub,d30EducatorHub]){
+  assert.ok(hub.includes('<html lang="id">'));
+  assert.ok(hub.includes('href="/en/"'));
+  assert.ok(hub.includes('href="/id/"'));
+  for(const href of [
+    'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/',
+    'https://github.com/KokunoYumeto/measure-theoretic-probability-stochastic-processes-id/tree/d0111bc20dc813f5fde12eb715be4cf6dd5a94bd',
+    'https://zenodo.org/records/22182655',
+    'https://www.randomservices.org/random/',
+    'https://continuous-time-mcs.quantecon.org/',
+    'https://gordanz.github.io/stochastic-book/',
+  ]) assert.ok(hub.includes('href="'+href+'"'),href);
+}
 assert.deepEqual(capabilityToolSupplementSources,[
   {path:clpCapabilityInput,bytes:clpCapabilityBytes.length,sha256:createHash('sha256').update(clpCapabilityBytes).digest('hex')},
   {path:originalIndonesianBilingualManifestInput,bytes:originalManifestBytes.length,sha256:createHash('sha256').update(originalManifestBytes).digest('hex')},
@@ -289,6 +322,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='C90').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='C60').layers.learner.tools[0].href='backend/c60/learning-map.json';},
   c=>{c.find(r=>r.course_id==='C60').layers.learner.tools.pop();},
+  c=>{c.find(r=>r.course_id==='D30').layers.learner.tools[0].href='backend/d30/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='D30').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D40').layers.learner.tools[0].href='backend/d40/learning-map.json';},
   c=>{c.find(r=>r.course_id==='D40').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='D70').layers.learner.tools[0].href='backend/d70/learning-map.json';},
@@ -454,6 +489,17 @@ for (const locale of supportedLocales) {
     assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
     if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('4.877')&&tool.note.includes('438')&&tool.note.includes('54'));
     else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
+  }
+  const d30Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D30'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(d30Tools.length,1);
+  assert.deepEqual(d30Tools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d30/D30.html',
+  ]);
+  for(const tool of d30Tools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.labelLanguage,'id'); assert.equal(tool.primary,false);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) {
+      assert.ok(tool.note.includes('57')&&tool.note.includes('lima laboratorium')&&tool.note.includes('36')&&tool.note.includes('dua formulir'));
+    } else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
   const d10Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D10'),locale).filter(r=>r.capabilityToolId);
   assert.equal(d10Tools.length,1);
@@ -731,15 +777,13 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
-    // evidence-bound mirrors, the bilingual B80/D120 tools, the D90 route,
-    // and A20's metadata-only learner capability. The measured union peaks
-    // below 481 KB raw and 96 KB compressed after combining those capabilities,
-    // distinct live/downloadable D100 routes, and the universal authoritative-
-    // original navigation closure.
-    assert.ok(Buffer.byteLength(html) < 481000, 'Offline map size budget');
+    // evidence-bound mirrors, the bilingual B80/D120 tools, A20's metadata-only
+    // learner capability, and the D30/D90 routes. The combined A20+D30 union is
+    // measured again by this gate after every deterministic interface build.
+    assert.ok(Buffer.byteLength(html) < 490000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 96000, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 100000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

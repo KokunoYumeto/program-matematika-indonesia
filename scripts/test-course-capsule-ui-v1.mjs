@@ -199,6 +199,37 @@ for (const [name, fetch] of [
   assert.equal(geometry.layers.educator.unit_alignment_status,'verified');
   assert.ok(geometry.layers.educator.resources.some(r=>r.id==='C100:native-educator-observation'&&r.status==='available_unverified'));
   assert.ok(geometry.layers.educator.resources.some(r=>r.id==='C100:geometry-educator-v1'&&r.status==='verified'));
+  const d30=courses.find(c=>c.course_id==='D30');
+  assert.equal(d30.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
+  assert.equal(d30.layers.interoperability.semantic_adapter.status,'verified');
+  assert.equal(d30.layers.learner.tools.length,1);
+  assert.equal(d30.layers.learner.tools[0].tool_id,'d30.open_learner_hub');
+  assert.equal(d30.layers.learner.tools[0].href,'backend/d30/D30.html');
+  assert.equal(d30.layers.learner.tools[0].page.path,'docs/backend/d30/D30.html');
+  assert.equal(d30.layers.learner.tools[0].resource.path,'docs/backend/d30/learning-map.json');
+  assert.equal(d30.layers.learner.tools[0].evidence.path,'docs/backend/d30/validation.json');
+  assert.match(d30.layers.learner.tools[0].scope,/57/);
+  assert.match(d30.layers.learner.tools[0].scope,/36/);
+  assert.match(d30.layers.learner.tools[0].scope,/dua formulir/);
+  assert.equal(d30.layers.curriculum.unit_identity_status,'verified');
+  assert.equal(d30.layers.translation.ledger_status,'verified');
+  assert.equal(d30.layers.translation.terminology_status,'verified');
+  assert.equal(d30.layers.translation.rights_status,'verified');
+  assert.equal(d30.layers.translation.corrections_status,'verified');
+  assert.equal(d30.layers.production.build_status,'verified');
+  assert.equal(d30.layers.production.deterministic_replay_status,'verified');
+  assert.equal(d30.layers.educator.status,'verified');
+  assert.equal(d30.layers.educator.unit_alignment_status,'verified');
+  assert.equal(d30.layers.educator.resources.length,7);
+  assert.ok(d30.layers.educator.resources.some(r=>r.id==='D30:native-educator-observation'&&r.status==='available_unverified'&&r.url==='https://zenodo.org/records/22182655'));
+  for(const resourceId of ['D30:educator-hub-v1','D30:educator-map-v1','D30:terms-index-v1','D30:rights-index-v1','D30:corrections-index-v1','D30:relations-index-v1']) {
+    assert.ok(d30.layers.educator.resources.some(r=>r.id===resourceId&&r.status==='verified'));
+  }
+  assert.equal(d30.layers.learner.primary.url,'https://kokunoyumeto.github.io/measure-theoretic-probability-stochastic-processes-id/');
+  assert.equal(d30.layers.learner.portable_html.status,'verified');
+  assert.equal(d30.layers.learner.portable_html.sha256,'e32dba5a896fb847192bbe944e7fd3db4d95f61ee57e33751bbff3108fca214a');
+  assert.equal(d30.layers.learner.capabilities.semantic_html,'verified');
+  assert.equal(d30.layers.learner.capabilities.mathml,'available_unverified');
   const d40=courses.find(c=>c.course_id==='D40');
   assert.equal(d40.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
   assert.equal(d40.layers.learner.tools.length,1);
@@ -476,7 +507,7 @@ for (const [name, fetch] of [
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { verified: 21, available_unverified: 10, in_progress: 1, unknown: 8 });
+assert.deepEqual(educatorCounts, { verified: 22, available_unverified: 9, in_progress: 1, unknown: 8 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),

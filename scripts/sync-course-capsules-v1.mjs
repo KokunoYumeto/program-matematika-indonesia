@@ -61,6 +61,19 @@ const mappings = [
   ['backend/course-capsule-v1/adapters/d90-capability-v1/data/corrections-index.jsonl', 'docs/backend/d90/data/corrections-index.jsonl'],
   ['backend/course-capsule-v1/adapters/d90-capability-v1/data/terms-index.jsonl', 'docs/backend/d90/data/terms-index.jsonl'],
   ['backend/course-capsule-v1/adapters/d90-capability-v1/validation.json', 'docs/backend/d90/validation.json'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/views/D30.html', 'docs/backend/d30/D30.html'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/views/D30-pengajar.html', 'docs/backend/d30/D30-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/views/capabilities.json', 'docs/backend/d30/capabilities.json'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/learning-map.json', 'docs/backend/d30/learning-map.json'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/learner-map.json', 'docs/backend/d30/learner-map.json'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/educator-map.json', 'docs/backend/d30/educator-map.json'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/public-evidence.json', 'docs/backend/d30/public-evidence.json'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/claim-boundary.json', 'docs/backend/d30/claim-boundary.json'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/rights-index.jsonl', 'docs/backend/d30/data/rights-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/corrections-index.jsonl', 'docs/backend/d30/data/corrections-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/terms-index.jsonl', 'docs/backend/d30/data/terms-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/data/relations-index.jsonl', 'docs/backend/d30/data/relations-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/d30-capability-v1/validation.json', 'docs/backend/d30/validation.json'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/manifest.json', 'docs/backend/c60/manifest.json'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60.html', 'docs/backend/c60/C60.html'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60-pengajar.html', 'docs/backend/c60/C60-pengajar.html'],
@@ -206,6 +219,37 @@ assert.equal(d90.layers.learner.epub.sha256, '1bb882a75209adb220de4ee6c6cf92355b
 assert.equal(d90.layers.learner.capabilities.semantic_html, 'verified');
 assert.equal(d90.layers.learner.capabilities.mathml, 'verified');
 assert.equal(d90.layers.learner.capabilities.print_profile, 'verified');
+const d30 = rows.find(({ course_id }) => course_id === 'D30');
+assert.equal(d30.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(d30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(d30.layers.learner.tools.length, 1);
+assert.equal(d30.layers.learner.tools[0].tool_id, 'd30.open_learner_hub');
+assert.equal(d30.layers.learner.tools[0].href, 'backend/d30/D30.html');
+assert.equal(d30.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(d30.layers.translation.ledger_status, 'verified');
+assert.equal(d30.layers.translation.terminology_status, 'verified');
+assert.equal(d30.layers.translation.rights_status, 'verified');
+assert.equal(d30.layers.translation.corrections_status, 'verified');
+assert.equal(d30.layers.production.build_status, 'verified');
+assert.equal(d30.layers.production.deterministic_replay_status, 'verified');
+assert.equal(d30.layers.production.release_status, 'verified');
+assert.equal(d30.layers.educator.status, 'verified');
+assert.equal(d30.layers.educator.unit_alignment_status, 'verified');
+assert.ok(d30.layers.educator.resources.some(({ id, status, url }) => id === 'D30:native-educator-observation'
+  && status === 'available_unverified' && url === 'https://zenodo.org/records/22182655'));
+assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:educator-hub-v1' && status === 'verified'));
+assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:educator-map-v1' && status === 'verified'));
+assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:terms-index-v1' && status === 'verified'));
+assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:rights-index-v1' && status === 'verified'));
+assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:corrections-index-v1' && status === 'verified'));
+assert.ok(d30.layers.educator.resources.some(({ id, status }) => id === 'D30:relations-index-v1' && status === 'verified'));
+assert.equal(d30.layers.learner.online_html.status, 'verified');
+assert.equal(d30.layers.learner.online_html.sha256, '417e580082b32178e99a9923c8d0fa13ae21fdb767edb8eb85a38d6b6a9f7bc9');
+assert.equal(d30.layers.learner.pdf.status, 'verified');
+assert.equal(d30.layers.learner.pdf.sha256, 'dda34267df928672e03e04b4c8a36d768aab2d33bc1194b269074da0d2d24e40');
+assert.equal(d30.layers.learner.portable_html.status, 'verified');
+assert.equal(d30.layers.learner.portable_html.sha256, 'e32dba5a896fb847192bbe944e7fd3db4d95f61ee57e33751bbff3108fca214a');
+assert.equal(d30.layers.learner.capabilities.semantic_html, 'verified');
 const c120 = rows.find(({ course_id }) => course_id === 'C120');
 assert.equal(c120.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(c120.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');

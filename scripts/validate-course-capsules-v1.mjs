@@ -392,9 +392,9 @@ assert.equal(d30.course_native.version, '2026.08.30-checkpoint.38');
 assert.equal(d30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22182655');
 assert.match(d30.course_native.corpus, /5 laboratorium/);
 assert.doesNotMatch(d30.course_native.corpus, /2 irisan/);
-assert.equal(d30.evidence.length, 1);
-assert.equal(d30.evidence[0].bytes, 39843697);
-assert.equal(d30.evidence[0].sha256, 'dda34267df928672e03e04b4c8a36d768aab2d33bc1194b269074da0d2d24e40');
+const d30PublicationEvidence = d30.evidence.filter(({ sha256: hash }) => hash === 'dda34267df928672e03e04b4c8a36d768aab2d33bc1194b269074da0d2d24e40');
+assert.equal(d30PublicationEvidence.length, 1, 'D30 must preserve exactly one course-publication evidence row.');
+assert.equal(d30PublicationEvidence[0].bytes, 39843697);
 assert.equal(d30.layers.learner.primary.status, 'verified');
 assert.equal(d30.layers.learner.primary.format, 'text/html');
 assert.equal(d30.layers.learner.primary.sha256, '417e580082b32178e99a9923c8d0fa13ae21fdb767edb8eb85a38d6b6a9f7bc9');
@@ -410,7 +410,71 @@ assert.equal(d30.layers.learner.portable_html.inventory_count, 163);
 assert.equal(d30.layers.learner.portable_html.dependency_free, true);
 assert.equal(d30.layers.production.release_status, 'verified');
 assert.equal(d30.layers.federation.components[0].status, 'verified');
-assert.equal(d30.layers.educator.evidence[0].locator, 'https://zenodo.org/records/22182655');
+const d30Adapter = d30.layers.interoperability.semantic_adapter;
+assert.equal(d30Adapter.status, 'verified');
+assert.equal(d30Adapter.contract_version, 'course-learning-capability/1');
+assert.match(d30Adapter.mapping_scope, /^zero_copy_projection_of_/);
+assert.deepEqual(
+  d30Adapter.evidence.map(({ kind }) => kind),
+  [
+    'central_adapter_manifest',
+    'deterministic_validation_receipt',
+    'native_metadata_intake',
+    'verified_native_public_release',
+  ],
+);
+for (const evidence of d30Adapter.evidence) {
+  const bytes = await readFile(resolve(project, evidence.locator));
+  assert.equal(bytes.length, evidence.bytes, `D30 ${evidence.kind} byte-count drift.`);
+  assert.equal(sha256(bytes), evidence.sha256, `D30 ${evidence.kind} SHA-256 drift.`);
+}
+const d30AdapterManifest = JSON.parse(await readFile(resolve(project, d30Adapter.evidence[0].locator), 'utf8'));
+assert.equal(d30AdapterManifest.contract, 'course-learning-capability/1');
+assert.equal(d30AdapterManifest.zero_copy, true);
+assert.equal(d30AdapterManifest.native_bodies_copied, false);
+assert.equal(d30.layers.federation.zero_copy, true);
+assert.equal(d30.layers.interoperability.native_identity_preserved, true);
+assert.equal(d30.layers.interoperability.mapping_scope, 'course_level_without_content_copy');
+
+assert.equal(d30.layers.learner.tools.length, 1);
+const d30Tool = d30.layers.learner.tools[0];
+assert.equal(d30Tool.tool_id, 'd30.open_learner_hub');
+assert.equal(d30Tool.href, 'backend/d30/D30.html');
+assert.deepEqual(
+  d30Tool.page,
+  overrides.learner_tools.D30[0].page,
+  'D30 learner page must match the current hosted-page authority rather than an adapter intermediate.',
+);
+const d30CommonMap = JSON.parse(await readFile(resolve(project, d30Tool.resource.path), 'utf8'));
+assert.equal(d30CommonMap.contract, 'course-learning-capability/1');
+assert.equal(d30CommonMap.course_id, 'D30');
+
+assert.equal(d30.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(d30.layers.translation.ledger_status, 'verified');
+assert.equal(d30.layers.translation.terminology_status, 'verified');
+assert.equal(d30.layers.translation.rights_status, 'verified');
+assert.equal(d30.layers.translation.corrections_status, 'verified');
+assert.equal(d30.layers.production.build_status, 'verified');
+assert.equal(d30.layers.production.deterministic_replay_status, 'verified');
+assert.equal(d30.layers.educator.status, 'verified');
+assert.equal(d30.layers.educator.unit_alignment_status, 'verified');
+assert.equal(d30.layers.educator.evidence[0].locator, overrides.educator_evidence.D30.locator);
+const d30EducatorResources = Object.fromEntries(d30.layers.educator.resources.map((resource) => [resource.id, resource]));
+assert.equal(Object.keys(d30EducatorResources).length, d30.layers.educator.resources.length, 'D30 educator resources must have unique IDs.');
+const d30NativeEducatorObservation = d30EducatorResources['D30:native-educator-observation'];
+assert.ok(d30NativeEducatorObservation, 'D30 native educator observation must survive shared admission.');
+assert.equal(d30NativeEducatorObservation.status, 'available_unverified');
+assert.equal(d30NativeEducatorObservation.url, 'https://zenodo.org/records/22182655');
+for (const resourceId of [
+  'D30:educator-hub-v1',
+  'D30:educator-map-v1',
+  'D30:terms-index-v1',
+  'D30:rights-index-v1',
+  'D30:corrections-index-v1',
+  'D30:relations-index-v1',
+]) {
+  assert.equal(d30EducatorResources[resourceId]?.status, 'verified', `D30 admitted educator resource ${resourceId} is missing or unverified.`);
+}
 const d40 = byId.D40;
 assert.equal(d40.course.state, 'published');
 assert.equal(d40.course_native.status, 'verified');
