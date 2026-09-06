@@ -24,6 +24,7 @@ INPUTS = {
     'c70': 'backend/course-capsule-v1/adapters/c70-capability-v1/publication/GITHUB_READBACK_4eb34c5d866a.json',
     'c110': 'backend/course-capsule-v1/adapters/c110-capability-v1/publication/GITHUB_READBACK_c7ccbcc9a27a.json',
     'c120': 'backend/course-capsule-v1/adapters/c120-capability-v1/publication/GITHUB_READBACK_5cef326a811b.json',
+    'c60': 'backend/course-capsule-v1/adapters/c60-capability-v1/publication/GITHUB_READBACK_306c9e080f89.json',
     'd10': 'backend/course-capsule-v1/adapters/d10-capability-v1/publication/GITHUB_READBACK_a290054a4e16.json',
     'd40': 'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
     'd70': 'backend/course-capsule-v1/adapters/d70-capability-v1/publication/GITHUB_READBACK_2ce9fbb5dacd.json',
@@ -49,7 +50,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 33
 assert model['summary']['roles_without_validated_common_adapter'] == 7
 assert model['summary']['locally_represented_families'] == 26
-assert model['summary']['github_evidenced_roles'] == 31
+assert model['summary']['github_evidenced_roles'] == 32
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -160,7 +161,7 @@ assert roles['C60']['learner']['relationship'] == 'directly_consumes_adapter_out
 assert len(roles['C60']['learner']['tools']) == 1
 assert roles['C60']['educator']['unit_alignment'] == 'verified'
 assert len(roles['C60']['educator']['resources']) == 7
-assert roles['C60']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['C60']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['C60']['common_adapter']['zenodo_preservation'] == 'not_established'
 assert roles['C60']['dimensions']['source_translation_ledger']['ledger'] == 'verified'
 assert roles['C60']['dimensions']['terminology']['register'] == 'verified'
@@ -323,6 +324,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('c110_missing_teacher_readback', 'c110', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/c110/C110-pengajar.html'])),
         ('c120_nonanonymous', 'c120', lambda value: value.update(anonymous=False)),
         ('c120_missing_teacher_readback', 'c120', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/c120/C120-pengajar.html'])),
+        ('c60_nonanonymous', 'c60', lambda value: value.update(anonymous=False)),
+        ('c60_missing_teacher_readback', 'c60', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/c60/C60-pengajar.html'])),
         ('d40_nonanonymous', 'd40', lambda value: value.update(anonymous=False)),
         ('d40_missing_teacher_readback', 'd40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d40/D40-pengajar.html'])),
         ('d70_nonanonymous', 'd70', lambda value: value.update(anonymous=False)),
