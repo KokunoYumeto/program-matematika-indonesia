@@ -6,8 +6,9 @@ import {fileURLToPath} from 'node:url';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const option = name => process.argv.find(value => value.startsWith(`--${name}=`))?.slice(name.length + 3);
-const b80Root = resolve(option('b80-root') ?? 'C:/Users/Floris/Documents/interlanguage/04_mirrors/en/mathematical-computing-reproducible-experiments-en');
-const d120Root = resolve(option('d120-root') ?? 'C:/Users/Floris/Documents/interlanguage/outputs/01a0216a-4b9f-7d30-a376-60e4e3859979/english-edition');
+const workspaceRoot = resolve(project, '..', '..', '..');
+const b80Root = resolve(option('b80-root') ?? process.env.PMI_B80_EN_ROOT ?? resolve(workspaceRoot, '04_mirrors/en/mathematical-computing-reproducible-experiments-en'));
+const d120Root = resolve(option('d120-root') ?? process.env.PMI_D120_EN_ROOT ?? resolve(workspaceRoot, 'outputs/01a0216a-4b9f-7d30-a376-60e4e3859979/english-edition'));
 const base = 'backend/course-capsule-v1/localizations/original-indonesian-bilingual-v1';
 
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
