@@ -360,8 +360,8 @@ const html = `<!doctype html>
 <body class="assessment-page">
   <a class="skip-link" href="#utama">Lewati ke isi utama</a>
   <header class="assessment-header" id="atas">
-    <a class="brand" href="../../../../index.html"><span class="brand-mark" aria-hidden="true">∴</span><span>Program Matematika Indonesia</span></a>
-    <nav aria-label="Navigasi halaman"><a href="../../../../index.html#course-A00">Kartu A00</a><a href="${publicRoot}/" target="_blank" rel="noreferrer">Pembaca utama ↗</a></nav>
+    <a class="brand" href="../../../../id/index.html"><span class="brand-mark" aria-hidden="true">∴</span><span>Program Matematika Indonesia</span></a>
+    <nav aria-label="Navigasi halaman"><a href="../../../../id/index.html#course-A00">Kartu A00</a><a href="${publicRoot}/" target="_blank" rel="noreferrer">Pembaca utama ↗</a></nav>
   </header>
   <main id="utama">
     <section class="assessment-hero">
@@ -399,7 +399,7 @@ const html = `<!doctype html>
       <h2>Backend tetap modular; pelajar mendapatkan tautan yang bisa dipakai.</h2>
       <p>Inventaris struktural O001 tetap menjadi sumber mesin yang tersegel. Lapisan pusat hanya menghubungkan ID modul dan latihan ke unit, hak, edisi, dan jangkar HTML yang sudah diverifikasi. Tidak ada teks soal atau rumus yang disalin ke halaman pusat.</p>
     </section>
-    <nav class="assessment-bottom-actions" aria-label="Tindakan akhir halaman"><a href="../../../../index.html">← Kembali ke program</a><a href="#atas">↑ Kembali ke atas</a></nav>
+    <nav class="assessment-bottom-actions" aria-label="Tindakan akhir halaman"><a href="../../../../id/index.html">← Kembali ke program</a><a href="#atas">↑ Kembali ke atas</a></nav>
   </main>
 </body>
 </html>

@@ -104,7 +104,8 @@ assert.doesNotMatch(html, /<noscript>/i, 'Static fallback must remain revealable
 assert.equal((html.match(/<article class="assessment-module-card">/g) ?? []).length, 75, 'Static fallback must expose all 75 module cards.');
 assert.ok(html.indexOf('id="assessment-static-fallback"') < html.indexOf('id="assessment-module-grid"'), 'Static fallback must precede the dynamic grid.');
 assert.match(html, /id="atas"/);
-assert.match(html, /href="\.\.\/\.\.\/\.\.\/\.\.\/index\.html">← Kembali ke program<\/a>/);
+assert.match(html, /href="\.\.\/\.\.\/\.\.\/\.\.\/id\/index\.html#course-A00">Kartu A00<\/a>/);
+assert.match(html, /href="\.\.\/\.\.\/\.\.\/\.\.\/id\/index\.html">← Kembali ke program<\/a>/);
 assert.match(html, /href="#atas">↑ Kembali ke atas<\/a>/);
 assert.match(script.toString('utf8'), /render\(\);\s*staticFallback\.hidden = true;/, 'Static fallback may hide only after successful dynamic render.');
 assert.match(script.toString('utf8'), /assessmentMap\?\.modules\) \|\| assessmentMap\.modules\.length !== 75/);
