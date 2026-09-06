@@ -28,6 +28,7 @@ INPUTS = {
     'd40': 'backend/course-capsule-v1/adapters/d40-capability-v1/publication/GITHUB_READBACK_4f7d6c825751.json',
     'd70': 'backend/course-capsule-v1/adapters/d70-capability-v1/publication/GITHUB_READBACK_2ce9fbb5dacd.json',
     'd80': 'backend/course-capsule-v1/adapters/d80-capability-v1/publication/GITHUB_READBACK_b22cd627901c.json',
+    'd90': 'backend/course-capsule-v1/adapters/d90-capability-v1/publication/GITHUB_READBACK_1ec3ed4846c8.json',
     'd100': 'backend/course-capsule-v1/adapters/d100-capability-v1/publication/GITHUB_READBACK_9b9480ff5b2c.json',
     'd120': 'backend/course-capsule-v1/adapters/d120-capability-v1/publication/GITHUB_READBACK_a42650f4815a.json',
 }
@@ -48,7 +49,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 31
 assert model['summary']['roles_without_validated_common_adapter'] == 9
 assert model['summary']['locally_represented_families'] == 24
-assert model['summary']['github_evidenced_roles'] == 30
+assert model['summary']['github_evidenced_roles'] == 31
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
@@ -149,7 +150,7 @@ assert roles['D90']['common_adapter']['contract'] == 'course-learning-capability
 assert roles['D90']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D90']['learner']['tools']) == 1
 assert roles['D90']['educator']['unit_alignment'] == 'verified'
-assert roles['D90']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['D90']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['D90']['common_adapter']['zenodo_preservation'] == 'not_established'
 assert roles['D90']['dimensions']['source_translation_ledger']['ledger'] == 'verified'
 assert roles['D90']['dimensions']['terminology']['register'] == 'verified'
@@ -285,6 +286,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d70_missing_teacher_readback', 'd70', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d70/D70-pengajar.html'])),
         ('d80_nonanonymous', 'd80', lambda value: value.update(anonymous=False)),
         ('d80_missing_teacher_readback', 'd80', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d80/D80-pengajar.html'])),
+        ('d90_nonanonymous', 'd90', lambda value: value.update(anonymous=False)),
+        ('d90_missing_teacher_readback', 'd90', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d90/D90-pengajar.html'])),
         ('d10_nonanonymous', 'd10', lambda value: value.update(anonymous=False)),
         ('d10_missing_teacher_readback', 'd10', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/d10/D10-pengajar.html'])),
         ('d100_nonanonymous', 'd100', lambda value: value.update(anonymous=False)),
