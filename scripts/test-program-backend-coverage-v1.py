@@ -48,14 +48,14 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters']) + 1
-assert model['summary']['locally_validated_adapter_roles'] == 34
-assert model['summary']['roles_without_validated_common_adapter'] == 6
-assert model['summary']['locally_represented_families'] == 27
+assert model['summary']['locally_validated_adapter_roles'] == 35
+assert model['summary']['roles_without_validated_common_adapter'] == 5
+assert model['summary']['locally_represented_families'] == 28
 assert model['summary']['github_evidenced_roles'] == 33
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
-} == {'A20', 'A30', 'B90', 'B95', 'C140', 'D30'}
+} == {'A20', 'A30', 'B95', 'C140', 'D30'}
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -170,6 +170,28 @@ assert roles['C60']['dimensions']['reproducible_production']['build'] == 'verifi
 assert roles['C60']['dimensions']['reproducible_production']['replay'] == 'verified'
 assert roles['C60']['dimensions']['accessibility']['semantic_html'] == 'verified'
 assert roles['C60']['dimensions']['accessibility']['mathml'] == 'verified'
+assert roles['B90']['common_adapter']['status'] == 'verified'
+assert roles['B90']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['B90']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_4716_public_native_records_800_units_711_exercises_'
+    '91_concepts_119_terms_152_corrections_and_4_component_rights_with_explicit_'
+    'answer_supplement_exclusion'
+)
+assert roles['B90']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['B90']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['B90']['learner']['tools'] == [{
+    'href': '../backend/b90/B90.html',
+    'label': 'B90 · Probabilitas Berbasis Kalkulus',
+}]
+assert roles['B90']['educator']['unit_alignment'] == 'verified'
+assert len(roles['B90']['educator']['resources']) == 8
+assert roles['B90']['dimensions']['source_translation_ledger']['ledger'] == 'verified'
+assert roles['B90']['dimensions']['source_translation_ledger']['corrections'] == 'verified'
+assert roles['B90']['dimensions']['terminology']['register'] == 'verified'
+assert roles['B90']['dimensions']['reproducible_production']['build'] == 'verified'
+assert roles['B90']['dimensions']['reproducible_production']['replay'] == 'verified'
+assert roles['B90']['dimensions']['accessibility']['semantic_html'] == 'not_yet_produced'
+assert roles['B90']['dimensions']['accessibility']['mathml'] == 'not_yet_produced'
 assert roles['D40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D40']['learner']['tools']) == 1

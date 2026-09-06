@@ -1192,7 +1192,7 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound D100, C110, C70, and D90 learner/educator capability links. Each new language route
+// hash-bound B90, D100, C110, C70, and D90 learner/educator capability links. Each new language route
 // has its own separately measured offline/closure budget.
 assert.ok(shellRawBytes <= 205_000, `Shell melewati 205.000 byte: ${shellRawBytes}.`);
 assert.ok(shellGzipBytes <= 51_000, `Shell gzip melewati 51.000 byte: ${shellGzipBytes}.`);
@@ -1227,6 +1227,31 @@ for (const name of ['index.html', 'styles.css', 'app.js', 'courses.js', 'live-co
     readFile(resolve(root, 'public/hub', name)),
   ]);
   assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror Sites berbeda dari docs.`);
+}
+
+for (const name of [
+  'backend/b90/B90.html',
+  'backend/b90/B90-pengajar.html',
+  'backend/b90/capabilities.json',
+  'backend/b90/learning-map.json',
+  'backend/b90/educator-map.json',
+  'backend/b90/public-evidence.json',
+  'backend/b90/claim-boundary.json',
+  'backend/b90/data/unit-index.jsonl',
+  'backend/b90/data/concept-index.jsonl',
+  'backend/b90/data/relation-index.jsonl',
+  'backend/b90/data/terms-index.jsonl',
+  'backend/b90/data/corrections-index.jsonl',
+  'backend/b90/data/rights-index.jsonl',
+  'backend/b90/source-lock.json',
+  'backend/b90/public-native-readback.json',
+  'backend/b90/validation.json',
+]) {
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', name)),
+    readFile(resolve(root, 'public/hub', name)),
+  ]);
+  assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror B90 Sites berbeda dari docs.`);
 }
 
 for (const name of [

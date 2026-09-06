@@ -744,6 +744,42 @@ assert.equal(c60.layers.learner.portable_html.status, 'not_yet_produced');
 assert.equal(c60.layers.learner.capabilities.semantic_html, 'verified');
 assert.equal(c60.layers.learner.capabilities.mathml, 'verified');
 
+const b90 = byId.B90;
+assert.equal(b90.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(b90.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(
+  b90.layers.interoperability.semantic_adapter.mapping_scope,
+  'zero_copy_projection_of_4716_public_native_records_800_units_711_exercises_91_concepts_119_terms_152_corrections_and_4_component_rights_with_explicit_answer_supplement_exclusion',
+);
+assert.equal(b90.layers.interoperability.semantic_adapter.evidence[0].sha256, '4aeea44fb4e13074fc82d40e33cb90d73e6dba6bdf2f1d0f71bc1b15e5f0574c');
+assert.equal(b90.layers.interoperability.semantic_adapter.evidence[1].sha256, '7008b23bf3f30f0f6d9b196c5d68f18c551bfcd259c8f6f45031cb693d1cbe29');
+assert.equal(b90.layers.learner.tools.length, 1);
+assert.equal(b90.layers.learner.tools[0].tool_id, 'b90.open_learner_hub');
+assert.equal(b90.layers.learner.tools[0].href, 'backend/b90/B90.html');
+assert.deepEqual(b90.layers.learner.tools[0].page, overrides.learner_tools.B90[0].page);
+assert.equal(b90.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(b90.layers.translation.ledger_status, 'verified');
+assert.equal(b90.layers.translation.terminology_status, 'verified');
+assert.equal(b90.layers.translation.rights_status, 'verified');
+assert.equal(b90.layers.translation.corrections_status, 'verified');
+assert.equal(b90.layers.production.build_status, 'verified');
+assert.equal(b90.layers.production.deterministic_replay_status, 'verified');
+assert.equal(b90.layers.educator.status, 'verified');
+assert.equal(b90.layers.educator.unit_alignment_status, 'verified');
+assert.equal(b90.layers.educator.resources.length, 8);
+assert.ok(b90.layers.educator.resources.some(resource => resource.id === 'B90:educator-hub-v1' && resource.status === 'verified'));
+assert.ok(b90.layers.educator.resources.some(resource => resource.id === 'B90:unit-index-v1' && resource.status === 'verified'));
+assert.equal(b90.layers.learner.primary.format, 'text/html');
+assert.equal(b90.layers.learner.primary.sha256, '1f07fc866cdeb52653984d9237d3ce7fc67473061d63861fdebfaf66bec1faed');
+assert.deepEqual(b90.layers.learner.primary, b90.layers.learner.online_html);
+assert.equal(b90.layers.learner.pdf.sha256, 'f4921540bb47b09bb938bb18a5a6f78fd5340835fb834fe865f1eb0930b8b2b8');
+assert.equal(b90.layers.learner.epub.status, 'not_yet_produced');
+assert.equal(b90.layers.learner.portable_html.status, 'not_yet_produced');
+assert.equal(b90.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(b90.layers.learner.capabilities.mathml, 'not_yet_produced');
+assert.equal(b90.layers.learner.capabilities.print_profile, 'verified');
+assert.ok(!b90.layers.educator.resources.some(resource => /answer|solution/i.test(resource.id)));
+
 const d90 = byId.D90;
 assert.equal(d90.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(d90.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
@@ -853,6 +889,7 @@ const receipt = {
     learner_tool_html_destination_gate: 'pass',
     lebl_family_truth_overrides: 'pass',
     semantic_adapter_truth: 'pass',
+    b90_zero_copy_adapter: 'pass',
     d40_completion_truth: 'pass',
     d40_independent_anonymous_readback: 'pass_7_of_7',
     design_policy_schema: 'pass',

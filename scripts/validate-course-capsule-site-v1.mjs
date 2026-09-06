@@ -47,6 +47,22 @@ const logicalFiles = [
   'backend/b40/public-evidence.json',
   'backend/b40/manifest.json',
   'backend/b40/validation.json',
+  'backend/b90/B90.html',
+  'backend/b90/B90-pengajar.html',
+  'backend/b90/capabilities.json',
+  'backend/b90/learning-map.json',
+  'backend/b90/educator-map.json',
+  'backend/b90/public-evidence.json',
+  'backend/b90/claim-boundary.json',
+  'backend/b90/data/unit-index.jsonl',
+  'backend/b90/data/concept-index.jsonl',
+  'backend/b90/data/relation-index.jsonl',
+  'backend/b90/data/terms-index.jsonl',
+  'backend/b90/data/corrections-index.jsonl',
+  'backend/b90/data/rights-index.jsonl',
+  'backend/b90/source-lock.json',
+  'backend/b90/public-native-readback.json',
+  'backend/b90/validation.json',
   'backend/c60/C60.html',
   'backend/c60/C60-pengajar.html',
   'backend/c60/capabilities.json',
@@ -185,8 +201,8 @@ assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.jso
 // roles without rewriting that history.
 const expectedFrozenSuccessorAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
 const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10', 'D50'];
-const expectedCapabilityAdapterRoles = ['B40', 'B70', 'B80', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
-const expectedCapabilityPackageCount = 16;
+const expectedCapabilityAdapterRoles = ['B40', 'B70', 'B80', 'B90', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
+const expectedCapabilityPackageCount = 17;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedFrozenSuccessorAdapterRoles), 'Frozen successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -262,7 +278,7 @@ assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
 assert.equal(rows.filter(({ course }) => course.state === 'published').length, 37);
 assert.equal(rows.filter(({ course }) => course.state === 'production').length, 3);
-assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 30);
+assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 31);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -343,8 +359,8 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 24);
-assert.equal(authorityToolIds.length, 34);
+assert.equal(Object.keys(authorityToolsByCourse).length, 25);
+assert.equal(authorityToolIds.length, 35);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
 assert.equal(manifest.summary.published_count, 37);
@@ -990,7 +1006,7 @@ const receipt = {
     prerequisite_dag_visited: 40,
     published_rows: 37,
     production_rows: 3,
-    educator_rows: 30,
+    educator_rows: 31,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,

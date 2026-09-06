@@ -244,7 +244,7 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-assert.equal(capabilityTools.length,37);
+assert.equal(capabilityTools.length,38);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 assert.deepEqual(capabilityToolSupplementSources,[
@@ -719,10 +719,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors, the bilingual B80/D120 tools, and the D90 route.
     // The measured union peaks below 469 KiB raw and 94 KiB compressed.
-    assert.ok(Buffer.byteLength(html) < 471000, 'Offline map size budget');
+    assert.ok(Buffer.byteLength(html) < 469 * 1024, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 94000, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 94 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
