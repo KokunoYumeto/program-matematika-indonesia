@@ -42,8 +42,8 @@ for(const [courseId,tools] of Object.entries(overrides.learner_tools??{}).sort((
     pagePaths.add(hosted.path);
   }
 }
-assert.equal(toolCount,30,'Integration learner-tool closure changed.');
-assert.equal(pagePaths.size,27,'Integration hosted-page closure changed.');
+assert.equal(toolCount,31,'Integration learner-tool closure changed.');
+assert.equal(pagePaths.size,28,'Integration hosted-page closure changed.');
 
 const hostedPathForUrl=url=>{
   if(typeof url!=='string'||!url.startsWith(programPagesPrefix))return null;
@@ -74,8 +74,8 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
     await refreshEducatorFact(courseId,`educator_resource:${resource.id}`,resource,resource.url);
   }
 }
-assert.equal(educatorFactCount,40,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,20,'Integration educator hosted-page closure changed.');
+assert.equal(educatorFactCount,42,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,21,'Integration educator hosted-page closure changed.');
 
 const nextBytes=Buffer.from(JSON.stringify(overrides,null,2)+'\n');
 await writeFile(resolve(root,overridePath),nextBytes);

@@ -161,6 +161,32 @@ for (const [name, fetch] of [
   assert.equal(a10.layers.translation.corrections_status, 'in_progress');
   assert.equal(a10.layers.production.build_status, 'unknown');
   assert.equal(a10.layers.production.deterministic_replay_status, 'unknown');
+  const a20 = courses.find(course => course.course_id === 'A20');
+  assert.equal(a20.layers.interoperability.semantic_adapter.status, 'verified');
+  assert.equal(a20.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+  assert.match(a20.layers.interoperability.semantic_adapter.mapping_scope, /174535_native_records/);
+  assert.match(a20.layers.interoperability.semantic_adapter.mapping_scope, /2971_unsolved_exercises_preserved/);
+  assert.equal(a20.layers.learner.tools.length, 1);
+  assert.equal(a20.layers.learner.tools[0].tool_id, 'a20.open_learner_hub');
+  assert.equal(a20.layers.learner.tools[0].href, 'backend/a20/A20.html');
+  assert.equal(a20.layers.curriculum.unit_identity_status, 'verified');
+  assert.equal(a20.layers.translation.ledger_status, 'verified');
+  assert.equal(a20.layers.translation.terminology_status, 'verified');
+  assert.equal(a20.layers.translation.rights_status, 'verified');
+  assert.equal(a20.layers.translation.corrections_status, 'verified');
+  assert.equal(a20.layers.production.build_status, 'verified');
+  assert.equal(a20.layers.production.deterministic_replay_status, 'verified');
+  assert.equal(a20.layers.educator.status, 'verified');
+  assert.equal(a20.layers.educator.unit_alignment_status, 'verified');
+  assert.equal(a20.layers.educator.resources.length, 10);
+  assert.ok(a20.layers.educator.resources.some(r=>r.id==='A20:educator-hub-v1'&&r.status==='verified'));
+  assert.ok(a20.layers.educator.resources.some(r=>r.id==='A20:exercise-index-v1'&&r.status==='verified'));
+  assert.equal(a20.layers.learner.pdf.status, 'verified');
+  assert.equal(a20.layers.learner.pdf.bytes, 412049461);
+  assert.equal(a20.layers.learner.pdf.sha256, '76276eeab590cd8181fd531378c4b4860bf30289a5e8093c9af5788d1eca3a9c');
+  assert.equal(a20.layers.learner.online_html.status, 'not_yet_produced');
+  assert.equal(a20.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+  assert.equal(a20.layers.learner.capabilities.mathml, 'not_yet_produced');
   const topology=courses.find(c=>c.course_id==='C90');
   assert.equal(topology.layers.interoperability.semantic_adapter.contract_version,'topology-learning-capability/1');
   assert.equal(topology.layers.learner.tools.length,1);
@@ -409,7 +435,7 @@ for (const [name, fetch] of [
   assert.equal(b80.layers.educator.unit_alignment_status,'verified');
   assert.equal(b80.layers.learner.tools.length,2);
   assert.equal(b80.layers.educator.resources[0].id,'B80:educator-map-v1');
-  for (const [value, count] of [['published', 37], ['production', 3], ['educator', 31], ['adapter', adapterCount]]) {
+  for (const [value, count] of [['published', 37], ['production', 3], ['educator', 32], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
     assert.equal(visibleCount(), count);
@@ -443,14 +469,14 @@ for (const [name, fetch] of [
   assert.match(f.element('#course-grid').innerHTML, /Tidak ada mata kuliah/);
   f.fire(f.element('#reset-filters'), 'click');
   assert.equal(visibleCount(), 40);
-  for (const [name, count] of Object.entries({ total: 40, published: 37, production: 3, educator: 31 })) {
+  for (const [name, count] of Object.entries({ total: 40, published: 37, production: 3, educator: 32 })) {
     assert.equal(Number(f.element('#summary-' + name).textContent), count);
     assert.match(html, new RegExp(`<strong id="summary-${name}">${count}</strong>`));
   }
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { verified: 20, available_unverified: 10, in_progress: 1, unknown: 9 });
+assert.deepEqual(educatorCounts, { verified: 21, available_unverified: 10, in_progress: 1, unknown: 8 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),

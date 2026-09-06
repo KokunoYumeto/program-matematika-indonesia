@@ -245,7 +245,7 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-assert.equal(capabilityTools.length,38);
+assert.equal(capabilityTools.length,39);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 assert.deepEqual(capabilityToolSupplementSources,[
@@ -278,6 +278,8 @@ for (const corrupt of [
   c=>{c.find(r=>r.course_id==='B80').layers.learner.tools[0].page.path='../../secret';},
   c=>{c.find(r=>r.course_id==='B80').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='A00').layers.learner.tools[0].label='changed';},
+  c=>{c.find(r=>r.course_id==='A20').layers.learner.tools[0].href='backend/a20/learning-map.json';},
+  c=>{c.find(r=>r.course_id==='A20').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='C20').layers.learner.tools.pop();},
   c=>{c.find(r=>r.course_id==='B70').layers.learner.tools[0].href='backend/lebl/C50.html';},
   c=>{c.find(r=>r.course_id==='C50').locale='en';},
@@ -346,6 +348,17 @@ assert.deepEqual(englishResources.D100.filter(r=>r.pages).map(r=>[r.bytes,r.sha2
   [808762,'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2'],
 ]);
 for (const locale of supportedLocales) {
+  const a20Tools=resourceBindings(interfaceCourses.find(c=>c.id==='A20'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(a20Tools.length,1);
+  assert.deepEqual(a20Tools.map(tool=>tool.href),[
+    'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/a20/A20.html',
+  ]);
+  for(const tool of a20Tools){
+    assert.equal(tool.contentLanguage,'id'); assert.equal(tool.primary,false);
+    if(tool.contentLanguage===localeMetadata[locale].languageTag) {
+      assert.ok(tool.note.includes('174.535')&&tool.note.includes('83')&&tool.note.includes('8.209')&&tool.note.includes('5.238'));
+    } else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
+  }
   const b40Tools=resourceBindings(interfaceCourses.find(c=>c.id==='B40'),locale).filter(r=>r.capabilityToolId);
   assert.equal(b40Tools.length,1);
   assert.deepEqual(b40Tools.map(tool=>tool.href),[
@@ -718,14 +731,15 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   if (file !== 'index.html') {
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
-    // evidence-bound mirrors, the bilingual B80/D120 tools, and the D90 route.
-    // The measured union peaks below 478 KB raw and 95.1 KB compressed after
-    // combining the B90 capability, distinct live/downloadable D100 routes,
-    // and the universal authoritative-original navigation closure.
-    assert.ok(Buffer.byteLength(html) < 478000, 'Offline map size budget');
+    // evidence-bound mirrors, the bilingual B80/D120 tools, the D90 route,
+    // and A20's metadata-only learner capability. The measured union peaks
+    // below 481 KB raw and 96 KB compressed after combining those capabilities,
+    // distinct live/downloadable D100 routes, and the universal authoritative-
+    // original navigation closure.
+    assert.ok(Buffer.byteLength(html) < 481000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 95100, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 96000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

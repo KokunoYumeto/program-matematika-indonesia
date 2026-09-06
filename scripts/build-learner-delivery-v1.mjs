@@ -21,6 +21,7 @@ const canonical = (value) => `${JSON.stringify(value, null, 2)}\n`;
 const fileIdentity = (path, bytes) => ({ path, bytes: bytes.length, sha256: sha256(bytes) });
 const absent = () => ({ status: 'absent' });
 const available = (url, format) => ({ status: 'available_unverified', format, url });
+const isAvailable = ({ status }) => status === 'verified' || status === 'available_unverified';
 const resourceExtension = (url) => extname(new URL(url).pathname).toLowerCase();
 const resourceFormat = (url, htmlUrl = null) => {
   if (url === htmlUrl) return 'text/html';
@@ -126,7 +127,7 @@ const sidecar = {
   courses: rows,
   summary: {
     course_count: rows.length,
-    online_html_available: rows.filter(({ online_html }) => online_html.status !== 'absent').length,
+    online_html_available: rows.filter(({ online_html }) => isAvailable(online_html)).length,
     verified_portable_html: rows.filter(({ portable_html }) => portable_html.status === 'verified').length,
     verified_epub: rows.filter(({ epub }) => epub.status === 'verified').length,
   },

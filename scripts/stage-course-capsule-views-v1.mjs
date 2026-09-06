@@ -27,6 +27,8 @@ const mappings=[
   ['backend/course-capsule-v1/adapters/c70-capability-v1/views/C70-pengajar.html','docs/backend/c70/C70-pengajar.html'],
   ['backend/course-capsule-v1/adapters/b40-capability-v1/views/B40.html','docs/backend/b40/B40.html'],
   ['backend/course-capsule-v1/adapters/b40-capability-v1/views/B40-pengajar.html','docs/backend/b40/B40-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/a20-capability-v1/views/A20.html','docs/backend/a20/A20.html'],
+  ['backend/course-capsule-v1/adapters/a20-capability-v1/views/A20-pengajar.html','docs/backend/a20/A20-pengajar.html'],
 ];
 
 const rows=[];
@@ -46,6 +48,14 @@ for(const [source,target] of mappings){
     payload=Buffer.from(projected,'utf8');
     projection='public-directory-link-depth';
   }
+  if(target==='docs/backend/a20/A20-pengajar.html'){
+    const original=sourcePayload.toString('utf8');
+    assert.equal(original.split('../data/').length-1,7,`${source}: expected seven adapter-relative governance links.`);
+    const projected=original.replaceAll('../data/','data/');
+    assert.equal(projected.includes('../data/'),false,`${target}: adapter-relative governance link survived projection.`);
+    payload=Buffer.from(projected,'utf8');
+    projection='public-directory-link-depth';
+  }
   const targetPath=resolve(root,target);
   await mkdir(dirname(targetPath),{recursive:true});
   await writeFile(targetPath,payload);
@@ -53,5 +63,5 @@ for(const [source,target] of mappings){
   assert.deepEqual(readback,payload,`${target}: staged view differs from adapter source.`);
   rows.push({source,target,projection,source_bytes:sourcePayload.length,source_sha256:sha256(sourcePayload),bytes:payload.length,sha256:sha256(payload)});
 }
-assert.equal(rows.length,20);
+assert.equal(rows.length,22);
 console.log(JSON.stringify({status:'pass',mode:'source-bound-public-projections',files:rows},null,2));

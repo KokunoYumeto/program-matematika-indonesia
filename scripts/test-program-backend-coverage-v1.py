@@ -49,14 +49,14 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters']) + 1
-assert model['summary']['locally_validated_adapter_roles'] == 35
-assert model['summary']['roles_without_validated_common_adapter'] == 5
-assert model['summary']['locally_represented_families'] == 28
+assert model['summary']['locally_validated_adapter_roles'] == 36
+assert model['summary']['roles_without_validated_common_adapter'] == 4
+assert model['summary']['locally_represented_families'] == 29
 assert model['summary']['github_evidenced_roles'] == 34
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
-} == {'A20', 'A30', 'B95', 'C140', 'D30'}
+} == {'A30', 'B95', 'C140', 'D30'}
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -84,6 +84,51 @@ assert roles['A10']['dimensions']['reproducible_production'] == {
     'replay': 'unknown',
 }
 assert roles['A10']['dimensions']['educator']['unit_alignment'] == 'unknown'
+assert roles['A20']['common_adapter']['status'] == 'verified'
+assert roles['A20']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['A20']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_174535_native_records_83_modules_8209_exercise_'
+    'problem_identities_5238_solution_identities_236_concepts_340_terms_1614_'
+    'corrections_and_17_component_rights_with_2971_unsolved_exercises_preserved'
+)
+assert roles['A20']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['A20']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['A20']['common_adapter']['public_package'] is None
+assert [row['kind'] for row in roles['A20']['common_adapter']['local_evidence']] == [
+    'central_adapter_manifest',
+    'deterministic_validation_receipt',
+    'native_source_lock',
+    'anonymous_native_public_readback',
+    'verified_native_public_release',
+    'native_record_ledger',
+    'module_identity_index',
+    'exercise_solution_identity_index',
+    'concept_index',
+    'pedagogical_relation_index',
+    'component_rights_index',
+    'correction_index',
+    'terminology_index',
+]
+assert roles['A20']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert roles['A20']['learner']['tools'] == [{
+    'href': '../backend/a20/A20.html',
+    'label': 'A20 · Aljabar Menengah',
+}]
+assert roles['A20']['educator']['unit_alignment'] == 'verified'
+assert len(roles['A20']['educator']['resources']) == 10
+assert roles['A20']['dimensions']['source_translation_ledger'] == {
+    'corrections': 'verified',
+    'ledger': 'verified',
+}
+assert roles['A20']['dimensions']['terminology']['register'] == 'verified'
+assert roles['A20']['dimensions']['reproducible_production'] == {
+    'build': 'verified',
+    'replay': 'verified',
+}
+assert roles['A20']['dimensions']['accessibility'] == {
+    'mathml': 'not_yet_produced',
+    'semantic_html': 'not_yet_produced',
+}
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['B40']['learner']['tools']) == 1

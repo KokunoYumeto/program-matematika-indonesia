@@ -16,6 +16,11 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
   : value && typeof value === 'object'
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
+  { name: 'a20_educator_resource_cannot_be_removed', id: 'A20', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(resource=>resource.id!=='A20:educator-hub-v1');}, error: /missing\/duplicate educator resource/ },
+  { name: 'a20_educator_hash_cannot_drift', id: 'A20', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='A20:educator-hub-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
+  { name: 'a20_educator_alignment_cannot_drift', id: 'A20', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },
+  { name: 'a20_native_semantic_html_cannot_be_invented', id: 'A20', mutate: row=>{row.layers.learner.capabilities.semantic_html='verified';}, error: /learner capability authority drift/ },
+  { name: 'a20_native_mathml_cannot_be_invented', id: 'A20', mutate: row=>{row.layers.learner.capabilities.mathml='verified';}, error: /learner capability authority drift/ },
   { name: 'b40_educator_resource_cannot_be_removed', id: 'B40', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(resource=>resource.id!=='B40:educator-hub-v1');}, error: /missing\/duplicate educator resource/ },
   { name: 'b40_educator_hash_cannot_drift', id: 'B40', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='B40:educator-hub-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'b40_educator_alignment_cannot_drift', id: 'B40', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },

@@ -425,6 +425,7 @@ assert.deepEqual(Object.keys(terminologyPolicyChecksums).sort(), ['README.md', '
 assert.equal(terminologyPolicyChecksums['README.md'], sha256(terminologyPolicyReadmeAuthorityBytes));
 assert.equal(terminologyPolicyChecksums['canonical-register-policy.json'], sha256(terminologyPolicyAuthorityBytes));
 assert.equal(integrationOverrides.native_capabilities.A10.terminology.status, 'in_progress');
+assert.equal(integrationOverrides.native_capabilities.A20.terminology.status, 'verified');
 assert.equal(integrationOverrides.native_capabilities.D100.terminology.status, 'verified');
 const c80Capsule = courseCapsules.find(({ course_id }) => course_id === 'C80');
 assert.ok(c80Capsule, 'Kapsul C80 harus tersedia.');
@@ -439,6 +440,15 @@ for (const courseId of ['A10']) {
   assert.equal(capsule.layers.translation.terminology_status, 'in_progress');
   assert.equal(capsule.layers.translation.corrections_status, 'in_progress');
 }
+const a20Capsule = courseCapsules.find(({ course_id }) => course_id === 'A20');
+assert.equal(a20Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(a20Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['a20.open_learner_hub']);
+assert.equal(a20Capsule.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(a20Capsule.layers.translation.ledger_status, 'verified');
+assert.equal(a20Capsule.layers.translation.terminology_status, 'verified');
+assert.equal(a20Capsule.layers.educator.unit_alignment_status, 'verified');
+assert.equal(a20Capsule.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(a20Capsule.layers.learner.capabilities.mathml, 'not_yet_produced');
 const d100Capsule = courseCapsules.find(({ course_id }) => course_id === 'D100');
 assert.equal(d100Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.deepEqual(d100Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['d100.open_learner_hub']);
@@ -1136,7 +1146,10 @@ assert.equal(
   effectiveCourses.filter((course) => course.learner || course.reader).length - legacyReaderCandidatesRejectedByDeliveryAuthority.length,
 );
 assert.equal(learnerDelivery.summary.course_count, learnerDelivery.courses.length);
-assert.equal(learnerDelivery.summary.online_html_available, learnerDelivery.courses.filter(({ online_html }) => online_html.status !== 'absent').length);
+assert.equal(
+  learnerDelivery.summary.online_html_available,
+  learnerDelivery.courses.filter(({ online_html }) => ['verified', 'available_unverified'].includes(online_html.status)).length,
+);
 assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').length);
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
 assert.equal(learnerDelivery.summary.online_html_available, 25);
@@ -1160,6 +1173,15 @@ assert.equal(deliveryById.get('C100').online_html.entry_point, 'index.html');
 assert.equal(deliveryById.get('C100').online_html.inventory_count, 2);
 assert.equal(deliveryById.get('C100').online_html.scope, 'whole_course');
 assert.equal(deliveryById.get('C100').online_html.dependency_free, true);
+const a20Delivery = deliveryById.get('A20');
+assert.equal(a20Delivery.primary.status, 'verified');
+assert.equal(a20Delivery.primary.format, 'application/pdf');
+assert.equal(a20Delivery.primary.bytes, 412_049_461);
+assert.equal(a20Delivery.primary.sha256, '76276eeab590cd8181fd531378c4b4860bf30289a5e8093c9af5788d1eca3a9c');
+assert.equal(a20Delivery.pdf.status, 'verified');
+assert.equal(a20Delivery.online_html.status, 'not_yet_produced');
+assert.equal(a20Delivery.portable_html.status, 'not_yet_produced');
+assert.equal(a20Delivery.epub.status, 'not_yet_produced');
 assert.equal(deliveryById.get('D10').portable_html.sha256, 'a0333dca723085e93d472b945a03758b133b05cbe5be3022133088e5c1f5ab00');
 const d10Delivery = deliveryById.get('D10');
 assert.equal(d10Delivery.online_html.status, 'available_unverified');
@@ -1219,8 +1241,9 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound B90, D100, C110, C70, and D90 learner/educator capability links. Each new language route
-// has its own separately measured offline/closure budget.
+// hash-bound B90, D100, C110, C70, D90, and A20 learner/educator capability
+// links. Each new language route has its own separately measured offline/
+// closure budget.
 assert.ok(shellRawBytes <= 206_000, `Shell melewati 206.000 byte: ${shellRawBytes}.`);
 assert.ok(shellGzipBytes <= 51_500, `Shell gzip melewati 51.500 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
@@ -1279,6 +1302,33 @@ for (const name of [
     readFile(resolve(root, 'public/hub', name)),
   ]);
   assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror B90 Sites berbeda dari docs.`);
+}
+
+for (const name of [
+  'backend/a20/A20.html',
+  'backend/a20/A20-pengajar.html',
+  'backend/a20/capabilities.json',
+  'backend/a20/claim-boundary.json',
+  'backend/a20/data/concept-index.jsonl',
+  'backend/a20/data/corrections-index.jsonl',
+  'backend/a20/data/exercise-index.jsonl',
+  'backend/a20/data/module-index.jsonl',
+  'backend/a20/data/native-record-ledger.json',
+  'backend/a20/data/pedagogical-relation-index.jsonl',
+  'backend/a20/data/rights-index.jsonl',
+  'backend/a20/data/terms-index.jsonl',
+  'backend/a20/educator-map.json',
+  'backend/a20/learning-map.json',
+  'backend/a20/public-evidence.json',
+  'backend/a20/public-native-readback.json',
+  'backend/a20/source-lock.json',
+  'backend/a20/validation.json',
+]) {
+  const [docsBytes, hostedBytes] = await Promise.all([
+    readFile(resolve(root, 'docs', name)),
+    readFile(resolve(root, 'public/hub', name)),
+  ]);
+  assert.deepEqual(hostedBytes, docsBytes, `${name}: mirror A20 Sites berbeda dari docs.`);
 }
 
 for (const name of [
