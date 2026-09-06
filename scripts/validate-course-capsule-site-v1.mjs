@@ -180,10 +180,11 @@ const v23AdapterIndexV2 = JSON.parse(docsBytes['data/v23-adapter-index-v2.json']
 const clpSuccessorIndex = JSON.parse(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'].toString('utf8'));
 const clpSuccessorAuthority = await readFile(resolve(project, 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json'));
 assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.json'], clpSuccessorAuthority, 'CLP successor public index differs from its authority.');
-// The frozen CLP successor index predates A10's central admission and must stay
-// byte-stable. The live course capsules add A10 without rewriting that history.
+// The frozen CLP successor index predates the later A10 and D50 central
+// admissions and must stay byte-stable. The live course capsules add both
+// roles without rewriting that history.
 const expectedFrozenSuccessorAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
-const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10'];
+const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10', 'D50'];
 const expectedCapabilityAdapterRoles = ['B40', 'B70', 'B80', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
 const expectedCapabilityPackageCount = 16;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));

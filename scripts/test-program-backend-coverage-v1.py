@@ -47,14 +47,14 @@ assert model['summary']['locally_validated_adapter_roles'] == sum(
     for row in inputs['capsules'])
 assert model['summary']['roles_without_validated_common_adapter'] + model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['adapters'])
-assert model['summary']['locally_validated_adapter_roles'] == 33
-assert model['summary']['roles_without_validated_common_adapter'] == 7
-assert model['summary']['locally_represented_families'] == 26
+assert model['summary']['locally_validated_adapter_roles'] == 34
+assert model['summary']['roles_without_validated_common_adapter'] == 6
+assert model['summary']['locally_represented_families'] == 27
 assert model['summary']['github_evidenced_roles'] == 32
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
-} == {'A20', 'A30', 'B90', 'B95', 'C140', 'D30', 'D50'}
+} == {'A20', 'A30', 'B90', 'B95', 'C140', 'D30'}
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -177,6 +177,32 @@ assert roles['D40']['common_adapter']['github_public_evidence'] == 'new_anonymou
 assert roles['D40']['common_adapter']['zenodo_preservation'] == 'not_established'
 for dimension in ('curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production', 'educator', 'interoperability'):
     assert 'unknown' not in roles['D40']['dimensions'][dimension].values()
+assert roles['D50']['common_adapter']['status'] == 'verified'
+assert roles['D50']['common_adapter']['contract'] == '2.3.1'
+assert roles['D50']['common_adapter']['mapping_scope'].startswith('zero_copy_projection_of_6912_owner_native_rows')
+assert roles['D50']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['D50']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['D50']['common_adapter']['public_package'] is None
+assert [row['kind'] for row in roles['D50']['common_adapter']['local_evidence']] == [
+    'central_adapter_manifest',
+    'central_admission_validation',
+    'sealed_zero_copy_adapter_package',
+    'fail_closed_negative_probe_report',
+    'independent_package_audit',
+]
+assert roles['D50']['learner']['relationship'] == 'no_common_adapter_consumption_proven'
+assert roles['D50']['learner']['tools'] == []
+assert roles['D50']['dimensions']['curriculum']['unit_identity'] == 'verified'
+assert roles['D50']['dimensions']['source_translation_ledger'] == {
+    'corrections': 'verified',
+    'ledger': 'verified',
+}
+assert roles['D50']['dimensions']['terminology']['register'] == 'verified'
+assert roles['D50']['dimensions']['reproducible_production'] == {
+    'build': 'unknown',
+    'replay': 'unknown',
+}
+assert roles['D50']['dimensions']['educator']['unit_alignment'] == 'unknown'
 assert roles['D70']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D70']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D70']['learner']['tools']) == 1
