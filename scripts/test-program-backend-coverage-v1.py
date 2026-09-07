@@ -57,10 +57,16 @@ INPUTS = {
     'd120': 'backend/course-capsule-v1/adapters/d120-capability-v1/publication/GITHUB_READBACK_a42650f4815a.json',
     'd50Publication': 'backend/v2.3/admissions/d50-smooth-manifolds-v0.1.0/publication/PUBLICATION_BINDING_v0.63.21.json',
     'gapAdmission': 'backend/course-capsule-v1/validation/20260907/GAP_ADMISSION.json',
+    'gapZipA30': 'backend/course-capsule-v1/packages/A30_PRECALCULUS_V231_ADAPTER.zip',
+    'gapZipB95': 'backend/course-capsule-v1/packages/B95_OPENINTRO_STATISTICS_V231_ADAPTER.zip',
+    'gapZipC140': 'backend/course-capsule-v1/packages/C140_MATHEMATICAL_STATISTICS_V231_ADAPTER.zip',
+    'centralV06324': 'publication-history/PUBLICATION_RECEIPT_v0.63.24.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
-inputs = {key: json.loads((ROOT / path).read_bytes()) for key, path in INPUTS.items()}
+binary_keys = {'gapZipA30', 'gapZipB95', 'gapZipC140'}
+inputs = {key: json.loads((ROOT / path).read_bytes()) for key, path in INPUTS.items()
+          if key not in binary_keys}
 model = json.loads((ROOT / OUTPUTS[0]).read_bytes())
 assert (ROOT / OUTPUTS[0]).read_bytes() == (ROOT / OUTPUTS[1]).read_bytes()
 roles = {row['role_id']: row for row in model['roles']}
@@ -299,7 +305,7 @@ assert b95['dimensions']['reproducible_production'] == {
     'replay': 'verified',
 }
 assert b95['dimensions']['accessibility'] == {
-    'mathml': 'not_yet_produced',
+    'mathml': 'available_unverified',
     'semantic_html': 'not_yet_produced',
 }
 assert b95['dimensions']['learner'] == {
@@ -374,11 +380,14 @@ for layer in ('primary', 'pdf'):
     assert b95_capsule['layers']['learner'][layer]['url'] == b95_public['reader']['zenodo_url']
     assert b95_capsule['layers']['learner'][layer]['bytes'] == 57049904
     assert b95_capsule['layers']['learner'][layer]['sha256'] == b95_public['reader']['pdf_sha256']
-for layer in ('online_html', 'epub', 'portable_html'):
+for layer in ('epub', 'portable_html'):
     assert b95_capsule['layers']['learner'][layer]['status'] == 'not_yet_produced'
+assert b95_capsule['layers']['learner']['online_html']['status'] == 'available_unverified'
+assert b95_capsule['layers']['learner']['online_html']['scope'] == 'course_gateway'
+assert b95_capsule['layers']['learner']['online_html']['url'] == 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/'
 assert b95_capsule['layers']['learner']['capabilities'] == {
     'chapter_downloads': 'not_yet_produced',
-    'mathml': 'not_yet_produced',
+    'mathml': 'available_unverified',
     'print_profile': 'verified',
     'semantic_html': 'not_yet_produced',
 }
@@ -715,16 +724,35 @@ assert roles['D120']['dimensions']['reproducible_production']['build'] == 'verif
 assert roles['D120']['dimensions']['reproducible_production']['replay'] == 'verified'
 dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production',
               'accessibility', 'learner', 'educator', 'federation', 'interoperability'}
+parity_roles = []
 for row in inputs['capsules']:
     projected = roles[row['course_id']]
     assert set(projected['dimensions']) == dimensions
+    required_fields = {
+        'curriculum': ['unit_identity_status'],
+        'translation': ['ledger_status', 'terminology_status', 'corrections_status'],
+        'production': ['build_status', 'deterministic_replay_status'],
+        'learner': ['status'],
+        'educator': ['status', 'unit_alignment_status'],
+        'federation': ['status'],
+    }
+    statuses = [row['layers'][layer][field]
+                for layer, fields in required_fields.items() for field in fields]
+    statuses.append(row['layers']['interoperability']['semantic_adapter']['status'])
+    parity = all(status in {'verified', 'not_applicable'} for status in statuses)
+    expected = 'verified' if parity else 'not_yet_proven'
+    assert projected['native_capability_parity_completion'] == expected
     assert projected['whole_course_backend_completion'] == (
         'selected_54_document_component_boundary_proven'
         if row['course_id'] == 'C140' else 'not_yet_proven')
+    if parity:
+        parity_roles.append(row['course_id'])
     assert len(projected['next_required_work']) > 0
     assert projected['dimensions']['terminology']['register'] == row['layers']['translation']['terminology_status']
     assert projected['dimensions']['reproducible_production']['replay'] == row['layers']['production']['deterministic_replay_status']
     assert projected['native_design_audit']['status'] == 'historical_comparison_not_new_native_reaudit'
+assert model['summary']['native_capability_parity_verified_roles'] == len(parity_roles)
+assert model['summary']['native_capability_parity_complete'] == (len(parity_roles) == 40)
 for fact in model['evidence']:
     data = (ROOT / fact['path']).read_bytes()
     assert len(data) == fact['bytes'] and hashlib.sha256(data).hexdigest() == fact['sha256']
@@ -871,6 +899,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d50_publication_authenticated_readback', 'd50Publication', lambda value: value['github'].update(anonymous_asset_readback='authenticated_only')),
         ('gap_admission_status', 'gapAdmission', lambda value: value.update(status='fail')),
         ('gap_admission_twin', 'gapAdmission', lambda value: value['roles']['A30']['twin'].update(status='fail')),
+        ('central_release_not_verified', 'centralV06324', lambda value: value.update(state='draft')),
+        ('central_packet_hash_mismatch', 'centralV06324', lambda value: value['v231_gap_adapters']['packets']['B95'].update(sha256='0' * 64)),
+        ('central_packet_missing', 'centralV06324', lambda value: value['v231_gap_adapters']['packets'].pop('C140')),
     ]
     for name, key, mutate in cases:
         altered = copy.deepcopy(inputs[key])
@@ -880,6 +911,14 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         assert run().returncode != 0, 'Accepted invalid coverage inputs: ' + name
         path.write_bytes((ROOT / INPUTS[key]).read_bytes())
         mutations.append(name)
+
+    for key in sorted(binary_keys):
+        path = sandbox / INPUTS[key]
+        original = path.read_bytes()
+        path.write_bytes(original + b'corruption')
+        assert run().returncode != 0, 'Accepted changed published adapter bytes: ' + key
+        path.write_bytes(original)
+        mutations.append(key + '_corrupted')
 
 receipt = {'schema': 'program-backend-coverage-validation/1', 'state': 'pass', 'roles': 40,
            'capability_dimensions_per_role': 9, 'exact_input_hashes': True, 'local_links_checked': local_links,

@@ -26,6 +26,7 @@ import {
   originalIndonesianBilingualValidationInput,
 } from './interface-capability-tools.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
+import {learnerToolsByCourseId} from '../docs/learner-tools.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
@@ -245,9 +246,20 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-// A30 adds one admitted capability tool; the three CLP projections remain
-// additive, so the shared capability-tool inventory is now 41.
+// B95 and C140 have been promoted into the canonical base learner-tool
+// inventory; the additional capability-tool projection therefore remains 41.
 assert.equal(capabilityTools.length,41);
+for (const [courseId, toolId, href] of [
+  ['B95', 'b95.open_learner_hub', 'backend/b95/B95.html'],
+  ['C140', 'c140.open_learner_hub', 'backend/c140/C140.html'],
+]) {
+  const tool = (learnerToolsByCourseId[courseId] ?? []).find(row => row.tool_id === toolId);
+  assert.ok(tool, `${courseId}: completed learner hub is absent from the interface tool inventory`);
+  assert.equal(tool.href, href);
+  assert.equal(tool.state, 'verified');
+  assert.equal(tool.machine_data_is_learner_destination, false);
+  assert.ok(resourceBindings(interfaceCourses.find(course => course.id === courseId), 'id').some(row => row.href === `${siteOrigin}${href}` && row.accessRole === 'tool'));
+}
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 const d30CapabilityTool=capabilityTools.find(row=>row.courseId==='D30'&&row.tool_id==='d30.open_learner_hub');
@@ -780,9 +792,9 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors, the bilingual B80/D120 tools, A20's metadata-only
-    // learner capability, the D30/D90 routes, and the complete B95/C140 learner/
-    // educator bindings. The combined live union is measured again by this gate
-    // after every deterministic interface build.
+    // learner capability, the D30/D90 routes, and the newly complete B95/C140
+    // learner hubs. The complete self-contained interface is measured again
+    // by this gate after every deterministic build.
     assert.ok(Buffer.byteLength(html) < 500000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.

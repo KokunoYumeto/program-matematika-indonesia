@@ -101,28 +101,28 @@ const logicalFiles = [
   'backend/b90/source-lock.json',
   'backend/b90/public-native-readback.json',
   'backend/b90/validation.json',
-  'backend/b95/manifest.json',
   'backend/b95/B95.html',
   'backend/b95/B95-pengajar.html',
   'backend/b95/capabilities.json',
-  'backend/b95/learning-map.json',
-  'backend/b95/educator-map.json',
-  'backend/b95/public-evidence.json',
   'backend/b95/claim-boundary.json',
-  'backend/b95/data/release-inventory.json',
-  'backend/b95/data/native-record-index.jsonl',
-  'backend/b95/data/unit-index.jsonl',
-  'backend/b95/data/exercise-index.jsonl',
   'backend/b95/data/concept-index.jsonl',
-  'backend/b95/data/relation-index.jsonl',
-  'backend/b95/data/terms-index.jsonl',
   'backend/b95/data/corrections-index.jsonl',
+  'backend/b95/data/evidence-index.jsonl',
+  'backend/b95/data/exercise-index.jsonl',
+  'backend/b95/data/localization-index.jsonl',
+  'backend/b95/data/native-record-index.jsonl',
+  'backend/b95/data/relation-index.jsonl',
+  'backend/b95/data/release-inventory.json',
   'backend/b95/data/rights-index.jsonl',
   'backend/b95/data/segment-index.jsonl',
-  'backend/b95/data/localization-index.jsonl',
-  'backend/b95/data/evidence-index.jsonl',
-  'backend/b95/source-lock.json',
+  'backend/b95/data/terms-index.jsonl',
+  'backend/b95/data/unit-index.jsonl',
+  'backend/b95/educator-map.json',
+  'backend/b95/learning-map.json',
+  'backend/b95/manifest.json',
+  'backend/b95/public-evidence.json',
   'backend/b95/public-native-readback.json',
+  'backend/b95/source-lock.json',
   'backend/b95/validation.json',
   'backend/c60/C60.html',
   'backend/c60/C60-pengajar.html',
@@ -197,6 +197,9 @@ const logicalFiles = [
   'backend/c120/rights-and-terms.json',
   'backend/c120/ledger-references.json',
   'backend/c120/validation.json',
+  'backend/c140/C140.html',
+  'backend/c140/learning-map.json',
+  'backend/c140/validation.json',
   'backend/c70/C70.html',
   'backend/c70/C70-pengajar.html',
   'backend/c70/learning-map.json',
@@ -352,7 +355,6 @@ assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
 assert.equal(rows.filter(({ course }) => course.state === 'published').length, 40);
 assert.equal(rows.filter(({ course }) => course.state === 'production').length, 0);
-assert.deepEqual(rows.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id), []);
 assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 34);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
@@ -380,6 +382,8 @@ const a20PublicNativeReadback = JSON.parse(docsBytes['backend/a20/public-native-
 const a20ClaimBoundary = JSON.parse(docsBytes['backend/a20/claim-boundary.json']);
 const a20SourceLock = JSON.parse(docsBytes['backend/a20/source-lock.json']);
 const a30 = rows.find(row => row.course_id === 'A30');
+const b95 = rows.find(row => row.course_id === 'B95');
+const c140 = rows.find(row => row.course_id === 'C140');
 const a30Validation = JSON.parse(docsBytes['backend/a30/validation.json']);
 const a30Capabilities = JSON.parse(docsBytes['backend/a30/capabilities.json']);
 const a30LearningMap = JSON.parse(docsBytes['backend/a30/learning-map.json']);
@@ -390,7 +394,6 @@ const a30ClaimBoundary = JSON.parse(docsBytes['backend/a30/claim-boundary.json']
 const a30SourceLock = JSON.parse(docsBytes['backend/a30/source-lock.json']);
 const a30AdapterManifest = JSON.parse(await readFile(resolve(project, 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json')));
 const a30AdapterValidationBytes = await readFile(resolve(project, 'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json'));
-const b95 = rows.find(row => row.course_id === 'B95');
 const b95Html = docsBytes['backend/b95/B95.html'].toString('utf8');
 const b95EducatorHtml = docsBytes['backend/b95/B95-pengajar.html'].toString('utf8');
 const b95Capabilities = JSON.parse(docsBytes['backend/b95/capabilities.json']);
@@ -476,6 +479,8 @@ const b40LedgerReferences = JSON.parse(docsBytes['backend/b40/ledger-references.
 const b40PublicEvidence = JSON.parse(docsBytes['backend/b40/public-evidence.json']);
 const b40Manifest = JSON.parse(docsBytes['backend/b40/manifest.json']);
 assert.equal(b40Validation.state,'pass');
+const c140Validation = JSON.parse(docsBytes['backend/c140/validation.json']);
+const c140LearningMap = JSON.parse(docsBytes['backend/c140/learning-map.json']);
 assert.equal(rows.filter((row) => Object.keys(row.layers).sort().join(',') === 'curriculum,educator,federation,interoperability,learner,production,translation').length, 40);
 assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy.public_access_required).length, 40);
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
@@ -495,8 +500,46 @@ assert.equal(manifest.public_baseline.authority.sha256, sha256(authorityBaseline
 assert.equal(manifest.public_baseline.schema.sha256, sha256(authorityBaselineSchemaBytes));
 assert.equal(validation.state, 'pass');
 assert.equal(validation.checks.seven_layer_rows, 40);
+assert.equal(validation.checks.published_count, 40);
+assert.equal(validation.checks.production_count, 0);
+assert.equal(validation.checks.learner_tool_course_count, 30);
+assert.equal(validation.checks.learner_tool_count, 40);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
+
+assert.equal(b95.course.state, 'published');
+assert.equal(b95.course_native.status, 'verified');
+assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(b95.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'b95.open_learner_hub', href: 'backend/b95/B95.html' },
+]);
+assert.equal(b95.layers.learner.tools[0].page.path, 'docs/backend/b95/B95.html');
+assert.equal(b95.layers.learner.tools[0].resource.path, 'docs/backend/b95/learning-map.json');
+assert.equal(b95.layers.learner.tools[0].evidence.path, 'docs/backend/b95/validation.json');
+assert.equal(b95Validation.result, 'pass');
+assert.equal(b95Validation.course_id, 'B95');
+assert.equal(b95LearningMap.course_id, 'B95');
+assert.equal(b95LearningMap.schema, 'b95-learner-map/1');
+assert.equal(b95LearningMap.body_content_embedded, false);
+assert.match(docsBytes['backend/b95/B95.html'].toString('utf8'), /<h1>Peta belajar statistika berbasis data<\/h1>/);
+
+assert.equal(c140.course.state, 'published');
+assert.equal(c140.course_native.status, 'available_unverified');
+assert.equal(c140.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(c140.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(c140.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'c140.open_learner_hub', href: 'backend/c140/C140.html' },
+]);
+assert.equal(c140.layers.learner.tools[0].page.path, 'docs/backend/c140/C140.html');
+assert.equal(c140.layers.learner.tools[0].resource.path, 'docs/backend/c140/learning-map.json');
+assert.equal(c140.layers.learner.tools[0].evidence.path, 'docs/backend/c140/validation.json');
+assert.equal(c140Validation.result, 'pass');
+assert.equal(c140Validation.course_id, 'C140');
+assert.equal(c140LearningMap.course_id, 'C140');
+assert.equal(c140LearningMap.schema, 'c140-learner-map/1');
+assert.equal(c140LearningMap.document_count, 54);
+assert.match(docsBytes['backend/c140/C140.html'].toString('utf8'), /<h1>Statistika Matematis<\/h1>/);
 
 const ids = rows.map(({ course_id }) => course_id);
 const edges = rows.flatMap((row) => row.course.prerequisites.map((source) => [source, row.course_id]));
@@ -898,9 +941,9 @@ assert.equal(b95.layers.learner.tools[0].evidence.path, 'docs/backend/b95/valida
 assert.equal(b95.layers.learner.pdf.status, 'verified');
 assert.equal(b95.layers.learner.pdf.bytes, 57049904);
 assert.equal(b95.layers.learner.pdf.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
-assert.equal(b95.layers.learner.online_html.status, 'not_yet_produced');
+assert.equal(b95.layers.learner.online_html.status, 'available_unverified');
 assert.equal(b95.layers.learner.capabilities.semantic_html, 'not_yet_produced');
-assert.equal(b95.layers.learner.capabilities.mathml, 'not_yet_produced');
+assert.equal(b95.layers.learner.capabilities.mathml, 'available_unverified');
 assert.equal(b95.layers.learner.capabilities.print_profile, 'verified');
 assert.equal(b95.layers.curriculum.unit_identity_status, 'verified');
 assert.equal(b95.layers.translation.ledger_status, 'verified');

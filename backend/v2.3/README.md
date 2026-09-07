@@ -157,6 +157,17 @@ A00, B10, C30, C40, D20, D60, and D110 are seven role bindings through six
 admitted packages. They are not a declaration that the other 33 course roles
 conform to v2.3.1.
 
+## Current program-wide common layer
+
+The program-wide common layer now spans 40 course roles across all 33 owner-native backend families.
+This does not make every native backend a v2.3.1 package: the current
+compatibility split is 15 primary `2.3.1` role bindings, 19
+`course-learning-capability/1` role bindings, four roles projected through the
+shared Lebl family capability, one topology-family role, and one geometry-family
+role. The seven roles described above remain the six original individually
+documented v2.3 lineage packages; the other adapters retain their own contracts
+and native authorities.
+
 ## Design proposal retained separately
 
 The following six older files under `schema/` remain an unadmitted design

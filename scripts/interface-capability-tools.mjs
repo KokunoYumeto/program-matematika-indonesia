@@ -18,6 +18,7 @@ const contracts = {
   'b80-educator-map-v1':['B80','reference','backend/b80/B80-pengajar.html'],
   'b80-exercise-map-v1':['B80','practice_diagnostic_map','backend/b80/B80.html'],
   'b90.open_learner_hub':['B90','course_reader','backend/b90/B90.html'],
+  'b95.open_learner_hub':['B95','course_reader','backend/b95/B95.html'],
   'c100-geometry-learning-map-v1':['C100','practice_diagnostic_map','backend/geometry/C100.html'],
   'c100-geometry-educator-map-v1':['C100','reference','backend/geometry/pengajar.html'],
   'c90-topology-course-map-v1':['C90','reference','backend/topology/C90.html'],
@@ -25,6 +26,7 @@ const contracts = {
   'c70.open_learner_hub':['C70','course_reader','backend/c70/C70.html'],
   'c110.open_learner_hub':['C110','course_reader','backend/c110/C110.html'],
   'c120.open_learner_hub':['C120','course_reader','backend/c120/C120.html'],
+  'c140.open_learner_hub':['C140','course_reader','backend/c140/C140.html'],
   'd10.open_learner_hub':['D10','course_reader','backend/d10/D10.html'],
   'd40.open_learner_hub':['D40','course_reader','backend/d40/D40.html'],
   'd70.open_learner_hub':['D70','course_reader','backend/d70/D70.html'],
@@ -47,7 +49,7 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.ok(!seen.has(tool.tool_id)); seen.add(tool.tool_id);
     const legacy = (learnerToolsByCourseId[capsule.course_id] ?? []).find(row=>row.tool_id===tool.tool_id);
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
-    // Explicit A20, A30, B40, B80, B90, Lebl, Geometry, Topology, C60, C70, C110, C120, D10, D30, D40, D70, D80, D90, D100 and D120 presentation contracts; no generic auto-admission.
+    // Explicit presentation contracts only; completion status never auto-admits a machine record as a learner destination.
     const expected = contracts[tool.tool_id];
     assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');
@@ -66,8 +68,10 @@ export function projectCapabilityTools(capsules, courseIds) {
     const contentLanguage = capsule.course_id === 'D100' ? 'en' : 'id';
     result.push({courseId:capsule.course_id, contentLanguage, ...tool});
   }
-  assert.deepEqual([...matchedLegacy].sort(),Object.values(learnerToolsByCourseId).flat().map(t=>t.tool_id).sort());
-  assert.deepEqual(result.map(t=>t.tool_id).sort(),Object.keys(contracts).sort());
+  const legacyToolIds=Object.values(learnerToolsByCourseId).flat().map(t=>t.tool_id).sort();
+  const legacyToolIdSet=new Set(legacyToolIds);
+  assert.deepEqual([...matchedLegacy].sort(),legacyToolIds);
+  assert.deepEqual(result.map(t=>t.tool_id).sort(),Object.keys(contracts).filter(id=>!legacyToolIdSet.has(id)).sort());
   return result;
 }
 export function projectClpCapabilityTools(source, validation, courseIds) {

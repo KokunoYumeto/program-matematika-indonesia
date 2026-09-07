@@ -242,9 +242,9 @@ for (const [name, fetch] of [
   assert.equal(b95.layers.learner.pdf.status, 'verified');
   assert.equal(b95.layers.learner.pdf.bytes, 57049904);
   assert.equal(b95.layers.learner.pdf.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
-  assert.equal(b95.layers.learner.online_html.status, 'not_yet_produced');
+  assert.equal(b95.layers.learner.online_html.status, 'available_unverified');
   assert.equal(b95.layers.learner.capabilities.semantic_html, 'not_yet_produced');
-  assert.equal(b95.layers.learner.capabilities.mathml, 'not_yet_produced');
+  assert.equal(b95.layers.learner.capabilities.mathml, 'available_unverified');
   assert.equal(b95.layers.learner.capabilities.print_profile, 'verified');
   const topology=courses.find(c=>c.course_id==='C90');
   assert.equal(topology.layers.interoperability.semantic_adapter.contract_version,'topology-learning-capability/1');

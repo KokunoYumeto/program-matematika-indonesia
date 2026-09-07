@@ -691,6 +691,32 @@ const pdf = {
   scope: 'whole_course_462_pages_with_exact_chapter_start_routes_and_context_only_nonchapter_routes',
   evidence: publicReceipt,
 };
+const centralGatewayIdentity = await identity('docs/id-ID/courses/B95/index.html');
+const centralGatewayDelivery = {
+  status: 'available_unverified',
+  format: 'text/html',
+  url: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/',
+  bytes: centralGatewayIdentity.bytes,
+  sha256: centralGatewayIdentity.sha256,
+  entry_point: 'index.html',
+  inventory_count: 1,
+  scope: 'course_gateway',
+  dependency_free: true,
+  evidence: {
+    kind: 'local_deterministic_program_gateway_pending_public_readback',
+    locator: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/',
+    verified_date: verifiedDate,
+    note: 'Gerbang pelajar pusat sudah dibangun dan divalidasi secara lokal; identitas byte publik akan dipromosikan setelah penerapan penerus Pages. Pembaca PDF lengkap tetap menjadi sumber pembelajaran utama.',
+  },
+};
+const availableUnverifiedMathml = {
+  status: 'available_unverified',
+  evidence: [{
+    kind: 'anonymous_native_public_release',
+    locator: 'https://doi.org/10.5281/zenodo.22261912',
+    verified_date: verifiedDate,
+  }],
+};
 const learnerDeliveryTarget = 'backend/authority/learner-delivery-overrides-v1.json';
 const learnerDelivery = await load(learnerDeliveryTarget);
 assert.equal(learnerDelivery.schema_version, '1.0.0');
@@ -700,14 +726,14 @@ delete unrelatedLearnerDelivery.courses.B95;
 learnerDelivery.courses.B95 = {
   ...(learnerDelivery.courses.B95 ?? {}),
   primary: clone(pdf),
-  online_html: { status: 'not_yet_produced' },
+  online_html: centralGatewayDelivery,
   pdf: clone(pdf),
   epub: { status: 'not_yet_produced' },
   portable_html: { status: 'not_yet_produced' },
   capabilities: {
     ...(learnerDelivery.courses.B95?.capabilities ?? {}),
     semantic_html: { status: 'not_yet_produced' },
-    mathml: { status: 'not_yet_produced' },
+    mathml: availableUnverifiedMathml,
     print_profile: { status: 'verified', evidence: { ...publicReceipt, pdf_pages: 462 } },
     chapter_downloads: { status: 'not_yet_produced' },
   },
