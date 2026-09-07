@@ -245,9 +245,19 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-// A30 adds one admitted capability tool; the three CLP projections remain
-// additive, so the shared capability-tool inventory is now 41.
-assert.equal(capabilityTools.length,41);
+// B95 and C140 now expose their verified learner hubs alongside the prior
+// inventory; machine data remains secondary, so the total is 43.
+assert.equal(capabilityTools.length,43);
+for (const [courseId, toolId, href] of [
+  ['B95', 'b95.open_learner_hub', 'backend/b95/B95.html'],
+  ['C140', 'c140.open_learner_hub', 'backend/c140/C140.html'],
+]) {
+  const tool = capabilityTools.find(row => row.courseId === courseId && row.tool_id === toolId);
+  assert.ok(tool, `${courseId}: completed learner hub is absent from the interface tool inventory`);
+  assert.equal(tool.href, href);
+  assert.equal(tool.state, 'verified');
+  assert.equal(tool.machine_data_is_learner_destination, false);
+}
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 const d30CapabilityTool=capabilityTools.find(row=>row.courseId==='D30'&&row.tool_id==='d30.open_learner_hub');
@@ -780,9 +790,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors, the bilingual B80/D120 tools, A20's metadata-only
-    // learner capability, and the D30/D90 routes. The combined A20+D30 union is
-    // measured again by this gate after every deterministic interface build.
-    assert.ok(Buffer.byteLength(html) < 490000, 'Offline map size budget');
+    // learner capability, the D30/D90 routes, and the newly complete B95/C140
+    // learner hubs. The complete self-contained interface is measured again
+    // by this gate after every deterministic build.
+    assert.ok(Buffer.byteLength(html) < 500000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
     assert.ok(gzipSync(html).length < 100000, 'Compressed map size budget');

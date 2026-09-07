@@ -721,17 +721,17 @@ for (const id of liveOverlayRequiredRoleIds) {
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
-assert.equal(effectivePublishedCourses.length, 38, 'Overlay harus menampilkan tepat 38 peran dengan edisi selesai.');
-assert.equal(effectivePublishedRecordDois.size, 34, 'Tiga puluh delapan peran selesai harus memakai tepat 34 rekaman DOI edisi berbeda.');
+assert.equal(effectivePublishedCourses.length, 40, 'Overlay harus menampilkan tepat 40 peran dengan edisi selesai.');
+assert.equal(effectivePublishedRecordDois.size, 36, 'Empat puluh peran selesai harus memakai tepat 36 rekaman DOI edisi berbeda.');
 assert.equal(
   effectiveCourses.filter(({ state }) => state === 'production').length,
-  2,
-  'Overlay harus menampilkan tepat 2 peran yang masih diproduksi.',
+  0,
+  'Overlay tidak boleh menampilkan peran yang masih diproduksi setelah B95 dan C140 selesai.',
 );
 assert.deepEqual(
   effectiveCourses.filter(({ state }) => state === 'production').map(({ id }) => id),
-  ['B95', 'C140'],
-  'Daftar dua peran produksi berubah.',
+  [],
+  'Daftar peran produksi harus kosong.',
 );
 const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
 for (const course of effectiveCourses) {
@@ -821,17 +821,19 @@ assert.match(effectiveCoursesById.get('B30').edition, /CLP-2_Kalkulus_Integral_B
 assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 138);
 assert.equal(effectiveCoursesById.get('B50').supplements.length, 2);
 assert.match(effectiveCoursesById.get('B50').zenodo, /(?:22163372|22184443)$/);
-assert.match(effectiveCoursesById.get('B95').zenodo, /22192066$/);
-assert.equal(effectiveCoursesById.get('B95').version, '2026.08.31.1-R011-B030');
-assert.equal(effectiveCoursesById.get('B95').state, 'production');
-assert.match(effectiveCoursesById.get('B95').release, /r011-b030-2026\.08\.31\.1$/);
-assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 322);
-assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'B030 — Bab 7, Bagian 7.5');
-assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B030_WORKING_READER\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('B95').zenodo, /22261912$/);
+assert.equal(effectiveCoursesById.get('B95').version, '2026.09.01.2-R011-B039');
+assert.equal(effectiveCoursesById.get('B95').state, 'published');
+assert.match(effectiveCoursesById.get('B95').release, /r011-b039-2026\.09\.01\.2$/);
+assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 462);
+assert.equal(effectiveCoursesById.get('B95').progress.publicUnits, 1245);
+assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'R011-B039 — seluruh korpus yang dapat didistribusikan');
+assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf\?download=1$/);
 assert.deepEqual(effectiveCoursesById.get('B95').verification, {
-  readerBytes: 13576715,
-  readerSha256: '28881f11d05dca933d16960f22be9a73ef2069c96d3e00d4e612afaf3dbecfcb',
-  backendRecords: 11810,
+  anonymousReadback: true,
+  readerBytes: 57049904,
+  readerSha256: '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049',
+  backendRecords: 21746,
   publicAssets: 9,
 });
 assert.equal(effectiveCoursesById.get('C90').state, 'published');
@@ -862,7 +864,11 @@ assert.equal(effectiveCoursesById.get('B50').progress.publicPages, 410);
 assert.equal(effectiveCoursesById.get('B50').state, 'published');
 assert.equal(effectiveCoursesById.get('C100').supplements.length, 1);
 assert.equal(effectiveCoursesById.get('C100').supplements[0].id, 'clemens-snapp-workbook-u022');
-assert.match(effectiveCoursesById.get('C140').zenodo, /22164344$/);
+assert.equal(effectiveCoursesById.get('C140').state, 'published');
+assert.equal(effectiveCoursesById.get('C140').version, '2026.08.31.c140-companion-c5');
+assert.match(effectiveCoursesById.get('C140').zenodo, /22208527$/);
+assert.match(effectiveCoursesById.get('C140').release, /v2026\.08\.31\.c140-companion-c5$/);
+assert.equal(effectiveCoursesById.get('C140').progress.publicUnits, 39);
 assert.equal(effectiveCoursesById.get('C140').supplements[0].id, 'c140-companion-reader');
 assert.equal(effectiveCoursesById.get('D10').progress.translationBearingUnits, 672);
 assert.equal(effectiveCoursesById.get('D10').progress.integrationReadyUnits, 672);
@@ -1082,16 +1088,17 @@ assert.ok(
   'Halaman siswa harus menautkan arsip Zenodo konsep atau otoritas.',
 );
 assert.match(html, new RegExp(`${courses.length} korpus terpilih`));
-assert.match(html, /produksi yang belum selesai tetap dilabeli dengan jelas/i);
+assert.match(html, /lapisan mesin agar mahasiswa tidak diarahkan ke JSON sebagai pintu masuk/i);
 assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
-assert.match(html, new RegExp(`${effectivePublishedCourses.length} peran melalui ${effectivePublishedRecordDois.size} rekaman DOI berbeda untuk edisi lengkap`));
-assert.match(html, /A00, B10, C30, C40, C80, C130, D20, D60, dan D110/);
-assert.match(html, /25 dari 40 peran/);
-assert.match(html, /18 dari 33 keluarga backend native/);
-assert.match(html, /sembilan ikatan peran melalui delapan paket/);
-assert.match(html, /enam belas peran lainnya memakai kontrak kapabilitas keluarga yang teruji/);
+assert.match(html, new RegExp(`Keempat puluh peran kini memiliki edisi publik lengkap melalui ${effectivePublishedRecordDois.size} rekaman DOI berbeda`));
+assert.match(html, /40 dari 40 peran/);
+assert.match(html, /seluruh 33 keluarga backend native/);
+assert.match(html, /identitas unit telah terbukti untuk 26 peran/);
+assert.match(html, /build\/replay native untuk 15 peran/);
+assert.match(html, /HTML adalah pintu belajar; JSON, CSV, skema, dan ZIP adalah lapisan mesin atau suplemen/);
 assert.match(rootReadme, /D60 kini merupakan edisi komposit lengkap v0\.31\.7/);
-assert.match(rootReadme, /Overlay penerus backend v2\.3 kini menerima sembilan ikatan peran melalui delapan paket kontrak 2\.3\.1: A00, B10, C30, C40, C80, C130, D20, D60, dan D110/);
+assert.match(rootReadme, /Adapter kapsul pertukaran bersama yang tervalidasi \| 40\/40/);
+assert.match(rootReadme, /15 × `2\.3\.1`; 19 × `course-learning-capability\/1`; 4 × Lebl; 1 × topologi; 1 × geometri/);
 assert.equal(v23AdapterIndex.adapters.find(({ role_id }) => role_id === 'D60').release_url, 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.62.10');
 assert.equal(v23AdapterIndex.adapters.find(({ role_id }) => role_id === 'D110').canonical_records, 41460);
 assert.equal(v23AdapterIndex.adapters.find(({ role_id }) => role_id === 'D110').release_url, 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.62.11');
@@ -1103,7 +1110,8 @@ assert.match(backendV23Readme, /41,460 canonical records/);
 assert.match(backendV23Readme, /10,978 native/);
 assert.match(backendV23Readme, /138,894 canonical records/);
 assert.match(backendV23Readme, /32,383 native records/);
-assert.match(backendV23Readme, /other 33 course roles/);
+assert.match(backendV23Readme, /40 course\s+roles across all 33 owner-native backend families/);
+assert.match(backendV23Readme, /15 primary `2\.3\.1` role bindings/);
 assert.match(schemaV23Index, /A00, B10, C30, C40, C80, C130, D20, D60, dan D110/);
 assert.match(schemaV23Index, /sembilan ikatan peran melalui delapan paket/);
 assert.match(schemaV23Index, /722\/722 identitas sumber-terjemahan Open Logic/);
@@ -1266,11 +1274,11 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound B90, D100, C110, C70, D90, and A20 learner/educator capability
-// links. Each new language route has its own separately measured offline/
-// closure budget.
-assert.ok(shellRawBytes <= 206_000, `Shell melewati 206.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 51_500, `Shell gzip melewati 51.500 byte: ${shellGzipBytes}.`);
+// hash-bound B90, D100, C110, C70, D90, A20, B95, and C140 learner/educator
+// capability links. Each language route has its own separately measured
+// offline/closure budget.
+assert.ok(shellRawBytes <= 208_000, `Shell melewati 208.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= 52_000, `Shell gzip melewati 52.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -1615,7 +1623,7 @@ assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/D10\/reader\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/D120\/reader\//);
 assert.match(livePublicationsModule, /kerja-matematika-yang-dapat-ditelusuri-id\//);
-assert.match(livePublicationsModule, /22192066/);
+assert.match(livePublicationsModule, /22261912/);
 assert.match(livePublicationsModule, /22161412/);
 assert.match(livePublicationsModule, /22184259/);
 assert.match(livePublicationsModule, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP/);
@@ -1629,12 +1637,12 @@ assert.match(livePublicationsModule, /(?:22164136|22183943)/);
 assert.match(livePublicationsModule, /(?:22163372|22184443)/);
 assert.match(livePublicationsModule, /clemens-snapp-workbook-u022/);
 assert.match(b95Landing, /Statistika Berbasis Data/);
-assert.match(b95Landing, /22192066/);
+assert.match(b95Landing, /22261912/);
 assert.match(b95Landing, /statistika-berbasis-data-id/);
-assert.match(b95Landing, /322 halaman/);
-assert.match(b95Landing, /GitHub \(B030\)/);
-assert.match(b95Landing, /byte-identik di Zenodo serta GitHub/);
-assert.match(b95Landing, /produksi berlanjut ke B031/);
+assert.match(b95Landing, /462 halaman/);
+assert.match(b95Landing, /GitHub \(edisi lengkap\)/);
+assert.match(b95Landing, /sembilan berkas publik/);
+assert.match(b95Landing, /seluruh korpus yang dapat didistribusikan/i);
 assert.doesNotMatch(b95Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
 assert.match(livePublicationsModule, /id-ID\/courses\/D30\//);

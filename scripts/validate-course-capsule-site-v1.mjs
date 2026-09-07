@@ -101,6 +101,9 @@ const logicalFiles = [
   'backend/b90/source-lock.json',
   'backend/b90/public-native-readback.json',
   'backend/b90/validation.json',
+  'backend/b95/B95.html',
+  'backend/b95/learning-map.json',
+  'backend/b95/validation.json',
   'backend/c60/C60.html',
   'backend/c60/C60-pengajar.html',
   'backend/c60/capabilities.json',
@@ -174,6 +177,9 @@ const logicalFiles = [
   'backend/c120/rights-and-terms.json',
   'backend/c120/ledger-references.json',
   'backend/c120/validation.json',
+  'backend/c140/C140.html',
+  'backend/c140/learning-map.json',
+  'backend/c140/validation.json',
   'backend/c70/C70.html',
   'backend/c70/C70-pengajar.html',
   'backend/c70/learning-map.json',
@@ -252,8 +258,8 @@ assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.jso
 // roles without rewriting that history.
 const expectedFrozenSuccessorAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
 const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10', 'D50'];
-const expectedCapabilityAdapterRoles = ['A20', 'A30', 'B40', 'B70', 'B80', 'B90', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
-const expectedCapabilityPackageCount = 20;
+const expectedCapabilityAdapterRoles = ['A20', 'A30', 'B40', 'B70', 'B80', 'B90', 'B95', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'C140', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
+const expectedCapabilityPackageCount = 22;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedFrozenSuccessorAdapterRoles), 'Frozen successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -327,8 +333,8 @@ const mainHtml = await readFile(resolve(project, 'docs/index.html'), 'utf8');
 assert.equal(rows.length, 40);
 assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 38);
-assert.equal(rows.filter(({ course }) => course.state === 'production').length, 2);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 40);
+assert.equal(rows.filter(({ course }) => course.state === 'production').length, 0);
 assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 33);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
@@ -356,6 +362,8 @@ const a20PublicNativeReadback = JSON.parse(docsBytes['backend/a20/public-native-
 const a20ClaimBoundary = JSON.parse(docsBytes['backend/a20/claim-boundary.json']);
 const a20SourceLock = JSON.parse(docsBytes['backend/a20/source-lock.json']);
 const a30 = rows.find(row => row.course_id === 'A30');
+const b95 = rows.find(row => row.course_id === 'B95');
+const c140 = rows.find(row => row.course_id === 'C140');
 const a30Validation = JSON.parse(docsBytes['backend/a30/validation.json']);
 const a30Capabilities = JSON.parse(docsBytes['backend/a30/capabilities.json']);
 const a30LearningMap = JSON.parse(docsBytes['backend/a30/learning-map.json']);
@@ -437,17 +445,21 @@ const b40LedgerReferences = JSON.parse(docsBytes['backend/b40/ledger-references.
 const b40PublicEvidence = JSON.parse(docsBytes['backend/b40/public-evidence.json']);
 const b40Manifest = JSON.parse(docsBytes['backend/b40/manifest.json']);
 assert.equal(b40Validation.state,'pass');
+const b95Validation = JSON.parse(docsBytes['backend/b95/validation.json']);
+const b95LearningMap = JSON.parse(docsBytes['backend/b95/learning-map.json']);
+const c140Validation = JSON.parse(docsBytes['backend/c140/validation.json']);
+const c140LearningMap = JSON.parse(docsBytes['backend/c140/learning-map.json']);
 assert.equal(rows.filter((row) => Object.keys(row.layers).sort().join(',') === 'curriculum,educator,federation,interoperability,learner,production,translation').length, 40);
 assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy.public_access_required).length, 40);
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 28);
-assert.equal(authorityToolIds.length, 38);
+assert.equal(Object.keys(authorityToolsByCourse).length, 30);
+assert.equal(authorityToolIds.length, 40);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
-assert.equal(manifest.summary.published_count, 38);
-assert.equal(manifest.summary.production_count, 2);
+assert.equal(manifest.summary.published_count, 40);
+assert.equal(manifest.summary.production_count, 0);
 assert.equal(manifest.design_policy.profile, 'thin_format_neutral_zero_copy');
 assert.equal(manifest.design_policy.authority.sha256, sha256(authorityDesignPolicyBytes));
 assert.equal(manifest.design_policy.schema.sha256, sha256(authorityDesignPolicySchemaBytes));
@@ -456,8 +468,46 @@ assert.equal(manifest.public_baseline.authority.sha256, sha256(authorityBaseline
 assert.equal(manifest.public_baseline.schema.sha256, sha256(authorityBaselineSchemaBytes));
 assert.equal(validation.state, 'pass');
 assert.equal(validation.checks.seven_layer_rows, 40);
+assert.equal(validation.checks.published_count, 40);
+assert.equal(validation.checks.production_count, 0);
+assert.equal(validation.checks.learner_tool_course_count, 30);
+assert.equal(validation.checks.learner_tool_count, 40);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
+
+assert.equal(b95.course.state, 'published');
+assert.equal(b95.course_native.status, 'verified');
+assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(b95.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'b95.open_learner_hub', href: 'backend/b95/B95.html' },
+]);
+assert.equal(b95.layers.learner.tools[0].page.path, 'docs/backend/b95/B95.html');
+assert.equal(b95.layers.learner.tools[0].resource.path, 'docs/backend/b95/learning-map.json');
+assert.equal(b95.layers.learner.tools[0].evidence.path, 'docs/backend/b95/validation.json');
+assert.equal(b95Validation.status, 'PASS');
+assert.equal(b95Validation.role_id, 'B95');
+assert.equal(b95LearningMap.role_id, 'B95');
+assert.equal(b95LearningMap.translation_state, 'complete_admitted_public');
+assert.equal(b95LearningMap.machine_data_is_learner_destination, false);
+assert.match(docsBytes['backend/b95/B95.html'].toString('utf8'), /<h1>Statistika berbasis data<\/h1>/);
+
+assert.equal(c140.course.state, 'published');
+assert.equal(c140.course_native.status, 'available_unverified');
+assert.equal(c140.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(c140.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(c140.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'c140.open_learner_hub', href: 'backend/c140/C140.html' },
+]);
+assert.equal(c140.layers.learner.tools[0].page.path, 'docs/backend/c140/C140.html');
+assert.equal(c140.layers.learner.tools[0].resource.path, 'docs/backend/c140/learning-map.json');
+assert.equal(c140.layers.learner.tools[0].evidence.path, 'docs/backend/c140/validation.json');
+assert.equal(c140Validation.status, 'PASS');
+assert.equal(c140Validation.role_id, 'C140');
+assert.equal(c140LearningMap.role_id, 'C140');
+assert.equal(c140LearningMap.translation_state, 'complete_c5_public');
+assert.equal(c140LearningMap.machine_data_is_learner_destination, false);
+assert.match(docsBytes['backend/c140/C140.html'].toString('utf8'), /<h1>Statistika matematis<\/h1>/);
 
 const ids = rows.map(({ course_id }) => course_id);
 const edges = rows.flatMap((row) => row.course.prerequisites.map((source) => [source, row.course_id]));
@@ -628,7 +678,7 @@ assert.equal(docsBytes['backend/a20/data/rights-index.jsonl'].toString('utf8').t
 assert.equal(docsBytes['backend/a20/data/corrections-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 1614);
 assert.equal(docsBytes['backend/a20/data/terms-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 340);
 assert.equal(a30.course.state, 'published');
-assert.equal(a30.course_native.status, 'available_unverified');
+assert.equal(a30.course_native.status, 'verified');
 assert.equal(a30.course_native.version, '1.0.0');
 assert.equal(a30.course_native.repository, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
 assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
@@ -1492,8 +1542,8 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: 83,
     prerequisite_dag_visited: 40,
-    published_rows: 38,
-    production_rows: 2,
+    published_rows: 40,
+    production_rows: 0,
     educator_rows: 33,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
