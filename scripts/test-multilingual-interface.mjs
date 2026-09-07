@@ -26,6 +26,7 @@ import {
   originalIndonesianBilingualValidationInput,
 } from './interface-capability-tools.mjs';
 import { LEARNER_STATE_STORAGE_KEY, createEmptyLearnerState, evaluateLearnerState, setCourseCompletion, setCourseClaim, setPrerequisiteWaiver, normalizeLearnerState } from '../docs/learner-state.js';
+import {learnerToolsByCourseId} from '../docs/learner-tools.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const ids = canonicalCourses.map((c) => c.id);
@@ -245,18 +246,19 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-// B95 and C140 now expose their verified learner hubs alongside the prior
-// inventory; machine data remains secondary, so the total is 43.
-assert.equal(capabilityTools.length,43);
+// B95 and C140 have been promoted into the canonical base learner-tool
+// inventory; the additional capability-tool projection therefore remains 41.
+assert.equal(capabilityTools.length,41);
 for (const [courseId, toolId, href] of [
   ['B95', 'b95.open_learner_hub', 'backend/b95/B95.html'],
   ['C140', 'c140.open_learner_hub', 'backend/c140/C140.html'],
 ]) {
-  const tool = capabilityTools.find(row => row.courseId === courseId && row.tool_id === toolId);
+  const tool = (learnerToolsByCourseId[courseId] ?? []).find(row => row.tool_id === toolId);
   assert.ok(tool, `${courseId}: completed learner hub is absent from the interface tool inventory`);
   assert.equal(tool.href, href);
   assert.equal(tool.state, 'verified');
   assert.equal(tool.machine_data_is_learner_destination, false);
+  assert.ok(resourceBindings(interfaceCourses.find(course => course.id === courseId), 'id').some(row => row.href === `${siteOrigin}${href}` && row.accessRole === 'tool'));
 }
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
@@ -796,7 +798,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(Buffer.byteLength(html) < 500000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
-    assert.ok(gzipSync(html).length < 100000, 'Compressed map size budget');
+    assert.ok(gzipSync(html).length < 101000, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));

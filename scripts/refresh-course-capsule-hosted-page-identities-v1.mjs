@@ -42,10 +42,10 @@ for(const [courseId,tools] of Object.entries(overrides.learner_tools??{}).sort((
     pagePaths.add(hosted.path);
   }
 }
-// A30, B95, and C140 each contribute one admitted learner tool and one
-// centrally overlaid hosted page in the merged successor authority.
-assert.equal(toolCount,35,'Integration learner-tool closure changed.');
-assert.equal(pagePaths.size,32,'Integration hosted-page closure changed.');
+// B95 and C140 are intentionally sourced from the dedicated learner-tool
+// authority, so they must not also appear in integration-overrides.
+assert.equal(toolCount,33,'Integration learner-tool closure changed.');
+assert.equal(pagePaths.size,30,'Integration hosted-page closure changed.');
 
 const hostedPathForUrl=url=>{
   if(typeof url!=='string'||!url.startsWith(programPagesPrefix))return null;
@@ -76,9 +76,10 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
     await refreshEducatorFact(courseId,`educator_resource:${resource.id}`,resource,resource.url);
   }
 }
-// A30 contributes its educator evidence and resource over one new hosted page.
-assert.equal(educatorFactCount,46,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,23,'Integration educator hosted-page closure changed.');
+// B95 and C140 each contribute educator evidence plus a hub resource over one
+// central hosted page.
+assert.equal(educatorFactCount,50,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,25,'Integration educator hosted-page closure changed.');
 
 const nextBytes=Buffer.from(JSON.stringify(overrides,null,2)+'\n');
 await writeFile(resolve(root,overridePath),nextBytes);

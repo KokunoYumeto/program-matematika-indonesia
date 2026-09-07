@@ -19,6 +19,8 @@ const mappings=[
   ['backend/course-capsule-v1/adapters/d90-capability-v1/views/D90-pengajar.html','docs/backend/d90/D90-pengajar.html'],
   ['backend/course-capsule-v1/adapters/d30-capability-v1/views/D30.html','docs/backend/d30/D30.html'],
   ['backend/course-capsule-v1/adapters/d30-capability-v1/views/D30-pengajar.html','docs/backend/d30/D30-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/views/B95.html','docs/backend/b95/B95.html'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/views/B95-pengajar.html','docs/backend/b95/B95-pengajar.html'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60.html','docs/backend/c60/C60.html'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60-pengajar.html','docs/backend/c60/C60-pengajar.html'],
   ['backend/course-capsule-v1/adapters/c110-capability-v1/views/C110.html','docs/backend/c110/C110.html'],
@@ -58,6 +60,16 @@ for(const [source,target] of mappings){
     payload=Buffer.from(projected,'utf8');
     projection='public-directory-link-depth';
   }
+  if(target==='docs/backend/b95/B95.html'||target==='docs/backend/b95/B95-pengajar.html'){
+    const original=sourcePayload.toString('utf8');
+    const expectedAdapterRelativeLinks=target.endsWith('/B95.html')?1:8;
+    assert.equal(original.split('../data/').length-1,expectedAdapterRelativeLinks,`${source}: unexpected adapter-relative data-link count.`);
+    let projected=original.replaceAll('../data/','data/');
+    if(target==='docs/backend/b95/B95-pengajar.html') projected=projected.replace('data/claim-boundary.json','claim-boundary.json');
+    assert.equal(projected.includes('../data/'),false,`${target}: adapter-relative data link survived projection.`);
+    payload=Buffer.from(projected,'utf8');
+    projection='public-directory-link-depth';
+  }
   const targetPath=resolve(root,target);
   await mkdir(dirname(targetPath),{recursive:true});
   await writeFile(targetPath,payload);
@@ -65,5 +77,5 @@ for(const [source,target] of mappings){
   assert.deepEqual(readback,payload,`${target}: staged view differs from adapter source.`);
   rows.push({source,target,projection,source_bytes:sourcePayload.length,source_sha256:sha256(sourcePayload),bytes:payload.length,sha256:sha256(payload)});
 }
-assert.equal(rows.length,24);
+assert.equal(rows.length,26);
 console.log(JSON.stringify({status:'pass',mode:'source-bound-public-projections',files:rows},null,2));

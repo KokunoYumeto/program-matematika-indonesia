@@ -213,6 +213,39 @@ for (const [name, fetch] of [
   assert.equal(a30.layers.learner.online_html.status, 'not_yet_produced');
   assert.equal(a30.layers.learner.capabilities.semantic_html, 'not_yet_produced');
   assert.equal(a30.layers.learner.capabilities.mathml, 'not_yet_produced');
+  const b95 = courses.find(course => course.course_id === 'B95');
+  assert.equal(b95.course.state, 'published');
+  assert.equal(b95.course_native.version, '2026.09.01.2-R011-B039');
+  assert.equal(b95.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+  assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
+  assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+  assert.match(b95.layers.interoperability.semantic_adapter.mapping_scope, /21746_native_records/);
+  assert.match(b95.layers.interoperability.semantic_adapter.mapping_scope, /105_o001_gap/);
+  assert.equal(b95.layers.learner.tools.length, 1);
+  assert.equal(b95.layers.learner.tools[0].tool_id, 'b95.open_learner_hub');
+  assert.equal(b95.layers.learner.tools[0].href, 'backend/b95/B95.html');
+  assert.equal(b95.layers.learner.tools[0].page.path, 'docs/backend/b95/B95.html');
+  assert.equal(b95.layers.learner.tools[0].resource.path, 'docs/backend/b95/learning-map.json');
+  assert.equal(b95.layers.learner.tools[0].evidence.path, 'docs/backend/b95/validation.json');
+  assert.equal(b95.layers.curriculum.unit_identity_status, 'verified');
+  assert.equal(b95.layers.translation.ledger_status, 'verified');
+  assert.equal(b95.layers.translation.terminology_status, 'verified');
+  assert.equal(b95.layers.translation.rights_status, 'verified');
+  assert.equal(b95.layers.translation.corrections_status, 'verified');
+  assert.equal(b95.layers.production.build_status, 'verified');
+  assert.equal(b95.layers.production.deterministic_replay_status, 'verified');
+  assert.equal(b95.layers.production.release_status, 'verified');
+  assert.equal(b95.layers.educator.status, 'verified');
+  assert.equal(b95.layers.educator.unit_alignment_status, 'verified');
+  assert.ok(b95.layers.educator.resources.some(r => r.id === 'B95:educator-hub-v1' && r.status === 'verified'));
+  assert.ok(b95.layers.educator.resources.some(r => r.id === 'B95:educator-map-v1' && r.status === 'verified'));
+  assert.equal(b95.layers.learner.pdf.status, 'verified');
+  assert.equal(b95.layers.learner.pdf.bytes, 57049904);
+  assert.equal(b95.layers.learner.pdf.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
+  assert.equal(b95.layers.learner.online_html.status, 'available_unverified');
+  assert.equal(b95.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+  assert.equal(b95.layers.learner.capabilities.mathml, 'available_unverified');
+  assert.equal(b95.layers.learner.capabilities.print_profile, 'verified');
   const topology=courses.find(c=>c.course_id==='C90');
   assert.equal(topology.layers.interoperability.semantic_adapter.contract_version,'topology-learning-capability/1');
   assert.equal(topology.layers.learner.tools.length,1);
@@ -540,8 +573,8 @@ for (const [name, fetch] of [
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-// A30 adds one verified educator-enabled course to the live 40-role surface.
-assert.deepEqual(educatorCounts, { verified: 23, available_unverified: 9, in_progress: 1, unknown: 7 });
+// B95 and the complete C140 C5 capability are verified on the live 40-role surface.
+assert.deepEqual(educatorCounts, { verified: 25, available_unverified: 9, in_progress: 0, unknown: 6 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),

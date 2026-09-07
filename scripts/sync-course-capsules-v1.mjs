@@ -74,6 +74,29 @@ const mappings = [
   ['backend/course-capsule-v1/adapters/d30-capability-v1/data/terms-index.jsonl', 'docs/backend/d30/data/terms-index.jsonl'],
   ['backend/course-capsule-v1/adapters/d30-capability-v1/data/relations-index.jsonl', 'docs/backend/d30/data/relations-index.jsonl'],
   ['backend/course-capsule-v1/adapters/d30-capability-v1/validation.json', 'docs/backend/d30/validation.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/manifest.json', 'docs/backend/b95/manifest.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/views/B95.html', 'docs/backend/b95/B95.html'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/views/B95-pengajar.html', 'docs/backend/b95/B95-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/views/capabilities.json', 'docs/backend/b95/capabilities.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/learner-map.json', 'docs/backend/b95/learning-map.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/educator-map.json', 'docs/backend/b95/educator-map.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/public-evidence.json', 'docs/backend/b95/public-evidence.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/claim-boundary.json', 'docs/backend/b95/claim-boundary.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/release-inventory.json', 'docs/backend/b95/data/release-inventory.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/native-record-index.jsonl', 'docs/backend/b95/data/native-record-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/unit-index.jsonl', 'docs/backend/b95/data/unit-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/exercise-index.jsonl', 'docs/backend/b95/data/exercise-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/concept-index.jsonl', 'docs/backend/b95/data/concept-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/relation-index.jsonl', 'docs/backend/b95/data/relation-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/terms-index.jsonl', 'docs/backend/b95/data/terms-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/corrections-index.jsonl', 'docs/backend/b95/data/corrections-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/rights-index.jsonl', 'docs/backend/b95/data/rights-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/segment-index.jsonl', 'docs/backend/b95/data/segment-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/localization-index.jsonl', 'docs/backend/b95/data/localization-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/data/evidence-index.jsonl', 'docs/backend/b95/data/evidence-index.jsonl'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/input/source-lock.json', 'docs/backend/b95/source-lock.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/input/public-native-readback.json', 'docs/backend/b95/public-native-readback.json'],
+  ['backend/course-capsule-v1/adapters/b95-capability-v1/validation.json', 'docs/backend/b95/validation.json'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/manifest.json', 'docs/backend/c60/manifest.json'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60.html', 'docs/backend/c60/C60.html'],
   ['backend/course-capsule-v1/adapters/c60-capability-v1/views/C60-pengajar.html', 'docs/backend/c60/C60-pengajar.html'],
@@ -194,6 +217,30 @@ assert.equal(a30.layers.production.build_status, 'verified');
 assert.equal(a30.layers.production.deterministic_replay_status, 'verified');
 assert.equal(a30.layers.educator.status, 'verified');
 assert.equal(a30.layers.educator.unit_alignment_status, 'verified');
+const b95 = rows.find(({ course_id }) => course_id === 'B95');
+assert.equal(b95.course.state, 'published');
+assert.equal(b95.course_native.version, '2026.09.01.2-R011-B039');
+assert.equal(b95.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+assert.equal(b95.course_native.repository, 'https://github.com/KokunoYumeto/statistika-berbasis-data-id');
+assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.equal(b95.layers.learner.tools.length, 1);
+assert.equal(b95.layers.learner.tools[0].tool_id, 'b95.open_learner_hub');
+assert.equal(b95.layers.learner.tools[0].href, 'backend/b95/B95.html');
+assert.equal(b95.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(b95.layers.translation.ledger_status, 'verified');
+assert.equal(b95.layers.translation.terminology_status, 'verified');
+assert.equal(b95.layers.translation.rights_status, 'verified');
+assert.equal(b95.layers.translation.corrections_status, 'verified');
+assert.equal(b95.layers.production.build_status, 'verified');
+assert.equal(b95.layers.production.deterministic_replay_status, 'verified');
+assert.equal(b95.layers.production.release_status, 'verified');
+assert.equal(b95.layers.educator.status, 'verified');
+assert.equal(b95.layers.educator.unit_alignment_status, 'verified');
+assert.equal(b95.layers.learner.pdf.status, 'verified');
+assert.equal(b95.layers.learner.pdf.bytes, 57049904);
+assert.equal(b95.layers.learner.pdf.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
+assert.equal(b95.layers.learner.capabilities.semantic_html, 'not_yet_produced');
 assert.equal(a30.layers.learner.pdf.status, 'verified');
 assert.equal(a30.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
 assert.equal(a30.layers.learner.online_html.status, 'not_yet_produced');
@@ -403,6 +450,22 @@ for (const [source, target, sourceBytes] of sourceEntries) {
       .replace('../data/corrections-index.jsonl', 'data/corrections-index.jsonl')
       .replace('../data/terms-index.jsonl', 'data/terms-index.jsonl')
       .replace('../data/claim-boundary.json', 'claim-boundary.json');
+    assert.equal(projected.includes('../data/'), false, `${target}: adapter-relative governance link survived projection.`);
+    publicPayload = Buffer.from(projected, 'utf8');
+  }
+  if (target === 'docs/backend/b95/B95.html' || target === 'docs/backend/b95/B95-pengajar.html') {
+    const original = sourceBytes.toString('utf8');
+    const expectedAdapterRelativeLinks = target.endsWith('/B95.html') ? 1 : 8;
+    assert.equal(original.split('../data/').length - 1, expectedAdapterRelativeLinks, `${source}: unexpected adapter-relative data-link count.`);
+    let projected = original.replaceAll('../data/', 'data/');
+    if (target === 'docs/backend/b95/B95-pengajar.html') projected = projected.replace('data/claim-boundary.json', 'claim-boundary.json');
+    assert.equal(projected.includes('../data/'), false, `${target}: adapter-relative data link survived projection.`);
+    publicPayload = Buffer.from(projected, 'utf8');
+  }
+  if (target === 'docs/backend/b95/educator-map.json') {
+    const original = sourceBytes.toString('utf8');
+    assert.equal(original.split('../data/').length - 1, 7, `${source}: unexpected adapter-relative governance-link count.`);
+    const projected = original.replaceAll('../data/', 'data/');
     assert.equal(projected.includes('../data/'), false, `${target}: adapter-relative governance link survived projection.`);
     publicPayload = Buffer.from(projected, 'utf8');
   }

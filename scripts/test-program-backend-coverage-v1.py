@@ -23,6 +23,18 @@ INPUTS = {
     'a30Public': 'backend/course-capsule-v1/adapters/a30-capability-v1/data/public-evidence.json',
     'a30NativeReadback': 'backend/course-capsule-v1/adapters/a30-capability-v1/input/public-native-readback.json',
     'a30Integration': 'backend/course-capsule-v1/adapters/a30-capability-v1/publication/GITHUB_READBACK_74b208108a25.json',
+    'b95Manifest': 'backend/course-capsule-v1/adapters/b95-capability-v1/manifest.json',
+    'b95Validation': 'backend/course-capsule-v1/adapters/b95-capability-v1/validation.json',
+    'b95Public': 'backend/course-capsule-v1/adapters/b95-capability-v1/data/public-evidence.json',
+    'b95NativeReadback': 'backend/course-capsule-v1/adapters/b95-capability-v1/input/public-native-readback.json',
+    'c140Manifest': 'backend/course-capsule-v1/adapters/c140-capability-v1/manifest.json',
+    'c140Validation': 'backend/course-capsule-v1/adapters/c140-capability-v1/validation.json',
+    'c140Public': 'backend/course-capsule-v1/adapters/c140-capability-v1/data/public-evidence.json',
+    'c140SourceLock': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/source-lock.json',
+    'c140GithubRelease': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/github-release-readback.json',
+    'c140GithubPages': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/github-pages-readback.json',
+    'c140Zenodo': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/zenodo-readback.json',
+    'c140Package': 'backend/course-capsule-v1/adapters/c140-capability-v1/build/PACKET_BUILD_RECEIPT.json',
     'b40': 'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -45,10 +57,16 @@ INPUTS = {
     'd120': 'backend/course-capsule-v1/adapters/d120-capability-v1/publication/GITHUB_READBACK_a42650f4815a.json',
     'd50Publication': 'backend/v2.3/admissions/d50-smooth-manifolds-v0.1.0/publication/PUBLICATION_BINDING_v0.63.21.json',
     'gapAdmission': 'backend/course-capsule-v1/validation/20260907/GAP_ADMISSION.json',
+    'gapZipA30': 'backend/course-capsule-v1/packages/A30_PRECALCULUS_V231_ADAPTER.zip',
+    'gapZipB95': 'backend/course-capsule-v1/packages/B95_OPENINTRO_STATISTICS_V231_ADAPTER.zip',
+    'gapZipC140': 'backend/course-capsule-v1/packages/C140_MATHEMATICAL_STATISTICS_V231_ADAPTER.zip',
+    'centralV06324': 'publication-history/PUBLICATION_RECEIPT_v0.63.24.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
-inputs = {key: json.loads((ROOT / path).read_bytes()) for key, path in INPUTS.items()}
+binary_keys = {'gapZipA30', 'gapZipB95', 'gapZipC140'}
+inputs = {key: json.loads((ROOT / path).read_bytes()) for key, path in INPUTS.items()
+          if key not in binary_keys}
 model = json.loads((ROOT / OUTPUTS[0]).read_bytes())
 assert (ROOT / OUTPUTS[0]).read_bytes() == (ROOT / OUTPUTS[1]).read_bytes()
 roles = {row['role_id']: row for row in model['roles']}
@@ -63,7 +81,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['roles_without_validated_common_adapter'] == 0
 assert model['summary']['locally_represented_families'] == 33
-assert model['summary']['github_evidenced_roles'] == 37
+assert model['summary']['github_evidenced_roles'] == 39
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -185,19 +203,25 @@ assert roles['A30']['dimensions']['accessibility'] == {
     'mathml': 'not_yet_produced',
     'semantic_html': 'not_yet_produced',
 }
-for role, contract, units, records in (
-    ('B95', 'course-learning-capability/1', 12, 92),
-    ('C140', 'course-learning-capability/1', 39, 252),
-):
+for role in ('B95', 'C140'):
     assert roles[role]['common_adapter']['status'] == 'verified'
-    assert roles[role]['common_adapter']['contract'] == contract
+    assert roles[role]['common_adapter']['contract'] == 'course-learning-capability/1'
     assert roles[role]['common_adapter']['admission']['status'] == 'pass'
     assert roles[role]['common_adapter']['admission']['twin']['status'] == 'pass'
     assert roles[role]['common_adapter']['admission']['spec']['path'] == f'backend/v2.3/specs/20260907/{role}.json'
-    assert roles[role]['common_adapter']['mapping_scope'].endswith(
-        f'{units}_bound_units_{records}_records_no_prose_copied')
     assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
     assert len(roles[role]['learner']['tools']) == 1
+assert roles['B95']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_21746_native_records_1089_units_448_exercises_'
+    '826_concepts_859_terms_302_corrections_80_component_rights_and_2231_'
+    'segments_and_localizations_with_153_public_answer_and_105_o001_gap_identities'
+)
+assert roles['C140']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_complete_54_document_three_component_boundary_'
+    '8358_stable_entity_ids_2423_structural_relations_234_terminology_rows_'
+    '261_correction_or_adverse_rows_146_solved_problem_identities_62_rubrics_'
+    'and_9_distinct_rights_projections'
+)
 for key, schema in (
     ('a30Manifest', 'a30-capability-manifest/1'),
     ('a30Validation', 'a30-capability-validation/1'),
@@ -243,6 +267,199 @@ assert len(inputs['a30Public']['github_release']['assets']) == 7
 assert len(inputs['a30Public']['zenodo']['assets']) == 7
 assert inputs['a30Public']['indonesian_reader']['bytes'] == 305654938
 assert inputs['a30Public']['indonesian_reader']['sha256'] == '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e'
+b95 = roles['B95']
+b95_capsule = next(row for row in inputs['capsules'] if row['course_id'] == 'B95')
+assert b95['common_adapter']['status'] == 'verified'
+assert b95['common_adapter']['contract'] == 'course-learning-capability/1'
+assert b95['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_21746_native_records_1089_units_448_exercises_'
+    '826_concepts_859_terms_302_corrections_80_component_rights_and_2231_'
+    'segments_and_localizations_with_153_public_answer_and_105_o001_gap_identities'
+)
+assert b95['common_adapter']['github_public_evidence'] == 'native_anonymous_release_asset_readback'
+assert b95['common_adapter']['zenodo_preservation'] == 'not_established'
+assert b95['common_adapter']['public_package'] is None
+assert b95['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert b95['learner']['tools'] == [{
+    'href': '../backend/b95/B95.html',
+    'label': 'B95 · Statistika Terapan dan Analisis Data',
+}]
+assert b95['learner']['unit_identity'] == 'verified'
+assert b95['educator']['unit_alignment'] == 'verified'
+assert b95['educator']['status'] == 'verified'
+assert len(b95['educator']['resources']) == 14
+assert {row['id'] for row in b95['educator']['resources']} == {
+    'B95:educator-hub-v1', 'B95:educator-map-v1', 'B95:native-record-index-v1',
+    'B95:unit-index-v1', 'B95:exercise-index-v1', 'B95:concept-index-v1',
+    'B95:relation-index-v1', 'B95:terms-index-v1', 'B95:corrections-index-v1',
+    'B95:rights-index-v1', 'B95:segment-index-v1', 'B95:localization-index-v1',
+    'B95:evidence-index-v1', 'B95:release-inventory-v1',
+}
+assert b95['dimensions']['source_translation_ledger'] == {
+    'corrections': 'verified',
+    'ledger': 'verified',
+}
+assert b95['dimensions']['terminology']['register'] == 'verified'
+assert b95['dimensions']['reproducible_production'] == {
+    'build': 'verified',
+    'replay': 'verified',
+}
+assert b95['dimensions']['accessibility'] == {
+    'mathml': 'available_unverified',
+    'semantic_html': 'not_yet_produced',
+}
+assert b95['dimensions']['learner'] == {
+    'central_tools': 1,
+    'delivery': 'verified',
+}
+assert [row['kind'] for row in b95['common_adapter']['local_evidence']] == [
+    'central_adapter_manifest',
+    'deterministic_validation_receipt',
+    'deterministic_package_receipt',
+    'deterministic_capability_packet',
+    'native_source_lock',
+    'anonymous_native_public_readback',
+    'verified_native_public_release',
+    'native_record_index',
+    'unit_identity_index',
+    'exercise_identity_index',
+    'concept_index',
+    'relation_index',
+    'terminology_index',
+    'correction_index',
+    'component_rights_index',
+    'segment_index',
+    'localization_index',
+    'evidence_index',
+    'release_inventory',
+    'central_adapter_manifest',
+    'deterministic_twin_validation',
+    'frozen_owner_specification',
+]
+for key, schema_key, schema in (
+    ('b95Manifest', 'schema', 'b95-capability-manifest/1'),
+    ('b95Validation', 'schema', 'b95-capability-validation/1'),
+    ('b95Public', 'schema', 'b95-public-evidence/1'),
+    ('b95NativeReadback', '$schema', 'interlanguage.r011-b039-final-completion/v1'),
+):
+    assert inputs[key][schema_key] == schema
+for kind, key in (
+    ('central_adapter_manifest', 'b95Manifest'),
+    ('deterministic_validation_receipt', 'b95Validation'),
+    ('verified_native_public_release', 'b95Public'),
+    ('anonymous_native_public_readback', 'b95NativeReadback'),
+):
+    path = INPUTS[key]
+    payload = (ROOT / path).read_bytes()
+    found = [row for row in b95['common_adapter']['local_evidence']
+             if row['kind'] == kind and row['locator'] == path]
+    assert len(found) == 1
+    assert found[0]['bytes'] == len(payload)
+    assert found[0]['sha256'] == hashlib.sha256(payload).hexdigest()
+b95_public = inputs['b95Public']
+assert b95_public['anonymous_readback'] is True
+assert b95_public['credentials_used'] is False
+assert b95_public['repository']['url'] == 'https://github.com/KokunoYumeto/statistika-berbasis-data-id'
+assert b95_public['repository']['public'] is True
+assert b95_public['release']['public'] is True
+assert b95_public['release']['asset_count'] == len(b95_public['release']['assets']) == 9
+assert b95_public['zenodo']['access_right'] == 'open'
+assert b95_public['zenodo']['record_id'] == 22261912
+assert b95_public['reader']['pdf_pages'] == 462
+assert b95_public['reader']['pdf_sha256'] == '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049'
+assert b95_capsule['course_native']['repository'] == b95_public['repository']['url']
+assert b95_capsule['course_native']['zenodo'] == 'https://doi.org/' + b95_public['zenodo']['doi']
+assert b95_capsule['course_native']['edition'] == b95_public['reader']['zenodo_url']
+assert b95_capsule['layers']['production']['repository'] == b95_public['repository']['url']
+assert b95_capsule['layers']['production']['zenodo'] == 'https://doi.org/' + b95_public['zenodo']['doi']
+assert b95_capsule['layers']['production']['edition'] == b95_public['reader']['zenodo_url']
+assert b95_capsule['layers']['production']['release_status'] == 'verified'
+assert b95_capsule['layers']['learner']['status'] == 'verified'
+for layer in ('primary', 'pdf'):
+    assert b95_capsule['layers']['learner'][layer]['status'] == 'verified'
+    assert b95_capsule['layers']['learner'][layer]['url'] == b95_public['reader']['zenodo_url']
+    assert b95_capsule['layers']['learner'][layer]['bytes'] == 57049904
+    assert b95_capsule['layers']['learner'][layer]['sha256'] == b95_public['reader']['pdf_sha256']
+for layer in ('epub', 'portable_html'):
+    assert b95_capsule['layers']['learner'][layer]['status'] == 'not_yet_produced'
+assert b95_capsule['layers']['learner']['online_html']['status'] == 'available_unverified'
+assert b95_capsule['layers']['learner']['online_html']['scope'] == 'course_gateway'
+assert b95_capsule['layers']['learner']['online_html']['url'] == 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/'
+assert b95_capsule['layers']['learner']['capabilities'] == {
+    'chapter_downloads': 'not_yet_produced',
+    'mathml': 'available_unverified',
+    'print_profile': 'verified',
+    'semantic_html': 'not_yet_produced',
+}
+assert b95_capsule['layers']['educator']['status'] == 'verified'
+assert b95_capsule['layers']['educator']['unit_alignment_status'] == 'verified'
+assert b95_capsule['layers']['educator']['features'] == [
+    'exercise_bank', 'lesson_sequences', 'remix_selectors',
+]
+assert len(b95_capsule['layers']['educator']['resources']) == 14
+assert inputs['b95NativeReadback']['complete_corpus'] is True
+assert inputs['b95NativeReadback']['credentials_recorded'] is False
+assert inputs['b95NativeReadback']['publication']['github']['all_nine_assets_read_back_by_bytes_and_sha256'] is True
+assert inputs['b95NativeReadback']['publication']['zenodo']['all_nine_files_read_back_by_bytes_and_sha256'] is True
+c140 = roles['C140']
+c140_capsule = next(row for row in inputs['capsules'] if row['course_id'] == 'C140')
+assert c140['whole_course_backend_completion'] == 'selected_54_document_component_boundary_proven'
+assert c140['common_adapter']['github_public_evidence'] == 'native_anonymous_release_and_pages_readback'
+assert c140['common_adapter']['zenodo_preservation'] == 'not_established'
+assert c140['dimensions']['source_translation_ledger'] == {'corrections': 'verified', 'ledger': 'verified'}
+assert c140['dimensions']['terminology']['register'] == 'verified'
+assert c140['dimensions']['reproducible_production'] == {'build': 'verified', 'replay': 'verified'}
+assert c140['educator']['status'] == 'verified'
+assert c140['educator']['unit_alignment'] == 'verified'
+assert len(c140['educator']['resources']) == 15
+assert c140_capsule['course']['state'] == 'published'
+assert c140_capsule['course_native']['repository'] == 'https://github.com/KokunoYumeto/penn-state-stat-415-id'
+assert c140_capsule['course_native']['zenodo'] == 'https://doi.org/10.5281/zenodo.22208527'
+assert c140_capsule['layers']['production']['release_status'] == 'available_unverified'
+assert c140_capsule['layers']['learner']['online_html']['status'] == 'verified'
+assert c140_capsule['layers']['learner']['online_html']['url'] == 'https://kokunoyumeto.github.io/penn-state-stat-415-id/'
+assert c140_capsule['layers']['learner']['pdf']['scope'] == 'penn_spine_component_only_not_uniform_whole_course'
+assert c140_capsule['layers']['learner']['epub']['scope'] == 'penn_spine_component_only_not_uniform_whole_course'
+for key, schema in (
+    ('c140Manifest', 'c140-capability-manifest/1'),
+    ('c140Validation', 'c140-capability-validation/1'),
+    ('c140Public', 'c140-public-evidence/1'),
+    ('c140SourceLock', 'c140-source-lock/1'),
+    ('c140GithubRelease', 'o006.c140.companion-c5.github-release-readback.v1'),
+    ('c140GithubPages', 'o006.c140.companion-c5.github-pages-readback.v1'),
+    ('c140Zenodo', 'o006.c140.zenodo-c140-companion-c5-publication.v1'),
+    ('c140Package', 'c140-capability-thin-packet-build-receipt/1'),
+):
+    assert inputs[key]['schema'] == schema
+for kind, key in (
+    ('central_adapter_manifest', 'c140Manifest'),
+    ('deterministic_validation_receipt', 'c140Validation'),
+    ('verified_native_public_release', 'c140Public'),
+    ('native_source_lock', 'c140SourceLock'),
+    ('anonymous_github_release_readback', 'c140GithubRelease'),
+    ('anonymous_github_pages_readback', 'c140GithubPages'),
+    ('anonymous_zenodo_readback', 'c140Zenodo'),
+    ('deterministic_package_receipt', 'c140Package'),
+):
+    path = INPUTS[key]
+    payload = (ROOT / path).read_bytes()
+    found = [row for row in c140['common_adapter']['local_evidence']
+             if row['kind'] == kind and row['locator'] == path]
+    assert len(found) == 1
+    assert found[0]['bytes'] == len(payload)
+    assert found[0]['sha256'] == hashlib.sha256(payload).hexdigest()
+assert inputs['c140Manifest']['counts']['public_documents'] == 54
+assert inputs['c140Manifest']['counts']['stable_entity_ids'] == 8358
+assert inputs['c140Manifest']['counts']['structural_relations'] == 2423
+assert inputs['c140Manifest']['counts']['component_rights'] == 9
+assert inputs['c140Validation']['result'] == 'pass'
+assert inputs['c140Validation']['checks']['negative_fixtures_rejected'] == 12
+assert inputs['c140Validation']['checks']['two_run_build_identity']['tree_sha256'] == '8983788c83539c5f1450a3a2d57ad94ccf448ba1496b96ef384f76c6c314797b'
+assert inputs['c140Public']['status'] == 'pass'
+assert len(inputs['c140Public']['pages']['course_document_files']) == 54
+assert inputs['c140Public']['zenodo']['access_right'] == 'open'
+assert inputs['c140Package']['result'] == 'PASS'
+assert inputs['c140Package']['zip_checks']['member_count'] == 45
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['B40']['learner']['tools']) == 1
@@ -507,14 +724,35 @@ assert roles['D120']['dimensions']['reproducible_production']['build'] == 'verif
 assert roles['D120']['dimensions']['reproducible_production']['replay'] == 'verified'
 dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reproducible_production',
               'accessibility', 'learner', 'educator', 'federation', 'interoperability'}
+parity_roles = []
 for row in inputs['capsules']:
     projected = roles[row['course_id']]
     assert set(projected['dimensions']) == dimensions
-    assert projected['whole_course_backend_completion'] == 'not_yet_proven'
+    required_fields = {
+        'curriculum': ['unit_identity_status'],
+        'translation': ['ledger_status', 'terminology_status', 'corrections_status'],
+        'production': ['build_status', 'deterministic_replay_status'],
+        'learner': ['status'],
+        'educator': ['status', 'unit_alignment_status'],
+        'federation': ['status'],
+    }
+    statuses = [row['layers'][layer][field]
+                for layer, fields in required_fields.items() for field in fields]
+    statuses.append(row['layers']['interoperability']['semantic_adapter']['status'])
+    parity = all(status in {'verified', 'not_applicable'} for status in statuses)
+    expected = 'verified' if parity else 'not_yet_proven'
+    assert projected['native_capability_parity_completion'] == expected
+    assert projected['whole_course_backend_completion'] == (
+        'selected_54_document_component_boundary_proven'
+        if row['course_id'] == 'C140' else 'not_yet_proven')
+    if parity:
+        parity_roles.append(row['course_id'])
     assert len(projected['next_required_work']) > 0
     assert projected['dimensions']['terminology']['register'] == row['layers']['translation']['terminology_status']
     assert projected['dimensions']['reproducible_production']['replay'] == row['layers']['production']['deterministic_replay_status']
     assert projected['native_design_audit']['status'] == 'historical_comparison_not_new_native_reaudit'
+assert model['summary']['native_capability_parity_verified_roles'] == len(parity_roles)
+assert model['summary']['native_capability_parity_complete'] == (len(parity_roles) == 40)
 for fact in model['evidence']:
     data = (ROOT / fact['path']).read_bytes()
     assert len(data) == fact['bytes'] and hashlib.sha256(data).hexdigest() == fact['sha256']
@@ -614,6 +852,11 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('a30_validation_not_pass', 'a30Validation', lambda value: value.update(result='FAIL')),
         ('a30_native_nonanonymous', 'a30NativeReadback', lambda value: value.update(anonymous=False)),
         ('a30_public_asset_omission', 'a30Public', lambda value: value['github_release']['assets'].pop()),
+        ('b95_manifest_contract', 'b95Manifest', lambda value: value.update(contract='wrong-contract/0')),
+        ('b95_validation_not_pass', 'b95Validation', lambda value: value.update(result='FAIL')),
+        ('b95_native_incomplete', 'b95NativeReadback', lambda value: value.update(complete_corpus=False)),
+        ('b95_public_asset_omission', 'b95Public', lambda value: value['release']['assets'].pop()),
+        ('b95_public_access_downgrade', 'b95Public', lambda value: value['zenodo'].update(access_right='restricted')),
         ('b40_nonanonymous', 'b40', lambda value: value.update(anonymous=False)),
         ('b40_missing_teacher_readback', 'b40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/b40/B40-pengajar.html'])),
         ('b80_nonanonymous', 'b80', lambda value: value.update(anonymous=False)),
@@ -656,6 +899,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d50_publication_authenticated_readback', 'd50Publication', lambda value: value['github'].update(anonymous_asset_readback='authenticated_only')),
         ('gap_admission_status', 'gapAdmission', lambda value: value.update(status='fail')),
         ('gap_admission_twin', 'gapAdmission', lambda value: value['roles']['A30']['twin'].update(status='fail')),
+        ('central_release_not_verified', 'centralV06324', lambda value: value.update(state='draft')),
+        ('central_packet_hash_mismatch', 'centralV06324', lambda value: value['v231_gap_adapters']['packets']['B95'].update(sha256='0' * 64)),
+        ('central_packet_missing', 'centralV06324', lambda value: value['v231_gap_adapters']['packets'].pop('C140')),
     ]
     for name, key, mutate in cases:
         altered = copy.deepcopy(inputs[key])
@@ -665,6 +911,14 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         assert run().returncode != 0, 'Accepted invalid coverage inputs: ' + name
         path.write_bytes((ROOT / INPUTS[key]).read_bytes())
         mutations.append(name)
+
+    for key in sorted(binary_keys):
+        path = sandbox / INPUTS[key]
+        original = path.read_bytes()
+        path.write_bytes(original + b'corruption')
+        assert run().returncode != 0, 'Accepted changed published adapter bytes: ' + key
+        path.write_bytes(original)
+        mutations.append(key + '_corrupted')
 
 receipt = {'schema': 'program-backend-coverage-validation/1', 'state': 'pass', 'roles': 40,
            'capability_dimensions_per_role': 9, 'exact_input_hashes': True, 'local_links_checked': local_links,

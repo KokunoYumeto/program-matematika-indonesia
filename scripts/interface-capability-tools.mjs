@@ -68,8 +68,10 @@ export function projectCapabilityTools(capsules, courseIds) {
     const contentLanguage = capsule.course_id === 'D100' ? 'en' : 'id';
     result.push({courseId:capsule.course_id, contentLanguage, ...tool});
   }
-  assert.deepEqual([...matchedLegacy].sort(),Object.values(learnerToolsByCourseId).flat().map(t=>t.tool_id).sort());
-  assert.deepEqual(result.map(t=>t.tool_id).sort(),Object.keys(contracts).sort());
+  const legacyToolIds=Object.values(learnerToolsByCourseId).flat().map(t=>t.tool_id).sort();
+  const legacyToolIdSet=new Set(legacyToolIds);
+  assert.deepEqual([...matchedLegacy].sort(),legacyToolIds);
+  assert.deepEqual(result.map(t=>t.tool_id).sort(),Object.keys(contracts).filter(id=>!legacyToolIdSet.has(id)).sort());
   return result;
 }
 export function projectClpCapabilityTools(source, validation, courseIds) {

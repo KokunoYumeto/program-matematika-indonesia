@@ -427,6 +427,7 @@ assert.equal(terminologyPolicyChecksums['canonical-register-policy.json'], sha25
 assert.equal(integrationOverrides.native_capabilities.A10.terminology.status, 'in_progress');
 assert.equal(integrationOverrides.native_capabilities.A20.terminology.status, 'verified');
 assert.equal(integrationOverrides.native_capabilities.A30.terminology.status, 'verified');
+assert.equal(integrationOverrides.native_capabilities.B95.terminology.status, 'verified');
 assert.equal(integrationOverrides.native_capabilities.D100.terminology.status, 'verified');
 const c80Capsule = courseCapsules.find(({ course_id }) => course_id === 'C80');
 assert.ok(c80Capsule, 'Kapsul C80 harus tersedia.');
@@ -464,6 +465,23 @@ assert.equal(a30Capsule.layers.educator.unit_alignment_status, 'verified');
 assert.equal(a30Capsule.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
 assert.equal(a30Capsule.layers.learner.capabilities.semantic_html, 'not_yet_produced');
 assert.equal(a30Capsule.layers.learner.capabilities.mathml, 'not_yet_produced');
+const b95Capsule = courseCapsules.find(({ course_id }) => course_id === 'B95');
+assert.equal(b95Capsule.course.state, 'published');
+assert.equal(b95Capsule.course_native.version, '2026.09.01.2-R011-B039');
+assert.equal(b95Capsule.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+assert.equal(b95Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.match(b95Capsule.layers.interoperability.semantic_adapter.mapping_scope, /21746_native_records/);
+assert.match(b95Capsule.layers.interoperability.semantic_adapter.mapping_scope, /105_o001_gap_identities/);
+assert.deepEqual(b95Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['b95.open_learner_hub']);
+assert.equal(b95Capsule.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(b95Capsule.layers.translation.ledger_status, 'verified');
+assert.equal(b95Capsule.layers.translation.terminology_status, 'verified');
+assert.equal(b95Capsule.layers.translation.corrections_status, 'verified');
+assert.equal(b95Capsule.layers.educator.unit_alignment_status, 'verified');
+assert.equal(b95Capsule.layers.learner.pdf.bytes, 57049904);
+assert.equal(b95Capsule.layers.learner.pdf.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
+assert.equal(b95Capsule.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(b95Capsule.layers.learner.capabilities.mathml, 'available_unverified');
 const d100Capsule = courseCapsules.find(({ course_id }) => course_id === 'D100');
 assert.equal(d100Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.deepEqual(d100Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['d100.open_learner_hub']);
@@ -527,8 +545,8 @@ assert.deepEqual(publicBaseline.successor, {
 });
 assert.equal(learnerTools.$schema, JSON.parse(learnerToolsSchemaBytes.toString('utf8')).$id);
 assert.deepEqual(learnerTools.courses, learnerToolsRows);
-assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130']);
-assert.equal(learnerTools.courses.length, 5);
+assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130', 'B95', 'C140']);
+assert.equal(learnerTools.courses.length, 7);
 const a00LearnerTool = learnerToolsByCourseId.A00?.[0];
 assert.ok(a00LearnerTool, 'A00 harus memiliki alat latihan pelajar.');
 assert.equal(a00LearnerTool.tool_id, 'a00-assessment-map-v1');
@@ -545,6 +563,8 @@ for (const [courseId, toolId, href] of [
   ['C40', 'judson-c40-chapter-map-v1', 'backend/judson/C40.html'],
   ['C80', 'c80-openlogic-course-map-v1', 'backend/openlogic/C80.html'],
   ['C130', 'c130-operations-research-course-map-v1', 'backend/c130/C130.html'],
+  ['B95', 'b95.open_learner_hub', 'backend/b95/B95.html'],
+  ['C140', 'c140.open_learner_hub', 'backend/c140/C140.html'],
 ]) {
   const tool = learnerToolsByCourseId[courseId]?.[0];
   assert.ok(tool, `${courseId} harus memiliki alat belajar terverifikasi.`);
@@ -868,7 +888,7 @@ assert.equal(effectiveCoursesById.get('C140').state, 'published');
 assert.equal(effectiveCoursesById.get('C140').version, '2026.08.31.c140-companion-c5');
 assert.match(effectiveCoursesById.get('C140').zenodo, /22208527$/);
 assert.match(effectiveCoursesById.get('C140').release, /v2026\.08\.31\.c140-companion-c5$/);
-assert.equal(effectiveCoursesById.get('C140').progress.publicUnits, 39);
+assert.equal(effectiveCoursesById.get('C140').progress.publicUnits, 54);
 assert.equal(effectiveCoursesById.get('C140').supplements[0].id, 'c140-companion-reader');
 assert.equal(effectiveCoursesById.get('D10').progress.translationBearingUnits, 672);
 assert.equal(effectiveCoursesById.get('D10').progress.integrationReadyUnits, 672);
@@ -1161,13 +1181,13 @@ for (const row of learnerDelivery.courses) {
     assert.doesNotMatch(row.portable_html.format, /pdf/i, `${row.course_id}: PDF tidak boleh dihitung sebagai HTML luring.`);
   }
 }
-const legacyReaderCandidatesRejectedByDeliveryAuthority = effectiveCourses
-  .filter((course) => (course.learner || course.reader) && deliveryById.get(course.id)?.online_html.status === 'absent')
+const liveHtmlCandidatesRejectedByDeliveryAuthority = effectiveCourses
+  .filter((course) => (course.reader || course.learner) && deliveryById.get(course.id)?.online_html.status === 'absent')
   .map(({ id }) => id);
-assert.deepEqual(legacyReaderCandidatesRejectedByDeliveryAuthority, []);
+assert.deepEqual(liveHtmlCandidatesRejectedByDeliveryAuthority, []);
 assert.equal(
   learnerDelivery.summary.online_html_available,
-  effectiveCourses.filter((course) => course.learner || course.reader).length - legacyReaderCandidatesRejectedByDeliveryAuthority.length,
+  effectiveCourses.filter((course) => course.reader || course.learner).length - liveHtmlCandidatesRejectedByDeliveryAuthority.length,
 );
 assert.equal(learnerDelivery.summary.course_count, learnerDelivery.courses.length);
 assert.equal(
@@ -1194,10 +1214,12 @@ for (const row of a10Mirror.files) {
   }, 'A10 source-bound reader');
 }
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
-assert.equal(learnerDelivery.summary.verified_epub, 2);
+assert.equal(learnerDelivery.summary.verified_epub, 3);
+assert.equal(deliveryById.get('B95').online_html.status, 'available_unverified');
+assert.equal(deliveryById.get('B95').pdf.status, 'verified');
 assert.deepEqual(
   [...learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').map(({ course_id }) => course_id)].sort(),
-  ['C100', 'D90'],
+  ['C100', 'C140', 'D90'],
 );
 assert.deepEqual(
   [...learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').map(({ course_id }) => course_id)].sort(),
@@ -1293,8 +1315,8 @@ const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, {
 // hash-bound B90, D100, C110, C70, D90, A20, B95, and C140 learner/educator
 // capability links. Each language route has its own separately measured
 // offline/closure budget.
-assert.ok(shellRawBytes <= 208_000, `Shell melewati 208.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 52_000, `Shell gzip melewati 52.000 byte: ${shellGzipBytes}.`);
+assert.ok(shellRawBytes <= 212_000, `Shell melewati 212.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= 54_000, `Shell gzip melewati 54.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -1373,6 +1395,39 @@ for (const name of d30PublicSurfacePaths) {
     `public/hub/${name}`,
     `docs/${name}`,
     `${name}: D30 Sites mirror differs from docs`,
+  );
+}
+
+const b95PublicSurfacePaths = [
+  'backend/b95/manifest.json',
+  'backend/b95/B95.html',
+  'backend/b95/B95-pengajar.html',
+  'backend/b95/capabilities.json',
+  'backend/b95/learning-map.json',
+  'backend/b95/educator-map.json',
+  'backend/b95/public-evidence.json',
+  'backend/b95/claim-boundary.json',
+  'backend/b95/data/release-inventory.json',
+  'backend/b95/data/native-record-index.jsonl',
+  'backend/b95/data/unit-index.jsonl',
+  'backend/b95/data/exercise-index.jsonl',
+  'backend/b95/data/concept-index.jsonl',
+  'backend/b95/data/relation-index.jsonl',
+  'backend/b95/data/terms-index.jsonl',
+  'backend/b95/data/corrections-index.jsonl',
+  'backend/b95/data/rights-index.jsonl',
+  'backend/b95/data/segment-index.jsonl',
+  'backend/b95/data/localization-index.jsonl',
+  'backend/b95/data/evidence-index.jsonl',
+  'backend/b95/source-lock.json',
+  'backend/b95/public-native-readback.json',
+  'backend/b95/validation.json',
+];
+for (const name of b95PublicSurfacePaths) {
+  await assertMirrorOrCentralNavigationIdentity(
+    `public/hub/${name}`,
+    `docs/${name}`,
+    `${name}: B95 Sites mirror differs from docs`,
   );
 }
 
@@ -1713,9 +1768,9 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 28);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 69);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 345);
-assert.equal(centralNavigation.summary.classified_html_documents, 348);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 71);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 347);
+assert.equal(centralNavigation.summary.classified_html_documents, 350);
 assert.equal(centralNavigation.readers.find(row => row.course_id === 'A10').root,
   'docs/id-ID/courses/A10/reader');
 assert.deepEqual(

@@ -20,7 +20,7 @@ adapter contracts remain deliberately heterogeneous:
 
 All 40 common adapters validate, so the course-level exchange layer is
 complete. Uniform native capability parity is a separate claim: on the current
-evidence-derived gate, 12 of 40 roles prove the full tracked combination of
+evidence-derived gate, 14 of 40 roles prove the full tracked combination of
 unit identity, translation controls, production replay, learner delivery,
 educator alignment, federation, and interoperability. An unknown capability
 means that the central evidence does not prove it; it does not mean the native
@@ -189,6 +189,17 @@ packages. The current live matrix records 15 primary `2.3.1` role bindings,
 binding, and one geometry binding. None of these counts asserts that all native
 backends share identical capabilities; the common capsule is the uniform
 exchange boundary.
+
+## Current program-wide common layer
+
+The program-wide common layer now spans 40 course roles across all 33 owner-native backend families.
+This does not make every native backend a v2.3.1 package: the current
+compatibility split is 15 primary `2.3.1` role bindings, 19
+`course-learning-capability/1` role bindings, four roles projected through the
+shared Lebl family capability, one topology-family role, and one geometry-family
+role. The seven roles described above remain the six original individually
+documented v2.3 lineage packages; the other adapters retain their own contracts
+and native authorities.
 
 ## Design proposal retained separately
 
