@@ -5,6 +5,36 @@ student-facing HTML, PDF, or EPUB readers, and it does not replace any corpus
 owner's source, terminology, rights, correction, build, or publication
 authority.
 
+## Current federation snapshot — 7 September 2026
+
+The live program now has a verified common exchange capsule for all 40 course
+roles across all 33 owner-native backend families. The capsule is a zero-copy
+federation layer: it indexes and links native identities and evidence instead
+of replacing each owner's richer backend. The currently selected native
+adapter contracts remain deliberately heterogeneous:
+
+- 15 roles use the generic `2.3.1` contract;
+- 19 roles use `course-learning-capability/1`;
+- four Lebl roles use `lebl-learning-capability/1`; and
+- the topology and geometry families each retain one specialized contract.
+
+All 40 common adapters validate, so the course-level exchange layer is
+complete. Uniform native capability parity is a separate claim: on the current
+evidence-derived gate, 12 of 40 roles prove the full tracked combination of
+unit identity, translation controls, production replay, learner delivery,
+educator alignment, federation, and interoperability. An unknown capability
+means that the central evidence does not prove it; it does not mean the native
+edition lacks it.
+
+The additive A30, B95, and C140 v2.3.1 packets were preserved in central release
+v0.63.24 and anonymously read back from both GitHub and the open Zenodo lineage.
+Those packets do not reclassify the three courses' primary
+`course-learning-capability/1` adapters. The controlling public receipt is
+`publication-history/PUBLICATION_RECEIPT_v0.63.24.json`.
+
+The package notes below preserve the order in which earlier increments were
+admitted; they are historical detail, not the current coverage total.
+
 ## Admitted packages
 
 ### A00 + O001 assessment adapter v0.1.0
@@ -153,9 +183,12 @@ semantics. The recorded live pages all returned HTTP 200 but differed from the
 frozen WEB edition, so the current reader and archived edition remain distinct
 identities rather than being collapsed into one claim.
 
-A00, B10, C30, C40, D20, D60, and D110 are seven role bindings through six
-admitted packages. They are not a declaration that the other 33 course roles
-conform to v2.3.1.
+That increment established seven early role bindings through six admitted
+packages. The current live matrix records 15 primary `2.3.1` role bindings,
+19 `course-learning-capability/1` bindings, four Lebl bindings, one topology
+binding, and one geometry binding. None of these counts asserts that all native
+backends share identical capabilities; the common capsule is the uniform
+exchange boundary.
 
 ## Design proposal retained separately
 
