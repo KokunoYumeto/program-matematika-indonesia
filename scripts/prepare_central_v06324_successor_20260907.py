@@ -252,6 +252,10 @@ def make_navigator(source_commit: str, predecessor_payload: dict[str, bytes], so
             committed_package = source_blob(source_commit, PACKAGE_SOURCES[role])
             require(committed_package == nested.read_bytes(), f"Committed package witness drift: {role}")
             packet_identities[role].update({
+                # ``path`` from build_deterministic_zip is the temporary
+                # staging filename (A30.zip, etc.).  Publish the stable
+                # navigator member path in the metadata instead.
+                "path": PACKETS[role][1],
                 "outer_member": PACKETS[role][1],
                 "source_path": PACKAGE_SOURCES[role],
                 "source_prefix": PACKETS[role][0],
