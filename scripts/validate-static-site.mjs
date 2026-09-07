@@ -426,6 +426,7 @@ assert.equal(terminologyPolicyChecksums['README.md'], sha256(terminologyPolicyRe
 assert.equal(terminologyPolicyChecksums['canonical-register-policy.json'], sha256(terminologyPolicyAuthorityBytes));
 assert.equal(integrationOverrides.native_capabilities.A10.terminology.status, 'in_progress');
 assert.equal(integrationOverrides.native_capabilities.A20.terminology.status, 'verified');
+assert.equal(integrationOverrides.native_capabilities.A30.terminology.status, 'verified');
 assert.equal(integrationOverrides.native_capabilities.D100.terminology.status, 'verified');
 const c80Capsule = courseCapsules.find(({ course_id }) => course_id === 'C80');
 assert.ok(c80Capsule, 'Kapsul C80 harus tersedia.');
@@ -449,6 +450,20 @@ assert.equal(a20Capsule.layers.translation.terminology_status, 'verified');
 assert.equal(a20Capsule.layers.educator.unit_alignment_status, 'verified');
 assert.equal(a20Capsule.layers.learner.capabilities.semantic_html, 'not_yet_produced');
 assert.equal(a20Capsule.layers.learner.capabilities.mathml, 'not_yet_produced');
+const a30Capsule = courseCapsules.find(({ course_id }) => course_id === 'A30');
+assert.equal(a30Capsule.course.state, 'published');
+assert.equal(a30Capsule.course_native.version, '1.0.0');
+assert.equal(a30Capsule.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+assert.equal(a30Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(a30Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['a30.open_learner_hub']);
+assert.equal(a30Capsule.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(a30Capsule.layers.translation.ledger_status, 'verified');
+assert.equal(a30Capsule.layers.translation.terminology_status, 'verified');
+assert.equal(a30Capsule.layers.translation.corrections_status, 'verified');
+assert.equal(a30Capsule.layers.educator.unit_alignment_status, 'verified');
+assert.equal(a30Capsule.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
+assert.equal(a30Capsule.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(a30Capsule.layers.learner.capabilities.mathml, 'not_yet_produced');
 const d100Capsule = courseCapsules.find(({ course_id }) => course_id === 'D100');
 assert.equal(d100Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.deepEqual(d100Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['d100.open_learner_hub']);
@@ -706,17 +721,17 @@ for (const id of liveOverlayRequiredRoleIds) {
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
-assert.equal(effectivePublishedCourses.length, 37, 'Overlay harus menampilkan tepat 37 peran dengan edisi selesai.');
-assert.equal(effectivePublishedRecordDois.size, 33, 'Tiga puluh tujuh peran selesai harus memakai tepat 33 rekaman DOI edisi berbeda.');
+assert.equal(effectivePublishedCourses.length, 38, 'Overlay harus menampilkan tepat 38 peran dengan edisi selesai.');
+assert.equal(effectivePublishedRecordDois.size, 34, 'Tiga puluh delapan peran selesai harus memakai tepat 34 rekaman DOI edisi berbeda.');
 assert.equal(
   effectiveCourses.filter(({ state }) => state === 'production').length,
-  3,
-  'Overlay harus menampilkan tepat 3 peran yang masih diproduksi.',
+  2,
+  'Overlay harus menampilkan tepat 2 peran yang masih diproduksi.',
 );
 assert.deepEqual(
   effectiveCourses.filter(({ state }) => state === 'production').map(({ id }) => id),
-  ['A30', 'B95', 'C140'],
-  'Daftar tiga peran produksi berubah.',
+  ['B95', 'C140'],
+  'Daftar dua peran produksi berubah.',
 );
 const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
 for (const course of effectiveCourses) {
@@ -788,12 +803,13 @@ assert.equal(effectiveCoursesById.get('A20').state, 'published');
 assert.equal(effectiveCoursesById.get('A20').version, '1.0.0');
 assert.match(effectiveCoursesById.get('A20').zenodo, /22229860$/);
 assert.equal(effectiveCoursesById.get('A30').progress.translationBearingUnits, 87);
-assert.ok(!Object.hasOwn(effectiveCoursesById.get('A30').progress, 'integrationReadyUnits'));
-assert.equal(effectiveCoursesById.get('A30').progress.canonicalUnits, 67);
-assert.equal(effectiveCoursesById.get('A30').progress.publicUnits, 67);
-assert.equal(effectiveCoursesById.get('A30').progress.publicPages, 2031);
-assert.equal(effectiveCoursesById.get('A30').state, 'production');
-assert.match(effectiveCoursesById.get('A30').zenodo, /22184511$/);
+assert.equal(effectiveCoursesById.get('A30').progress.integrationReadyUnits, 87);
+assert.equal(effectiveCoursesById.get('A30').progress.canonicalUnits, 87);
+assert.equal(effectiveCoursesById.get('A30').progress.publicUnits, 87);
+assert.equal(effectiveCoursesById.get('A30').progress.publicPages, 3165);
+assert.equal(effectiveCoursesById.get('A30').state, 'published');
+assert.equal(effectiveCoursesById.get('A30').version, '1.0.0');
+assert.match(effectiveCoursesById.get('A30').zenodo, /22290180$/);
 assert.equal(effectiveCoursesById.get('B20').progress.publicUnits, 5178);
 assert.equal(effectiveCoursesById.get('B20').supplements.length, 2);
 assert.match(effectiveCoursesById.get('B20').zenodo, /(?:22164136|22183943)$/);
@@ -1182,6 +1198,15 @@ assert.equal(a20Delivery.pdf.status, 'verified');
 assert.equal(a20Delivery.online_html.status, 'not_yet_produced');
 assert.equal(a20Delivery.portable_html.status, 'not_yet_produced');
 assert.equal(a20Delivery.epub.status, 'not_yet_produced');
+const a30Delivery = deliveryById.get('A30');
+assert.equal(a30Delivery.primary.status, 'verified');
+assert.equal(a30Delivery.primary.format, 'application/pdf');
+assert.equal(a30Delivery.primary.bytes, 305_654_938);
+assert.equal(a30Delivery.primary.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
+assert.equal(a30Delivery.pdf.status, 'verified');
+assert.equal(a30Delivery.online_html.status, 'not_yet_produced');
+assert.equal(a30Delivery.portable_html.status, 'not_yet_produced');
+assert.equal(a30Delivery.epub.status, 'not_yet_produced');
 assert.equal(deliveryById.get('D10').portable_html.sha256, 'a0333dca723085e93d472b945a03758b133b05cbe5be3022133088e5c1f5ab00');
 const d10Delivery = deliveryById.get('D10');
 assert.equal(d10Delivery.online_html.status, 'available_unverified');
@@ -1663,10 +1688,10 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 25);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 65);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 340);
-assert.equal(centralNavigation.summary.classified_html_documents, 343);
+assert.equal(centralNavigation.summary.course_surface_roots, 28);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 69);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 344);
+assert.equal(centralNavigation.summary.classified_html_documents, 347);
 assert.deepEqual(
   centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/d30'),
   {

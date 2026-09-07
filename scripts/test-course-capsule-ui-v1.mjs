@@ -187,6 +187,32 @@ for (const [name, fetch] of [
   assert.equal(a20.layers.learner.online_html.status, 'not_yet_produced');
   assert.equal(a20.layers.learner.capabilities.semantic_html, 'not_yet_produced');
   assert.equal(a20.layers.learner.capabilities.mathml, 'not_yet_produced');
+  const a30 = courses.find(course => course.course_id === 'A30');
+  assert.equal(a30.course.state, 'published');
+  assert.equal(a30.course_native.version, '1.0.0');
+  assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
+  assert.equal(a30.layers.interoperability.semantic_adapter.status, 'verified');
+  assert.equal(a30.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+  assert.match(a30.layers.interoperability.semantic_adapter.mapping_scope, /220680_native_records/);
+  assert.match(a30.layers.interoperability.semantic_adapter.mapping_scope, /3067_unsupported_solution_cases_preserved/);
+  assert.equal(a30.layers.learner.tools.length, 1);
+  assert.equal(a30.layers.learner.tools[0].tool_id, 'a30.open_learner_hub');
+  assert.equal(a30.layers.learner.tools[0].href, 'backend/a30/A30.html');
+  assert.equal(a30.layers.curriculum.unit_identity_status, 'verified');
+  assert.equal(a30.layers.translation.ledger_status, 'verified');
+  assert.equal(a30.layers.translation.terminology_status, 'verified');
+  assert.equal(a30.layers.translation.rights_status, 'verified');
+  assert.equal(a30.layers.translation.corrections_status, 'verified');
+  assert.equal(a30.layers.production.build_status, 'verified');
+  assert.equal(a30.layers.production.deterministic_replay_status, 'verified');
+  assert.equal(a30.layers.educator.status, 'verified');
+  assert.equal(a30.layers.educator.unit_alignment_status, 'verified');
+  assert.equal(a30.layers.learner.pdf.status, 'verified');
+  assert.equal(a30.layers.learner.pdf.bytes, 305654938);
+  assert.equal(a30.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
+  assert.equal(a30.layers.learner.online_html.status, 'not_yet_produced');
+  assert.equal(a30.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+  assert.equal(a30.layers.learner.capabilities.mathml, 'not_yet_produced');
   const topology=courses.find(c=>c.course_id==='C90');
   assert.equal(topology.layers.interoperability.semantic_adapter.contract_version,'topology-learning-capability/1');
   assert.equal(topology.layers.learner.tools.length,1);
@@ -466,7 +492,14 @@ for (const [name, fetch] of [
   assert.equal(b80.layers.educator.unit_alignment_status,'verified');
   assert.equal(b80.layers.learner.tools.length,2);
   assert.equal(b80.layers.educator.resources[0].id,'B80:educator-map-v1');
-for (const [value, count] of [['published', 40], ['production', 0], ['educator', 32], ['adapter', adapterCount]]) {
+ const expectedStateCounts = {
+   published: courses.filter((course) => course.course.state === 'published').length,
+   production: courses.filter((course) => course.course.state === 'production').length,
+   educator: courses.filter((course) => ['verified', 'available_unverified', 'in_progress'].includes(course.layers.educator.status)).length,
+ };
+ assert.equal(expectedStateCounts.published, 40);
+ assert.equal(expectedStateCounts.production, 0);
+ for (const [value, count] of [['published', expectedStateCounts.published], ['production', expectedStateCounts.production], ['educator', expectedStateCounts.educator], ['adapter', adapterCount]]) {
     f.element('#state-filter').value = value;
     f.fire(f.element('#state-filter'), 'change');
     assert.equal(visibleCount(), count);
@@ -500,14 +533,15 @@ for (const [value, count] of [['published', 40], ['production', 0], ['educator',
   assert.match(f.element('#course-grid').innerHTML, /Tidak ada mata kuliah/);
   f.fire(f.element('#reset-filters'), 'click');
   assert.equal(visibleCount(), 40);
-for (const [name, count] of Object.entries({ total: 40, published: 40, production: 0, educator: 32 })) {
+ for (const [name, count] of Object.entries({ total: 40, published: expectedStateCounts.published, production: expectedStateCounts.production, educator: expectedStateCounts.educator })) {
     assert.equal(Number(f.element('#summary-' + name).textContent), count);
     assert.match(html, new RegExp(`<strong id="summary-${name}">${count}</strong>`));
   }
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-assert.deepEqual(educatorCounts, { verified: 22, available_unverified: 9, in_progress: 1, unknown: 8 });
+// A30 adds one verified educator-enabled course to the live 40-role surface.
+assert.deepEqual(educatorCounts, { verified: 23, available_unverified: 9, in_progress: 1, unknown: 7 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),

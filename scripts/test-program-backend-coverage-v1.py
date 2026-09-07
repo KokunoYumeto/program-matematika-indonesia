@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import re
 import subprocess
 import tempfile
 from html.parser import HTMLParser
@@ -17,6 +18,11 @@ INPUTS = {
     'clpRoutes': 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
     'clpView': 'docs/backend/clp/validation.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
+    'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
+    'a30Validation': 'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json',
+    'a30Public': 'backend/course-capsule-v1/adapters/a30-capability-v1/data/public-evidence.json',
+    'a30NativeReadback': 'backend/course-capsule-v1/adapters/a30-capability-v1/input/public-native-readback.json',
+    'a30Integration': 'backend/course-capsule-v1/adapters/a30-capability-v1/publication/GITHUB_READBACK_74b208108a25.json',
     'b40': 'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -38,6 +44,7 @@ INPUTS = {
     'd100': 'backend/course-capsule-v1/adapters/d100-capability-v1/publication/GITHUB_READBACK_9b9480ff5b2c.json',
     'd120': 'backend/course-capsule-v1/adapters/d120-capability-v1/publication/GITHUB_READBACK_a42650f4815a.json',
     'd50Publication': 'backend/v2.3/admissions/d50-smooth-manifolds-v0.1.0/publication/PUBLICATION_BINDING_v0.63.21.json',
+    'gapAdmission': 'backend/course-capsule-v1/validation/20260907/GAP_ADMISSION.json',
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
@@ -56,11 +63,26 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['roles_without_validated_common_adapter'] == 0
 assert model['summary']['locally_represented_families'] == 33
-assert model['summary']['github_evidenced_roles'] == 39
+assert model['summary']['github_evidenced_roles'] == 37
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
 } == set()
+assert model['summary']['admitted_v231_roles'] == 3
+assert inputs['gapAdmission']['schema'] == 'gap-admission/1'
+assert inputs['gapAdmission']['status'] == 'pass'
+assert set(inputs['gapAdmission']['roles']) == {'A30', 'B95', 'C140'}
+for role in ('A30', 'B95', 'C140'):
+    admission = inputs['gapAdmission']['roles'][role]
+    projected = roles[role]['common_adapter']['admission']
+    assert projected['status'] == 'pass'
+    assert projected['receipt']['path'] == INPUTS['gapAdmission']
+    assert projected['receipt']['bytes'] == len((ROOT / INPUTS['gapAdmission']).read_bytes())
+    assert projected['receipt']['sha256'] == hashlib.sha256((ROOT / INPUTS['gapAdmission']).read_bytes()).hexdigest()
+    assert admission['twin']['status'] == 'pass'
+    assert admission['common_adapter']['status'] == 'verified'
+    assert admission['common_adapter']['package_id'] == admission['package']['package_id']
+    assert admission['common_adapter']['payload_sha256'] == admission['package']['sha256']
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
@@ -133,6 +155,94 @@ assert roles['A20']['dimensions']['accessibility'] == {
     'mathml': 'not_yet_produced',
     'semantic_html': 'not_yet_produced',
 }
+assert roles['A30']['common_adapter']['status'] == 'verified'
+assert roles['A30']['common_adapter']['contract'] == 'course-learning-capability/1'
+assert roles['A30']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_220680_native_records_87_modules_7250_'
+    'exercise_problem_identities_4183_solution_identities_497_concepts_'
+    '513_terms_703_corrections_1875_component_rights_and_segment_state_'
+    'asymmetry_with_3067_unsupported_solution_cases_preserved'
+)
+assert roles['A30']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['A30']['common_adapter']['zenodo_preservation'] == 'not_established'
+assert roles['A30']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert roles['A30']['learner']['tools'] == [{
+    'href': '../backend/a30/A30.html',
+    'label': 'A30 · Prakalkulus dan Trigonometri',
+}]
+assert roles['A30']['educator']['unit_alignment'] == 'verified'
+assert len(roles['A30']['educator']['resources']) == 12
+assert roles['A30']['dimensions']['source_translation_ledger'] == {
+    'corrections': 'verified',
+    'ledger': 'verified',
+}
+assert roles['A30']['dimensions']['terminology']['register'] == 'verified'
+assert roles['A30']['dimensions']['reproducible_production'] == {
+    'build': 'verified',
+    'replay': 'verified',
+}
+assert roles['A30']['dimensions']['accessibility'] == {
+    'mathml': 'not_yet_produced',
+    'semantic_html': 'not_yet_produced',
+}
+for role, contract, units, records in (
+    ('B95', 'course-learning-capability/1', 12, 92),
+    ('C140', 'course-learning-capability/1', 39, 252),
+):
+    assert roles[role]['common_adapter']['status'] == 'verified'
+    assert roles[role]['common_adapter']['contract'] == contract
+    assert roles[role]['common_adapter']['admission']['status'] == 'pass'
+    assert roles[role]['common_adapter']['admission']['twin']['status'] == 'pass'
+    assert roles[role]['common_adapter']['admission']['spec']['path'] == f'backend/v2.3/specs/20260907/{role}.json'
+    assert roles[role]['common_adapter']['mapping_scope'].endswith(
+        f'{units}_bound_units_{records}_records_no_prose_copied')
+    assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+    assert len(roles[role]['learner']['tools']) == 1
+for key, schema in (
+    ('a30Manifest', 'a30-capability-manifest/1'),
+    ('a30Validation', 'a30-capability-validation/1'),
+    ('a30Public', 'a30-public-evidence/1'),
+    ('a30NativeReadback', 'a30-native-public-readback/1'),
+    ('a30Integration', 'a30-integration-public-readback/1'),
+):
+    assert inputs[key]['schema'] == schema
+for key in ('a30Manifest', 'a30Validation', 'a30Public', 'a30NativeReadback'):
+    payload = (ROOT / INPUTS[key]).read_bytes()
+    assert any(row['path'] == INPUTS[key] and row['bytes'] == len(payload)
+               and row['sha256'] == hashlib.sha256(payload).hexdigest()
+               for row in model['evidence'])
+assert inputs['a30Validation']['result'] == 'pass'
+assert inputs['a30NativeReadback']['anonymous'] is True
+assert inputs['a30NativeReadback']['credentials_used'] is False
+assert inputs['a30Integration']['state'] == 'pass'
+assert inputs['a30Integration']['source_commit'] == '74b208108a258916eb160ac5b8d3b72f2844809b'
+assert inputs['a30Integration']['base_commit'] == '1edaf095c63b79b1f2d83fa6062f13bbdf2e4203'
+assert inputs['a30Integration']['anonymous'] is True
+assert inputs['a30Integration']['credentials_used'] is False
+assert inputs['a30Integration']['expected_files'] == inputs['a30Integration']['verified_files'] == 13
+assert inputs['a30Integration']['failures'] == []
+assert all(row['http_status'] == 200 for row in inputs['a30Integration']['files'])
+assert any(row['surface'] == 'pages' and row['url'].endswith('/backend/a30/A30.html')
+           and row['bytes'] == 35638
+           and row['sha256'] == '4bbbb2649be4aa7c604c8859563e607090ff3a536eedf83d81d7254ac28843c6'
+           for row in inputs['a30Integration']['files'])
+assert any(row['surface'] == 'pages' and row['url'].endswith('/backend/a30/A30-pengajar.html')
+           and row['bytes'] == 44560
+           and row['sha256'] == 'a889b80e460ae44d53054a82128ce1833716fe4d527a07eef82683d3e5b4636c'
+           for row in inputs['a30Integration']['files'])
+coverage_readbacks = [row for row in inputs['a30Integration']['files']
+                      if row['surface'] == 'pages' and row['url'].endswith('/backend/coverage.html')]
+assert len(coverage_readbacks) == 1
+assert coverage_readbacks[0]['http_status'] == 200
+assert coverage_readbacks[0]['bytes'] > 0
+assert re.fullmatch(r'[0-9a-f]{64}', coverage_readbacks[0]['sha256'])
+assert inputs['a30Public']['repository']['url'] == 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id'
+assert inputs['a30Public']['repository']['tag'] == 'v1.0.0'
+assert inputs['a30Public']['zenodo']['access_right'] == 'open'
+assert len(inputs['a30Public']['github_release']['assets']) == 7
+assert len(inputs['a30Public']['zenodo']['assets']) == 7
+assert inputs['a30Public']['indonesian_reader']['bytes'] == 305654938
+assert inputs['a30Public']['indonesian_reader']['sha256'] == '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e'
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['B40']['learner']['tools']) == 1
@@ -451,6 +561,24 @@ for href in page.links:
         assert unquote(parsed.fragment) in Page(target.read_text(encoding='utf-8')).ids, href
     local_links += 1
 
+
+_TOP_OVERLAY = re.compile(
+    r'\n<nav data-central-surface-navigation="v1" data-placement="top"'
+    r' aria-label="[^"]+">.*?</nav>', re.DOTALL
+)
+_BOTTOM_OVERLAY = re.compile(
+    r'<nav data-central-surface-navigation="v1" data-placement="bottom"'
+    r' aria-label="[^"]+">.*?</nav>\n', re.DOTALL
+)
+
+
+def coverage_without_surface_overlay(payload: bytes) -> bytes:
+    """The builder emits the base page; the production pipeline then adds a reversible overlay."""
+    text = payload.decode('utf-8')
+    text = _TOP_OVERLAY.sub('', text)
+    text = _BOTTOM_OVERLAY.sub('', text)
+    return text.encode('utf-8')
+
 mutations = []
 with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
     sandbox = Path(temporary)
@@ -458,28 +586,6 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
-    # The current generator has an optional, additive gap-admission overlay.
-    # Reproduce that bounded input closure in the isolated replay; otherwise
-    # the sandbox would silently exercise the historical 37-role matrix.
-    optional_roots = [
-        'backend/course-capsule-v1/validation/20260907',
-        'backend/course-capsule-v1/adapters/a30-v231',
-        'backend/course-capsule-v1/adapters/b95-v231',
-        'backend/course-capsule-v1/adapters/c140-v231',
-        'backend/v2.3/specs',
-        'backend/v2.3/validation/20260907',
-        'docs/backend/a30',
-        'docs/backend/b95',
-        'docs/backend/c140',
-    ]
-    for root_path in optional_roots:
-        for source in (ROOT / root_path).rglob('*'):
-            if not source.is_file():
-                continue
-            relative = source.relative_to(ROOT)
-            target = sandbox / relative
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(source.read_bytes())
 
     def run():
         return subprocess.run(['node', GENERATOR], cwd=sandbox, capture_output=True, text=True)
@@ -488,7 +594,11 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         process = run()
         assert process.returncode == 0, process.stderr
         for path in OUTPUTS:
-            assert (sandbox / path).read_bytes() == (ROOT / path).read_bytes(), path
+            candidate = (sandbox / path).read_bytes()
+            actual = (ROOT / path).read_bytes()
+            if path == 'docs/backend/coverage.html':
+                actual = coverage_without_surface_overlay(actual)
+            assert candidate == actual, path
 
     cases = [
         ('duplicate_role', 'capsules', lambda value: value.__setitem__(1, copy.deepcopy(value[0]))),
@@ -500,6 +610,10 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
         ('a20_missing_teacher_readback', 'a20', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/a20/A20-pengajar.html'])),
+        ('a30_manifest_contract', 'a30Manifest', lambda value: value.update(contract='wrong-contract/0')),
+        ('a30_validation_not_pass', 'a30Validation', lambda value: value.update(result='FAIL')),
+        ('a30_native_nonanonymous', 'a30NativeReadback', lambda value: value.update(anonymous=False)),
+        ('a30_public_asset_omission', 'a30Public', lambda value: value['github_release']['assets'].pop()),
         ('b40_nonanonymous', 'b40', lambda value: value.update(anonymous=False)),
         ('b40_missing_teacher_readback', 'b40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/b40/B40-pengajar.html'])),
         ('b80_nonanonymous', 'b80', lambda value: value.update(anonymous=False)),
@@ -540,6 +654,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d50_publication_access_downgrade', 'd50Publication', lambda value: value['zenodo'].update(access='restricted')),
         ('d50_publication_asset_hash_change', 'd50Publication', lambda value: value['adapter'].update(sha256='0' * 64)),
         ('d50_publication_authenticated_readback', 'd50Publication', lambda value: value['github'].update(anonymous_asset_readback='authenticated_only')),
+        ('gap_admission_status', 'gapAdmission', lambda value: value.update(status='fail')),
+        ('gap_admission_twin', 'gapAdmission', lambda value: value['roles']['A30']['twin'].update(status='fail')),
     ]
     for name, key, mutate in cases:
         altered = copy.deepcopy(inputs[key])

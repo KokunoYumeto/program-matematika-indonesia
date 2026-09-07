@@ -24,14 +24,17 @@ RECEIPT_PATH = (
 )
 MARKER = 'data-central-surface-navigation="v1"'
 TOP_OVERLAY_RE = re.compile(
-    r'\n<nav data-central-surface-navigation="v1" data-placement="top"'
-    r' aria-label="[^"]+">.*?</nav>',
-    flags=re.DOTALL,
+    r'(?:\n[ \t]*)?<nav\b'
+    r'(?=[^>]*data-central-surface-navigation="v1")'
+    r'(?=[^>]*data-placement="top")[^>]*>.*?</nav>',
+    flags=re.DOTALL | re.IGNORECASE,
 )
 BOTTOM_OVERLAY_RE = re.compile(
-    r'<nav data-central-surface-navigation="v1" data-placement="bottom"'
-    r' aria-label="[^"]+">.*?</nav>\n',
-    flags=re.DOTALL,
+    r'<nav\b'
+    r'(?=[^>]*data-central-surface-navigation="v1")'
+    r'(?=[^>]*data-placement="bottom")[^>]*>.*?</nav>'
+    r'(?:\n[ \t]*)?',
+    flags=re.DOTALL | re.IGNORECASE,
 )
 BODY_OPEN_RE = re.compile(r"<body\b[^>]*>", flags=re.IGNORECASE)
 BODY_CLOSE_RE = re.compile(r"</body>", flags=re.IGNORECASE)
@@ -67,9 +70,15 @@ def strip_owned_overlay(text: str, logical: str) -> str:
     marker_count = text.count(MARKER)
     if marker_count not in (0, 2):
         raise ValueError(f"{logical}: malformed central-surface marker count {marker_count}")
-    stripped, top_replacements = TOP_OVERLAY_RE.subn("", text)
-    stripped, bottom_replacements = BOTTOM_OVERLAY_RE.subn("", stripped)
-    if top_replacements != marker_count // 2 or bottom_replacements != marker_count // 2:
+    if marker_count == 0:
+        return text
+    top_matches = list(TOP_OVERLAY_RE.finditer(text))
+    bottom_matches = list(BOTTOM_OVERLAY_RE.finditer(text))
+    if len(top_matches) != 1 or len(bottom_matches) != 1:
+        raise ValueError(f"{logical}: central-surface overlay is not exactly reversible")
+    stripped = TOP_OVERLAY_RE.sub("", text, count=1)
+    stripped, replacements = BOTTOM_OVERLAY_RE.subn("", stripped, count=1)
+    if replacements != 1:
         raise ValueError(f"{logical}: central-surface overlay is not exactly reversible")
     return stripped
 

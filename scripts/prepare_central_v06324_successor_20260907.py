@@ -318,7 +318,10 @@ def prepare(source_commit: str, source_tree: str, preflight_only: bool) -> dict[
             require(final.read_bytes() == first.read_bytes(), "Existing successor navigator drift")
         else:
             shutil.copyfile(first, final)
-    navigator = {**first_meta, "deterministic_builds": 2}
+    # The first/second deterministic builds use temporary names.  The
+    # metadata exposed in the candidate must identify the actual successor
+    # artifact that will be uploaded, never the temporary ``first.zip``.
+    navigator = {**first_meta, "name": NEW_NAVIGATOR, "deterministic_builds": 2}
     id_map = source_blob(source_commit, "docs/id/learning-map.html")
     en_map = source_blob(source_commit, "docs/en/learning-map.html")
     (OUTPUT / "02_learning-map-id.html").write_bytes(id_map)

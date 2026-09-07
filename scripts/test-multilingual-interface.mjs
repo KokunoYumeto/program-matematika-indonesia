@@ -245,7 +245,9 @@ const originalManifestBytes=await readFile(resolve(root,originalIndonesianBiling
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
-assert.equal(capabilityTools.length,40);
+// A30 adds one admitted capability tool; the three CLP projections remain
+// additive, so the shared capability-tool inventory is now 41.
+assert.equal(capabilityTools.length,41);
 assert.equal(capabilityToolSource.sha256,createHash('sha256').update(capsuleBytes).digest('hex'));
 assert.equal(capabilityToolSource.bytes,capsuleBytes.length);
 const d30CapabilityTool=capabilityTools.find(row=>row.courseId==='D30'&&row.tool_id==='d30.open_learner_hub');
