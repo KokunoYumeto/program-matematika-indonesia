@@ -23,6 +23,10 @@ INPUTS = {
     'a30Public': 'backend/course-capsule-v1/adapters/a30-capability-v1/data/public-evidence.json',
     'a30NativeReadback': 'backend/course-capsule-v1/adapters/a30-capability-v1/input/public-native-readback.json',
     'a30Integration': 'backend/course-capsule-v1/adapters/a30-capability-v1/publication/GITHUB_READBACK_74b208108a25.json',
+    'b95Manifest': 'backend/course-capsule-v1/adapters/b95-capability-v1/manifest.json',
+    'b95Validation': 'backend/course-capsule-v1/adapters/b95-capability-v1/validation.json',
+    'b95Public': 'backend/course-capsule-v1/adapters/b95-capability-v1/data/public-evidence.json',
+    'b95NativeReadback': 'backend/course-capsule-v1/adapters/b95-capability-v1/input/public-native-readback.json',
     'b40': 'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -63,7 +67,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['roles_without_validated_common_adapter'] == 0
 assert model['summary']['locally_represented_families'] == 33
-assert model['summary']['github_evidenced_roles'] == 37
+assert model['summary']['github_evidenced_roles'] == 38
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -243,6 +247,134 @@ assert len(inputs['a30Public']['github_release']['assets']) == 7
 assert len(inputs['a30Public']['zenodo']['assets']) == 7
 assert inputs['a30Public']['indonesian_reader']['bytes'] == 305654938
 assert inputs['a30Public']['indonesian_reader']['sha256'] == '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e'
+b95 = roles['B95']
+b95_capsule = next(row for row in inputs['capsules'] if row['course_id'] == 'B95')
+assert b95['common_adapter']['status'] == 'verified'
+assert b95['common_adapter']['contract'] == 'course-learning-capability/1'
+assert b95['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_21746_native_records_1089_units_448_exercises_'
+    '826_concepts_859_terms_302_corrections_80_component_rights_and_2231_'
+    'segments_and_localizations_with_153_public_answer_and_105_o001_gap_identities'
+)
+assert b95['common_adapter']['github_public_evidence'] == 'native_anonymous_release_asset_readback'
+assert b95['common_adapter']['zenodo_preservation'] == 'not_established'
+assert b95['common_adapter']['public_package'] is None
+assert b95['learner']['relationship'] == 'directly_consumes_adapter_outputs'
+assert b95['learner']['tools'] == [{
+    'href': '../backend/b95/B95.html',
+    'label': 'B95 · Statistika Terapan dan Analisis Data',
+}]
+assert b95['learner']['unit_identity'] == 'verified'
+assert b95['educator']['unit_alignment'] == 'verified'
+assert b95['educator']['status'] == 'verified'
+assert len(b95['educator']['resources']) == 14
+assert {row['id'] for row in b95['educator']['resources']} == {
+    'B95:educator-hub-v1', 'B95:educator-map-v1', 'B95:native-record-index-v1',
+    'B95:unit-index-v1', 'B95:exercise-index-v1', 'B95:concept-index-v1',
+    'B95:relation-index-v1', 'B95:terms-index-v1', 'B95:corrections-index-v1',
+    'B95:rights-index-v1', 'B95:segment-index-v1', 'B95:localization-index-v1',
+    'B95:evidence-index-v1', 'B95:release-inventory-v1',
+}
+assert b95['dimensions']['source_translation_ledger'] == {
+    'corrections': 'verified',
+    'ledger': 'verified',
+}
+assert b95['dimensions']['terminology']['register'] == 'verified'
+assert b95['dimensions']['reproducible_production'] == {
+    'build': 'verified',
+    'replay': 'verified',
+}
+assert b95['dimensions']['accessibility'] == {
+    'mathml': 'not_yet_produced',
+    'semantic_html': 'not_yet_produced',
+}
+assert b95['dimensions']['learner'] == {
+    'central_tools': 1,
+    'delivery': 'verified',
+}
+assert [row['kind'] for row in b95['common_adapter']['local_evidence']] == [
+    'central_adapter_manifest',
+    'deterministic_validation_receipt',
+    'deterministic_package_receipt',
+    'deterministic_capability_packet',
+    'native_source_lock',
+    'anonymous_native_public_readback',
+    'verified_native_public_release',
+    'native_record_index',
+    'unit_identity_index',
+    'exercise_identity_index',
+    'concept_index',
+    'relation_index',
+    'terminology_index',
+    'correction_index',
+    'component_rights_index',
+    'segment_index',
+    'localization_index',
+    'evidence_index',
+    'release_inventory',
+]
+for key, schema_key, schema in (
+    ('b95Manifest', 'schema', 'b95-capability-manifest/1'),
+    ('b95Validation', 'schema', 'b95-capability-validation/1'),
+    ('b95Public', 'schema', 'b95-public-evidence/1'),
+    ('b95NativeReadback', '$schema', 'interlanguage.r011-b039-final-completion/v1'),
+):
+    assert inputs[key][schema_key] == schema
+for kind, key in (
+    ('central_adapter_manifest', 'b95Manifest'),
+    ('deterministic_validation_receipt', 'b95Validation'),
+    ('verified_native_public_release', 'b95Public'),
+    ('anonymous_native_public_readback', 'b95NativeReadback'),
+):
+    path = INPUTS[key]
+    payload = (ROOT / path).read_bytes()
+    found = [row for row in b95['common_adapter']['local_evidence']
+             if row['kind'] == kind and row['locator'] == path]
+    assert len(found) == 1
+    assert found[0]['bytes'] == len(payload)
+    assert found[0]['sha256'] == hashlib.sha256(payload).hexdigest()
+b95_public = inputs['b95Public']
+assert b95_public['anonymous_readback'] is True
+assert b95_public['credentials_used'] is False
+assert b95_public['repository']['url'] == 'https://github.com/KokunoYumeto/statistika-berbasis-data-id'
+assert b95_public['repository']['public'] is True
+assert b95_public['release']['public'] is True
+assert b95_public['release']['asset_count'] == len(b95_public['release']['assets']) == 9
+assert b95_public['zenodo']['access_right'] == 'open'
+assert b95_public['zenodo']['record_id'] == 22261912
+assert b95_public['reader']['pdf_pages'] == 462
+assert b95_public['reader']['pdf_sha256'] == '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049'
+assert b95_capsule['course_native']['repository'] == b95_public['repository']['url']
+assert b95_capsule['course_native']['zenodo'] == 'https://doi.org/' + b95_public['zenodo']['doi']
+assert b95_capsule['course_native']['edition'] == b95_public['reader']['zenodo_url']
+assert b95_capsule['layers']['production']['repository'] == b95_public['repository']['url']
+assert b95_capsule['layers']['production']['zenodo'] == 'https://doi.org/' + b95_public['zenodo']['doi']
+assert b95_capsule['layers']['production']['edition'] == b95_public['reader']['zenodo_url']
+assert b95_capsule['layers']['production']['release_status'] == 'available_unverified'
+assert b95_capsule['layers']['learner']['status'] == 'verified'
+for layer in ('primary', 'pdf'):
+    assert b95_capsule['layers']['learner'][layer]['status'] == 'verified'
+    assert b95_capsule['layers']['learner'][layer]['url'] == b95_public['reader']['zenodo_url']
+    assert b95_capsule['layers']['learner'][layer]['bytes'] == 57049904
+    assert b95_capsule['layers']['learner'][layer]['sha256'] == b95_public['reader']['pdf_sha256']
+for layer in ('online_html', 'epub', 'portable_html'):
+    assert b95_capsule['layers']['learner'][layer]['status'] == 'not_yet_produced'
+assert b95_capsule['layers']['learner']['capabilities'] == {
+    'chapter_downloads': 'not_yet_produced',
+    'mathml': 'not_yet_produced',
+    'print_profile': 'verified',
+    'semantic_html': 'not_yet_produced',
+}
+assert b95_capsule['layers']['educator']['status'] == 'verified'
+assert b95_capsule['layers']['educator']['unit_alignment_status'] == 'verified'
+assert b95_capsule['layers']['educator']['features'] == [
+    'exercise_bank', 'lesson_sequences', 'remix_selectors',
+]
+assert len(b95_capsule['layers']['educator']['resources']) == 14
+assert inputs['b95NativeReadback']['complete_corpus'] is True
+assert inputs['b95NativeReadback']['credentials_recorded'] is False
+assert inputs['b95NativeReadback']['publication']['github']['all_nine_assets_read_back_by_bytes_and_sha256'] is True
+assert inputs['b95NativeReadback']['publication']['zenodo']['all_nine_files_read_back_by_bytes_and_sha256'] is True
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['B40']['learner']['tools']) == 1
@@ -614,6 +746,11 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('a30_validation_not_pass', 'a30Validation', lambda value: value.update(result='FAIL')),
         ('a30_native_nonanonymous', 'a30NativeReadback', lambda value: value.update(anonymous=False)),
         ('a30_public_asset_omission', 'a30Public', lambda value: value['github_release']['assets'].pop()),
+        ('b95_manifest_contract', 'b95Manifest', lambda value: value.update(contract='wrong-contract/0')),
+        ('b95_validation_not_pass', 'b95Validation', lambda value: value.update(result='FAIL')),
+        ('b95_native_incomplete', 'b95NativeReadback', lambda value: value.update(complete_corpus=False)),
+        ('b95_public_asset_omission', 'b95Public', lambda value: value['release']['assets'].pop()),
+        ('b95_public_access_downgrade', 'b95Public', lambda value: value['zenodo'].update(access_right='restricted')),
         ('b40_nonanonymous', 'b40', lambda value: value.update(anonymous=False)),
         ('b40_missing_teacher_readback', 'b40', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/b40/B40-pengajar.html'])),
         ('b80_nonanonymous', 'b80', lambda value: value.update(anonymous=False)),

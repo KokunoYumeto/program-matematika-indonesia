@@ -780,9 +780,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(!/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html), 'Self-contained executable/style');
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors, the bilingual B80/D120 tools, A20's metadata-only
-    // learner capability, and the D30/D90 routes. The combined A20+D30 union is
-    // measured again by this gate after every deterministic interface build.
-    assert.ok(Buffer.byteLength(html) < 490000, 'Offline map size budget');
+    // learner capability, the D30/D90 routes, and the B95 learner/educator
+    // bindings. The combined live union is measured again by this gate after
+    // every deterministic interface build.
+    assert.ok(Buffer.byteLength(html) < 495000, 'Offline map size budget');
     // The multilingual interface, central gateway closure, and the bounded
     // source/hosted identity map remain under measured raw and gzip budgets.
     assert.ok(gzipSync(html).length < 100000, 'Compressed map size budget');

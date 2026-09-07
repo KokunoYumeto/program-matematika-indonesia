@@ -291,46 +291,51 @@ export const liveCoursePublications = Object.freeze({
     },
   }),
   B95: publication({
-    "state": "production",
+    "state": "published",
     "learner": "https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/B95/",
-    "edition": "https://zenodo.org/records/22192066/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B030_WORKING_READER.pdf?download=1",
-    "zenodo": "https://doi.org/10.5281/zenodo.22192066",
+    "edition": "https://zenodo.org/records/22261912/files/00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER.pdf?download=1",
+    "zenodo": "https://doi.org/10.5281/zenodo.22261912",
     "repository": "https://github.com/KokunoYumeto/statistika-berbasis-data-id",
-    "release": "https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b030-2026.08.31.1",
-    "version": "2026.08.31.1-R011-B030",
-    "note": "Edisi kerja publik R011-B030 sampai Bab 7 Bagian 7.5 tersedia dalam PDF 322 halaman. Produksi B031 dan bagian berikutnya masih berlangsung. Paket sumber dan backend bukan pembaca HTML luring.",
+    "release": "https://github.com/KokunoYumeto/statistika-berbasis-data-id/releases/tag/r011-b039-2026.09.01.2",
+    "version": "2026.09.01.2-R011-B039",
+    "note": "Edisi lengkap publik R011-B039 mencakup seluruh sembilan bab dalam pembaca PDF Bahasa Indonesia 462 halaman. Sembilan aset rilis GitHub dan Zenodo telah dibaca kembali secara anonim; paket sumber sunting serta backend modular 21.746 rekaman tersedia sebagai arsip pendamping dan bukan pembaca HTML luring.",
     "verification": {
-      "readerBytes": 13576715,
-      "readerSha256": "28881f11d05dca933d16960f22be9a73ef2069c96d3e00d4e612afaf3dbecfcb",
-      "backendRecords": 11810,
+      "readerBytes": 57049904,
+      "readerSha256": "7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049",
+      "backendRecords": 21746,
       "publicAssets": 9
     },
     "progress": {
-      "unitLabel": "batas produksi R011",
-      "publicPages": 322,
-      "publicBoundary": "B030 — Bab 7, Bagian 7.5",
-      "updatedAt": "2026-08-31"
+      "unitLabel": "bab OpenIntro Statistics",
+      "totalUnits": 9,
+      "translationBearingUnits": 9,
+      "integrationReadyUnits": 9,
+      "canonicalUnits": 9,
+      "publicUnits": 9,
+      "publicPages": 462,
+      "publicBoundary": "R011-B039 — edisi lengkap 9/9 bab",
+      "updatedAt": "2026-09-01"
     },
     "additionalSupplements": [
       {
         "id": "b95-current-native-backend",
-        "title": "Backend native edisi kerja",
+        "title": "Backend modular edisi lengkap",
         "resourceType": "reference",
         "state": "complete",
-        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
-        "url": "https://zenodo.org/records/22192066/files/02_STATISTIKA_BERBASIS_DATA_ID_R011-B030_MODULAR_BACKEND.zip?download=1",
-        "bytes": 335761173,
-        "sha256": "20fc7ed127c7a2b60107854b29c2b98f7055e06f3527ce09c785dfc5c31b9553"
+        "scope": "Paket backend modular edisi lengkap, 21.746 rekaman; bukan pembaca HTML luring.",
+        "url": "https://zenodo.org/records/22261912/files/02_STATISTIKA_BERBASIS_DATA_ID_R011-B039_MODULAR_BACKEND.zip?download=1",
+        "bytes": 9495632,
+        "sha256": "aeed9e35a97e7c8ab5e62473365362616b34e3fad79134b8de1a965bd1732c76"
       },
       {
         "id": "b95-current-source",
-        "title": "Sumber sunting edisi kerja",
+        "title": "Sumber sunting edisi lengkap",
         "resourceType": "reference",
         "state": "complete",
-        "scope": "Paket checkpoint publik; bukan edisi lengkap atau HTML luring.",
-        "url": "https://zenodo.org/records/22192066/files/01_STATISTIKA_BERBASIS_DATA_ID_R011-B030_EDITABLE_SOURCE.zip?download=1",
-        "bytes": 36025332,
-        "sha256": "146ec42eb39d229b50a4166dedc60c7768665baa48793ef5d06bddf0ccff7296"
+        "scope": "Paket sumber sunting edisi lengkap; bukan pembaca HTML luring.",
+        "url": "https://zenodo.org/records/22261912/files/01_STATISTIKA_BERBASIS_DATA_ID_R011-B039_EDITABLE_SOURCE.zip?download=1",
+        "bytes": 43928517,
+        "sha256": "0edd9b035b959ff88dcc2c2c277994f5a857597d44634f3ab625ac238f038967"
       }
     ]
   }),

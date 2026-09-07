@@ -427,6 +427,7 @@ assert.equal(terminologyPolicyChecksums['canonical-register-policy.json'], sha25
 assert.equal(integrationOverrides.native_capabilities.A10.terminology.status, 'in_progress');
 assert.equal(integrationOverrides.native_capabilities.A20.terminology.status, 'verified');
 assert.equal(integrationOverrides.native_capabilities.A30.terminology.status, 'verified');
+assert.equal(integrationOverrides.native_capabilities.B95.terminology.status, 'verified');
 assert.equal(integrationOverrides.native_capabilities.D100.terminology.status, 'verified');
 const c80Capsule = courseCapsules.find(({ course_id }) => course_id === 'C80');
 assert.ok(c80Capsule, 'Kapsul C80 harus tersedia.');
@@ -464,6 +465,23 @@ assert.equal(a30Capsule.layers.educator.unit_alignment_status, 'verified');
 assert.equal(a30Capsule.layers.learner.pdf.sha256, '3cfd5294b91252cc766992f158b6601e80aa31b719b0b8bf69e1ff6d08a4fa3e');
 assert.equal(a30Capsule.layers.learner.capabilities.semantic_html, 'not_yet_produced');
 assert.equal(a30Capsule.layers.learner.capabilities.mathml, 'not_yet_produced');
+const b95Capsule = courseCapsules.find(({ course_id }) => course_id === 'B95');
+assert.equal(b95Capsule.course.state, 'published');
+assert.equal(b95Capsule.course_native.version, '2026.09.01.2-R011-B039');
+assert.equal(b95Capsule.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+assert.equal(b95Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.match(b95Capsule.layers.interoperability.semantic_adapter.mapping_scope, /21746_native_records/);
+assert.match(b95Capsule.layers.interoperability.semantic_adapter.mapping_scope, /105_o001_gap_identities/);
+assert.deepEqual(b95Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['b95.open_learner_hub']);
+assert.equal(b95Capsule.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(b95Capsule.layers.translation.ledger_status, 'verified');
+assert.equal(b95Capsule.layers.translation.terminology_status, 'verified');
+assert.equal(b95Capsule.layers.translation.corrections_status, 'verified');
+assert.equal(b95Capsule.layers.educator.unit_alignment_status, 'verified');
+assert.equal(b95Capsule.layers.learner.pdf.bytes, 57049904);
+assert.equal(b95Capsule.layers.learner.pdf.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
+assert.equal(b95Capsule.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(b95Capsule.layers.learner.capabilities.mathml, 'not_yet_produced');
 const d100Capsule = courseCapsules.find(({ course_id }) => course_id === 'D100');
 assert.equal(d100Capsule.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.deepEqual(d100Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['d100.open_learner_hub']);
@@ -527,8 +545,8 @@ assert.deepEqual(publicBaseline.successor, {
 });
 assert.equal(learnerTools.$schema, JSON.parse(learnerToolsSchemaBytes.toString('utf8')).$id);
 assert.deepEqual(learnerTools.courses, learnerToolsRows);
-assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130']);
-assert.equal(learnerTools.courses.length, 5);
+assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130', 'B95']);
+assert.equal(learnerTools.courses.length, 6);
 const a00LearnerTool = learnerToolsByCourseId.A00?.[0];
 assert.ok(a00LearnerTool, 'A00 harus memiliki alat latihan pelajar.');
 assert.equal(a00LearnerTool.tool_id, 'a00-assessment-map-v1');
@@ -545,6 +563,7 @@ for (const [courseId, toolId, href] of [
   ['C40', 'judson-c40-chapter-map-v1', 'backend/judson/C40.html'],
   ['C80', 'c80-openlogic-course-map-v1', 'backend/openlogic/C80.html'],
   ['C130', 'c130-operations-research-course-map-v1', 'backend/c130/C130.html'],
+  ['B95', 'b95.open_learner_hub', 'backend/b95/B95.html'],
 ]) {
   const tool = learnerToolsByCourseId[courseId]?.[0];
   assert.ok(tool, `${courseId} harus memiliki alat belajar terverifikasi.`);
@@ -721,17 +740,17 @@ for (const id of liveOverlayRequiredRoleIds) {
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
-assert.equal(effectivePublishedCourses.length, 38, 'Overlay harus menampilkan tepat 38 peran dengan edisi selesai.');
-assert.equal(effectivePublishedRecordDois.size, 34, 'Tiga puluh delapan peran selesai harus memakai tepat 34 rekaman DOI edisi berbeda.');
+assert.equal(effectivePublishedCourses.length, 39, 'Overlay harus menampilkan tepat 39 peran dengan edisi selesai.');
+assert.equal(effectivePublishedRecordDois.size, 35, 'Tiga puluh sembilan peran selesai harus memakai tepat 35 rekaman DOI edisi berbeda.');
 assert.equal(
   effectiveCourses.filter(({ state }) => state === 'production').length,
-  2,
-  'Overlay harus menampilkan tepat 2 peran yang masih diproduksi.',
+  1,
+  'Overlay harus menampilkan tepat 1 peran yang masih diproduksi.',
 );
 assert.deepEqual(
   effectiveCourses.filter(({ state }) => state === 'production').map(({ id }) => id),
-  ['B95', 'C140'],
-  'Daftar dua peran produksi berubah.',
+  ['C140'],
+  'Daftar satu peran produksi berubah.',
 );
 const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
 for (const course of effectiveCourses) {
@@ -821,17 +840,21 @@ assert.match(effectiveCoursesById.get('B30').edition, /CLP-2_Kalkulus_Integral_B
 assert.equal(effectiveCoursesById.get('B50').progress.publicUnits, 138);
 assert.equal(effectiveCoursesById.get('B50').supplements.length, 2);
 assert.match(effectiveCoursesById.get('B50').zenodo, /(?:22163372|22184443)$/);
-assert.match(effectiveCoursesById.get('B95').zenodo, /22192066$/);
-assert.equal(effectiveCoursesById.get('B95').version, '2026.08.31.1-R011-B030');
-assert.equal(effectiveCoursesById.get('B95').state, 'production');
-assert.match(effectiveCoursesById.get('B95').release, /r011-b030-2026\.08\.31\.1$/);
-assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 322);
-assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'B030 — Bab 7, Bagian 7.5');
-assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B030_WORKING_READER\.pdf\?download=1$/);
+assert.match(effectiveCoursesById.get('B95').zenodo, /22261912$/);
+assert.equal(effectiveCoursesById.get('B95').version, '2026.09.01.2-R011-B039');
+assert.equal(effectiveCoursesById.get('B95').state, 'published');
+assert.match(effectiveCoursesById.get('B95').release, /r011-b039-2026\.09\.01\.2$/);
+assert.equal(effectiveCoursesById.get('B95').progress.translationBearingUnits, 9);
+assert.equal(effectiveCoursesById.get('B95').progress.integrationReadyUnits, 9);
+assert.equal(effectiveCoursesById.get('B95').progress.canonicalUnits, 9);
+assert.equal(effectiveCoursesById.get('B95').progress.publicUnits, 9);
+assert.equal(effectiveCoursesById.get('B95').progress.publicPages, 462);
+assert.equal(effectiveCoursesById.get('B95').progress.publicBoundary, 'R011-B039 — edisi lengkap 9/9 bab');
+assert.match(effectiveCoursesById.get('B95').edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf\?download=1$/);
 assert.deepEqual(effectiveCoursesById.get('B95').verification, {
-  readerBytes: 13576715,
-  readerSha256: '28881f11d05dca933d16960f22be9a73ef2069c96d3e00d4e612afaf3dbecfcb',
-  backendRecords: 11810,
+  readerBytes: 57049904,
+  readerSha256: '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049',
+  backendRecords: 21746,
   publicAssets: 9,
 });
 assert.equal(effectiveCoursesById.get('C90').state, 'published');
@@ -1086,10 +1109,10 @@ assert.match(html, /produksi yang belum selesai tetap dilabeli dengan jelas/i);
 assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
 assert.match(html, new RegExp(`${effectivePublishedCourses.length} peran melalui ${effectivePublishedRecordDois.size} rekaman DOI berbeda untuk edisi lengkap`));
 assert.match(html, /A00, B10, C30, C40, C80, C130, D20, D60, dan D110/);
-assert.match(html, /25 dari 40 peran/);
-assert.match(html, /18 dari 33 keluarga backend native/);
+assert.match(html, /39 dari 40 peran/);
+assert.match(html, /32 dari 33 keluarga backend native/);
 assert.match(html, /sembilan ikatan peran melalui delapan paket/);
-assert.match(html, /enam belas peran lainnya memakai kontrak kapabilitas keluarga yang teruji/);
+assert.match(html, /tiga puluh peran lainnya memakai kontrak kapabilitas keluarga yang teruji/);
 assert.match(rootReadme, /D60 kini merupakan edisi komposit lengkap v0\.31\.7/);
 assert.match(rootReadme, /Overlay penerus backend v2\.3 kini menerima sembilan ikatan peran melalui delapan paket kontrak 2\.3\.1: A00, B10, C30, C40, C80, C130, D20, D60, dan D110/);
 assert.equal(v23AdapterIndex.adapters.find(({ role_id }) => role_id === 'D60').release_url, 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.62.10');
@@ -1154,12 +1177,12 @@ for (const row of learnerDelivery.courses) {
   }
 }
 const legacyReaderCandidatesRejectedByDeliveryAuthority = effectiveCourses
-  .filter((course) => (course.learner || course.reader) && deliveryById.get(course.id)?.online_html.status === 'absent')
+  .filter((course) => course.reader && deliveryById.get(course.id)?.online_html.status === 'absent')
   .map(({ id }) => id);
 assert.deepEqual(legacyReaderCandidatesRejectedByDeliveryAuthority, []);
 assert.equal(
   learnerDelivery.summary.online_html_available,
-  effectiveCourses.filter((course) => course.learner || course.reader).length - legacyReaderCandidatesRejectedByDeliveryAuthority.length,
+  effectiveCourses.filter((course) => course.reader).length - legacyReaderCandidatesRejectedByDeliveryAuthority.length,
 );
 assert.equal(learnerDelivery.summary.course_count, learnerDelivery.courses.length);
 assert.equal(
@@ -1168,9 +1191,11 @@ assert.equal(
 );
 assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').length);
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
-assert.equal(learnerDelivery.summary.online_html_available, 25);
+assert.equal(learnerDelivery.summary.online_html_available, 24);
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
 assert.equal(learnerDelivery.summary.verified_epub, 2);
+assert.equal(deliveryById.get('B95').online_html.status, 'not_yet_produced');
+assert.equal(deliveryById.get('B95').pdf.status, 'verified');
 assert.deepEqual(
   [...learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').map(({ course_id }) => course_id)].sort(),
   ['C100', 'D90'],
@@ -1266,11 +1291,11 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound B90, D100, C110, C70, D90, and A20 learner/educator capability
+// hash-bound B90, D100, C110, C70, D90, A20, and B95 learner/educator capability
 // links. Each new language route has its own separately measured offline/
 // closure budget.
-assert.ok(shellRawBytes <= 206_000, `Shell melewati 206.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 51_500, `Shell gzip melewati 51.500 byte: ${shellGzipBytes}.`);
+assert.ok(shellRawBytes <= 208_000, `Shell melewati 208.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= 52_000, `Shell gzip melewati 52.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -1349,6 +1374,39 @@ for (const name of d30PublicSurfacePaths) {
     `public/hub/${name}`,
     `docs/${name}`,
     `${name}: D30 Sites mirror differs from docs`,
+  );
+}
+
+const b95PublicSurfacePaths = [
+  'backend/b95/manifest.json',
+  'backend/b95/B95.html',
+  'backend/b95/B95-pengajar.html',
+  'backend/b95/capabilities.json',
+  'backend/b95/learning-map.json',
+  'backend/b95/educator-map.json',
+  'backend/b95/public-evidence.json',
+  'backend/b95/claim-boundary.json',
+  'backend/b95/data/release-inventory.json',
+  'backend/b95/data/native-record-index.jsonl',
+  'backend/b95/data/unit-index.jsonl',
+  'backend/b95/data/exercise-index.jsonl',
+  'backend/b95/data/concept-index.jsonl',
+  'backend/b95/data/relation-index.jsonl',
+  'backend/b95/data/terms-index.jsonl',
+  'backend/b95/data/corrections-index.jsonl',
+  'backend/b95/data/rights-index.jsonl',
+  'backend/b95/data/segment-index.jsonl',
+  'backend/b95/data/localization-index.jsonl',
+  'backend/b95/data/evidence-index.jsonl',
+  'backend/b95/source-lock.json',
+  'backend/b95/public-native-readback.json',
+  'backend/b95/validation.json',
+];
+for (const name of b95PublicSurfacePaths) {
+  await assertMirrorOrCentralNavigationIdentity(
+    `public/hub/${name}`,
+    `docs/${name}`,
+    `${name}: B95 Sites mirror differs from docs`,
   );
 }
 
@@ -1615,7 +1673,7 @@ assert.match(livePublicationsModule, /id-ID\/courses\/B95\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/D10\/reader\//);
 assert.match(livePublicationsModule, /id-ID\/courses\/D120\/reader\//);
 assert.match(livePublicationsModule, /kerja-matematika-yang-dapat-ditelusuri-id\//);
-assert.match(livePublicationsModule, /22192066/);
+assert.match(livePublicationsModule, /22261912/);
 assert.match(livePublicationsModule, /22161412/);
 assert.match(livePublicationsModule, /22184259/);
 assert.match(livePublicationsModule, /PERSAMAAN_DIFERENSIAL_PARSIAL_DIONNE_ID_LENGKAP/);
@@ -1629,12 +1687,12 @@ assert.match(livePublicationsModule, /(?:22164136|22183943)/);
 assert.match(livePublicationsModule, /(?:22163372|22184443)/);
 assert.match(livePublicationsModule, /clemens-snapp-workbook-u022/);
 assert.match(b95Landing, /Statistika Berbasis Data/);
-assert.match(b95Landing, /22192066/);
+assert.match(b95Landing, /22261912/);
 assert.match(b95Landing, /statistika-berbasis-data-id/);
-assert.match(b95Landing, /322 halaman/);
-assert.match(b95Landing, /GitHub \(B030\)/);
+assert.match(b95Landing, /462 halaman/);
+assert.match(b95Landing, /GitHub \(B039\)/);
 assert.match(b95Landing, /byte-identik di Zenodo serta GitHub/);
-assert.match(b95Landing, /produksi berlanjut ke B031/);
+assert.match(b95Landing, /R011-B039 lengkap telah diterbitkan/);
 assert.doesNotMatch(b95Landing, /href="[^"]+\.(?:json|jsonl|csv)(?:[?#"])/i);
 
 assert.match(livePublicationsModule, /id-ID\/courses\/D30\//);

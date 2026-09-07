@@ -101,6 +101,29 @@ const logicalFiles = [
   'backend/b90/source-lock.json',
   'backend/b90/public-native-readback.json',
   'backend/b90/validation.json',
+  'backend/b95/manifest.json',
+  'backend/b95/B95.html',
+  'backend/b95/B95-pengajar.html',
+  'backend/b95/capabilities.json',
+  'backend/b95/learning-map.json',
+  'backend/b95/educator-map.json',
+  'backend/b95/public-evidence.json',
+  'backend/b95/claim-boundary.json',
+  'backend/b95/data/release-inventory.json',
+  'backend/b95/data/native-record-index.jsonl',
+  'backend/b95/data/unit-index.jsonl',
+  'backend/b95/data/exercise-index.jsonl',
+  'backend/b95/data/concept-index.jsonl',
+  'backend/b95/data/relation-index.jsonl',
+  'backend/b95/data/terms-index.jsonl',
+  'backend/b95/data/corrections-index.jsonl',
+  'backend/b95/data/rights-index.jsonl',
+  'backend/b95/data/segment-index.jsonl',
+  'backend/b95/data/localization-index.jsonl',
+  'backend/b95/data/evidence-index.jsonl',
+  'backend/b95/source-lock.json',
+  'backend/b95/public-native-readback.json',
+  'backend/b95/validation.json',
   'backend/c60/C60.html',
   'backend/c60/C60-pengajar.html',
   'backend/c60/capabilities.json',
@@ -252,8 +275,8 @@ assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.jso
 // roles without rewriting that history.
 const expectedFrozenSuccessorAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
 const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10', 'D50'];
-const expectedCapabilityAdapterRoles = ['A20', 'A30', 'B40', 'B70', 'B80', 'B90', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
-const expectedCapabilityPackageCount = 20;
+const expectedCapabilityAdapterRoles = ['A20', 'A30', 'B40', 'B70', 'B80', 'B90', 'B95', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
+const expectedCapabilityPackageCount = 21;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedFrozenSuccessorAdapterRoles), 'Frozen successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -327,9 +350,10 @@ const mainHtml = await readFile(resolve(project, 'docs/index.html'), 'utf8');
 assert.equal(rows.length, 40);
 assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 38);
-assert.equal(rows.filter(({ course }) => course.state === 'production').length, 2);
-assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 33);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 39);
+assert.equal(rows.filter(({ course }) => course.state === 'production').length, 1);
+assert.deepEqual(rows.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id), ['C140']);
+assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 34);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -366,6 +390,21 @@ const a30ClaimBoundary = JSON.parse(docsBytes['backend/a30/claim-boundary.json']
 const a30SourceLock = JSON.parse(docsBytes['backend/a30/source-lock.json']);
 const a30AdapterManifest = JSON.parse(await readFile(resolve(project, 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json')));
 const a30AdapterValidationBytes = await readFile(resolve(project, 'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json'));
+const b95 = rows.find(row => row.course_id === 'B95');
+const b95Html = docsBytes['backend/b95/B95.html'].toString('utf8');
+const b95EducatorHtml = docsBytes['backend/b95/B95-pengajar.html'].toString('utf8');
+const b95Capabilities = JSON.parse(docsBytes['backend/b95/capabilities.json']);
+const b95LearningMap = JSON.parse(docsBytes['backend/b95/learning-map.json']);
+const b95EducatorMap = JSON.parse(docsBytes['backend/b95/educator-map.json']);
+const b95PublicEvidence = JSON.parse(docsBytes['backend/b95/public-evidence.json']);
+const b95PublicNativeReadback = JSON.parse(docsBytes['backend/b95/public-native-readback.json']);
+const b95ClaimBoundary = JSON.parse(docsBytes['backend/b95/claim-boundary.json']);
+const b95ReleaseInventory = JSON.parse(docsBytes['backend/b95/data/release-inventory.json']);
+const b95SourceLock = JSON.parse(docsBytes['backend/b95/source-lock.json']);
+const b95Validation = JSON.parse(docsBytes['backend/b95/validation.json']);
+const b95PublicManifest = JSON.parse(docsBytes['backend/b95/manifest.json']);
+const b95AdapterManifest = JSON.parse(await readFile(resolve(project, 'backend/course-capsule-v1/adapters/b95-capability-v1/manifest.json')));
+const b95AdapterValidationBytes = await readFile(resolve(project, 'backend/course-capsule-v1/adapters/b95-capability-v1/validation.json'));
 const d10Validation = JSON.parse(docsBytes['backend/d10/validation.json']);
 const d10LearningMap = JSON.parse(docsBytes['backend/d10/learning-map.json']);
 const d10EducatorMap = JSON.parse(docsBytes['backend/d10/educator-map.json']);
@@ -442,12 +481,12 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 28);
-assert.equal(authorityToolIds.length, 38);
+assert.equal(Object.keys(authorityToolsByCourse).length, 29);
+assert.equal(authorityToolIds.length, 39);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
-assert.equal(manifest.summary.published_count, 38);
-assert.equal(manifest.summary.production_count, 2);
+assert.equal(manifest.summary.published_count, 39);
+assert.equal(manifest.summary.production_count, 1);
 assert.equal(manifest.design_policy.profile, 'thin_format_neutral_zero_copy');
 assert.equal(manifest.design_policy.authority.sha256, sha256(authorityDesignPolicyBytes));
 assert.equal(manifest.design_policy.schema.sha256, sha256(authorityDesignPolicySchemaBytes));
@@ -842,6 +881,234 @@ for (const a30Page of [docsBytes['backend/a30/A30.html'].toString('utf8'), docsB
   assert.match(a30Page, /<html lang="id">/);
   assert.match(a30Page, /https:\/\/zenodo\.org\/records\/22290180/);
   assert.doesNotMatch(a30Page, /<script\b/i);
+}
+assert.equal(b95.course.state, 'published');
+assert.equal(b95.course_native.version, '2026.09.01.2-R011-B039');
+assert.equal(b95.course_native.repository, 'https://github.com/KokunoYumeto/statistika-berbasis-data-id');
+assert.equal(b95.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22261912');
+assert.match(b95.course_native.edition, /00_STATISTIKA_BERBASIS_DATA_ID_R011-B039_WORKING_READER\.pdf\?download=1$/);
+assert.equal(b95.layers.interoperability.semantic_adapter.status, 'verified');
+assert.equal(b95.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
+assert.deepEqual(b95.layers.learner.tools.map(({ tool_id, href }) => ({ tool_id, href })), [
+  { tool_id: 'b95.open_learner_hub', href: 'backend/b95/B95.html' },
+]);
+assert.equal(b95.layers.learner.tools[0].page.path, 'docs/backend/b95/B95.html');
+assert.equal(b95.layers.learner.tools[0].resource.path, 'docs/backend/b95/learning-map.json');
+assert.equal(b95.layers.learner.tools[0].evidence.path, 'docs/backend/b95/validation.json');
+assert.equal(b95.layers.learner.pdf.status, 'verified');
+assert.equal(b95.layers.learner.pdf.bytes, 57049904);
+assert.equal(b95.layers.learner.pdf.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
+assert.equal(b95.layers.learner.online_html.status, 'not_yet_produced');
+assert.equal(b95.layers.learner.capabilities.semantic_html, 'not_yet_produced');
+assert.equal(b95.layers.learner.capabilities.mathml, 'not_yet_produced');
+assert.equal(b95.layers.learner.capabilities.print_profile, 'verified');
+assert.equal(b95.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(b95.layers.translation.ledger_status, 'verified');
+assert.equal(b95.layers.translation.terminology_status, 'verified');
+assert.equal(b95.layers.translation.rights_status, 'verified');
+assert.equal(b95.layers.translation.corrections_status, 'verified');
+assert.equal(b95.layers.production.build_status, 'verified');
+assert.equal(b95.layers.production.deterministic_replay_status, 'verified');
+assert.equal(b95.layers.production.release_status, 'available_unverified');
+assert.equal(b95.layers.educator.status, 'verified');
+assert.equal(b95.layers.educator.unit_alignment_status, 'verified');
+assert.ok(b95.layers.educator.resources.some(({ id, status }) => id === 'B95:educator-hub-v1' && status === 'verified'));
+assert.ok(b95.layers.educator.resources.some(({ id, status }) => id === 'B95:educator-map-v1' && status === 'verified'));
+assert.equal(b95AdapterManifest.schema, 'b95-capability-manifest/1');
+assert.equal(b95AdapterManifest.contract, 'course-learning-capability/1');
+assert.equal(b95AdapterManifest.course_id, 'B95');
+assert.equal(b95AdapterManifest.native_role_id, 'R011');
+assert.equal(b95AdapterManifest.boundary_id, 'R011-B039');
+assert.equal(b95AdapterManifest.authority.public_release_id, 'R011-B039-v2026.09.01.2');
+assert.equal(b95AdapterManifest.authority.public_release_tag, 'r011-b039-2026.09.01.2');
+assert.equal(b95AdapterManifest.authority.public_release_tag_target_sha, '88ac7599a979c0f52b77b07fa3cb4f0db101f3b2');
+assert.equal(b95AdapterManifest.authority.tag_contains_current_working_tree_exports, false);
+assert.deepEqual(b95PublicManifest, b95AdapterManifest);
+assert.equal(b95Validation.schema, 'b95-capability-validation/1');
+assert.equal(b95Validation.result, 'pass');
+assert.equal(b95Validation.course_id, 'B95');
+assert.equal(b95Validation.boundary_id, 'R011-B039');
+for (const [key, expected] of Object.entries({
+  native_records: 21746,
+  units: 1089,
+  chapters: 9,
+  sections: 35,
+  subsections: 83,
+  exercises: 448,
+  exercise_units: 322,
+  guided_exercises: 126,
+  public_answer_ids: 153,
+  o001_gap_ids: 105,
+  concepts: 826,
+  relations: 11127,
+  terms: 859,
+  corrections: 302,
+  component_rights: 80,
+  segments: 2231,
+  localizations: 2231,
+  evidence_records: 2049,
+  source_files: 1245,
+  reader_pages: 462,
+})) assert.equal(b95Validation.counts[key], expected, `B95 validation count drift: ${key}`);
+assert.equal(b95Validation.checks.native_bodies_absent, true);
+assert.equal(b95Validation.checks.negative_fixtures_rejected, 12);
+assert.equal(b95Validation.checks.public_completion_receipt_preserved_byte_for_byte, true);
+assert.equal(b95Validation.checks.public_github_zenodo_readback_preserved, true);
+assert.equal(b95Validation.checks.public_reader_pages, 462);
+assert.equal(b95Validation.checks.two_run_build_identity.file_count, 36);
+assert.equal(b95Validation.checks.two_run_build_identity.tree_sha256, 'dd580a0af4fb9b2262489ec46e4692069b7949b3dbdd19c8206254f1c0c156ae');
+assert.equal(b95Capabilities.schema, 'b95-capabilities/1');
+assert.equal(b95Capabilities.contract, 'course-learning-capability/1');
+assert.equal(b95Capabilities.native_role_id, 'R011');
+assert.equal(b95Capabilities.native_course_id, 'be02bb59-5807-512c-8ba1-f5d22a702812');
+assert.equal(b95Capabilities.native_edition_id, 'fd249e50-2371-5c79-88c6-70abc1222771');
+assert.equal(b95Capabilities.curriculum_graph.chapter_and_unit_hierarchy, true);
+assert.deepEqual(b95Capabilities.curriculum_graph.native_prerequisite_course_ids, []);
+assert.equal(b95Capabilities.learner_delivery.chapter_navigation, true);
+assert.equal(b95Capabilities.learner_delivery.exercise_identity_navigation, true);
+assert.equal(b95Capabilities.learner_delivery.public_answer_identity_navigation, true);
+assert.equal(b95Capabilities.learner_delivery.page_based_pdf_reader, true);
+assert.equal(b95Capabilities.learner_delivery.semantic_html, false);
+assert.equal(b95Capabilities.learner_delivery.answers_or_solutions, false);
+assert.equal(b95Capabilities.educator_delivery.unit_selector, true);
+assert.equal(b95Capabilities.educator_delivery.teacher_manual, false);
+assert.equal(b95Capabilities.federation.stable_native_ids_preserved, true);
+assert.equal(b95Capabilities.federation.body_content_embedded, false);
+assert.equal(b95Capabilities.federation.external_native_backend_required_for_replay, true);
+assert.equal(b95LearningMap.schema, 'b95-learner-map/1');
+assert.equal(b95LearningMap.chapters.length, 9);
+assert.equal(b95LearningMap.exercise_identity_count, 448);
+assert.equal(b95LearningMap.public_answer_identity_count, 153);
+assert.equal(b95LearningMap.o001_gap_identity_count, 105);
+assert.equal(b95LearningMap.reader.pages, 462);
+assert.equal(b95LearningMap.reader.page_navigation, true);
+assert.equal(b95LearningMap.reader.semantic_html, false);
+assert.equal(b95LearningMap.reader.mathml, false);
+assert.equal(b95LearningMap.body_content_embedded, false);
+assert.equal(b95LearningMap.answers_or_solutions_available_as_bodies, false);
+assert.equal(b95EducatorMap.schema, 'b95-educator-map/1');
+assert.equal(b95EducatorMap.selectable_units.length, 1089);
+assert.equal(b95EducatorMap.chapter_summaries.length, 9);
+assert.equal(b95EducatorMap.teacher_manual_claimed, false);
+assert.equal(b95EducatorMap.answer_key_claimed, false);
+assert.equal(b95EducatorMap.body_content_embedded, false);
+assert.equal(b95PublicEvidence.schema, 'b95-public-evidence/1');
+assert.equal(b95PublicEvidence.anonymous_readback, true);
+assert.equal(b95PublicEvidence.credentials_used, false);
+assert.equal(b95PublicEvidence.repository.public, true);
+assert.equal(b95PublicEvidence.repository.tag, 'r011-b039-2026.09.01.2');
+assert.equal(b95PublicEvidence.repository.tag_target_sha, '88ac7599a979c0f52b77b07fa3cb4f0db101f3b2');
+assert.equal(b95PublicEvidence.zenodo.record_id, 22261912);
+assert.equal(b95PublicEvidence.zenodo.concept_id, 22059801);
+assert.equal(b95PublicEvidence.zenodo.access_right, 'open');
+assert.equal(b95PublicEvidence.reader.pdf_pages, 462);
+assert.equal(b95PublicEvidence.reader.pdf_sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
+assert.equal(b95PublicEvidence.reader.semantic_html_established, false);
+assert.equal(b95PublicNativeReadback.status, 'COMPLETE_TRANSLATED_ADMITTED_PUBLISHED_AND_PUBLICLY_READ_BACK');
+assert.equal(b95PublicNativeReadback.complete_corpus, true);
+assert.equal(b95PublicNativeReadback.translation.source_files, 1245);
+assert.equal(b95PublicNativeReadback.reader.pages, 462);
+assert.equal(b95PublicNativeReadback.reader.bytes, 57049904);
+assert.equal(b95PublicNativeReadback.reader.sha256, '7ef1ed4390cd846cc636345d34a1ba3765f8afc32eb9446fd60c7862b7fde049');
+assert.equal(b95PublicNativeReadback.reader.untranslated_instructional_or_exercise_prose_pages, 0);
+assert.equal(b95PublicNativeReadback.backend.record_count, 21746);
+assert.equal(b95PublicNativeReadback.release.asset_count, 9);
+assert.equal(b95PublicNativeReadback.release.aggregate_bytes, 110713131);
+assert.equal(b95PublicNativeReadback.publication.zenodo.public, true);
+assert.equal(b95PublicNativeReadback.publication.github.public, true);
+assert.equal(b95PublicNativeReadback.credentials_recorded, false);
+assert.equal(b95SourceLock.schema, 'b95-capability-source-lock/1');
+assert.equal(b95SourceLock.observed_native_checkout.head, '6289d53ce1a6df2da54646fb3a9f3ba02b36327f');
+assert.equal(b95SourceLock.observed_native_checkout.tree, 'd8d2af61972e146ad1b955825605eb5bf05c84ba');
+assert.equal(b95SourceLock.release.upstream_commit, 'fee25091fb24e89c36296fd67c48c1fcf7a93b6e');
+assert.equal(b95SourceLock.release.upstream_tree, 'd61cc601e7d97759ce805900520f784d02a0489e');
+assert.equal(b95SourceLock.public_evidence_summary.github_public, true);
+assert.equal(b95SourceLock.public_evidence_summary.zenodo_public, true);
+assert.equal(b95ClaimBoundary.schema, 'b95-claim-boundary/1');
+for (const key of ['native_bodies_copied', 'native_prerequisites_invented', 'semantic_html_claimed', 'mathml_claimed', 'epub_claimed', 'offline_portability_claimed', 'wcag_conformance_claimed', 'reversible_exchange_claimed', 'public_access_state_changed']) assert.equal(b95ClaimBoundary[key], false, `B95 claim-boundary drift: ${key}`);
+for (const key of ['source_segment_text_copied', 'target_segment_text_copied', 'answer_or_solution_bodies_copied', 'restricted_solution_records_exposed']) assert.equal(b95ClaimBoundary[key], 0, `B95 zero-copy boundary drift: ${key}`);
+assert.equal(b95ClaimBoundary.public_answer_identity_rows, 153);
+assert.equal(b95ClaimBoundary.o001_gap_identity_rows, 105);
+assert.equal(b95ClaimBoundary.chapter_routes_are_exact_reader_toc_starts, true);
+assert.equal(b95ClaimBoundary.nonchapter_routes_are_context_only, true);
+assert.equal(Object.keys(b95ReleaseInventory).length, 15);
+for (const [path, expected] of Object.entries({
+  'backend/b95/data/native-record-index.jsonl': 21746,
+  'backend/b95/data/unit-index.jsonl': 1089,
+  'backend/b95/data/exercise-index.jsonl': 448,
+  'backend/b95/data/concept-index.jsonl': 826,
+  'backend/b95/data/relation-index.jsonl': 11127,
+  'backend/b95/data/terms-index.jsonl': 859,
+  'backend/b95/data/corrections-index.jsonl': 302,
+  'backend/b95/data/rights-index.jsonl': 80,
+  'backend/b95/data/segment-index.jsonl': 2231,
+  'backend/b95/data/localization-index.jsonl': 2231,
+  'backend/b95/data/evidence-index.jsonl': 2049,
+})) assert.equal(docsBytes[path].toString('utf8').trimEnd().split('\n').length, expected, `${path}: B95 row-count drift.`);
+const b95PublicMappings = [
+  ['manifest.json', 'backend/b95/manifest.json'],
+  ['views/B95.html', 'backend/b95/B95.html'],
+  ['views/B95-pengajar.html', 'backend/b95/B95-pengajar.html'],
+  ['views/capabilities.json', 'backend/b95/capabilities.json'],
+  ['data/learner-map.json', 'backend/b95/learning-map.json'],
+  ['data/educator-map.json', 'backend/b95/educator-map.json'],
+  ['data/public-evidence.json', 'backend/b95/public-evidence.json'],
+  ['data/claim-boundary.json', 'backend/b95/claim-boundary.json'],
+  ['data/release-inventory.json', 'backend/b95/data/release-inventory.json'],
+  ['data/native-record-index.jsonl', 'backend/b95/data/native-record-index.jsonl'],
+  ['data/unit-index.jsonl', 'backend/b95/data/unit-index.jsonl'],
+  ['data/exercise-index.jsonl', 'backend/b95/data/exercise-index.jsonl'],
+  ['data/concept-index.jsonl', 'backend/b95/data/concept-index.jsonl'],
+  ['data/relation-index.jsonl', 'backend/b95/data/relation-index.jsonl'],
+  ['data/terms-index.jsonl', 'backend/b95/data/terms-index.jsonl'],
+  ['data/corrections-index.jsonl', 'backend/b95/data/corrections-index.jsonl'],
+  ['data/rights-index.jsonl', 'backend/b95/data/rights-index.jsonl'],
+  ['data/segment-index.jsonl', 'backend/b95/data/segment-index.jsonl'],
+  ['data/localization-index.jsonl', 'backend/b95/data/localization-index.jsonl'],
+  ['data/evidence-index.jsonl', 'backend/b95/data/evidence-index.jsonl'],
+  ['input/source-lock.json', 'backend/b95/source-lock.json'],
+  ['input/public-native-readback.json', 'backend/b95/public-native-readback.json'],
+  ['validation.json', 'backend/b95/validation.json'],
+];
+for (const [adapterPath, publicPath] of b95PublicMappings) {
+  const expected = b95AdapterManifest.outputs.find(({ path }) => path === adapterPath);
+  if (!['manifest.json', 'validation.json'].includes(adapterPath)) assert.ok(expected, `B95 adapter manifest does not bind ${adapterPath}.`);
+  const sealedBytes = await readFile(resolve(project, 'backend/course-capsule-v1/adapters/b95-capability-v1', adapterPath));
+  let projectedBytes = sealedBytes;
+  if (adapterPath === 'views/B95.html' || adapterPath === 'views/B95-pengajar.html') {
+    const expectedAdapterRelativeLinks = adapterPath === 'views/B95.html' ? 1 : 8;
+    assert.equal(sealedBytes.toString('utf8').split('../data/').length - 1, expectedAdapterRelativeLinks, `${adapterPath}: adapter-relative data-link count drift.`);
+    let projected = sealedBytes.toString('utf8').replaceAll('../data/', 'data/');
+    if (adapterPath === 'views/B95-pengajar.html') projected = projected.replace('data/claim-boundary.json', 'claim-boundary.json');
+    projectedBytes = Buffer.from(projected, 'utf8');
+  }
+  if (adapterPath === 'data/educator-map.json') {
+    assert.equal(sealedBytes.toString('utf8').split('../data/').length - 1, 7, `${adapterPath}: adapter-relative governance-link count drift.`);
+    projectedBytes = Buffer.from(sealedBytes.toString('utf8').replaceAll('../data/', 'data/'), 'utf8');
+  }
+  const expectedSource = identity('docs/' + publicPath, projectedBytes);
+  const observedHosted = identity('docs/' + publicPath, docsBytes[publicPath]);
+  if (adapterPath === 'views/B95.html' || adapterPath === 'views/B95-pengajar.html') {
+    const overlay = centralNavigationOverlay.files.find(({ document }) => document === 'docs/' + publicPath);
+    assert.ok(overlay, `${publicPath}: hosted navigation overlay is missing.`);
+    assert.deepEqual(overlay.source_body, expectedSource, `${publicPath}: navigation overlay does not bind the transformed sealed adapter source body.`);
+    assert.deepEqual(overlay.hosted_surface, observedHosted, `${publicPath}: hosted navigation-overlay identity drift.`);
+    assert.equal(overlay.source_body_replay_exact, true);
+    assert.deepEqual(overlay.placements, ['top', 'bottom']);
+    assert.equal(overlay.program_root_return_links_per_placement, 2);
+    assert.equal(overlay.course_card_return_links_per_placement, 2);
+    assert.equal(overlay.authoritative_original_links_per_placement, 1);
+  } else {
+    assert.deepEqual(observedHosted, expectedSource, `${publicPath}: public B95 byte identity differs from the sealed adapter.`);
+  }
+  if (expected) assert.equal(expected.bytes, sealedBytes.length, `${adapterPath}: B95 sealed output byte drift.`);
+}
+assert.deepEqual(docsBytes['backend/b95/validation.json'], b95AdapterValidationBytes, 'Public B95 validation receipt differs from the sealed adapter.');
+for (const b95Page of [b95Html, b95EducatorHtml]) {
+  assert.match(b95Page, /<html lang="id">/);
+  assert.match(b95Page, /https:\/\/zenodo\.org\/records\/22261912/);
+  assert.doesNotMatch(b95Page, /\.\.\/data\//);
+  assert.doesNotMatch(b95Page, /<script\b/i);
 }
 const d30 = rows.find(({ course_id }) => course_id === 'D30');
 assert.equal(d30.course.state, 'published');
@@ -1492,9 +1759,9 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: 83,
     prerequisite_dag_visited: 40,
-    published_rows: 38,
-    production_rows: 2,
-    educator_rows: 33,
+    published_rows: 39,
+    production_rows: 1,
+    educator_rows: 34,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,

@@ -76,9 +76,9 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
     await refreshEducatorFact(courseId,`educator_resource:${resource.id}`,resource,resource.url);
   }
 }
-// A30 contributes its educator evidence and resource over one new hosted page.
-assert.equal(educatorFactCount,46,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,23,'Integration educator hosted-page closure changed.');
+// B95 contributes educator evidence plus its hub resource over one new hosted page.
+assert.equal(educatorFactCount,48,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,24,'Integration educator hosted-page closure changed.');
 
 const nextBytes=Buffer.from(JSON.stringify(overrides,null,2)+'\n');
 await writeFile(resolve(root,overridePath),nextBytes);
