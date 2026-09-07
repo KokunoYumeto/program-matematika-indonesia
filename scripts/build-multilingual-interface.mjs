@@ -113,6 +113,7 @@ const sources = [
   // still hash-bound below. No course source or backend is changed.
   'const authorityCourses = ' + JSON.stringify(interfaceCourses) + ';\nconst topics = ' + JSON.stringify(interfaceTopics) + ';\nconst materializeLiveCourses = rows => rows;',
   await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
+  await read('docs/interface/central-hosted-readers.js'),
   await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read(hostedSurfaceIdentityModulePath), await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
@@ -252,6 +253,10 @@ const receipt = {
   resourceBindings: Object.fromEntries(supportedLocales.map((locale) => [locale, Object.fromEntries(interfaceCourses.map((course) => [course.id, resourceBindings(course, locale)]))])),
 };
 const originalSourceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/original-sources.js'));
+for (const path of ['docs/interface/central-hosted-readers.js', 'docs/id-ID/courses/A10/A10_READER_MIRROR_MANIFEST_V1.json', 'scripts/stage_a10_public_html_v1.py']) {
+  const bytes = await readFile(resolve(interfaceRoot, path));
+  receipt.inputs.push({path, bytes:bytes.length, sha256:createHash('sha256').update(bytes).digest('hex')});
+}
 receipt.inputs.push({path:'docs/interface/original-sources.js', bytes:originalSourceBytes.length, sha256:createHash('sha256').update(originalSourceBytes).digest('hex')});
 const sourceAccessBytes = await readFile(resolve(interfaceRoot, 'docs/interface/evidence/original-source-access-review.json'));
 receipt.inputs.push({path:'docs/interface/evidence/original-source-access-review.json', bytes:sourceAccessBytes.length, sha256:createHash('sha256').update(sourceAccessBytes).digest('hex')});

@@ -18,6 +18,8 @@ function publication(value) {
 
 export const liveCoursePublications = Object.freeze({
   A10: publication({
+    learner: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A10/reader/index.html',
+    reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A10/reader/index.html',
     state: 'published',
     edition: 'https://zenodo.org/records/22236314/files/00-elementary-algebra-2e-bahasa-indonesia-EA2-C0082-reader.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22236314',
