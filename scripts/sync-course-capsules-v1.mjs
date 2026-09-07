@@ -234,7 +234,7 @@ assert.equal(b95.layers.translation.rights_status, 'verified');
 assert.equal(b95.layers.translation.corrections_status, 'verified');
 assert.equal(b95.layers.production.build_status, 'verified');
 assert.equal(b95.layers.production.deterministic_replay_status, 'verified');
-assert.equal(b95.layers.production.release_status, 'available_unverified');
+assert.equal(b95.layers.production.release_status, 'verified');
 assert.equal(b95.layers.educator.status, 'verified');
 assert.equal(b95.layers.educator.unit_alignment_status, 'verified');
 assert.equal(b95.layers.learner.pdf.status, 'verified');

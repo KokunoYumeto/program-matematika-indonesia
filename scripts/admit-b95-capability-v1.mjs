@@ -514,9 +514,36 @@ const limitations = [
 
 const integrationTarget = 'backend/course-capsule-v1/authority/integration-overrides-v1.json';
 const overrides = await load(integrationTarget);
+const toolId = 'b95.open_learner_hub';
+const oldSemantic = overrides.semantic_adapters?.B95;
+const sealedSecondaryKinds = new Set([
+  'central_adapter_manifest',
+  'deterministic_twin_validation',
+  'frozen_owner_specification',
+]);
+const sealedSecondaryEvidence = [];
+for (const row of oldSemantic?.evidence ?? []) {
+  if (!sealedSecondaryKinds.has(row.kind)) continue;
+  assert.equal(typeof row.locator, 'string', 'Incoming B95 sealed evidence lacks a locator.');
+  const fact = await identity(row.locator);
+  assert.equal(fact.bytes, row.bytes, `${row.locator}: incoming B95 evidence byte drift.`);
+  assert.equal(fact.sha256, row.sha256, `${row.locator}: incoming B95 evidence hash drift.`);
+  sealedSecondaryEvidence.push(clone(row));
+}
+const integrationToolValue = overrides.learner_tools?.B95;
+const integrationToolRows = integrationToolValue == null
+  ? []
+  : Array.isArray(integrationToolValue)
+    ? integrationToolValue
+    : [integrationToolValue];
+assert.ok(integrationToolRows.length <= 1, 'Duplicate B95 tools already exist in integration-overrides.');
+assert.ok(
+  integrationToolRows.every((row) => row?.tool_id === toolId),
+  'Refusing to remove an unrelated B95 tool from integration-overrides.',
+);
 const stripManagedIntegration = (value) => {
   const result = clone(value);
-  for (const key of ['semantic_adapters', 'native_capabilities', 'educator_evidence']) {
+  for (const key of ['semantic_adapters', 'native_capabilities', 'educator_evidence', 'learner_tools']) {
     if (result[key]) delete result[key].B95;
   }
   return result;
@@ -525,17 +552,24 @@ const unrelatedIntegration = stripManagedIntegration(overrides);
 overrides.semantic_adapters ??= {};
 overrides.native_capabilities ??= {};
 overrides.educator_evidence ??= {};
+if (overrides.learner_tools) delete overrides.learner_tools.B95;
 assert.ok(
-  !overrides.semantic_adapters.B95
-    || !overrides.semantic_adapters.B95.contract_version
-    || overrides.semantic_adapters.B95.contract_version === manifest.contract,
+  !oldSemantic
+    || !oldSemantic.contract_version
+    || oldSemantic.contract_version === manifest.contract,
   'Preserve a different admitted B95 contract.',
 );
+const mergedSemanticEvidence = [...evidence, ...sealedSecondaryEvidence]
+  .filter((row, index, rows) => rows.findIndex((candidate) => (
+    candidate.kind === row.kind
+      && candidate.locator === row.locator
+      && candidate.sha256 === row.sha256
+  )) === index);
 overrides.semantic_adapters.B95 = {
   status: 'verified',
   contract_version: manifest.contract,
   mapping_scope: 'zero_copy_projection_of_21746_native_records_1089_units_448_exercises_826_concepts_859_terms_302_corrections_80_component_rights_and_2231_segments_and_localizations_with_153_public_answer_and_105_o001_gap_identities',
-  evidence,
+  evidence: mergedSemanticEvidence,
 };
 overrides.native_capabilities.B95 = { ...(overrides.native_capabilities.B95 ?? {}) };
 for (const capability of [
@@ -641,6 +675,7 @@ assert.deepEqual(stripManagedIntegration(overrides), unrelatedIntegration, 'Admi
 assert.deepEqual(overrides.native_capabilities.D30, unrelatedIntegration.native_capabilities?.D30, 'D30 native capabilities changed.');
 assert.deepEqual(overrides.semantic_adapters.D30, unrelatedIntegration.semantic_adapters?.D30, 'D30 semantic adapter changed.');
 assert.deepEqual(overrides.educator_evidence.D30, unrelatedIntegration.educator_evidence?.D30, 'D30 educator evidence changed.');
+assert.deepEqual(overrides.learner_tools?.D30, unrelatedIntegration.learner_tools?.D30, 'D30 learner tools changed.');
 
 const publicReceipt = {
   kind: 'anonymous_public_release_asset_readback',
@@ -682,7 +717,6 @@ delete learnerDeliveryAfter.courses.B95;
 assert.deepEqual(learnerDeliveryAfter, unrelatedLearnerDelivery, 'Admission changed an unrelated learner-delivery override.');
 assert.deepEqual(learnerDelivery.courses.D30, unrelatedLearnerDelivery.courses.D30, 'D30 learner delivery changed.');
 
-const toolId = 'b95.open_learner_hub';
 const learnerToolInput = {
   tool_id: toolId,
   label: 'B95 · Statistika Terapan dan Analisis Data',
@@ -723,7 +757,7 @@ assert.equal(new Set(learnerTools.courses.flatMap(({ tools }) => tools.map(({ to
 // duplicate this managed tool in integration-overrides, whose merge would make
 // the normal course-capsule builder reject the global tool ID.
 assert.ok(
-  !(overrides.learner_tools?.B95 ?? []).some(({ tool_id }) => tool_id === toolId),
+  !Object.hasOwn(overrides.learner_tools ?? {}, 'B95'),
   'Remove the duplicate managed B95 tool from integration-overrides before admission.',
 );
 

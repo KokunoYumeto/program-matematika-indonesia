@@ -275,8 +275,8 @@ assert.deepEqual(docsBytes['data/clp-successor/v0.62.17/v23-adapter-index-v2.jso
 // roles without rewriting that history.
 const expectedFrozenSuccessorAdapterRoles = ['A00', 'B10', 'B20', 'B30', 'B50', 'B60', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60', 'D110'];
 const expectedLiveAdapterRoles = [...expectedFrozenSuccessorAdapterRoles, 'A10', 'D50'];
-const expectedCapabilityAdapterRoles = ['A20', 'A30', 'B40', 'B70', 'B80', 'B90', 'B95', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
-const expectedCapabilityPackageCount = 21;
+const expectedCapabilityAdapterRoles = ['A20', 'A30', 'B40', 'B70', 'B80', 'B90', 'B95', 'C10', 'C20', 'C50', 'C60', 'C70', 'C90', 'C100', 'C110', 'C120', 'C140', 'D10', 'D30', 'D40', 'D70', 'D80', 'D90', 'D100', 'D120'];
+const expectedCapabilityPackageCount = 22;
 const sortedIds = (ids) => [...ids].sort((a, b) => a.localeCompare(b, 'en', { numeric: true }));
 assert.deepEqual(sortedIds(clpSuccessorIndex.adapters.map(({ role_id }) => role_id)), sortedIds(expectedFrozenSuccessorAdapterRoles), 'Frozen successor adapter role set differs.');
 assert.equal(new Set(clpSuccessorIndex.packages.map(({ package_id }) => package_id)).size, 9);
@@ -350,9 +350,9 @@ const mainHtml = await readFile(resolve(project, 'docs/index.html'), 'utf8');
 assert.equal(rows.length, 40);
 assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
-assert.equal(rows.filter(({ course }) => course.state === 'published').length, 39);
-assert.equal(rows.filter(({ course }) => course.state === 'production').length, 1);
-assert.deepEqual(rows.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id), ['C140']);
+assert.equal(rows.filter(({ course }) => course.state === 'published').length, 40);
+assert.equal(rows.filter(({ course }) => course.state === 'production').length, 0);
+assert.deepEqual(rows.filter(({ course }) => course.state === 'production').map(({ course_id }) => course_id), []);
 assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 34);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
@@ -481,12 +481,12 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 29);
-assert.equal(authorityToolIds.length, 39);
+assert.equal(Object.keys(authorityToolsByCourse).length, 30);
+assert.equal(authorityToolIds.length, 40);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
-assert.equal(manifest.summary.published_count, 39);
-assert.equal(manifest.summary.production_count, 1);
+assert.equal(manifest.summary.published_count, 40);
+assert.equal(manifest.summary.production_count, 0);
 assert.equal(manifest.design_policy.profile, 'thin_format_neutral_zero_copy');
 assert.equal(manifest.design_policy.authority.sha256, sha256(authorityDesignPolicyBytes));
 assert.equal(manifest.design_policy.schema.sha256, sha256(authorityDesignPolicySchemaBytes));
@@ -667,7 +667,7 @@ assert.equal(docsBytes['backend/a20/data/rights-index.jsonl'].toString('utf8').t
 assert.equal(docsBytes['backend/a20/data/corrections-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 1614);
 assert.equal(docsBytes['backend/a20/data/terms-index.jsonl'].toString('utf8').trimEnd().split('\n').length, 340);
 assert.equal(a30.course.state, 'published');
-assert.equal(a30.course_native.status, 'available_unverified');
+assert.equal(a30.course_native.status, 'verified');
 assert.equal(a30.course_native.version, '1.0.0');
 assert.equal(a30.course_native.repository, 'https://github.com/KokunoYumeto/openstax-precalculus-2e-id');
 assert.equal(a30.course_native.zenodo, 'https://doi.org/10.5281/zenodo.22290180');
@@ -909,7 +909,7 @@ assert.equal(b95.layers.translation.rights_status, 'verified');
 assert.equal(b95.layers.translation.corrections_status, 'verified');
 assert.equal(b95.layers.production.build_status, 'verified');
 assert.equal(b95.layers.production.deterministic_replay_status, 'verified');
-assert.equal(b95.layers.production.release_status, 'available_unverified');
+assert.equal(b95.layers.production.release_status, 'verified');
 assert.equal(b95.layers.educator.status, 'verified');
 assert.equal(b95.layers.educator.unit_alignment_status, 'verified');
 assert.ok(b95.layers.educator.resources.some(({ id, status }) => id === 'B95:educator-hub-v1' && status === 'verified'));
@@ -1759,8 +1759,8 @@ const receipt = {
     seven_layer_rows: 40,
     prerequisite_edges: 83,
     prerequisite_dag_visited: 40,
-    published_rows: 39,
-    production_rows: 1,
+    published_rows: 40,
+    production_rows: 0,
     educator_rows: 34,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,

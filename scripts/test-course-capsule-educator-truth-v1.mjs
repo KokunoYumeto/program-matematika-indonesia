@@ -86,7 +86,7 @@ const tests = [
   { name: 'c70_educator_alignment_cannot_drift', id: 'C70', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },
   { name: 'c70_translation_ledger_cannot_be_downgraded', id: 'C70', mutate: row=>{row.layers.translation.ledger_status='unknown';}, error: /native status needs capability-specific evidence/ },
   { name: 'unindexed_is_not_proof_of_nonproduction', id: 'B10', status: 'not_yet_produced', error: /educator status must preserve authority or honest indexing uncertainty/ },
-  { name: 'explicit_in_progress_authority_is_preserved', id: 'C140', status: 'available_unverified', error: /educator status must preserve authority or honest indexing uncertainty/ },
+  { name: 'c140_verified_educator_authority_cannot_be_downgraded', id: 'C140', status: 'available_unverified', error: /educator status must preserve authority or honest indexing uncertainty/ },
   { name: 'invalid_capsule_status_cannot_escape_schema', id: 'B10', status: 'invented_status', error: /JSON Schema validation failed/ },
   ...[
     ['curriculum', 'unit_identity_status'],

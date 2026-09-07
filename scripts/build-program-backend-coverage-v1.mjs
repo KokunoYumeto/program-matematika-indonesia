@@ -20,6 +20,14 @@ const sources={
   b95Validation:'backend/course-capsule-v1/adapters/b95-capability-v1/validation.json',
   b95Public:'backend/course-capsule-v1/adapters/b95-capability-v1/data/public-evidence.json',
   b95NativeReadback:'backend/course-capsule-v1/adapters/b95-capability-v1/input/public-native-readback.json',
+  c140Manifest:'backend/course-capsule-v1/adapters/c140-capability-v1/manifest.json',
+  c140Validation:'backend/course-capsule-v1/adapters/c140-capability-v1/validation.json',
+  c140Public:'backend/course-capsule-v1/adapters/c140-capability-v1/data/public-evidence.json',
+  c140SourceLock:'backend/course-capsule-v1/adapters/c140-capability-v1/input/source-lock.json',
+  c140GithubRelease:'backend/course-capsule-v1/adapters/c140-capability-v1/input/github-release-readback.json',
+  c140GithubPages:'backend/course-capsule-v1/adapters/c140-capability-v1/input/github-pages-readback.json',
+  c140Zenodo:'backend/course-capsule-v1/adapters/c140-capability-v1/input/zenodo-readback.json',
+  c140Package:'backend/course-capsule-v1/adapters/c140-capability-v1/build/PACKET_BUILD_RECEIPT.json',
   b40:'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
   b80:'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
   lebl:'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -158,6 +166,37 @@ assert.equal(data.b95NativeReadback.reader.untranslated_instructional_or_exercis
 assert.equal(data.b95NativeReadback.release.asset_count,9);assert.equal(data.b95NativeReadback.publication.github.public,true);assert.equal(data.b95NativeReadback.publication.zenodo.public,true);
 assert.equal(data.b95NativeReadback.publication.github.all_nine_assets_read_back_by_bytes_and_sha256,true);assert.equal(data.b95NativeReadback.publication.zenodo.all_nine_files_read_back_by_bytes_and_sha256,true);
 assert.equal(data.b95NativeReadback.credentials_recorded,false);assert.equal(data.b95NativeReadback.next_action,null);
+assert.equal(data.c140Manifest.schema,'c140-capability-manifest/1');
+assert.equal(data.c140Manifest.course_id,'C140');assert.equal(data.c140Manifest.contract,'course-learning-capability/1');
+assert.equal(data.c140Manifest.boundary_id,'C140-C5-54');assert.equal(data.c140Manifest.native_family,'penn_stat415_random_completeness_original_companion');
+assert.equal(data.c140Manifest.content_policy,'identity_structure_terminology_corrections_rights_and_public_routes_only');
+assert.deepEqual(data.c140Manifest.projection,{
+  component_rights_preserved:true,
+  external_native_backend_required_for_replay:true,
+  native_bodies_copied:false,
+  native_ids_preserved:true,
+  public_access_state_changed:false,
+  reversible_content_exchange_claimed:false,
+  whole_course_component_boundary_proven:true,
+});
+for(const [key,value] of Object.entries({penn_documents:14,random_documents:1,companion_documents:39,public_documents:54,penn_units:6510,penn_segments:4932,penn_math_surfaces:3156,penn_terms:192,penn_corrections:242,random_entities:325,random_relations:474,random_terms:42,random_adverse_records:19,companion_entities:1523,companion_relations:1949,companion_theory_documents:13,companion_mastery_documents:13,companion_simulation_documents:6,companion_assessment_documents:4,companion_capstone_documents:2,companion_solved_problems:146,companion_rubrics:62,stable_entity_ids:8358,structural_relations:2423,terminology_rows:234,correction_and_adverse_rows:261,component_rights:9}))assert.equal(data.c140Manifest.counts[key],value,`C140 manifest count drift: ${key}`);
+assert.equal(data.c140Manifest.outputs.length,37);assert.equal(data.c140Manifest.negative_fixture_count,12);
+assert.equal(data.c140Validation.schema,'c140-capability-validation/1');assert.equal(data.c140Validation.course_id,'C140');assert.equal(data.c140Validation.boundary_id,'C140-C5-54');
+assert.equal(data.c140Validation.result,'pass');assert.deepEqual(data.c140Validation.counts,data.c140Manifest.counts);
+assert.equal(data.c140Validation.negative_fixtures.length,12);assert.equal(data.c140Validation.checks.negative_fixtures_rejected,12);
+assert.equal(data.c140Validation.checks.two_run_build_identity.file_count,38);assert.equal(data.c140Validation.checks.two_run_build_identity.tree_sha256,'8983788c83539c5f1450a3a2d57ad94ccf448ba1496b96ef384f76c6c314797b');
+assert.equal(data.c140Public.schema,'c140-public-evidence/1');assert.equal(data.c140Public.status,'pass');
+assert.equal(data.c140Public.translation_provenance,'OpenAI Codex gpt-5.6-sol, Ultra');
+assert.equal(data.c140Public.repository.url,'https://github.com/KokunoYumeto/penn-state-stat-415-id');assert.equal(data.c140Public.repository.anonymous_asset_readback,true);
+assert.equal(data.c140Public.repository.release_tag,'v2026.08.31.c140-companion-c5');assert.equal(data.c140Public.repository.file_count,65);
+assert.equal(data.c140Public.pages.anonymous_readback,true);assert.equal(data.c140Public.pages.course_document_files.length,54);
+assert.equal(new Set(data.c140Public.pages.course_document_files.map(row=>row.path)).size,54);assert.ok(data.c140Public.pages.course_document_files.every(row=>row.http_status===200&&row.bytes>0&&/^[a-f0-9]{64}$/.test(row.sha256)));
+assert.equal(data.c140Public.zenodo.access_right,'open');assert.equal(data.c140Public.zenodo.anonymous_readback,true);assert.equal(data.c140Public.zenodo.doi,'10.5281/zenodo.22208527');assert.equal(data.c140Public.zenodo.file_count,65);
+assert.equal(data.c140SourceLock.schema,'c140-source-lock/1');assert.equal(data.c140SourceLock.boundary_id,'C140-C5-54');assert.equal(data.c140SourceLock.input_count,99);
+assert.equal(data.c140GithubRelease.schema,'o006.c140.companion-c5.github-release-readback.v1');assert.equal(data.c140GithubRelease.status,'pass');assert.equal(data.c140GithubRelease.public_asset_readback_anonymous,true);
+assert.equal(data.c140GithubPages.schema,'o006.c140.companion-c5.github-pages-readback.v1');assert.equal(data.c140GithubPages.status,'pass');
+assert.equal(data.c140Zenodo.schema,'o006.c140.zenodo-c140-companion-c5-publication.v1');assert.equal(data.c140Zenodo.public.anonymous_readback,true);assert.equal(data.c140Zenodo.public.file_count,65);assert.equal(data.c140Zenodo.public.doi,'10.5281/zenodo.22208527');
+assert.equal(data.c140Package.schema,'c140-capability-thin-packet-build-receipt/1');assert.equal(data.c140Package.result,'PASS');assert.equal(data.c140Package.zip_checks.member_count,45);assert.equal(data.c140Package.archive.sha256,'6c7745f1b999d72a517ec000259f1b230a922b56cf002a27f6506dea85baa296');
 assert.equal(data.b40.anonymous,true);assert.equal(data.b40.credentials_used,false);
 assert.equal(data.b80.anonymous,true);assert.equal(data.b80.credentials_used,false);
 assert.equal(data.lebl.state,'pass');assert.equal(data.lebl.anonymous,true);assert.equal(data.lebl.credentials_used,false);
@@ -320,7 +359,7 @@ const rows=data.capsules.map(capsule=>{
     assert.equal(capsule.layers.production.repository,data.b95Public.repository.url);
     assert.equal(capsule.layers.production.zenodo,`https://doi.org/${data.b95Public.zenodo.doi}`);
     assert.equal(capsule.layers.production.edition,data.b95Public.reader.zenodo_url);
-    assert.equal(capsule.layers.production.release_status,'available_unverified');
+    assert.equal(capsule.layers.production.release_status,'verified');
     assert.equal(capsule.layers.production.build_status,'verified');assert.equal(capsule.layers.production.deterministic_replay_status,'verified');
     assert.equal(capsule.layers.learner.status,'verified');
     assert.deepEqual(capsule.layers.learner.tools.map(({tool_id,label,href,state,primary})=>({tool_id,label,href,state,primary})),[{tool_id:'b95.open_learner_hub',label:'B95 · Statistika Terapan dan Analisis Data',href:'backend/b95/B95.html',state:'verified',primary:false}]);
@@ -331,6 +370,35 @@ const rows=data.capsules.map(capsule=>{
     for(const key of ['online_html','epub','portable_html'])assert.equal(capsule.layers.learner[key].status,'not_yet_produced');
     assert.deepEqual(capsule.layers.learner.capabilities,{chapter_downloads:'not_yet_produced',mathml:'not_yet_produced',print_profile:'verified',semantic_html:'not_yet_produced'});
     assert.equal(capsule.layers.educator.status,'verified');assert.equal(capsule.layers.educator.unit_alignment_status,'verified');assert.equal(capsule.layers.educator.resources.length,14);
+  }
+  if(role==='C140'){
+    assert.equal(adapter.status,'verified');assert.equal(adapter.contract_version,data.c140Manifest.contract);
+    assert.equal(adapter.mapping_scope,'zero_copy_projection_of_complete_54_document_three_component_boundary_8358_stable_entity_ids_2423_structural_relations_234_terminology_rows_261_correction_or_adverse_rows_146_solved_problem_identities_62_rubrics_and_9_distinct_rights_projections');
+    for(const [kind,path,key] of [
+      ['central_adapter_manifest',sources.c140Manifest,'c140Manifest'],
+      ['deterministic_validation_receipt',sources.c140Validation,'c140Validation'],
+      ['verified_native_public_release',sources.c140Public,'c140Public'],
+      ['native_source_lock',sources.c140SourceLock,'c140SourceLock'],
+      ['anonymous_github_release_readback',sources.c140GithubRelease,'c140GithubRelease'],
+      ['anonymous_github_pages_readback',sources.c140GithubPages,'c140GithubPages'],
+      ['anonymous_zenodo_readback',sources.c140Zenodo,'c140Zenodo'],
+      ['deterministic_package_receipt',sources.c140Package,'c140Package'],
+    ]){
+      const evidence=adapter.evidence.find(row=>row.kind===kind&&row.locator===path);
+      assert.ok(evidence,`C140 missing exact ${kind} evidence`);
+      assert.equal(evidence.bytes,bytes[key].length);assert.equal(evidence.sha256,sha256(bytes[key]));
+    }
+    assert.equal(capsule.course_native.repository,data.c140Public.repository.url);
+    assert.equal(capsule.course_native.zenodo,`https://doi.org/${data.c140Public.zenodo.doi}`);
+    assert.equal(capsule.layers.production.repository,data.c140Public.repository.url);
+    assert.equal(capsule.layers.production.zenodo,`https://doi.org/${data.c140Public.zenodo.doi}`);
+    assert.equal(capsule.layers.production.release_status,'available_unverified');
+    assert.equal(capsule.layers.production.build_status,'verified');assert.equal(capsule.layers.production.deterministic_replay_status,'verified');
+    assert.equal(capsule.layers.learner.status,'verified');assert.equal(capsule.layers.learner.online_html.status,'verified');
+    assert.equal(capsule.layers.learner.online_html.url,data.c140Public.pages.base_url);assert.equal(capsule.layers.learner.tools.length,1);assert.equal(capsule.layers.learner.tools[0].tool_id,'c140.open_learner_hub');
+    assert.equal(capsule.layers.learner.pdf.status,'verified');assert.equal(capsule.layers.learner.pdf.scope,'penn_spine_component_only_not_uniform_whole_course');
+    assert.equal(capsule.layers.learner.epub.status,'verified');assert.equal(capsule.layers.learner.epub.scope,'penn_spine_component_only_not_uniform_whole_course');
+    assert.equal(capsule.layers.educator.status,'verified');assert.equal(capsule.layers.educator.unit_alignment_status,'verified');assert.equal(capsule.layers.educator.resources.length,15);
   }
   if(role==='D30'){
     assert.equal(adapter.status,'verified');assert.equal(adapter.contract_version,data.d30Manifest.contract);
@@ -370,7 +438,7 @@ const rows=data.capsules.map(capsule=>{
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
-      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='B95'?'native_anonymous_release_asset_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A30'?'new_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
+      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='B95'?'native_anonymous_release_asset_readback':role==='C140'?'native_anonymous_release_and_pages_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A30'?'new_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
       zenodo_preservation:publicRow?'frozen_public_readback':role==='D50'?'new_embedded_successor_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established',
       ...(gap?{admission:{status:'pass',receipt:{path:sources.gapAdmission,bytes:bytes.gapAdmission.length,sha256:sha256(bytes.gapAdmission)},package:gap.package,twin:gap.twin,spec:gap.spec,public_embedding:'not_yet_released_in_central_successor'}}:{}),
       local_evidence:adapter.evidence??[],
@@ -410,7 +478,7 @@ const rows=data.capsules.map(capsule=>{
       ...(gap?['Paket adapter v2.3.1 lulus replay lokal; embedding dan readback publik pada navigator penerus masih harus dibuktikan.']:[]),
       ...(role==='B80'?['Verifikasi pelestarian Zenodo yang ditangani pengelola pusat tanpa transaksi rilis yang bersaing.']:[]),
       'Selesaikan audit sembilan bidang kemampuan dan bukti penggunaannya; adapter yang lulus tidak otomatis berarti backend lengkap.'
-    ],whole_course_backend_completion:'not_yet_proven'};
+    ],whole_course_backend_completion:role==='C140'?'selected_54_document_component_boundary_proven':'not_yet_proven'};
 });
 const integrated=rows.filter(row=>['verified','legacy_verified'].includes(row.common_adapter.status));
 const summary={roles:40,native_families:33,locally_validated_adapter_roles:integrated.length,
@@ -422,7 +490,7 @@ const summary={roles:40,native_families:33,locally_validated_adapter_roles:integ
   overall_program_backend_complete:false};
 assert.equal(summary.locally_validated_adapter_roles+summary.roles_without_validated_common_adapter,40);
 const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-07',scope:'Backend integration, not textbook translation progress.',
-  evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. A30 has complete anonymous native GitHub/Zenodo release readback plus a central integration readback covering ten source/derived files and three changed Pages routes. B95 has a complete 21,746-record zero-copy adapter, a 462-page reader, and anonymous byte/hash readback for all nine assets from its native GitHub and Zenodo release; its native Zenodo publication is not counted as a centrally preserved adapter package. C140 currently has a sealed companion projection and central-successor evidence; the separate full three-component capability boundary remains subject to the programme completion audit. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
+  evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. A30 has complete anonymous native GitHub/Zenodo release readback plus a central integration readback covering ten source/derived files and three changed Pages routes. B95 has a complete 21,746-record zero-copy adapter, a 462-page reader, and anonymous byte/hash readback for all nine assets from its native GitHub and Zenodo release; its native Zenodo publication is not counted as a centrally preserved adapter package. C140 now has a complete zero-copy capability over the selected 54-document, three-component boundary, with 8,358 stable identities, 2,423 structural relations, separate rights projections, and anonymous GitHub release, GitHub Pages, and Zenodo readback; the older 39-document v2.3.1 packet remains secondary evidence only. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
   evidence:Object.entries(sources).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),
   admission:{receipt:{path:sources.gapAdmission,bytes:bytes.gapAdmission.length,sha256:sha256(bytes.gapAdmission)},roles:gapRoles,public_embedding:'not_yet_released_in_central_successor'},summary,roles:rows};
 const esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

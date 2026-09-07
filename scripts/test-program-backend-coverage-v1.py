@@ -27,6 +27,14 @@ INPUTS = {
     'b95Validation': 'backend/course-capsule-v1/adapters/b95-capability-v1/validation.json',
     'b95Public': 'backend/course-capsule-v1/adapters/b95-capability-v1/data/public-evidence.json',
     'b95NativeReadback': 'backend/course-capsule-v1/adapters/b95-capability-v1/input/public-native-readback.json',
+    'c140Manifest': 'backend/course-capsule-v1/adapters/c140-capability-v1/manifest.json',
+    'c140Validation': 'backend/course-capsule-v1/adapters/c140-capability-v1/validation.json',
+    'c140Public': 'backend/course-capsule-v1/adapters/c140-capability-v1/data/public-evidence.json',
+    'c140SourceLock': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/source-lock.json',
+    'c140GithubRelease': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/github-release-readback.json',
+    'c140GithubPages': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/github-pages-readback.json',
+    'c140Zenodo': 'backend/course-capsule-v1/adapters/c140-capability-v1/input/zenodo-readback.json',
+    'c140Package': 'backend/course-capsule-v1/adapters/c140-capability-v1/build/PACKET_BUILD_RECEIPT.json',
     'b40': 'backend/course-capsule-v1/adapters/b40-capability-v1/publication/GITHUB_READBACK_35b2e2bd34d0.json',
     'b80': 'backend/course-capsule-v1/adapters/b80-capability-v1/publication/GITHUB_SOURCE_AND_PAGES_READBACK_20260904.json',
     'lebl': 'backend/course-capsule-v1/adapters/lebl-capability-v1/publication/GITHUB_READBACK_97960cc12b34.json',
@@ -67,7 +75,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['roles_without_validated_common_adapter'] == 0
 assert model['summary']['locally_represented_families'] == 33
-assert model['summary']['github_evidenced_roles'] == 38
+assert model['summary']['github_evidenced_roles'] == 39
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -189,19 +197,25 @@ assert roles['A30']['dimensions']['accessibility'] == {
     'mathml': 'not_yet_produced',
     'semantic_html': 'not_yet_produced',
 }
-for role, contract, units, records in (
-    ('B95', 'course-learning-capability/1', 12, 92),
-    ('C140', 'course-learning-capability/1', 39, 252),
-):
+for role in ('B95', 'C140'):
     assert roles[role]['common_adapter']['status'] == 'verified'
-    assert roles[role]['common_adapter']['contract'] == contract
+    assert roles[role]['common_adapter']['contract'] == 'course-learning-capability/1'
     assert roles[role]['common_adapter']['admission']['status'] == 'pass'
     assert roles[role]['common_adapter']['admission']['twin']['status'] == 'pass'
     assert roles[role]['common_adapter']['admission']['spec']['path'] == f'backend/v2.3/specs/20260907/{role}.json'
-    assert roles[role]['common_adapter']['mapping_scope'].endswith(
-        f'{units}_bound_units_{records}_records_no_prose_copied')
     assert roles[role]['learner']['relationship'] == 'directly_consumes_adapter_outputs'
     assert len(roles[role]['learner']['tools']) == 1
+assert roles['B95']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_21746_native_records_1089_units_448_exercises_'
+    '826_concepts_859_terms_302_corrections_80_component_rights_and_2231_'
+    'segments_and_localizations_with_153_public_answer_and_105_o001_gap_identities'
+)
+assert roles['C140']['common_adapter']['mapping_scope'] == (
+    'zero_copy_projection_of_complete_54_document_three_component_boundary_'
+    '8358_stable_entity_ids_2423_structural_relations_234_terminology_rows_'
+    '261_correction_or_adverse_rows_146_solved_problem_identities_62_rubrics_'
+    'and_9_distinct_rights_projections'
+)
 for key, schema in (
     ('a30Manifest', 'a30-capability-manifest/1'),
     ('a30Validation', 'a30-capability-validation/1'),
@@ -312,6 +326,9 @@ assert [row['kind'] for row in b95['common_adapter']['local_evidence']] == [
     'localization_index',
     'evidence_index',
     'release_inventory',
+    'central_adapter_manifest',
+    'deterministic_twin_validation',
+    'frozen_owner_specification',
 ]
 for key, schema_key, schema in (
     ('b95Manifest', 'schema', 'b95-capability-manifest/1'),
@@ -350,7 +367,7 @@ assert b95_capsule['course_native']['edition'] == b95_public['reader']['zenodo_u
 assert b95_capsule['layers']['production']['repository'] == b95_public['repository']['url']
 assert b95_capsule['layers']['production']['zenodo'] == 'https://doi.org/' + b95_public['zenodo']['doi']
 assert b95_capsule['layers']['production']['edition'] == b95_public['reader']['zenodo_url']
-assert b95_capsule['layers']['production']['release_status'] == 'available_unverified'
+assert b95_capsule['layers']['production']['release_status'] == 'verified'
 assert b95_capsule['layers']['learner']['status'] == 'verified'
 for layer in ('primary', 'pdf'):
     assert b95_capsule['layers']['learner'][layer]['status'] == 'verified'
@@ -375,6 +392,65 @@ assert inputs['b95NativeReadback']['complete_corpus'] is True
 assert inputs['b95NativeReadback']['credentials_recorded'] is False
 assert inputs['b95NativeReadback']['publication']['github']['all_nine_assets_read_back_by_bytes_and_sha256'] is True
 assert inputs['b95NativeReadback']['publication']['zenodo']['all_nine_files_read_back_by_bytes_and_sha256'] is True
+c140 = roles['C140']
+c140_capsule = next(row for row in inputs['capsules'] if row['course_id'] == 'C140')
+assert c140['whole_course_backend_completion'] == 'selected_54_document_component_boundary_proven'
+assert c140['common_adapter']['github_public_evidence'] == 'native_anonymous_release_and_pages_readback'
+assert c140['common_adapter']['zenodo_preservation'] == 'not_established'
+assert c140['dimensions']['source_translation_ledger'] == {'corrections': 'verified', 'ledger': 'verified'}
+assert c140['dimensions']['terminology']['register'] == 'verified'
+assert c140['dimensions']['reproducible_production'] == {'build': 'verified', 'replay': 'verified'}
+assert c140['educator']['status'] == 'verified'
+assert c140['educator']['unit_alignment'] == 'verified'
+assert len(c140['educator']['resources']) == 15
+assert c140_capsule['course']['state'] == 'published'
+assert c140_capsule['course_native']['repository'] == 'https://github.com/KokunoYumeto/penn-state-stat-415-id'
+assert c140_capsule['course_native']['zenodo'] == 'https://doi.org/10.5281/zenodo.22208527'
+assert c140_capsule['layers']['production']['release_status'] == 'available_unverified'
+assert c140_capsule['layers']['learner']['online_html']['status'] == 'verified'
+assert c140_capsule['layers']['learner']['online_html']['url'] == 'https://kokunoyumeto.github.io/penn-state-stat-415-id/'
+assert c140_capsule['layers']['learner']['pdf']['scope'] == 'penn_spine_component_only_not_uniform_whole_course'
+assert c140_capsule['layers']['learner']['epub']['scope'] == 'penn_spine_component_only_not_uniform_whole_course'
+for key, schema in (
+    ('c140Manifest', 'c140-capability-manifest/1'),
+    ('c140Validation', 'c140-capability-validation/1'),
+    ('c140Public', 'c140-public-evidence/1'),
+    ('c140SourceLock', 'c140-source-lock/1'),
+    ('c140GithubRelease', 'o006.c140.companion-c5.github-release-readback.v1'),
+    ('c140GithubPages', 'o006.c140.companion-c5.github-pages-readback.v1'),
+    ('c140Zenodo', 'o006.c140.zenodo-c140-companion-c5-publication.v1'),
+    ('c140Package', 'c140-capability-thin-packet-build-receipt/1'),
+):
+    assert inputs[key]['schema'] == schema
+for kind, key in (
+    ('central_adapter_manifest', 'c140Manifest'),
+    ('deterministic_validation_receipt', 'c140Validation'),
+    ('verified_native_public_release', 'c140Public'),
+    ('native_source_lock', 'c140SourceLock'),
+    ('anonymous_github_release_readback', 'c140GithubRelease'),
+    ('anonymous_github_pages_readback', 'c140GithubPages'),
+    ('anonymous_zenodo_readback', 'c140Zenodo'),
+    ('deterministic_package_receipt', 'c140Package'),
+):
+    path = INPUTS[key]
+    payload = (ROOT / path).read_bytes()
+    found = [row for row in c140['common_adapter']['local_evidence']
+             if row['kind'] == kind and row['locator'] == path]
+    assert len(found) == 1
+    assert found[0]['bytes'] == len(payload)
+    assert found[0]['sha256'] == hashlib.sha256(payload).hexdigest()
+assert inputs['c140Manifest']['counts']['public_documents'] == 54
+assert inputs['c140Manifest']['counts']['stable_entity_ids'] == 8358
+assert inputs['c140Manifest']['counts']['structural_relations'] == 2423
+assert inputs['c140Manifest']['counts']['component_rights'] == 9
+assert inputs['c140Validation']['result'] == 'pass'
+assert inputs['c140Validation']['checks']['negative_fixtures_rejected'] == 12
+assert inputs['c140Validation']['checks']['two_run_build_identity']['tree_sha256'] == '8983788c83539c5f1450a3a2d57ad94ccf448ba1496b96ef384f76c6c314797b'
+assert inputs['c140Public']['status'] == 'pass'
+assert len(inputs['c140Public']['pages']['course_document_files']) == 54
+assert inputs['c140Public']['zenodo']['access_right'] == 'open'
+assert inputs['c140Package']['result'] == 'PASS'
+assert inputs['c140Package']['zip_checks']['member_count'] == 45
 assert roles['B40']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['B40']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['B40']['learner']['tools']) == 1
@@ -642,7 +718,9 @@ dimensions = {'curriculum', 'source_translation_ledger', 'terminology', 'reprodu
 for row in inputs['capsules']:
     projected = roles[row['course_id']]
     assert set(projected['dimensions']) == dimensions
-    assert projected['whole_course_backend_completion'] == 'not_yet_proven'
+    assert projected['whole_course_backend_completion'] == (
+        'selected_54_document_component_boundary_proven'
+        if row['course_id'] == 'C140' else 'not_yet_proven')
     assert len(projected['next_required_work']) > 0
     assert projected['dimensions']['terminology']['register'] == row['layers']['translation']['terminology_status']
     assert projected['dimensions']['reproducible_production']['replay'] == row['layers']['production']['deterministic_replay_status']

@@ -545,8 +545,8 @@ assert.deepEqual(publicBaseline.successor, {
 });
 assert.equal(learnerTools.$schema, JSON.parse(learnerToolsSchemaBytes.toString('utf8')).$id);
 assert.deepEqual(learnerTools.courses, learnerToolsRows);
-assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130', 'B95']);
-assert.equal(learnerTools.courses.length, 6);
+assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130', 'B95', 'C140']);
+assert.equal(learnerTools.courses.length, 7);
 const a00LearnerTool = learnerToolsByCourseId.A00?.[0];
 assert.ok(a00LearnerTool, 'A00 harus memiliki alat latihan pelajar.');
 assert.equal(a00LearnerTool.tool_id, 'a00-assessment-map-v1');
@@ -564,6 +564,7 @@ for (const [courseId, toolId, href] of [
   ['C80', 'c80-openlogic-course-map-v1', 'backend/openlogic/C80.html'],
   ['C130', 'c130-operations-research-course-map-v1', 'backend/c130/C130.html'],
   ['B95', 'b95.open_learner_hub', 'backend/b95/B95.html'],
+  ['C140', 'c140.open_learner_hub', 'backend/c140/C140.html'],
 ]) {
   const tool = learnerToolsByCourseId[courseId]?.[0];
   assert.ok(tool, `${courseId} harus memiliki alat belajar terverifikasi.`);
@@ -740,17 +741,17 @@ for (const id of liveOverlayRequiredRoleIds) {
 }
 assert.deepEqual(effectiveCourses.map(({ id }) => id), courses.map(({ id }) => id), 'Overlay mengubah urutan atau identitas mata kuliah.');
 assert.equal(effectiveCourses.length, courses.length, 'Overlay mengubah jumlah mata kuliah.');
-assert.equal(effectivePublishedCourses.length, 39, 'Overlay harus menampilkan tepat 39 peran dengan edisi selesai.');
-assert.equal(effectivePublishedRecordDois.size, 35, 'Tiga puluh sembilan peran selesai harus memakai tepat 35 rekaman DOI edisi berbeda.');
+assert.equal(effectivePublishedCourses.length, 40, 'Overlay harus menampilkan tepat 40 peran dengan edisi selesai.');
+assert.equal(effectivePublishedRecordDois.size, 36, 'Empat puluh peran selesai harus memakai tepat 36 rekaman DOI edisi berbeda.');
 assert.equal(
   effectiveCourses.filter(({ state }) => state === 'production').length,
-  1,
-  'Overlay harus menampilkan tepat 1 peran yang masih diproduksi.',
+  0,
+  'Overlay tidak boleh menyisakan peran yang masih diproduksi setelah C140 C5 selesai.',
 );
 assert.deepEqual(
   effectiveCourses.filter(({ state }) => state === 'production').map(({ id }) => id),
-  ['C140'],
-  'Daftar satu peran produksi berubah.',
+  [],
+  'Daftar peran produksi harus kosong.',
 );
 const progressStageKeys = ['translationBearingUnits', 'integrationReadyUnits', 'canonicalUnits', 'publicUnits'];
 for (const course of effectiveCourses) {
@@ -885,7 +886,7 @@ assert.equal(effectiveCoursesById.get('B50').progress.publicPages, 410);
 assert.equal(effectiveCoursesById.get('B50').state, 'published');
 assert.equal(effectiveCoursesById.get('C100').supplements.length, 1);
 assert.equal(effectiveCoursesById.get('C100').supplements[0].id, 'clemens-snapp-workbook-u022');
-assert.match(effectiveCoursesById.get('C140').zenodo, /22164344$/);
+assert.match(effectiveCoursesById.get('C140').zenodo, /22208527$/);
 assert.equal(effectiveCoursesById.get('C140').supplements[0].id, 'c140-companion-reader');
 assert.equal(effectiveCoursesById.get('D10').progress.translationBearingUnits, 672);
 assert.equal(effectiveCoursesById.get('D10').progress.integrationReadyUnits, 672);
@@ -1105,14 +1106,14 @@ assert.ok(
   'Halaman siswa harus menautkan arsip Zenodo konsep atau otoritas.',
 );
 assert.match(html, new RegExp(`${courses.length} korpus terpilih`));
-assert.match(html, /produksi yang belum selesai tetap dilabeli dengan jelas/i);
+assert.match(html, /tidak ada lagi peran yang berstatus produksi pada overlay langsung/i);
 assert.match(html, new RegExp(`<strong id="live-completed-role-count">${effectiveCourses.filter(({ state }) => state === 'published').length}<\\/strong><span>peran dengan edisi selesai<\\/span>`));
 assert.match(html, new RegExp(`${effectivePublishedCourses.length} peran melalui ${effectivePublishedRecordDois.size} rekaman DOI berbeda untuk edisi lengkap`));
-assert.match(html, /A00, B10, C30, C40, C80, C130, D20, D60, dan D110/);
-assert.match(html, /39 dari 40 peran/);
-assert.match(html, /32 dari 33 keluarga backend native/);
-assert.match(html, /sembilan ikatan peran melalui delapan paket/);
-assert.match(html, /tiga puluh peran lainnya memakai kontrak kapabilitas keluarga yang teruji/);
+assert.match(html, /href="backend\/c140\/C140\.html"/);
+assert.match(html, /40 dari 40 peran/);
+assert.match(html, /33 dari 33 keluarga backend native/);
+assert.match(html, /snapshot penerus v2\.3\.1 yang dibekukan tetap dipertahankan sebagai bukti historis/i);
+assert.match(html, /seluruh 40 peran kini memiliki adapter semantik terverifikasi/i);
 assert.match(rootReadme, /D60 kini merupakan edisi komposit lengkap v0\.31\.7/);
 assert.match(rootReadme, /Overlay penerus backend v2\.3 kini menerima sembilan ikatan peran melalui delapan paket kontrak 2\.3\.1: A00, B10, C30, C40, C80, C130, D20, D60, dan D110/);
 assert.equal(v23AdapterIndex.adapters.find(({ role_id }) => role_id === 'D60').release_url, 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/tag/v0.62.10');
@@ -1193,12 +1194,12 @@ assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.cou
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
 assert.equal(learnerDelivery.summary.online_html_available, 24);
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
-assert.equal(learnerDelivery.summary.verified_epub, 2);
+assert.equal(learnerDelivery.summary.verified_epub, 3);
 assert.equal(deliveryById.get('B95').online_html.status, 'not_yet_produced');
 assert.equal(deliveryById.get('B95').pdf.status, 'verified');
 assert.deepEqual(
   [...learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').map(({ course_id }) => course_id)].sort(),
-  ['C100', 'D90'],
+  ['C100', 'C140', 'D90'],
 );
 assert.deepEqual(
   [...learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').map(({ course_id }) => course_id)].sort(),
@@ -1291,11 +1292,11 @@ const shellFiles = [Buffer.from(html), stylesBytes, Buffer.from(app), coursesMod
 const shellRawBytes = shellFiles.reduce((sum, bytes) => sum + bytes.length, 0);
 const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, { level: 9 }).length, 0);
 // Legacy entry gained two language links, fragment-preserving handoff, and the
-// hash-bound B90, D100, C110, C70, D90, A20, and B95 learner/educator capability
-// links. Each new language route has its own separately measured offline/
-// closure budget.
-assert.ok(shellRawBytes <= 208_000, `Shell melewati 208.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 52_000, `Shell gzip melewati 52.000 byte: ${shellGzipBytes}.`);
+// hash-bound B90, D100, C110, C70, D90, A20, B95, and complete-C140
+// learner/educator capability links. Each new language route has its own
+// separately measured offline/closure budget.
+assert.ok(shellRawBytes <= 212_000, `Shell melewati 212.000 byte: ${shellRawBytes}.`);
+assert.ok(shellGzipBytes <= 54_000, `Shell gzip melewati 54.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -1747,9 +1748,9 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 28);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 69);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 344);
-assert.equal(centralNavigation.summary.classified_html_documents, 347);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 71);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 346);
+assert.equal(centralNavigation.summary.classified_html_documents, 349);
 assert.deepEqual(
   centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/d30'),
   {

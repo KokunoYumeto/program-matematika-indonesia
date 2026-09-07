@@ -234,7 +234,7 @@ for (const [name, fetch] of [
   assert.equal(b95.layers.translation.corrections_status, 'verified');
   assert.equal(b95.layers.production.build_status, 'verified');
   assert.equal(b95.layers.production.deterministic_replay_status, 'verified');
-  assert.equal(b95.layers.production.release_status, 'available_unverified');
+  assert.equal(b95.layers.production.release_status, 'verified');
   assert.equal(b95.layers.educator.status, 'verified');
   assert.equal(b95.layers.educator.unit_alignment_status, 'verified');
   assert.ok(b95.layers.educator.resources.some(r => r.id === 'B95:educator-hub-v1' && r.status === 'verified'));
@@ -573,8 +573,8 @@ for (const [name, fetch] of [
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-// B95 moves from unknown to verified on the live 40-role surface.
-assert.deepEqual(educatorCounts, { verified: 24, available_unverified: 9, in_progress: 1, unknown: 6 });
+// B95 and the complete C140 C5 capability are verified on the live 40-role surface.
+assert.deepEqual(educatorCounts, { verified: 25, available_unverified: 9, in_progress: 0, unknown: 6 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),
