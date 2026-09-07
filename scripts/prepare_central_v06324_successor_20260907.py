@@ -71,8 +71,13 @@ def sha256(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
+def md5(data: bytes) -> str:
+    """Return the transport checksum used by Zenodo's file inventory."""
+    return hashlib.md5(data).hexdigest()
+
+
 def identity(name: str, data: bytes) -> dict[str, object]:
-    return {"name": name, "bytes": len(data), "sha256": sha256(data)}
+    return {"name": name, "bytes": len(data), "sha256": sha256(data), "md5": md5(data)}
 
 
 def git(args: list[str]) -> bytes:
@@ -128,7 +133,8 @@ def build_deterministic_zip(destination: Path, members: dict[str, bytes]) -> dic
         require(all(row.date_time == FIXED_TIME and not row.extra and not row.comment for row in infos), "Nested packet metadata drift")
         for name in names:
             require(sha256(archive.read(name)) == sha256(members[name]), f"Nested packet member drift: {name}")
-    return {"path": destination.name, "entries": len(names), "uncompressed_bytes": sum(len(value) for value in members.values()), "bytes": destination.stat().st_size, "sha256": sha256(destination.read_bytes())}
+    archive_bytes = destination.read_bytes()
+    return {"path": destination.name, "entries": len(names), "uncompressed_bytes": sum(len(value) for value in members.values()), "bytes": len(archive_bytes), "sha256": sha256(archive_bytes), "md5": md5(archive_bytes)}
 
 
 def source_blob(commit: str, path: str) -> bytes:
@@ -261,6 +267,7 @@ def make_navigator(source_commit: str, predecessor_payload: dict[str, bytes], so
                 "source_prefix": PACKETS[role][0],
                 "source_bytes": len(committed_package),
                 "source_sha256": sha256(committed_package),
+                "source_md5": md5(committed_package),
             })
             sources[PACKETS[role][1]] = committed_package
         checksums = {name: sha256(data) for name, data in sources.items()}
