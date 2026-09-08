@@ -30,6 +30,12 @@ assert.equal(manifest.counts.exercises,9406);
 assert.equal(manifest.counts.solutions,6106);
 assert.equal(manifest.counts.missing_solutions,3300);
 assert.equal(manifest.counts.verified_exercise_reading_routes,0);
+assert.equal(validation.html_route_checks.result,'pass');
+assert.equal(validation.html_route_checks.exercises,9406);
+assert.equal(validation.html_route_checks.solutions,6106);
+assert.equal(validation.html_route_checks.negative_fixtures.length,4);
+assert.equal(manifest.counts.html_exercise_routes,9406);
+assert.equal(manifest.counts.html_solution_routes,6106);
 const mapped=[];
 for(const item of manifest.outputs) {
   assert.deepEqual(await identity(base+'/'+item.path),{...item,path:base+'/'+item.path});
@@ -51,6 +57,7 @@ for(const [source,target] of [[base+'/manifest.json',publicBase+'/manifest.json'
 }
 const limits=[
   '82 rute PDF membuka awal modul, bukan halaman latihan atau solusi tertentu.',
+  'Tautan HTML terpisah membuka tepat 9.406 latihan, 9.406 soal dan 6.106 solusi dalam pembaca Bahasa Indonesia; 3.300 latihan tetap tanpa solusi sumber.',
   '9.406 identitas latihan dipertahankan: 6.106 memiliki solusi sumber dan 3.300 tidak. Nomor urutan bukan nomor soal tercetak.',
   '600 catatan istilah terkurasi berbeda dari 460 kemunculan sumber. Riwayat penggantian istilah tetap terlihat.',
   'Pemilih pengajar mengekspor metadata modul dan latihan, bukan buku, panduan guru resmi atau silabus baru.',

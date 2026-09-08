@@ -38,6 +38,7 @@ const logicalFiles = [
   'backend/a10/data/translation-index.jsonl',
   'backend/a10/data/unit-reference-index.jsonl',
   'backend/a10/data/pdf-route-evidence.json',
+  'backend/a10/data/html-route-evidence.json',
   'backend/a10/data/english-source-mirror.json',
   'backend/a10/data/learning-map.json',
   'backend/a10/data/capabilities.json',

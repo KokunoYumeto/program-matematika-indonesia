@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 
 from a10_capability_model_v1 import ADAPTER, NATIVE, ROOT, INPUTS, derive_projection, json_bytes, sha
+from a10_html_routes_v1 import attach_html_routes
 
 STYLE = """
 :root{color-scheme:light;--ink:#172d36;--muted:#53666d;--paper:#f3f0e7;--card:#fff;--line:#cad3d5;--accent:#086d78}
@@ -21,6 +22,12 @@ COPY = {
 
 COPY['id']['superseded'] = 'Istilah historis; telah digantikan oleh'
 COPY['en']['superseded'] = 'Historical term; superseded by'
+COPY['id'].update(htmlReader='Baca HTML Bahasa Indonesia', readExercise='Baca latihan', readProblem='Baca soal', readSolution='Baca solusi',
+    intro='Pilih modul, buka latihan dan solusi sumber langsung dalam buku HTML Bahasa Indonesia, atau gunakan PDF. Tidak ada kunci jawaban baru yang ditambahkan.',
+    boundary='Nomor urutan mengikuti posisi dalam sumber, bukan nomor soal tercetak. Tautan HTML menuju butir yang tepat; tautan PDF membuka awal modul.')
+COPY['en'].update(htmlReader='Read the Indonesian HTML', readExercise='Read exercise', readProblem='Read problem', readSolution='Read solution',
+    intro='Choose a module and open exercises and supplied solutions directly in the Indonesian HTML textbook, or use the PDF. This navigator does not create an answer key.',
+    boundary='Positions follow source order, not printed exercise numbers. HTML links open exact items; PDF links open the start of a module.')
 
 
 def esc(value: object) -> str:
@@ -28,7 +35,7 @@ def esc(value: object) -> str:
 
 
 def consumer_data(bundle: dict, language: str) -> dict:
-    keys = "id module_id source_element_id problem_id solution_id solution_status ordinal_within_module".split()
+    keys = "id module_id source_element_id problem_id solution_id solution_status ordinal_within_module exercise_html_url problem_html_url solution_html_url".split()
     def display_title(row):
         label=row['label']
         title=row['title_en'] if language=='en' else row['title']
@@ -38,6 +45,7 @@ def consumer_data(bundle: dict, language: str) -> dict:
     return {"schema":"a10-navigator-data/1", "locale":language, "labels":COPY[language],
         "edition_id":bundle["native_record_ledger"]["stable_identifiers"]["edition_id"],
         "native_release_sha256":INPUTS["backend-core.zip"]["sha256"], "pdf_sha256":INPUTS["reader.pdf"]["sha256"],
+        "html_reader":bundle['html_route_evidence'],
         "modules":[{**row,"display_title":display_title(row)} for row in bundle["module_index"]],
         "exercises":[{key:row[key] for key in keys} for row in bundle["exercise_index"]],
         "terms":bundle["terms_index"], "corrections":bundle["corrections_index"]}
@@ -54,7 +62,7 @@ def render(bundle: dict, language: str, educator: bool) -> str:
     items = []
     for module in data["modules"]:
         check = f'<label><input type="checkbox" name="selected-module" value="{module["module_id"]}"> {esc(module["display_title"])}</label>' if educator else f'<strong>{esc(module["display_title"])}</strong>'
-        items.append(f'<li class="module-item">{check} · <a href="{esc(module["url"])}">PDF (id), {text["page"]} {module["physical_page"]}</a><br>{module["exercise_count"]} {text["exercises"]} · {module["solution_count"]} {text["provided"]} · <code>{module["module_id"]}</code></li>')
+        items.append(f'<li class="module-item">{check} · <a href="{esc(module["html_url"])}" lang="id">HTML (id)</a> · <a href="{esc(module["url"])}">PDF (id), {text["page"]} {module["physical_page"]}</a><br>{module["exercise_count"]} {text["exercises"]} · {module["solution_count"]} {text["provided"]} · <code>{module["module_id"]}</code></li>')
     governance = ""
     if educator:
         governance = f'''<h2>{text['terms']}</h2><p>{text['governanceNote']}</p><div class="governance"><section class="panel"><label for="term-query">{text['termSearch']}</label><input id="term-query" type="search"><p id="term-count" role="status"></p><ul id="terms"></ul></section><section class="panel"><h3>{text['corrections']} (<span id="correction-count"></span>)</h3><ul id="corrections"></ul></section></div>'''
@@ -68,17 +76,19 @@ def render(bundle: dict, language: str, educator: bool) -> str:
 <p>82 {text['module'].lower()} · 9{separator}406 {text['exercises']} · 6{separator}106 {text['provided']}</p>
 <p><a href="{esc(bundle['english_source_mirror']['program_mirror']['reader_url'])}" lang="en">{text['english']}</a> · <a href="{esc(INPUTS['reader.pdf']['url'])}" lang="id">{text['reader']}</a></p>
 <section class="panel" aria-label="{text['module']}"><div class="controls"><div><label for="module">{text['module']}</label><select id="module">{options}</select></div><div><label for="availability">{text['filter']}</label><select id="availability"><option value="all">{text['all']}</option><option value="provided">{text['provided']}</option><option value="missing">{text['notProvided']}</option></select></div><div><label for="query">{text['search']}</label><input id="query" type="search"></div></div>
-<p id="module-summary"></p><p><a id="module-reader" href="{esc(next(m['url'] for m in data['modules'] if m['module_id']==selected))}">{text['reader']}</a></p><p class="warning">{text['boundary']}</p><p id="result-count" role="status"></p><ul id="exercises"></ul><div class="pagination"><button type="button" id="previous">{text['previous']}</button><button type="button" id="next">{text['next']}</button></div><noscript><p>{text['noscript']}</p></noscript></section>
+<p id="module-summary"></p><p><a id="module-html-reader" href="{esc(next(m['html_url'] for m in data['modules'] if m['module_id']==selected))}" lang="id">{text['htmlReader']}</a> · <a id="module-reader" href="{esc(next(m['url'] for m in data['modules'] if m['module_id']==selected))}">{text['reader']}</a></p><p class="warning">{text['boundary']}</p><p id="result-count" role="status"></p><ul id="exercises"></ul><div class="pagination"><button type="button" id="previous">{text['previous']}</button><button type="button" id="next">{text['next']}</button></div><noscript><p>{text['noscript']}</p></noscript></section>
 {governance}<h2>{text['select'] if educator else text['modules']}</h2>{selection}<details><summary>82 {text['modules'].lower()}</summary><ol>{''.join(items)}</ol></details>
 <details><summary>{text['indices']}</summary><ul>{index_links}<li><a href="capabilities.json">Capabilities</a></li><li><a href="claim-boundary.json">Scope and limitations</a></li><li><a href="../validation.json">Validation</a></li></ul></details><p class="muted">{text['offline']}</p>
 </main><script type="application/json" id="a10-data">{embedded}</script><script>{js}</script></body></html>\n'''
 
 
 def build(native: Path=NATIVE, destination: Path=ADAPTER) -> dict:
-    bundle = derive_projection(native)
+    bundle = attach_html_routes(derive_projection(native))
     bundle['learning_map'] = {'schema':'a10-learning-map/1','course_id':'A10','counts':bundle['capabilities']['counts'],
         'modules':bundle['module_index'],'exercise_index':'data/exercise-index.jsonl',
-        'view_languages':['id','en'],'reading_routes_are_module_start_only':True,
+        'view_languages':['id','en'],'reading_routes_are_module_start_only':False,
+        'pdf_routes_are_module_start_only':True,'html_routes_are_exact_items':True,
+        'html_route_evidence':'data/html-route-evidence.json',
         'native_edition_id':bundle['native_record_ledger']['stable_identifiers']['edition_id']}
     files = {}
     for key,value in bundle.items():
@@ -99,7 +109,9 @@ def build(native: Path=NATIVE, destination: Path=ADAPTER) -> dict:
         "Indonesian and English interfaces share the same identity model; the English book link preserves the existing original-source mirror.\n\n"
         "All 19 native JSONL streams are independently hash/count/ID checked during construction. Native bodies and historical "
         "translation payloads remain in the original public package. Raw IDs must be scoped by module. Module-start links "
-        "are not exercise/solution links. Four PDF exercise declarations exist but no exercise reading route is claimed verified.\n\n"
+        "are not PDF exercise/solution links. Four PDF exercise declarations exist but no PDF exercise route is claimed verified. "
+        "Separate HTML evidence binds all 82 module, 9,406 exercise/problem and 6,106 supplied solution destinations "
+        "to exact module-scoped IDs in the existing Indonesian reader. The English interface does not relabel Indonesian content.\n\n"
         "The educator selection is a portable identity manifest, not an official manual or a new syllabus. "
         "Curated terminology and source occurrences remain different evidence classes. Component rights and correction states are retained.\n").encode()
     for name,content in files.items():
@@ -107,7 +119,7 @@ def build(native: Path=NATIVE, destination: Path=ADAPTER) -> dict:
     manifest={"schema":"a10-capability-manifest/1","course_id":"A10","contract":"course-learning-capability/1",
         "counts":bundle['capabilities']['counts'],"input_lock":bundle['source_lock'],
         "generators":[{'path':'scripts/'+name,'bytes':(ROOT/'scripts'/name).stat().st_size,'sha256':sha((ROOT/'scripts'/name).read_bytes())}
-            for name in ['acquire_a10_capability_inputs_v1.py','a10_capability_model_v1.py','build_a10_capability_v1.py','a10_navigator_v1.js']],
+            for name in ['acquire_a10_capability_inputs_v1.py','a10_capability_model_v1.py','a10_html_routes_v1.py','central_surface_navigation_overlay_v1.py','build_a10_capability_v1.py','a10_navigator_v1.js']],
         "outputs":[{"path":name,"bytes":len(content),"sha256":sha(content)} for name,content in sorted(files.items())],
         "validation_path":"validation.json","consumer_views":[f'views/A10{suffix}.html' for suffix in ('','-en','-pengajar','-pengajar-en')]}
     (destination/'manifest.json').write_bytes(json_bytes(manifest))

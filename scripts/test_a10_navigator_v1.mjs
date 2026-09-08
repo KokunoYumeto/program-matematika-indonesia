@@ -16,6 +16,14 @@ for (const suffix of ['', '-en', '-pengajar', '-pengajar-en']) {
   const helpers=context.A10Selection;
   assert.equal(data.exercises.length,9406);assert.equal(data.modules.length,82);
   assert.equal(new Set(data.exercises.map(r=>r.id)).size,9406);
+  assert.equal(data.html_reader.content_language,'id-ID');
+  assert.equal(data.html_reader.reading_language_follows_interface,false);
+  for (const [index,row] of rows.entries()) {
+    for (const key of ['exercise_html_url','problem_html_url','solution_html_url'])
+      assert.equal(data.exercises[index][key],row[key]);
+    assert.ok(row.exercise_html_url.endsWith('#'+encodeURIComponent(row.module_id+'--'+row.source_element_id)));
+    assert.equal(Boolean(row.solution_html_url),Boolean(row.solution_id));
+  }
   for (const module of modules) {
     const expected=rows.filter(r=>r.module_id===module.module_id);
     for (const state of ['all','provided','missing']) {
@@ -34,6 +42,17 @@ for (const suffix of ['', '-en', '-pengajar', '-pengajar-en']) {
   assert.throws(()=>helpers.makeSelection(data,[]));assert.throws(()=>helpers.makeSelection(data,['unknown']));
   assert.equal(selection.selection_is_full_text,false);
   assert.equal(selection.selection_is_a_new_curriculum_claim,false);
+  assert.equal(selection.source_html_body_sha256,data.html_reader.reader_body.sha256);
+  for (const module of selection.modules) {
+    const source=modules.find(m=>m.module_id===module.module_id);
+    assert.equal(module.reader_url,source.html_url);assert.equal(module.pdf_url,source.url);
+  }
+  for (const exercise of selection.exercises) {
+    const original=rows.find(r=>r.id===exercise.exercise_id);
+    assert.equal(exercise.exercise_html_url,original.exercise_html_url);
+    assert.equal(exercise.solution_html_url,original.solution_html_url);
+    assert.equal(exercise.reading_language,'id-ID');
+  }
   const price=helpers.selectTerms(data,'m82452','cost per pound');
   const old=price.find(t=>t.ledger_id==='EA2-T0309');
   const current=price.find(t=>t.ledger_id==='EA2-T0452');
@@ -51,6 +70,8 @@ for (const suffix of ['', '-en', '-pengajar', '-pengajar-en']) {
   }
   assert.equal(/<script[^>]+src=|<link[^>]+rel="stylesheet"/.test(html),false);
   for (const module of modules) assert.ok(html.includes(module.url.replaceAll('&','&amp;')));
+  for (const module of modules) assert.ok(html.includes(module.html_url));
+  assert.ok(html.includes('id="module-html-reader"'));
 }
 console.log(JSON.stringify({result:'pass',views:4,module_filter_cases:assertions,
   additional_checks:['identity_search','ordered_multi_module_export','empty_and_unknown_selection_rejected',

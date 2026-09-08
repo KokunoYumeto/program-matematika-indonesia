@@ -7,6 +7,7 @@ from __future__ import annotations
 import argparse
 import copy
 import hashlib
+import html
 import json
 import re
 import subprocess
@@ -14,6 +15,7 @@ import sys
 import zipfile
 from collections import defaultdict
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / 'backend/course-capsule-v1/adapters/a10-capability-v1'
@@ -150,6 +152,70 @@ def raw_pdf_destinations(native):
     return destinations
 
 
+def html_reader_check(base, source, modules, exercises):
+    # Independent article/attribute extraction; do not import the route builder.
+    from central_surface_navigation_overlay_v1 import strip_central_surface_overlay
+    mirror_path = ROOT/'docs/id-ID/courses/A10/A10_READER_MIRROR_MANIFEST_V1.json'
+    check(digest(mirror_path)=='f0416955ef0f6eecf21ff86cda7f7c23a7b67140a34f206dce1005edc9217e68','HTML-MANIFEST')
+    mirror=load(mirror_path)
+    raw=strip_central_surface_overlay((ROOT/mirror['reader_entrypoint']).read_bytes(),mirror['reader_entrypoint'])
+    check(len(raw)==14913255 and hashlib.sha256(raw).hexdigest()=='8d125695e57897c2364a0508ab7b169ef96f7e0e6b7c697190418436a63ffc54','HTML-BODY')
+    text=raw.decode('utf-8')
+    def attrs(tag):
+        return {k:html.unescape(v) for k,v in re.findall(r'([\w-]+)="([^"]*)"',tag)}
+    articles={}
+    for opening,body in re.findall(r'(<article\b[^>]*>)([\s\S]*?)</article>',text):
+        a=attrs(opening);mid=a.get('data-module-id')
+        if not mid:continue
+        check(mid not in articles,'HTML-DUPLICATE-MODULE')
+        ids=[attrs(tag)['id'] for tag in re.findall(r'<[A-Za-z][^>]*>',opening+body) if 'id' in attrs(tag)]
+        check(len(ids)==len(set(ids)),'HTML-DUPLICATE-MODULE-ID')
+        articles[mid]=(a['data-target-sha256'],set(ids))
+    check(len(articles)==82,'HTML-MODULE-COVERAGE')
+    all_ids=[attrs(tag)['id'] for tag in re.findall(r'<[A-Za-z][^>]*>',text) if 'id' in attrs(tag)]
+    check(len(all_ids)==len(set(all_ids))==55690,'HTML-GLOBAL-ID-UNIQUENESS')
+    root_url='https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A10/reader/index.html'
+    for m in modules:
+        target,ids=articles[m['module_id']]
+        check(target==m['sha256'] and 'module-'+m['module_id'] in ids,'HTML-MODULE-TARGET-BINDING')
+        check(m['html_url']==root_url+'#module-'+m['module_id'] and m['html_route_scope']=='exact_module_anchor'
+              and m['html_route_verified'] is True,'HTML-MODULE-ROUTE')
+    unit_routes={}
+    for uid,u in source['unit'].items():
+        if not u.get('source_module_id') or not u.get('source_element_id'):continue
+        mid=u['source_module_id'];fragment=mid+'--'+u['source_element_id']
+        check(fragment in articles[mid][1],'HTML-NATIVE-UNIT-ANCHOR')
+        unit_routes[uid]=root_url+'#'+quote(fragment,safe='')
+    check(len(unit_routes)==55180,'HTML-NATIVE-UNIT-COVERAGE')
+    def route_check(rows):
+        check(len(rows)==9406 and len({r['id'] for r in rows})==9406,'HTML-EXERCISE-COVERAGE')
+        for e in rows:
+            check(e['html_route_verified'] is True,'HTML-VERIFIED-STATE')
+            for prefix,uid in [('exercise',e['id']),('problem',e['problem_id']),('solution',e['solution_id'])]:
+                check(e[prefix+'_html_url']==(unit_routes[uid] if uid else None),'HTML-EXACT-'+prefix)
+    route_check(exercises)
+    negatives=[]
+    first_missing=next(i for i,r in enumerate(exercises) if not r['solution_id'])
+    for name,index,key,value in [
+        ('unscoped-anchor',0,'exercise_html_url',root_url+'#'+exercises[0]['source_element_id']),
+        ('wrong-solution',0,'solution_html_url',exercises[1]['exercise_html_url']),
+        ('invented-gap-link',first_missing,'solution_html_url',exercises[0]['exercise_html_url']),
+        ('false-route-state',0,'html_route_verified',False),
+    ]:
+        rows=list(exercises);rows[index]={**rows[index],key:value}
+        try:route_check(rows)
+        except ValueError as error:negatives.append({'case':name,'result':'rejected','error':str(error)})
+        else:raise ValueError('HTML-NEGATIVE-ACCEPTED:'+name)
+    evidence=load(base/'data/html-route-evidence.json')
+    check(evidence['reader_body']=={'path':mirror['reader_entrypoint'],**mirror['reader_body']},'HTML-EVIDENCE-IDENTITY')
+    check(evidence['content_language']=='id-ID' and evidence['reading_language_follows_interface'] is False,'HTML-LANGUAGE')
+    check([evidence[k] for k in ['module_count','exercise_routes','problem_routes','solution_routes','missing_solutions']]
+          ==[82,9406,9406,6106,3300],'HTML-EVIDENCE-COUNTS')
+    return {'result':'pass','modules':82,'exercises':9406,'problems':9406,'solutions':6106,
+        'missing_solutions':3300,'source_element_units':55180,'body_sha256':hashlib.sha256(raw).hexdigest(),
+        'independent_article_and_native_identity_replay':True,'negative_fixtures':negatives}
+
+
 def validate(base, native):
     manifest=load(base/'manifest.json')
     for generator in manifest['generators']:
@@ -206,6 +272,7 @@ def validate(base, native):
         check((m['exercise_count'],m['solution_count'],m['missing_solution_count'])==(len(selected),sum(bool(r['solution_id']) for r in selected),sum(not r['solution_id'] for r in selected)),'MODULE-COUNTS')
     module_urls={m['module_id']:m['url'] for m in modules}
     check(all(r['module_reading_url']==module_urls[r['module_id']] for r in exercises),'EXERCISE-MODULE-URL')
+    html_checks=html_reader_check(base,source,modules,exercises)
     ledger=load(base/'data/native-record-ledger.json')
     check(ledger['streams']==source['ledgers'] and ledger['record_counts']==source['manifest']['record_counts'] and ledger['records']==561994,'LEDGER-REPLAY')
     boundary=load(base/'data/claim-boundary.json')
@@ -235,7 +302,7 @@ def validate(base, native):
     bad_targets=copy.deepcopy(target[:1]);bad_targets[0]['translation']['target_text']='copied body'
     reject('copied-translation-body',lambda:compare_native_fields([bad_targets[0]['translation']],{bad_targets[0]['translation']['id']:source['translation'][bad_targets[0]['translation']['id']]}))
     return {'schema':'a10-capability-validation/1','result':'pass','course_id':'A10',
-        'counts':manifest['counts'],'negative_fixtures':negatives,
+        'counts':manifest['counts'],'negative_fixtures':negatives,'html_route_checks':html_checks,
         'checks':{'generator_source_hashes_verified':True,'independent_native_field_replay':True,'all_19_native_streams_verified':True,
             'exercise_child_and_relation_replay':True,'placement_ancestry_replayed':True,
             'pdf_raw_name_tree_page_objects_replayed':True,'term_decision_classes_preserved':True,

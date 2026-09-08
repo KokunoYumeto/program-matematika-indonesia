@@ -1196,7 +1196,23 @@ assert.equal(
 );
 assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').length);
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
-assert.equal(learnerDelivery.summary.online_html_available, 25);
+assert.equal(learnerDelivery.summary.online_html_available, 26);
+// A10 is an admitted, portable projection, not a PDF mislabeled as HTML.
+const a10Mirror = await readJson('docs/id-ID/courses/A10/A10_READER_MIRROR_MANIFEST_V1.json');
+assert.equal(a10Mirror.course_id, 'A10');
+assert.equal(a10Mirror.validation.modules, 82);
+assert.equal(a10Mirror.validation.mathml_regions_preserved, 20979);
+assert.equal(a10Mirror.validation.stable_ids_preserved, 55690);
+assert.equal(a10Mirror.validation.external_runtime_dependencies, 0);
+assert.equal(deliveryById.get('A10').online_html.url,
+  'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A10/reader/index.html');
+assert.equal(deliveryById.get('A10').pdf.format, 'application/pdf');
+for (const row of a10Mirror.files) {
+  assert.ok(!row.path.startsWith('/') && !row.path.includes('\\') && !row.path.split('/').includes('..'));
+  await assertBaseOrCentralNavigationIdentity({
+    path: `docs/id-ID/courses/A10/reader/${row.path}`, bytes: row.bytes, sha256: row.sha256,
+  }, 'A10 source-bound reader');
+}
 assert.equal(learnerDelivery.summary.verified_portable_html, 6);
 assert.equal(learnerDelivery.summary.verified_epub, 3);
 assert.equal(deliveryById.get('B95').online_html.status, 'available_unverified');
@@ -1753,12 +1769,14 @@ const centralNavigation = await readJson('backend/authority/central-reader-navig
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 29);
 assert.equal(centralNavigation.summary.course_surface_html_documents, 75);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 350);
-assert.equal(centralNavigation.summary.classified_html_documents, 353);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 351);
+assert.equal(centralNavigation.summary.classified_html_documents, 354);
 assert.deepEqual(Object.fromEntries(centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/a10')
   .documents.map(({path, locale}) => [path, locale])), {
   'A10.html': 'id', 'A10-en.html': 'en', 'A10-pengajar.html': 'id', 'A10-pengajar-en.html': 'en',
 });
+assert.equal(centralNavigation.readers.find(row => row.course_id === 'A10').root,
+  'docs/id-ID/courses/A10/reader');
 assert.deepEqual(
   centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/d30'),
   {

@@ -14,13 +14,17 @@
     if (!modules.length || modules.length !== wanted.size) throw new Error('A10-INVALID-SELECTION');
     return {schema:'pmi-course-selection/1', course_id:'A10', edition_id:data.edition_id,
       native_release_sha256:data.native_release_sha256, source_pdf_sha256:data.pdf_sha256,
+      source_html_body_sha256:data.html_reader.reader_body.sha256,
       selection_is_full_text:false, selection_is_a_new_curriculum_claim:false,
       modules:modules.map(row => ({module_id:row.module_id, module_unit_id:row.module_unit_id,
-        translated_source_sha256:row.sha256, reader_url:row.url, route_scope:row.route_scope})),
+        translated_source_sha256:row.sha256, reader_url:row.html_url, route_scope:row.html_route_scope,
+        pdf_url:row.url, pdf_route_scope:row.route_scope})),
       exercises:data.exercises.filter(row => wanted.has(row.module_id)).map(row => ({
         exercise_id:row.id, problem_id:row.problem_id, solution_id:row.solution_id,
         solution_status:row.solution_status, source_module_id:row.module_id,
         source_element_id:row.source_element_id, ordinal_within_module:row.ordinal_within_module,
+        exercise_html_url:row.exercise_html_url, problem_html_url:row.problem_html_url,
+        solution_html_url:row.solution_html_url, reading_language:'id-ID',
         ordinal_is_printed_exercise_number:false})),
       limitations:['Metadata selection only; native mathematical text remains in the pinned edition.',
         'PDF links open modules, not verified individual exercise or solution destinations.']};
@@ -55,6 +59,7 @@
     if (offset >= rows.length) offset = 0;
     const list = document.getElementById('exercises'); list.replaceChildren();
     document.getElementById('module-reader').href = module.url;
+    document.getElementById('module-html-reader').href = module.html_url;
     document.getElementById('module-summary').textContent = `${module.display_title} · ${labels.page} ${module.physical_page} · ${number(module.exercise_count)} ${labels.exercises} · ${number(module.solution_count)} ${labels.provided}`;
     document.getElementById('result-count').textContent = rows.length ?
       `${number(offset+1)}–${number(Math.min(offset+pageSize,rows.length))} / ${number(rows.length)}` : labels.empty;
@@ -62,6 +67,14 @@
       const item = element('li');
       item.append(element('strong',`${labels.sourceOrder} ${row.ordinal_within_module}`));
       item.append(element('span',row.solution_id ? labels.provided : labels.notProvided,'badge'));
+      const links = element('p');
+      for (const [label,url] of [[labels.readExercise,row.exercise_html_url],
+        [labels.readProblem,row.problem_html_url],[labels.readSolution,row.solution_html_url]]) {
+        if (!url) continue;
+        if (links.childNodes.length) links.append(document.createTextNode(' · '));
+        const link = element('a',label+' (id)'); link.href=url; link.lang='id'; links.append(link);
+      }
+      item.append(links);
       const detail = element('details'); detail.append(element('summary',labels.identities));
       const fields = [[labels.exercise,row.id],[labels.problem,row.problem_id],[labels.solution,row.solution_id || labels.notProvided],[labels.source,row.module_id+'#'+row.source_element_id]];
       for (const [key,value] of fields) {const p=element('p',key+': ');p.append(element('code',value));detail.append(p);}

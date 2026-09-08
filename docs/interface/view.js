@@ -13,6 +13,7 @@ import { supplementalReaders } from './supplemental-readers.js';
 import { additionalOriginalSources } from './original-sources.js';
 import { hostedSurfaceIdentities } from './hosted-surface-identities.js';
 import { centralGatewayResources } from './central-gateway-resources.js';
+import { centralHostedReaders } from './central-hosted-readers.js';
 
 // Final links are a presentation overlay, not a replacement backend or corpus.
 export const interfaceCourses = materializeLiveCourses(authorityCourses).map(course => {
@@ -96,6 +97,13 @@ export function resourceBindings(course, locale) {
     add(label, href, contentLanguage, kind, { ...facts, labelLanguage:'en', primary: locale === 'en' && rows.length === 0 });
   }
   const idPrefix = locale === 'id' ? '' : contentLanguageName('id', locale) + ' — ';
+  for (const row of centralHostedReaders.filter(item => item.courseId === course.id)) {
+    add(idPrefix + localizedValue(row.labels, locale), row.href, row.contentLanguage, 'reader', {
+      format: row.format, bytes: row.bytes, sha256: row.sha256,
+      primary: locale === 'id', accessRole: 'hosted-reader',
+      authorityRole: 'program-edition', relationToSource: 'mirrors',
+    });
+  }
   const finalEdition = finalEditions.find(row => row.courseId === course.id);
   if (finalEdition) for (const row of finalEdition.resources) {
     const pages = row.pages ? ' — ' + row.pages + ' ' + t.pageUnit : '';
