@@ -536,7 +536,8 @@ for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityTool
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
 assert.equal(Object.keys(authorityToolsByCourse).length, 31);
-assert.equal(authorityToolIds.length, 41);
+assert.equal(authorityToolIds.length, 42);
+assert.deepEqual(authorityToolsByCourse.A00.map(({tool_id})=>tool_id),['a00-assessment-map-v1','a00-concept-teacher-v1']);
 assert.equal(new Set(authorityToolIds).size, authorityToolIds.length, 'Duplicate public learner-tool identity.');
 assert.deepEqual(authorityToolsByCourse.A10.map(({ tool_id }) => tool_id), ['a10.open_learner_hub']);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
@@ -554,7 +555,7 @@ assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
 assert.equal(validation.checks.learner_tool_course_count, 31);
-assert.equal(validation.checks.learner_tool_count, 41);
+assert.equal(validation.checks.learner_tool_count, 42);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 

@@ -1315,7 +1315,9 @@ const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, {
 // hash-bound B90, D100, C110, C70, D90, A20, B95, and C140 learner/educator
 // capability links. Each language route has its own separately measured
 // offline/closure budget.
-assert.ok(shellRawBytes <= 212_000, `Shell melewati 212.000 byte: ${shellRawBytes}.`);
+// A00 adds one explicit concept/teacher tool with page, model and QA hashes.
+// Retain the compressed budget; allow 2 KB for this additional shipped metadata.
+assert.ok(shellRawBytes <= 214_000, `Shell melewati 214.000 byte: ${shellRawBytes}.`);
 assert.ok(shellGzipBytes <= 54_000, `Shell gzip melewati 54.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
