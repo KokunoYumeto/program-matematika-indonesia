@@ -17,7 +17,7 @@ ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = "KokunoYumeto/program-matematika-indonesia"
 PAGES = "https://kokunoyumeto.github.io/program-matematika-indonesia/"
 SCOPES = (
-    "backend", "docs", "scripts", "schema", "releases", "tests", "app",
+    "backend", "docs", "scripts", "schema", "schemas", "releases", "tests", "app",
     "package.json", "package-lock.json", "README.md", ".gitattributes",
     ".github", ".openai/hosting.json",
 )
@@ -26,6 +26,8 @@ FRONT_DOORS = (
     "docs/backend/index.html", "docs/backend/b95/B95.html",
     "docs/backend/b95/B95-pengajar.html", "docs/backend/c140/C140.html",
     "docs/backend/c140/C140-pengajar.html",
+    "docs/backend/a10/A10.html", "docs/backend/a10/A10-en.html",
+    "docs/backend/a10/A10-pengajar.html", "docs/backend/a10/A10-pengajar-en.html",
 )
 
 
@@ -92,7 +94,7 @@ def main() -> None:
         "schema": "combined-backend-increment-public-readback/1", "state": "in_progress",
         "base_commit": args.base_commit, "source_commit": args.commit,
         "anonymous": True, "credentials_used": False, "ambient_credentials_disabled": True,
-        "scope": "Changed committed files in the listed integration scopes, plus bilingual and B95/C140 front doors; every docs file also checked through Pages.",
+        "scope": "Changed committed files in the listed integration scopes, plus bilingual and A10/B95/C140 front doors; every docs file also checked through Pages.",
         "integration_scopes": list(SCOPES), "expected_jobs": jobs, "files": [],
         "failures": [], "overall_program_backend_complete": False,
         "zenodo_preservation_verified": False,
