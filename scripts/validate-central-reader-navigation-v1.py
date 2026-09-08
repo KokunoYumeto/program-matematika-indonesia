@@ -492,7 +492,7 @@ def main() -> int:
                 raise ValueError(f"{row['root']}: invalid embedded fragment closure")
             fragments = {declared_by_relative[value] for value in fragment_relatives}
             for fragment in fragments:
-                marker = 'b20-fragment-url-base' if row['course_id'] == 'B20' else 'b10-fragment-url-base'
+                marker = row.get('fragment_url_base_marker', 'b20-fragment-url-base' if row['course_id'] == 'B20' else 'b10-fragment-url-base')
                 if f'name="{marker}" content="document"' not in fragment.read_text(encoding='utf-8'):
                     raise ValueError(f"{fragment}: fragment document-relative URL marker absent")
             closure = row.get("navigation_closure")

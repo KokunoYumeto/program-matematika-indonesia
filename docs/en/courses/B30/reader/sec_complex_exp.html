@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>The Complex Exponential</title>
+
+
+<link rel="stylesheet" href="runtime/reader-support/material-symbols-local.css">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="external/RQS.css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="runtime/mathjax/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="CLP-2 Integral Calculus">
+<meta property="book:author" content="Joel Feldman">
+<meta property="book:author" content="Andrew Rechnitzer">
+<meta property="book:author" content="Elyse Yeager">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '8.2.5';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/prefix-runtime.18d8728f6d56e11d.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.b388362b5f43738a.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.8086b62682b271d1.css">
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="runtime/lunr/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+<link rel="stylesheet" href="program-navigation.css"></head>
+<body class="pretext book ignore-math">
+<nav data-central-surface-navigation="v1" data-placement="top" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B30" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">English — B30</a> · <a data-program-home data-course-card data-course-id="B30" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Bahasa Indonesia — B30</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B30" href="https://personal.math.ubc.ca/~CLP/CLP2/">Original source — Original authors’ website — CLP-2 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="clp_2_ic.html">Open related page</a></nav><nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP2/">Original authors’ website ↗</a><a href="clp_2_ic.html">Book contents</a></nav>
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="clp_2_ic.html"><span class="title">CLP-2 Integral Calculus</span></a></h1>
+<p class="byline">Joel Feldman, Andrew Rechnitzer, Elyse Yeager</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Contents</span></button><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="sec_complex_defn.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="up-button button" href="ap_complex.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Up</span></a><a class="next-button button" href="app_Richardson_Romberg.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}\newcommand{\dee}[1]{\mathrm{d}#1}
+\newcommand{\half}{ \frac{1}{2} }
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ts}{\textstyle}
+\newcommand{\es}{ {\varnothing}}
+\newcommand{\st}{ {\mbox{ s.t. }} }
+\newcommand{\pow}[1]{ \mathcal{P}\left(#1\right) }
+\newcommand{\set}[1]{ \left\{#1\right\} }
+\newcommand{\lin}{{\text{LIN}}}
+\newcommand{\quot}{{\text{QR}}}
+\newcommand{\simp}{{\text{SMP}}}
+\newcommand{\diff}[2]{ \frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\bdiff}[2]{ \frac{\mathrm{d}}{\mathrm{d}#2} \left( #1 \right)}
+\newcommand{\ddiff}[3]{ \frac{\mathrm{d}^#1#2}{\mathrm{d}{#3}^#1}}
+\renewcommand{\neg}{ {\sim} }
+\newcommand{\limp}{ {\;\Rightarrow\;} }
+\newcommand{\nimp}{ {\;\not\Rightarrow\;} }
+\newcommand{\liff}{ {\;\Leftrightarrow\;} }
+\newcommand{\niff}{ {\;\not\Leftrightarrow\;} }
+\newcommand{\De}{\Delta}
+\newcommand{\bbbn}{\mathbb{N}}
+\newcommand{\bbbr}{\mathbb{R}}
+\newcommand{\bbbp}{\mathbb{P}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\Si}{\Sigma}
+
+\newcommand{\arccsc}{\mathop{\mathrm{arccsc}}}
+\newcommand{\arcsec}{\mathop{\mathrm{arcsec}}}
+\newcommand{\arccot}{\mathop{\mathrm{arccot}}}
+\newcommand{\erf}{\mathop{\mathrm{erf}}}
+\newcommand{\smsum}{\mathop{{\ts \sum}}}
+\newcommand{\atp}[2]{ \genfrac{}{}{0in}{}{#1}{#2} }
+
+\newcommand{\ave}{\mathrm{ave}}
+\newcommand{\llt}{\left \lt }
+\newcommand{\rgt}{\right \gt }
+
+
+\newcommand{\YEaxis}[2]{\draw[help lines] (-#1,0)--(#1,0) node[right]{$x$};\draw[help lines] (0,-#2)--(0,#2) node[above]{$y$};}
+
+\newcommand{\YEaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$x$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YEtaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+\newcommand{\YEtaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$}; \draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YExcoord}[2]{\draw (#1,.2)--(#1,-.2) node[below]{$#2$};}
+\newcommand{\YEycoord}[2]{\draw (.2,#1)--(-.2,#1) node[left]{$#2$};}
+\newcommand{\YEnxcoord}[2]{\draw (#1,-.2)--(#1,.2) node[above]{$#2$};}
+\newcommand{\YEnycoord}[2]{\draw (-.2,#1)--(.2,#1) node[right]{$#2$};}
+
+\newcommand{\YEstickfig}[3]{
+\draw (#1,#2) arc(-90:270:2mm);
+\draw (#1,#2)--(#1,#2-.5) (#1-.25,#2-.75)--(#1,#2-.5)--(#1+.25,#2-.75) (#1-.2,#2-.2)--(#1+.2,#2-.2);}
+
+
+\newcommand{\IBP}[7]{
+\begin{array}{|c  | l | l |}
+\hline
+\color{red}{\text{Option 1:}}
+&amp; u=#2
+&amp;\color{red}{\dee{u}=#3 ~ \dee{#1}}
+\\
+&amp; \dee{v}=#5~\dee{#1}
+&amp;\color{red}{v=#7}
+\\
+\hline
+\color{blue}{\text{Option 2:}}
+&amp; u=#5
+&amp;\color{blue}{\dee{u}=#6 ~ \dee{#1}}
+\\
+&amp;\dee{v}=#2 \dee{#1}
+&amp;\color{blue}{v=#4}
+\\
+\hline
+\end{array}
+}
+
+
+\renewcommand{\textcolor}[2]{{\color{#1}{#2}}}
+
+
+\newcommand{\trigtri}[4]{
+\begin{tikzpicture}
+\draw (-.5,0)--(2,0)--(2,1.5)--cycle;
+\draw (1.8,0) |- (2,.2);
+\draw[double] (0,0) arc(0:30:.5cm);
+\draw (0,.2) node[right]{$#1$};
+\draw (1,-.5) node{$#2$};
+\draw (2,.75) node[right]{$#3$};
+\draw (.6,1.1) node[rotate=30]{$#4$};
+\end{tikzpicture}}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="clp_2_ic-2.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="front-colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-4.html" class="internal"><span class="title">Preface</span></a></div></li>
+<li class="toc-item toc-dedication"><div class="toc-title-box"><a href="clp_2_ic-2-5.html" class="internal"><span class="title">Dedication</span></a></div></li>
+<li class="toc-item toc-acknowledgement"><div class="toc-title-box"><a href="clp_2_ic-2-6.html" class="internal"><span class="title">Acknowledgements</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-7.html" class="internal"><span class="title">Using the exercises in this book</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-8.html" class="internal"><span class="title">Feedback about the text</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_integral.html" class="internal"><span class="codenumber">1</span> <span class="title">Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intdef.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Definition of the Integral</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-3" class="internal"><span class="codenumber">1.1.1</span> <span class="title">A Motivating Example</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-4" class="internal"><span class="codenumber">1.1.2</span> <span class="title">Optional — A more rigorous area computation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_intdef.html#ssec_sum_notn" class="internal"><span class="codenumber">1.1.3</span> <span class="title">Summation notation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_sum_notn-3" class="internal"><span class="codenumber">1.1.3.1</span> <span class="title">Proof of Theorem 1.1.6 (Optional)</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_defInt" class="internal"><span class="codenumber">1.1.4</span> <span class="title">The Definition of the Definite Integral</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_knownareas" class="internal"><span class="codenumber">1.1.5</span> <span class="title">Using Known Areas to Evaluate Integrals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_velocity" class="internal"><span class="codenumber">1.1.6</span> <span class="title">Another Interpretation for Definite Integrals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_careful_defn" class="internal"><span class="codenumber">1.1.7</span> <span class="title">Optional — careful definition of the integral</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-10" class="internal"><span class="codenumber">1.1.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_def_int.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Basic properties of the definite integral</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_int.html#sec_evenodd" class="internal"><span class="codenumber">1.2.1</span> <span class="title">More properties of integration: even and odd functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_int.html#sec_def_int-4" class="internal"><span class="codenumber">1.2.2</span> <span class="title">Optional — More properties of integration: inequalities for integrals</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_def_int.html#sec_def_int-5" class="internal"><span class="codenumber">1.2.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_fundamental.html" class="internal"><span class="codenumber">1.3</span> <span class="title">The Fundamental Theorem of Calculus</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_fundamental.html#sec_fundamental-3" class="internal"><span class="codenumber">1.3.1</span> <span class="title">The Fundamental Theorem of Calculus</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_fundamental.html#sec_fundamental-4" class="internal"><span class="codenumber">1.3.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_subs.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Substitution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_subs.html#sec_subs-3" class="internal"><span class="codenumber">1.4.1</span> <span class="title">Substitution</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_subs.html#sec_subs-4" class="internal"><span class="codenumber">1.4.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_area.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Area between curves</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_area.html#sec_area-3" class="internal"><span class="codenumber">1.5.1</span> <span class="title">Area between curves</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_area.html#sec_area-4" class="internal"><span class="codenumber">1.5.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_int_volumes.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Volumes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_int_volumes.html#sec_int_volumes-3" class="internal"><span class="codenumber">1.6.1</span> <span class="title">Optional — Cylindrical shells</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_int_volumes.html#sec_int_volumes-4" class="internal"><span class="codenumber">1.6.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intbyparts.html" class="internal"><span class="codenumber">1.7</span> <span class="title">Integration by parts</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intbyparts.html#sec_intbyparts-3" class="internal"><span class="codenumber">1.7.1</span> <span class="title">Integration by parts</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_intbyparts.html#sec_intbyparts-4" class="internal"><span class="codenumber">1.7.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trigint.html" class="internal"><span class="codenumber">1.8</span> <span class="title">Trigonometric Integrals</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trigint.html#sec_sincos" class="internal"><span class="codenumber">1.8.1</span> <span class="title">Integrating <span class="process-math">\(\int \sin^m x\cos^n x\dee{x}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_sincos-2" class="internal"><span class="codenumber">1.8.1.1</span> <span class="title">One of <span class="process-math">\(n\)</span> and <span class="process-math">\(m\)</span> is odd</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_sincos-3" class="internal"><span class="codenumber">1.8.1.2</span> <span class="title">Both <span class="process-math">\(n\)</span> and <span class="process-math">\(m\)</span> are even</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trigint.html#sec_tansec" class="internal"><span class="codenumber">1.8.2</span> <span class="title">Integrating <span class="process-math">\(\int \tan^m x\sec^n x\dee{x}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-3" class="internal"><span class="codenumber">1.8.2.1</span> <span class="title"><span class="process-math">\(m\)</span> is odd — odd power of tangent</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-4" class="internal"><span class="codenumber">1.8.2.2</span> <span class="title"><span class="process-math">\(m\)</span> is odd and <span class="process-math">\(n\geq 1\)</span> — odd power of tangent and at least one secant</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-5" class="internal"><span class="codenumber">1.8.2.3</span> <span class="title"><span class="process-math">\(n\geq 2\)</span> is even — a positive even power of secant</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-6" class="internal"><span class="codenumber">1.8.2.4</span> <span class="title"><span class="process-math">\(m\)</span> is even and <span class="process-math">\(n=0\)</span> — even powers of tangent</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_secantEtc" class="internal"><span class="codenumber">1.8.3</span> <span class="title">Optional — Integrating <span class="process-math">\(\sec x\text{,}\)</span> <span class="process-math">\(\csc x\text{,}\)</span> <span class="process-math">\(\sec^3 x\)</span> and <span class="process-math">\(\csc^3 x\)</span></span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trigint.html#sec_trigint-6" class="internal"><span class="codenumber">1.8.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trigsub.html" class="internal"><span class="codenumber">1.9</span> <span class="title">Trigonometric Substitution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trigsub.html#sec_trigsub-3" class="internal"><span class="codenumber">1.9.1</span> <span class="title">Trigonometric Substitution</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trigsub.html#sec_trigsub-4" class="internal"><span class="codenumber">1.9.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_parfrac.html" class="internal"><span class="codenumber">1.10</span> <span class="title">Partial Fractions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-3" class="internal"><span class="codenumber">1.10.1</span> <span class="title">Partial fraction decomposition examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4" class="internal"><span class="codenumber">1.10.2</span> <span class="title">The form of partial fraction decompositions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-3" class="internal"><span class="codenumber">1.10.2.1</span> <span class="title">Simple linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-4" class="internal"><span class="codenumber">1.10.2.2</span> <span class="title">General linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-5" class="internal"><span class="codenumber">1.10.2.3</span> <span class="title">Simple linear and quadratic factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-6" class="internal"><span class="codenumber">1.10.2.4</span> <span class="title">Optional — General linear and quadratic factor case</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5" class="internal"><span class="codenumber">1.10.3</span> <span class="title">Optional — Justification of the partial fraction decompositions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-3" class="internal"><span class="codenumber">1.10.3.1</span> <span class="title">Simple linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-4" class="internal"><span class="codenumber">1.10.3.2</span> <span class="title">The general case with linear factors</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-5" class="internal"><span class="codenumber">1.10.3.3</span> <span class="title">Really Optional — The Fully General Case</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-6" class="internal"><span class="codenumber">1.10.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_numeric_int.html" class="internal"><span class="codenumber">1.11</span> <span class="title">Numerical Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_midpointRule" class="internal"><span class="codenumber">1.11.1</span> <span class="title">The midpoint rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_trapRule" class="internal"><span class="codenumber">1.11.2</span> <span class="title">The trapezoidal rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_Simpson" class="internal"><span class="codenumber">1.11.3</span> <span class="title">Simpson’s Rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#ssec_num_int_err" class="internal"><span class="codenumber">1.11.4</span> <span class="title">Three Simple Numerical Integrators — Error Behaviour</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_numeric_int-7" class="internal"><span class="codenumber">1.11.5</span> <span class="title">Optional — An error bound for the midpoint rule</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_numeric_int-8" class="internal"><span class="codenumber">1.11.6</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_improp_int.html" class="internal"><span class="codenumber">1.12</span> <span class="title">Improper Integrals</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-3" class="internal"><span class="codenumber">1.12.1</span> <span class="title">Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-4" class="internal"><span class="codenumber">1.12.2</span> <span class="title">Examples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-5" class="internal"><span class="codenumber">1.12.3</span> <span class="title">Convergence Tests for Improper Integrals</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-6" class="internal"><span class="codenumber">1.12.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_integral-15.html" class="internal"><span class="codenumber">1.13</span> <span class="title">More Integration Examples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_integral-15.html#chap_integral-15-3" class="internal"><span class="codenumber">1.13</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_int_app.html" class="internal"><span class="codenumber">2</span> <span class="title">Applications of Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_work.html" class="internal"><span class="codenumber">2.1</span> <span class="title">Work</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_work.html#sec_work-3" class="internal"><span class="codenumber">2.1.1</span> <span class="title">Work</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_work.html#sec_work-4" class="internal"><span class="codenumber">2.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_avg.html" class="internal"><span class="codenumber">2.2</span> <span class="title">Averages</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_avg.html#sec_avg-3" class="internal"><span class="codenumber">2.2.1</span> <span class="title">Optional — Return to the mean value theorem</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_avg.html#sec_avg-4" class="internal"><span class="codenumber">2.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_com.html" class="internal"><span class="codenumber">2.3</span> <span class="title">Centre of Mass and Torque</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_com.html#sec_com-3" class="internal"><span class="codenumber">2.3.1</span> <span class="title">Centre of Mass</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_com.html#sec_com-4" class="internal"><span class="codenumber">2.3.2</span> <span class="title">Optional — Torque</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_com.html#sec_com-5" class="internal"><span class="codenumber">2.3.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_sep_de.html" class="internal"><span class="codenumber">2.4</span> <span class="title">Separable Differential Equations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-3" class="internal"><span class="codenumber">2.4.1</span> <span class="title">Separate and integrate</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-4" class="internal"><span class="codenumber">2.4.2</span> <span class="title">Optional — Carbon Dating</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-5" class="internal"><span class="codenumber">2.4.3</span> <span class="title">Optional — Newton’s Law of Cooling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-6" class="internal"><span class="codenumber">2.4.4</span> <span class="title">Optional — Population Growth</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-7" class="internal"><span class="codenumber">2.4.5</span> <span class="title">Optional — Mixing Problems</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-8" class="internal"><span class="codenumber">2.4.6</span> <span class="title">Optional — Interest on Investments</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-9" class="internal"><span class="codenumber">2.4.7</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_seq_ser.html" class="internal"><span class="codenumber">3</span> <span class="title">Sequences and series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-3.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-3.html#chap_seq_ser-3-3" class="internal"><span class="codenumber">3.1.1</span> <span class="title">Sequences</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-3.html#chap_seq_ser-3-4" class="internal"><span class="codenumber">3.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-4.html" class="internal"><span class="codenumber">3.2</span> <span class="title">Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-4.html#chap_seq_ser-4-3" class="internal"><span class="codenumber">3.2.1</span> <span class="title">Series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-4.html#chap_seq_ser-4-4" class="internal"><span class="codenumber">3.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-5.html" class="internal"><span class="codenumber">3.3</span> <span class="title">Convergence Tests</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-3" class="internal"><span class="codenumber">3.3.1</span> <span class="title">The Divergence Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-4" class="internal"><span class="codenumber">3.3.2</span> <span class="title">The Integral Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-5" class="internal"><span class="codenumber">3.3.3</span> <span class="title">The Comparison Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_AST" class="internal"><span class="codenumber">3.3.4</span> <span class="title">The Alternating Series Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_RatioTest" class="internal"><span class="codenumber">3.3.5</span> <span class="title">The Ratio Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-8" class="internal"><span class="codenumber">3.3.6</span> <span class="title">Convergence Test List</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_Stack" class="internal"><span class="codenumber">3.3.7</span> <span class="title">Optional — The Leaning Tower of Books</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_RootTest" class="internal"><span class="codenumber">3.3.8</span> <span class="title">Optional — The Root Test</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel" class="internal"><span class="codenumber">3.3.9</span> <span class="title">Optional — Harmonic and Basel Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel-2" class="internal"><span class="codenumber">3.3.9.1</span> <span class="title">The Harmonic Series</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel-3" class="internal"><span class="codenumber">3.3.9.2</span> <span class="title">The Basel Problem</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_CompProof" class="internal"><span class="codenumber">3.3.10</span> <span class="title">Optional — Some Proofs</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-13" class="internal"><span class="codenumber">3.3.11</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-6.html" class="internal"><span class="codenumber">3.4</span> <span class="title">Absolute and Conditional Convergence</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-6.html#sec_abs_conv" class="internal"><span class="codenumber">3.4.1</span> <span class="title">Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-6.html#chap_seq_ser-6-4" class="internal"><span class="codenumber">3.4.2</span> <span class="title">Optional — The delicacy of conditionally convergent series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-6.html#chap_seq_ser-6-5" class="internal"><span class="codenumber">3.4.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-7.html" class="internal"><span class="codenumber">3.5</span> <span class="title">Power Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-3" class="internal"><span class="codenumber">3.5.1</span> <span class="title">Radius and Interval of Convergence</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-4" class="internal"><span class="codenumber">3.5.2</span> <span class="title">Working With Power Series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-5" class="internal"><span class="codenumber">3.5.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-8.html" class="internal"><span class="codenumber">3.6</span> <span class="title">Taylor Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-3" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Extending Taylor Polynomials</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-4" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Optional — More about the Taylor Remainder</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-5" class="internal"><span class="codenumber">3.6.2</span> <span class="title">Computing with Taylor Series</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#sec_Euler" class="internal"><span class="codenumber">3.6.3</span> <span class="title">Optional — Linking <span class="process-math">\(e^x\)</span> with trigonometric functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-7" class="internal"><span class="codenumber">3.6.4</span> <span class="title">Evaluating Limits using Taylor Expansions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-8" class="internal"><span class="codenumber">3.6.5</span> <span class="title">Optional — The Big O Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-9" class="internal"><span class="codenumber">3.6.6</span> <span class="title">Optional — Evaluating Limits Using Taylor Expansions — More Examples</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-10" class="internal"><span class="codenumber">3.6.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_RatIrr.html" class="internal"><span class="codenumber">3.7</span> <span class="title">Optional — Rational and irrational numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-3" class="internal"><span class="codenumber">3.7.1</span> <span class="title">Decimal expansions of rational numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-4" class="internal"><span class="codenumber">3.7.2</span> <span class="title">Eventually periodic implies rational</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-5" class="internal"><span class="codenumber">3.7.3</span> <span class="title">Rational implies eventually periodic</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6" class="internal"><span class="codenumber">3.7.4</span> <span class="title">Irrationality of <span class="process-math">\(e\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6-3" class="internal"><span class="codenumber">3.7.4.1</span> <span class="title">Proof 1</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6-4" class="internal"><span class="codenumber">3.7.4.2</span> <span class="title">Proof 2</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7" class="internal"><span class="codenumber">3.7.5</span> <span class="title">Irrationality of <span class="process-math">\(\pi\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-3" class="internal"><span class="codenumber">3.7.5.1</span> <span class="title">Bounding the integral</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-4" class="internal"><span class="codenumber">3.7.5.2</span> <span class="title">Integration by parts</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-5" class="internal"><span class="codenumber">3.7.5.3</span> <span class="title">The derivatives are integers</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-6" class="internal"><span class="codenumber">3.7.5.4</span> <span class="title">Putting it together</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-backmatter contains-active">
+<div class="toc-title-box"><a href="clp_2_ic-6.html" class="internal"><span class="title">Appendices</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_highschool.html" class="internal"><span class="codenumber">A</span> <span class="title">High School Material</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_simtri.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Similar Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-4.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Pythagoras</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-5.html" class="internal"><span class="codenumber">A.3</span> <span class="title">Trigonometry — Definitions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_rad_arc_sec.html" class="internal"><span class="codenumber">A.4</span> <span class="title">Radians, Arcs and Sectors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_trig_graphs.html" class="internal"><span class="codenumber">A.5</span> <span class="title">Trigonometry — Graphs</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-8.html" class="internal"><span class="codenumber">A.6</span> <span class="title">Trigonometry — Special Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-9.html" class="internal"><span class="codenumber">A.7</span> <span class="title">Trigonometry — Simple Identities</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_trig_add.html" class="internal"><span class="codenumber">A.8</span> <span class="title">Trigonometry — Add and Subtract Angles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_inv_trig.html" class="internal"><span class="codenumber">A.9</span> <span class="title">Inverse Trigonometric Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_areas.html" class="internal"><span class="codenumber">A.10</span> <span class="title">Areas</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_volumes.html" class="internal"><span class="codenumber">A.11</span> <span class="title">Volumes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_powers.html" class="internal"><span class="codenumber">A.12</span> <span class="title">Powers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_logs.html" class="internal"><span class="codenumber">A.13</span> <span class="title">Logarithms</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_must_deriv.html" class="internal"><span class="codenumber">A.14</span> <span class="title">Highschool Material You Should be Able to Derive</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-17.html" class="internal"><span class="codenumber">A.15</span> <span class="title">Cartesian Coordinates</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_roots.html" class="internal"><span class="codenumber">A.16</span> <span class="title">Roots of Polynomials</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix contains-active">
+<div class="toc-title-box"><a href="ap_complex.html" class="internal"><span class="codenumber">B</span> <span class="title">Complex Numbers and Exponentials</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_complex_defn.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Definition and Basic Operations</span></a></div></li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="sec_complex_exp.html" class="internal"><span class="codenumber">B.2</span> <span class="title">The Complex Exponential</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_exp_def" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Definition and Basic Properties</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_sin_cos" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Relationship with <span class="process-math">\(\sin\)</span> and <span class="process-math">\(\cos\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_polar" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Polar Coordinates</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_calculus" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Exploiting Complex Exponentials in Calculus Computations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_de" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Exploiting Complex Exponentials in Differential Equation Computations</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_Richardson_Romberg.html" class="internal"><span class="codenumber">C</span> <span class="title">More About Numerical Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_Richardson.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Richardson Extrapolation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_Romberg.html" class="internal"><span class="codenumber">C.2</span> <span class="title">Romberg Integration</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_adaptive.html" class="internal"><span class="codenumber">C.3</span> <span class="title">Adaptive Quadrature</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_ODE_numerical.html" class="internal"><span class="codenumber">D</span> <span class="title">Numerical Solution of ODE’s</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_derivation.html" class="internal"><span class="codenumber">D.1</span> <span class="title">Simple ODE Solvers — Derivation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_euler" class="internal"><span class="codenumber">D.1.1</span> <span class="title">Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_imp_euler" class="internal"><span class="codenumber">D.1.2</span> <span class="title">The Improved Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_runge_kutta" class="internal"><span class="codenumber">D.1.3</span> <span class="title">The Runge-Kutta Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_error_behaviour.html" class="internal"><span class="codenumber">D.2</span> <span class="title">Simple ODE Solvers —  Error Behaviour</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_error_behaviour.html#ap_local_trunc_Euler" class="internal"><span class="codenumber">D.2.1</span> <span class="title">Local Truncation Error for Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_error_behaviour.html#ap_global_trunc_Euler" class="internal"><span class="codenumber">D.2.2</span> <span class="title">Global Truncation Error for Euler’s Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_variable.html" class="internal"><span class="codenumber">D.3</span> <span class="title">Variable Step Size Methods</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_prelim_E_E2" class="internal"><span class="codenumber">D.3.1</span> <span class="title">Euler and Euler-2step (preliminary version)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_final_E_E2" class="internal"><span class="codenumber">D.3.2</span> <span class="title">Euler and Euler-2step (final version)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_Fehlberg" class="internal"><span class="codenumber">D.3.3</span> <span class="title">Fehlberg’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_Kutta_Merson" class="internal"><span class="codenumber">D.3.4</span> <span class="title">The Kutta-Merson Process</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_E_E2_local_trunc" class="internal"><span class="codenumber">D.3.5</span> <span class="title">The Local Truncation Error for Euler-2step</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_hint.html" class="internal"><span class="codenumber">E</span> <span class="title">Hints for Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_answ.html" class="internal"><span class="codenumber">F</span> <span class="title">Answers to Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_soln.html" class="internal"><span class="codenumber">G</span> <span class="title">Solutions to Exercises</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="section" id="sec_complex_exp"><h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The Complex Exponential</span>
+</h2>
+<section class="subsection" id="ssec_complex_exp_def"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Definition and Basic Properties</span>
+</h3>
+<div class="para logical" id="ssec_complex_exp_def-2">
+<div class="para">There are two equivalent standard definitions of the exponential, <span class="process-math">\(e^z\text{,}\)</span> of the complex number <span class="process-math">\(z=x+iy\text{.}\)</span> For the more intuitive definition, one simply replaces the real number <span class="process-math">\(x\)</span> in the Taylor series expansion<details class="ptx-footnote" aria-live="polite" id="ssec_complex_exp_def-2-4"><summary class="ptx-footnote__number" title="Footnote B.2.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents">See Theorem <a href="chap_seq_ser-8.html#thm_SRimportantTaylorSeries" class="xref" data-knowl="./knowl/xref/thm_SRimportantTaylorSeries.html" data-reveal-label="Reveal" data-close-label="Close" title="Theorem 3.6.7">3.6.7</a>.</div></details> <span class="process-math">\(e^x=\sum_{n=0}^\infty \frac{x^n}{n!}\)</span> with the complex number <span class="process-math">\(z\text{,}\)</span> giving</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_SRimportantTaylorSeries.html">
+\begin{equation*}
+e^z=\sum_{n=0}^\infty \frac{z^n}{n!}
+\tag{EZ}
+\end{equation*}
+</div>
+<div class="para">We instead highlight the more computationally useful definition.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_exp_def-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="def_complex_exp"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="def_complex_exp-1">
+<div class="para">For any complex number <span class="process-math">\(z=x+iy\text{,}\)</span> with <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> real, the exponential <span class="process-math">\(\, e^z\, \text{,}\)</span> is defined by</div>
+<div class="displaymath process-math">
+\begin{equation*}
+e^{x+iy}\ =\ e^x\cos y+i e^x\sin y
+\end{equation*}
+</div>
+<div class="para">In particular<details class="ptx-footnote" aria-live="polite" id="def_complex_exp-1-6"><summary class="ptx-footnote__number" title="Footnote B.2.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents">The equation <span class="process-math">\(e^{iy}\ =\ \cos y+i \sin y\)</span> is known as Euler’s formula. Leonhard Euler (1707–1783) was a  Swiss mathematician and physicist who spent most of his adult life in Saint Petersberg and Berlin. He gave the name <span class="process-math">\(\pi\)</span> to the ratio of a circle’s circumference to its diameter. He also developed the constant <span class="process-math">\(e\text{.}\)</span> His collected works fill 92 volumes.</div></details>, <span class="process-math">\(e^{iy}\ =\ \cos y+i \sin y\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#def_complex_exp-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition B.2.1"><a href="#def_complex_exp" title="Copy heading and permalink for Definition B.2.1" aria-label="Copy heading and permalink for Definition B.2.1">🔗</a></div></article><div class="para logical" id="ssec_complex_exp_def-4">
+<div class="para">We will not fully prove that the intuitive definition (EZ) and the computational Definition <a href="sec_complex_exp.html#def_complex_exp" class="xref" data-knowl="./knowl/xref/def_complex_exp.html" data-reveal-label="Reveal" data-close-label="Close" title="Definition B.2.1">B.2.1</a> are equivalent. But we will do so in the special case that <span class="process-math">\(z=iy\text{,}\)</span> with <span class="process-math">\(y\)</span> real. Under (EZ),</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/lem_exp_ppties.html">
+\begin{equation*}
+e^{iy} = 1 +iy +\frac{(iy)^2}{2!}+\frac{(iy)^3}{3!}+\frac{(iy)^4}{4!}
++\frac{(iy)^5}{5!}+\frac{(iy)^6}{6!}+\cdots
+\end{equation*}
+</div>
+<div class="para">The even terms in this expansion are</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/lem_exp_ppties.html">
+\begin{equation*}
+1  +\frac{(iy)^2}{2!}+\frac{(iy)^4}{4!}+\frac{(iy)^6}{6!}+\cdots
+=1  -\frac{y^2}{2!}+\frac{y^4}{4!}-\frac{y^6}{6!}+\cdots
+=\cos y
+\end{equation*}
+</div>
+<div class="para">and the odd terms in this expansion are</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/lem_exp_ppties.html">
+\begin{equation*}
+iy +\frac{(iy)^3}{3!}+\frac{(iy)^5}{5!}+\cdots
+=i\Big(y-\frac{y^3}{3!}+\frac{y^5}{5!}+\cdots\Big)
+=i\sin y
+\end{equation*}
+</div>
+<div class="para">Adding the even and odd terms together gives us that, under (EZ),  <span class="process-math">\(e^{iy}\)</span> is indeed equal to  <span class="process-math">\(\cos y + i\sin y\text{.}\)</span><details class="ptx-footnote" aria-live="polite" id="ssec_complex_exp_def-4-10"><summary class="ptx-footnote__number" title="Footnote B.2.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents">It is obvious that, in the special case that <span class="process-math">\(z=x\)</span> with <span class="process-math">\(x\)</span> real, the definitions (EZ) and <a href="sec_complex_exp.html#def_complex_exp" class="xref" data-knowl="./knowl/xref/def_complex_exp.html" data-reveal-label="Reveal" data-close-label="Close" title="Definition B.2.1">B.2.1</a> are equivalent. So to complete the proof of equivalence in the general case <span class="process-math">\(z=x+iy\text{,}\)</span> it suffices to prove that <span class="process-math">\(e^{x+iy}=e^x e^{iy}\)</span> under both (EZ) and Definition <a href="sec_complex_exp.html#def_complex_exp" class="xref" data-knowl="./knowl/xref/def_complex_exp.html" data-reveal-label="Reveal" data-close-label="Close" title="Definition B.2.1">B.2.1</a>. For Definition <a href="sec_complex_exp.html#def_complex_exp" class="xref" data-knowl="./knowl/xref/def_complex_exp.html" data-reveal-label="Reveal" data-close-label="Close" title="Definition B.2.1">B.2.1</a>, this follows from Lemma <a href="sec_complex_exp.html#lem_exp_ppties" class="xref" data-knowl="./knowl/xref/lem_exp_ppties.html" data-reveal-label="Reveal" data-close-label="Close" title="Lemma B.2.2">B.2.2</a>, below.</div></details> As a consequence, we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/def_complex_exp.html ./knowl/xref/lem_exp_ppties.html">
+\begin{equation*}
+e^{i\pi}=-1
+\end{equation*}
+</div>
+<div class="para">which gives an amazing linking between calculus (<span class="process-math">\(e\)</span>), geometry (<span class="process-math">\(\pi\)</span>), algebra (<span class="process-math">\(i\)</span>) and the basic number <span class="process-math">\(-1\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_exp_def-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ssec_complex_exp_def-5">In the next lemma we verify that the complex exponential obeys a couple of familiar computational properties.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_exp_def-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lem_exp_ppties"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="lem_exp_ppties-1">
+<ol class="lower-alpha ol-marker-6" id="lem_exp_ppties-1-1">
+<li id="lem_exp_ppties-1-1-1">
+<div class="para" id="p-derived-lem_exp_ppties-1-1-1">For any complex numbers <span class="process-math">\(z_1\)</span> and <span class="process-math">\(z_2\text{,}\)</span><div class="displaymath process-math">
+\begin{equation*}
+e^{z_1+z_2} = e^{z_1}e^{z_2}
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item a"><a href="#lem_exp_ppties-1-1-1" title="Copy heading and permalink for Item a" aria-label="Copy heading and permalink for Item a">🔗</a></div>
+</li>
+<li id="lem_exp_ppties-1-1-2">
+<div class="para" id="p-derived-lem_exp_ppties-1-1-2">For any complex number <span class="process-math">\(c\text{,}\)</span><div class="displaymath process-math">
+\begin{equation*}
+\diff{}{t}e^{ct} = c e^{ct}
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item b"><a href="#lem_exp_ppties-1-1-2" title="Copy heading and permalink for Item b" aria-label="Copy heading and permalink for Item b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#lem_exp_ppties-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma B.2.2"><a href="#lem_exp_ppties" title="Copy heading and permalink for Lemma B.2.2" aria-label="Copy heading and permalink for Lemma B.2.2">🔗</a></div></article><details id="ssec_complex_exp_def-7" class="hiddenproof born-hidden-knowl"><summary class="knowl__link"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4></summary><article class="hiddenproof knowl__content"><div class="para logical" id="ssec_complex_exp_def-7-1">
+<ol class="lower-alpha ol-marker-6" id="ssec_complex_exp_def-7-1-1">
+<li id="ssec_complex_exp_def-7-1-1-1">
+<div class="para" id="p-derived-ssec_complex_exp_def-7-1-1-1">For any two complex numbers <span class="process-math">\(z_1=x_1+iy_1\)</span> and <span class="process-math">\(z_2=x_2+iy_2\text{,}\)</span> with <span class="process-math">\(x_1\text{,}\)</span> <span class="process-math">\(y_1\text{,}\)</span> <span class="process-math">\(x_2\text{,}\)</span> <span class="process-math">\(y_2\)</span> real,<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_trig_add.html" id="ssec_complex_exp_def-7-1-1-1-7">
+\begin{align*}
+&amp;e^{z_1}e^{z_2}
+= e^{x_1}(\cos y_1+i \sin y_1)e^{x_2}(\cos y_2+i \sin y_2) \\
+&amp;= e^{x_1+x_2}(\cos y_1+i \sin y_1)(\cos y_2+i \sin y_2) \\
+&amp;= e^{x_1+x_2}\left\{(\cos y_1\cos y_2\!-\!\sin y_1\sin y_2)
++i (\cos y_1\sin y_2\!+\!\cos y_2\sin y_1)\right\} \\
+&amp;= e^{x_1+x_2}\left\{\cos(y_1+y_2)+i\sin(y_1+y_2)\right\}
+\end{align*}
+</div>by the trig identities of Appendix <a href="sec_trig_add.html" class="internal" title="Section A.8: Trigonometry — Add and Subtract Angles">A.8</a>. This says exactly that<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_trig_add.html">
+\begin{equation*}
+e^{z_1}e^{z_2}= e^{(x_1+x_2)+i(y_1+y_2)} = e^{z_1+z_2}
+\end{equation*}
+</div>and that the familiar multiplication formula also applies to complex exponentials.</div>
+<div class="autopermalink" data-description="Item a"><a href="#ssec_complex_exp_def-7-1-1-1" title="Copy heading and permalink for Item a" aria-label="Copy heading and permalink for Item a">🔗</a></div>
+</li>
+<li id="ssec_complex_exp_def-7-1-1-2">
+<div class="para" id="p-derived-ssec_complex_exp_def-7-1-1-2">For any real number <span class="process-math">\(t\)</span> and any complex number <span class="process-math">\(c=\alpha+i\beta\text{,}\)</span> with <span class="process-math">\(\alpha\text{,}\)</span> <span class="process-math">\(\beta\)</span> real,<div class="displaymath process-math">
+\begin{equation*}
+e^{ct}=e^{\alpha t+i\beta t}=e^{\alpha t}[\cos( \beta t)+i\sin(\beta t)]
+\end{equation*}
+</div>so that the derivative with respect to <span class="process-math">\(t\)</span><div class="displaymath process-math" id="ssec_complex_exp_def-7-1-1-2-7">
+\begin{align*}
+\diff{}{t} e^{ct}
+&amp;=\alpha e^{\alpha t}[\cos( \beta t)+i\sin(\beta t)]
++e^{\alpha t}[-\beta\sin( \beta t)+i\beta \cos(\beta t)] \\
+&amp;=(\alpha+i\beta) e^{\alpha t}[\cos( \beta t)+i\sin(\beta t)] \\
+&amp;=ce^{ct}
+\end{align*}
+</div>is also the familiar one.</div>
+<div class="autopermalink" data-description="Item b"><a href="#ssec_complex_exp_def-7-1-1-2" title="Copy heading and permalink for Item b" aria-label="Copy heading and permalink for Item b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_exp_def-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof B.2.1.1"><a href="#ssec_complex_exp_def-7" title="Copy heading and permalink for Proof B.2.1.1" aria-label="Copy heading and permalink for Proof B.2.1.1">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection B.2.1: Definition and Basic Properties"><a href="#ssec_complex_exp_def" title="Copy heading and permalink for Subsection B.2.1: Definition and Basic Properties" aria-label="Copy heading and permalink for Subsection B.2.1: Definition and Basic Properties">🔗</a></div></section><section class="subsection" id="ssec_complex_sin_cos"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Relationship with <span class="process-math">\(\sin\)</span> and <span class="process-math">\(\cos\)</span></span>
+</h3>
+<article class="fact theorem-like" id="eqn_euler"><h4 class="heading">
+<span class="type">Equation</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="eqn_euler-1-1">
+<div class="para">When <span class="process-math">\(\theta\)</span> is a real number</div>
+<div class="displaymath process-math" id="eqn_euler-1-1-2">
+\begin{align*}
+e^{i \theta} &amp;= \cos \theta+i \sin \theta \\
+e^{-i \theta} &amp;= \cos \theta-i \sin \theta=\overline{e^{i\theta}}
+\end{align*}
+</div>
+<div class="para">are complex numbers of modulus one.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eqn_euler-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Equation B.2.3"><a href="#eqn_euler" title="Copy heading and permalink for Equation B.2.3" aria-label="Copy heading and permalink for Equation B.2.3">🔗</a></div></article><div class="para" id="ssec_complex_sin_cos-3">Solving for <span class="process-math">\(\cos\theta\)</span> and <span class="process-math">\(\sin\theta\)</span> (by adding and subtracting the two equations) gives<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_sin_cos-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="fact theorem-like" id="eqn_exp_sin_cos"><h4 class="heading">
+<span class="type">Equation</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="eqn_exp_sin_cos-1-1">
+<div class="displaymath process-math" id="eqn_exp_sin_cos-1-1-1">
+\begin{alignat*}{2}
+\cos\theta&amp;=\frac{1}{2}(e^{i\theta}+e^{-i\theta})&amp;&amp;=\Re e^{i\theta} \\
+\sin\theta&amp;=\frac{1}{2i}(e^{i\theta}-e^{-i\theta})&amp;&amp;=\Im e^{i\theta}
+\end{alignat*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eqn_exp_sin_cos-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Equation B.2.4"><a href="#eqn_exp_sin_cos" title="Copy heading and permalink for Equation B.2.4" aria-label="Copy heading and permalink for Equation B.2.4">🔗</a></div></article><details id="eg_complex_trig_id" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_complex_trig_id-1">
+<div class="para">These formulae make it easy derive trig identities. For example,</div>
+<div class="displaymath process-math" id="eg_complex_trig_id-1-1">
+\begin{align*}
+\cos\theta\cos\phi &amp;= \frac{1}{4}\big(e^{i\theta}+e^{-i\theta}\big)
+\big(e^{i\phi}+e^{-i\phi}\big) \\
+&amp;= \frac{1}{4}\big(e^{i(\theta+\phi)}+e^{i(\theta-\phi)}
++e^{i(-\theta+\phi)}+e^{-i(\theta+\phi)}\big) \\
+&amp;= \frac{1}{4}\big(e^{i(\theta+\phi)}+e^{-i(\theta+\phi)}
++e^{i(\theta-\phi)} +e^{i(-\theta+\phi)}\big) \\
+&amp;= \frac{1}{2}\big(\cos(\theta+\phi)+\cos(\theta-\phi)\big)
+\end{align*}
+</div>
+<div class="para">and, using <span class="process-math">\((a+b)^3=a^3+3a^2b+3ab^2+b^3\text{,}\)</span>
+</div>
+<div class="displaymath process-math" id="eg_complex_trig_id-1-3">
+\begin{align*}
+\sin^3\theta&amp;=-\frac{1}{8i}\big(e^{i\theta}-e^{-i\theta}\big)^3\cr
+&amp;=-\frac{1}{8i}\big(e^{i3\theta}-3e^{i\theta}
++3e^{-i\theta}-e^{-i3\theta}\big) \\
+&amp;=\frac{3}{4}\frac{1}{2i}\big(e^{i\theta}-e^{-i\theta}\big)
+-\frac{1}{4}\frac{1}{2i}\big(e^{i3\theta}-e^{-i3\theta}\big) \\
+&amp;=\frac{3}{4}\sin\theta-\frac{1}{4}\sin(3\theta)
+\end{align*}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" id="eg_complex_trig_id-1-4">
+\begin{align*}
+\cos(2\theta)&amp;=\Re\big(e^{2\theta i}\big)=\Re \big(e^{i\theta}\big)^2 \\
+&amp;=\Re \big(\cos \theta+i\sin\theta\big)^2 \\
+&amp;=\Re \big(\cos^2 \theta+2i\sin\theta\cos\theta-\sin^2\theta\big) \\
+&amp;=\cos^2\theta-\sin^2\theta
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_complex_trig_id-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example B.2.5"><a href="#eg_complex_trig_id" title="Copy heading and permalink for Example B.2.5" aria-label="Copy heading and permalink for Example B.2.5">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection B.2.2: Relationship with \sin and \cos"><a href="#ssec_complex_sin_cos" title="Copy heading and permalink for Subsection B.2.2: Relationship with \sin and \cos" aria-label="Copy heading and permalink for Subsection B.2.2: Relationship with \sin and \cos">🔗</a></div></section><section class="subsection" id="ssec_complex_polar"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Polar Coordinates</span>
+</h3>
+<div class="para logical" id="ssec_complex_polar-2">
+<div class="para">Let <span class="process-math">\(z=x+iy\)</span> be any complex number. Writing <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> in polar coordinates in the usual way, i.e. <span class="process-math">\(x=r\cos(\theta)\text{,}\)</span> <span class="process-math">\(y=r\sin(\theta)\text{,}\)</span> gives</div>
+<div class="displaymath process-math" id="ssec_complex_polar-2-6">
+\begin{gather*}
+x+iy=r\cos\theta+ir\sin\theta=re^{i\theta}\qquad
+\end{gather*}
+</div>
+<div class="para">See the figure on the left below. In particular</div>
+<div class="displaymath process-math" id="ssec_complex_polar-2-7">
+\begin{alignat*}{4}
+1  &amp;=\ \ \ \  e^{i0}      &amp;&amp;= e^{2\pi i}         &amp;&amp;= e^{2k\pi i}             
+&amp;&amp;\quad\text{for }k=0,\pm 1,\pm2,\cdots \\
+-1 &amp;=\ \ \  e^{i\pi}    &amp;&amp;= e^{3\pi i}         &amp;&amp;= e^{(1+2k)\pi i}         
+&amp;&amp;\quad\text{for }k=0,\pm 1,\pm2,\cdots \\
+i  &amp;=\   e^{i\pi/2}  &amp;&amp;= e^{{5\over 2}\pi i} &amp;&amp;= e^{({1\over 2}+2k)\pi i}
+&amp;&amp;\quad\text{for }k=0,\pm 1,\pm2,\cdots \\
+-i &amp;=  e^{-i\pi/2} &amp;&amp;=e^{{3\over 2}\pi i}  &amp;&amp;= e^{(-{1\over 2}+2k)\pi i}
+&amp;&amp;\quad\text{for }k=0,\pm 1,\pm2,\cdots 
+\end{alignat*}
+</div>
+<div class="para">See the figure on the right below.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_polar-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:7.25%;margin-right:7.25%;grid-template-columns:40.9356725146199% 42.1052631578947%;column-gap:14.5%;">
+<div class="sbspanel sbspanel--middle middle" style=""><img src="external/text/figs/polar.svg" role="img" class="contained"></div>
+<div class="sbspanel sbspanel--middle middle" style=""><img src="external/text/figs/polar2.svg" role="img" class="contained"></div>
+</div></div>
+<div class="para" id="ssec_complex_polar-4">The polar coordinate <span class="process-math">\(\theta=\arctan\frac{y}{x}\)</span> associated with the complex number <span class="process-math">\(z=x+iy\text{,}\)</span> i.e. the point <span class="process-math">\((x,y)\)</span> in the <span class="process-math">\(xy\)</span>-plane, is also called the argument of <span class="process-math">\(z\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_polar-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="ssec_complex_polar-5">
+<div class="para">The polar coordinate representation makes it easy to find square roots, third roots and so on. Fix any positive integer <span class="process-math">\(n\text{.}\)</span> The <span class="process-math">\(n^{\rm th}\)</span> roots of unity are, by definition, all solutions <span class="process-math">\(z\)</span> of</div>
+<div class="displaymath process-math">
+\begin{equation*}
+z^n\ =\ 1
+\end{equation*}
+</div>
+<div class="para">Writing <span class="process-math">\(z=re^{i\theta}\)</span>
+</div>
+<div class="displaymath process-math">
+\begin{equation*}
+r^ne^{n\theta i}\ =\ 1e^{0i}
+\end{equation*}
+</div>
+<div class="para">The polar coordinates <span class="process-math">\((r,\theta)\)</span> and <span class="process-math">\((r',\theta')\)</span> represent the same point in the <span class="process-math">\(xy\)</span>-plane if and only if <span class="process-math">\(r=r'\)</span> and <span class="process-math">\(\theta=\theta'+2k\pi\)</span> for some integer <span class="process-math">\(k\text{.}\)</span> So <span class="process-math">\(z^n=1\)</span> if and only if <span class="process-math">\(r^n=1\text{,}\)</span> i.e. <span class="process-math">\(r=1\text{,}\)</span> and <span class="process-math">\(n\theta =2 k\pi\)</span> for some integer <span class="process-math">\(k\text{.}\)</span> The <span class="process-math">\(n^{\rm th}\)</span> roots of unity are all the complex numbers <span class="process-math">\(e^{2\pi i{k\over n}}\)</span> with <span class="process-math">\(k\)</span> integer. There are precisely <span class="process-math">\(n\)</span> distinct <span class="process-math">\(n^{\rm th}\)</span> roots of unity because <span class="process-math">\(e^{2\pi i{k\over n}}=e^{2\pi i{k'\over n}}\)</span> if and only if <span class="process-math">\(2\pi {k\over n}-2\pi {k'\over n}=2\pi {k-k'\over n}\)</span> is an integer multiple of <span class="process-math">\(2\pi\text{.}\)</span> That is, if and only if <span class="process-math">\(k-k'\)</span> is an integer multiple of <span class="process-math">\(n\text{.}\)</span> The <span class="process-math">\(\, n\, \)</span> distinct <span class="process-math">\(n^{\rm th}\)</span> roots of unity are</div>
+<div class="displaymath process-math">
+\begin{equation*}
+1\ ,\ e^{2\pi i{1\over n}}\ ,\ e^{2\pi i{2\over n}}
+\ ,\  e^{2\pi i{3\over n}}\ ,\ \cdots\ ,\ e^{2\pi i{n-1\over n}}
+\end{equation*}
+</div>
+<div class="para">For example, the <span class="process-math">\(6^{\rm th}\)</span> roots of unity are depicted below.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_polar-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:30%;margin-right:30%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/polar3.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Subsection B.2.3: Polar Coordinates"><a href="#ssec_complex_polar" title="Copy heading and permalink for Subsection B.2.3: Polar Coordinates" aria-label="Copy heading and permalink for Subsection B.2.3: Polar Coordinates">🔗</a></div></section><section class="subsection" id="ssec_complex_calculus"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exploiting Complex Exponentials in Calculus Computations</span>
+</h3>
+<div class="para" id="ssec_complex_calculus-2">You have learned how to evaluate integrals involving trigonometric functions by using integration by parts, various trigonometric identities and various substitutions. It is often much easier to just use (<a href="sec_complex_exp.html#eqn_euler" class="xref" data-knowl="./knowl/xref/eqn_euler.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.3">B.2.3</a>) and (<a href="sec_complex_exp.html#eqn_exp_sin_cos" class="xref" data-knowl="./knowl/xref/eqn_exp_sin_cos.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.4">B.2.4</a>). Part of the utility of complex numbers comes from how well they interact with calculus through the exponential function. Here are two examples.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_calculus-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_complex_calc_A" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_complex_calc_A-1">
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eg_PRTSexsinx.html" id="eg_complex_calc_A-1-1">
+\begin{align*}
+\int e^x\cos x\ \dee{x}&amp;=\frac{1}{2} \int e^x\big[e^{ix}+e^{-ix}\big]\ \dee{x}
+=\frac{1}{2}  \int \big[e^{(1+i)x}+e^{(1-i)x}\big]\ \dee{x} \\
+&amp;=\frac{1}{2}  \left[\frac{1}{1+i}e^{(1+i)x}+\frac{1}{1-i}e^{(1-i)x}\right]+C
+\end{align*}
+</div>
+<div class="para">This form of the indefinite integral looks a little weird because of the <span class="process-math">\(i\)</span>’s.  While it looks complex because of the <span class="process-math">\(i\)</span>’s, it is actually purely real (and correct), because <span class="process-math">\(\frac{1}{1-i}e^{(1-i)x}\)</span> is the complex conjugate of <span class="process-math">\(\frac{1}{1+i}e^{(1+i)x}\text{.}\)</span> We can convert the indefinite integral into a more familiar form just by subbing back in <span class="process-math">\(e^{\pm ix}=\cos x\pm i\sin x\text{,}\)</span> <span class="process-math">\(\frac{1}{1+i}=\frac{1-i}{(1+i)(1-i)}=\frac{1-i}{2}\)</span> and <span class="process-math">\(\frac{1}{1-i}=\overline{\frac{1}{1+i}}=\frac{1+i}{2}\text{.}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eg_PRTSexsinx.html" id="eg_complex_calc_A-1-9">
+\begin{align*}
+\int e^x\cos x\ \dee{x}
+&amp;=\frac{1}{2}  e^x\left[\frac{1}{1+i}e^{ix}+\frac{1}{1-i}e^{-ix}\right]+C\\
+&amp;=\frac{1}{2}  e^x\left[\frac{1-i}{2}(\cos x+i\sin x)
++\frac{1+i}{2}(\cos x-i\sin x)\right]+C \\
+&amp;=\frac{1}{2}  e^x\cos x+\frac{1}{2} e^x\sin x+C
+\end{align*}
+</div>
+<div class="para">You can quickly verify this by differentiating (or by comparing with Example <a href="sec_intbyparts.html#eg_PRTSexsinx" class="xref" data-knowl="./knowl/xref/eg_PRTSexsinx.html" data-reveal-label="Reveal" data-close-label="Close" title="Example 1.7.11: \int_a^b e^x\sin x\dee{x} and \int_a^b e^x\cos x\dee{x}">1.7.11</a>).</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_complex_calc_A-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example B.2.6"><a href="#eg_complex_calc_A" title="Copy heading and permalink for Example B.2.6" aria-label="Copy heading and permalink for Example B.2.6">🔗</a></div></article></details><details id="eg_complex_calc_B" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_complex_calc_B-1">
+<div class="para">Evaluating the integral <span class="process-math">\(\int\cos^nx\ \dee{x}\)</span> using the methods of Section <a href="sec_trigint.html" class="internal" title="Section 1.8: Trigonometric Integrals">1.8</a> can be a real pain. It is much easier if we convert to complex exponentials. Using <span class="process-math">\((a+b)^4=a^4+4a^3b+6a^2b^2+4ab^3+b^4\text{,}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_trigint.html" id="eg_complex_calc_B-1-5">
+\begin{align*}
+\int \cos^4 x\ \dee{x}&amp;=\frac{1}{2^4} \int\big[e^{ix}+e^{-ix}\big]^4\ \dee{x}\\
+&amp;=\frac{1}{2^4} \int \big[e^{4ix}+4e^{2ix}+6+4e^{-2ix}+e^{-4ix}\big]\ \dee{x} \\
+&amp;=\frac{1}{2^4} \left[\frac{1}{4i}e^{4ix}+\frac{4}{2i}e^{2ix}+6x
++\frac{4}{-2i}e^{-2ix}+\frac{1}{-4i}e^{-4ix}\right]+C\\
+&amp;=\frac{1}{2^4} \left[\frac{1}{2}\frac{1}{2i}(e^{4ix}-e^{-4ix})
++\frac{4}{2i}(e^{2ix}-e^{-2ix})+6x\right]+C\\
+&amp;=\frac{1}{2^4} \left[\frac{1}{2}\sin 4x+4\sin 2x+6x\right]+C \\
+&amp;=\frac{1}{32} \sin 4x+\frac{1}{4}\sin 2x+\frac{3}{8}x+C
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_complex_calc_B-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example B.2.7"><a href="#eg_complex_calc_B" title="Copy heading and permalink for Example B.2.7" aria-label="Copy heading and permalink for Example B.2.7">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection B.2.4: Exploiting Complex Exponentials in Calculus Computations"><a href="#ssec_complex_calculus" title="Copy heading and permalink for Subsection B.2.4: Exploiting Complex Exponentials in Calculus Computations" aria-label="Copy heading and permalink for Subsection B.2.4: Exploiting Complex Exponentials in Calculus Computations">🔗</a></div></section><section class="subsection" id="ssec_complex_de"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exploiting Complex Exponentials in Differential Equation Computations</span>
+</h3>
+<div class="para" id="ssec_complex_de-2">Complex exponentials are also widely used to simplify the process of guessing solutions to ordinary differential equations. We’ll start with (possibly a review of) some basic definitions and facts about differential equations.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_de-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="def_apODE"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="def_apODE-1-1">
+<ol class="lower-alpha ol-marker-1" id="def_apODE-1-1-1">
+<li id="def_apODE-1-1-1-1">
+<div class="para" id="p-derived-def_apODE-1-1-1-1">A <dfn class="terminology">differential equation</dfn> is an equation for an unknown function that contains the derivatives of that unknown function. For example <span class="process-math">\(y''(t)+y(t)=0\)</span> is a differential equation for the unknown function <span class="process-math">\(y(t)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item a"><a href="#def_apODE-1-1-1-1" title="Copy heading and permalink for Item a" aria-label="Copy heading and permalink for Item a">🔗</a></div>
+</li>
+<li id="def_apODE-1-1-1-2">
+<div class="para" id="def_apODE-1-1-1-2-1">In the differential calculus text CLP-1, we treated only derivatives of functions of one variable. Such derivatives are called ordinary derivatives. A differential equation is called an <dfn class="terminology">ordinary differential equation</dfn> (often shortened to “ODE”) if only ordinary derivatives appear. That is, if the unknown function has only a single independent variable.<div class="autopermalink" data-description="Paragraph"><a href="#def_apODE-1-1-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="def_apODE-1-1-1-2-2">In CLP-3 we will treat derivatives of functions of more than one variable. For example, let <span class="process-math">\(f(x,y)\)</span> be a function of two variables. If you treat <span class="process-math">\(y\)</span> as a constant and take the derivative of the resulting function of the single variable <span class="process-math">\(x\text{,}\)</span> the result is called the partial derivative of <span class="process-math">\(f\)</span> with respect to <span class="process-math">\(x\text{.}\)</span> A differential equation is called a <dfn class="terminology">partial differential equation</dfn> (often shortened to “PDE”) if partial derivatives appear. That is, if the unknown function has more than one independent variable. For example <span class="process-math">\(y''(t)+y(t)=0\)</span> is an ODE while <span class="process-math">\(\frac{\partial^2 u}{\partial\, t^2}(x,t)=c^2
+\frac{\partial^2 u}{\partial\, x^2}(x,t)\)</span> is a PDE.<div class="autopermalink" data-description="Paragraph"><a href="#def_apODE-1-1-1-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item b"><a href="#def_apODE-1-1-1-2" title="Copy heading and permalink for Item b" aria-label="Copy heading and permalink for Item b">🔗</a></div>
+</li>
+<li id="def_apODE-1-1-1-3">
+<div class="para" id="p-derived-def_apODE-1-1-1-3">The <dfn class="terminology">order</dfn> of a differential equation is the order of the highest derivative that appears. For example <span class="process-math">\(y''(t)+y(t)=0\)</span> is a second order ODE.</div>
+<div class="autopermalink" data-description="Item c"><a href="#def_apODE-1-1-1-3" title="Copy heading and permalink for Item c" aria-label="Copy heading and permalink for Item c">🔗</a></div>
+</li>
+<li id="def_apODE-1-1-1-4">
+<div class="para logical" id="def_apODE-1-1-1-4-1">
+<div class="para">An ordinary differential equation that is of the form</div>
+<div class="displaymath process-math" id="eqn_ODEordern">
+\begin{equation}
+a_0(t) y^{(n)}(t) + a_1(t) y^{(n-1)}(t)+\cdots +a_n(t)y(t)
+=F(t)\tag{B.2.1}
+\end{equation}
+</div>
+<div class="para">with given coefficient functions <span class="process-math">\(a_0(t)\text{,}\)</span> <span class="process-math">\(\cdots\text{,}\)</span> <span class="process-math">\(a_n(t)\)</span> and <span class="process-math">\(F(t)\)</span> is said to be <dfn class="terminology">linear</dfn>. Otherwise, the ODE is said to be <dfn class="terminology">nonlinear</dfn>. For example, <span class="process-math">\(y'(t)^2+y(t)=0\text{,}\)</span> <span class="process-math">\(y'(t)y''(t)+y(t)=0\)</span> and <span class="process-math">\(y'(t)=e^{y(t)}\)</span> are all nonlinear.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#def_apODE-1-1-1-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item d"><a href="#def_apODE-1-1-1-4" title="Copy heading and permalink for Item d" aria-label="Copy heading and permalink for Item d">🔗</a></div>
+</li>
+<li id="def_apODE-1-1-1-5">
+<div class="para" id="p-derived-def_apODE-1-1-1-5">The ODE <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a> is said to have <dfn class="terminology">constant coefficients</dfn> if the coefficients  <span class="process-math">\(a_0(t)\text{,}\)</span> <span class="process-math">\(a_1(t)\text{,}\)</span> <span class="process-math">\(\cdots\text{,}\)</span> <span class="process-math">\(a_n(t)\)</span> are all constants. Otherwise, it is said to have <dfn class="terminology">variable coefficients</dfn>. For example, the ODE <span class="process-math">\(y''(t)+7y(t)=\sin t\)</span> is constant coefficient, while <span class="process-math">\(y''(t)+ty(t)=\sin t\)</span> is variable coefficient.</div>
+<div class="autopermalink" data-description="Item e"><a href="#def_apODE-1-1-1-5" title="Copy heading and permalink for Item e" aria-label="Copy heading and permalink for Item e">🔗</a></div>
+</li>
+<li id="def_apODE-1-1-1-6">
+<div class="para" id="p-derived-def_apODE-1-1-1-6">The ODE <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a> is said to be <dfn class="terminology">homogeneous</dfn> if <span class="process-math">\(F(t)\)</span> is identically zero. Otherwise, it is said to be <dfn class="terminology">inhomogeneous</dfn> or <dfn class="terminology">nonhomogeneous</dfn>. For example, the ODE <span class="process-math">\(y''(t)+7y(t)=0\)</span> is homogeneous, while  <span class="process-math">\(y''(t)+7y(t)=\sin t\)</span> is inhomogeneous. A homogeneous ODE always has the trivial solution <span class="process-math">\(y(t)=0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item f"><a href="#def_apODE-1-1-1-6" title="Copy heading and permalink for Item f" aria-label="Copy heading and permalink for Item f">🔗</a></div>
+</li>
+<li id="def_apODE-1-1-1-7">
+<div class="para" id="p-derived-def_apODE-1-1-1-7">An <dfn class="terminology">initial value problem</dfn>  is a problem in which one is to find an unknown function <span class="process-math">\(y(t)\)</span> that satisfies both a given ODE and given initial conditions, like <span class="process-math">\(y(t_0)=1\text{,}\)</span> <span class="process-math">\(y'(t_0)=0\text{.}\)</span> Note that all of the conditions involve the function <span class="process-math">\(y(t)\)</span> (or its derivatives) evaluated at a single time <span class="process-math">\(t=t_0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item g"><a href="#def_apODE-1-1-1-7" title="Copy heading and permalink for Item g" aria-label="Copy heading and permalink for Item g">🔗</a></div>
+</li>
+<li id="def_apODE-1-1-1-8">
+<div class="para" id="p-derived-def_apODE-1-1-1-8">A <dfn class="terminology">boundary value problem</dfn>  is a problem in which one is to find an unknown function <span class="process-math">\(y(t)\)</span> that satisfies both a given ODE and given boundary conditions, like <span class="process-math">\(y(t_0)=0\text{,}\)</span> <span class="process-math">\(y(t_1)=0\text{.}\)</span>  Note that the conditions involve the function <span class="process-math">\(y(t)\)</span> (or its derivatives) evaluated at two different times.</div>
+<div class="autopermalink" data-description="Item h"><a href="#def_apODE-1-1-1-8" title="Copy heading and permalink for Item h" aria-label="Copy heading and permalink for Item h">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#def_apODE-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition B.2.8"><a href="#def_apODE" title="Copy heading and permalink for Definition B.2.8" aria-label="Copy heading and permalink for Definition B.2.8">🔗</a></div></article><div class="para" id="ssec_complex_de-4">The following theorem gives the form of solutions to the linear<details class="ptx-footnote" aria-live="polite" id="ssec_complex_de-4-1"><summary class="ptx-footnote__number" title="Footnote B.2.4"><sup> 4 </sup></summary><div class="ptx-footnote__contents">There are a some special classes of nonlinear ODE’s, like the separable differential equations of §<a href="sec_sep_de.html" class="internal" title="Section 2.4: Separable Differential Equations">2.4</a>, that are relatively easy to solve. But generally, nonlinear ODE’s are much harder to solve than linear ODE’s.</div></details> ODE <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a>.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_de-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_odeMain"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="thm_odeMain-1-1">
+<div class="para">Assume that the coefficients <span class="process-math">\(a_0(t)\text{,}\)</span> <span class="process-math">\(a_1(t)\text{,}\)</span> <span class="process-math">\(\cdots\text{,}\)</span> <span class="process-math">\(a_{n-1}(t)\text{,}\)</span> <span class="process-math">\(a_n(t)\)</span> and <span class="process-math">\(F(t)\)</span> are continuous functions and that <span class="process-math">\(a_0(t)\)</span> is not zero.</div>
+<ol class="lower-alpha ol-marker-1" id="thm_odeMain-1-1-8">
+<li id="thm_odeMain-1-1-8-1">
+<div class="para logical" id="thm_odeMain-1-1-8-1-1">
+<div class="para">The general solution to the linear ODE <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a> is of the form</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_ODEordern.html ./knowl/xref/eqn_ODEordern.html ./knowl/xref/eqn_ODEordern.html ./knowl/xref/eqn_ODEordern.html ./knowl/xref/eqn_ODEgensln.html" id="eqn_ODEgensln">
+\begin{equation}
+y(t)=y_p(t)+ C_1y_1(t)+C_2y_2(t)+\cdots+C_n y_n(t)\tag{B.2.2}
+\end{equation}
+</div>
+<div class="para">where</div>
+<ul class="disc" id="thm_odeMain-1-1-8-1-1-3">
+<li id="thm_odeMain-1-1-8-1-1-3-1">
+<div class="para" id="p-derived-thm_odeMain-1-1-8-1-1-3-1">
+<span class="process-math">\(n\)</span> is the order of <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#thm_odeMain-1-1-8-1-1-3-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="thm_odeMain-1-1-8-1-1-3-2">
+<div class="para" id="p-derived-thm_odeMain-1-1-8-1-1-3-2">
+<span class="process-math">\(y_p(t)\)</span> is <em class="alert">any</em> solution to <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#thm_odeMain-1-1-8-1-1-3-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="thm_odeMain-1-1-8-1-1-3-3">
+<div class="para" id="p-derived-thm_odeMain-1-1-8-1-1-3-3">
+<span class="process-math">\(C_1\text{,}\)</span> <span class="process-math">\(C_2\text{,}\)</span> <span class="process-math">\(\cdots\text{,}\)</span> <span class="process-math">\(C_n\)</span> are arbitrary constants</div>
+<div class="autopermalink" data-description="Item"><a href="#thm_odeMain-1-1-8-1-1-3-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="thm_odeMain-1-1-8-1-1-3-4">
+<div class="para" id="p-derived-thm_odeMain-1-1-8-1-1-3-4">
+<span class="process-math">\(y_1\text{,}\)</span> <span class="process-math">\(y_2\text{,}\)</span> <span class="process-math">\(\cdots\text{,}\)</span> <span class="process-math">\(y_n\)</span> are <span class="process-math">\(n\)</span> independent solutions to the homogenous equation<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_ODEordern.html">
+\begin{equation*}
+a_0(t) y^{(n)}(t) + a_1(t) y^{(n-1)}(t)+\cdots+a_{n-1}(t) y'(t) +a_n(t)y(t)=0
+\end{equation*}
+</div>associated to <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a>. “Independent” just means that no <span class="process-math">\(y_i\)</span> can be written as a linear combination of the other <span class="process-math">\(y_j\)</span>’s. For example, <span class="process-math">\(y_1(t)\)</span> cannot be expressed in the form <span class="process-math">\(b_2y_2(t)+\cdots+b_ny_n(t)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#thm_odeMain-1-1-8-1-1-3-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">In <a href="sec_complex_exp.html#eqn_ODEgensln" class="xref" data-knowl="./knowl/xref/eqn_ODEgensln.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.2">(B.2.2)</a>, <span class="process-math">\(y_p\)</span> is called the “particular solution” and <span class="process-math">\(C_1y_1(t)+C_2y_2(t)+\cdots+C_n y_n(t)\)</span> is called the “complementary solution”.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#thm_odeMain-1-1-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item a"><a href="#thm_odeMain-1-1-8-1" title="Copy heading and permalink for Item a" aria-label="Copy heading and permalink for Item a">🔗</a></div>
+</li>
+<li id="thm_odeMain-1-1-8-2">
+<div class="para" id="p-derived-thm_odeMain-1-1-8-2">Given any constants <span class="process-math">\(b_0\text{,}\)</span> <span class="process-math">\(\cdots\text{,}\)</span> <span class="process-math">\(b_{n-1}\)</span> there is exactly one function <span class="process-math">\(y(t)\)</span> that obeys the ODE <a href="sec_complex_exp.html#eqn_ODEordern" class="xref" data-knowl="./knowl/xref/eqn_ODEordern.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.1">(B.2.1)</a> and the initial conditions<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_ODEordern.html">
+\begin{equation*}
+y(0)=b_0\qquad y'(0)=b_1\qquad \cdots\qquad y^{(n-1)}(0)=b_{n-1}
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item b"><a href="#thm_odeMain-1-1-8-2" title="Copy heading and permalink for Item b" aria-label="Copy heading and permalink for Item b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#thm_odeMain-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem B.2.9"><a href="#thm_odeMain" title="Copy heading and permalink for Theorem B.2.9" aria-label="Copy heading and permalink for Theorem B.2.9">🔗</a></div></article><div class="para" id="ssec_complex_de-6">In the following example we’ll derive one widely used linear constant coefficient ODE.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_de-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_RLC" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">RLC circuit.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_RLC-2">As an example of how ODE’s arise, we consider the RLC circuit, which is the electrical circuit consisting of a resistor of resistance <span class="process-math">\(R\text{,}\)</span> a coil (or solenoid) of inductance <span class="process-math">\(L\text{,}\)</span> a capacitor of capacitance <span class="process-math">\(C\)</span> and a voltage source arranged in series, as shown below. Here <span class="process-math">\(R\text{,}\)</span> <span class="process-math">\(L\)</span> and <span class="process-math">\(C\)</span> are all nonnegative constants.<div class="autopermalink" data-description="Paragraph"><a href="#eg_RLC-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:25%;margin-right:25%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/RLC.svg" role="img" class="contained"></div></div></div>
+<div class="para logical" id="eg_RLC-4">
+<div class="para">We’re going to think of the voltage <span class="process-math">\(x(t)\)</span> as an input signal, and the voltage <span class="process-math">\(y(t)\)</span> as an output signal. The goal is to determine the output signal produced by a given input signal. If <span class="process-math">\(i(t)\)</span> is the current flowing at time <span class="process-math">\(t\)</span> in the loop as shown and <span class="process-math">\(q(t)\)</span> is the charge on the capacitor, then the voltages across <span class="process-math">\(R\text{,}\)</span> <span class="process-math">\(L\)</span> and <span class="process-math">\(C\text{,}\)</span> respectively, at time <span class="process-math">\(t\)</span> are <span class="process-math">\(Ri(t)\text{,}\)</span> <span class="process-math">\(L\diff{i}{t}(t)\)</span> and <span class="process-math">\(y(t)=\frac{q(t)}{C}\text{.}\)</span> By the Kirchhoff’s law<details class="ptx-footnote" aria-live="polite" id="eg_RLC-4-13"><summary class="ptx-footnote__number" title="Footnote B.2.5"><sup> 5 </sup></summary><div class="ptx-footnote__contents">Gustav Robert Kirchhoff (1824–1887) was a German physicist. There are several sets of Kirchhoff’s laws that are named after him — Kirchhoff’s circuit laws, that we are using in this example, Krichhoff’s spectroscopy laws and Kirchhoff’s law of thermochemistry. Kirchhoff and his collaborator Robert Bunsen, of Bunsen burner fame, invented the spectroscope.</div></details> that says that the voltage between any two points has to be independent of the path used to travel between the two points, these three voltages must add up to <span class="process-math">\(x(t)\)</span> so that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_RLCiq.html ./knowl/xref/eqn_RLCrlc.html" id="eqn_RLCrlc">
+\begin{equation}
+Ri(t) + L\diff{i}{t}(t) + \frac{q(t)}{C} = x(t)\tag{B.2.3}
+\end{equation}
+</div>
+<div class="para">Assuming that <span class="process-math">\(R,\ L,\ C\)</span> and <span class="process-math">\(x(t)\)</span> are known, this is still one differential equation in two unknowns, the current <span class="process-math">\(i(t)\)</span> and the charge <span class="process-math">\(q(t)\text{.}\)</span> Fortunately, there is a relationship between the two. Because the current entering the capacitor is the rate of change of the charge on the capacitor</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_RLCiq.html ./knowl/xref/eqn_RLCrlc.html" id="eqn_RLCiq">
+\begin{equation}
+i(t)=\diff{q}{t}(t) = Cy'(t)\tag{B.2.4}
+\end{equation}
+</div>
+<div class="para">This just says that the capacitor cannot create or destroy charge on its own; all charging of the capacitor must come from the current. Substituting <a href="sec_complex_exp.html#eqn_RLCiq" class="xref" data-knowl="./knowl/xref/eqn_RLCiq.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.4">(B.2.4)</a> into <a href="sec_complex_exp.html#eqn_RLCrlc" class="xref" data-knowl="./knowl/xref/eqn_RLCrlc.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.3">(B.2.3)</a> gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_RLCiq.html ./knowl/xref/eqn_RLCrlc.html">
+\begin{equation*}
+LCy''(t) + RCy'(t) + y(t) = x(t)
+\end{equation*}
+</div>
+<div class="para">which is a second order linear constant coefficient ODE. As a concrete example, we’ll take  an ac voltage source and choose the origin of time so that <span class="process-math">\(x(0)=0\text{,}\)</span> <span class="process-math">\(x(t)=E_0\sin(\omega t)\text{.}\)</span> Then the differential equation becomes</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_RLCiq.html ./knowl/xref/eqn_RLCrlc.html" id="eqn_ODERy">
+\begin{equation}
+LCy''(t)+RCy'(t)+y(t)=E_0\sin(\omega t)\tag{B.2.5}
+\end{equation}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_RLC-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example B.2.10: RLC circuit"><a href="#eg_RLC" title="Copy heading and permalink for Example B.2.10: RLC circuit" aria-label="Copy heading and permalink for Example B.2.10: RLC circuit">🔗</a></div></article></details><div class="para" id="ssec_complex_de-8">Finally, here are two examples in which we use complex exponentials to solve an ODE.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_complex_de-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_complex_ode_A" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_complex_ode_A-1">
+<div class="para">By Theorem <a href="sec_complex_exp.html#thm_odeMain" class="xref" data-knowl="./knowl/xref/thm_odeMain.html" data-reveal-label="Reveal" data-close-label="Close" title="Theorem B.2.9">B.2.9</a>(a), the general solution to the ordinary differential equation</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html">
+\begin{equation*}
+y''(t)+4y'(t)+5y(t)=0
+\tag{ODE}
+\end{equation*}
+</div>
+<div class="para">is of the form <span class="process-math">\(C_1 u_1(t)+C_2 u_2(t)\)</span> with <span class="process-math">\(u_1(t)\)</span> and <span class="process-math">\(u_2(t)\)</span> being two (independent) solutions to (ODE) and with <span class="process-math">\(C_1\)</span> and <span class="process-math">\(C_2\)</span> being arbitrary constants. The easiest way to find <span class="process-math">\(u_1(t)\)</span> and <span class="process-math">\(u_2(t)\)</span> is to guess them. And the easiest way to guess them is to try<details class="ptx-footnote" aria-live="polite" id="eg_complex_ode_A-1-11"><summary class="ptx-footnote__number" title="Footnote B.2.6"><sup> 6 </sup></summary><div class="ptx-footnote__contents">The reason that <span class="process-math">\(y(t)=e^{rt}\)</span> is a good guess is that, with this guess, all of <span class="process-math">\(y(t)\text{,}\)</span> <span class="process-math">\(y'(t)\)</span> and <span class="process-math">\(y''(t)\)</span> are constants times <span class="process-math">\(e^{rt}\text{.}\)</span> So the left hand side of the differential equation is also a constant, that depends on <span class="process-math">\(r\text{,}\)</span> times <span class="process-math">\(e^{rt}\text{.}\)</span> So we just have to choose <span class="process-math">\(r\)</span> so that the constant is zero.</div></details> <span class="process-math">\(y(t)=e^{rt}\text{,}\)</span> with <span class="process-math">\(r\)</span> being a constant to be determined. Substituting <span class="process-math">\(y(t)=e^{rt}\)</span> into (ODE) gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html" id="eg_complex_ode_A-1-15">
+\begin{gather*}
+r^2 e^{rt} +4re^{rt}+5e^{rt}=0
+\iff\big(r^2 +4r+5\big)e^{rt}=0
+\iff r^2 +4r+5=0
+\end{gather*}
+</div>
+<div class="para">This quadratic equation for <span class="process-math">\(r\)</span> can be solved either by using the high school formula  or by completing the square.</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html" id="eg_complex_ode_A-1-17">
+\begin{align*}
+r^2 +4r+5=0
+&amp;\iff (r+2)^2+1=0\\
+&amp;\iff (r+2)^2=-1
+\iff r+2=\pm i \\
+&amp;\iff r=-2\pm i
+\end{align*}
+</div>
+<div class="para">So the general solution to (ODE) is</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html" id="eg_complex_ode_A-1-18">
+\begin{gather*}
+y(t)=C_1e^{(-2+i)t} + C_2e^{(-2-i)t}
+\end{gather*}
+</div>
+<div class="para">This is one way to write the general solution, but there are many others. In particular there are quite a few people in the world who are (foolishly) afraid<details class="ptx-footnote" aria-live="polite" id="eg_complex_ode_A-1-19"><summary class="ptx-footnote__number" title="Footnote B.2.7"><sup> 7 </sup></summary><div class="ptx-footnote__contents">Embracing the complexity leads to simplicity.</div></details> of complex exponentials. We can hide them by using (<a href="sec_complex_exp.html#eqn_euler" class="xref" data-knowl="./knowl/xref/eqn_euler.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.3">B.2.3</a>) and (<a href="sec_complex_exp.html#eqn_exp_sin_cos" class="xref" data-knowl="./knowl/xref/eqn_exp_sin_cos.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation B.2.4">B.2.4</a>).</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html" id="eg_complex_ode_A-1-22">
+\begin{align*}
+y(t)&amp;=C_1e^{(-2+i)t} + C_2e^{(-2-i)t}
+=C_1e^{-2t}e^{it} + C_2 e^{-2t}e^{-it} \\
+&amp;=C_1e^{-2t}\big(\cos t+i\sin t \big) 
++C_2 e^{-2t}\big(\cos t-i\sin t \big) \\
+&amp;=(C_1+C_2) e^{-2t} \cos t 
++(iC_1-iC_2) e^{-2t}\sin t \\
+&amp;=D_1 e^{-2t} \cos t 
++D_2 e^{-2t}\sin t 
+\end{align*}
+</div>
+<div class="para">with <span class="process-math">\(D_1=C_1+C_2\)</span> and <span class="process-math">\(D_2=iC_1-iC_2\)</span> being two other arbitrary constants. Don’t make the mistake of thinking that <span class="process-math">\(D_2\)</span> must be complex because <span class="process-math">\(i\)</span> appears in the formula <span class="process-math">\(D_2=iC_1-iC_2\)</span> relating <span class="process-math">\(D_2\)</span> and <span class="process-math">\(C_1,C_2\text{.}\)</span> No one said that <span class="process-math">\(C_1\)</span> and <span class="process-math">\(C_2\)</span> are real numbers. In fact, in typical applications, the arbitrary constants are determined by initial conditions and often <span class="process-math">\(D_1\)</span> and <span class="process-math">\(D_2\)</span> turn out to be real and <span class="process-math">\(C_1\)</span> and <span class="process-math">\(C_2\)</span> turn out to be complex. For example, the initial conditions  <span class="process-math">\(y(0)=0\text{,}\)</span> <span class="process-math">\(y'(0)=2\)</span> force</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html" id="eg_complex_ode_A-1-38">
+\begin{align*}
+0&amp;=y(0) = C_1 + C_2
+\cr
+2&amp;=y'(0) = (-2+i)C_1 + (-2-i)C_2
+\end{align*}
+</div>
+<div class="para">The first equation gives <span class="process-math">\(C_2=-C_1\)</span> and then the second equation gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html" id="eg_complex_ode_A-1-40">
+\begin{align*}
+(-2+i)C_1 - (-2-i)C_1 = 2
+&amp;\iff 2iC_1=2
+\iff iC_1=1\\
+&amp;\iff C_1=-i,\ C_2=i
+\end{align*}
+</div>
+<div class="para">and</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_odeMain.html ./knowl/xref/eqn_euler.html ./knowl/xref/eqn_exp_sin_cos.html" id="eg_complex_ode_A-1-41">
+\begin{gather*}
+D_1=C_1+C_2=0\qquad
+D_2=iC_1-iC_2=2
+\end{gather*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_complex_ode_A-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example B.2.11"><a href="#eg_complex_ode_A" title="Copy heading and permalink for Example B.2.11" aria-label="Copy heading and permalink for Example B.2.11">🔗</a></div></article></details><details id="eg_complex_ode_B" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">B.2.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_complex_ode_B-1">
+<div class="para">We shall now guess one solution (i.e. a particular solution) to the differential equation</div>
+<div class="displaymath process-math">
+\begin{equation*}
+y''(t)+2y'(t)+3y(t)=\cos t
+\tag{ODE1}
+\end{equation*}
+</div>
+<div class="para">Equations like this arise, for example, in the  study of the RLC circuit. We shall simplify the computation by exploiting that <span class="process-math">\(\cos t=\Re e^{it}\text{.}\)</span> First, we shall guess a function <span class="process-math">\(Y(t)\)</span> obeying</div>
+<div class="displaymath process-math">
+\begin{equation*}
+Y''+2Y'+3Y=e^{i t}
+\tag{ODE2}
+\end{equation*}
+</div>
+<div class="para">Then, taking complex conjugates gives</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\bar Y''+2\bar Y'+3\bar Y=e^{-i t}
+\end{equation*}
+</div>
+<div class="para">which we shall call (<span class="process-math">\(\overline{\text{ODE2}}\)</span>). Then, adding <span class="process-math">\(\frac{1}{2}\)</span>(ODE2) and <span class="process-math">\(\frac{1}{2}\)</span>(<span class="process-math">\(\overline{\text{ODE2}}\)</span>) together will give</div>
+<div class="displaymath process-math">
+\begin{equation*}
+(\Re Y)''+2(\Re Y)'+3(\Re Y)=\Re e^{i t}=\cos t
+\end{equation*}
+</div>
+<div class="para">which shows that <span class="process-math">\(\Re Y(t)\)</span> is a solution to (ODE1). Let’s try <span class="process-math">\(Y(t)=Ae^{i t}\text{,}\)</span> with <span class="process-math">\(A\)</span> a constant to be determined. This is a solution of (ODE2) if and only if</div>
+<div class="displaymath process-math" id="eg_complex_ode_B-1-14">
+\begin{align*}
+&amp; &amp; \frac{\mathrm{d^2}}{\mathrm{d}t^2}\big(Ae^{it}\big)
++2\diff{}{t}\big(Ae^{it}\big)
++3Ae^{it}&amp;=e^{it} \\
+&amp;\iff&amp; (i^2+2i+3)Ae^{it}&amp;=e^{it} \\
+&amp;\iff&amp; A&amp;=\frac{1}{2+2i} 
+\end{align*}
+</div>
+<div class="para">So <span class="process-math">\(\frac{e^{it}}{2+2i}\)</span> is a solution to (ODE2) and <span class="process-math">\(\Re \frac{e^{it}}{2+2i}\)</span> is a solution to (ODE1). To simplify this, write <span class="process-math">\(2+2i\)</span> in polar coordinates. From the sketch below we have <span class="process-math">\(2+2i=2\sqrt{2}e^{i{\pi\over 4}}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_complex_ode_B-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:30%;margin-right:30%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/polar4.svg" role="img" class="contained"></div></div></div>
+<div class="para logical" id="eg_complex_ode_B-3">
+<div class="para">So</div>
+<div class="displaymath process-math" id="eg_complex_ode_B-3-1">
+\begin{align*}
+\frac{e^{it}}{2+2i}&amp;=\frac{e^{it}}{2\sqrt{2}e^{i{\pi\over 4}}}
+=\frac{1}{2\sqrt{2}}e^{i(t-{\pi\over 4})} \\
+\implies \Re\frac{e^{it}}{2+2i}
+&amp;=\frac{1}{2\sqrt{2}}\Re e^{i(t-{\pi\over 4})}
+=\frac{1}{2\sqrt{2}}\cos\left(t-\frac{\pi}{4}\right)
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_complex_ode_B-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example B.2.12"><a href="#eg_complex_ode_B" title="Copy heading and permalink for Example B.2.12" aria-label="Copy heading and permalink for Example B.2.12">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection B.2.5: Exploiting Complex Exponentials in Differential Equation Computations"><a href="#ssec_complex_de" title="Copy heading and permalink for Subsection B.2.5: Exploiting Complex Exponentials in Differential Equation Computations" aria-label="Copy heading and permalink for Subsection B.2.5: Exploiting Complex Exponentials in Differential Equation Computations">🔗</a></div></section><div class="autopermalink" data-description="Section B.2: The Complex Exponential"><a href="#sec_complex_exp" title="Copy heading and permalink for Section B.2: The Complex Exponential" aria-label="Copy heading and permalink for Section B.2: The Complex Exponential">🔗</a></div></section></div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="sec_complex_defn.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Top</span></a><a class="next-button button" href="app_Richardson_Romberg.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="feedback-link" href="mailto:clp@ugrad.math.ubc.ca?subject=clp4-pretext" target="_blank">Feedback</a><a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="runtime/reader-support/runestone-credit-logo.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="runtime/reader-support/mathjax-credit-logo.png" alt="MathJax logo"></a>
+</div>
+<nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP2/">Original authors’ website ↗</a><a href="clp_2_ic.html">Book contents</a></nav><nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B30" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">English — B30</a> · <a data-program-home data-course-card data-course-id="B30" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Bahasa Indonesia — B30</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B30" href="https://personal.math.ubc.ca/~CLP/CLP2/">Original source — Original authors’ website — CLP-2 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="clp_2_ic.html">Open related page</a></nav>
+</body>
+</html>

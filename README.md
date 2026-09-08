@@ -2,6 +2,8 @@
 
 ## Bahasa Indonesia / English
 
+**Integral Calculus in original English:** [Read CLP-2 with all 737 exercises and supplied solutions](https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/B30/reader/). The complete combined reader also retains 721 supplied hints, 338 source-rendered diagrams, and the original authors' credits. Every reading page connects to the program and the [original authors' website](https://personal.math.ubc.ca/~CLP/CLP2/). [Download the offline reader and original editable source](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.31/B30-CLP2-Integral-Calculus-original-English-reader-source-v1.zip).
+
 [Buka peta belajar Bahasa Indonesia](https://kokunoyumeto.github.io/program-matematika-indonesia/id/) · [Open the English learning map](https://kokunoyumeto.github.io/program-matematika-indonesia/en/)
 
 [Latest preserved multilingual map / peta multibahasa terbaru](https://doi.org/10.5281/zenodo.22059707) · [Latest interface release](https://github.com/KokunoYumeto/program-matematika-indonesia/releases/latest)

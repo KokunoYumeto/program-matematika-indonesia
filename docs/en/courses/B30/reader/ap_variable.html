@@ -1,0 +1,1192 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Variable Step Size Methods</title>
+
+
+<link rel="stylesheet" href="runtime/reader-support/material-symbols-local.css">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="external/RQS.css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="runtime/mathjax/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="CLP-2 Integral Calculus">
+<meta property="book:author" content="Joel Feldman">
+<meta property="book:author" content="Andrew Rechnitzer">
+<meta property="book:author" content="Elyse Yeager">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '8.2.5';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/prefix-runtime.18d8728f6d56e11d.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.b388362b5f43738a.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.8086b62682b271d1.css">
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="runtime/lunr/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+<link rel="stylesheet" href="program-navigation.css"></head>
+<body class="pretext book ignore-math">
+<nav data-central-surface-navigation="v1" data-placement="top" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B30" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">English — B30</a> · <a data-program-home data-course-card data-course-id="B30" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Bahasa Indonesia — B30</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B30" href="https://personal.math.ubc.ca/~CLP/CLP2/">Original source — Original authors’ website — CLP-2 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="clp_2_ic.html">Open related page</a></nav><nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP2/">Original authors’ website ↗</a><a href="clp_2_ic.html">Book contents</a></nav>
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="clp_2_ic.html"><span class="title">CLP-2 Integral Calculus</span></a></h1>
+<p class="byline">Joel Feldman, Andrew Rechnitzer, Elyse Yeager</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Contents</span></button><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="ap_error_behaviour.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="up-button button" href="app_ODE_numerical.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Up</span></a><a class="next-button button" href="app_hint.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}\newcommand{\dee}[1]{\mathrm{d}#1}
+\newcommand{\half}{ \frac{1}{2} }
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ts}{\textstyle}
+\newcommand{\es}{ {\varnothing}}
+\newcommand{\st}{ {\mbox{ s.t. }} }
+\newcommand{\pow}[1]{ \mathcal{P}\left(#1\right) }
+\newcommand{\set}[1]{ \left\{#1\right\} }
+\newcommand{\lin}{{\text{LIN}}}
+\newcommand{\quot}{{\text{QR}}}
+\newcommand{\simp}{{\text{SMP}}}
+\newcommand{\diff}[2]{ \frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\bdiff}[2]{ \frac{\mathrm{d}}{\mathrm{d}#2} \left( #1 \right)}
+\newcommand{\ddiff}[3]{ \frac{\mathrm{d}^#1#2}{\mathrm{d}{#3}^#1}}
+\renewcommand{\neg}{ {\sim} }
+\newcommand{\limp}{ {\;\Rightarrow\;} }
+\newcommand{\nimp}{ {\;\not\Rightarrow\;} }
+\newcommand{\liff}{ {\;\Leftrightarrow\;} }
+\newcommand{\niff}{ {\;\not\Leftrightarrow\;} }
+\newcommand{\De}{\Delta}
+\newcommand{\bbbn}{\mathbb{N}}
+\newcommand{\bbbr}{\mathbb{R}}
+\newcommand{\bbbp}{\mathbb{P}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\Si}{\Sigma}
+
+\newcommand{\arccsc}{\mathop{\mathrm{arccsc}}}
+\newcommand{\arcsec}{\mathop{\mathrm{arcsec}}}
+\newcommand{\arccot}{\mathop{\mathrm{arccot}}}
+\newcommand{\erf}{\mathop{\mathrm{erf}}}
+\newcommand{\smsum}{\mathop{{\ts \sum}}}
+\newcommand{\atp}[2]{ \genfrac{}{}{0in}{}{#1}{#2} }
+
+\newcommand{\ave}{\mathrm{ave}}
+\newcommand{\llt}{\left \lt }
+\newcommand{\rgt}{\right \gt }
+
+
+\newcommand{\YEaxis}[2]{\draw[help lines] (-#1,0)--(#1,0) node[right]{$x$};\draw[help lines] (0,-#2)--(0,#2) node[above]{$y$};}
+
+\newcommand{\YEaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$x$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YEtaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+\newcommand{\YEtaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$}; \draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YExcoord}[2]{\draw (#1,.2)--(#1,-.2) node[below]{$#2$};}
+\newcommand{\YEycoord}[2]{\draw (.2,#1)--(-.2,#1) node[left]{$#2$};}
+\newcommand{\YEnxcoord}[2]{\draw (#1,-.2)--(#1,.2) node[above]{$#2$};}
+\newcommand{\YEnycoord}[2]{\draw (-.2,#1)--(.2,#1) node[right]{$#2$};}
+
+\newcommand{\YEstickfig}[3]{
+\draw (#1,#2) arc(-90:270:2mm);
+\draw (#1,#2)--(#1,#2-.5) (#1-.25,#2-.75)--(#1,#2-.5)--(#1+.25,#2-.75) (#1-.2,#2-.2)--(#1+.2,#2-.2);}
+
+
+\newcommand{\IBP}[7]{
+\begin{array}{|c  | l | l |}
+\hline
+\color{red}{\text{Option 1:}}
+&amp; u=#2
+&amp;\color{red}{\dee{u}=#3 ~ \dee{#1}}
+\\
+&amp; \dee{v}=#5~\dee{#1}
+&amp;\color{red}{v=#7}
+\\
+\hline
+\color{blue}{\text{Option 2:}}
+&amp; u=#5
+&amp;\color{blue}{\dee{u}=#6 ~ \dee{#1}}
+\\
+&amp;\dee{v}=#2 \dee{#1}
+&amp;\color{blue}{v=#4}
+\\
+\hline
+\end{array}
+}
+
+
+\renewcommand{\textcolor}[2]{{\color{#1}{#2}}}
+
+
+\newcommand{\trigtri}[4]{
+\begin{tikzpicture}
+\draw (-.5,0)--(2,0)--(2,1.5)--cycle;
+\draw (1.8,0) |- (2,.2);
+\draw[double] (0,0) arc(0:30:.5cm);
+\draw (0,.2) node[right]{$#1$};
+\draw (1,-.5) node{$#2$};
+\draw (2,.75) node[right]{$#3$};
+\draw (.6,1.1) node[rotate=30]{$#4$};
+\end{tikzpicture}}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="clp_2_ic-2.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="front-colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-4.html" class="internal"><span class="title">Preface</span></a></div></li>
+<li class="toc-item toc-dedication"><div class="toc-title-box"><a href="clp_2_ic-2-5.html" class="internal"><span class="title">Dedication</span></a></div></li>
+<li class="toc-item toc-acknowledgement"><div class="toc-title-box"><a href="clp_2_ic-2-6.html" class="internal"><span class="title">Acknowledgements</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-7.html" class="internal"><span class="title">Using the exercises in this book</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-8.html" class="internal"><span class="title">Feedback about the text</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_integral.html" class="internal"><span class="codenumber">1</span> <span class="title">Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intdef.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Definition of the Integral</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-3" class="internal"><span class="codenumber">1.1.1</span> <span class="title">A Motivating Example</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-4" class="internal"><span class="codenumber">1.1.2</span> <span class="title">Optional — A more rigorous area computation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_intdef.html#ssec_sum_notn" class="internal"><span class="codenumber">1.1.3</span> <span class="title">Summation notation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_sum_notn-3" class="internal"><span class="codenumber">1.1.3.1</span> <span class="title">Proof of Theorem 1.1.6 (Optional)</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_defInt" class="internal"><span class="codenumber">1.1.4</span> <span class="title">The Definition of the Definite Integral</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_knownareas" class="internal"><span class="codenumber">1.1.5</span> <span class="title">Using Known Areas to Evaluate Integrals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_velocity" class="internal"><span class="codenumber">1.1.6</span> <span class="title">Another Interpretation for Definite Integrals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_careful_defn" class="internal"><span class="codenumber">1.1.7</span> <span class="title">Optional — careful definition of the integral</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-10" class="internal"><span class="codenumber">1.1.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_def_int.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Basic properties of the definite integral</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_int.html#sec_evenodd" class="internal"><span class="codenumber">1.2.1</span> <span class="title">More properties of integration: even and odd functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_int.html#sec_def_int-4" class="internal"><span class="codenumber">1.2.2</span> <span class="title">Optional — More properties of integration: inequalities for integrals</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_def_int.html#sec_def_int-5" class="internal"><span class="codenumber">1.2.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_fundamental.html" class="internal"><span class="codenumber">1.3</span> <span class="title">The Fundamental Theorem of Calculus</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_fundamental.html#sec_fundamental-3" class="internal"><span class="codenumber">1.3.1</span> <span class="title">The Fundamental Theorem of Calculus</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_fundamental.html#sec_fundamental-4" class="internal"><span class="codenumber">1.3.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_subs.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Substitution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_subs.html#sec_subs-3" class="internal"><span class="codenumber">1.4.1</span> <span class="title">Substitution</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_subs.html#sec_subs-4" class="internal"><span class="codenumber">1.4.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_area.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Area between curves</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_area.html#sec_area-3" class="internal"><span class="codenumber">1.5.1</span> <span class="title">Area between curves</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_area.html#sec_area-4" class="internal"><span class="codenumber">1.5.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_int_volumes.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Volumes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_int_volumes.html#sec_int_volumes-3" class="internal"><span class="codenumber">1.6.1</span> <span class="title">Optional — Cylindrical shells</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_int_volumes.html#sec_int_volumes-4" class="internal"><span class="codenumber">1.6.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intbyparts.html" class="internal"><span class="codenumber">1.7</span> <span class="title">Integration by parts</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intbyparts.html#sec_intbyparts-3" class="internal"><span class="codenumber">1.7.1</span> <span class="title">Integration by parts</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_intbyparts.html#sec_intbyparts-4" class="internal"><span class="codenumber">1.7.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trigint.html" class="internal"><span class="codenumber">1.8</span> <span class="title">Trigonometric Integrals</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trigint.html#sec_sincos" class="internal"><span class="codenumber">1.8.1</span> <span class="title">Integrating <span class="process-math">\(\int \sin^m x\cos^n x\dee{x}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_sincos-2" class="internal"><span class="codenumber">1.8.1.1</span> <span class="title">One of <span class="process-math">\(n\)</span> and <span class="process-math">\(m\)</span> is odd</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_sincos-3" class="internal"><span class="codenumber">1.8.1.2</span> <span class="title">Both <span class="process-math">\(n\)</span> and <span class="process-math">\(m\)</span> are even</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trigint.html#sec_tansec" class="internal"><span class="codenumber">1.8.2</span> <span class="title">Integrating <span class="process-math">\(\int \tan^m x\sec^n x\dee{x}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-3" class="internal"><span class="codenumber">1.8.2.1</span> <span class="title"><span class="process-math">\(m\)</span> is odd — odd power of tangent</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-4" class="internal"><span class="codenumber">1.8.2.2</span> <span class="title"><span class="process-math">\(m\)</span> is odd and <span class="process-math">\(n\geq 1\)</span> — odd power of tangent and at least one secant</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-5" class="internal"><span class="codenumber">1.8.2.3</span> <span class="title"><span class="process-math">\(n\geq 2\)</span> is even — a positive even power of secant</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-6" class="internal"><span class="codenumber">1.8.2.4</span> <span class="title"><span class="process-math">\(m\)</span> is even and <span class="process-math">\(n=0\)</span> — even powers of tangent</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_secantEtc" class="internal"><span class="codenumber">1.8.3</span> <span class="title">Optional — Integrating <span class="process-math">\(\sec x\text{,}\)</span> <span class="process-math">\(\csc x\text{,}\)</span> <span class="process-math">\(\sec^3 x\)</span> and <span class="process-math">\(\csc^3 x\)</span></span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trigint.html#sec_trigint-6" class="internal"><span class="codenumber">1.8.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trigsub.html" class="internal"><span class="codenumber">1.9</span> <span class="title">Trigonometric Substitution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trigsub.html#sec_trigsub-3" class="internal"><span class="codenumber">1.9.1</span> <span class="title">Trigonometric Substitution</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trigsub.html#sec_trigsub-4" class="internal"><span class="codenumber">1.9.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_parfrac.html" class="internal"><span class="codenumber">1.10</span> <span class="title">Partial Fractions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-3" class="internal"><span class="codenumber">1.10.1</span> <span class="title">Partial fraction decomposition examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4" class="internal"><span class="codenumber">1.10.2</span> <span class="title">The form of partial fraction decompositions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-3" class="internal"><span class="codenumber">1.10.2.1</span> <span class="title">Simple linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-4" class="internal"><span class="codenumber">1.10.2.2</span> <span class="title">General linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-5" class="internal"><span class="codenumber">1.10.2.3</span> <span class="title">Simple linear and quadratic factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-6" class="internal"><span class="codenumber">1.10.2.4</span> <span class="title">Optional — General linear and quadratic factor case</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5" class="internal"><span class="codenumber">1.10.3</span> <span class="title">Optional — Justification of the partial fraction decompositions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-3" class="internal"><span class="codenumber">1.10.3.1</span> <span class="title">Simple linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-4" class="internal"><span class="codenumber">1.10.3.2</span> <span class="title">The general case with linear factors</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-5" class="internal"><span class="codenumber">1.10.3.3</span> <span class="title">Really Optional — The Fully General Case</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-6" class="internal"><span class="codenumber">1.10.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_numeric_int.html" class="internal"><span class="codenumber">1.11</span> <span class="title">Numerical Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_midpointRule" class="internal"><span class="codenumber">1.11.1</span> <span class="title">The midpoint rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_trapRule" class="internal"><span class="codenumber">1.11.2</span> <span class="title">The trapezoidal rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_Simpson" class="internal"><span class="codenumber">1.11.3</span> <span class="title">Simpson’s Rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#ssec_num_int_err" class="internal"><span class="codenumber">1.11.4</span> <span class="title">Three Simple Numerical Integrators — Error Behaviour</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_numeric_int-7" class="internal"><span class="codenumber">1.11.5</span> <span class="title">Optional — An error bound for the midpoint rule</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_numeric_int-8" class="internal"><span class="codenumber">1.11.6</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_improp_int.html" class="internal"><span class="codenumber">1.12</span> <span class="title">Improper Integrals</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-3" class="internal"><span class="codenumber">1.12.1</span> <span class="title">Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-4" class="internal"><span class="codenumber">1.12.2</span> <span class="title">Examples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-5" class="internal"><span class="codenumber">1.12.3</span> <span class="title">Convergence Tests for Improper Integrals</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-6" class="internal"><span class="codenumber">1.12.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_integral-15.html" class="internal"><span class="codenumber">1.13</span> <span class="title">More Integration Examples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_integral-15.html#chap_integral-15-3" class="internal"><span class="codenumber">1.13</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_int_app.html" class="internal"><span class="codenumber">2</span> <span class="title">Applications of Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_work.html" class="internal"><span class="codenumber">2.1</span> <span class="title">Work</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_work.html#sec_work-3" class="internal"><span class="codenumber">2.1.1</span> <span class="title">Work</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_work.html#sec_work-4" class="internal"><span class="codenumber">2.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_avg.html" class="internal"><span class="codenumber">2.2</span> <span class="title">Averages</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_avg.html#sec_avg-3" class="internal"><span class="codenumber">2.2.1</span> <span class="title">Optional — Return to the mean value theorem</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_avg.html#sec_avg-4" class="internal"><span class="codenumber">2.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_com.html" class="internal"><span class="codenumber">2.3</span> <span class="title">Centre of Mass and Torque</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_com.html#sec_com-3" class="internal"><span class="codenumber">2.3.1</span> <span class="title">Centre of Mass</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_com.html#sec_com-4" class="internal"><span class="codenumber">2.3.2</span> <span class="title">Optional — Torque</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_com.html#sec_com-5" class="internal"><span class="codenumber">2.3.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_sep_de.html" class="internal"><span class="codenumber">2.4</span> <span class="title">Separable Differential Equations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-3" class="internal"><span class="codenumber">2.4.1</span> <span class="title">Separate and integrate</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-4" class="internal"><span class="codenumber">2.4.2</span> <span class="title">Optional — Carbon Dating</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-5" class="internal"><span class="codenumber">2.4.3</span> <span class="title">Optional — Newton’s Law of Cooling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-6" class="internal"><span class="codenumber">2.4.4</span> <span class="title">Optional — Population Growth</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-7" class="internal"><span class="codenumber">2.4.5</span> <span class="title">Optional — Mixing Problems</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-8" class="internal"><span class="codenumber">2.4.6</span> <span class="title">Optional — Interest on Investments</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-9" class="internal"><span class="codenumber">2.4.7</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_seq_ser.html" class="internal"><span class="codenumber">3</span> <span class="title">Sequences and series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-3.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-3.html#chap_seq_ser-3-3" class="internal"><span class="codenumber">3.1.1</span> <span class="title">Sequences</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-3.html#chap_seq_ser-3-4" class="internal"><span class="codenumber">3.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-4.html" class="internal"><span class="codenumber">3.2</span> <span class="title">Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-4.html#chap_seq_ser-4-3" class="internal"><span class="codenumber">3.2.1</span> <span class="title">Series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-4.html#chap_seq_ser-4-4" class="internal"><span class="codenumber">3.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-5.html" class="internal"><span class="codenumber">3.3</span> <span class="title">Convergence Tests</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-3" class="internal"><span class="codenumber">3.3.1</span> <span class="title">The Divergence Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-4" class="internal"><span class="codenumber">3.3.2</span> <span class="title">The Integral Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-5" class="internal"><span class="codenumber">3.3.3</span> <span class="title">The Comparison Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_AST" class="internal"><span class="codenumber">3.3.4</span> <span class="title">The Alternating Series Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_RatioTest" class="internal"><span class="codenumber">3.3.5</span> <span class="title">The Ratio Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-8" class="internal"><span class="codenumber">3.3.6</span> <span class="title">Convergence Test List</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_Stack" class="internal"><span class="codenumber">3.3.7</span> <span class="title">Optional — The Leaning Tower of Books</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_RootTest" class="internal"><span class="codenumber">3.3.8</span> <span class="title">Optional — The Root Test</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel" class="internal"><span class="codenumber">3.3.9</span> <span class="title">Optional — Harmonic and Basel Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel-2" class="internal"><span class="codenumber">3.3.9.1</span> <span class="title">The Harmonic Series</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel-3" class="internal"><span class="codenumber">3.3.9.2</span> <span class="title">The Basel Problem</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_CompProof" class="internal"><span class="codenumber">3.3.10</span> <span class="title">Optional — Some Proofs</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-13" class="internal"><span class="codenumber">3.3.11</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-6.html" class="internal"><span class="codenumber">3.4</span> <span class="title">Absolute and Conditional Convergence</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-6.html#sec_abs_conv" class="internal"><span class="codenumber">3.4.1</span> <span class="title">Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-6.html#chap_seq_ser-6-4" class="internal"><span class="codenumber">3.4.2</span> <span class="title">Optional — The delicacy of conditionally convergent series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-6.html#chap_seq_ser-6-5" class="internal"><span class="codenumber">3.4.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-7.html" class="internal"><span class="codenumber">3.5</span> <span class="title">Power Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-3" class="internal"><span class="codenumber">3.5.1</span> <span class="title">Radius and Interval of Convergence</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-4" class="internal"><span class="codenumber">3.5.2</span> <span class="title">Working With Power Series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-5" class="internal"><span class="codenumber">3.5.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-8.html" class="internal"><span class="codenumber">3.6</span> <span class="title">Taylor Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-3" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Extending Taylor Polynomials</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-4" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Optional — More about the Taylor Remainder</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-5" class="internal"><span class="codenumber">3.6.2</span> <span class="title">Computing with Taylor Series</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#sec_Euler" class="internal"><span class="codenumber">3.6.3</span> <span class="title">Optional — Linking <span class="process-math">\(e^x\)</span> with trigonometric functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-7" class="internal"><span class="codenumber">3.6.4</span> <span class="title">Evaluating Limits using Taylor Expansions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-8" class="internal"><span class="codenumber">3.6.5</span> <span class="title">Optional — The Big O Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-9" class="internal"><span class="codenumber">3.6.6</span> <span class="title">Optional — Evaluating Limits Using Taylor Expansions — More Examples</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-10" class="internal"><span class="codenumber">3.6.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_RatIrr.html" class="internal"><span class="codenumber">3.7</span> <span class="title">Optional — Rational and irrational numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-3" class="internal"><span class="codenumber">3.7.1</span> <span class="title">Decimal expansions of rational numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-4" class="internal"><span class="codenumber">3.7.2</span> <span class="title">Eventually periodic implies rational</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-5" class="internal"><span class="codenumber">3.7.3</span> <span class="title">Rational implies eventually periodic</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6" class="internal"><span class="codenumber">3.7.4</span> <span class="title">Irrationality of <span class="process-math">\(e\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6-3" class="internal"><span class="codenumber">3.7.4.1</span> <span class="title">Proof 1</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6-4" class="internal"><span class="codenumber">3.7.4.2</span> <span class="title">Proof 2</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7" class="internal"><span class="codenumber">3.7.5</span> <span class="title">Irrationality of <span class="process-math">\(\pi\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-3" class="internal"><span class="codenumber">3.7.5.1</span> <span class="title">Bounding the integral</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-4" class="internal"><span class="codenumber">3.7.5.2</span> <span class="title">Integration by parts</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-5" class="internal"><span class="codenumber">3.7.5.3</span> <span class="title">The derivatives are integers</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-6" class="internal"><span class="codenumber">3.7.5.4</span> <span class="title">Putting it together</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-backmatter contains-active">
+<div class="toc-title-box"><a href="clp_2_ic-6.html" class="internal"><span class="title">Appendices</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_highschool.html" class="internal"><span class="codenumber">A</span> <span class="title">High School Material</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_simtri.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Similar Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-4.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Pythagoras</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-5.html" class="internal"><span class="codenumber">A.3</span> <span class="title">Trigonometry — Definitions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_rad_arc_sec.html" class="internal"><span class="codenumber">A.4</span> <span class="title">Radians, Arcs and Sectors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_trig_graphs.html" class="internal"><span class="codenumber">A.5</span> <span class="title">Trigonometry — Graphs</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-8.html" class="internal"><span class="codenumber">A.6</span> <span class="title">Trigonometry — Special Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-9.html" class="internal"><span class="codenumber">A.7</span> <span class="title">Trigonometry — Simple Identities</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_trig_add.html" class="internal"><span class="codenumber">A.8</span> <span class="title">Trigonometry — Add and Subtract Angles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_inv_trig.html" class="internal"><span class="codenumber">A.9</span> <span class="title">Inverse Trigonometric Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_areas.html" class="internal"><span class="codenumber">A.10</span> <span class="title">Areas</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_volumes.html" class="internal"><span class="codenumber">A.11</span> <span class="title">Volumes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_powers.html" class="internal"><span class="codenumber">A.12</span> <span class="title">Powers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_logs.html" class="internal"><span class="codenumber">A.13</span> <span class="title">Logarithms</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_must_deriv.html" class="internal"><span class="codenumber">A.14</span> <span class="title">Highschool Material You Should be Able to Derive</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-17.html" class="internal"><span class="codenumber">A.15</span> <span class="title">Cartesian Coordinates</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_roots.html" class="internal"><span class="codenumber">A.16</span> <span class="title">Roots of Polynomials</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ap_complex.html" class="internal"><span class="codenumber">B</span> <span class="title">Complex Numbers and Exponentials</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_complex_defn.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Definition and Basic Operations</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_complex_exp.html" class="internal"><span class="codenumber">B.2</span> <span class="title">The Complex Exponential</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_exp_def" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Definition and Basic Properties</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_sin_cos" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Relationship with <span class="process-math">\(\sin\)</span> and <span class="process-math">\(\cos\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_polar" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Polar Coordinates</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_calculus" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Exploiting Complex Exponentials in Calculus Computations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_de" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Exploiting Complex Exponentials in Differential Equation Computations</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_Richardson_Romberg.html" class="internal"><span class="codenumber">C</span> <span class="title">More About Numerical Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_Richardson.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Richardson Extrapolation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_Romberg.html" class="internal"><span class="codenumber">C.2</span> <span class="title">Romberg Integration</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_adaptive.html" class="internal"><span class="codenumber">C.3</span> <span class="title">Adaptive Quadrature</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix contains-active">
+<div class="toc-title-box"><a href="app_ODE_numerical.html" class="internal"><span class="codenumber">D</span> <span class="title">Numerical Solution of ODE’s</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_derivation.html" class="internal"><span class="codenumber">D.1</span> <span class="title">Simple ODE Solvers — Derivation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_euler" class="internal"><span class="codenumber">D.1.1</span> <span class="title">Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_imp_euler" class="internal"><span class="codenumber">D.1.2</span> <span class="title">The Improved Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_runge_kutta" class="internal"><span class="codenumber">D.1.3</span> <span class="title">The Runge-Kutta Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_error_behaviour.html" class="internal"><span class="codenumber">D.2</span> <span class="title">Simple ODE Solvers —  Error Behaviour</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_error_behaviour.html#ap_local_trunc_Euler" class="internal"><span class="codenumber">D.2.1</span> <span class="title">Local Truncation Error for Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_error_behaviour.html#ap_global_trunc_Euler" class="internal"><span class="codenumber">D.2.2</span> <span class="title">Global Truncation Error for Euler’s Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="ap_variable.html" class="internal"><span class="codenumber">D.3</span> <span class="title">Variable Step Size Methods</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_prelim_E_E2" class="internal"><span class="codenumber">D.3.1</span> <span class="title">Euler and Euler-2step (preliminary version)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_final_E_E2" class="internal"><span class="codenumber">D.3.2</span> <span class="title">Euler and Euler-2step (final version)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_Fehlberg" class="internal"><span class="codenumber">D.3.3</span> <span class="title">Fehlberg’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_Kutta_Merson" class="internal"><span class="codenumber">D.3.4</span> <span class="title">The Kutta-Merson Process</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_E_E2_local_trunc" class="internal"><span class="codenumber">D.3.5</span> <span class="title">The Local Truncation Error for Euler-2step</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_hint.html" class="internal"><span class="codenumber">E</span> <span class="title">Hints for Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_answ.html" class="internal"><span class="codenumber">F</span> <span class="title">Answers to Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_soln.html" class="internal"><span class="codenumber">G</span> <span class="title">Solutions to Exercises</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="section" id="ap_variable"><h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Variable Step Size Methods</span>
+</h2>
+<section class="introduction" id="ap_variable-2"><div class="para" id="ap_variable-2-1">We now introduce a family of procedures that decide by themselves what step size to use. In all of these procedures the user specifies an acceptable error rate and the procedure attempts to adjust the step size so that each step introduces error at no more than that rate. That way the procedure uses a small step size when it is hard to get an accurate approximation, and a large step size when it is easy to get a good approximation.<div class="autopermalink" data-description="Paragraph"><a href="#ap_variable-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="ap_variable-2-2">
+<div class="para">Suppose that we wish to generate an approximation to the initial value problem</div>
+<div class="displaymath process-math">
+\begin{equation*}
+y'=f(t,y),\qquad
+y(t_0)=y_0
+\end{equation*}
+</div>
+<div class="para">for some range of <span class="process-math">\(t\)</span>’s and we want the error introduced per unit increase<details class="ptx-footnote" aria-live="polite" id="ap_variable-2-2-3"><summary class="ptx-footnote__number" title="Footnote D.3.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents">We know that the error will get larger the further we go in <span class="process-math">\(t\text{.}\)</span> So it makes sense to try to limit the error per unit increase in <span class="process-math">\(t\text{.}\)</span>
+</div></details> of <span class="process-math">\(t\)</span> to be no more than about some small fixed number <span class="process-math">\(\varepsilon\text{.}\)</span> This means that if <span class="process-math">\(y_n\approx y(t_0+nh)\)</span> and <span class="process-math">\(y_{n+1}\approx y(t+(n+1)h)\text{,}\)</span> then we want the local truncation error in the step from <span class="process-math">\(y_n\)</span> to <span class="process-math">\(y_{n+1}\)</span> to be no more than about <span class="process-math">\(\varepsilon h\text{.}\)</span> Suppose further that we have already produced the approximate solution as far as <span class="process-math">\(t_n\text{.}\)</span> The rough strategy is as follows. We do the step from <span class="process-math">\(t_n\)</span> to <span class="process-math">\(t_n+h\)</span> twice using two different algorithms, giving two different approximations to <span class="process-math">\(y(t_{n+1})\text{,}\)</span> that we call <span class="process-math">\(A_{1,n+1}\)</span> and <span class="process-math">\(A_{2,n+1}\text{.}\)</span> The two algorithms are chosen so that</div>
+<ol class="decimal ol-marker-7" id="ap_variable-2-2-17">
+<li id="ap_variable-2-2-17-1">
+<div class="para" id="p-derived-ap_variable-2-2-17-1">we can use <span class="process-math">\(A_{1,n+1}-A_{2,n+1}\)</span> to compute an approximate local truncation error and</div>
+<div class="autopermalink" data-description="Item 1"><a href="#ap_variable-2-2-17-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="ap_variable-2-2-17-2">
+<div class="para" id="p-derived-ap_variable-2-2-17-2">for efficiency, the two algorithms use almost the same evaluations of <span class="process-math">\(f\text{.}\)</span> Remember that evaluating the function <span class="process-math">\(f\)</span> is typically the most time-consuming part of our computation.</div>
+<div class="autopermalink" data-description="Item 2"><a href="#ap_variable-2-2-17-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+</ol>
+<div class="para">In the event that the local truncation error, divided by <span class="process-math">\(h\text{,}\)</span> (i.e. the error per unit increase of <span class="process-math">\(t\)</span>) is smaller than <span class="process-math">\(\varepsilon\text{,}\)</span> we set <span class="process-math">\(t_{n+1}=t_n+h\text{,}\)</span> accept <span class="process-math">\(A_{2,n+1}\)</span> as the approximate value<details class="ptx-footnote" aria-live="polite" id="ap_variable-2-2-23"><summary class="ptx-footnote__number" title="Footnote D.3.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents">Better still, accept <span class="process-math">\(A_{2,n+1}\)</span> minus the computed approximate error in <span class="process-math">\(A_{2,n+1}\)</span> as the approximate value for <span class="process-math">\(y(t_{n+1})\text{.}\)</span>
+</div></details> for <span class="process-math">\(y(t_{n+1})\text{,}\)</span> and move on to the next step. Otherwise we pick, using what we have learned from <span class="process-math">\(A_{1,n+1}-A_{2,n+1}\text{,}\)</span> a new trial step size <span class="process-math">\(h\)</span> and start over again at <span class="process-math">\(t_n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ap_variable-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ap_variable-2-3">Now for the details. We start with a very simple procedure. We will later soup it up to get a much more efficient procedure.<div class="autopermalink" data-description="Paragraph"><a href="#ap_variable-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section><section class="subsection" id="ssec_prelim_E_E2"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Euler and Euler-2step (preliminary version)</span>
+</h3>
+<div class="para logical" id="ssec_prelim_E_E2-2">
+<div class="para">Denote by <span class="process-math">\(\phi(t)\)</span> the exact solution to <span class="process-math">\(y'=f(t,y)\)</span> that satisfies the initial condition <span class="process-math">\(\phi(t_n)=y_n\text{.}\)</span> If we apply one step of Euler with step size <span class="process-math">\(h\text{,}\)</span> giving</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_local_trunc_error_Euler.html">
+\begin{equation*}
+A_{1,n+1}=y_n+hf(t_n,y_n)
+\end{equation*}
+</div>
+<div class="para">we know, from (<a href="ap_error_behaviour.html#eqn_local_trunc_error_Euler" class="xref" data-knowl="./knowl/xref/eqn_local_trunc_error_Euler.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation D.2.4">D.2.4</a>), that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_local_trunc_error_Euler.html">
+\begin{equation*}
+A_{1,n+1}=\phi(t_n+h)+Kh^2+O(h^3)
+\end{equation*}
+</div>
+<div class="para">The problem, of course, is that we don’t know what the error is, even approximately, because we don’t know what the constant <span class="process-math">\(K\)</span> is. But we can estimate <span class="process-math">\(K\)</span> simply by redoing the step from <span class="process-math">\(t_n\)</span>  to <span class="process-math">\(t_n+h\)</span> using a judiciously chosen second algorithm. There are a number of different second algorithms that will work. We call the simple algorithm that we use in this subsection Euler-2step<details class="ptx-footnote" aria-live="polite" id="ssec_prelim_E_E2-2-12"><summary class="ptx-footnote__number" title="Footnote D.3.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents">This name is begging for a dance related footnote and we invite the reader to supply their own.</div></details>. One step of Euler-2step with step size <span class="process-math">\(h\)</span> just consists of doing two steps of Euler with step size <span class="process-math">\(h/2\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_local_trunc_error_Euler.html">
+\begin{equation*}
+A_{2,n+1} = y_n+\tfrac{h}{2}f(t_n,y_n)
++\tfrac{h}{2}f\big(t_n+\tfrac{h}{2},y_n+\tfrac{h}{2}f(t_n,y_n)\big)
+\end{equation*}
+</div>
+<div class="para">Here, the first half-step took us from <span class="process-math">\(y_n\)</span> to <span class="process-math">\(y_{\rm mid}=y_n+\frac{h}{2}f(t_n,y_n)\)</span> and the second half-step took us from <span class="process-math">\(y_{\rm mid}\)</span> to <span class="process-math">\(y_{\rm mid}+\frac{h}{2}f\big(t_n+\frac{h}{2},y_{\rm mid}\big)\text{.}\)</span> The local truncation error introduced in the first half-step is <span class="process-math">\(K(h/2)^2+O(h^3)\text{.}\)</span> That for the second half-step is <span class="process-math">\(K(h/2)^2+O(h^3)\)</span> with the same<details class="ptx-footnote" aria-live="polite" id="ssec_prelim_E_E2-2-22"><summary class="ptx-footnote__number" title="Footnote D.3.4"><sup> 4 </sup></summary><div class="ptx-footnote__contents">Because the two half-steps start at values of <span class="process-math">\(t\)</span> only <span class="process-math">\(h/2\)</span> apart, and we are thinking of <span class="process-math">\(h\)</span> as being very small, it should not be surprising that we can use the same value of <span class="process-math">\(K\)</span> in both. In case you don’t believe us, we have included a derivation of the local truncation error for Euler-2step later in this appendix.</div></details> <span class="process-math">\(K\text{,}\)</span> though with a different <span class="process-math">\(O(h^3)\text{.}\)</span> All together</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_local_trunc_error_Euler.html" id="ssec_prelim_E_E2-2-25">
+\begin{align*}
+A_{2,n+1}&amp;=\phi(t_n+h)+\big[ K\big(\tfrac{h}{2}\big)^2+O(h^3)\big]
++ \big[K\big(\tfrac{h}{2}\big)^2+O(h^3)\big] \\
+&amp;=\phi(t_n+h)+\half Kh^2+O(h^3)
+\end{align*}
+</div>
+<div class="para">The difference is<details class="ptx-footnote" aria-live="polite" id="ssec_prelim_E_E2-2-26"><summary class="ptx-footnote__number" title="Footnote D.3.5"><sup> 5 </sup></summary><div class="ptx-footnote__contents">Recall that every time the symbol <span class="process-math">\(O(h^3)\)</span> is used it can stand for a different function that is bounded by some constant times <span class="process-math">\(h^3\)</span> for small <span class="process-math">\(h\text{.}\)</span> Thus <span class="process-math">\(O(h^3)-O(h^3)\)</span> need not be zero, but is <span class="process-math">\(O(h^3)\text{.}\)</span> What is important here is that if <span class="process-math">\(K\)</span> is not zero and if <span class="process-math">\(h\)</span> is very small, then <span class="process-math">\(O(h^3)\)</span> is much smaller than <span class="process-math">\(\half Kh^2\text{.}\)</span>
+</div></details>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_local_trunc_error_Euler.html" id="ssec_prelim_E_E2-2-27">
+\begin{align*}
+A_{1,n+1}-A_{2,n+1}&amp;=\big[\phi(t_n+h)+Kh^2+O(h^3)\big]
+-\big[\phi(t_n+h)-\half Kh^2-O(h^3)\big] \\
+&amp;=\half Kh^2+O(h^3)
+\end{align*}
+</div>
+<div class="para">So if we do one step of both Euler and Euler-2step, we can estimate</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eqn_local_trunc_error_Euler.html">
+\begin{equation*}
+\half Kh^2=A_{1,n+1}-A_{2,n+1}+O(h^3)
+\end{equation*}
+</div>
+<div class="para">We now know that in the step just completed Euler-2step introduced an error of about  <span class="process-math">\(\half Kh^2\approx A_{1,n+1}-A_{2,n+1}\text{.}\)</span> That is, the current error rate is about <span class="process-math">\(r=\frac{|A_{1,n+1}-A_{2,n+1}|}{h}\approx\half |K| h\)</span> per unit increase of <span class="process-math">\(t\text{.}\)</span>
+</div>
+<ul class="disc" id="ssec_prelim_E_E2-2-32">
+<li id="ssec_prelim_E_E2-2-32-1">
+<div class="para" id="p-derived-ssec_prelim_E_E2-2-32-1">If this <span class="process-math">\(r=\frac{|A_{1,n+1}-A_{2,n+1}|}{h}&gt;\varepsilon\text{,}\)</span> we reject<details class="ptx-footnote" aria-live="polite" id="ssec_prelim_E_E2-2-32-1-2"><summary class="ptx-footnote__number" title="Footnote D.3.6"><sup> 6 </sup></summary><div class="ptx-footnote__contents">The measured error rate, <span class="process-math">\(r\text{,}\)</span>  is bigger than the desired error rate <span class="process-math">\(\varepsilon\text{.}\)</span> That means that it is harder to get the accuracy we want than we thought. So we have to take smaller steps.</div></details> <span class="process-math">\(A_{2,n+1}\)</span> and repeat the current step with a new trial step size chosen so that <span class="process-math">\(\half |K|(\text{new }h)\lt\varepsilon\text{,}\)</span> i.e. <span class="process-math">\(\frac{r}{h}(\text{new }h)\lt\varepsilon\text{.}\)</span> To give ourselves a small safety margin, we could use<details class="ptx-footnote" aria-live="polite" id="ssec_prelim_E_E2-2-32-1-6"><summary class="ptx-footnote__number" title="Footnote D.3.7"><sup> 7 </sup></summary><div class="ptx-footnote__contents">We don’t want to make the new <span class="process-math">\(h\)</span> too close to <span class="process-math">\(\frac{\varepsilon}{r}{h}\)</span> since we are only estimating things and we might end up with an error rate bigger that <span class="process-math">\(\varepsilon\text{.}\)</span> On the other hand, we don’t want to make the new <span class="process-math">\(h\)</span> too small because that means too much work — so we choose it to be just a little smaller than <span class="process-math">\(\frac{\varepsilon}{r}{h}\)</span> <span class="process-math">\(\ldots\)</span> say <span class="process-math">\(0.9\frac{\varepsilon}{r}{h}\)</span> .</div></details><div class="displaymath process-math">
+\begin{equation*}
+\text{new }h=0.9\,\frac{\varepsilon}{r}\,h
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_prelim_E_E2-2-32-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="ssec_prelim_E_E2-2-32-2">
+<div class="para" id="p-derived-ssec_prelim_E_E2-2-32-2">If <span class="process-math">\(r=\frac{|A_{1,n+1}-A_{2,n+1}|}{h}\lt\varepsilon\)</span> we can accept<details class="ptx-footnote" aria-live="polite" id="ssec_prelim_E_E2-2-32-2-2"><summary class="ptx-footnote__number" title="Footnote D.3.8"><sup> 8 </sup></summary><div class="ptx-footnote__contents">The measured error rate, <span class="process-math">\(r\text{,}\)</span>  is smaller than the desired error rate <span class="process-math">\(\varepsilon\text{.}\)</span> That means that it is easier to get the accuracy we want than we thought. So we can make the next step larger.</div></details>  <span class="process-math">\(A_{2,n+1}\)</span> as an approximate  value for <span class="process-math">\(y(t_{n+1})\text{,}\)</span> with <span class="process-math">\(t_{n+1}=t_n+h\text{,}\)</span> and move on to the next step, starting with the new trial step size<details class="ptx-footnote" aria-live="polite" id="ssec_prelim_E_E2-2-32-2-6"><summary class="ptx-footnote__number" title="Footnote D.3.9"><sup> 9 </sup></summary><div class="ptx-footnote__contents">Note that in this case <span class="process-math">\(\frac{\varepsilon}{r}&gt;1\text{.}\)</span> So the new <span class="process-math">\(h\)</span> can be bigger than the last <span class="process-math">\(h\text{.}\)</span>
+</div></details><div class="displaymath process-math">
+\begin{equation*}
+\text{new } h=0.9\,\frac{\varepsilon}{r}\,h
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_prelim_E_E2-2-32-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">That is our preliminary version of the Euler/Euler-2step variable step size method. We call it the preliminary version, because we will shortly tweak it to get a much more efficient procedure.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_prelim_E_E2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="prelim_E_E2" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="prelim_E_E2-1">
+<div class="para">As a concrete example, suppose that our problem is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+y(0)=e^{-2},\ y'=8(1-2t)y,\ \varepsilon=0.1
+\end{equation*}
+</div>
+<div class="para">and that we have gotten as far as</div>
+<div class="displaymath process-math">
+\begin{equation*}
+t_n=0.33,\ y_n=0.75,\ \ \text{trial }h=0.094
+\end{equation*}
+</div>
+<div class="para">Then, using <span class="process-math">\(E=|A_{1,n+1}-A_{2,n+1}|\)</span> to denote the magnitude of the estimated local truncation error in <span class="process-math">\(A_{2,n+1}\)</span> and <span class="process-math">\(r\)</span> the corresponding error rate</div>
+<div class="displaymath process-math" id="prelim_E_E2-1-6">
+\begin{align*}
+f(t_n,y_n)&amp;=8(1-2\times 0.33) 0.75=2.04 \\
+A_{1,n+1}&amp;=y_n+hf(t_n,y_n)=0.75+0.094\times 2.04=0.942 \\
+y_{\rm mid}&amp;=y_n+\tfrac{h}{2}f(t_n,y_n)
+=0.75+\tfrac{0.094}{2}\times 2.04=0.846 \\
+f\big(t_n+\tfrac{h}{2},y_{\rm mid}\big)
+&amp;=8\Big[1-2\big(0.33+\tfrac{0.094}{2}\big)\Big]0.846=1.66 \\
+A_{2,n+1}&amp;=y_{\rm mid}+\tfrac{h}{2}f(t_n+\tfrac{h}{2},y_{\rm mid})
+=0.846+\tfrac{0.094}{2}1.66=0.924\\
+E&amp;=|A_{1,n+1}-A_{2,n+1}|=|0.942-0.924|=0.018\\
+r&amp;=\frac{|E|}{h}=\frac{0.018}{0.094}=0.19
+\end{align*}
+</div>
+<div class="para">Since <span class="process-math">\(r=0.19&gt;\varepsilon=0.1\,\text{,}\)</span> the current step size is unacceptable and we have to recompute with the new step size</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\text{new } h=0.9\frac{\varepsilon}{r}(\text{old }h)
+=0.9\ \frac{0.1}{0.19}\ 0.094
+=0.045
+\end{equation*}
+</div>
+<div class="para">to give</div>
+<div class="displaymath process-math" id="prelim_E_E2-1-9">
+\begin{align*}
+f(t_n,y_n)&amp;=8(1-2\times0.33)0.75=2.04 \\
+A_{1,n+1}&amp;=y_n+hf(t_n,y_n)=0.75+0.045\times 2.04=0.842 \\
+y_{\rm mid}&amp;=y_n+\tfrac{h}{2}f(t_n,y_n)
+=0.75+\tfrac{0.045}{2}\times 2.04=0.796 \\
+f\big(t_n+\tfrac{h}{2},y_{\rm mid}\big)
+&amp;=8\Big[1-2\big(0.33+\tfrac{0.045}{2}\big)\Big]0.796=1.88 \\
+A_{2,n+1}&amp;=y_{\text{mid}}
++\tfrac{h}{2}f(t_n +\tfrac{h}{2},y_{\rm mid})
+=0.796+\tfrac{0.045}{2}1.88
+=0.838 \\
+E&amp;=A_{1.n+1}-A_{2.n+1}=0.842-0.838=0.004 \\
+r&amp;=\frac{|E|}{h}=\frac{0.004}{0.045}=0.09
+\end{align*}
+</div>
+<div class="para">This time <span class="process-math">\(\,r=0.09\lt \varepsilon=0.1\,\text{,}\)</span> is acceptable so we set <span class="process-math">\(t_{n+1}=0.33+0.045=0.375\)</span> and</div>
+<div class="displaymath process-math">
+\begin{equation*}
+y_{n+1}=A_{2,n+1}=0.838
+\end{equation*}
+</div>
+<div class="para">The initial trial step size from <span class="process-math">\(t_{n+1}\)</span> to <span class="process-math">\(t_{n+2}\)</span> is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\text{new }h = 0.9\frac{\varepsilon}{r}(\text{old }h)
+=0.9\,\frac{0.1}{0.09}\,.045=.045
+\end{equation*}
+</div>
+<div class="para">By a fluke, it has turned out that the new <span class="process-math">\(h\)</span> is the same as the old <span class="process-math">\(h\)</span> (to three decimal places). If <span class="process-math">\(r\)</span> had been significantly smaller than <span class="process-math">\(\varepsilon\text{,}\)</span> then the new <span class="process-math">\(h\)</span> would have been signficantly bigger than the old <span class="process-math">\(h\)</span> - indicating that it is (relatively) easy to estimate things in this region, making a larger step size sufficient.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#prelim_E_E2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example D.3.1"><a href="#prelim_E_E2" title="Copy heading and permalink for Example D.3.1" aria-label="Copy heading and permalink for Example D.3.1">🔗</a></div></article></details><div class="para" id="ssec_prelim_E_E2-4">As we said above, we will shortly upgrade the above variable step size method, that we are calling the preliminary version of the Euler/Euler-2step method, to get a much more efficient procedure. Before we do so, let’s pause to investigate a little how well our preliminary procedure does at controlling the rate of error production.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_prelim_E_E2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ssec_prelim_E_E2-5">We have been referring, loosely, to <span class="process-math">\(\varepsilon\)</span> as the desired rate for introduction of error, by our variable step size method, as <span class="process-math">\(t\)</span> advances. If the rate of increase of error were exactly <span class="process-math">\(\varepsilon\text{,}\)</span> then at final time <span class="process-math">\(t_f\)</span> the accumulated error would be exactly <span class="process-math">\(\varepsilon(t_f-t_0)\text{.}\)</span> But our algorithm actually chooses the step size <span class="process-math">\(h\)</span> for each step so that the estimated local truncation error in <span class="process-math">\(A_{2,n+1}\)</span> for that step is about <span class="process-math">\(\varepsilon h\text{.}\)</span> We have seen that, once some local truncation error has been introduced, its contribution to the global truncation error can grow exponentially with <span class="process-math">\(t_f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#ssec_prelim_E_E2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ssec_prelim_E_E2-6">Here are the results of a numerical experiment that illustrate this effect. In this experiment, the above preliminary Euler/Euler-2step method is applied to the initial value problem <span class="process-math">\(\ 
+y'=t-2y,\ 
+y(0)=3
+\ \)</span> for <span class="process-math">\(\varepsilon=\frac{1}{16},\frac{1}{32},\cdots\)</span> (ten different values) and for <span class="process-math">\(t_f=0.2,\ 0.4,\ \cdots,\ 3.8\text{.}\)</span> Here  is a plot of the resulting <span class="process-math">\(\frac{\text{actual error at }t=t_f}{\varepsilon t_f}\)</span> against <span class="process-math">\(t_f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#ssec_prelim_E_E2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:5%;margin-right:5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/vble_error.svg" role="img" class="contained"></div></div></div>
+<div class="para" id="ssec_prelim_E_E2-8">If the rate of introduction of error were exactly <span class="process-math">\(\varepsilon\text{,}\)</span> we would have <span class="process-math">\(\frac{\text{actual error at }t=t_f}{\varepsilon t_f}=1\text{.}\)</span> There is a small square on the graph for each different pair <span class="process-math">\(\varepsilon,t_f\text{.}\)</span> So for each value of <span class="process-math">\(t_f\)</span> there are ten (possibly overlapping) squares on the line <span class="process-math">\(x=t_f\text{.}\)</span> This numerical experiment suggests that <span class="process-math">\(\frac{\text{actual error at }t=t_f}{\varepsilon t_f}\)</span> is relatively independent of <span class="process-math">\(\varepsilon\)</span> and starts, when <span class="process-math">\(t_f\)</span> is small, at about one, as we want, but grows (perhaps exponentially) with <span class="process-math">\(t_f\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#ssec_prelim_E_E2-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection D.3.1: Euler and Euler-2step (preliminary version)"><a href="#ssec_prelim_E_E2" title="Copy heading and permalink for Subsection D.3.1: Euler and Euler-2step (preliminary version)" aria-label="Copy heading and permalink for Subsection D.3.1: Euler and Euler-2step (preliminary version)">🔗</a></div></section><section class="subsection" id="ssec_final_E_E2"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Euler and Euler-2step (final version)</span>
+</h3>
+<div class="para logical" id="ssec_final_E_E2-2">
+<div class="para">We are now ready  to use a sneaky bit of arithemtic to supercharge our Euler/Euler-2step method. As in our development of the preliminary version of the method, denote by <span class="process-math">\(\phi(t)\)</span> the exact solution to <span class="process-math">\(y'=f(t,y)\)</span> that satisfies the initial condition <span class="process-math">\(\phi(t_n)=y_n\text{.}\)</span> We have seen, at the beginning of §<a href="ap_variable.html#ssec_prelim_E_E2" class="internal" title="Subsection D.3.1: Euler and Euler-2step (preliminary version)">D.3.1</a>, that applying one step of Euler with step size <span class="process-math">\(h\text{,}\)</span> gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/ssec_prelim_E_E2.html" id="ssec_final_E_E2-2-6">
+\begin{align*}
+A_{1,n+1}&amp;=y_n+hf(t_n,y_n) \notag\\
+&amp;=\phi(t_n+h)+Kh^2+O(h^3)
+\tag{E5}
+\end{align*}
+</div>
+<div class="para">and applying one step of Euler-2step with step size <span class="process-math">\(h\)</span> (i.e. applying two steps of Euler with step size <span class="process-math">\(h/2\)</span>) gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/ssec_prelim_E_E2.html" id="ssec_final_E_E2-2-9">
+\begin{align*}
+A_{2,n+1} &amp;= y_n+\tfrac{h}{2}f(t_n,y_n)
++\tfrac{h}{2}f\big(t_n+\tfrac{h}{2}\,,\,y_n+\tfrac{h}{2}f(t_n,y_n)\big)\notag\\
+&amp;=\phi(t_n+h)+\tfrac{1}{2} Kh^2+O(h^3)
+\tag{E6}
+\end{align*}
+</div>
+<div class="para">because the local truncation error introduced in the first half-step was <span class="process-math">\(K(h/2)^2+O(h^3)\)</span> and that introduced in the second half-step was <span class="process-math">\(K(h/2)^2+O(h^3)\text{.}\)</span> Now here is the sneaky bit. Equations (E5) and (E6) are very similar and we can eliminate all <span class="process-math">\(Kh^2\)</span>’s by subtracting (E5) from <span class="process-math">\(2\)</span> times (E6). This gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/ssec_prelim_E_E2.html">
+\begin{equation*}
+2\text{(E6)} - \text{(E5):}\qquad
+2A_{2,n+1}-A_{1,n+1} = \phi(t_n+h) +O(h^3)
+\end{equation*}
+</div>
+<div class="para">(no more <span class="process-math">\(h^2\)</span> term!) or</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/ssec_prelim_E_E2.html">
+\begin{equation*}
+\phi(t_n+h)= 2A_{2,n+1}-A_{1,n+1}+O(h^3)
+\tag{E7}
+\end{equation*}
+</div>
+<div class="para">which tells us that choosing</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/ssec_prelim_E_E2.html">
+\begin{equation*}
+y_{n+1}=2A_{2,n+1}-A_{1,n+1}
+\tag{E8}
+\end{equation*}
+</div>
+<div class="para">would give a local truncation error of order <span class="process-math">\(h^3\text{,}\)</span> rather than the order <span class="process-math">\(h^2\)</span> of the preliminary Euler/Euler-2step method. To convert the preliminary version to the final version, we just replace <span class="process-math">\(y_{n+1}=A_{2,n+1}\)</span> by <span class="process-math">\(y_{n+1} = 2A_{2,n+1}-A_{1,n+1}\text{:}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_final_E_E2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="fact theorem-like" id="full_E_E2"><h4 class="heading">
+<span class="type">Equation</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Euler/Euler-2step Method.</span>
+</h4>
+<div class="para logical" id="full_E_E2-2-1">
+<div class="para">Given <span class="process-math">\(\varepsilon&gt;0\text{,}\)</span> <span class="process-math">\(t_n\text{,}\)</span> <span class="process-math">\(y_n\)</span> and the current step size <span class="process-math">\(h\)</span>
+</div>
+<ul class="disc" id="full_E_E2-2-1-5">
+<li id="full_E_E2-2-1-5-1">
+<div class="para" id="p-derived-full_E_E2-2-1-5-1">compute<div class="displaymath process-math" id="full_E_E2-2-1-5-1-1">
+\begin{align*}
+A_{1,n+1}&amp;=y_n+hf(t_n,y_n) \\
+A_{2,n+1} &amp;= y_n+\tfrac{h}{2}f(t_n,y_n)
++\tfrac{h}{2}f\big(t_n+\tfrac{h}{2}\,,\,y_n+\tfrac{h}{2}f(t_n,y_n)\big)\\
+r&amp;=\frac{|A_{1,n+1}-A_{2,n+1}|}{h}
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#full_E_E2-2-1-5-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="full_E_E2-2-1-5-2">
+<div class="para" id="p-derived-full_E_E2-2-1-5-2">If <span class="process-math">\(r&gt;\varepsilon\text{,}\)</span> repeat the first bullet but with the new step size<div class="displaymath process-math">
+\begin{equation*}
+(\text{new }h)=0.9\,\frac{\varepsilon}{r}\,(\text{old }h)
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#full_E_E2-2-1-5-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="full_E_E2-2-1-5-3">
+<div class="para" id="p-derived-full_E_E2-2-1-5-3">If <span class="process-math">\(r\lt\varepsilon\)</span> set<div class="displaymath process-math" id="full_E_E2-2-1-5-3-2">
+\begin{align*}
+t_{n+1}&amp;=t_n+h \\
+y_{n+1}&amp;=2A_{2,n+1}-A_{1,n+1}\quad\text{and the new trial step size} \\
+(\text{new } h)&amp;=0.9\,\frac{\varepsilon}{r}\,(\text{old }h)
+\end{align*}
+</div>and move on to the next step. Note that since <span class="process-math">\(r\lt\varepsilon\text{,}\)</span> <span class="process-math">\(\frac{r}{\varepsilon}h\gt h\)</span> which indicates that the new <span class="process-math">\(h\)</span> can be larger than the old <span class="process-math">\(h\text{.}\)</span> We include the <span class="process-math">\(0.9\)</span> to be careful not to make the error of the next step too big.</div>
+<div class="autopermalink" data-description="Item"><a href="#full_E_E2-2-1-5-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#full_E_E2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Equation D.3.2: Euler/Euler-2step Method"><a href="#full_E_E2" title="Copy heading and permalink for Equation D.3.2: Euler/Euler-2step Method" aria-label="Copy heading and permalink for Equation D.3.2: Euler/Euler-2step Method">🔗</a></div></article><div class="para logical" id="ssec_final_E_E2-4">
+<div class="para">Let’s think a bit about how our final Euler/Euler-2step method should perform.</div>
+<ul class="disc" id="ssec_final_E_E2-4-1">
+<li id="ssec_final_E_E2-4-1-1">
+<div class="para" id="p-derived-ssec_final_E_E2-4-1-1">The step size here, as in the preliminary version, is chosen so that the local truncation error in <span class="process-math">\(A_{2,n+1}\)</span> per unit increase of <span class="process-math">\(t\text{,}\)</span> namely <span class="process-math">\(r=\frac{|A_{1,n+1}-A_{2,n+1}|}{h}\approx\frac{Kh^2/2}{h}=\frac{K}{2}h\text{,}\)</span> is approximately <span class="process-math">\(\varepsilon\text{.}\)</span> So <span class="process-math">\(h\)</span> is roughly proportional to <span class="process-math">\(\varepsilon\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_final_E_E2-4-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="ssec_final_E_E2-4-1-2">
+<div class="para" id="p-derived-ssec_final_E_E2-4-1-2">On the other hand, (E7) shows that, in the full method, local truncation error is being added to <span class="process-math">\(y_{n+1}\)</span> at a rate of <span class="process-math">\(\frac{O(h^3)}{h}=O(h^2)\)</span> per unit increase in <span class="process-math">\(t\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_final_E_E2-4-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="ssec_final_E_E2-4-1-3">
+<div class="para" id="p-derived-ssec_final_E_E2-4-1-3">So one would expect that local truncation increases the error at a rate proportional to <span class="process-math">\(\varepsilon^2\)</span> per unit increase in <span class="process-math">\(t\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_final_E_E2-4-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="ssec_final_E_E2-4-1-4">
+<div class="para" id="p-derived-ssec_final_E_E2-4-1-4">If the rate of increase of error were exactly a constant time <span class="process-math">\(\varepsilon^2\text{,}\)</span> then the error accumulated between the initial time <span class="process-math">\(t=0\)</span> and the final time <span class="process-math">\(t=t_f\)</span> would be exactly a constant times <span class="process-math">\(\varepsilon^2\,t_f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_final_E_E2-4-1-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="ssec_final_E_E2-4-1-5">
+<div class="para" id="p-derived-ssec_final_E_E2-4-1-5">However we have seen that, once some local truncation error has been introduced, its contribution to the global error can grow exponentially with <span class="process-math">\(t_f\text{.}\)</span> So we would expect that, under the full Euler/Euler-2step method, <span class="process-math">\(\frac{{\rm actual\ error\ at\ }t=t_f}{\varepsilon^2 t_f}\)</span> to be more or less independent of <span class="process-math">\(\varepsilon\text{,}\)</span> but still growing exponentially in <span class="process-math">\(t_f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_final_E_E2-4-1-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">Here are the results of a numerical experiment that illustrate this. In this experiment, the above final Euler/Euler-2step method, (<a href="ap_variable.html#full_E_E2" class="xref" data-knowl="./knowl/xref/full_E_E2.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation D.3.2: Euler/Euler-2step Method">D.3.2</a>), is applied to the initial value problem <span class="process-math">\(\ 
+y'=t-2y,\ 
+y(0)=3
+\ \)</span> for <span class="process-math">\(\varepsilon=\frac{1}{16},\frac{1}{32},\cdots\)</span> (ten different values) and for <span class="process-math">\(t_f=0.2,\ 0.4,\ \cdots,\ 3.8\text{.}\)</span> In the following plot, there is a small square for the resulting <span class="process-math">\(\frac{\text{actual error at }t=t_f}{\varepsilon^2 t_f}\)</span> for each different pair <span class="process-math">\(\varepsilon,t_f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_final_E_E2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:5%;margin-right:5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/vble4_error.svg" role="img" class="contained"></div></div></div>
+<div class="para" id="ssec_final_E_E2-6">It does indeed look like <span class="process-math">\(\frac{{\rm actual\ error\ at\ }t=t_f}{\varepsilon^2 t_f}\)</span> is relatively independent of <span class="process-math">\(\varepsilon\)</span> but grows (perhaps exponentially) with <span class="process-math">\(t_f\text{.}\)</span> Note that <span class="process-math">\(\frac{{\rm actual\ error\ at\ }t=t_f}{\varepsilon^2 t_f}\)</span> contains a factor of <span class="process-math">\(\varepsilon^2\)</span> in the denominator. The actual error rate <span class="process-math">\(\frac{{\rm actual\ error\ at\ }t=t_f}{t_f}\)</span> is much smaller than is suggested by the graph.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_final_E_E2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection D.3.2: Euler and Euler-2step (final version)"><a href="#ssec_final_E_E2" title="Copy heading and permalink for Subsection D.3.2: Euler and Euler-2step (final version)" aria-label="Copy heading and permalink for Subsection D.3.2: Euler and Euler-2step (final version)">🔗</a></div></section><section class="subsection" id="ssec_Fehlberg"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.3</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fehlberg’s Method</span>
+</h3>
+<div class="para logical" id="ssec_Fehlberg-2">
+<div class="para">Of course, in practice more efficient and more accurate methods<details class="ptx-footnote" aria-live="polite" id="ssec_Fehlberg-2-1"><summary class="ptx-footnote__number" title="Footnote D.3.10"><sup> 10 </sup></summary><div class="ptx-footnote__contents">There are a very large number of such methods. We will only look briefly at a couple of the simpler ones. The interested reader can find more by search engining for such keywords as “Runge-Kutta methods” and “adaptive step size”.</div></details> than Euler and Euler-2step are used. Fehlberg’s method<details class="ptx-footnote" aria-live="polite" id="ssec_Fehlberg-2-2"><summary class="ptx-footnote__number" title="Footnote D.3.11"><sup> 11 </sup></summary><div class="ptx-footnote__contents">E. Fehlberg, NASA Technical Report R315 (1969) and NASA Technical Report R287 (1968).</div></details> uses improved Euler and a second more accurate method. Each step involves three calculations of <span class="process-math">\(f\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="ssec_Fehlberg-2-4">
+\begin{align*}
+f_{1,n}&amp;=f(t_n,y_n) \\
+f_{2,n}&amp;=f(t_n+h,y_n+hf_{1,n}) \\
+f_{3,n}&amp;=f\left(t_n+\tfrac{h}{2},y_n+\tfrac{h}{4}[f_{1,n}+f_{2,n}]\right)
+\end{align*}
+</div>
+<div class="para">Once these three evaluations have been made, the method generates two approximations for <span class="process-math">\(y(t_n+h)\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="ssec_Fehlberg-2-6">
+\begin{align*}
+A_{1,n+1}&amp;=y_n+\tfrac{h}{2}\left[f_{1,n}+f_{2,n}\right] \\
+A_{2,n+1}&amp;=y_n+\tfrac{h}{6}\left[f_{1,n}+f_{2,n}+4f_{3,n}\right]
+\end{align*}
+</div>
+<div class="para">Denote by <span class="process-math">\(\phi(t)\)</span> the exact solution to <span class="process-math">\(y'=f(t,y)\)</span> that satisfies the initial condition <span class="process-math">\(\phi(t_n)=y_n\text{.}\)</span>  Now <span class="process-math">\(A_{1,n+1}\)</span> is just the <span class="process-math">\(y_{n+1}\)</span> produced by the improved Euler’s method. The local truncation error for the improved Euler’s method is of order <span class="process-math">\(h^3\text{,}\)</span> one power of <span class="process-math">\(h\)</span> smaller than that for Euler’s method. So</div>
+<div class="displaymath process-math">
+\begin{equation*}
+A_{1,n+1} = \phi(t_n+h) + Kh^3+O(h^4) 
+\end{equation*}
+</div>
+<div class="para">and it turns out<details class="ptx-footnote" aria-live="polite" id="ssec_Fehlberg-2-15"><summary class="ptx-footnote__number" title="Footnote D.3.12"><sup> 12 </sup></summary><div class="ptx-footnote__contents">The interested reader can find Fehlberg’s original paper online (at NASA!) and follow the derivation. It requires careful Taylor expansions and then clever algebra to cancel the bigger error terms.</div></details>  that</div>
+<div class="displaymath process-math">
+\begin{equation*}
+A_{2,n+1} = \phi(t_n+h) + O(h^4) 
+\end{equation*}
+</div>
+<div class="para">So the  error in <span class="process-math">\(A_{1,n+1}\)</span> is</div>
+<div class="displaymath process-math" id="ssec_Fehlberg-2-18">
+\begin{align*}
+E&amp;=\big|Kh^3+O(h^4)\big|
+=\big|A_{1,n+1}-\phi(t_n+h)\big|+O(h^4) \\
+&amp;=\big|A_{1,n+1}-A_{2,n+1}\big|+O(h^4)
+\end{align*}
+</div>
+<div class="para">and our estimate for rate at which error is being introduced into <span class="process-math">\(A_{1,n+1}\)</span> is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+r=\frac{|A_{1,n+1}-A_{2,n+1}|}{h}\approx |K|h^2
+\end{equation*}
+</div>
+<div class="para">per unit increase of <span class="process-math">\(t\text{.}\)</span>
+</div>
+<ul class="disc" id="ssec_Fehlberg-2-22">
+<li id="ssec_Fehlberg-2-22-1">
+<div class="para" id="p-derived-ssec_Fehlberg-2-22-1">If <span class="process-math">\(r&gt;\varepsilon\)</span> we redo this step with a new trial step size chosen so that <span class="process-math">\(|K|(\text{new }h)^2\lt\varepsilon\text{,}\)</span> i.e. <span class="process-math">\(\frac{r}{h^2}(\text{new }h)^2\lt\varepsilon\text{.}\)</span> With our traditional safety factor, we take<div class="displaymath process-math">
+\begin{equation*}
+\text{new }h=0.9\sqrt{\frac{\varepsilon}{r}}\,h\qquad
+\text{(the new }h\text{ is smaller)}
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_Fehlberg-2-22-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="ssec_Fehlberg-2-22-2">
+<div class="para" id="p-derived-ssec_Fehlberg-2-22-2">If <span class="process-math">\(r\le \varepsilon\)</span> we set <span class="process-math">\(t_{n+1}=t_n+h\)</span> and <span class="process-math">\(y_{n+1}=A_{2,n+1}\)</span> (since <span class="process-math">\(A_{2,n+1}\)</span> should be considerably more accurate than <span class="process-math">\(A_{1,n+1}\)</span>) and move on to the next step with trial step size<div class="displaymath process-math">
+\begin{equation*}
+\text{new }h=0.9\sqrt{\frac{\varepsilon}{r}}\,h\qquad
+\text{(the new }h\text{ is usually bigger)}
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_Fehlberg-2-22-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_Fehlberg-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection D.3.3: Fehlberg’s Method"><a href="#ssec_Fehlberg" title="Copy heading and permalink for Subsection D.3.3: Fehlberg’s Method" aria-label="Copy heading and permalink for Subsection D.3.3: Fehlberg’s Method">🔗</a></div></section><section class="subsection" id="ssec_Kutta_Merson"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.4</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The Kutta-Merson Process</span>
+</h3>
+<div class="para logical" id="ssec_Kutta_Merson-2">
+<div class="para">The Kutta-Merson process<details class="ptx-footnote" aria-live="polite" id="ssec_Kutta_Merson-2-1"><summary class="ptx-footnote__number" title="Footnote D.3.13"><sup> 13 </sup></summary><div class="ptx-footnote__contents">R.H. Merson, ``An operational method for the study of integration processes’’ , Proc. Symp. Data Processing , Weapons Res. Establ. Salisbury , Salisbury (1957) pp. 110–125.</div></details> uses two variations of the Runge-Kutta method. Each step involves five calculations<details class="ptx-footnote" aria-live="polite" id="ssec_Kutta_Merson-2-2"><summary class="ptx-footnote__number" title="Footnote D.3.14"><sup> 14 </sup></summary><div class="ptx-footnote__contents">Like the other methods described above, the coefficients <span class="process-math">\(1/3\text{,}\)</span> <span class="process-math">\(1/6\text{,}\)</span> <span class="process-math">\(1/8\)</span> etc. are chosen so as to cancel larger error terms. While determining the correct choice of coefficients is not conceptually difficult, it does take some work and is beyond the scope of this appendix. The interested reader should search-engine their way to a discussion of adaptive Runge-Kutta methods.</div></details>  of <span class="process-math">\(f\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="ssec_Kutta_Merson-2-4">
+\begin{align*}
+k_{1,n}&amp;=f(t_n,y_n) \\
+k_{2,n}&amp;=f\big(t_n+\tfrac{1}{3}h,y_n+\tfrac{1}{3}hk_{1,n}\big)\\
+k_{3,n}&amp;=
+f\big(t_n+\tfrac{1}{3}h,y_n+\tfrac{1}{6}hk_{1,n}+\tfrac{1}{6}hk_{2,n}\big) \\
+k_{4,n}&amp;=
+f\big(t_n+\tfrac{1}{2}h,y_n+\tfrac{1}{8}hk_{1,n}+\tfrac{3}{8}hk_{3,n}\big) \\
+k_{5,n}&amp;=
+f\big(t_n+h,y_n+\tfrac{1}{2}hk_{1,n}-\tfrac{3}{2}hk_{3,n}+2hk_{4,n}\big)
+\end{align*}
+</div>
+<div class="para">Once these five evaluations have been made, the process generates two approximations for <span class="process-math">\(y(t_n+h)\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="ssec_Kutta_Merson-2-6">
+\begin{align*}
+A_{1,n+1}&amp;=y_n+h\left[\tfrac{1}{2}k_{1,n}-\tfrac{3}{2}k_{3,n}+2k_{4,n}\right] \\
+A_{2,n+1}&amp;=y_n+h\left[\tfrac{1}{6}k_{1,n}+\tfrac{2}{3}k_{4,n}
++\tfrac{1}{6}k_{5,n}\right]
+\end{align*}
+</div>
+<div class="para">The (signed) error in <span class="process-math">\(A_{1,n+1}\)</span> is <span class="process-math">\(\frac{1}{120}h^5K+O(h^6)\)</span> while that in <span class="process-math">\(A_{2,n+1}\)</span> is <span class="process-math">\(\frac{1}{720}h^5K+O(h^6)\)</span> with the same constant <span class="process-math">\(K\text{.}\)</span> So <span class="process-math">\(A_{1,n+1}-A_{2,n+1} = \frac{5}{720}Kh^5+O(h^6)\)</span> and the unknown constant <span class="process-math">\(K\)</span> can be determined, to within an error <span class="process-math">\(O(h)\text{,}\)</span> by</div>
+<div class="displaymath process-math">
+\begin{equation*}
+K=\frac{720}{5\,h^5}(A_{1,n+1}-A_{2,n+1})
+\end{equation*}
+</div>
+<div class="para">and the approximate (signed) error in <span class="process-math">\(A_{2,n+1}\)</span> and its corresponding rate per unit increase of <span class="process-math">\(t\)</span> are</div>
+<div class="displaymath process-math" id="ssec_Kutta_Merson-2-18">
+\begin{align*}
+E&amp;=\frac{1}{720}K h^5=\frac{1}{5}(A_{1,n+1}-A_{2,n+1}) \\
+r=\frac{|E|}{h}&amp;=\frac{1}{720}|K| h^4=\frac{1}{5\,h}\big|A_{1,n+1}-A_{2,n+1}\big|
+\end{align*}
+</div>
+<ul class="disc" id="ssec_Kutta_Merson-2-19">
+<li id="ssec_Kutta_Merson-2-19-1">
+<div class="para" id="p-derived-ssec_Kutta_Merson-2-19-1">If <span class="process-math">\(r&gt;\varepsilon\)</span> we redo this step with a new trial step size chosen so that <span class="process-math">\(\frac{1}{720}|K|(\text{new h})^4\lt\varepsilon\text{,}\)</span> i.e. <span class="process-math">\(\frac{r}{h^4}(\text{new }h)^4\lt\varepsilon\text{.}\)</span> With our traditional safety factor, we take<div class="displaymath process-math">
+\begin{equation*}
+\text{new }h=0.9\left(\frac{\varepsilon}{r}\right)^{1/4}\,h
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_Kutta_Merson-2-19-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="ssec_Kutta_Merson-2-19-2">
+<div class="para" id="p-derived-ssec_Kutta_Merson-2-19-2">If <span class="process-math">\(r\le \varepsilon\)</span> we set <span class="process-math">\(t_{n+1}=t_n+h\)</span> and <span class="process-math">\(y_{n+1}=A_{2,n+1}-E\)</span> (since <span class="process-math">\(E\)</span> is our estimate of the signed error in <span class="process-math">\(A_{2,n+1}\)</span>) and move on to the next step with trial step size<div class="displaymath process-math">
+\begin{equation*}
+\text{new }h=0.9\left(\frac{\varepsilon}{r}\right)^{1/4}\,h
+\end{equation*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#ssec_Kutta_Merson-2-19-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_Kutta_Merson-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection D.3.4: The Kutta-Merson Process"><a href="#ssec_Kutta_Merson" title="Copy heading and permalink for Subsection D.3.4: The Kutta-Merson Process" aria-label="Copy heading and permalink for Subsection D.3.4: The Kutta-Merson Process">🔗</a></div></section><section class="subsection" id="ssec_E_E2_local_trunc"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.5</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The Local Truncation Error for Euler-2step</span>
+</h3>
+<div class="para" id="ssec_E_E2_local_trunc-2">In our description of Euler/Euler-2step above we simply stated the local truncation error without an explanation. In this section, we show how it may be derived. We note that very similar calculations underpin the other methods we have described.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_E_E2_local_trunc-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="ssec_E_E2_local_trunc-3">In this section, we will be using partial derivatives and, in particular, the chain rule for functions of two variables. That material is covered in Chapter 2 of the CLP-3 text. If you are not yet comfortable with it, you can either take our word for those bits, or you can delay reading this section until you have learned a little multivariable calculus.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_E_E2_local_trunc-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="ssec_E_E2_local_trunc-4">
+<div class="para">Recall that, by definition, the local truncation error for an algorithm is the (signed) error generated by a single step of the algorithm, under the assumptions that we start the step with the exact solution and that there is no roundoff error<details class="ptx-footnote" aria-live="polite" id="ssec_E_E2_local_trunc-4-1"><summary class="ptx-footnote__number" title="Footnote D.3.15"><sup> 15 </sup></summary><div class="ptx-footnote__contents">We should note that in serious big numerical computations, one really does have to take rounding errors into account because they can cause serious problems. The interested reader should search-engine their way to the story of Edward Lorenz’s numerical simulations and the beginnings of chaos theory. Unfortunately we simply do not have space in this text to discuss all aspects of mathematics.</div></details>. Denote by <span class="process-math">\(\phi(t)\)</span> the exact solution to</div>
+<div class="displaymath process-math" id="ssec_E_E2_local_trunc-4-3">
+\begin{align*}
+y'(t)&amp;=f(t,y) \\
+y(t_n)&amp;=y_n
+\end{align*}
+</div>
+<div class="para">In other words, <span class="process-math">\(\phi(t)\)</span> obeys</div>
+<div class="displaymath process-math" id="ssec_E_E2_local_trunc-4-5">
+\begin{align*}
+\phi'(t) &amp;= f\big(t,\phi(t)\big)\qquad\text{ for all }t \\
+\phi(t_n)&amp;=y_n
+\end{align*}
+</div>
+<div class="para">In particular <span class="process-math">\(\phi'(t_n)=f\big(t_n,\phi(t_n)\big)=f(t_n,y_n)\)</span> and, carefully using the chain rule, which is (2.4.2) in the CLP-3 text,</div>
+<div class="displaymath process-math" id="ssec_E_E2_local_trunc-4-7">
+\begin{align*}
+\phi''(t_n)&amp;=\diff{}{t}f\big(t,\phi(t)\big)\Big|_{t=t_n}
+=\Big[f_t\big(t,\phi(t)\big)+f_y\big(t,\phi(t)\big)\phi'(t)\Big]_{t=t_n} \\
+&amp;=f_t(t_n,y_n)+f_y(t_n,y_n)\,f(t_n,y_n)
+\tag{E9}
+\end{align*}
+</div>
+<div class="para">Remember that <span class="process-math">\(f_t\)</span> is the partial derivative of <span class="process-math">\(f\)</span> with respect to <span class="process-math">\(t\text{,}\)</span> and that <span class="process-math">\(f_y\)</span> is the partial derivative of <span class="process-math">\(f\)</span> with respect to <span class="process-math">\(y\text{.}\)</span> We’ll need (E9) below.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_E_E2_local_trunc-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="ssec_E_E2_local_trunc-5">
+<div class="para">By definition, the local truncation error for Euler is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+E_1(h)=\phi(t_n+h)-y_n-hf\big(t_n,y_n\big) 
+\end{equation*}
+</div>
+<div class="para">while that for Euler-2step is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+E_2(h)=\phi(t_n+h)-y_n-\tfrac{h}{2}f(t_n,y_n)
+-\tfrac{h}{2}f\big(t_n+\tfrac{h}{2},y_n+\tfrac{h}{2}f(t_n,y_n)\big)
+\end{equation*}
+</div>
+<div class="para">To understand how <span class="process-math">\(E_1(h)\)</span> and <span class="process-math">\(E_2(h)\)</span> behave for small <span class="process-math">\(h\)</span> we can use Taylor expansions ((3.4.10) in the CLP-1 text) to write them as power series in <span class="process-math">\(h\text{.}\)</span>  To be precise, we use</div>
+<div class="displaymath process-math">
+\begin{equation*}
+g(h)=g(0)+g'(0)\,h+\half g''(0)\,h^2+O(h^3)
+\end{equation*}
+</div>
+<div class="para">to expand both <span class="process-math">\(E_1(h)\)</span> and <span class="process-math">\(E_2(h)\)</span> in powers of <span class="process-math">\(h\)</span> to order <span class="process-math">\(h^2\text{.}\)</span> Note that, in the expression for <span class="process-math">\(E_1(h)\text{,}\)</span>  <span class="process-math">\(t_n\)</span> and <span class="process-math">\(y_n\)</span> are constants — they do not vary with <span class="process-math">\(h\text{.}\)</span> So computing derivatives of <span class="process-math">\(E_1(h)\)</span> with respect to <span class="process-math">\(h\)</span> is actually quite simple.</div>
+<div class="displaymath process-math" id="ssec_E_E2_local_trunc-5-19">
+\begin{alignat*}{2}
+E_1(h)&amp;=\phi(t_n+h)-y_n-hf\big(t_n,y_n\big)\qquad &amp;
+E_1(0)&amp;=\phi(t_n)-y_n=0 \\
+E'_1(h)&amp;=\phi'(t_n+h)-f\big(t_n,y_n\big) &amp;
+E'_1(0)&amp;=\phi'(t_n)-f\big(t_n,y_n\big)=0 \\
+E''_1(h)&amp;=\phi''(t_n+h) &amp;
+E''_1(0)&amp;=\phi''(t_n) 
+\end{alignat*}
+</div>
+<div class="para">By Taylor, the local truncation error for Euler obeys</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_E_E2_local_trunc-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="fact theorem-like" id="Euler_1step"><h4 class="heading">
+<span class="type">Equation</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="Euler_1step-1-1">
+<div class="displaymath process-math">
+\begin{equation*}
+E_1(h)=\half\phi''(t_n)h^2+O(h^3)=Kh^2+O(h^3)\qquad\text{with }
+K=\half\phi''(t_n)
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#Euler_1step-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Equation D.3.3"><a href="#Euler_1step" title="Copy heading and permalink for Equation D.3.3" aria-label="Copy heading and permalink for Equation D.3.3">🔗</a></div></article><div class="para logical" id="ssec_E_E2_local_trunc-7">
+<div class="para">Computing arguments of <span class="process-math">\(E_2(h)\)</span> with respect to <span class="process-math">\(h\)</span> is a little harder, since <span class="process-math">\(h\)</span> now appears in the arguments of the function <span class="process-math">\(f\text{.}\)</span> As a consequence, we have to include some partial derivatives.</div>
+<div class="displaymath process-math" id="ssec_E_E2_local_trunc-7-5">
+\begin{align*}
+E_2(h)&amp;=\phi(t_n+h)-y_n-\frac{h}{2}f(t_n,y_n)
+-\frac{h}{2}f\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big) \\
+E'_2(h)&amp;=\phi'(t_n+h)-\frac{1}{2}f(t_n,y_n)
+-\frac{1}{2}f\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big) \\
+&amp;\hskip2.5in-\frac{h}{2}
+\underbrace{\diff{}{h} f\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big)}_{\text{leave this expression as is for now}} \\
+E''_2(h)&amp;=\phi''(t_n+h)
+-2\times\frac{1}{2}
+\underbrace{\diff{}{h}f\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big)}_{\text{leave this one too}} \\
+&amp;\hskip2.5in-\frac{h}{2}
+\underbrace{\frac{\mathrm{d^2}}{\mathrm{d}h^2}f\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big)}_{\text{and leave this one too}} 
+\end{align*}
+</div>
+<div class="para">Since we only need <span class="process-math">\(E_2(h)\)</span> and its derivatives at <span class="process-math">\(h=0\text{,}\)</span> we don’t have to compute the <span class="process-math">\(\frac{\mathrm{d^2 f}}{\mathrm{d}h^2}\)</span> term (thankfully) and we also do not need to compute the <span class="process-math">\(\diff{f}{h}\)</span> term in <span class="process-math">\(E_2'\text{.}\)</span> We do, however, need <span class="process-math">\(\diff{f}{h}\Big|_{h=0}\)</span> for <span class="process-math">\(E_2''(0)\text{.}\)</span>
+</div>
+<div class="displaymath process-math" id="ssec_E_E2_local_trunc-7-13">
+\begin{align*}
+E_2(0)&amp;=\phi(t_n)-y_n=0 \\
+E'_2(0)&amp;=\phi'(t_n)-\frac{1}{2}f(t_n,y_n)-\frac{1}{2}f(t_n,y_n)=0 \\
+E''_2(0)&amp;=\phi''(t_n)-\diff{}{h}
+f\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big)\Big|_{h=0} \\
+&amp;=\phi''(t_n)-
+\frac{1}{2} f_t\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big)\Big|_{h=0} \\
+&amp;\hskip1.5in -\frac{1}{2} f(t_n,y_n)\, f_y\Big(t_n+\frac{h}{2},y_n+\frac{h}{2}f(t_n,y_n)\Big)\Big|_{h=0} \\
+&amp;=\phi''(t_n)- \frac{1}{2}f_t(t_n,y_n)-\frac{1}{2}f_y(t_n,y_n)\, f(t_n,y_n) \\
+&amp;=\half\phi''(t_n)\qquad\text{by (E9)}
+\end{align*}
+</div>
+<div class="para">By Taylor, the local truncation error for Euler-2step obeys</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#ssec_E_E2_local_trunc-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="fact theorem-like" id="Euler_2step"><h4 class="heading">
+<span class="type">Equation</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">D.3.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="Euler_2step-1-1">
+<div class="displaymath process-math">
+\begin{equation*}
+E_2(h)=\frac{1}{4}\phi''(t_n)\,h^2+O(h^3)
+=\half Kh^2+O(h^3)\qquad{\rm with\ }K=\half\phi''(t_n)
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#Euler_2step-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Equation D.3.4"><a href="#Euler_2step" title="Copy heading and permalink for Equation D.3.4" aria-label="Copy heading and permalink for Equation D.3.4">🔗</a></div></article><div class="para" id="ssec_E_E2_local_trunc-9">Observe that the <span class="process-math">\(K\)</span> in (<a href="ap_variable.html#Euler_2step" class="xref" data-knowl="./knowl/xref/Euler_2step.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation D.3.4">D.3.4</a>) is identical to the <span class="process-math">\(K\)</span> in (<a href="ap_variable.html#Euler_1step" class="xref" data-knowl="./knowl/xref/Euler_1step.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation D.3.3">D.3.3</a>). This is exactly what we needed in our analysis of Sections <a href="ap_variable.html#ssec_prelim_E_E2" class="internal" title="Subsection D.3.1: Euler and Euler-2step (preliminary version)">D.3.1</a> and <a href="ap_variable.html#ssec_final_E_E2" class="internal" title="Subsection D.3.2: Euler and Euler-2step (final version)">D.3.2</a>.<div class="autopermalink" data-description="Paragraph"><a href="#ssec_E_E2_local_trunc-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection D.3.5: The Local Truncation Error for Euler-2step"><a href="#ssec_E_E2_local_trunc" title="Copy heading and permalink for Subsection D.3.5: The Local Truncation Error for Euler-2step" aria-label="Copy heading and permalink for Subsection D.3.5: The Local Truncation Error for Euler-2step">🔗</a></div></section><div class="autopermalink" data-description="Section D.3: Variable Step Size Methods"><a href="#ap_variable" title="Copy heading and permalink for Section D.3: Variable Step Size Methods" aria-label="Copy heading and permalink for Section D.3: Variable Step Size Methods">🔗</a></div></section></div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="ap_error_behaviour.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Top</span></a><a class="next-button button" href="app_hint.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="feedback-link" href="mailto:clp@ugrad.math.ubc.ca?subject=clp4-pretext" target="_blank">Feedback</a><a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="runtime/reader-support/runestone-credit-logo.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="runtime/reader-support/mathjax-credit-logo.png" alt="MathJax logo"></a>
+</div>
+<nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP2/">Original authors’ website ↗</a><a href="clp_2_ic.html">Book contents</a></nav><nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B30" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">English — B30</a> · <a data-program-home data-course-card data-course-id="B30" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Bahasa Indonesia — B30</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B30" href="https://personal.math.ubc.ca/~CLP/CLP2/">Original source — Original authors’ website — CLP-2 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="clp_2_ic.html">Open related page</a></nav>
+</body>
+</html>

@@ -1,0 +1,1552 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Averages</title>
+
+
+<link rel="stylesheet" href="runtime/reader-support/material-symbols-local.css">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="external/RQS.css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="runtime/mathjax/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="CLP-2 Integral Calculus">
+<meta property="book:author" content="Joel Feldman">
+<meta property="book:author" content="Andrew Rechnitzer">
+<meta property="book:author" content="Elyse Yeager">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '8.2.5';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/prefix-runtime.18d8728f6d56e11d.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.b388362b5f43738a.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.8086b62682b271d1.css">
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="runtime/lunr/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+<link rel="stylesheet" href="program-navigation.css"></head>
+<body class="pretext book ignore-math">
+<nav data-central-surface-navigation="v1" data-placement="top" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B30" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">English — B30</a> · <a data-program-home data-course-card data-course-id="B30" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Bahasa Indonesia — B30</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B30" href="https://personal.math.ubc.ca/~CLP/CLP2/">Original source — Original authors’ website — CLP-2 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="clp_2_ic.html">Open related page</a></nav><nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP2/">Original authors’ website ↗</a><a href="clp_2_ic.html">Book contents</a></nav>
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="clp_2_ic.html"><span class="title">CLP-2 Integral Calculus</span></a></h1>
+<p class="byline">Joel Feldman, Andrew Rechnitzer, Elyse Yeager</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Contents</span></button><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="sec_work.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="up-button button" href="chap_int_app.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Up</span></a><a class="next-button button" href="sec_com.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}\newcommand{\dee}[1]{\mathrm{d}#1}
+\newcommand{\half}{ \frac{1}{2} }
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ts}{\textstyle}
+\newcommand{\es}{ {\varnothing}}
+\newcommand{\st}{ {\mbox{ s.t. }} }
+\newcommand{\pow}[1]{ \mathcal{P}\left(#1\right) }
+\newcommand{\set}[1]{ \left\{#1\right\} }
+\newcommand{\lin}{{\text{LIN}}}
+\newcommand{\quot}{{\text{QR}}}
+\newcommand{\simp}{{\text{SMP}}}
+\newcommand{\diff}[2]{ \frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\bdiff}[2]{ \frac{\mathrm{d}}{\mathrm{d}#2} \left( #1 \right)}
+\newcommand{\ddiff}[3]{ \frac{\mathrm{d}^#1#2}{\mathrm{d}{#3}^#1}}
+\renewcommand{\neg}{ {\sim} }
+\newcommand{\limp}{ {\;\Rightarrow\;} }
+\newcommand{\nimp}{ {\;\not\Rightarrow\;} }
+\newcommand{\liff}{ {\;\Leftrightarrow\;} }
+\newcommand{\niff}{ {\;\not\Leftrightarrow\;} }
+\newcommand{\De}{\Delta}
+\newcommand{\bbbn}{\mathbb{N}}
+\newcommand{\bbbr}{\mathbb{R}}
+\newcommand{\bbbp}{\mathbb{P}}
+\newcommand{\cA}{\mathcal{A}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\Si}{\Sigma}
+
+\newcommand{\arccsc}{\mathop{\mathrm{arccsc}}}
+\newcommand{\arcsec}{\mathop{\mathrm{arcsec}}}
+\newcommand{\arccot}{\mathop{\mathrm{arccot}}}
+\newcommand{\erf}{\mathop{\mathrm{erf}}}
+\newcommand{\smsum}{\mathop{{\ts \sum}}}
+\newcommand{\atp}[2]{ \genfrac{}{}{0in}{}{#1}{#2} }
+
+\newcommand{\ave}{\mathrm{ave}}
+\newcommand{\llt}{\left \lt }
+\newcommand{\rgt}{\right \gt }
+
+
+\newcommand{\YEaxis}[2]{\draw[help lines] (-#1,0)--(#1,0) node[right]{$x$};\draw[help lines] (0,-#2)--(0,#2) node[above]{$y$};}
+
+\newcommand{\YEaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$x$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YEtaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+\newcommand{\YEtaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$}; \draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YExcoord}[2]{\draw (#1,.2)--(#1,-.2) node[below]{$#2$};}
+\newcommand{\YEycoord}[2]{\draw (.2,#1)--(-.2,#1) node[left]{$#2$};}
+\newcommand{\YEnxcoord}[2]{\draw (#1,-.2)--(#1,.2) node[above]{$#2$};}
+\newcommand{\YEnycoord}[2]{\draw (-.2,#1)--(.2,#1) node[right]{$#2$};}
+
+\newcommand{\YEstickfig}[3]{
+\draw (#1,#2) arc(-90:270:2mm);
+\draw (#1,#2)--(#1,#2-.5) (#1-.25,#2-.75)--(#1,#2-.5)--(#1+.25,#2-.75) (#1-.2,#2-.2)--(#1+.2,#2-.2);}
+
+
+\newcommand{\IBP}[7]{
+\begin{array}{|c  | l | l |}
+\hline
+\color{red}{\text{Option 1:}}
+&amp; u=#2
+&amp;\color{red}{\dee{u}=#3 ~ \dee{#1}}
+\\
+&amp; \dee{v}=#5~\dee{#1}
+&amp;\color{red}{v=#7}
+\\
+\hline
+\color{blue}{\text{Option 2:}}
+&amp; u=#5
+&amp;\color{blue}{\dee{u}=#6 ~ \dee{#1}}
+\\
+&amp;\dee{v}=#2 \dee{#1}
+&amp;\color{blue}{v=#4}
+\\
+\hline
+\end{array}
+}
+
+
+\renewcommand{\textcolor}[2]{{\color{#1}{#2}}}
+
+
+\newcommand{\trigtri}[4]{
+\begin{tikzpicture}
+\draw (-.5,0)--(2,0)--(2,1.5)--cycle;
+\draw (1.8,0) |- (2,.2);
+\draw[double] (0,0) arc(0:30:.5cm);
+\draw (0,.2) node[right]{$#1$};
+\draw (1,-.5) node{$#2$};
+\draw (2,.75) node[right]{$#3$};
+\draw (.6,1.1) node[rotate=30]{$#4$};
+\end{tikzpicture}}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="clp_2_ic-2.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="front-colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-4.html" class="internal"><span class="title">Preface</span></a></div></li>
+<li class="toc-item toc-dedication"><div class="toc-title-box"><a href="clp_2_ic-2-5.html" class="internal"><span class="title">Dedication</span></a></div></li>
+<li class="toc-item toc-acknowledgement"><div class="toc-title-box"><a href="clp_2_ic-2-6.html" class="internal"><span class="title">Acknowledgements</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-7.html" class="internal"><span class="title">Using the exercises in this book</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="clp_2_ic-2-8.html" class="internal"><span class="title">Feedback about the text</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_integral.html" class="internal"><span class="codenumber">1</span> <span class="title">Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intdef.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Definition of the Integral</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-3" class="internal"><span class="codenumber">1.1.1</span> <span class="title">A Motivating Example</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-4" class="internal"><span class="codenumber">1.1.2</span> <span class="title">Optional — A more rigorous area computation</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_intdef.html#ssec_sum_notn" class="internal"><span class="codenumber">1.1.3</span> <span class="title">Summation notation</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_sum_notn-3" class="internal"><span class="codenumber">1.1.3.1</span> <span class="title">Proof of Theorem 1.1.6 (Optional)</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#sec_defInt" class="internal"><span class="codenumber">1.1.4</span> <span class="title">The Definition of the Definite Integral</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_knownareas" class="internal"><span class="codenumber">1.1.5</span> <span class="title">Using Known Areas to Evaluate Integrals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_velocity" class="internal"><span class="codenumber">1.1.6</span> <span class="title">Another Interpretation for Definite Integrals</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intdef.html#ssec_careful_defn" class="internal"><span class="codenumber">1.1.7</span> <span class="title">Optional — careful definition of the integral</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_intdef.html#sec_intdef-10" class="internal"><span class="codenumber">1.1.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_def_int.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Basic properties of the definite integral</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_int.html#sec_evenodd" class="internal"><span class="codenumber">1.2.1</span> <span class="title">More properties of integration: even and odd functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_int.html#sec_def_int-4" class="internal"><span class="codenumber">1.2.2</span> <span class="title">Optional — More properties of integration: inequalities for integrals</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_def_int.html#sec_def_int-5" class="internal"><span class="codenumber">1.2.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_fundamental.html" class="internal"><span class="codenumber">1.3</span> <span class="title">The Fundamental Theorem of Calculus</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_fundamental.html#sec_fundamental-3" class="internal"><span class="codenumber">1.3.1</span> <span class="title">The Fundamental Theorem of Calculus</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_fundamental.html#sec_fundamental-4" class="internal"><span class="codenumber">1.3.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_subs.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Substitution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_subs.html#sec_subs-3" class="internal"><span class="codenumber">1.4.1</span> <span class="title">Substitution</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_subs.html#sec_subs-4" class="internal"><span class="codenumber">1.4.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_area.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Area between curves</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_area.html#sec_area-3" class="internal"><span class="codenumber">1.5.1</span> <span class="title">Area between curves</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_area.html#sec_area-4" class="internal"><span class="codenumber">1.5.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_int_volumes.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Volumes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_int_volumes.html#sec_int_volumes-3" class="internal"><span class="codenumber">1.6.1</span> <span class="title">Optional — Cylindrical shells</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_int_volumes.html#sec_int_volumes-4" class="internal"><span class="codenumber">1.6.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intbyparts.html" class="internal"><span class="codenumber">1.7</span> <span class="title">Integration by parts</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intbyparts.html#sec_intbyparts-3" class="internal"><span class="codenumber">1.7.1</span> <span class="title">Integration by parts</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_intbyparts.html#sec_intbyparts-4" class="internal"><span class="codenumber">1.7.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trigint.html" class="internal"><span class="codenumber">1.8</span> <span class="title">Trigonometric Integrals</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trigint.html#sec_sincos" class="internal"><span class="codenumber">1.8.1</span> <span class="title">Integrating <span class="process-math">\(\int \sin^m x\cos^n x\dee{x}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_sincos-2" class="internal"><span class="codenumber">1.8.1.1</span> <span class="title">One of <span class="process-math">\(n\)</span> and <span class="process-math">\(m\)</span> is odd</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_sincos-3" class="internal"><span class="codenumber">1.8.1.2</span> <span class="title">Both <span class="process-math">\(n\)</span> and <span class="process-math">\(m\)</span> are even</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trigint.html#sec_tansec" class="internal"><span class="codenumber">1.8.2</span> <span class="title">Integrating <span class="process-math">\(\int \tan^m x\sec^n x\dee{x}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-3" class="internal"><span class="codenumber">1.8.2.1</span> <span class="title"><span class="process-math">\(m\)</span> is odd — odd power of tangent</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-4" class="internal"><span class="codenumber">1.8.2.2</span> <span class="title"><span class="process-math">\(m\)</span> is odd and <span class="process-math">\(n\geq 1\)</span> — odd power of tangent and at least one secant</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-5" class="internal"><span class="codenumber">1.8.2.3</span> <span class="title"><span class="process-math">\(n\geq 2\)</span> is even — a positive even power of secant</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_tansec-6" class="internal"><span class="codenumber">1.8.2.4</span> <span class="title"><span class="process-math">\(m\)</span> is even and <span class="process-math">\(n=0\)</span> — even powers of tangent</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trigint.html#sec_secantEtc" class="internal"><span class="codenumber">1.8.3</span> <span class="title">Optional — Integrating <span class="process-math">\(\sec x\text{,}\)</span> <span class="process-math">\(\csc x\text{,}\)</span> <span class="process-math">\(\sec^3 x\)</span> and <span class="process-math">\(\csc^3 x\)</span></span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trigint.html#sec_trigint-6" class="internal"><span class="codenumber">1.8.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trigsub.html" class="internal"><span class="codenumber">1.9</span> <span class="title">Trigonometric Substitution</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trigsub.html#sec_trigsub-3" class="internal"><span class="codenumber">1.9.1</span> <span class="title">Trigonometric Substitution</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trigsub.html#sec_trigsub-4" class="internal"><span class="codenumber">1.9.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_parfrac.html" class="internal"><span class="codenumber">1.10</span> <span class="title">Partial Fractions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-3" class="internal"><span class="codenumber">1.10.1</span> <span class="title">Partial fraction decomposition examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4" class="internal"><span class="codenumber">1.10.2</span> <span class="title">The form of partial fraction decompositions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-3" class="internal"><span class="codenumber">1.10.2.1</span> <span class="title">Simple linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-4" class="internal"><span class="codenumber">1.10.2.2</span> <span class="title">General linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-5" class="internal"><span class="codenumber">1.10.2.3</span> <span class="title">Simple linear and quadratic factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-4-6" class="internal"><span class="codenumber">1.10.2.4</span> <span class="title">Optional — General linear and quadratic factor case</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5" class="internal"><span class="codenumber">1.10.3</span> <span class="title">Optional — Justification of the partial fraction decompositions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-3" class="internal"><span class="codenumber">1.10.3.1</span> <span class="title">Simple linear factor case</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-4" class="internal"><span class="codenumber">1.10.3.2</span> <span class="title">The general case with linear factors</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-5-5" class="internal"><span class="codenumber">1.10.3.3</span> <span class="title">Really Optional — The Fully General Case</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_parfrac.html#sec_parfrac-6" class="internal"><span class="codenumber">1.10.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_numeric_int.html" class="internal"><span class="codenumber">1.11</span> <span class="title">Numerical Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_midpointRule" class="internal"><span class="codenumber">1.11.1</span> <span class="title">The midpoint rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_trapRule" class="internal"><span class="codenumber">1.11.2</span> <span class="title">The trapezoidal rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_Simpson" class="internal"><span class="codenumber">1.11.3</span> <span class="title">Simpson’s Rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#ssec_num_int_err" class="internal"><span class="codenumber">1.11.4</span> <span class="title">Three Simple Numerical Integrators — Error Behaviour</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_numeric_int-7" class="internal"><span class="codenumber">1.11.5</span> <span class="title">Optional — An error bound for the midpoint rule</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_numeric_int.html#sec_numeric_int-8" class="internal"><span class="codenumber">1.11.6</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_improp_int.html" class="internal"><span class="codenumber">1.12</span> <span class="title">Improper Integrals</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-3" class="internal"><span class="codenumber">1.12.1</span> <span class="title">Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-4" class="internal"><span class="codenumber">1.12.2</span> <span class="title">Examples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-5" class="internal"><span class="codenumber">1.12.3</span> <span class="title">Convergence Tests for Improper Integrals</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_improp_int.html#sec_improp_int-6" class="internal"><span class="codenumber">1.12.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_integral-15.html" class="internal"><span class="codenumber">1.13</span> <span class="title">More Integration Examples</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_integral-15.html#chap_integral-15-3" class="internal"><span class="codenumber">1.13</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="chap_int_app.html" class="internal"><span class="codenumber">2</span> <span class="title">Applications of Integration</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_work.html" class="internal"><span class="codenumber">2.1</span> <span class="title">Work</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_work.html#sec_work-3" class="internal"><span class="codenumber">2.1.1</span> <span class="title">Work</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_work.html#sec_work-4" class="internal"><span class="codenumber">2.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="sec_avg.html" class="internal"><span class="codenumber">2.2</span> <span class="title">Averages</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_avg.html#sec_avg-3" class="internal"><span class="codenumber">2.2.1</span> <span class="title">Optional — Return to the mean value theorem</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_avg.html#sec_avg-4" class="internal"><span class="codenumber">2.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_com.html" class="internal"><span class="codenumber">2.3</span> <span class="title">Centre of Mass and Torque</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_com.html#sec_com-3" class="internal"><span class="codenumber">2.3.1</span> <span class="title">Centre of Mass</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_com.html#sec_com-4" class="internal"><span class="codenumber">2.3.2</span> <span class="title">Optional — Torque</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_com.html#sec_com-5" class="internal"><span class="codenumber">2.3.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_sep_de.html" class="internal"><span class="codenumber">2.4</span> <span class="title">Separable Differential Equations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-3" class="internal"><span class="codenumber">2.4.1</span> <span class="title">Separate and integrate</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-4" class="internal"><span class="codenumber">2.4.2</span> <span class="title">Optional — Carbon Dating</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-5" class="internal"><span class="codenumber">2.4.3</span> <span class="title">Optional — Newton’s Law of Cooling</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-6" class="internal"><span class="codenumber">2.4.4</span> <span class="title">Optional — Population Growth</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-7" class="internal"><span class="codenumber">2.4.5</span> <span class="title">Optional — Mixing Problems</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-8" class="internal"><span class="codenumber">2.4.6</span> <span class="title">Optional — Interest on Investments</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_sep_de.html#sec_sep_de-9" class="internal"><span class="codenumber">2.4.7</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_seq_ser.html" class="internal"><span class="codenumber">3</span> <span class="title">Sequences and series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-3.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-3.html#chap_seq_ser-3-3" class="internal"><span class="codenumber">3.1.1</span> <span class="title">Sequences</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-3.html#chap_seq_ser-3-4" class="internal"><span class="codenumber">3.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-4.html" class="internal"><span class="codenumber">3.2</span> <span class="title">Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-4.html#chap_seq_ser-4-3" class="internal"><span class="codenumber">3.2.1</span> <span class="title">Series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-4.html#chap_seq_ser-4-4" class="internal"><span class="codenumber">3.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-5.html" class="internal"><span class="codenumber">3.3</span> <span class="title">Convergence Tests</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-3" class="internal"><span class="codenumber">3.3.1</span> <span class="title">The Divergence Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-4" class="internal"><span class="codenumber">3.3.2</span> <span class="title">The Integral Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-5" class="internal"><span class="codenumber">3.3.3</span> <span class="title">The Comparison Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_AST" class="internal"><span class="codenumber">3.3.4</span> <span class="title">The Alternating Series Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_RatioTest" class="internal"><span class="codenumber">3.3.5</span> <span class="title">The Ratio Test</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-8" class="internal"><span class="codenumber">3.3.6</span> <span class="title">Convergence Test List</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_Stack" class="internal"><span class="codenumber">3.3.7</span> <span class="title">Optional — The Leaning Tower of Books</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_RootTest" class="internal"><span class="codenumber">3.3.8</span> <span class="title">Optional — The Root Test</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel" class="internal"><span class="codenumber">3.3.9</span> <span class="title">Optional — Harmonic and Basel Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel-2" class="internal"><span class="codenumber">3.3.9.1</span> <span class="title">The Harmonic Series</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_HarminicBasel-3" class="internal"><span class="codenumber">3.3.9.2</span> <span class="title">The Basel Problem</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-5.html#sec_CompProof" class="internal"><span class="codenumber">3.3.10</span> <span class="title">Optional — Some Proofs</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-5.html#chap_seq_ser-5-13" class="internal"><span class="codenumber">3.3.11</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-6.html" class="internal"><span class="codenumber">3.4</span> <span class="title">Absolute and Conditional Convergence</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-6.html#sec_abs_conv" class="internal"><span class="codenumber">3.4.1</span> <span class="title">Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-6.html#chap_seq_ser-6-4" class="internal"><span class="codenumber">3.4.2</span> <span class="title">Optional — The delicacy of conditionally convergent series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-6.html#chap_seq_ser-6-5" class="internal"><span class="codenumber">3.4.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-7.html" class="internal"><span class="codenumber">3.5</span> <span class="title">Power Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-3" class="internal"><span class="codenumber">3.5.1</span> <span class="title">Radius and Interval of Convergence</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-4" class="internal"><span class="codenumber">3.5.2</span> <span class="title">Working With Power Series</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-7.html#chap_seq_ser-7-5" class="internal"><span class="codenumber">3.5.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="chap_seq_ser-8.html" class="internal"><span class="codenumber">3.6</span> <span class="title">Taylor Series</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-3" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Extending Taylor Polynomials</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-4" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Optional — More about the Taylor Remainder</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-5" class="internal"><span class="codenumber">3.6.2</span> <span class="title">Computing with Taylor Series</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#sec_Euler" class="internal"><span class="codenumber">3.6.3</span> <span class="title">Optional — Linking <span class="process-math">\(e^x\)</span> with trigonometric functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-7" class="internal"><span class="codenumber">3.6.4</span> <span class="title">Evaluating Limits using Taylor Expansions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-8" class="internal"><span class="codenumber">3.6.5</span> <span class="title">Optional — The Big O Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-9" class="internal"><span class="codenumber">3.6.6</span> <span class="title">Optional — Evaluating Limits Using Taylor Expansions — More Examples</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="chap_seq_ser-8.html#chap_seq_ser-8-10" class="internal"><span class="codenumber">3.6.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_RatIrr.html" class="internal"><span class="codenumber">3.7</span> <span class="title">Optional — Rational and irrational numbers</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-3" class="internal"><span class="codenumber">3.7.1</span> <span class="title">Decimal expansions of rational numbers</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-4" class="internal"><span class="codenumber">3.7.2</span> <span class="title">Eventually periodic implies rational</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-5" class="internal"><span class="codenumber">3.7.3</span> <span class="title">Rational implies eventually periodic</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6" class="internal"><span class="codenumber">3.7.4</span> <span class="title">Irrationality of <span class="process-math">\(e\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6-3" class="internal"><span class="codenumber">3.7.4.1</span> <span class="title">Proof 1</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-6-4" class="internal"><span class="codenumber">3.7.4.2</span> <span class="title">Proof 2</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7" class="internal"><span class="codenumber">3.7.5</span> <span class="title">Irrationality of <span class="process-math">\(\pi\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-3" class="internal"><span class="codenumber">3.7.5.1</span> <span class="title">Bounding the integral</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-4" class="internal"><span class="codenumber">3.7.5.2</span> <span class="title">Integration by parts</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-5" class="internal"><span class="codenumber">3.7.5.3</span> <span class="title">The derivatives are integers</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_RatIrr.html#sec_RatIrr-7-6" class="internal"><span class="codenumber">3.7.5.4</span> <span class="title">Putting it together</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="clp_2_ic-6.html" class="internal"><span class="title">Appendices</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_highschool.html" class="internal"><span class="codenumber">A</span> <span class="title">High School Material</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_simtri.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Similar Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-4.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Pythagoras</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-5.html" class="internal"><span class="codenumber">A.3</span> <span class="title">Trigonometry — Definitions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_rad_arc_sec.html" class="internal"><span class="codenumber">A.4</span> <span class="title">Radians, Arcs and Sectors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_trig_graphs.html" class="internal"><span class="codenumber">A.5</span> <span class="title">Trigonometry — Graphs</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-8.html" class="internal"><span class="codenumber">A.6</span> <span class="title">Trigonometry — Special Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-9.html" class="internal"><span class="codenumber">A.7</span> <span class="title">Trigonometry — Simple Identities</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_trig_add.html" class="internal"><span class="codenumber">A.8</span> <span class="title">Trigonometry — Add and Subtract Angles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_inv_trig.html" class="internal"><span class="codenumber">A.9</span> <span class="title">Inverse Trigonometric Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_areas.html" class="internal"><span class="codenumber">A.10</span> <span class="title">Areas</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_volumes.html" class="internal"><span class="codenumber">A.11</span> <span class="title">Volumes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_powers.html" class="internal"><span class="codenumber">A.12</span> <span class="title">Powers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_logs.html" class="internal"><span class="codenumber">A.13</span> <span class="title">Logarithms</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_must_deriv.html" class="internal"><span class="codenumber">A.14</span> <span class="title">Highschool Material You Should be Able to Derive</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_highschool-17.html" class="internal"><span class="codenumber">A.15</span> <span class="title">Cartesian Coordinates</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_roots.html" class="internal"><span class="codenumber">A.16</span> <span class="title">Roots of Polynomials</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="ap_complex.html" class="internal"><span class="codenumber">B</span> <span class="title">Complex Numbers and Exponentials</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_complex_defn.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Definition and Basic Operations</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_complex_exp.html" class="internal"><span class="codenumber">B.2</span> <span class="title">The Complex Exponential</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_exp_def" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Definition and Basic Properties</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_sin_cos" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Relationship with <span class="process-math">\(\sin\)</span> and <span class="process-math">\(\cos\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_polar" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Polar Coordinates</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_calculus" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Exploiting Complex Exponentials in Calculus Computations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_complex_exp.html#ssec_complex_de" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Exploiting Complex Exponentials in Differential Equation Computations</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_Richardson_Romberg.html" class="internal"><span class="codenumber">C</span> <span class="title">More About Numerical Integration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_Richardson.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Richardson Extrapolation</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_Romberg.html" class="internal"><span class="codenumber">C.2</span> <span class="title">Romberg Integration</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="ap_adaptive.html" class="internal"><span class="codenumber">C.3</span> <span class="title">Adaptive Quadrature</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_ODE_numerical.html" class="internal"><span class="codenumber">D</span> <span class="title">Numerical Solution of ODE’s</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_derivation.html" class="internal"><span class="codenumber">D.1</span> <span class="title">Simple ODE Solvers — Derivation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_euler" class="internal"><span class="codenumber">D.1.1</span> <span class="title">Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_imp_euler" class="internal"><span class="codenumber">D.1.2</span> <span class="title">The Improved Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_derivation.html#ap_runge_kutta" class="internal"><span class="codenumber">D.1.3</span> <span class="title">The Runge-Kutta Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_error_behaviour.html" class="internal"><span class="codenumber">D.2</span> <span class="title">Simple ODE Solvers —  Error Behaviour</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_error_behaviour.html#ap_local_trunc_Euler" class="internal"><span class="codenumber">D.2.1</span> <span class="title">Local Truncation Error for Euler’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_error_behaviour.html#ap_global_trunc_Euler" class="internal"><span class="codenumber">D.2.2</span> <span class="title">Global Truncation Error for Euler’s Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="ap_variable.html" class="internal"><span class="codenumber">D.3</span> <span class="title">Variable Step Size Methods</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_prelim_E_E2" class="internal"><span class="codenumber">D.3.1</span> <span class="title">Euler and Euler-2step (preliminary version)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_final_E_E2" class="internal"><span class="codenumber">D.3.2</span> <span class="title">Euler and Euler-2step (final version)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_Fehlberg" class="internal"><span class="codenumber">D.3.3</span> <span class="title">Fehlberg’s Method</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_Kutta_Merson" class="internal"><span class="codenumber">D.3.4</span> <span class="title">The Kutta-Merson Process</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="ap_variable.html#ssec_E_E2_local_trunc" class="internal"><span class="codenumber">D.3.5</span> <span class="title">The Local Truncation Error for Euler-2step</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_hint.html" class="internal"><span class="codenumber">E</span> <span class="title">Hints for Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_answ.html" class="internal"><span class="codenumber">F</span> <span class="title">Answers to Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_soln.html" class="internal"><span class="codenumber">G</span> <span class="title">Solutions to Exercises</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="section" id="sec_avg"><h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Averages</span>
+</h2>
+<section class="introduction" id="sec_avg-2"><div class="para" id="sec_avg-2-1">Another frequent <details class="ptx-footnote" aria-live="polite" id="sec_avg-2-1-1"><summary class="ptx-footnote__number" title="Footnote 2.2.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents">Awful pun. The two main approaches to statistics are  frequentism and Bayesianism; the latter named after Bayes’ Theorem which is, in turn,  named for Reverend Thomas Bayes. While this (both the approaches to statistics  and their history and naming) is a very interesting and quite  philosophical topic, it is beyond the scope of this course. The interested reader has  plenty of interesting reading here to interest them.</div></details> application of integration is  computing averages and other statistical quantities. We will not spend too much time on  this topic — that is best left to a proper course in statistics — however, we will  demonstrate the application of integration to the problem of computing averages.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_avg-2-2">Let us start with the definition <details class="ptx-footnote" aria-live="polite" id="sec_avg-2-2-1"><summary class="ptx-footnote__number" title="Footnote 2.2.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents">We are being a little loose here with the distinction between mean and average. To be  much more pedantic — the average is the arithmetic mean. Other interesting “means” are  the geometric and harmonic means:<div class="displaymath process-math" id="sec_avg-2-2-1-3">
+\begin{align*}
+\text{arithmetic mean} &amp;= \frac{1}{n}\left( y_1 + y_2 + \cdots + y_n \right)\\
+\text{geometric mean} &amp;= \left( y_1 \cdot y_2 \cdots y_n \right)^{\frac{1}{n}}\\
+\text{harmonic mean} &amp;= \left[\frac{1}{n}\left(  \frac{1}{y_1} + \frac{1}{y_2} + \cdots \frac{1}{y_n}  \right)\right]^{-1}
+\end{align*}
+</div>All of these quantities, along with the median and mode, are ways to measure the typical  value of a set of numbers. They all have advantages and disadvantages — another  interesting topic beyond the scope of this course, but plenty of fodder for the  interested reader and their favourite search engine. But let us put pedantry (and  beyond-the-scope-of-the-course-reading) aside and just use the terms average and mean  interchangeably for our purposes here.</div></details> of the average of a finite set of numbers.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="def_avg"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="def_avg-1-1">
+<div class="para">The average (mean) of a set of <span class="process-math">\(n\)</span> numbers <span class="process-math">\(y_1\text{,}\)</span> <span class="process-math">\(y_2\text{,}\)</span> <span class="process-math">\(\cdots\text{,}\)</span> <span class="process-math">\(y_n\)</span> is</div>
+<div class="displaymath process-math" id="def_avg-1-1-6">
+\begin{gather*}
+y_\ave =\bar y = \llt y\rgt =\frac{y_1+y_2+\cdots+y_n}{n}
+\end{gather*}
+</div>
+<div class="para">The notations <span class="process-math">\(y_\ave\text{,}\)</span> <span class="process-math">\(\bar y\)</span> and <span class="process-math">\(\llt y\rgt\)</span> are all commonly used to represent the average.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#def_avg-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.2.1"><a href="#def_avg" title="Copy heading and permalink for Definition 2.2.1" aria-label="Copy heading and permalink for Definition 2.2.1">🔗</a></div></article><div class="para logical" id="sec_avg-2-4">
+<div class="para">Now suppose that we want to take the average of a function <span class="process-math">\(f(x)\)</span> with <span class="process-math">\(x\)</span> running  continuously from <span class="process-math">\(a\)</span> to <span class="process-math">\(b\text{.}\)</span> How do we even define what that means? A natural approach is  to</div>
+<ul class="disc" id="sec_avg-2-4-5">
+<li id="sec_avg-2-4-5-1">
+<div class="para" id="p-derived-sec_avg-2-4-5-1">select, for each natural number <span class="process-math">\(n\text{,}\)</span> a sample of <span class="process-math">\(n\text{,}\)</span> more or  less uniformly distributed, values of <span class="process-math">\(x\)</span> between <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{,}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-5-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-2-4-5-2">
+<div class="para" id="p-derived-sec_avg-2-4-5-2">take the average of the values of <span class="process-math">\(f\)</span> at the selected points,</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-5-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-2-4-5-3">
+<div class="para" id="p-derived-sec_avg-2-4-5-3">and then take the limit as <span class="process-math">\(n\)</span> tends to infinity.</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-5-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">Unsurprisingly, this process looks very much like how we computed areas and volumes  previously. So let’s get to it.</div>
+<ul class="disc" id="sec_avg-2-4-6">
+<li id="sec_avg-2-4-6-1">
+<div class="para" id="p-derived-sec_avg-2-4-6-1">First fix any natural number <span class="process-math">\(n\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-6-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-2-4-6-2">
+<div class="para" id="p-derived-sec_avg-2-4-6-2">Subdivide the interval <span class="process-math">\(a\le x\le b\)</span> into <span class="process-math">\(n\)</span> equal subintervals,  each of width <span class="process-math">\(\De x=\frac{b-a}{n}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-6-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-2-4-6-3">
+<div class="para" id="p-derived-sec_avg-2-4-6-3">The subinterval number <span class="process-math">\(i\)</span> runs from <span class="process-math">\(x_{i-1}\)</span> to <span class="process-math">\(x_i\)</span> with  <span class="process-math">\(x_i=a+i\frac{b-a}{n}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-6-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-2-4-6-4">
+<div class="para" id="p-derived-sec_avg-2-4-6-4">Select, for each <span class="process-math">\(1\le i\le n\text{,}\)</span> one value of <span class="process-math">\(x\)</span> from subinterval number <span class="process-math">\(i\)</span> and call it <span class="process-math">\(x_i^*\text{.}\)</span>  So <span class="process-math">\(x_{i-1}\le x_i^*\le x_i\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-6-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-2-4-6-5">
+<div class="para" id="p-derived-sec_avg-2-4-6-5">The average value of <span class="process-math">\(f\)</span> at the selected points is<div class="displaymath process-math" id="sec_avg-2-4-6-5-2">
+\begin{align*}
+\frac{1}{n}\sum_{i=1}^n f(x_i^*)
+=&amp;\frac{1}{b-a}\sum_{i=1}^n f(x_i^*) \De x
+&amp;\text{since $\De x=\frac{b-a}{n}$}
+\end{align*}
+</div>giving us a Riemann sum.</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-2-4-6-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">Now when we take the limit <span class="process-math">\(n\rightarrow\infty\)</span> we get exactly <span class="process-math">\(\frac{1}{b-a}\int_a^b f(x)\dee{x}\text{.}\)</span> That’s why we define</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="def_AVaverage"><h3 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para logical" id="def_AVaverage-1-1">
+<div class="para">Let <span class="process-math">\(f(x)\)</span> be an integrable function defined on the interval  <span class="process-math">\(a\le x\le b\text{.}\)</span> The average value of <span class="process-math">\(f\)</span> on that interval is</div>
+<div class="displaymath process-math" id="def_AVaverage-1-1-4">
+\begin{gather*}
+f_\ave=\bar f=\llt f\rgt =\frac{1}{b-a}\int_a^b f(x)\dee{x}
+\end{gather*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#def_AVaverage-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.2.2"><a href="#def_AVaverage" title="Copy heading and permalink for Definition 2.2.2" aria-label="Copy heading and permalink for Definition 2.2.2">🔗</a></div></article><div class="para" id="sec_avg-2-6">Consider the case when <span class="process-math">\(f(x)\)</span> is positive. Then rewriting Definition <a href="sec_avg.html#def_AVaverage" class="xref" data-knowl="./knowl/xref/def_AVaverage.html" data-reveal-label="Reveal" data-close-label="Close" title="Definition 2.2.2">2.2.2</a>  as<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:5%;margin-right:5%;grid-template-columns:44.4444444444444% 44.4444444444444%;column-gap:10%;">
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="sec_avg-2-7-1">
+<span class="process-math">\(f_\ave\ (b-a) = \int_a^b f(x)\dee{x}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><img src="external/text/figs/areaAve.svg" role="img" class="contained"></div>
+</div></div>
+<div class="para logical" id="sec_avg-2-8">
+<div class="para">gives us a link between the average value and the area under the curve. The right-hand  side is the area of the region</div>
+<div class="displaymath process-math" id="sec_avg-2-8-1">
+\begin{gather*}
+\big\{(x,y)\ \big|\ a\le x\le b,\ 0\le y\le f(x)\ \big\}
+\end{gather*}
+</div>
+<div class="para">while the left-hand side can be seen as the area of a rectangle of width <span class="process-math">\(b-a\)</span>  and height <span class="process-math">\(f_\ave\text{.}\)</span> Since these areas must be the same, we interpret <span class="process-math">\(f_\ave\)</span> as  the height of the rectangle which has the same width and the same area as  <span class="process-math">\(\big\{(x,y)\ \big|\ a\le x\le b,\ 0\le y\le f(x)\ \big\}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_avg-2-9">Let us start with a couple of simple examples and then work our way up to harder ones.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="sec_avg-2-10" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">An easy warm-up.</span>
+</h3></summary><article class="example example-like knowl__content"><div class="para" id="sec_avg-2-10-2">Let <span class="process-math">\(f(x)= x\)</span> and <span class="process-math">\(g(x)=x^2\)</span> and compute their average values  over <span class="process-math">\(1 \leq x\leq 5\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-10-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_avg-2-10-3">
+<div class="para">
+<em class="alert">Solution:</em> We can just plug things into the definition.</div>
+<div class="displaymath process-math" id="sec_avg-2-10-3-2">
+\begin{align*}
+f_\ave &amp;= \frac{1}{5-1}\int_1^5 x \dee{x}\\
+&amp;= \frac{1}{4} \bigg[ \frac{x^2}{2} \bigg]_1^5\\
+&amp;= \frac{1}{8} (25-1) = \frac{24}{8}\\
+&amp;= 3
+\end{align*}
+</div>
+<div class="para">as we might expect. And then</div>
+<div class="displaymath process-math" id="sec_avg-2-10-3-3">
+\begin{align*}
+g_\ave &amp;= \frac{1}{5-1}\int_1^5 x^2 \dee{x}\\
+&amp;= \frac{1}{4} \bigg[ \frac{x^3}{3} \bigg]_1^5\\
+&amp;= \frac{1}{12} (125-1) = \frac{124}{12}\\
+&amp;= \frac{31}{3}
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-10-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.2.3: An easy warm-up"><a href="#sec_avg-2-10" title="Copy heading and permalink for Example 2.2.3: An easy warm-up" aria-label="Copy heading and permalink for Example 2.2.3: An easy warm-up">🔗</a></div></article></details><div class="para" id="sec_avg-2-11">Something a little more trigonometric<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="sec_avg-2-12" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Average of sine.</span>
+</h3></summary><article class="example example-like knowl__content"><div class="para" id="sec_avg-2-12-2">Find the average value of <span class="process-math">\(\sin(x)\)</span> over <span class="process-math">\(0 \leq x \leq \frac{\pi}{2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-12-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_avg-2-12-3">
+<div class="para">
+<em class="alert">Solution:</em> Again, we just need the definition.</div>
+<div class="displaymath process-math" id="sec_avg-2-12-3-2">
+\begin{align*}
+\text{average} &amp;= \frac{1}{\frac{\pi}{2} - 0} \int_0^{\frac{\pi}{2}} \sin(x) \dee{x}\\
+&amp;= \frac{2}{\pi} \cdot \bigg[ -\cos(x) \bigg]_0^{\frac{\pi}{2}}\\
+&amp;= \frac{2}{\pi} (-\cos(\frac{\pi}{2})+\cos(0))\\
+&amp;= \frac{2}{\pi}.
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-12-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.2.4: Average of sine"><a href="#sec_avg-2-12" title="Copy heading and permalink for Example 2.2.4: Average of sine" aria-label="Copy heading and permalink for Example 2.2.4: Average of sine">🔗</a></div></article></details><div class="para" id="sec_avg-2-13">We could keep going… But better to do some more substantial examples.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_AVvelocity" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Average velocity.</span>
+</h3></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_AVvelocity-2">
+<div class="para">Let <span class="process-math">\(x(t)\)</span> be the position at time <span class="process-math">\(t\)</span> of a car moving along the <span class="process-math">\(x\)</span>-axis. The velocity of the car at time <span class="process-math">\(t\)</span> is the derivative <span class="process-math">\(v(t)=x'(t)\text{.}\)</span> The average velocity of the car over the time interval <span class="process-math">\(a\le t\le b\)</span> is</div>
+<div class="displaymath process-math" id="eg_AVvelocity-2-7">
+\begin{align*}
+v_\ave &amp;= \frac{1}{b-a}\int_a^b v(t)\dee{t}\\
+&amp;=\frac{1}{b-a}\int_a^b x'(t)\dee{t}\\
+&amp;=\frac{x(b)-x(a)}{b-a} &amp; \text{by the fundamental theorem of calculus.}
+\end{align*}
+</div>
+<div class="para">The numerator in this formula is just the displacement (net distance travelled — if  <span class="process-math">\(x'(t)\ge 0\text{,}\)</span> it’s the distance travelled) between time <span class="process-math">\(a\)</span> and time <span class="process-math">\(b\)</span> and the  denominator is just the time it took.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_AVvelocity-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="eg_AVvelocity-3">Notice that this is exactly the formula we used way back at the start of your  <em class="emphasis">differential</em> calculus class to help introduce the idea of the derivative. Of  course this is a very circuitous way to get to this formula — but it is reassuring that  we get the same answer.<div class="autopermalink" data-description="Paragraph"><a href="#eg_AVvelocity-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.2.5: Average velocity"><a href="#eg_AVvelocity" title="Copy heading and permalink for Example 2.2.5: Average velocity" aria-label="Copy heading and permalink for Example 2.2.5: Average velocity">🔗</a></div></article></details><div class="para" id="sec_avg-2-15">A very physics example.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_peakvsrms" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Peak vs RMS voltage.</span>
+</h3></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_peakvsrms-2">
+<div class="para">When you plug a light bulb into a socket <details class="ptx-footnote" aria-live="polite" id="eg_peakvsrms-2-1"><summary class="ptx-footnote__number" title="Footnote 2.2.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents">A normal household socket delivers  alternating current, rather than the direct current USB supplies. At the risk of yet  another “the interested reader” suggestion — the how and why household plugs supply  AC current is another worthwhile and interesting digression from studying integration.  The interested reader should look up the “War of Currents”. The diligent and  interested reader should bookmark this, finish the section and come back to it later.</div></details> and turn it on, it is subjected to a voltage</div>
+<div class="displaymath process-math" id="eg_peakvsrms-2-2">
+\begin{align*}
+V(t) &amp;= V_0\sin(\omega t-\delta)
+\end{align*}
+</div>
+<div class="para">where</div>
+<ul class="disc" id="eg_peakvsrms-2-3">
+<li id="eg_peakvsrms-2-3-1">
+<div class="para" id="p-derived-eg_peakvsrms-2-3-1">
+<span class="process-math">\(V_0=170\)</span> volts,</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_peakvsrms-2-3-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_peakvsrms-2-3-2">
+<div class="para" id="p-derived-eg_peakvsrms-2-3-2">
+<span class="process-math">\(\omega=2\pi\times 60\)</span> (which corresponds to <span class="process-math">\(60\)</span> cycles per second <details class="ptx-footnote" aria-live="polite" id="eg_peakvsrms-2-3-2-3"><summary class="ptx-footnote__number" title="Footnote 2.2.4"><sup> 4 </sup></summary><div class="ptx-footnote__contents">Some  countries supply power at 50 cycles per second. Japan actually supplies both — 50  cycles in the east of the country and 60 in the west.</div></details>) and</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_peakvsrms-2-3-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_peakvsrms-2-3-3">
+<div class="para" id="p-derived-eg_peakvsrms-2-3-3">the constant <span class="process-math">\(\delta\)</span> is an (unimportant) phase. It just shifts the time  at which the voltage is zero</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_peakvsrms-2-3-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">The voltage <span class="process-math">\(V_0\)</span> is the “peak voltage” — the maximum value the voltage takes over  time. More typically we quote the “root mean square” voltage <details class="ptx-footnote" aria-live="polite" id="eg_peakvsrms-2-8"><summary class="ptx-footnote__number" title="Footnote 2.2.5"><sup> 5 </sup></summary><div class="ptx-footnote__contents">This example was  written in North America where the standard voltage supplied to homes is 120 volts. Most  of the rest of the world supplies homes with 240 volts. The main reason for this  difference is the development of the light bulb. The USA electrified earlier when the best  voltage for bulb technology was 110 volts. As time went on, bulb technology improved and  countries that electrified later took advantage of this (and the cheaper transmission  costs that come with higher voltage) and standardised at 240 volts. So many digressions in this section!</div></details> (or RMS-voltage). In this example we explain the difference, but to  simplify the calculations, let us simplify the voltage function and just use</div>
+<div class="displaymath process-math" id="eg_peakvsrms-2-9">
+\begin{align*}
+V(t) &amp;= V_0 \sin(t)
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_peakvsrms-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_peakvsrms-3">
+<div class="para">Since the voltage is a sine-function, it takes both positive and negative values. If we  take its simple average over 1 period then we get</div>
+<div class="displaymath process-math" id="eg_peakvsrms-3-1">
+\begin{align*}
+V_\ave &amp;= \frac{1}{2\pi-0} \int_0^{2\pi} V_0 \sin(t) \dee{t}\\
+&amp;= \frac{V_0}{2\pi}\bigg[ - \cos(t)\bigg]_0^{2\pi}\\
+&amp;= \frac{V_0}{2\pi}\left( -\cos(2\pi) + \cos 0\right) = \frac{V_0}{2\pi}(-1+1)\\
+&amp;= 0
+\end{align*}
+</div>
+<div class="para">This is clearly not a good indication of the typical voltage.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_peakvsrms-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_peakvsrms-4">
+<div class="para">What we actually want here is a measure of how far the voltage is from zero. Now we could  do this by taking the average of <span class="process-math">\(|V(t)|\text{,}\)</span> but this is a little harder to work with.  Instead we take the average of the square <details class="ptx-footnote" aria-live="polite" id="eg_peakvsrms-4-2"><summary class="ptx-footnote__number" title="Footnote 2.2.6"><sup> 6 </sup></summary><div class="ptx-footnote__contents">For a finite  set of numbers one can compute the “quadratic mean” which is another way to generalise  the notion of the average:<div class="displaymath process-math">
+\begin{equation*}
+\text{quadratic mean}
+= \sqrt{\frac{1}{n}\left(y_1^2 + y_2^2 + \cdots + y_n^2 \right) }
+\end{equation*}
+</div>
+</div></details> of the voltage (so it is always positive) and then take the square root at the end. That is</div>
+<div class="displaymath process-math" id="eg_peakvsrms-4-3">
+\begin{align*}
+V_\mathrm{rms}
+&amp;= \sqrt{\frac{1}{2\pi-0} \int_0^{2\pi} V(t)^2 \dee{t}}\\
+&amp;= \sqrt{\frac{1}{2\pi} \int_0^{2\pi} V_0^2 \sin^2(t) \dee{t}}\\
+&amp;= \sqrt{\frac{V_0^2}{2\pi} \int_0^{2\pi} \sin^2(t) \dee{t}}
+\end{align*}
+</div>
+<div class="para">This is called the “root mean square” voltage.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_peakvsrms-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_peakvsrms-5">
+<div class="para">Though we do know how to integrate sine and cosine, we don’t (yet) know how to integrate their squares. A quick look at double-angle formulas <details class="ptx-footnote" aria-live="polite" id="eg_peakvsrms-5-1"><summary class="ptx-footnote__number" title="Footnote 2.2.7"><sup> 7 </sup></summary><div class="ptx-footnote__contents">A quick glance at  Appendix <a href="sec_must_deriv.html" class="internal" title="Section A.14: Highschool Material You Should be Able to Derive">A.14</a> will refresh your memory.</div></details> gives us a way to eliminate the  square:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_must_deriv.html" id="eg_peakvsrms-5-2">
+\begin{gather*}
+\cos(2\theta) =1-2\sin^2\theta \implies \sin^2\theta=\frac{1-\cos(2\theta)}{2}
+\end{gather*}
+</div>
+<div class="para">Using this we manipulate our integrand a little more:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_must_deriv.html" id="eg_peakvsrms-5-3">
+\begin{align*}
+V_\mathrm{rms} &amp;= \sqrt{\frac{V_0^2}{2\pi} \int_0^{2\pi}  \frac{1}{2}(1-\cos(2t)) \dee{t}}\\
+&amp;= \sqrt{ \frac{V_0^2}{4\pi} \bigg[t - \frac{1}{2}\sin(2t)  \bigg]_0^{2\pi} }\\
+&amp;= \sqrt{ \frac{V_0^2}{4\pi} \left(2\pi - \frac{1}{2}\sin(4\pi) - 0 + \frac{1}{2}\sin(0) \right) }\\
+&amp;= \sqrt{ \frac{V_0^2}{4\pi} \cdot 2\pi }\\
+&amp;= \frac{V_0}{\sqrt{2}}
+\end{align*}
+</div>
+<div class="para">So if the peak voltage is 170 volts then the RMS voltage is <span class="process-math">\(\frac{170}{\sqrt{2}}\approx  120.2\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_peakvsrms-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.2.6: Peak vs RMS voltage"><a href="#eg_peakvsrms" title="Copy heading and permalink for Example 2.2.6: Peak vs RMS voltage" aria-label="Copy heading and permalink for Example 2.2.6: Peak vs RMS voltage">🔗</a></div></article></details><div class="para" id="sec_avg-2-17">Continuing this very physics example:<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-2-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_AVpower" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Peak vs RMS voltage — continued.</span>
+</h3></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_AVpower-2">
+<div class="para">Let us take our same light bulb with voltage (after it is plugged in) given by</div>
+<div class="displaymath process-math" id="eg_AVpower-2-1">
+\begin{align*}
+V(t) &amp;= V_0\sin(\omega t-\delta)
+\end{align*}
+</div>
+<div class="para">where</div>
+<ul class="disc" id="eg_AVpower-2-2">
+<li id="eg_AVpower-2-2-1">
+<div class="para" id="p-derived-eg_AVpower-2-2-1">
+<span class="process-math">\(V_0\)</span> is the peak voltage,</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-2-2-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_AVpower-2-2-2">
+<div class="para" id="p-derived-eg_AVpower-2-2-2">
+<span class="process-math">\(\omega=2\pi\times 60\text{,}\)</span> and</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-2-2-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_AVpower-2-2-3">
+<div class="para" id="p-derived-eg_AVpower-2-2-3">the constant <span class="process-math">\(\delta\)</span> is an (unimportant) phase.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-2-2-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">If the light bulb is “100 watts”, then what is its resistance?</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_AVpower-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_AVpower-3">
+<div class="para">To answer this question we need the following facts from physics.</div>
+<ul class="disc" id="eg_AVpower-3-1">
+<li id="eg_AVpower-3-1-1">
+<div class="para" id="p-derived-eg_AVpower-3-1-1">If the light bulb has resistance <span class="process-math">\(R\)</span> ohms, this causes, by Ohm’s law, a current of<div class="displaymath process-math" id="eg_AVpower-3-1-1-2">
+\begin{align*}
+I(t) &amp;= \frac{1}{R} V(t) &amp;
+\end{align*}
+</div>(amps) to flow through the light bulb.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-3-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_AVpower-3-1-2">
+<div class="para" id="p-derived-eg_AVpower-3-1-2">The current <span class="process-math">\(I\)</span> is the number of units of charge moving through the bulb per unit time.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-3-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_AVpower-3-1-3">
+<div class="para" id="p-derived-eg_AVpower-3-1-3">The voltage is the energy required to move one unit of charge through the bulb.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-3-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_AVpower-3-1-4">
+<div class="para" id="p-derived-eg_AVpower-3-1-4">The power is the energy used by the bulb per unit time and is measured in watts.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-3-1-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">So the power is the product of the current times the voltage and, so</div>
+<div class="displaymath process-math">
+\begin{equation*}
+P(t)=I(t)V(t)
+=\frac{V(t)^2}{R}
+=\frac{V_0^2}{R}\sin^2(\omega t-\delta)
+\end{equation*}
+</div>
+<div class="para">The average power used over the time interval <span class="process-math">\(a\le t\le b\)</span> is</div>
+<div class="displaymath process-math" id="eg_AVpower-3-4">
+\begin{align*}
+P_\ave &amp;= \frac{1}{b-a}\int_a^b P(t)\dee{t}
+= \frac{V_0^2}{R(b-a)}\int_a^b \sin^2(\omega t-\delta)\dee{t}
+\end{align*}
+</div>
+<div class="para">Notice that this is almost exactly the form we had in the previous example when computing  the root mean square voltage.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_AVpower-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_AVpower-4">
+<div class="para">Again we simplify the integrand using the identity</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\cos(2\theta) =1-2\sin^2\theta \implies \sin^2\theta=\frac{1-\cos(2\theta)}{2}
+\end{equation*}
+</div>
+<div class="para">So</div>
+<div class="displaymath process-math" id="eg_AVpower-4-2">
+\begin{align*}
+P_\ave &amp;= \frac{1}{b-a}\int_a^b P(t)\dee{t}
+= \frac{V_0^2}{2R(b-a)}\int_a^b \big[1-\cos(2\omega t-2\delta)\big]\dee{t}\\
+&amp;=\frac{V_0^2}{2R(b-a)}\bigg[t-\frac{\sin(2\omega t-2\delta)}{2\omega}\bigg]_a^b\\
+&amp;=\frac{V_0^2}{2R(b-a)}\bigg[b-a-\frac{\sin(2\omega b-2\delta)}{2\omega}
++\frac{\sin(2\omega a-2\delta)}{2\omega}\bigg]\\
+&amp;=\frac{V_0^2}{2R}
+-\frac{V_0^2}{4\omega R(b-a)}\big[\sin(2\omega b-2\delta)-\sin(2\omega a-2\delta)\big]
+\end{align*}
+</div>
+<div class="para">In the limit as the length of the time interval <span class="process-math">\(b-a\)</span> tends to infinity, this converges to <span class="process-math">\(\frac{V_0^2}{2R}\text{.}\)</span> The resistance <span class="process-math">\(R\)</span> of a “100 watt bulb”  obeys</div>
+<div class="displaymath process-math" id="eg_AVpower-4-7">
+\begin{align*}
+\frac{V_0^2}{2R} &amp;=100 &amp; \text{so that} &amp;&amp; R &amp;= \frac{V_0^2}{200}.
+\end{align*}
+</div>
+<div class="para">We finish this example off with two side remarks.</div>
+<ul class="disc" id="eg_AVpower-4-8">
+<li id="eg_AVpower-4-8-1">
+<div class="para" id="p-derived-eg_AVpower-4-8-1">If we translate the peak voltage to the root mean square voltage using<div class="displaymath process-math" id="eg_AVpower-4-8-1-1">
+\begin{align*}
+V_0 &amp;= V_\mathrm{rms} \cdot \sqrt{2}
+\end{align*}
+</div>then we have<div class="displaymath process-math" id="eg_AVpower-4-8-1-2">
+\begin{align*}
+P &amp;= \frac{V^2_{\mathrm{rms}}}{R}
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-4-8-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_AVpower-4-8-2">
+<div class="para" id="p-derived-eg_AVpower-4-8-2">If we were using direct voltage rather than alternating current then the  computation is  much simpler. The voltage and current are constants, so<div class="displaymath process-math" id="eg_AVpower-4-8-2-1">
+\begin{align*}
+P &amp;= V \cdot I &amp; \text{but $I = V/R$ by Ohm's law}\\
+&amp;= \frac{V^2}{R}
+\end{align*}
+</div>So if we have a direct current giving voltage equal to the root mean square voltage, then  we would expend the same power.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_AVpower-4-8-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_AVpower-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.2.7: Peak vs RMS voltage — continued"><a href="#eg_AVpower" title="Copy heading and permalink for Example 2.2.7: Peak vs RMS voltage — continued" aria-label="Copy heading and permalink for Example 2.2.7: Peak vs RMS voltage — continued">🔗</a></div></article></details></section><section class="subsection" id="sec_avg-3"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Optional — Return to the mean value theorem</span>
+</h3>
+<div class="para" id="sec_avg-3-2">Here is another application of the Definition <a href="sec_avg.html#def_AVaverage" class="xref" data-knowl="./knowl/xref/def_AVaverage.html" data-reveal-label="Reveal" data-close-label="Close" title="Definition 2.2.2">2.2.2</a> of the average value of a function on an interval. The following theorem can be  thought of as an analogue of the mean value theorem (which was covered in your  differential calculus class) but for integrals. The theorem says that a  continuous function <span class="process-math">\(f(x)\)</span> must be exactly equal to its average value for some <span class="process-math">\(x\text{.}\)</span> For example, if you  went for a drive along the <span class="process-math">\(x\)</span>-axis and you were at <span class="process-math">\(x(a)\)</span> at time <span class="process-math">\(a\)</span> and at <span class="process-math">\(x(b)\)</span> at  time <span class="process-math">\(b\text{,}\)</span> then your velocity <span class="process-math">\(x'(t)\)</span> had to be exactly your average velocity <span class="process-math">\(\frac{x(b)-x(a)}{b-a}\)</span> at some time <span class="process-math">\(t\)</span> between <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{.}\)</span> In particular, if your average velocity was greater than the speed limit, you were definitely speeding at some point during the trip. This is, of course, no great surprise<details class="ptx-footnote" aria-live="polite" id="sec_avg-3-2-15"><summary class="ptx-footnote__number" title="Footnote 2.2.8"><sup> 8 </sup></summary><div class="ptx-footnote__contents">There are many unsurprising things that are true, but there are also many unsurprising things that surprisingly turn out to be false. Mathematicians like to prove things - surprising or not.</div></details>.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_AVmvt"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.8</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mean Value Theorem for Integrals.</span>
+</h4>
+<div class="para logical" id="thm_AVmvt-2-1">
+<div class="para">Let <span class="process-math">\(f(x)\)</span> be a continuous function on the interval <span class="process-math">\(a\le x\le b\text{.}\)</span> Then there is some <span class="process-math">\(c\)</span> obeying <span class="process-math">\(a\lt c \lt b\)</span> such that</div>
+<div class="displaymath process-math" id="thm_AVmvt-2-1-5">
+\begin{gather*}
+\frac{1}{b-a}\int_a^b f(x)\dee{x}=f(c) \qquad\text{or}\qquad \int_a^b f(x)\dee{x} = f(c)\,(b-a)
+\end{gather*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#thm_AVmvt-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 2.2.8: Mean Value Theorem for Integrals"><a href="#thm_AVmvt" title="Copy heading and permalink for Theorem 2.2.8: Mean Value Theorem for Integrals" aria-label="Copy heading and permalink for Theorem 2.2.8: Mean Value Theorem for Integrals">🔗</a></div></article><details id="sec_avg-3-4" class="hiddenproof born-hidden-knowl"><summary class="knowl__link"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4></summary><article class="hiddenproof knowl__content"><div class="para logical" id="sec_avg-3-4-1">
+<div class="para">We will apply the mean value theorem (Theorem 2.13.4 in the CLP-1 text) to the function</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_INTfundthmofcalc.html">
+\begin{equation*}
+F(x) = \int_a^x f(t)\,\dee{t}
+\end{equation*}
+</div>
+<div class="para">By the part 1 of the fundamental theorem of calculus (Theorem <a href="sec_fundamental.html#thm_INTfundthmofcalc" class="xref" data-knowl="./knowl/xref/thm_INTfundthmofcalc.html" data-reveal-label="Reveal" data-close-label="Close" title="Theorem 1.3.1: Fundamental Theorem of Calculus">1.3.1</a>), <span class="process-math">\(F'(x)=f(x)\text{,}\)</span> so the mean value theorem says that there is a <span class="process-math">\(a\lt c\lt b\)</span> with</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_INTfundthmofcalc.html" id="sec_avg-3-4-1-6">
+\begin{align*}
+f(c) &amp;= F'(c) = \frac{F(b)-F(a)}{b-a}
+=\frac{1}{b-a}\left\{\int_a^b f(t)\,\dee{t}-\int_a^a f(t)\,\dee{t}\right\}\\
+&amp;=\frac{1}{b-a}\int_a^b f(x)\,\dee{x}
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-3-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.2.1.1"><a href="#sec_avg-3-4" title="Copy heading and permalink for Proof 2.2.1.1" aria-label="Copy heading and permalink for Proof 2.2.1.1">🔗</a></div></article></details><div class="para" id="sec_avg-3-5">In the next section, we will encounter an application in which we want to take the average value of a function <span class="process-math">\(f(x)\text{,}\)</span> but in doing so we want some values of <span class="process-math">\(x\)</span> to count more than other values of <span class="process-math">\(x\text{.}\)</span> That is, we want to weight some <span class="process-math">\(x\)</span>’s more than other <span class="process-math">\(x\)</span>’s. To do so, we choose a “weight function” <span class="process-math">\(w(x)\ge 0\)</span> with <span class="process-math">\(w(x)\)</span> larger for more important <span class="process-math">\(x\)</span>’s.  Then we define the weighted average of <span class="process-math">\(f\)</span> as follows.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-3-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="def_Wtaverage"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.9</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="def_Wtaverage-1">
+<div class="para">Let <span class="process-math">\(f(x)\)</span> and <span class="process-math">\(w(x)\)</span> be integrable functions defined on the interval <span class="process-math">\(a\le x\le b\)</span> with <span class="process-math">\(w(x)\ge 0\)</span> for all <span class="process-math">\(a\le x\le b\)</span> and with <span class="process-math">\(\int_a^b w(x)\,\dee{x}&gt;0\text{.}\)</span>  The average value of <span class="process-math">\(f\)</span> on that interval, weighted by <span class="process-math">\(w\text{,}\)</span> is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{\int_a^b f(x)\,w(x)\,\dee{x}}{\int_a^b w(x)\,\dee{x}}
+\end{equation*}
+</div>
+<div class="para">We typically refer to this simply as the weighted average of <span class="process-math">\(f\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#def_Wtaverage-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 2.2.9"><a href="#def_Wtaverage" title="Copy heading and permalink for Definition 2.2.9" aria-label="Copy heading and permalink for Definition 2.2.9">🔗</a></div></article><div class="para logical" id="sec_avg-3-7">
+<div class="para">Here are a few remarks concerning this definition.</div>
+<ul class="disc" id="sec_avg-3-7-1">
+<li id="sec_avg-3-7-1-1">
+<div class="para" id="p-derived-sec_avg-3-7-1-1">The definition has been rigged so that, if <span class="process-math">\(f(x)=1\)</span> for all <span class="process-math">\(x\text{,}\)</span> then the weighted average of <span class="process-math">\(f\)</span> is <span class="process-math">\(1\text{,}\)</span> no matter what weight function <span class="process-math">\(w(x)\)</span> is used.</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-3-7-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-3-7-1-2">
+<div class="para" id="p-derived-sec_avg-3-7-1-2">If the weight function <span class="process-math">\(w(x)=C\)</span> for some constant <span class="process-math">\(C&gt;0\)</span> then the weighted average<div class="displaymath process-math">
+\begin{equation*}
+\frac{\int_a^b f(x)\,w(x)\,\dee{x}}{\int_a^b w(x)\,\dee{x}}
+=\frac{\int_a^b f(x)\,C\,\dee{x}}{\int_a^b C\,\dee{x}}
+=\frac{\int_a^b f(x)\,\dee{x}}{b-a}
+\end{equation*}
+</div>is just the usual average.</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-3-7-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_avg-3-7-1-3">
+<div class="para" id="p-derived-sec_avg-3-7-1-3">For any function <span class="process-math">\(w(x)\ge 0\)</span> and any <span class="process-math">\(a\lt b\text{,}\)</span> we have <span class="process-math">\(\int_a^b w(x)\, \dee{x}\ge 0\text{.}\)</span> But for the definition of weighted average to make sense, we need to be able to divide by <span class="process-math">\(\int_a^b w(x)\, \dee{x}\text{.}\)</span> So we need <span class="process-math">\(\int_a^b w(x)\, \dee{x}\ne 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_avg-3-7-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-3-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_avg-3-8">The next theorem says that a continuous function <span class="process-math">\(f(x)\)</span> must be equal to its weighted average at some point <span class="process-math">\(x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-3-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="theorem theorem-like" id="thm_AVwtmvt"><h4 class="heading">
+<span class="type">Theorem</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.10</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Mean Value Theorem for Weighted Integrals.</span>
+</h4>
+<div class="para logical" id="thm_AVwtmvt-2-1">
+<div class="para">Let <span class="process-math">\(f(x)\)</span> and <span class="process-math">\(w(x)\)</span> be continuous functions on the interval <span class="process-math">\(a\le x\le b\text{.}\)</span> Assume that <span class="process-math">\(w(x)\gt 0\)</span> for all <span class="process-math">\(a\lt x\lt b\text{.}\)</span> Then there is some <span class="process-math">\(c\)</span> obeying <span class="process-math">\(a\lt c \lt b\)</span> such that</div>
+<div class="displaymath process-math" id="thm_AVwtmvt-2-1-8">
+\begin{gather*}
+\frac{\int_a^b f(x)\,w(x)\,\dee{x}}{\int_a^b w(x)\,\dee{x}}=f(c) \qquad\text{or}\qquad
+\int_a^b f(x)\,w(x)\,\dee{x} = f(c)\int_a^b w(x)\,\dee{x}
+\end{gather*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#thm_AVwtmvt-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Theorem 2.2.10: Mean Value Theorem for Weighted Integrals"><a href="#thm_AVwtmvt" title="Copy heading and permalink for Theorem 2.2.10: Mean Value Theorem for Weighted Integrals" aria-label="Copy heading and permalink for Theorem 2.2.10: Mean Value Theorem for Weighted Integrals">🔗</a></div></article><details id="sec_avg-3-10" class="hiddenproof born-hidden-knowl"><summary class="knowl__link"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4></summary><article class="hiddenproof knowl__content"><div class="para logical" id="sec_avg-3-10-1">
+<div class="para">We will apply the generalised mean value theorem (Theorem 3.4.38 in the CLP-1 text) to</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_INTfundthmofcalc.html">
+\begin{equation*}
+F(x) = \int_a^x f(t)\,w(t)\dee{t}\qquad
+G(x) = \int_a^x w(t)\dee{t}
+\end{equation*}
+</div>
+<div class="para">By the part 1 of the fundamental theorem of calculus (Theorem <a href="sec_fundamental.html#thm_INTfundthmofcalc" class="xref" data-knowl="./knowl/xref/thm_INTfundthmofcalc.html" data-reveal-label="Reveal" data-close-label="Close" title="Theorem 1.3.1: Fundamental Theorem of Calculus">1.3.1</a>), <span class="process-math">\(F'(x)=f(x)w(x)\)</span> and <span class="process-math">\(G'(x)=w(x)\text{,}\)</span> so the generalised mean value theorem says that there is a <span class="process-math">\(a\lt c\lt b\)</span> with</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_INTfundthmofcalc.html" id="sec_avg-3-10-1-7">
+\begin{align*}
+f(c) &amp;= \frac{F'(c)}{G'(c)} = \frac{F(b)-F(a)}{G(b)-G(a)}
+=\frac{\int_a^b f(t)\,w(t)\dee{t}-\int_a^a f(t)w(t)\,\dee{t}}
+{\int_a^b w(t)\dee{t}-\int_a^a w(t)\dee{t}}\\
+&amp;=\frac{\int_a^b f(t)\,w(t)\,\dee{t}}{\int_a^b w(t)\,\dee{t}}
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-3-10-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 2.2.1.2"><a href="#sec_avg-3-10" title="Copy heading and permalink for Proof 2.2.1.2" aria-label="Copy heading and permalink for Proof 2.2.1.2">🔗</a></div></article></details><details id="eg_weightedAverage" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.11</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_weightedAverage-1">
+<div class="para">In this example, we will take a number of weighted averages of the simple function <span class="process-math">\(f(x)=x\)</span> over the simple interval <span class="process-math">\(a=1\le x\le 2=b\text{.}\)</span> As <span class="process-math">\(x\)</span> increases from <span class="process-math">\(1\)</span> to <span class="process-math">\(2\text{,}\)</span> the function <span class="process-math">\(f(x)\)</span> increases linearly from <span class="process-math">\(1\)</span> to <span class="process-math">\(2\text{.}\)</span> So it is no shock that the ordinary average of <span class="process-math">\(f\)</span> is exactly its middle value:</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{b-a}\int_a^b f(t)\,\dee{t}
+=\frac{1}{2-1}\int_1^2 t\,\dee{t}
+=\frac{3}{2}
+\end{equation*}
+</div>
+<div class="para">Pick any natural number <span class="process-math">\(N\ge 1\)</span> and consider the weight function <span class="process-math">\(w_N(x)=x^N\text{.}\)</span> Note that <span class="process-math">\(w_N(x)\)</span> increases as <span class="process-math">\(x\)</span> increases. So <span class="process-math">\(w_N(x)\)</span> weights bigger <span class="process-math">\(x\)</span>’s more than it weights smaller <span class="process-math">\(x\)</span>’s.  In particular <span class="process-math">\(w_N\)</span> weights the point <span class="process-math">\(x=2\)</span> by a factor of <span class="process-math">\(2^N\)</span> (which is greater than <span class="process-math">\(1\)</span> and grows to infinity as <span class="process-math">\(N\)</span> grows to infinity) more than it weights the point <span class="process-math">\(x=1\text{.}\)</span> The weighted average of <span class="process-math">\(f\)</span> is</div>
+<div class="displaymath process-math" id="eg_weightedAverage-1-25">
+\begin{align*}
+\frac{\int_a^b f(t)\,w_N(t)\,\dee{t}}{\int_a^b w_N(t)\,\dee{t}}
+&amp;=\frac{\int_1^2 t^{N+1}\,\dee{t}}{\int_1^2 t^N\,\dee{t}}
+=\frac{\frac{2^{N+2}-1}{N+2}}{\frac{2^{N+1}-1}{N+1}}
+=\frac{N+1}{N+2}\ \frac{2^{N+2}-1}{2^{N+1}-1} \\
+&amp;=\begin{cases}
+\frac{2\times 7}{3\times 3}  = 1.555  &amp;\text{if }N=1 \\
+\frac{3\times 15}{4\times 7} = 1.607  &amp;\text{if }N=2 \\
+\frac{4\times 31}{5\times 15}= 1.653  &amp;\text{if }N=3 \\
+\frac{5\times 63}{6\times 31}= 1.694  &amp;\text{if }N=4 
+\\ 1.889  &amp;\text{if }N=16    
+\\ 1.992  &amp;\text{if }N=256  
+\end{cases}
+\end{align*}
+</div>
+<div class="para">As we would expect, the <span class="process-math">\(w_N\)</span>-weighted average is between <span class="process-math">\(1.5\)</span> (which is the ordinary, unweighted, average) and <span class="process-math">\(2\)</span> (which is the biggest value of <span class="process-math">\(f\)</span> in the interval) and grows as <span class="process-math">\(N\)</span> grows. The limit as <span class="process-math">\(N\rightarrow\infty\)</span> of the <span class="process-math">\(w_N\)</span>-weighted average is</div>
+<div class="displaymath process-math" id="eg_weightedAverage-1-33">
+\begin{align*}
+\lim_{N\rightarrow\infty}\frac{N+1}{N+2}\ \frac{2^{N+2}-1}{2^{N+1}-1} 
+&amp;=\lim_{N\rightarrow\infty}\frac{N+2-1}{N+2}\ \frac{2^{N+2}-2+1}{2^{N+1}-1} \\
+&amp;=\lim_{N\rightarrow\infty}\left[1-\frac{1}{N+2}\right]\ 
+\left[2+\frac{1}{2^{N+1}-1}\right] \\
+&amp;=2
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_weightedAverage-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.2.11"><a href="#eg_weightedAverage" title="Copy heading and permalink for Example 2.2.11" aria-label="Copy heading and permalink for Example 2.2.11">🔗</a></div></article></details><details id="eg_needPositive" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.12</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_needPositive-1">
+<div class="para">Here is an example which shows what can go wrong with Theorem <a href="sec_avg.html#thm_AVwtmvt" class="xref" data-knowl="./knowl/xref/thm_AVwtmvt.html" data-reveal-label="Reveal" data-close-label="Close" title="Theorem 2.2.10: Mean Value Theorem for Weighted Integrals">2.2.10</a> if we allow the weight function <span class="process-math">\(w(x)\)</span> to change sign. Let <span class="process-math">\(a=-0.99\)</span> and <span class="process-math">\(b=1\text{.}\)</span> Let</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_AVwtmvt.html" id="eg_needPositive-1-6">
+\begin{align*}
+w(x)&amp;=\begin{cases}
+1&amp;\text{if }x\ge 0 \\
+-1&amp;\text{if }x\lt 0 
+\end{cases} \\
+f(x)&amp;=\begin{cases}
+x&amp;\text{if }x\ge 0 \\
+0&amp;\text{if }x\lt 0 
+\end{cases} 
+\end{align*}
+</div>
+<div class="para">Then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_AVwtmvt.html" id="eg_needPositive-1-7">
+\begin{align*}
+\int_a^b f(x)\,w(x)\,\dee{x} &amp;= \int_0^1 x\,\dee{x} =\frac{1}{2} \\
+\int_a^b w(x)\,\dee{x} &amp;= \int_0^1 \dee{x} -\int_{-0.99}^0\dee{x}
+= 1 - 0.99
+= 0.01
+\end{align*}
+</div>
+<div class="para">As <span class="process-math">\(c\)</span> runs from <span class="process-math">\(a\)</span> to <span class="process-math">\(b\text{,}\)</span> <span class="process-math">\(f(c)\int_a^b w(x)\,\dee{x}=0.01 f(c)\)</span> runs from <span class="process-math">\(0\)</span> to <span class="process-math">\(0.01\)</span> and, in particular, never takes a value anywhere near <span class="process-math">\(\int_a^b f(x)\,w(x)\,\dee{x}=\frac{1}{2}\text{.}\)</span> There is no <span class="process-math">\(c\)</span> value which works.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_needPositive-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 2.2.12"><a href="#eg_needPositive" title="Copy heading and permalink for Example 2.2.12" aria-label="Copy heading and permalink for Example 2.2.12">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection 2.2.1: Optional — Return to the mean value theorem"><a href="#sec_avg-3" title="Copy heading and permalink for Subsection 2.2.1: Optional — Return to the mean value theorem" aria-label="Copy heading and permalink for Subsection 2.2.1: Optional — Return to the mean value theorem">🔗</a></div></section><section class="exercises" id="sec_avg-4"><h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<section class="introduction" id="sec_avg-4-1"><div class="para" id="sec_avg-4-1-1">Recall that we are using <span class="process-math">\(\log x\)</span> to denote the logarithm of <span class="process-math">\(x\)</span> with base <span class="process-math">\(e\text{.}\)</span> In other courses it is often denoted <span class="process-math">\(\ln x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section><div class="exercisegroup" id="sec_avg-4-2">
+<h4 class="heading"><span class="title">
+  Exercises — Stage 1
+.</span></h4>
+<div class="introduction" id="sec_avg-4-2-2"></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like boxed" id="prob_s2_2_avgvalue"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="prob_s2_2_avgvalue-1-1">Below is the graph of a function <span class="process-math">\(y=f(x)\text{.}\)</span> Its average value on the interval  <span class="process-math">\([0,5]\)</span> is <span class="process-math">\(A\text{.}\)</span> Draw a rectangle on the graph with area <span class="process-math">\(\int_0^5 f(x)\,\dee{x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_avgvalue-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/prob_s2_2_avgvalue-1-2-1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Exercise 2.2.2.1"><a href="#prob_s2_2_avgvalue" title="Copy heading and permalink for Exercise 2.2.2.1" aria-label="Copy heading and permalink for Exercise 2.2.2.1">🔗</a></div></article><article class="exercise-like" id="prob_s2_2_vel"><h5 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="prob_s2_2_vel-1-1">Suppose a car travels for 5 hours in a straight line, with an average velocity of 100 kph. How far did the car travel?<div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_vel-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.2"><a href="#prob_s2_2_vel" title="Copy heading and permalink for Exercise 2.2.2.2" aria-label="Copy heading and permalink for Exercise 2.2.2.2">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-2-5"><h5 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-2-5-1-1">A force <span class="process-math">\(F(x)\)</span> acts on an object from position <span class="process-math">\(x=a\)</span> metres to position <span class="process-math">\(x=b\)</span> metres, for a total of <span class="process-math">\(W\)</span> joules of work. What was the average force on the object?<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-2-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.3"><a href="#sec_avg-4-2-5" title="Copy heading and permalink for Exercise 2.2.2.3" aria-label="Copy heading and permalink for Exercise 2.2.2.3">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-2-6"><h5 class="heading"><span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-2-6-1-1">Suppose we want to approximate the average value of the function <span class="process-math">\(f(x)\)</span> on the interval <span class="process-math">\([a,b]\text{.}\)</span> To do this, we cut the interval <span class="process-math">\([a,b]\)</span> into <span class="process-math">\(n\)</span> pieces, then take <span class="process-math">\(n\)</span> samples by finding the function’s output at the left endpoint of each piece, starting with <span class="process-math">\(a\text{.}\)</span> Then, we average those <span class="process-math">\(n\)</span> samples. (In the example below, <span class="process-math">\(n=4\text{.}\)</span>)<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-2-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_avg-4-2-6-1-2-1.svg" role="img" class="contained"></div></div></div>
+<div class="para logical" id="sec_avg-4-2-6-1-3">
+<ol class="lower-alpha ol-marker-1" id="sec_avg-4-2-6-1-3-1">
+<li id="sec_avg-4-2-6-1-3-1-1">
+<div class="para" id="p-derived-sec_avg-4-2-6-1-3-1-1">Using <span class="process-math">\(n\)</span> samples, what is the distance between two consecutive sample points <span class="process-math">\(x_i\)</span> and <span class="process-math">\(x_{i+1}\text{?}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.4.a"><a href="#sec_avg-4-2-6-1-3-1-1" title="Copy heading and permalink for Item 2.2.2.4.a" aria-label="Copy heading and permalink for Item 2.2.2.4.a">🔗</a></div>
+</li>
+<li id="sec_avg-4-2-6-1-3-1-2">
+<div class="para" id="p-derived-sec_avg-4-2-6-1-3-1-2">Assuming <span class="process-math">\(n \geq 4\text{,}\)</span> what is the <span class="process-math">\(x\)</span>-coordinate of the fourth sample?</div>
+<div class="autopermalink" data-description="Item 2.2.2.4.b"><a href="#sec_avg-4-2-6-1-3-1-2" title="Copy heading and permalink for Item 2.2.2.4.b" aria-label="Copy heading and permalink for Item 2.2.2.4.b">🔗</a></div>
+</li>
+<li id="sec_avg-4-2-6-1-3-1-3">
+<div class="para" id="p-derived-sec_avg-4-2-6-1-3-1-3">Assuming <span class="process-math">\(n \geq 4\text{,}\)</span> what is the <span class="process-math">\(y\)</span>-value of the fourth sample?</div>
+<div class="autopermalink" data-description="Item 2.2.2.4.c"><a href="#sec_avg-4-2-6-1-3-1-3" title="Copy heading and permalink for Item 2.2.2.4.c" aria-label="Copy heading and permalink for Item 2.2.2.4.c">🔗</a></div>
+</li>
+<li id="sec_avg-4-2-6-1-3-1-4">
+<div class="para" id="p-derived-sec_avg-4-2-6-1-3-1-4">Write the approximation of the average value of <span class="process-math">\(f(x)\)</span> over the interval <span class="process-math">\([a,b]\)</span> using sigma notation.</div>
+<div class="autopermalink" data-description="Item 2.2.2.4.d"><a href="#sec_avg-4-2-6-1-3-1-4" title="Copy heading and permalink for Item 2.2.2.4.d" aria-label="Copy heading and permalink for Item 2.2.2.4.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-2-6-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.4"><a href="#sec_avg-4-2-6" title="Copy heading and permalink for Exercise 2.2.2.4" aria-label="Copy heading and permalink for Exercise 2.2.2.4">🔗</a></div></article><article class="exercise-like boxed" id="sec_avg-4-2-7"><h5 class="heading"><span class="codenumber">5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_avg-4-2-7-1-1">
+<div class="para">Suppose <span class="process-math">\(f(x)\)</span> and <span class="process-math">\(g(x)\)</span> are functions that are defined for all numbers in the interval <span class="process-math">\([0,10]\text{.}\)</span>
+</div>
+<ol class="lower-alpha ol-marker-1" id="sec_avg-4-2-7-1-1-4">
+<li id="sec_avg-4-2-7-1-1-4-1">
+<div class="para" id="p-derived-sec_avg-4-2-7-1-1-4-1">If <span class="process-math">\(f(x) \leq g(x)\)</span> for all <span class="process-math">\(x\)</span> in <span class="process-math">\([0,10]\text{,}\)</span> then is the average value of <span class="process-math">\(f(x)\)</span> is less than or equal to the average value of <span class="process-math">\(g(x)\)</span> on the interval <span class="process-math">\([0,10]\text{,}\)</span> or is there not enough information to tell?</div>
+<div class="autopermalink" data-description="Item 2.2.2.5.a"><a href="#sec_avg-4-2-7-1-1-4-1" title="Copy heading and permalink for Item 2.2.2.5.a" aria-label="Copy heading and permalink for Item 2.2.2.5.a">🔗</a></div>
+</li>
+<li id="sec_avg-4-2-7-1-1-4-2">
+<div class="para" id="p-derived-sec_avg-4-2-7-1-1-4-2">Suppose <span class="process-math">\(f(x) \leq g(x)\)</span> for all <span class="process-math">\(x\)</span> in <span class="process-math">\([0.01,10]\text{.}\)</span> Is the average value of <span class="process-math">\(f(x)\)</span> less than or equal to the average value of <span class="process-math">\(g(x)\)</span> over the interval <span class="process-math">\([0,10]\text{,}\)</span> or is there not enough information to tell?</div>
+<div class="autopermalink" data-description="Item 2.2.2.5.b"><a href="#sec_avg-4-2-7-1-1-4-2" title="Copy heading and permalink for Item 2.2.2.5.b" aria-label="Copy heading and permalink for Item 2.2.2.5.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-2-7-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.5"><a href="#sec_avg-4-2-7" title="Copy heading and permalink for Exercise 2.2.2.5" aria-label="Copy heading and permalink for Exercise 2.2.2.5">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-2-8"><h5 class="heading"><span class="codenumber">6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-2-8-1-1">Suppose <span class="process-math">\(f\)</span> is an odd function, defined for all real numbers. What is the average of <span class="process-math">\(f\)</span> on the interval <span class="process-math">\([-10,10]\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-2-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.6"><a href="#sec_avg-4-2-8" title="Copy heading and permalink for Exercise 2.2.2.6" aria-label="Copy heading and permalink for Exercise 2.2.2.6">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 2.2.2.1–6: 
+  Exercises — Stage 1
+"><a href="#sec_avg-4-2" title="Copy heading and permalink for Exercise Group 2.2.2.1–6: 
+  Exercises — Stage 1
+" aria-label="Copy heading and permalink for Exercise Group 2.2.2.1–6: 
+  Exercises — Stage 1
+">🔗</a></div>
+</div>
+<div class="exercisegroup" id="sec_avg-4-3">
+<h4 class="heading"><span class="title">
+Exercises — Stage 2
+.</span></h4>
+<div class="introduction" id="sec_avg-4-3-2"></div>
+<div class="introduction" id="sec_avg-4-3-12"><div class="para" id="sec_avg-4-3-12-1">For Questions <a href="sec_avg.html#prob_s2_2_RMS1" class="xref" data-knowl="./knowl/xref/prob_s2_2_RMS1.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 2.2.2.16">16</a> through <a href="sec_avg.html#prob_s2_2_RMS3" class="xref" data-knowl="./knowl/xref/prob_s2_2_RMS3.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 2.2.2.18">18</a>, let the root mean square of <span class="process-math">\(f(x)\)</span> on <span class="process-math">\([a,b]\)</span> be <span class="process-math">\(\displaystyle\sqrt{\frac{1}{b-a}\int_a^b f^2(x)\,\dee{x}}\text{.}\)</span> This is the formula used in Example <a href="sec_avg.html#eg_peakvsrms" class="xref" data-knowl="./knowl/xref/eg_peakvsrms.html" data-reveal-label="Reveal" data-close-label="Close" title="Example 2.2.6: Peak vs RMS voltage">2.2.6</a> in the text.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-12-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like boxed" id="sec_avg-4-3-3"><h5 class="heading">
+<span class="codenumber">7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-3-3-2-1">Find the average value of <span class="process-math">\(f(x) = \sin(5x)+1\)</span> over the interval <span class="process-math">\(-\pi/2 \le x \le \pi/2 \text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.7: (✳)"><a href="#sec_avg-4-3-3" title="Copy heading and permalink for Exercise 2.2.2.7: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.7: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-3-4"><h5 class="heading">
+<span class="codenumber">8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-3-4-2-1">Find the average value of the function <span class="process-math">\(y= x^2\log x\)</span> on the interval <span class="process-math">\(1 \le x\le e\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.8: (✳)"><a href="#sec_avg-4-3-4" title="Copy heading and permalink for Exercise 2.2.2.8: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.8: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-3-5"><h5 class="heading">
+<span class="codenumber">9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-3-5-2-1">Find the average value of the function <span class="process-math">\(f(x) = 3\cos^3x + 2\cos^2x\)</span> on the interval <span class="process-math">\(0\le x\le\frac\pi2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.9: (✳)"><a href="#sec_avg-4-3-5" title="Copy heading and permalink for Exercise 2.2.2.9: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.9: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-3-6"><h5 class="heading">
+<span class="codenumber">10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-3-6-2-1">Let <span class="process-math">\(k\)</span> be a positive constant. Find the average value of the function <span class="process-math">\(f(x) = \sin(kx)\)</span> on the interval <span class="process-math">\(0\le x\le \pi/k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-6-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.10: (✳)"><a href="#sec_avg-4-3-6" title="Copy heading and permalink for Exercise 2.2.2.10: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.10: (✳)">🔗</a></div></article><article class="exercise-like boxed" id="sec_avg-4-3-7"><h5 class="heading">
+<span class="codenumber">11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-3-7-2-1">The temperature in Celsius in a 3 m long rod at a point <span class="process-math">\(x\)</span> metres from the left end of the rod is given by the function <span class="process-math">\(T(x)=\frac{80}{16-x^2}\text{.}\)</span> Determine the average temperature in the rod.<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-7-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.11: (✳)"><a href="#sec_avg-4-3-7" title="Copy heading and permalink for Exercise 2.2.2.11: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.11: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-3-8"><h5 class="heading">
+<span class="codenumber">12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-3-8-2-1">What is the average value of the function <span class="process-math">\(f(x)=\dfrac{\log x}{x}\)</span> on the interval <span class="process-math">\([1,e]\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-8-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.12: (✳)"><a href="#sec_avg-4-3-8" title="Copy heading and permalink for Exercise 2.2.2.12: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.12: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-3-9"><h5 class="heading">
+<span class="codenumber">13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-3-9-2-1">Find the average value of <span class="process-math">\(f(x)=\cos^2(x)\)</span> over <span class="process-math">\(0\le x\le 2\pi\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-9-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.13: (✳)"><a href="#sec_avg-4-3-9" title="Copy heading and permalink for Exercise 2.2.2.13: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.13: (✳)">🔗</a></div></article><article class="exercise-like boxed" id="sec_avg-4-3-10"><h5 class="heading"><span class="codenumber">14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_avg-4-3-10-1-1">
+<div class="para">The carbon dioxide concentration in the air at a particular location over one year is approximated by <span class="process-math">\(C(t) = 400+50\cos\left(\frac{t}{12}\pi\right)+200\cos\left(\frac{t}{4380}\pi\right)\)</span> parts per million, where  <span class="process-math">\(t\)</span> is measured in hours.</div>
+<ol class="lower-alpha ol-marker-1" id="sec_avg-4-3-10-1-1-3">
+<li id="sec_avg-4-3-10-1-1-3-1">
+<div class="para" id="p-derived-sec_avg-4-3-10-1-1-3-1">What is the average carbon dioxide concentration for that location for that year?</div>
+<div class="autopermalink" data-description="Item 2.2.2.14.a"><a href="#sec_avg-4-3-10-1-1-3-1" title="Copy heading and permalink for Item 2.2.2.14.a" aria-label="Copy heading and permalink for Item 2.2.2.14.a">🔗</a></div>
+</li>
+<li id="sec_avg-4-3-10-1-1-3-2">
+<div class="para" id="p-derived-sec_avg-4-3-10-1-1-3-2">What is the average over the first day?</div>
+<div class="autopermalink" data-description="Item 2.2.2.14.b"><a href="#sec_avg-4-3-10-1-1-3-2" title="Copy heading and permalink for Item 2.2.2.14.b" aria-label="Copy heading and permalink for Item 2.2.2.14.b">🔗</a></div>
+</li>
+<li id="sec_avg-4-3-10-1-1-3-3">
+<div class="para logical" id="sec_avg-4-3-10-1-1-3-3-1">
+<div class="para">Suppose measurements were only made at noon every day: that is, when <span class="process-math">\(t=12+24n\text{,}\)</span> where <span class="process-math">\(n\)</span> is any whole number between 0 and 364.  Then the daily variation would cease: <span class="process-math">\(50\cos\left(\frac{(12+24n)}{12}\pi\right) = 50\cos\left(\pi+2\pi n\right) = 50\cos\pi=-50\text{.}\)</span> So, the approximation for the concentration of carbon dioxide in the atmosphere might be given as</div>
+<div class="displaymath process-math">
+\begin{equation*}
+N(t) = 350 +200\cos\left(\frac{t}{4380}\pi\right)\quad\text{ ppm}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-10-1-1-3-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_avg-4-3-10-1-1-3-3-2">What is the relative error in the yearly average concentration of carbon dioxide involved in using <span class="process-math">\(N(t)\text{,}\)</span> instead of <span class="process-math">\(C(t)\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-10-1-1-3-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.14.c"><a href="#sec_avg-4-3-10-1-1-3-3" title="Copy heading and permalink for Item 2.2.2.14.c" aria-label="Copy heading and permalink for Item 2.2.2.14.c">🔗</a></div>
+</li>
+</ol>
+<div class="para">You may assume a day has exactly 24 hours, and a year has exactly 8760 hours.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-10-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.14"><a href="#sec_avg-4-3-10" title="Copy heading and permalink for Exercise 2.2.2.14" aria-label="Copy heading and permalink for Exercise 2.2.2.14">🔗</a></div></article><article class="exercise-like" id="prob_s2_2_avgarea"><h5 class="heading"><span class="codenumber">15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="prob_s2_2_avgarea-1-1">
+<div class="para">Let <span class="process-math">\(S\)</span> be the solid formed by rotating the parabola <span class="process-math">\(y=x^2\)</span> from <span class="process-math">\(x=0\)</span> to <span class="process-math">\(x=2\)</span> about the <span class="process-math">\(x\)</span>-axis.</div>
+<ol class="lower-alpha ol-marker-1" id="prob_s2_2_avgarea-1-1-6">
+<li id="prob_s2_2_avgarea-1-1-6-1">
+<div class="para" id="p-derived-prob_s2_2_avgarea-1-1-6-1">What is the average area of the circular cross-sections of <span class="process-math">\(S\text{?}\)</span> Call this value <span class="process-math">\(A\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.15.a"><a href="#prob_s2_2_avgarea-1-1-6-1" title="Copy heading and permalink for Item 2.2.2.15.a" aria-label="Copy heading and permalink for Item 2.2.2.15.a">🔗</a></div>
+</li>
+<li id="prob_s2_2_avgarea-1-1-6-2">
+<div class="para" id="p-derived-prob_s2_2_avgarea-1-1-6-2">What is the volume of <span class="process-math">\(S\text{?}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.15.b"><a href="#prob_s2_2_avgarea-1-1-6-2" title="Copy heading and permalink for Item 2.2.2.15.b" aria-label="Copy heading and permalink for Item 2.2.2.15.b">🔗</a></div>
+</li>
+<li id="prob_s2_2_avgarea-1-1-6-3">
+<div class="para" id="p-derived-prob_s2_2_avgarea-1-1-6-3">What is the volume of a cylinder with circular cross-sectional area <span class="process-math">\(A\)</span> and length 2?</div>
+<div class="autopermalink" data-description="Item 2.2.2.15.c"><a href="#prob_s2_2_avgarea-1-1-6-3" title="Copy heading and permalink for Item 2.2.2.15.c" aria-label="Copy heading and permalink for Item 2.2.2.15.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_avgarea-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.15"><a href="#prob_s2_2_avgarea" title="Copy heading and permalink for Exercise 2.2.2.15" aria-label="Copy heading and permalink for Exercise 2.2.2.15">🔗</a></div></article><article class="exercise-like boxed" id="prob_s2_2_RMS1"><h5 class="heading"><span class="codenumber">16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="prob_s2_2_RMS1-1-1">
+<div class="para">Let <span class="process-math">\(f(x) = x\text{.}\)</span>
+</div>
+<ol class="lower-alpha ol-marker-1" id="prob_s2_2_RMS1-1-1-2">
+<li id="prob_s2_2_RMS1-1-1-2-1">
+<div class="para" id="p-derived-prob_s2_2_RMS1-1-1-2-1">Calculate the average of <span class="process-math">\(f(x)\)</span> over <span class="process-math">\([-3,3]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.16.a"><a href="#prob_s2_2_RMS1-1-1-2-1" title="Copy heading and permalink for Item 2.2.2.16.a" aria-label="Copy heading and permalink for Item 2.2.2.16.a">🔗</a></div>
+</li>
+<li id="prob_s2_2_RMS1-1-1-2-2">
+<div class="para" id="p-derived-prob_s2_2_RMS1-1-1-2-2">Calculate the root mean square of <span class="process-math">\(f(x)\)</span> over <span class="process-math">\([-3,3]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.16.b"><a href="#prob_s2_2_RMS1-1-1-2-2" title="Copy heading and permalink for Item 2.2.2.16.b" aria-label="Copy heading and permalink for Item 2.2.2.16.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_RMS1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.16"><a href="#prob_s2_2_RMS1" title="Copy heading and permalink for Exercise 2.2.2.16" aria-label="Copy heading and permalink for Exercise 2.2.2.16">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-3-14"><h5 class="heading"><span class="codenumber">17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-3-14-1-1">Calculate the root mean square of <span class="process-math">\(f(x) = \tan x\)</span> over <span class="process-math">\(\left[-\frac{\pi}{4},\frac{\pi}{4}\right]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-3-14-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.17"><a href="#sec_avg-4-3-14" title="Copy heading and permalink for Exercise 2.2.2.17" aria-label="Copy heading and permalink for Exercise 2.2.2.17">🔗</a></div></article><article class="exercise-like" id="prob_s2_2_RMS3"><h5 class="heading"><span class="codenumber">18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="prob_s2_2_RMS3-1-1">
+<div class="para">A force acts on a spring, and the spring stretches and contracts. The distance beyond its natural length at time <span class="process-math">\(t\)</span> is <span class="process-math">\(f(t) = \sin\left(t\pi\right)\)</span> cm, where <span class="process-math">\(t\)</span> is measured in seconds. The spring constant is 3 N/cm.</div>
+<ol class="lower-alpha ol-marker-1" id="prob_s2_2_RMS3-1-1-4">
+<li id="prob_s2_2_RMS3-1-1-4-1">
+<div class="para" id="p-derived-prob_s2_2_RMS3-1-1-4-1">What is the force exerted by the spring at time <span class="process-math">\(t\text{,}\)</span> if it obeys Hooke’s law?</div>
+<div class="autopermalink" data-description="Item 2.2.2.18.a"><a href="#prob_s2_2_RMS3-1-1-4-1" title="Copy heading and permalink for Item 2.2.2.18.a" aria-label="Copy heading and permalink for Item 2.2.2.18.a">🔗</a></div>
+</li>
+<li id="prob_s2_2_RMS3-1-1-4-2">
+<div class="para" id="p-derived-prob_s2_2_RMS3-1-1-4-2">Find the average of the force exerted by the spring from <span class="process-math">\(t=0\)</span> to <span class="process-math">\(t=6\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.18.b"><a href="#prob_s2_2_RMS3-1-1-4-2" title="Copy heading and permalink for Item 2.2.2.18.b" aria-label="Copy heading and permalink for Item 2.2.2.18.b">🔗</a></div>
+</li>
+<li id="prob_s2_2_RMS3-1-1-4-3">
+<div class="para" id="p-derived-prob_s2_2_RMS3-1-1-4-3">Find the root mean square of the force exerted by the spring from <span class="process-math">\(t=0\)</span> to <span class="process-math">\(t=6\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.18.c"><a href="#prob_s2_2_RMS3-1-1-4-3" title="Copy heading and permalink for Item 2.2.2.18.c" aria-label="Copy heading and permalink for Item 2.2.2.18.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_RMS3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.18"><a href="#prob_s2_2_RMS3" title="Copy heading and permalink for Exercise 2.2.2.18" aria-label="Copy heading and permalink for Exercise 2.2.2.18">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 2.2.2.7–18: 
+Exercises — Stage 2
+"><a href="#sec_avg-4-3" title="Copy heading and permalink for Exercise Group 2.2.2.7–18: 
+Exercises — Stage 2
+" aria-label="Copy heading and permalink for Exercise Group 2.2.2.7–18: 
+Exercises — Stage 2
+">🔗</a></div>
+</div>
+<div class="exercisegroup" id="sec_avg-4-4">
+<h4 class="heading"><span class="title">
+Exercises — Stage 3
+.</span></h4>
+<div class="introduction" id="sec_avg-4-4-2"></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like boxed" id="sec_avg-4-4-3"><h5 class="heading">
+<span class="codenumber">19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_avg-4-4-3-2-1">A car travels two hours without stopping. The driver records the car’s speed every 20 minutes, as indicated in the table below:<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel fixed-width sbspanel--top top" style=""><table class="tabular">
+<tr>
+<td class="l m b1 r1 l1 t1 lines">time in hours</td>
+<td class="l m b1 r1 l0 t1 lines">0</td>
+<td class="l m b1 r1 l0 t1 lines">1/3</td>
+<td class="l m b1 r1 l0 t1 lines">2/3</td>
+<td class="l m b1 r1 l0 t1 lines">1</td>
+<td class="l m b1 r1 l0 t1 lines">4/3</td>
+<td class="l m b1 r1 l0 t1 lines">5/3</td>
+<td class="l m b1 r1 l0 t1 lines">2</td>
+</tr>
+<tr>
+<td class="l m b1 r1 l1 t0 lines">speed in km/hr</td>
+<td class="l m b1 r1 l0 t0 lines">50</td>
+<td class="l m b1 r1 l0 t0 lines">70</td>
+<td class="l m b1 r1 l0 t0 lines">80</td>
+<td class="l m b1 r1 l0 t0 lines">55</td>
+<td class="l m b1 r1 l0 t0 lines">60</td>
+<td class="l m b1 r1 l0 t0 lines">80</td>
+<td class="l m b1 r1 l0 t0 lines">40</td>
+</tr>
+</table></div></div></div> <div class="para logical" id="sec_avg-4-4-3-2-3">
+<ol class="lower-alpha ol-marker-1" id="sec_avg-4-4-3-2-3-1">
+<li id="sec_avg-4-4-3-2-3-1-1">
+<div class="para" id="p-derived-sec_avg-4-4-3-2-3-1-1">Use the trapezoidal rule to estimate the total distance traveled in the two hours.</div>
+<div class="autopermalink" data-description="Item 2.2.2.19.a"><a href="#sec_avg-4-4-3-2-3-1-1" title="Copy heading and permalink for Item 2.2.2.19.a" aria-label="Copy heading and permalink for Item 2.2.2.19.a">🔗</a></div>
+</li>
+<li id="sec_avg-4-4-3-2-3-1-2">
+<div class="para" id="p-derived-sec_avg-4-4-3-2-3-1-2">Use the answer to part (a)  to estimate the average speed of the car during this period.</div>
+<div class="autopermalink" data-description="Item 2.2.2.19.b"><a href="#sec_avg-4-4-3-2-3-1-2" title="Copy heading and permalink for Item 2.2.2.19.b" aria-label="Copy heading and permalink for Item 2.2.2.19.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-3-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.19: (✳)"><a href="#sec_avg-4-4-3" title="Copy heading and permalink for Exercise 2.2.2.19: (✳)" aria-label="Copy heading and permalink for Exercise 2.2.2.19: (✳)">🔗</a></div></article><article class="exercise-like" id="prob_s2_2_var"><h5 class="heading"><span class="codenumber">20<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="prob_s2_2_var-1-1">
+<div class="para">Let <span class="process-math">\(s(t) = e^t\text{.}\)</span>
+</div>
+<ol class="lower-alpha ol-marker-1" id="prob_s2_2_var-1-1-2">
+<li id="prob_s2_2_var-1-1-2-1">
+<div class="para" id="p-derived-prob_s2_2_var-1-1-2-1">Find the average of <span class="process-math">\(s(t)\)</span> on the interval <span class="process-math">\([0,1]\text{.}\)</span> Call this quantity <span class="process-math">\(A\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.20.a"><a href="#prob_s2_2_var-1-1-2-1" title="Copy heading and permalink for Item 2.2.2.20.a" aria-label="Copy heading and permalink for Item 2.2.2.20.a">🔗</a></div>
+</li>
+<li id="prob_s2_2_var-1-1-2-2">
+<div class="para" id="p-derived-prob_s2_2_var-1-1-2-2">For any point <span class="process-math">\(t\text{,}\)</span> the difference between <span class="process-math">\(s(t)\)</span> and <span class="process-math">\(A\)</span> is <span class="process-math">\(s(t)-A\text{.}\)</span> Find the average value of <span class="process-math">\(s(t)-A\)</span> on the interval <span class="process-math">\([0,1]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.20.b"><a href="#prob_s2_2_var-1-1-2-2" title="Copy heading and permalink for Item 2.2.2.20.b" aria-label="Copy heading and permalink for Item 2.2.2.20.b">🔗</a></div>
+</li>
+<li id="prob_s2_2_var-1-1-2-3">
+<div class="para" id="p-derived-prob_s2_2_var-1-1-2-3">For any point <span class="process-math">\(t\text{,}\)</span> the  absolute difference between <span class="process-math">\(s(t)\)</span> and <span class="process-math">\(A\)</span> is <span class="process-math">\(|s(t)-A|\text{.}\)</span> Find the average value of <span class="process-math">\(|s(t)-A|\)</span> on the interval <span class="process-math">\([0,1]\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.20.c"><a href="#prob_s2_2_var-1-1-2-3" title="Copy heading and permalink for Item 2.2.2.20.c" aria-label="Copy heading and permalink for Item 2.2.2.20.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_var-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.20"><a href="#prob_s2_2_var" title="Copy heading and permalink for Exercise 2.2.2.20" aria-label="Copy heading and permalink for Exercise 2.2.2.20">🔗</a></div></article><article class="exercise-like boxed" id="sec_avg-4-4-5"><h5 class="heading"><span class="codenumber">21<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-4-5-1-1">Consider the two functions <span class="process-math">\(f(x)\)</span> and <span class="process-math">\(g(x)\)</span> below, both of which have average <span class="process-math">\(A\)</span> on <span class="process-math">\([0,4]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:25%;margin-right:25%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_avg-4-4-5-1-2-1.svg" role="img" class="contained"></div></div></div>
+<div class="para logical" id="sec_avg-4-4-5-1-3">
+<ol class="lower-alpha ol-marker-1" id="sec_avg-4-4-5-1-3-1">
+<li id="sec_avg-4-4-5-1-3-1-1">
+<div class="para" id="p-derived-sec_avg-4-4-5-1-3-1-1">Which function has a larger average on <span class="process-math">\([0,4]\text{:}\)</span>  <span class="process-math">\(f(x)-A\)</span> or  <span class="process-math">\(g(x)-A\text{?}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.21.a"><a href="#sec_avg-4-4-5-1-3-1-1" title="Copy heading and permalink for Item 2.2.2.21.a" aria-label="Copy heading and permalink for Item 2.2.2.21.a">🔗</a></div>
+</li>
+<li id="sec_avg-4-4-5-1-3-1-2">
+<div class="para" id="p-derived-sec_avg-4-4-5-1-3-1-2">Which function has a larger average on <span class="process-math">\([0,4]\text{:}\)</span>  <span class="process-math">\(|f(x)-A|\)</span> or  <span class="process-math">\(|g(x)-A|\text{?}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.21.b"><a href="#sec_avg-4-4-5-1-3-1-2" title="Copy heading and permalink for Item 2.2.2.21.b" aria-label="Copy heading and permalink for Item 2.2.2.21.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-5-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.21"><a href="#sec_avg-4-4-5" title="Copy heading and permalink for Exercise 2.2.2.21" aria-label="Copy heading and permalink for Exercise 2.2.2.21">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-4-6"><h5 class="heading"><span class="codenumber">22<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-4-6-1-1">Suppose the root mean square of a function <span class="process-math">\(f(x)\)</span> on the interval <span class="process-math">\([a,b]\)</span> is <span class="process-math">\(R\text{.}\)</span> What is the volume of the solid formed by rotating the portion of <span class="process-math">\(f(x)\)</span> from <span class="process-math">\(a\)</span> to <span class="process-math">\(b\)</span> about the <span class="process-math">\(x\)</span>-axis?<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_avg-4-4-6-1-2-1.svg" role="img" class="contained"></div></div></div>
+<div class="para" id="sec_avg-4-4-6-1-3">As in Example <a href="sec_avg.html#eg_peakvsrms" class="xref" data-knowl="./knowl/xref/eg_peakvsrms.html" data-reveal-label="Reveal" data-close-label="Close" title="Example 2.2.6: Peak vs RMS voltage">2.2.6</a>, let the root mean square of <span class="process-math">\(f(x)\)</span> on <span class="process-math">\([a,b]\)</span> be <span class="process-math">\(\displaystyle\sqrt{\frac{1}{b-a}\int_a^b f^2(x)\,\dee{x}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-6-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.22"><a href="#sec_avg-4-4-6" title="Copy heading and permalink for Exercise 2.2.2.22" aria-label="Copy heading and permalink for Exercise 2.2.2.22">🔗</a></div></article><article class="exercise-like" id="prob_s2_2_quadraticaverage"><h5 class="heading"><span class="codenumber">23<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="prob_s2_2_quadraticaverage-1-1">Suppose <span class="process-math">\(f(x)=ax^2+bx+c\text{,}\)</span> and the average value of <span class="process-math">\(f(x)\)</span> on the interval <span class="process-math">\([0,1]\)</span> is the same as the average of <span class="process-math">\(f(0)\)</span> and <span class="process-math">\(f(1)\text{.}\)</span> What is <span class="process-math">\(a\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_quadraticaverage-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.23"><a href="#prob_s2_2_quadraticaverage" title="Copy heading and permalink for Exercise 2.2.2.23" aria-label="Copy heading and permalink for Exercise 2.2.2.23">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-4-8"><h5 class="heading"><span class="codenumber">24<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-4-8-1-1">Suppose <span class="process-math">\(f(x)=ax^2+bx+c\text{,}\)</span> and the average value of <span class="process-math">\(f(x)\)</span> on the interval <span class="process-math">\([s,t]\)</span> is the same as the average of <span class="process-math">\(f(s)\)</span> and <span class="process-math">\(f(t)\text{.}\)</span> Is it possible that <span class="process-math">\(a \neq 0\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="sec_avg-4-4-8-1-2">That is — does the result of Question <a href="sec_avg.html#prob_s2_2_quadraticaverage" class="xref" data-knowl="./knowl/xref/prob_s2_2_quadraticaverage.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 2.2.2.23">23</a> generalize?<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-8-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.24"><a href="#sec_avg-4-4-8" title="Copy heading and permalink for Exercise 2.2.2.24" aria-label="Copy heading and permalink for Exercise 2.2.2.24">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-4-9"><h5 class="heading"><span class="codenumber">25<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-4-9-1-1">Let <span class="process-math">\(f(x)\)</span> be a function defined for all numbers in the interval <span class="process-math">\([a,b]\text{,}\)</span> with average value <span class="process-math">\(A\)</span> over that interval. What is the average of <span class="process-math">\(f(a+b-x)\)</span> over the interval <span class="process-math">\([a,b]\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-9-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.25"><a href="#sec_avg-4-4-9" title="Copy heading and permalink for Exercise 2.2.2.25" aria-label="Copy heading and permalink for Exercise 2.2.2.25">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-4-10"><h5 class="heading"><span class="codenumber">26<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_avg-4-4-10-1-1">
+<div class="para">Suppose <span class="process-math">\(f(t)\)</span> is a continuous function, and <span class="process-math">\(A(x)\)</span> is the average of <span class="process-math">\(f(t)\)</span> on the interval from 0 to <span class="process-math">\(x\text{.}\)</span>
+</div>
+<ol class="lower-alpha ol-marker-1" id="sec_avg-4-4-10-1-1-5">
+<li id="sec_avg-4-4-10-1-1-5-1">
+<div class="para" id="p-derived-sec_avg-4-4-10-1-1-5-1">What is the average of <span class="process-math">\(f(t)\)</span> on <span class="process-math">\([a,b]\text{,}\)</span> where <span class="process-math">\(a \lt b\text{?}\)</span> Give your answer in terms of <span class="process-math">\(A\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.26.a"><a href="#sec_avg-4-4-10-1-1-5-1" title="Copy heading and permalink for Item 2.2.2.26.a" aria-label="Copy heading and permalink for Item 2.2.2.26.a">🔗</a></div>
+</li>
+<li id="sec_avg-4-4-10-1-1-5-2">
+<div class="para" id="p-derived-sec_avg-4-4-10-1-1-5-2">What is <span class="process-math">\(f(t)\text{?}\)</span> Again, give your answer in terms of <span class="process-math">\(A\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 2.2.2.26.b"><a href="#sec_avg-4-4-10-1-1-5-2" title="Copy heading and permalink for Item 2.2.2.26.b" aria-label="Copy heading and permalink for Item 2.2.2.26.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-10-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.26"><a href="#sec_avg-4-4-10" title="Copy heading and permalink for Exercise 2.2.2.26" aria-label="Copy heading and permalink for Exercise 2.2.2.26">🔗</a></div></article><article class="exercise-like boxed" id="sec_avg-4-4-11"><h5 class="heading"><span class="codenumber">27<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_avg-4-4-11-1-1">
+<ol class="lower-alpha ol-marker-1" id="sec_avg-4-4-11-1-1-1">
+<li id="sec_avg-4-4-11-1-1-1-1">
+<div class="para" id="p-derived-sec_avg-4-4-11-1-1-1-1">Find a function <span class="process-math">\(f(x)\)</span> with average <span class="process-math">\(0\)</span> over <span class="process-math">\([-1,1]\)</span> but <span class="process-math">\(f(x) \neq 0\)</span> for all <span class="process-math">\(x\)</span> in <span class="process-math">\([-1,1]\text{,}\)</span> or show that no such function exists.</div>
+<div class="autopermalink" data-description="Item 2.2.2.27.a"><a href="#sec_avg-4-4-11-1-1-1-1" title="Copy heading and permalink for Item 2.2.2.27.a" aria-label="Copy heading and permalink for Item 2.2.2.27.a">🔗</a></div>
+</li>
+<li id="sec_avg-4-4-11-1-1-1-2">
+<div class="para" id="p-derived-sec_avg-4-4-11-1-1-1-2">Find a <em class="emphasis">continuous</em> function <span class="process-math">\(f(x)\)</span> with average <span class="process-math">\(0\)</span> over <span class="process-math">\([-1,1]\)</span> but <span class="process-math">\(f(x) \neq 0\)</span> for all <span class="process-math">\(x\)</span> in <span class="process-math">\([-1,1]\text{,}\)</span> or show that no such function exists.</div>
+<div class="autopermalink" data-description="Item 2.2.2.27.b"><a href="#sec_avg-4-4-11-1-1-1-2" title="Copy heading and permalink for Item 2.2.2.27.b" aria-label="Copy heading and permalink for Item 2.2.2.27.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-11-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.27"><a href="#sec_avg-4-4-11" title="Copy heading and permalink for Exercise 2.2.2.27" aria-label="Copy heading and permalink for Exercise 2.2.2.27">🔗</a></div></article><article class="exercise-like" id="prob_s2_2_limitavg"><h5 class="heading"><span class="codenumber">28<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="prob_s2_2_limitavg-1-1">Suppose <span class="process-math">\(f(x)\)</span> is a positive, continuous function with <span class="process-math">\(\lim\limits_{x \to \infty} f(x)=0\text{,}\)</span> and let <span class="process-math">\(A(x)\)</span> be the average of <span class="process-math">\(f(x)\)</span> on <span class="process-math">\([0,x]\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_limitavg-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="prob_s2_2_limitavg-1-2">True or false: <span class="process-math">\(\lim\limits_{x \to \infty} A(x) = 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#prob_s2_2_limitavg-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.28"><a href="#prob_s2_2_limitavg" title="Copy heading and permalink for Exercise 2.2.2.28" aria-label="Copy heading and permalink for Exercise 2.2.2.28">🔗</a></div></article><article class="exercise-like" id="sec_avg-4-4-13"><h5 class="heading"><span class="codenumber">29<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_avg-4-4-13-1-1">Let <span class="process-math">\(A(x)\)</span> be the average of the function <span class="process-math">\(f(t)=e^{-t^2}\)</span> on the interval <span class="process-math">\([0,x]\text{.}\)</span> What is <span class="process-math">\(\displaystyle\lim_{x \to \infty} A(x)\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_avg-4-4-13-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 2.2.2.29"><a href="#sec_avg-4-4-13" title="Copy heading and permalink for Exercise 2.2.2.29" aria-label="Copy heading and permalink for Exercise 2.2.2.29">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 2.2.2.19–29: 
+Exercises — Stage 3
+"><a href="#sec_avg-4-4" title="Copy heading and permalink for Exercise Group 2.2.2.19–29: 
+Exercises — Stage 3
+" aria-label="Copy heading and permalink for Exercise Group 2.2.2.19–29: 
+Exercises — Stage 3
+">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercises 2.2.2"><a href="#sec_avg-4" title="Copy heading and permalink for Exercises 2.2.2" aria-label="Copy heading and permalink for Exercises 2.2.2">🔗</a></div></section><div class="autopermalink" data-description="Section 2.2: Averages"><a href="#sec_avg" title="Copy heading and permalink for Section 2.2: Averages" aria-label="Copy heading and permalink for Section 2.2: Averages">🔗</a></div></section></div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="sec_work.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Top</span></a><a class="next-button button" href="sec_com.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="feedback-link" href="mailto:clp@ugrad.math.ubc.ca?subject=clp4-pretext" target="_blank">Feedback</a><a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="runtime/reader-support/runestone-credit-logo.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="runtime/reader-support/mathjax-credit-logo.png" alt="MathJax logo"></a>
+</div>
+<nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP2/">Original authors’ website ↗</a><a href="clp_2_ic.html">Book contents</a></nav><nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B30" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B30">English — B30</a> · <a data-program-home data-course-card data-course-id="B30" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B30">Bahasa Indonesia — B30</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B30" href="https://personal.math.ubc.ca/~CLP/CLP2/">Original source — Original authors’ website — CLP-2 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="clp_2_ic.html">Open related page</a></nav>
+</body>
+</html>
