@@ -1769,8 +1769,16 @@ const centralNavigation = await readJson('backend/authority/central-reader-navig
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 28);
 assert.equal(centralNavigation.summary.course_surface_html_documents, 71);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 347);
-assert.equal(centralNavigation.summary.classified_html_documents, 350);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 436);
+assert.equal(centralNavigation.summary.classified_html_documents, 439);
+assert.equal(centralNavigation.readers.find(row => row.course_id === 'A30' && row.locale === 'en').root,
+  'docs/en/courses/A30/reader');
+assert.equal(centralNavigation.readers.find(row => row.course_id === 'A30' && row.locale === 'en').html_documents, 89);
+const a30EnglishAdmission = await readJson('docs/en/courses/A30/A30_ORIGINAL_ENGLISH_ADMISSION_V1.json');
+assert.equal(a30EnglishAdmission.module_count, 87);
+assert.equal(a30EnglishAdmission.native_ids, 46359);
+assert.equal(a30EnglishAdmission.assets, 1873);
+assert.equal(a30EnglishAdmission.translation_performed, false);
 assert.equal(centralNavigation.readers.find(row => row.course_id === 'A10').root,
   'docs/id-ID/courses/A10/reader');
 assert.deepEqual(

@@ -234,7 +234,10 @@ export const englishResources = {
     english('Original publisher reader — OpenStax Intermediate Algebra 2e', 'https://openstax.org/books/intermediate-algebra-2e/pages/1-introduction'),
     englishMirror('Complete English HTML reader — offline ZIP', 'https://github.com/KokunoYumeto/openstax-intermediate-algebra-2e-original-en/releases/download/v1.0.0/openstax-intermediate-algebra-2e-original-en-html-v1.0.0.zip', 'HTML ZIP', { bytes:90279762, sha256:'6348f5085bf7e6b7dc01dd62704019b56f2cbf6202849951875aa5398fc20e11', offlineAfterDownload:true }),
   ],
-  A30: [english('OpenStax Precalculus 2e', 'https://openstax.org/books/precalculus-2e/pages/1-introduction-to-functions')],
+  A30: [
+    englishMirror('Program-hosted complete English HTML reader — 87 modules', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/A30/reader/', 'HTML', { modules:87, assets:1873, nativeIds:46359, sourceRevision:'789b54099106b071d1d32bfcee454fed72eb4768' }),
+    english('Original publisher reader — OpenStax Precalculus 2e', 'https://openstax.org/books/precalculus-2e/pages/1-introduction-to-functions'),
+  ],
   B10: [english('Discrete Mathematics: An Open Introduction, 4th edition', 'https://discrete.openmathbooks.org/dmoi4/')],
   B20: [english('CLP-1: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP1/clp_1_dc/index.html')],
   B30: [english('CLP-2: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP2/clp_2_ic/index.html')],

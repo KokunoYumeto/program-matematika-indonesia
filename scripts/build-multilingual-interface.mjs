@@ -253,7 +253,7 @@ const receipt = {
   resourceBindings: Object.fromEntries(supportedLocales.map((locale) => [locale, Object.fromEntries(interfaceCourses.map((course) => [course.id, resourceBindings(course, locale)]))])),
 };
 const originalSourceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/original-sources.js'));
-for (const path of ['docs/interface/central-hosted-readers.js', 'docs/id-ID/courses/A10/A10_READER_MIRROR_MANIFEST_V1.json', 'scripts/stage_a10_public_html_v1.py']) {
+for (const path of ['docs/interface/central-hosted-readers.js', 'docs/id-ID/courses/A10/A10_READER_MIRROR_MANIFEST_V1.json', 'scripts/stage_a10_public_html_v1.py', 'docs/en/courses/A30/A30_ORIGINAL_ENGLISH_ADMISSION_V1.json', 'scripts/stage_a30_original_english_v1.py']) {
   const bytes = await readFile(resolve(interfaceRoot, path));
   receipt.inputs.push({path, bytes:bytes.length, sha256:createHash('sha256').update(bytes).digest('hex')});
 }
