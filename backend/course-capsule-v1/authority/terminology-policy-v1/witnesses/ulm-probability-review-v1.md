@@ -34,3 +34,9 @@ full-file and page hashes, evidence classes, rejected interpretations and the
 two exact native term records. Original PDFs, extractions and page images are
 not redistributed. Mechanical replay validates identities and surface forms;
 the contextual judgment remains explicitly attributed to this editorial pass.
+
+Subsequent [course-occurrence review](course-conditional-probability-review-v1.md)
+now checks two actual source/target passages. It supports retaining both terms
+within that scope and records a separate untranslated D30 formula annotation.
+The earlier next-action wording above describes this witness packet's stage;
+it is not an instruction to repeat completed source acquisition.
