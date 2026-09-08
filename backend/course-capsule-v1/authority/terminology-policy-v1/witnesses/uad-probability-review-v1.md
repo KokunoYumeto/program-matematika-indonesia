@@ -24,3 +24,9 @@ checks verify identities and the recorded surface forms; they do not automate
 the contextual mathematical judgment described here. Current editions remain
 available and unchanged while this evidence is developed into occurrence-linked
 decisions. No human response is a prerequisite for the next examination.
+
+Subsequent independent comparison: [ULM conditional-probability review](ulm-probability-review-v1.md)
+now supplies contextual support for the competing B90 designation. It also
+records a rejected same-sense search hit. The original limits above remain
+historical limits of this first packet, not claims that the ULM comparison
+is still unperformed.

@@ -5,10 +5,13 @@ import {readFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const packetPath='backend/course-capsule-v1/authority/terminology-policy-v1/witnesses/uad-probability-v1.json';
 const args=process.argv.slice(2);
-assert.equal(args.length,2,'Use --source-directory followed by the existing private source directory');
+assert.ok(args.length===2||args.length===4,'Use --source-directory PATH [--witness uad|ulm]');
 assert.equal(args[0],'--source-directory');
+if(args.length===4)assert.equal(args[2],'--witness');
+const witness=args.length===4?args[3]:'uad';
+assert.ok(['uad','ulm'].includes(witness),'Unknown witness profile');
+const packetPath=`backend/course-capsule-v1/authority/terminology-policy-v1/witnesses/${witness}-probability-v1.json`;
 const sourceDirectory=resolve(args[1]);
 const hash=data=>createHash('sha256').update(data).digest('hex');
 const raw=await readFile(resolve(root,packetPath));
@@ -50,7 +53,7 @@ const mutations=[
   r=>{r.decision.full_occurrence_coverage=true;}
 ];
 for(const mutate of mutations){const copy=structuredClone(packet);mutate(copy);assert.throws(()=>verify(copy));}
-console.log(JSON.stringify({status:'pass',packet_sha256:hash(raw),source_pages:3,
+console.log(JSON.stringify({status:'pass',witness,packet_sha256:hash(raw),source_pages:3,
   pinned_native_term_records:2,rejected_mutations:mutations.length,original_source_modified:false,
   production_translation_modified:false,automatic_resolution:false,
   scope:'source_and_page_identity_replay_plus_attested_forms_and_exact_native_term_records; not_independent_semantic_certification'}));
