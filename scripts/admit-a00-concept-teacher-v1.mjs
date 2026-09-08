@@ -16,6 +16,8 @@ assert.equal(validation.validator.sha256,(await fact('scripts/validate-a00-conce
 assert.deepEqual(validation.ui_test_host,await fact('scripts/test_a00_ui_host_v1.mjs'));
 assert.equal(validation.checks.actual_ui_host_cases.length,4);
 assert.ok(validation.checks.actual_ui_host_cases.every(row=>row.actual_ui_handlers&&row.module_and_solution_and_query_filters));
+assert.ok(validation.checks.actual_ui_host_cases.filter(row=>row.teacher).every(row=>row.study_plan_exports));
+assert.equal(validation.checks.source_bound_study_plan_cases,35);assert.equal(validation.checks.readable_plan_locales,2);
 assert.equal(validation.checks.deterministic_second_build,true);assert.equal(validation.checks.module_category_solution_cases,2250);
 assert.ok(validation.checks.negative_fixtures.length>=11);assert.ok(validation.checks.negative_fixtures.every(row=>row.result==='rejected'));
 for(const source of manifest.generators)assert.deepEqual(await fact(source.path),source);

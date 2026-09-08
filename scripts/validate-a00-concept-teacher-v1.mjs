@@ -89,6 +89,14 @@ for(const c of model.concepts){
   assert.equal(selection.learning_outcome_validated,false);assert.equal(selection.prerequisite_mastery_inferred,false);
   assert.deepEqual(selection.selected_concept_evidence_modules_not_in_selection,[]);
   assert.equal(selection.selected_concepts[0].id,c.id);
+  const plan=plain(helper.makeStudyPlan(model,moduleIds,[c.key],{}, {goal:'Authored intention'},'en'));
+  assert.deepEqual(plan.selected_source_concepts[0].source_objective_ids,c.objective_unit_ids);
+  assert.equal(plan.selected_source_concepts[0].objective_ids_are_not_localized_ordinals,true);
+  assert.equal(plan.author_intent_is_source_content,false);
+  assert.equal(plan.reading_order,'native_book_order_not_individualized_recommendation');
+  assert.equal(plan.delivery.textbook_bodies_included,false);
+  assert.equal(plan.learning_gain_estimated,false);assert.equal(plan.learner_population_estimated,false);
+  assert.deepEqual(plan.selection,selection);
 }
 const allModules=model.modules.map(row=>row.module_id);
 const complete=plain(helper.makeSelection(model,allModules,model.concepts.map(c=>c.key)));
@@ -110,6 +118,10 @@ const cycle=structuredClone(model);cycle.concepts[0].prerequisite_keys=[cycle.co
 reject('prerequisite cycle',()=>helper.prerequisiteClosure(cycle,[cycle.concepts[0].key]));
 const dangling=structuredClone(model);dangling.concepts[0].prerequisite_keys=['missing'];
 reject('dangling prerequisite',()=>helper.prerequisiteClosure(dangling,[dangling.concepts[0].key]));
+reject('unsupported plan locale',()=>helper.makeStudyPlan(model,allModules,[],{}, {},'xx'));
+reject('unexpected authored field',()=>helper.makeStudyPlan(model,allModules,[],{}, {source_revision:'forged'}));
+reject('oversized authored field',()=>helper.makeStudyPlan(model,allModules,[],{}, {goal:'a'.repeat(2001)}));
+reject('nontext authored field',()=>helper.makeStudyPlan(model,allModules,[],{}, {goal:{}}));
 let checkedPages=0;const uiCases=[];
 for(const file of manifest.outputs){
   const bytes=await read(base+'/'+file.path);assert.equal(bytes.length,file.bytes);assert.equal(hash(bytes),file.sha256);
@@ -124,7 +136,17 @@ for(const file of manifest.outputs){
   assert.equal((html.match(/<li><a href="https:\/\/kokunoyumeto.github.io\/openstax-prealgebra-2e-id-ID\/modules\//g)||[]).length,138);
   for(const key of ['module','category','solution','assessment-query','results','previous','next','concept-query','concept-role'])
     assert.ok(ids.includes(key)||(key==='module'&&payload.teacher));
-  if(payload.teacher)for(const id of ['download-selection','export-status','prerequisite-status','clear-modules','select-concept-modules'])assert.ok(ids.includes(id));
+  if(payload.teacher){
+    for(const id of ['download-selection','export-status','prerequisite-status','clear-modules','select-concept-modules','download-study-plan-html','download-study-plan-json','plan-export-status'])assert.ok(ids.includes(id));
+    for(const key of Object.keys(payload.labels.planFields))assert.ok(ids.includes('plan-'+key));
+    const plan=plain(helper.makeStudyPlan(model,[allModules[0]],[],{}, {title:'<img src=x onerror=alert(1)>'},expectedLocale));
+    const rendered=helper.renderStudyPlan(plan,payload.labels);
+    assert.ok(rendered.includes('&lt;img src=x onerror=alert(1)&gt;'));assert.doesNotMatch(rendered,/<img\b|<script\b/);
+    assert.ok(rendered.includes(payload.labels.planPortableNote));
+    assert.ok(!rendered.includes(payload.labels.portableNote),'Standalone plan must describe its own offline scope');
+    const badLink=structuredClone(plan);badLink.readings[0].module_url='javascript:alert(1)';
+    reject('unsafe exported link '+expectedLocale,()=>helper.renderStudyPlan(badLink,payload.labels));
+  }
   for(const match of html.matchAll(/(?:href|src)="([^"]+)"/g)){
     const value=match[1];if(value.startsWith('#')){assert.ok(ids.includes(value.slice(1)));continue;}
     if(value.startsWith('https://'))continue;
@@ -156,6 +178,7 @@ const receipt={schema:'a00-concept-teacher-validation/1',result:'pass',counts:mo
     independent_native_objective_identity_replay:true,source_ordinal_evidence_exact:true,prerequisite_closure_cases:35,
     module_category_solution_cases:selectionCases,exercise_identity_replay:8105,negative_fixtures:negatives,
     bilingual_pages:checkedPages,actual_ui_host_cases:uiCases,relative_asset_links:true,deterministic_second_build:true,
+    source_bound_study_plan_cases:35,readable_plan_locales:2,
     browser_testing_performed:false,linguistic_certification:false,publication_verified:false}};
 await writeFile(resolve(root,base,'validation.json'),JSON.stringify(receipt,null,2)+'\n');
 console.log(JSON.stringify(receipt));

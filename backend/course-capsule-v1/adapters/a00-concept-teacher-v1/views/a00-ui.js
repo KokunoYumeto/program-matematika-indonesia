@@ -49,6 +49,7 @@
     get('previous').disabled=offset===0;get('next').disabled=offset+40>=rows.length;
     if(teacher){
       get('download-selection').disabled=modules.length===0;
+      for(const id of ['download-study-plan-html','download-study-plan-json'])get(id).disabled=modules.length===0;
       const keys=helpers.prerequisiteClosure(model,selectedConcepts());
       get('prerequisite-status').textContent=keys.length?L.unselectedPrerequisites+': '+keys.map(key=>model.concepts.find(c=>c.key===key).labels[page.locale]).join('; '):L.noUnselectedPrerequisites;
     }
@@ -57,6 +58,17 @@
   get('previous').addEventListener('click',()=>{offset=Math.max(0,offset-40);render();});
   get('next').addEventListener('click',()=>{offset+=40;render();});
   if(teacher){
+    for(const format of ['html','json'])get('download-study-plan-'+format).addEventListener('click',()=>{
+      try {
+        const author=Object.fromEntries(Object.keys(L.planFields).map(key=>[key,get('plan-'+key).value]));
+        const plan=helpers.makeStudyPlan(model,selectedModules(),selectedConcepts(),
+          {category:get('category').value,solution:get('solution').value,query:get('assessment-query').value},author,page.locale);
+        const body=format==='html'?helpers.renderStudyPlan(plan,L):JSON.stringify(plan,null,2)+'\n';
+        const url=URL.createObjectURL(new Blob([body],{type:format==='html'?'text/html;charset=utf-8':'application/json'}));
+        const link=element('a');link.href=url;link.download='A00-study-plan.'+format;link.click();
+        setTimeout(()=>URL.revokeObjectURL(url),1000);get('plan-export-status').textContent=L.planExported;
+      }catch{get('plan-export-status').textContent=L.planInvalid;}
+    });
     for(const node of document.querySelectorAll('input[name="module"],input[name="concept"]'))node.addEventListener('change',()=>{offset=0;render();});
     get('clear-modules').addEventListener('click',()=>{for(const node of document.querySelectorAll('input[name="module"]'))node.checked=false;offset=0;render();});
     get('select-concept-modules').addEventListener('click',()=>{
