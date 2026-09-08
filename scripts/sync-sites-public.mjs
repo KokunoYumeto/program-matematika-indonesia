@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import { cp, mkdir, readFile, readdir, rm } from 'node:fs/promises';
+import { cp, mkdir, readFile, readdir, stat } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, relative, resolve, sep } from 'node:path';
@@ -19,7 +19,8 @@ for (const [locale, { routeSegment }] of Object.entries(localeMetadata)) {
   assert.equal(dirname(localeRoot).toLowerCase(), source.toLowerCase(), `Rute locale keluar atau bersarang: ${locale}`);
 }
 
-await rm(target, { recursive: true, force: true });
+// This is an additive public mirror. Preserve existing payloads and avoid
+// deleting/rebuilding the full generated tree for a bounded reader increment.
 await mkdir(target, { recursive: true });
 const approvedTopLevelFiles = new Set([
   'app.js',
@@ -108,9 +109,15 @@ const approvedReaderParents = new Set([
 const approvedReaderPrefixes = approvedReaderRoots.map((root) => `${root}/`);
 await cp(source, target, {
   recursive: true,
-  filter: (path) => {
+  filter: async (path) => {
     if (path === source) return true;
     const name = relative(source, path).split(sep).join('/');
+    if ((await stat(path)).isFile()) {
+      try {
+        const [left, right] = await Promise.all([readFile(path), readFile(resolve(target, name))]);
+        if (left.equals(right)) return false;
+      } catch (error) { if (error.code !== 'ENOENT') throw error; }
+    }
     if (name === 'data' || name === 'schema' || name.startsWith('schema/')) return true;
     if (name === 'backend' || name.startsWith('backend/')) return true;
     // Preserve central learner route wrappers for the hosted mirror.  These
