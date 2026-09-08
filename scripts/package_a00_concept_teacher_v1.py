@@ -3,21 +3,28 @@ from pathlib import Path
 import hashlib
 import io
 import json
+import sys
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / 'backend/course-capsule-v1/adapters/a00-concept-teacher-v1'
 digest = lambda payload: hashlib.sha256(payload).hexdigest()
+assert sys.argv[1:] in ([], ['--verify-only']), 'Unknown package mode'
+verify_only = sys.argv[1:] == ['--verify-only']
 manifest = json.loads((BASE / 'manifest.json').read_bytes())
 validation = json.loads((BASE / 'validation.json').read_bytes())
 assert validation['result'] == 'pass'
 assert validation['manifest']['sha256'] == digest((BASE / 'manifest.json').read_bytes())
+lock_bytes = (BASE / 'input/source-lock.json').read_bytes()
+assert manifest['input']['path'] == 'input/source-lock.json'
+assert manifest['input']['bytes'] == len(lock_bytes)
+assert manifest['input']['sha256'] == digest(lock_bytes)
 members = {}
 for item in manifest['outputs']:
     payload = (BASE / item['path']).read_bytes()
     assert len(payload) == item['bytes'] and digest(payload) == item['sha256']
     members[item['path']] = payload
-lock = json.loads((BASE / 'input/source-lock.json').read_bytes())
+lock = json.loads(lock_bytes)
 for item in lock['snapshots']:
     payload = (BASE / 'input' / item['path']).read_bytes()
     assert len(payload) == item['bytes'] and digest(payload) == item['sha256']
@@ -47,7 +54,10 @@ def archive():
 payload = archive()
 assert payload == archive()
 path = BASE / 'A00-concept-teacher-offline.zip'
-path.write_bytes(payload)
+if verify_only:
+    assert path.read_bytes() == payload, 'Archive differs from current validated loose inputs'
+else:
+    path.write_bytes(payload)
 with zipfile.ZipFile(path) as z:
     assert z.testzip() is None and z.namelist() == sorted(members)
     for name, expected in members.items():
@@ -58,5 +68,8 @@ receipt = {'schema': 'a00-concept-teacher-package/1', 'result': 'pass',
            'archive_member_readback': True, 'textbook_bodies_included': False,
            'browser_execution_tested': False,
            'scope': 'offline_navigation_and_metadata_selection; reading_requires_external_book'}
-(BASE / 'package.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+if verify_only:
+    assert json.loads((BASE / 'package.json').read_bytes()) == receipt, 'Package receipt differs'
+else:
+    (BASE / 'package.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8', newline='\n')
 print(json.dumps(receipt))

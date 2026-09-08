@@ -28,6 +28,8 @@ FRONT_DOORS = (
     "docs/backend/c140/C140-pengajar.html",
     "docs/backend/a10/A10.html", "docs/backend/a10/A10-en.html",
     "docs/backend/a10/A10-pengajar.html", "docs/backend/a10/A10-pengajar-en.html",
+    "docs/backend/a00/A00.html", "docs/backend/a00/A00-en.html",
+    "docs/backend/a00/A00-pengajar.html", "docs/backend/a00/A00-pengajar-en.html",
 )
 
 
@@ -41,9 +43,9 @@ def identity(data: bytes) -> dict:
 
 def make_jobs(base: str, commit: str) -> list[dict]:
     git("merge-base", "--is-ancestor", base, commit)
-    removed = git("diff", "--name-only", "--diff-filter=D", base, commit, "--", *SCOPES)
-    assert not removed.strip(), "This release verifier does not authorize removed public files"
-    changed = git("diff", "--name-only", "--diff-filter=AM", base, commit, "--", *SCOPES)
+    removed = git("diff", "--no-renames", "--name-only", "--diff-filter=DT", base, commit, "--", *SCOPES)
+    assert not removed.strip(), "This release verifier does not authorize removed or type-changed public files"
+    changed = git("diff", "--no-renames", "--name-only", "--diff-filter=AM", base, commit, "--", *SCOPES)
     paths = sorted(set(changed.decode("utf-8").splitlines()) | set(FRONT_DOORS))
     assert paths and all(not Path(path).is_absolute() and ".." not in Path(path).parts for path in paths)
     result = []
@@ -94,7 +96,7 @@ def main() -> None:
         "schema": "combined-backend-increment-public-readback/1", "state": "in_progress",
         "base_commit": args.base_commit, "source_commit": args.commit,
         "anonymous": True, "credentials_used": False, "ambient_credentials_disabled": True,
-        "scope": "Changed committed files in the listed integration scopes, plus bilingual and A10/B95/C140 front doors; every docs file also checked through Pages.",
+        "scope": "Changed committed files in the listed integration scopes, plus bilingual and A00/A10/B95/C140 front doors; every docs file also checked through Pages.",
         "integration_scopes": list(SCOPES), "expected_jobs": jobs, "files": [],
         "failures": [], "overall_program_backend_complete": False,
         "zenodo_preservation_verified": False,

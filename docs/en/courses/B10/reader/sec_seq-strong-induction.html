@@ -1,0 +1,1283 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: denver                         *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Strong Induction</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="runtime/reader-support/material-symbols-local.css">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="external/custom-styles.css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math",
+    "renderActions": {
+      "findScript": [
+        10,
+        function (doc) {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(function(node) {
+                var display = !!node.type.match(/; *mode=display/);
+                var math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                var text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = {node: text, delim: '', n: 0};
+                math.end = {node: text, delim: '', n: 0};
+                doc.math.push(math);
+            });
+        },
+        ""
+      ]
+    }
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="runtime/mathjax/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="Discrete Mathematics">
+<meta property="book:author" content="
+      Oscar Levin">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '8.2.5';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/prefix-runtime.18d8728f6d56e11d.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.b388362b5f43738a.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.8086b62682b271d1.css">
+<script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script><script src="_static/pretext/js/pretext-webwork/2.20/pretext-webwork.js"></script><script src="https://webwork-ptx.aimath.org/webwork2_files/node_modules/iframe-resizer/js/iframeResizer.min.js"></script><script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="runtime/prism/components/prism-core.min.js"></script><script src="runtime/prism/plugins/autoloader/prism-autoloader.min.js"></script><script src="runtime/prism/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="runtime/prism/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="runtime/lunr/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+<link rel="stylesheet" href="program-navigation.css"></head>
+<body id="dmoi-4" class="pretext book ignore-math">
+<nav data-central-surface-navigation="v1" data-placement="top" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B10" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">English — B10</a> · <a data-program-home data-course-card data-course-id="B10" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Bahasa Indonesia — B10</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B10" href="https://discrete.openmathbooks.org/dmoi4/">Original source — Original author’s reader — Discrete Mathematics: An Open Introduction, 4th edition</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="frontmatter.html">Open related page</a></nav><nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Program — Bahasa Indonesia</a><a href="https://discrete.openmathbooks.org/dmoi4/">Original author’s website ↗</a><a href="frontmatter.html">Book contents</a></nav><aside class="program-reader-note">Original English by Oscar Levin. This unofficial mirror includes local math and search assets and frozen exercise statements. Remote computation, live checking and external websites still need internet access. <a href="https://discrete.openmathbooks.org/dmoi4/">Use the original website for its live services.</a></aside>
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner">
+<a id="logo-link" class="logo-link" target="_blank" href="http://discrete.openmathbooks.org/dmoi4.html"><img src="external/images/cover4.png" alt="Logo image"></a><div class="title-container">
+<h1 class="heading"><a href="dmoi4.html"><span class="title">Discrete Mathematics</span> <span class="subtitle">An Open Introduction, 4th Edition</span></a></h1>
+<p class="byline">Oscar Levin</p>
+</div>
+</div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Contents</span></button><a class="index-button button" href="backmatter-5.html" title="Index"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Index</span></a><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="embed-button" class="embed-button button" title="Embed this page"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Embed</span></button><div class="embed-popup hidden" id="embed-popup">
+<p>Copy the code below to embed this page in your own website or LMS page.</p>
+<div class="embed-code-container">
+<textarea class="embed-code-textbox" id="embed-code-textbox" readonly aria-label="textbox"><iframe src="https://example.com/embed" width="100%" height="1000"></iframe></textarea><button class="copy-embed-button button" id="copy-embed-button" title="Copy embed code"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Copy</span></button>
+</div>
+</div>
+<button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="sec_seq-induction.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="up-button button" href="ch_sequences.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Up</span></a><a class="next-button button" href="sec_sequences-conc.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\usepackage{cancel}
+\def\d{\displaystyle} 
+\def\N{\mathbb N} 
+\def\B{\mathbf B} 
+\def\Z{\mathbb Z} 
+\def\Q{\mathbb Q} 
+\def\R{\mathbb R} 
+\def\C{\mathbb C} 
+\def\U{\mathcal U} 
+\def\x{\mathbf{x}}
+\def\y{\mathbf{y}}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\def\pow{\mathcal P} 
+\def\inv{^{-1}} 
+\def\st{:} 
+\def\iff{\leftrightarrow} 
+\def\Iff{\Leftrightarrow} 
+\def\imp{\rightarrow} 
+\def\Imp{\Rightarrow} 
+\def\isom{\cong} 
+
+\def\bar{\overline} 
+\def\card#1{\left| #1 \right|} 
+\def\twoline#1#2{\begin{pmatrix}#1 \\ #2 \end{pmatrix}} 
+
+\def\mchoose#1#2{
+  \left.\mathchoice
+    {\left(\kern-0.48em\binom{#1}{#2}\kern-0.48em\right)}
+    {\big(\kern-0.30em\binom{\smash{#1}}{\smash{#2}}\kern-0.30em\big)}
+    {\left(\kern-0.30em\binom{\smash{#1}}{\smash{#2}}\kern-0.30em\right)}
+    {\left(\kern-0.30em\binom{\smash{#1}}{\smash{#2}}\kern-0.30em\right)}
+  \right.}
+\def\o{\circ}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth3 focused" data-preexpanded-levels="1" data-max-levels="3"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="front-colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-dedication"><div class="toc-title-box"><a href="frontmatter-4.html" class="internal"><span class="title">Dedication</span></a></div></li>
+<li class="toc-item toc-acknowledgement"><div class="toc-title-box"><a href="frontmatter-5.html" class="internal"><span class="title">Acknowledgements</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="preface.html" class="internal"><span class="title">Preface</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="frontmatter-7.html" class="internal"><span class="title">How to Use This Book</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_intro.html" class="internal"><span class="codenumber">0</span> <span class="title">Introduction and Preliminaries</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intro-intro.html" class="internal"><span class="codenumber">0.1</span> <span class="title">What is Discrete Mathematics?</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_intro-intro.html#rqs-intro-intro" class="internal"><span class="codenumber">0.1</span> <span class="title">Reading Questions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intro-structures.html" class="internal"><span class="codenumber">0.2</span> <span class="title">Discrete Structures</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#sec_intro-structures-2" class="internal"><span class="title">Introduction</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-sets" class="internal"><span class="title">Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-functions" class="internal"><span class="title">Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-sequences" class="internal"><span class="title">Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec-relations" class="internal"><span class="title">Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-graphs" class="internal"><span class="title">Graphs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-even-more" class="internal"><span class="title">Even More Structures</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_intro-structures.html#rqs-intro-structures" class="internal"><span class="title">Reading Questions</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_logic.html" class="internal"><span class="codenumber">1</span> <span class="title">Logic and Proofs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-statements.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Mathematical Statements</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-statements.html#sec_logic-statements-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-statements.html#PA-logic-statements" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-statements.html#atomic-molecular-statements" class="internal"><span class="title">Atomic and Molecular Statements</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-statements.html#subsec_logic-statements-quant" class="internal"><span class="title">Quantifiers and Predicates</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-statements.html#rqs-logic-statements" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-statements.html#practice_intro-statements" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-statements.html#exercises_intro-statements" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-implications.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Implications</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-implications.html#subsec-introduction" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-implications.html#ws-preview-implications" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-implications.html#subsec_implications" class="internal"><span class="title">Understanding the Truth Table</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-implications.html#subsec-related-statements" class="internal"><span class="title">Related Statements</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-implications.html#rqs-logic-implications" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-implications.html#practice-logic-implications" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-implications.html#ex-logic-implications" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-rules.html" class="internal"><span class="codenumber">1.3</span> <span class="title">Rules of Logic</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-rules.html#PA-logic-prop" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-4" class="internal"><span class="title">Truth Tables</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-5" class="internal"><span class="title">Logical Equivalence</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-6" class="internal"><span class="title">Equivalence for Quantified Statements</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-7" class="internal"><span class="title">Deductions</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-rules.html#rqs-logic-prop" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-rules.html#practice-logic-rules" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-rules.html#exercises-logic-rules" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-proofs.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Proofs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-proofs.html#logic-proofs-intro" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-proofs.html#PA-logic-proofs" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#sec_logic-proofs-4" class="internal"><span class="title">Direct Proof</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#ssec_contrapositive-proof" class="internal"><span class="title">Proof by Contrapositive</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#sec_logic-proofs-6" class="internal"><span class="title">Proof by Contradiction</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#subsec-summary-of-proof-styles" class="internal"><span class="title">Summary of Proof Styles</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-proofs.html#rqs-logic-proof" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-proofs.html#practice_logic-proofs" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-proofs.html#exercises_logic-proofs" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-structures.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Proofs about Discrete Structures</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-structures.html#logic-structures-intro" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-structures.html#PA-logic-structures" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#sec_logic-structures-4" class="internal"><span class="title">Proofs about Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#subsec-logic-proofs-functions" class="internal"><span class="title">Proofs about Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#subsec-proofs-about-relations" class="internal"><span class="title">Proofs about Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#subsec-proofs-about-graphs" class="internal"><span class="title">Proofs about Graphs</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-structures.html#rqs-logic-structures" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-structures.html#practice-logic-structures" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-structures.html#exercises-logic-structures" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-conc.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-conc.html#exercises_logic-conc" class="internal"><span class="codenumber">1.6</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_graphtheory.html" class="internal"><span class="codenumber">2</span> <span class="title">Graph Theory</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-intro.html" class="internal"><span class="codenumber">2.1</span> <span class="title">Problems and Definitions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-intro.html#subsec-gt-intro-preview" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-intro.html#PA-gt-intro" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-intro.html#sec_gt-intro-5" class="internal"><span class="title">What is a Graph?</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-intro.html#rqs-gt-intro" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-intro.html#practice_gt-intro" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-intro.html#exercises_gt-intro" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trees.html" class="internal"><span class="codenumber">2.2</span> <span class="title">Trees</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trees.html#sec_trees-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_trees.html#PA-gt-trees" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trees.html#sec_trees-4" class="internal"><span class="title">Properties of Trees</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trees.html#sec_trees-5" class="internal"><span class="title">Spanning Trees</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trees.html#subsec-rooted-trees" class="internal"><span class="title">Rooted Trees</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_trees.html#rqs-gt-trees" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trees.html#practice_gt-trees" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trees.html#exercises_gt-trees" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-planar.html" class="internal"><span class="codenumber">2.3</span> <span class="title">Planar Graphs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-planar.html#PA-gt-planar" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-4" class="internal"><span class="title">Euler’s Formula for Planar Graphs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-5" class="internal"><span class="title">Non-planar Graphs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-6" class="internal"><span class="title">Polyhedra</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-planar.html#rqs-gt-planar" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-planar.html#practice_gt-planar" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-planar.html#exercises_gt-planar" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-paths.html" class="internal"><span class="codenumber">2.4</span> <span class="title">Euler Trails and Circuits</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-paths.html#sec_gt-paths-14" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-paths.html#PA-gt-paths" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-paths.html#sec_gt-paths-15" class="internal"><span class="title">Conditions for Euler Trails</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-paths.html#gt-ham-paths" class="internal"><span class="title">Hamilton Paths</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-paths.html#rqs-gt-paths" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-paths.html#practice_gt-paths" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-paths.html#exercises_gt-paths" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_coloring.html" class="internal"><span class="codenumber">2.5</span> <span class="title">Coloring</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_coloring.html#sec_coloring-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_coloring.html#PA-coloring-vertices" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_coloring.html#sec_coloring-4" class="internal"><span class="title">Coloring Vertices</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_coloring.html#sec_coloring-5" class="internal"><span class="title">Coloring Edges</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_coloring.html#rqs-gt-coloring" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_coloring.html#practice_gt-coloring" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_coloring.html#exercises_gt-coloring" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-relations.html" class="internal"><span class="codenumber">2.6</span> <span class="title">Relations and Graphs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-relations.html#gt-relations-section-previw" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-relations.html#PA-gt-relations" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec-relations-generally" class="internal"><span class="title">Relations Generally</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec-properties-of-relations" class="internal"><span class="title">Properties of Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec_equivalence-relations" class="internal"><span class="title">Equivalence Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec-equivalence-classes-and-partitions" class="internal"><span class="title">Equivalence Classes and Partitions</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-relations.html#rqs-gt-relations" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-relations.html#practice_gt-relations" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-relations.html#exercises_gt-relations" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_matchings.html" class="internal"><span class="codenumber">2.7</span> <span class="title">Matching in Bipartite Graphs</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_matchings.html#exercises_gt-matchings" class="internal"><span class="codenumber">2.7</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-conc.html" class="internal"><span class="codenumber">2.8</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-conc.html#exercises_gt-conc" class="internal"><span class="codenumber">2.8</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_counting.html" class="internal"><span class="codenumber">3</span> <span class="title">Counting</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-pascal.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Pascal’s Arithmetical Triangle</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-pascal.html#PA-counting-pascal" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-5" class="internal"><span class="title">Lattice Paths</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#subsec-counting-binom-bitstrings" class="internal"><span class="title">Bit Strings</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-7" class="internal"><span class="title">Subsets and Pizzas</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-8" class="internal"><span class="title">Algebra?</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-pascal.html#rqs-counting-pascal" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-pascal.html#practice_counting-binom" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-pascal.html#exercises_counting-binom" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-combine-outcomes.html" class="internal"><span class="codenumber">3.2</span> <span class="title">Combining Outcomes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#sec_counting-combine-outcomes-7" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#PA-counting-combine" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#sec_counting-combine-outcomes-8" class="internal"><span class="title">What are <em class="emphasis">Outcomes</em>?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#sec_counting-combine-outcomes-9" class="internal"><span class="title">The Sum and Product Principles</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#subsec-sum-product" class="internal"><span class="title">Combining Principles</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#rqs-counting-addmult" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#practice_counting-combine-outcomes" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#exercises_counting-combine-outcomes" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-non-disjoint.html" class="internal"><span class="codenumber">3.3</span> <span class="title">Non-Disjoint Outcomes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-non-disjoint.html#sec_counting-non-disjoint-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#PA-counting-non-disjoint" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#subsec_counting-venn" class="internal"><span class="title">Counting with Venn Diagrams</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#subsec-pie" class="internal"><span class="title">The Principle of Inclusion/Exclusion</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#subsec-overlaps-and-the-product-principle" class="internal"><span class="title">Overlaps and the Product Principle</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#rqs-counting-non-disjoint" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#practice_counting-repeats" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#exercises_counting-repeats" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-combperm.html" class="internal"><span class="codenumber">3.4</span> <span class="title">Combinations and Permutations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-combperm.html#sec_counting-combperm-5" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-combperm.html#PA-counting-combperm" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combperm.html#subsec-counting-sequences" class="internal"><span class="title">Counting Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combperm.html#subsec-combinations" class="internal"><span class="title">Counting Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combperm.html#subsec-quotient-principle" class="internal"><span class="title">The Quotient Principle</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-combperm.html#rqs-counting-combperm" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combperm.html#practice_counting-combperm" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combperm.html#exercises_counting-combperm" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-multisets.html" class="internal"><span class="codenumber">3.5</span> <span class="title">Counting Multisets</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-multisets.html#sec_counting-multisets-8" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-multisets.html#PA-couting-multisets" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-multisets.html#subsec-cookies-kids" class="internal"><span class="title">Have Some Cookies</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-multisets.html#subsec-representing-multisets-with-bit-strings" class="internal"><span class="title">Representing Multisets with Bit Strings</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-multisets.html#rqs-counting-multisets" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-multisets.html#exercises_stars-and-bars" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-multisets.html#exercises_multisets" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_comb-proofs.html" class="internal"><span class="codenumber">3.6</span> <span class="title">Combinatorial Proofs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_comb-proofs.html#sec_comb-proofs-5" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_comb-proofs.html#Activity-13-combinatorial-proofs" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_comb-proofs.html#subsec_patternsPascal" class="internal"><span class="title">Patterns in Pascal’s Triangle</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_comb-proofs.html#subsec_moreProofs" class="internal"><span class="title">More Proofs</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_comb-proofs.html#rqs-counting-proofs" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_comb-proofs.html#practice-comb-proofs" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_comb-proofs.html#exercises_comb-proofs" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec-counting-probability.html" class="internal"><span class="codenumber">3.7</span> <span class="title">Applications to Probability</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec-counting-probability.html#sec-counting-probability-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec-counting-probability.html#PA-counting-probability" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec-counting-probability.html#subsec-computing-probabilities" class="internal"><span class="title">Computing Probabilities</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec-counting-probability.html#subsec-probability-rules" class="internal"><span class="title">Probability Rules</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec-counting-probability.html#sec-counting-probability-6" class="internal"><span class="title">Conditional Probability</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec-counting-probability.html#rqs-counting-probability" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec-counting-probability.html#practice-counting-probability" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec-counting-probability.html#ex-counting-probability" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_advPIE.html" class="internal"><span class="codenumber">3.8</span> <span class="title">Advanced Counting Using PIE</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_advPIE.html#sec_advPIE-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_advPIE.html#PA-counting-advPIE" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_advPIE.html#subsec-multset-pie" class="internal"><span class="title">PIE for Multisets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_advPIE.html#subsec_derangements" class="internal"><span class="title">Counting Derangements</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_advPIE.html#sec_advPIE-7" class="internal"><span class="title">Counting Functions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_advPIE.html#practice-counting-advPIE" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_advPIE.html#exercises_counting-advPIE" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_count-conc.html" class="internal"><span class="codenumber">3.9</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_count-conc.html#exercises_count-conc" class="internal"><span class="codenumber">3.9</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="ch_sequences.html" class="internal"><span class="codenumber">4</span> <span class="title">Sequences</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq_intro.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Describing Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq_intro.html#subsec-preview" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq_intro.html#PA-seq-basic" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq_intro.html#subsec-formulas-for-sequences" class="internal"><span class="title">Sequences and Formulas</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq_intro.html#subsec-partial-sums" class="internal"><span class="title">Partial Sums and Differences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq_intro.html#subsec-seq-python" class="internal"><span class="title">Sequences in python</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq_intro.html#rqs-seq-basics" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq_intro.html#practice_seq_basics" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq_intro.html#exercises_seq_basics" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-growth.html" class="internal"><span class="codenumber">4.2</span> <span class="title">Rate of Growth</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-growth.html#sec_seq-growth-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-growth.html#PA-seq-growth" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-growth.html#subsec-arithmetic" class="internal"><span class="title">Arithmetic Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-growth.html#subsec-geometric-sequences" class="internal"><span class="title">Geometric Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-growth.html#subsec-beyond-arithmetic-and-geometric-sequences" class="internal"><span class="title">Beyond Arithmetic and Geometric Sequences</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-growth.html#rqs-seq-arithgeom" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-growth.html#practice_seq-growth" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-growth.html#exercises_seq-growth" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-polynomial.html" class="internal"><span class="codenumber">4.3</span> <span class="title">Polynomial Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-polynomial.html#sec_seq-polynomial-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-polynomial.html#PA-seq-polynomial" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-polynomial.html#sec_seq-polynomial-5" class="internal"><span class="title">Summing Arithmetic Sequences: Reverse and Add</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-polynomial.html#subsec-seq-higher-poly" class="internal"><span class="title">Higher Degree Polynomials</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-polynomial.html#sec_seq-polynomial-7" class="internal"><span class="title">Solving Systems of Equations with Technology</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-polynomial.html#rqs-seq-polyfit" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-polynomial.html#practice_seq-polynomial" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-polynomial.html#exercises_seq-polynomial" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-exponential.html" class="internal"><span class="codenumber">4.4</span> <span class="title">Exponential Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-exponential.html#sec_seq-exponential-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-exponential.html#PA-seq-exponential" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-exponential.html#subsec-sum-geometric" class="internal"><span class="title">Summing Geometric Sequences: Multiply, Shift, and Subtract</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-exponential.html#sec_seq-exponential-6" class="internal"><span class="title">The Characteristic Root Technique</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-exponential.html#rqs-seq-recurrence" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-exponential.html#practice-sec-recurrence" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-exponential.html#exercises-sec-recurrence" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-induction.html" class="internal"><span class="codenumber">4.5</span> <span class="title">Proof by Induction</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-induction.html#subsec-induction-preview" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-induction.html#PA-seq-induction" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-induction.html#subsec_induction-recursion" class="internal"><span class="title">Recursive Reasoning</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-induction.html#subsec_induction-formproofs" class="internal"><span class="title">Formalizing Proofs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-induction.html#subsec_induction-examples" class="internal"><span class="title">Examples</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-induction.html#rqs-seq-induction" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-induction.html#practice-sec-induction" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-induction.html#exercises_seq-induction" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="sec_seq-strong-induction.html" class="internal"><span class="codenumber">4.6</span> <span class="title">Strong Induction</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-strong-induction.html#subsec-going-farther-back" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#PA-strong-indcution" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#sec_seq-strong-induction-6" class="internal"><span class="title">Divide and Conquer</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#rqs-seq-strong-induction" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#practice-sec-strong-induction" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#exercises_seq-strong-induction" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_sequences-conc.html" class="internal"><span class="codenumber">4.7</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_sequences-conc.html#exercises_seq-conc" class="internal"><span class="codenumber">4.7</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_structures.html" class="internal"><span class="codenumber">5</span> <span class="title">Discrete Structures Revisited</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_structures-sets.html" class="internal"><span class="codenumber">5.1</span> <span class="title">Sets</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#subsec_notation" class="internal"><span class="title">Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#sec_structures-sets-4" class="internal"><span class="title">Relationships between Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#sec_structures-sets-5" class="internal"><span class="title">Operations on Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#sec_structures-sets-6" class="internal"><span class="title">Venn Diagrams</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_structures-sets.html#exercises_intro-sets" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_structures-functions.html" class="internal"><span class="codenumber">5.2</span> <span class="title">Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-functions.html#sec_structures-functions-3" class="internal"><span class="title">Describing Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-functions.html#subsec_surj-inj-bij" class="internal"><span class="title">Surjections, Injections, and Bijections</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_structures-functions.html#sec_structures-functions-5" class="internal"><span class="title">Image and Inverse Image</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_structures-functions.html#rqs-intro-functions" class="internal"><span class="title">Reading Questions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_structures-functions.html#exercises_intro-functions" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_additionalTopics.html" class="internal"><span class="codenumber">6</span> <span class="title">Additional Topics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_addtops-genfun.html" class="internal"><span class="codenumber">6.1</span> <span class="title">Generating Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-4" class="internal"><span class="title">Building Generating Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-5" class="internal"><span class="title">Differencing</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-6" class="internal"><span class="title">Multiplication and Partial Sums</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-7" class="internal"><span class="title">Solving Recurrence Relations with Generating Functions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_addtops-genfun.html#exercises_addtops-genfun" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_addtops-numbth.html" class="internal"><span class="codenumber">6.2</span> <span class="title">Introduction to Number Theory</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-4" class="internal"><span class="title">Divisibility</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-5" class="internal"><span class="title">Remainder Classes</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-6" class="internal"><span class="title">Properties of Congruence</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-7" class="internal"><span class="title">Solving Congruences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-8" class="internal"><span class="title">Solving Linear Diophantine Equations</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_addtops-numbth.html#exercises_addtops-numbth" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="backmatter.html" class="internal"><span class="title">Backmatter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="backmatter-2.html" class="internal"><span class="codenumber">A</span> <span class="title">Selected Hints</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="backmatter-3.html" class="internal"><span class="codenumber">B</span> <span class="title">Selected Solutions</span></a></div></li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="backmatter-4.html" class="internal"><span class="codenumber">C</span> <span class="title">List of Symbols</span></a></div></li>
+<li class="toc-item toc-index"><div class="toc-title-box"><a href="backmatter-5.html" class="internal"><span class="title">Index</span></a></div></li>
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="backmatter-6.html" class="internal"><span class="title">Colophon</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="section" id="sec_seq-strong-induction"><h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.6</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Strong Induction</span>
+</h2>
+<article class="objectives goal-like" id="sec_seq-strong-induction-4"><h3 class="heading"><span class="type">Objectives</span></h3>
+<div class="introduction" id="sec_seq-strong-induction-4-1"><div class="para" id="sec_seq-strong-induction-4-1-1">After completing this section, you should be able to do the following.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<ol class="decimal" id="sec_seq-strong-induction-4-2">
+<li id="sec_seq-strong-induction-4-2-1">
+<div class="para" id="sec_seq-strong-induction-4-2-1-1">Explain the difference between proof by induction and proof by strong induction.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-4-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Objective 4.6.1"><a href="#sec_seq-strong-induction-4-2-1" title="Copy heading and permalink for Objective 4.6.1" aria-label="Copy heading and permalink for Objective 4.6.1">🔗</a></div>
+</li>
+<li id="sec_seq-strong-induction-4-2-2">
+<div class="para" id="sec_seq-strong-induction-4-2-2-1">Use strong induction to prove statements.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-4-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Objective 4.6.2"><a href="#sec_seq-strong-induction-4-2-2" title="Copy heading and permalink for Objective 4.6.2" aria-label="Copy heading and permalink for Objective 4.6.2">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Objectives 4.6"><a href="#sec_seq-strong-induction-4" title="Copy heading and permalink for Objectives 4.6" aria-label="Copy heading and permalink for Objectives 4.6">🔗</a></div></article><section class="subsection" id="subsec-going-farther-back"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Section Preview</span>
+</h3>
+<article class="investigation project-like" id="subsec-going-farther-back-2"><h6 class="heading">
+<span class="type">Investigate!</span> </h6>
+<div class="para" id="subsec-going-farther-back-2-1">Start with a square piece of paper. You want to cut this square into smaller squares, leaving no waste (every piece of paper you end up with must be a square). Obviously it is possible to cut the square into 4 squares. You can also cut it into 9 squares. It turns out you can cut the square into 7 squares (although not all the same size). What other numbers of squares could you end up with?<div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Investigate! 4.6"><a href="#subsec-going-farther-back-2" title="Copy heading and permalink for Investigate! 4.6" aria-label="Copy heading and permalink for Investigate! 4.6">🔗</a></div></article><div class="para" id="subsec-going-farther-back-3">Sometimes, to prove that <span class="process-math">\(P(k+1)\)</span> is true, it would be helpful to know that <span class="process-math">\(P(k)\)</span> <em class="emphasis">and</em> <span class="process-math">\(P(k-1)\)</span> <em class="emphasis">and</em> <span class="process-math">\(P(k-2)\)</span> are all true.  This is certainly the case when proving something about a recurrence relation that is given as a combination of two previous terms.<div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="subsec-going-farther-back-4"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.6.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="subsec-going-farther-back-4-1-1">Prove that <span class="process-math">\(2^n\)</span> is a solution to the recurrence relation <span class="process-math">\(a_n = 5a_{n-1} - 6a_{n-2}\)</span> with initial conditions <span class="process-math">\(a_0 = 1\)</span> and <span class="process-math">\(a_1 = 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="subsec-going-farther-back-4-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<article class="proof" id="subsec-going-farther-back-4-2-1"><h5 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="subsec-going-farther-back-4-2-1-1">Let <span class="process-math">\(P(n)\)</span> be the statement, “<span class="process-math">\(a_n = 2^n\text{.}\)</span>”  We will show this is true for all <span class="process-math">\(n \ge 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-4-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="subsec-going-farther-back-4-2-1-2">Base cases: <span class="process-math">\(a_0 = 2^0 = 1\)</span> and <span class="process-math">\(a_1 = 2^1 = 2\)</span> both agree with the initial conditions.<div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-4-2-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="subsec-going-farther-back-4-2-1-3">
+<div class="para">Inductive case:  Let <span class="process-math">\(k \ge 2\)</span> be arbitrary.  Assume <span class="process-math">\(P(k)\)</span> and <span class="process-math">\(P(k-1)\)</span> are both true.  That is, assume <span class="process-math">\(a_k = 2^k\)</span> and <span class="process-math">\(a_{k-1} = 2^{k-1}\text{.}\)</span>  We will show that <span class="process-math">\(P(k+1)\)</span> is true.  Consider <span class="process-math">\(a_{k+1}\text{.}\)</span>  We have</div>
+<div class="displaymath process-math" id="subsec-going-farther-back-4-2-1-3-8">
+\begin{align*}
+a_{k+1} = \amp 5a_k - 6a_{k-1}\\
+= \amp 5\cdot 2^k - 6\cdot 2^{k-1}\\
+= \amp 10 \cdot 2^{k-1} - 6 \cdot 2^{k-1}\\
+= \amp 4\cdot 2^{k-1}\\
+= \amp 2^{k+1}\text{.}
+\end{align*}
+</div>
+<div class="para">Therefore, by the principle of mathematical induction, <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 0\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-4-2-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.6.1.1.1"><a href="#subsec-going-farther-back-4-2-1" title="Copy heading and permalink for Proof 4.6.1.1.1" aria-label="Copy heading and permalink for Proof 4.6.1.1.1">🔗</a></div></article><div class="para" id="subsec-going-farther-back-4-2-2">Well, almost the principle of mathematical induction.  Is what we did okay?<div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-4-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 4.6.1.1"><a href="#subsec-going-farther-back-4-2" title="Copy heading and permalink for Solution 4.6.1.1" aria-label="Copy heading and permalink for Solution 4.6.1.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 4.6.1"><a href="#subsec-going-farther-back-4" title="Copy heading and permalink for Example 4.6.1" aria-label="Copy heading and permalink for Example 4.6.1">🔗</a></div></article><div class="para" id="subsec-going-farther-back-5">There are also times when we might want to go even farther back to use an assumption that <span class="process-math">\(P(j)\)</span> is true for <span class="process-math">\(j\)</span> much smaller than <span class="process-math">\(k+1\text{.}\)</span>  This is the idea behind <dfn class="terminology">strong induction</dfn> and the topic of this short section.<div class="autopermalink" data-description="Paragraph"><a href="#subsec-going-farther-back-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<section class="worksheet" id="PA-strong-indcution" data-margins="0.75in 0.75in 0.75in 0.75in"><h4 class="heading hide-type">
+<span class="type">Worksheet</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Preview Activity</span><div class="print-links"><a href="PA-strong-indcution-printable.html" class="print-link" title="Print preview"><span class="icon material-symbols-outlined" aria-hidden="true"></span></a></div>
+</h4>
+<article class="exercise exercise-like" id="pa-strong-indcution-1"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="introduction" id="extracted-webwork-216-1-1">
+<div class="para" id="extracted-webwork-216-1-1-1">Consider the following puzzle:<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="extracted-webwork-216-1-1-2">You have a rectangular chocolate bar, made up of <span class="process-math">\(n\)</span> identical squares of chocolate. You can take such a bar and break it along any row or column. How many times will you have to break the bar to reduce it to <span class="process-math">\(n\)</span> single chocolate squares?<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="extracted-webwork-216-1-1-3">At first, this question might seem impossible. Perhaps we meant to ask for the <em class="emphasis">smallest</em> number of breaks needed. Let’s investigate.<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</div>
+<article class="task exercise-like" id="extracted-webwork-216-1-2"><h6 class="heading"><span class="codenumber">(a)</span></h6>
+<div class="para" id="extracted-webwork-216-1-2-1-1">Suppose you started with a <span class="process-math">\(1\times 3\)</span> bar.  How many breaks would you need to reduce it to single squares?<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="extracted-webwork-216-1-2-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-2-2-1">
+<span class="process-math">\(2\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.1"><a href="#extracted-webwork-216-1-2-2" title="Copy heading and permalink for Answer 1.1" aria-label="Copy heading and permalink for Answer 1.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Task 1.a"><a href="#extracted-webwork-216-1-2" title="Copy heading and permalink for Task 1.a" aria-label="Copy heading and permalink for Task 1.a">🔗</a></div></article><article class="task exercise-like" id="extracted-webwork-216-1-3"><h6 class="heading"><span class="codenumber">(b)</span></h6>
+<div class="para" id="extracted-webwork-216-1-3-1-1">If you had a <span class="process-math">\(1\times 4\)</span> bar, how many breaks are required?<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="extracted-webwork-216-1-3-1-2">If you had 4 squares arranged in a <span class="process-math">\(2\times 2\)</span> square, your first break would require you to break the chocolate into two <span class="process-math">\(1 \times 2\)</span> bars.  Then each of these would require <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> more break(s), for a total of <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> breaks to go from the <span class="process-math">\(2\times 2\)</span> to single squares.<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-3-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="extracted-webwork-216-1-3-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-3-2-1">
+<span class="process-math">\(3\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.1"><a href="#extracted-webwork-216-1-3-2" title="Copy heading and permalink for Answer 1.1" aria-label="Copy heading and permalink for Answer 1.1">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-3-3" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-3-3-1">
+<span class="process-math">\(1\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-3-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.2"><a href="#extracted-webwork-216-1-3-3" title="Copy heading and permalink for Answer 1.2" aria-label="Copy heading and permalink for Answer 1.2">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-3-4" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-3-4-1">
+<span class="process-math">\(3\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-3-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.3"><a href="#extracted-webwork-216-1-3-4" title="Copy heading and permalink for Answer 1.3" aria-label="Copy heading and permalink for Answer 1.3">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Task 1.b"><a href="#extracted-webwork-216-1-3" title="Copy heading and permalink for Task 1.b" aria-label="Copy heading and permalink for Task 1.b">🔗</a></div></article><article class="task exercise-like" id="extracted-webwork-216-1-4"><h6 class="heading"><span class="codenumber">(c)</span></h6>
+<div class="para" id="extracted-webwork-216-1-4-1-1">A <span class="process-math">\(6\)</span>-square bar could either be a <span class="process-math">\(1 \times 6\)</span> bar, requiring <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> breaks, or a <span class="process-math">\(2 \times 3\)</span> bar.<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para logical" id="extracted-webwork-216-1-4-1-2">
+<div class="para">There are two ways to proceed now.</div>
+<ol class="lower-alpha ol-marker-1" id="extracted-webwork-216-1-4-1-2-1">
+<li id="extracted-webwork-216-1-4-1-2-1-1">
+<div class="para" id="extracted-webwork-216-1-4-1-2-1-1-1">Break the bar into two <span class="process-math">\(1 \times 3\)</span> bars, each requiring <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> more breaks, for a total of <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> breaks.<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-1-2-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.a"><a href="#extracted-webwork-216-1-4-1-2-1-1" title="Copy heading and permalink for Item 1.a" aria-label="Copy heading and permalink for Item 1.a">🔗</a></div>
+</li>
+<li id="extracted-webwork-216-1-4-1-2-1-2">
+<div class="para" id="extracted-webwork-216-1-4-1-2-1-2-1">Break the bar into a <span class="process-math">\(1\times 2\)</span> bar and a <span class="process-math">\(2 \times 2\)</span> bar.  The <span class="process-math">\(1 \times 2\)</span> bar takes <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> more break(s) and the <span class="process-math">\(2 \times 2\)</span> bar takes <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> more break(s), for a total of <span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span> breaks.<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-1-2-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1.b"><a href="#extracted-webwork-216-1-4-1-2-1-2" title="Copy heading and permalink for Item 1.b" aria-label="Copy heading and permalink for Item 1.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="extracted-webwork-216-1-4-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-4-2-1">
+<span class="process-math">\(5\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.1"><a href="#extracted-webwork-216-1-4-2" title="Copy heading and permalink for Answer 1.1" aria-label="Copy heading and permalink for Answer 1.1">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-4-3" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-4-3-1">
+<span class="process-math">\(2\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.2"><a href="#extracted-webwork-216-1-4-3" title="Copy heading and permalink for Answer 1.2" aria-label="Copy heading and permalink for Answer 1.2">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-4-4" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-4-4-1">
+<span class="process-math">\(5\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.3"><a href="#extracted-webwork-216-1-4-4" title="Copy heading and permalink for Answer 1.3" aria-label="Copy heading and permalink for Answer 1.3">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-4-5" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-4-5-1">
+<span class="process-math">\(1\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.4"><a href="#extracted-webwork-216-1-4-5" title="Copy heading and permalink for Answer 1.4" aria-label="Copy heading and permalink for Answer 1.4">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-4-6" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-4-6-1">
+<span class="process-math">\(3\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.5"><a href="#extracted-webwork-216-1-4-6" title="Copy heading and permalink for Answer 1.5" aria-label="Copy heading and permalink for Answer 1.5">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-4-7" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-4-7-1">
+<span class="process-math">\(5\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-4-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.6"><a href="#extracted-webwork-216-1-4-7" title="Copy heading and permalink for Answer 1.6" aria-label="Copy heading and permalink for Answer 1.6">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Task 1.c"><a href="#extracted-webwork-216-1-4" title="Copy heading and permalink for Task 1.c" aria-label="Copy heading and permalink for Task 1.c">🔗</a></div></article><article class="task exercise-like" id="extracted-webwork-216-1-5"><h6 class="heading"><span class="codenumber">(d)</span></h6>
+<div class="para" id="extracted-webwork-216-1-5-1-1">Based on the above data, what should our conjecture be for the number of breaks to reduce an <span class="process-math">\(n\)</span>-square bar to single squares, in terms of <span class="process-math">\(n\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="extracted-webwork-216-1-5-1-2">It will take <span class="fillin underline" role="img" aria-label="10-character blank" style="width: 4.545454545454546em;"></span> breaks to reduce an <span class="process-math">\(n\)</span>-square bar to single squares.<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-5-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="extracted-webwork-216-1-5-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-5-2-1">
+<span class="process-math">\(n-1\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.1"><a href="#extracted-webwork-216-1-5-2" title="Copy heading and permalink for Answer 1.1" aria-label="Copy heading and permalink for Answer 1.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Task 1.d"><a href="#extracted-webwork-216-1-5" title="Copy heading and permalink for Task 1.d" aria-label="Copy heading and permalink for Task 1.d">🔗</a></div></article><article class="task exercise-like" id="extracted-webwork-216-1-6"><h6 class="heading"><span class="codenumber">(e)</span></h6>
+<div class="para" id="extracted-webwork-216-1-6-1-1">Do we believe this?  Suppose you used one break to reduce the bar into two smaller bars, with <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> squares respectively.  If the conjecture is correct, how many more breaks will it take to reduce the size <span class="process-math">\(a\)</span> bar?<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="extracted-webwork-216-1-6-1-2">How many more breaks will it take to reduce the size <span class="process-math">\(b\)</span> bar?<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="extracted-webwork-216-1-6-1-3">How many breaks is this all together, in terms of <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{,}\)</span> including the initial break?<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="extracted-webwork-216-1-6-1-4">But what is <span class="process-math">\(a+b\text{?}\)</span>  We got <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> by breaking the <span class="process-math">\(n\)</span> squares in two pieces, so <span class="process-math">\(a+b =\)</span><span class="fillin underline" role="img" aria-label="5-character blank" style="width: 2.272727272727273em;"></span>.  This gives us a total number of breaks as <span class="fillin underline" role="img" aria-label="10-character blank" style="width: 4.545454545454546em;"></span>.<div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-1-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions">
+<details id="extracted-webwork-216-1-6-2" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-6-2-1">
+<span class="process-math">\(a-1\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.1"><a href="#extracted-webwork-216-1-6-2" title="Copy heading and permalink for Answer 1.1" aria-label="Copy heading and permalink for Answer 1.1">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-6-3" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-6-3-1">
+<span class="process-math">\(b-1\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.2"><a href="#extracted-webwork-216-1-6-3" title="Copy heading and permalink for Answer 1.2" aria-label="Copy heading and permalink for Answer 1.2">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-6-4" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-6-4-1">
+<span class="process-math">\(1+a-1+b-1\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.3"><a href="#extracted-webwork-216-1-6-4" title="Copy heading and permalink for Answer 1.3" aria-label="Copy heading and permalink for Answer 1.3">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-6-5" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-6-5-1">
+<span class="process-math">\(n\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.4"><a href="#extracted-webwork-216-1-6-5" title="Copy heading and permalink for Answer 1.4" aria-label="Copy heading and permalink for Answer 1.4">🔗</a></div>
+</div></details><details id="extracted-webwork-216-1-6-6" class="answer solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Answer</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="answer solution-like knowl__content">
+<div class="para" id="extracted-webwork-216-1-6-6-1">
+<span class="process-math">\(n-1\)</span><div class="autopermalink" data-description="Paragraph"><a href="#extracted-webwork-216-1-6-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Answer 1.5"><a href="#extracted-webwork-216-1-6-6" title="Copy heading and permalink for Answer 1.5" aria-label="Copy heading and permalink for Answer 1.5">🔗</a></div>
+</div></details>
+</div>
+<div class="autopermalink" data-description="Task 1.e"><a href="#extracted-webwork-216-1-6" title="Copy heading and permalink for Task 1.e" aria-label="Copy heading and permalink for Task 1.e">🔗</a></div></article><div class="autopermalink" data-description="Worksheet Exercise 1"><a href="#pa-strong-indcution-1" title="Copy heading and permalink for Worksheet Exercise 1" aria-label="Copy heading and permalink for Worksheet Exercise 1">🔗</a></div></article><div class="autopermalink" data-description="Worksheet: Preview Activity"><a href="#PA-strong-indcution" title="Copy heading and permalink for Worksheet: Preview Activity" aria-label="Copy heading and permalink for Worksheet: Preview Activity">🔗</a></div></section><div class="autopermalink" data-description="Subsection: Section Preview"><a href="#subsec-going-farther-back" title="Copy heading and permalink for Subsection: Section Preview" aria-label="Copy heading and permalink for Subsection: Section Preview">🔗</a></div></section><section class="subsection" id="sec_seq-strong-induction-6"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Divide and Conquer</span>
+</h3>
+<div class="para" id="sec_seq-strong-induction-6-2">Think of recursive definitions as instructions for building a ladder.  You can build the ladder as tall as you like because you have instructions for building the next rung, as long as you are standing on the rung before it.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-3">Induction is the corresponding proof technique.  To prove that you can climb the ladder as high as you like, you prove that you can step onto the ladder (the base case) and then prove that, from any rung, you can get to the next rung (the inductive step).<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-4">More specifically, suppose you were trying to prove that you can get to rung 4 on the ladder.  You have successfully proved that you can get to rung 1, and that from any rung, you can get to the next.  So you can get to rung 1, and from 1 you can get to 2.  From 2 you can get to 3, and from 3 you can get to 4.  Therefore, you can get to 4.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-5">But notice that along the way, you know you have visited rungs 1 through 3.  We might as well assume that we have visited all the rungs below the next one we are trying to reach.  This is the idea behind <dfn class="terminology">strong induction</dfn>.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-6">A better ladder metaphor for strong induction is to think of ladders as things we can stack on top of each other.  We want to argue that it is possible to climb 20 rungs of a ladder.  Let’s divide that into two smaller ladders, say a 12-rung ladder and an 8-rung ladder.  We can assume that we can climb both of these since 20 is the least size we are not yet convinced of.  Well, put those two ladders together, and you get <span class="process-math">\(12+8 = 20\)</span> rungs.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-7">We better climb down from our shaky metaphor before we hurt ourselves.  Let’s look at a formal definition of strong induction.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="assemblage assemblage-like" id="sec_seq-strong-induction-6-8"><h4 class="heading"><span class="title">Strong Induction Proof Structure.</span></h4>
+<div class="para logical" id="sec_seq-strong-induction-6-8-3">
+<div class="para">Start by saying what we want to prove: “Let <span class="process-math">\(P(n)\)</span> be the statement….” Then establish two facts:</div>
+<ol class="decimal" id="sec_seq-strong-induction-6-8-3-2">
+<li id="sec_seq-strong-induction-6-8-3-2-1">
+<div class="para" id="sec_seq-strong-induction-6-8-3-2-1-1">Base case: Prove that <span class="process-math">\(P(0)\)</span> is true.  (Perhaps also prove other needed base cases.) <div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-8-3-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 1"><a href="#sec_seq-strong-induction-6-8-3-2-1" title="Copy heading and permalink for Item 1" aria-label="Copy heading and permalink for Item 1">🔗</a></div>
+</li>
+<li id="sec_seq-strong-induction-6-8-3-2-2">
+<div class="para" id="sec_seq-strong-induction-6-8-3-2-2-1">Inductive case: Assume <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\text{.}\)</span> Prove that <span class="process-math">\(P(k+1)\)</span> is true. <div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-8-3-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 2"><a href="#sec_seq-strong-induction-6-8-3-2-2" title="Copy heading and permalink for Item 2" aria-label="Copy heading and permalink for Item 2">🔗</a></div>
+</li>
+</ol>
+<div class="para">Conclude, “Therefore, by strong induction, <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \gt 0\text{.}\)</span>”</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-8-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Summary: Strong Induction Proof Structure"><a href="#sec_seq-strong-induction-6-8" title="Copy heading and permalink for Summary: Strong Induction Proof Structure" aria-label="Copy heading and permalink for Summary: Strong Induction Proof Structure">🔗</a></div></article><div class="para" id="sec_seq-strong-induction-6-9">Of course, it is acceptable to replace 0 with a larger base case if needed.<details class="ptx-footnote" aria-live="polite" id="sec_seq-strong-induction-6-9-1"><summary class="ptx-footnote__number" title="Footnote 4.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents" id="sec_seq-strong-induction-6-9-1">Technically, strong induction does not require you to prove a separate base case. This is because when proving the inductive case, you must show that <span class="process-math">\(P(0)\)</span> is true, assuming <span class="process-math">\(P(k)\)</span> is true for all <span class="process-math">\(k \lt 0\text{.}\)</span> But this is not any help so you end up proving <span class="process-math">\(P(0)\)</span> anyway. To be on the safe side, we will always include the base case separately.</div></details><div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-10">To illustrate strong induction, let’s return to the chocolate bar problem.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proposition theorem-like" id="prop-chocolate"><h4 class="heading">
+<span class="type">Proposition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.6.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="prop-chocolate-1-1">Given an <span class="process-math">\(n\)</span>-square rectangular chocolate bar, it always takes <span class="process-math">\(n-1\)</span> breaks to reduce the bar to single squares.<div class="autopermalink" data-description="Paragraph"><a href="#prop-chocolate-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proposition 4.6.2"><a href="#prop-chocolate" title="Copy heading and permalink for Proposition 4.6.2" aria-label="Copy heading and permalink for Proposition 4.6.2">🔗</a></div></article><article class="proof" id="sec_seq-strong-induction-6-12"><h4 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="sec_seq-strong-induction-6-12-1">Let <span class="process-math">\(P(n)\)</span> be the statement, “It takes <span class="process-math">\(n-1\)</span> breaks to reduce a <span class="process-math">\(n\)</span>-square chocolate bar to single squares.”<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-12-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-12-2">Base case: Consider <span class="process-math">\(P(2)\text{.}\)</span> The squares must be arranged into a <span class="process-math">\(1\times 2\)</span> rectangle, and we require <span class="process-math">\(2-1 = 1\)</span> breaks to reduce this to single squares.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-12-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-12-3">Inductive case: Fix an arbitrary <span class="process-math">\(k\ge 2\)</span> and assume <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\text{.}\)</span> Consider a <span class="process-math">\((k+1)\)</span>-square rectangular chocolate bar. Break the bar once along any row or column. This results in two chocolate bars, say of sizes <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> . That is, we have an <span class="process-math">\(a\)</span>-square rectangular chocolate bar, a <span class="process-math">\(b\)</span>-square rectangular chocolate bar, and <span class="process-math">\(a+b = k+1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-12-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_seq-strong-induction-6-12-4">
+<div class="para">We also know that <span class="process-math">\(a \le k\)</span> and <span class="process-math">\(b \le k\text{,}\)</span> so by our inductive hypothesis, <span class="process-math">\(P(a)\)</span> and <span class="process-math">\(P(b)\)</span> are true. To reduce the <span class="process-math">\(a\)</span>-square bar to single squares takes <span class="process-math">\(a-1\)</span> breaks; to reduce the <span class="process-math">\(b\)</span>-square bar to single squares takes <span class="process-math">\(b-1\)</span> breaks. Doing this results in our original bar being reduced to single squares. All together it took the initial break, plus the <span class="process-math">\(a-1\)</span> and <span class="process-math">\(b-1\)</span> breaks, for a total of</div>
+<div class="displaymath process-math">
+\begin{equation*}
+1+a-1+b-1 = a+b-1 = k+1 - 1 = k
+\end{equation*}
+</div>
+<div class="para">breaks. Thus <span class="process-math">\(P(k+1)\)</span> is true.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-12-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-12-5">Therefore, by strong induction, <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-12-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 1"><a href="#sec_seq-strong-induction-6-12" title="Copy heading and permalink for Proof 1" aria-label="Copy heading and permalink for Proof 1">🔗</a></div></article><div class="para" id="sec_seq-strong-induction-6-13">Here is a more mathematically relevant example:<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_seq-strong-induction-6-14"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.6.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_seq-strong-induction-6-14-1-1">Prove that any natural number greater than 1 is either prime  or can be written as the product of primes.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-14-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="sec_seq-strong-induction-6-14-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="sec_seq-strong-induction-6-14-2-1">First, the idea: If we take some number <span class="process-math">\(n\text{,}\)</span> maybe it is prime. If so, we are done. If not, then it is composite, so it is the product of two smaller numbers. Each of these factors is smaller than <span class="process-math">\(n\)</span> (but at least 2), so we can repeat the argument with these numbers. We have reduced to a smaller case.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-14-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-14-2-2">Now the formal proof:<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-14-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="sec_seq-strong-induction-6-14-2-3"><h5 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_seq-strong-induction-6-14-2-3-1">Let <span class="process-math">\(P(n)\)</span> be the statement, “<span class="process-math">\(n\)</span> is either prime or can be written as the product of primes.” We will prove <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-14-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-14-2-3-2">Base case: <span class="process-math">\(P(2)\)</span> is true because <span class="process-math">\(2\)</span> is indeed prime.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-14-2-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-14-2-3-3">Inductive case: assume <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\text{.}\)</span> We want to show that <span class="process-math">\(P(k+1)\)</span> is true. That is, we want to show that <span class="process-math">\(k+1\)</span> is either prime or is the product of primes. If <span class="process-math">\(k+1\)</span> is prime, we are done. If not, then <span class="process-math">\(k+1\)</span> has more than 2 divisors, so we can write <span class="process-math">\(k+1 = m_1 \cdot m_2\text{,}\)</span> with <span class="process-math">\(m_1\)</span> and <span class="process-math">\(m_2\)</span> less than <span class="process-math">\(k+1\)</span> (and greater than 1). By the inductive hypothesis, <span class="process-math">\(m_1\)</span> and <span class="process-math">\(m_2\)</span> are each either prime or can be written as the product of primes. In either case, we have that <span class="process-math">\(m_1\cdot m_2 = k+1\)</span> can be written as the product of primes.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-14-2-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_seq-strong-induction-6-14-2-3-4">Thus by strong induction, <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-14-2-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 4.6.3.1.1"><a href="#sec_seq-strong-induction-6-14-2-3" title="Copy heading and permalink for Proof 4.6.3.1.1" aria-label="Copy heading and permalink for Proof 4.6.3.1.1">🔗</a></div></article><div class="autopermalink" data-description="Solution 4.6.3.1"><a href="#sec_seq-strong-induction-6-14-2" title="Copy heading and permalink for Solution 4.6.3.1" aria-label="Copy heading and permalink for Solution 4.6.3.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 4.6.3"><a href="#sec_seq-strong-induction-6-14" title="Copy heading and permalink for Example 4.6.3" aria-label="Copy heading and permalink for Example 4.6.3">🔗</a></div></article><div class="para" id="sec_seq-strong-induction-6-15">Whether you use regular induction or strong induction depends on the statement you want to prove. If you wanted to be safe, you could always use strong induction. It really is <em class="emphasis">stronger</em>, so can accomplish everything “weak” induction can.  That said, using regular induction is often easier since there is only one place you can use the induction hypothesis. There is also something to be said for <em class="emphasis">elegance</em> in proofs. If you can prove a statement using simpler tools, it is nice to do so.<div class="autopermalink" data-description="Paragraph"><a href="#sec_seq-strong-induction-6-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection: Divide and Conquer"><a href="#sec_seq-strong-induction-6" title="Copy heading and permalink for Subsection: Divide and Conquer" aria-label="Copy heading and permalink for Subsection: Divide and Conquer">🔗</a></div></section><section class="reading-questions" id="rqs-seq-strong-induction"><h3 class="heading hide-type">
+<span class="type">Reading Questions</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Reading Questions</span>
+</h3>
+<article class="exercise exercise-like" id="rq-seq-strong-induction-tf"><h4 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="ptx-runestone-container"><div class="runestone multiplechoice_section"><ul data-component="multiplechoice" data-multipleanswers="false" id="rs-rq-seq-strong-induction-tf">
+<div class="para" id="rq-seq-strong-induction-tf-1-1">True or false: To prove the inductive case of a proof by strong induction, you should assume <span class="process-math">\(P(k+1)\)</span> is true and prove that <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-tf-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<li data-component="answer" id="rs-rq-seq-strong-induction-tf_opt_t"><p>True.</p></li>
+<li data-component="feedback" id="rs-rq-seq-strong-induction-tf_opt_t"><div class="para" id="rq-seq-strong-induction-tf-2-1">This is backwards.  You still prove the next case, you just get to assume all previous cases (not just the one previous case).</div></li>
+<li data-component="answer" id="rs-rq-seq-strong-induction-tf_opt_f" data-correct=""><p>False.</p></li>
+<li data-component="feedback" id="rs-rq-seq-strong-induction-tf_opt_f"><div class="para" id="rq-seq-strong-induction-tf-2-1">This is backwards.  You still prove the next case, you just get to assume all previous cases (not just the one previous case).</div></li>
+</ul></div></div>
+<div class="autopermalink" data-description="Reading Question 1"><a href="#rq-seq-strong-induction-tf" title="Copy heading and permalink for Reading Question 1" aria-label="Copy heading and permalink for Reading Question 1">🔗</a></div><details id="rq-seq-strong-induction-tf-3" class="b10-static-source-solution" data-b10-static-solution="rq-seq-strong-induction-tf-3" style="margin:1rem 0;padding:.7rem;border:1px solid currentColor;border-radius:.25rem"><summary style="cursor:pointer;font-weight:600">Source-provided solution — read without completing the interaction</summary><div class="b10-static-source-solution-content">
+<div class="para" id="rq-seq-strong-induction-tf-3-1">False.<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-tf-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="rq-seq-strong-induction-tf-3-2">This is backwards.  You still prove the next case, you just get to assume all previous cases (not just the one previous case).<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-tf-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 1.1"><a href="#rq-seq-strong-induction-tf-3" title="Copy heading and permalink for Solution 1.1" aria-label="Copy heading and permalink for Solution 1.1">🔗</a></div>
+</div></details></article><article class="exercise exercise-like" id="rq-seq-strong-induction-compare"><h4 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="ptx-runestone-container"><div class="runestone multiplechoice_section">
+<div class="exercise-statement"><div class="para" id="rq-seq-strong-induction-compare-1-1">Which of the following claims about the relationship between proof by induction and proof by strong induction are true?<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-compare-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<ul data-component="multiplechoice" class="exercise-interactives" id="rs-rq-seq-strong-induction-compare" data-multipleanswers="true" data-random="">
+<li data-component="answer" id="rs-rq-seq-strong-induction-compare_opt_a" data-correct=""><div class="para" id="rq-seq-strong-induction-compare-2-1-1-1">Any proof by induction can be written as a proof by strong induction.<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-compare-2-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-rq-seq-strong-induction-compare_opt_a">
+</li><li data-component="answer" id="rs-rq-seq-strong-induction-compare_opt_b"><div class="para" id="rq-seq-strong-induction-compare-2-2-1-1">Any proof by strong induction can be written as a proof by induction.<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-compare-2-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-rq-seq-strong-induction-compare_opt_b">
+</li><li data-component="answer" id="rs-rq-seq-strong-induction-compare_opt_c"><div class="para" id="rq-seq-strong-induction-compare-2-3-1-1">Strong induction is “stronger” because the base case is stronger.<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-compare-2-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-rq-seq-strong-induction-compare_opt_c">
+</li><li data-component="answer" id="rs-rq-seq-strong-induction-compare_opt_d" data-correct=""><div class="para" id="rq-seq-strong-induction-compare-2-4-1-1">Strong induction is “stronger” because the inductive hypothesis is stronger.<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-compare-2-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-rq-seq-strong-induction-compare_opt_d">
+</li></ul>
+</div></div>
+<div class="autopermalink" data-description="Reading Question 2"><a href="#rq-seq-strong-induction-compare" title="Copy heading and permalink for Reading Question 2" aria-label="Copy heading and permalink for Reading Question 2">🔗</a></div><details id="rq-seq-strong-induction-compare-3" class="b10-static-source-solution" data-b10-static-solution="rq-seq-strong-induction-compare-3" style="margin:1rem 0;padding:.7rem;border:1px solid currentColor;border-radius:.25rem"><summary style="cursor:pointer;font-weight:600">Source-provided solution — read without completing the interaction</summary><div class="b10-static-source-solution-content">
+<div class="para logical" id="rq-seq-strong-induction-compare-3-1">
+<ol class="upper-alpha ol-marker-1" id="rq-seq-strong-induction-compare-3-1-1">
+<li id="rq-seq-strong-induction-compare-3-1-1-1">
+<span class="heading"><span class="title">Correct.</span></span><div class="para" id="p-derived-rq-seq-strong-induction-compare-3-1-1-1"></div>
+<div class="autopermalink" data-description="Item 2.A: Correct"><a href="#rq-seq-strong-induction-compare-3-1-1-1" title="Copy heading and permalink for Item 2.A: Correct" aria-label="Copy heading and permalink for Item 2.A: Correct">🔗</a></div>
+</li>
+<li id="rq-seq-strong-induction-compare-3-1-1-2">
+<span class="heading"><span class="title">Incorrect.</span></span><div class="para" id="p-derived-rq-seq-strong-induction-compare-3-1-1-2"></div>
+<div class="autopermalink" data-description="Item 2.B: Incorrect"><a href="#rq-seq-strong-induction-compare-3-1-1-2" title="Copy heading and permalink for Item 2.B: Incorrect" aria-label="Copy heading and permalink for Item 2.B: Incorrect">🔗</a></div>
+</li>
+<li id="rq-seq-strong-induction-compare-3-1-1-3">
+<span class="heading"><span class="title">Incorrect.</span></span><div class="para" id="p-derived-rq-seq-strong-induction-compare-3-1-1-3"></div>
+<div class="autopermalink" data-description="Item 2.C: Incorrect"><a href="#rq-seq-strong-induction-compare-3-1-1-3" title="Copy heading and permalink for Item 2.C: Incorrect" aria-label="Copy heading and permalink for Item 2.C: Incorrect">🔗</a></div>
+</li>
+<li id="rq-seq-strong-induction-compare-3-1-1-4">
+<span class="heading"><span class="title">Correct.</span></span><div class="para" id="p-derived-rq-seq-strong-induction-compare-3-1-1-4"></div>
+<div class="autopermalink" data-description="Item 2.D: Correct"><a href="#rq-seq-strong-induction-compare-3-1-1-4" title="Copy heading and permalink for Item 2.D: Correct" aria-label="Copy heading and permalink for Item 2.D: Correct">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-compare-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 2.1"><a href="#rq-seq-strong-induction-compare-3" title="Copy heading and permalink for Solution 2.1" aria-label="Copy heading and permalink for Solution 2.1">🔗</a></div>
+</div></details></article><article class="exercise exercise-like" id="rq-seq-strong-induction-q"><h4 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="ptx-runestone-container"><div class="runestone shortanswer_section"><div data-component="shortanswer" data-question_label="" class="journal" data-mathjax="" id="rs-rq-seq-strong-induction-q" data-placeholder="You can write here, and it will be saved on this device, but your response will not be graded."><div class="para" id="rq-seq-strong-induction-q-1-1">What questions do you have? Write at least one question about the content of this section that you or a classmate might be curious about after reading this section.<div class="autopermalink" data-description="Paragraph"><a href="#rq-seq-strong-induction-q-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div></div></div>
+<div class="autopermalink" data-description="Reading Question 3"><a href="#rq-seq-strong-induction-q" title="Copy heading and permalink for Reading Question 3" aria-label="Copy heading and permalink for Reading Question 3">🔗</a></div></article><div class="autopermalink" data-description="Reading Questions"><a href="#rqs-seq-strong-induction" title="Copy heading and permalink for Reading Questions" aria-label="Copy heading and permalink for Reading Questions">🔗</a></div></section><section class="exercises" id="practice-sec-strong-induction"><h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Practice Problems</span>
+</h3>
+<article class="exercise exercise-like" id="mc-strong-induction-step"><h4 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="ptx-runestone-container"><div class="runestone multiplechoice_section">
+<div class="exercise-statement"><div class="para" id="mc-strong-induction-step-1-1">Suppose you are trying to prove, by strong induction, that a statement <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 0\text{.}\)</span>  What would you attempt to prove in the <em class="emphasis">induction step</em> of the proof?  (Select all that apply.)<div class="autopermalink" data-description="Paragraph"><a href="#mc-strong-induction-step-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<ul data-component="multiplechoice" class="exercise-interactives" id="rs-mc-strong-induction-step" data-multipleanswers="true" data-random="">
+<li data-component="answer" id="rs-mc-strong-induction-step_opt_a" data-correct=""><div class="para" id="mc-strong-induction-step-2-1-1-1">That assuming <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\text{,}\)</span> for an arbitrary <span class="process-math">\(k \ge 0\text{,}\)</span> we can prove that <span class="process-math">\(P(k+1)\)</span> is true.<div class="autopermalink" data-description="Paragraph"><a href="#mc-strong-induction-step-2-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-mc-strong-induction-step_opt_a">
+</li><li data-component="answer" id="rs-mc-strong-induction-step_opt_b" data-correct=""><div class="para" id="mc-strong-induction-step-2-2-1-1">That <span class="process-math">\((P(0) \wedge P(1) \wedge \cdots \wedge P(k))\)</span> implies <span class="process-math">\(P(k+1)\)</span> for all <span class="process-math">\(k \ge 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#mc-strong-induction-step-2-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-mc-strong-induction-step_opt_b">
+</li><li data-component="answer" id="rs-mc-strong-induction-step_opt_c"><div class="para" id="mc-strong-induction-step-2-3-1-1">That assuming <span class="process-math">\(P(k+1)\)</span> is true for an arbitrary <span class="process-math">\(k \ge 0\text{,}\)</span> we can prove that <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#mc-strong-induction-step-2-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-mc-strong-induction-step_opt_c">
+</li><li data-component="answer" id="rs-mc-strong-induction-step_opt_d"><div class="para" id="mc-strong-induction-step-2-4-1-1">That <span class="process-math">\(P(k+1)\)</span> implies <span class="process-math">\(P(j)\)</span> for all <span class="process-math">\(j \le k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#mc-strong-induction-step-2-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-mc-strong-induction-step_opt_d">
+</li><li data-component="answer" id="rs-mc-strong-induction-step_opt_e"><div class="para" id="mc-strong-induction-step-2-5-1-1">That <span class="process-math">\(P(k-2)\)</span> implies <span class="process-math">\(P(k+1)\)</span> for at least one <span class="process-math">\(k \ge 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#mc-strong-induction-step-2-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></li>
+<li data-component="feedback" id="rs-mc-strong-induction-step_opt_e">
+</li></ul>
+</div></div>
+<div class="autopermalink" data-description="Exercise 1"><a href="#mc-strong-induction-step" title="Copy heading and permalink for Exercise 1" aria-label="Copy heading and permalink for Exercise 1">🔗</a></div><details id="mc-strong-induction-step-3" class="b10-static-source-solution" data-b10-static-solution="mc-strong-induction-step-3" style="margin:1rem 0;padding:.7rem;border:1px solid currentColor;border-radius:.25rem"><summary style="cursor:pointer;font-weight:600">Source-provided solution — read without completing the interaction</summary><div class="b10-static-source-solution-content">
+<div class="para logical" id="mc-strong-induction-step-3-1">
+<ol class="upper-alpha ol-marker-1" id="mc-strong-induction-step-3-1-1">
+<li id="mc-strong-induction-step-3-1-1-1">
+<span class="heading"><span class="title">Correct.</span></span><div class="para" id="p-derived-mc-strong-induction-step-3-1-1-1"></div>
+<div class="autopermalink" data-description="Item 1.A: Correct"><a href="#mc-strong-induction-step-3-1-1-1" title="Copy heading and permalink for Item 1.A: Correct" aria-label="Copy heading and permalink for Item 1.A: Correct">🔗</a></div>
+</li>
+<li id="mc-strong-induction-step-3-1-1-2">
+<span class="heading"><span class="title">Correct.</span></span><div class="para" id="p-derived-mc-strong-induction-step-3-1-1-2"></div>
+<div class="autopermalink" data-description="Item 1.B: Correct"><a href="#mc-strong-induction-step-3-1-1-2" title="Copy heading and permalink for Item 1.B: Correct" aria-label="Copy heading and permalink for Item 1.B: Correct">🔗</a></div>
+</li>
+<li id="mc-strong-induction-step-3-1-1-3">
+<span class="heading"><span class="title">Incorrect.</span></span><div class="para" id="p-derived-mc-strong-induction-step-3-1-1-3"></div>
+<div class="autopermalink" data-description="Item 1.C: Incorrect"><a href="#mc-strong-induction-step-3-1-1-3" title="Copy heading and permalink for Item 1.C: Incorrect" aria-label="Copy heading and permalink for Item 1.C: Incorrect">🔗</a></div>
+</li>
+<li id="mc-strong-induction-step-3-1-1-4">
+<span class="heading"><span class="title">Incorrect.</span></span><div class="para" id="p-derived-mc-strong-induction-step-3-1-1-4"></div>
+<div class="autopermalink" data-description="Item 1.D: Incorrect"><a href="#mc-strong-induction-step-3-1-1-4" title="Copy heading and permalink for Item 1.D: Incorrect" aria-label="Copy heading and permalink for Item 1.D: Incorrect">🔗</a></div>
+</li>
+<li id="mc-strong-induction-step-3-1-1-5">
+<span class="heading"><span class="title">Incorrect.</span></span><div class="para" id="p-derived-mc-strong-induction-step-3-1-1-5"></div>
+<div class="autopermalink" data-description="Item 1.E: Incorrect"><a href="#mc-strong-induction-step-3-1-1-5" title="Copy heading and permalink for Item 1.E: Incorrect" aria-label="Copy heading and permalink for Item 1.E: Incorrect">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#mc-strong-induction-step-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 1.1"><a href="#mc-strong-induction-step-3" title="Copy heading and permalink for Solution 1.1" aria-label="Copy heading and permalink for Solution 1.1">🔗</a></div>
+</div></details></article><article class="exercise exercise-like" id="parsons-strong-induction-chocolate"><h4 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="ptx-runestone-container"><div class="runestone parsons_section" style="max-width: none;"><div data-component="parsons" class="parsons" id="rs-parsons-strong-induction-chocolate">
+<div class="parsons_question parsons-text">
+<div class="para" id="parsons-strong-induction-chocolate-1-1">A simpler version of the chocolate bar problem is as follows:  Suppose you have a chocolate bar that is <span class="process-math">\(n\)</span> squares long.  You can break the chocolate bar into two pieces by making a single straight break across the bar.  No matter where you make the breaks, you will break the chocolate bar into <span class="process-math">\(n\)</span> pieces by making <span class="process-math">\(n-1\)</span> breaks.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="parsons-strong-induction-chocolate-1-2">Arrange some of the following statements in the correct order to form a proof of this claim by strong induction.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</div>
+<pre class="parsonsblocks" data-question_label="" style="visibility: hidden;" data-language="natural" data-noindent="true"><div class="para" id="parsons-strong-induction-chocolate-2-1-1">Let <span class="process-math">\(P(n)\)</span> be the statement that a chocolate bar that is <span class="process-math">\(n\)</span> squares long can be broken into <span class="process-math">\(n\)</span> pieces by making <span class="process-math">\(n-1\)</span> breaks.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+---
+<div class="para" id="parsons-strong-induction-chocolate-2-2-1">
+<span class="process-math">\(P(1)\)</span> is true because a chocolate bar that is 1 square long is already in one piece.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+---
+<div class="para" id="parsons-strong-induction-chocolate-2-3-1">Assume that <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\)</span> for an arbitrary <span class="process-math">\(k \ge 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+---
+<div class="para" id="parsons-strong-induction-chocolate-2-4-1">Consider a chocolate bar that is <span class="process-math">\(k+1\)</span> squares long.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+---
+<div class="para" id="parsons-strong-induction-chocolate-2-5-1">Anywhere you break this bar will result in two smaller bars, say of length <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+---
+<div class="para" id="parsons-strong-induction-chocolate-2-6-1">Since <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> are no more than <span class="process-math">\(k\text{,}\)</span> it will be possible to break these smaller bars into single squares using <span class="process-math">\(a-1\)</span> and <span class="process-math">\(b-1\)</span> breaks, respectively.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+---
+<div class="para" id="parsons-strong-induction-chocolate-2-7-1">The total number of breaks is therefore <span class="process-math">\(a-1 + b-1 + 1 = a+b -1\text{,}\)</span> which is <span class="process-math">\(k+1-1 = k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+---
+<div class="para" id="parsons-strong-induction-chocolate-2-8-1">Therefore, by the principle of strong induction, <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-8-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></pre>
+</div></div></div>
+<div class="autopermalink" data-description="Exercise 2"><a href="#parsons-strong-induction-chocolate" title="Copy heading and permalink for Exercise 2" aria-label="Copy heading and permalink for Exercise 2">🔗</a></div><details id="parsons-strong-induction-chocolate-2" class="b10-static-source-solution" data-b10-static-solution="parsons-strong-induction-chocolate-2" style="margin:1rem 0;padding:.7rem;border:1px solid currentColor;border-radius:.25rem"><summary style="cursor:pointer;font-weight:600">Source-provided solution — read without completing the interaction</summary><div class="b10-static-source-solution-content">
+<div class="para logical" id="parsons-strong-induction-chocolate-2-1">
+<ul class="disc" id="b10-static-parsons-strong-induction-chocolate-2-1-1" data-source-native-id="parsons-strong-induction-chocolate-2-1-1">
+<li id="parsons-strong-induction-chocolate-2-1-1-1">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-1-1">Let <span class="process-math">\(P(n)\)</span> be the statement that a chocolate bar that is <span class="process-math">\(n\)</span> squares long can be broken into <span class="process-math">\(n\)</span> pieces by making <span class="process-math">\(n-1\)</span> breaks.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="parsons-strong-induction-chocolate-2-1-1-2">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-2-1">
+<span class="process-math">\(P(1)\)</span> is true because a chocolate bar that is 1 square long is already in one piece.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="parsons-strong-induction-chocolate-2-1-1-3">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-3-1">Assume that <span class="process-math">\(P(j)\)</span> is true for all <span class="process-math">\(j \le k\)</span> for an arbitrary <span class="process-math">\(k \ge 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="parsons-strong-induction-chocolate-2-1-1-4">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-4-1">Consider a chocolate bar that is <span class="process-math">\(k+1\)</span> squares long.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="parsons-strong-induction-chocolate-2-1-1-5">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-5-1">Anywhere you break this bar will result in two smaller bars, say of length <span class="process-math">\(a\)</span> and <span class="process-math">\(b\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="parsons-strong-induction-chocolate-2-1-1-6">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-6-1">Since <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> are no more than <span class="process-math">\(k\text{,}\)</span> it will be possible to break these smaller bars into single squares using <span class="process-math">\(a-1\)</span> and <span class="process-math">\(b-1\)</span> breaks, respectively.<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-6" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="parsons-strong-induction-chocolate-2-1-1-7">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-7-1">The total number of breaks is therefore <span class="process-math">\(a-1 + b-1 + 1 = a+b -1\text{,}\)</span> which is <span class="process-math">\(k+1-1 = k\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-7" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="parsons-strong-induction-chocolate-2-1-1-8">
+<div class="para" id="parsons-strong-induction-chocolate-2-1-1-8-1">Therefore, by the principle of strong induction, <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1-1-8-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#parsons-strong-induction-chocolate-2-1-1-8" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#parsons-strong-induction-chocolate-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 2.1"><a href="#parsons-strong-induction-chocolate-2" title="Copy heading and permalink for Solution 2.1" aria-label="Copy heading and permalink for Solution 2.1">🔗</a></div>
+</div></details></article><div class="autopermalink" data-description="Exercises: Practice Problems"><a href="#practice-sec-strong-induction" title="Copy heading and permalink for Exercises: Practice Problems" aria-label="Copy heading and permalink for Exercises: Practice Problems">🔗</a></div></section><section class="exercises" id="exercises_seq-strong-induction"><h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Additional Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercises_seq-strong-induction-2"><h4 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_seq-strong-induction-2-2-1">Suppose a football team only scores 3-point field goals and 7-point touchdowns (ignore the possibilities of safeties, missed extra points, and two-point conversions). Prove, using <em class="emphasis">strong</em> induction, that the team can get any number of points, 12 points or greater.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_seq-strong-induction-2-3" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="hint solution-like knowl__content">
+<div class="para" id="exercises_seq-strong-induction-2-3-1">If you have three base cases, can you always be sure you can get three points more?<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Hint 1.1"><a href="#exercises_seq-strong-induction-2-3" title="Copy heading and permalink for Hint 1.1" aria-label="Copy heading and permalink for Hint 1.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 1"><a href="#exercises_seq-strong-induction-2" title="Copy heading and permalink for Exercise 1" aria-label="Copy heading and permalink for Exercise 1">🔗</a></div></article><article class="exercise exercise-like" id="exercises_seq-strong-induction-3"><h4 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_seq-strong-induction-3-2-1">Prove using <em class="emphasis">strong</em> induction that the sum of the interior angles of a convex <span class="process-math">\(n\)</span>-gon is <span class="process-math">\((n-2)\cdot 180^\circ\text{.}\)</span> (A convex <span class="process-math">\(n\)</span>-gon is a polygon with <span class="process-math">\(n\)</span> sides for which each interior angle is less than <span class="process-math">\(180^\circ\text{.}\)</span>)<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_seq-strong-induction-3-3" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="hint solution-like knowl__content">
+<div class="para" id="exercises_seq-strong-induction-3-3-1">Start with a <span class="process-math">\((k+1)\)</span>-gon, and divide it into two smaller polygons.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-3-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Hint 2.1"><a href="#exercises_seq-strong-induction-3-3" title="Copy heading and permalink for Hint 2.1" aria-label="Copy heading and permalink for Hint 2.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 2"><a href="#exercises_seq-strong-induction-3" title="Copy heading and permalink for Exercise 2" aria-label="Copy heading and permalink for Exercise 2">🔗</a></div></article><article class="exercise exercise-like" id="exercises_seq-strong-induction-4"><h4 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_seq-strong-induction-4-2-1">Prove that every positive integer is either a power of 2 or can be written as the sum of distinct powers of 2.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_seq-strong-induction-4-3" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_seq-strong-induction-4-3-1">The proof will be by strong induction.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-4-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="proof" id="exercises_seq-strong-induction-4-3-2"><h5 class="heading"><span class="type">Proof<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="exercises_seq-strong-induction-4-3-2-1">Let <span class="process-math">\(P(n)\)</span> be the statement, “<span class="process-math">\(n\)</span> is either a power of 2 or can be written as the sum of distinct powers of 2.” We will show that <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-4-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="exercises_seq-strong-induction-4-3-2-2">Base case: <span class="process-math">\(1 = 2^0\)</span> is a power of 2, so <span class="process-math">\(P(1)\)</span> is true.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-4-3-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="exercises_seq-strong-induction-4-3-2-3">Inductive case: Suppose <span class="process-math">\(P(k)\)</span> is true for all <span class="process-math">\(k \lt n\text{.}\)</span> Now if <span class="process-math">\(n\)</span> is a power of 2, we are done. If not, let <span class="process-math">\(2^x\)</span> be the largest power of 2 strictly less than <span class="process-math">\(n\text{.}\)</span> Consider <span class="process-math">\(n - 2^x\text{,}\)</span> which is a smaller number, in fact smaller than both <span class="process-math">\(n\)</span> and <span class="process-math">\(2^x\text{.}\)</span> Thus <span class="process-math">\(n-2^x\)</span> is either a power of 2 or can be written as the sum of distinct powers of 2, but none of them are going to be <span class="process-math">\(2^x\text{,}\)</span> so together with <span class="process-math">\(2^x\)</span> we have written <span class="process-math">\(n\)</span> as the sum of distinct powers of 2.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-4-3-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="exercises_seq-strong-induction-4-3-2-4">Therefore, by the principle of (strong) mathematical induction, <span class="process-math">\(P(n)\)</span> is true for all <span class="process-math">\(n \ge 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-4-3-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Proof 3.1.1"><a href="#exercises_seq-strong-induction-4-3-2" title="Copy heading and permalink for Proof 3.1.1" aria-label="Copy heading and permalink for Proof 3.1.1">🔗</a></div></article><div class="autopermalink" data-description="Solution 3.1"><a href="#exercises_seq-strong-induction-4-3" title="Copy heading and permalink for Solution 3.1" aria-label="Copy heading and permalink for Solution 3.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 3"><a href="#exercises_seq-strong-induction-4" title="Copy heading and permalink for Exercise 3" aria-label="Copy heading and permalink for Exercise 3">🔗</a></div></article><article class="exercise exercise-like" id="exercises_seq-strong-induction-5"><h4 class="heading"><span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_seq-strong-induction-5-2-1">Prove, using strong induction, that every natural number is either a Fibonacci number or can be written as the <em class="emphasis">sum</em> of <em class="emphasis">distinct</em> Fibonacci numbers.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_seq-strong-induction-5-3" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="hint solution-like knowl__content">
+<div class="para" id="exercises_seq-strong-induction-5-3-1">As with the previous question, we will want to subtract something from <span class="process-math">\(n\)</span> in the inductive step.  There we subtracted the largest power of 2 less than <span class="process-math">\(n\text{.}\)</span>  So what should you subtract here?<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-5-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="exercises_seq-strong-induction-5-3-2">Note that you will still need to take care here that the sum you get from the inductive hypothesis, together with the number you subtracted, will be a sum of <em class="emphasis">distinct</em> Fibonacci numbers.  In fact, you could prove that the Fibonacci numbers in the sum are non-consecutive!<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-5-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Hint 4.1"><a href="#exercises_seq-strong-induction-5-3" title="Copy heading and permalink for Hint 4.1" aria-label="Copy heading and permalink for Hint 4.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 4"><a href="#exercises_seq-strong-induction-5" title="Copy heading and permalink for Exercise 4" aria-label="Copy heading and permalink for Exercise 4">🔗</a></div></article><article class="exercise exercise-like" id="exercises_seq-strong-induction-6"><h4 class="heading"><span class="codenumber">5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_seq-strong-induction-6-1-1">We have previously proved that for any tree, the number of edges is always one less than the number of vertices.  That is, a tree with <span class="process-math">\(v\)</span> vertices and <span class="process-math">\(e\)</span> edges satisfies <span class="process-math">\(v = e+1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="exercises_seq-strong-induction-6-1-2">Give an alternate proof of this fact using strong induction on the number of vertices.  Do so by taking a non-leaf vertex and “splitting” it into two vertices, each belonging to a separate tree.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-6-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 5"><a href="#exercises_seq-strong-induction-6" title="Copy heading and permalink for Exercise 5" aria-label="Copy heading and permalink for Exercise 5">🔗</a></div></article><article class="exercise exercise-like" id="exercises_seq-strong-induction-7"><h4 class="heading"><span class="codenumber">6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_seq-strong-induction-7-1-1">Suppose that a particular real number <span class="process-math">\(x\)</span> has the property that <span class="process-math">\(x + \frac{1}{x}\)</span> is an integer. Prove that <span class="process-math">\(x^n + \frac{1}{x^n}\)</span> is an integer for all natural numbers <span class="process-math">\(n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-7-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_seq-strong-induction-7-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="hint solution-like knowl__content">
+<div class="para" id="exercises_seq-strong-induction-7-2-1">You will need to use strong induction. For the inductive case, try multiplying <span class="process-math">\(\left (x^k + \frac{1}{x^{k}}\right)\left(x+\frac{1}{x}\right)\text{,}\)</span> and collect which terms together are integers.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-7-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Hint 6.1"><a href="#exercises_seq-strong-induction-7-2" title="Copy heading and permalink for Hint 6.1" aria-label="Copy heading and permalink for Hint 6.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 6"><a href="#exercises_seq-strong-induction-7" title="Copy heading and permalink for Exercise 6" aria-label="Copy heading and permalink for Exercise 6">🔗</a></div></article><article class="exercise exercise-like" id="exercises_seq-strong-induction-8"><h4 class="heading"><span class="codenumber">7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="introduction" id="exercises_seq-strong-induction-8-4">
+<div class="para" id="exercises_seq-strong-induction-8-4-1">Here is an example of a more complicated induction technique called <dfn class="terminology">double induction</dfn>.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-8-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="exercises_seq-strong-induction-8-4-2">
+<div class="para">You will prove that the Fibonacci numbers satisfy the identity <span class="process-math">\(F_n^2 + F_{n+1}^2 = F_{2n+1}\text{.}\)</span> One way to do this is to prove the more general identity,</div>
+<div class="displaymath process-math">
+\begin{equation*}
+F_mF_n + F_{m+1}F_{n+1} = F_{m+n+1}\text{,}
+\end{equation*}
+</div>
+<div class="para">and realize that when <span class="process-math">\(m = n\)</span> we get our desired result.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-8-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="exercises_seq-strong-induction-8-4-3">Note that we now have two variables, so we want to prove this for all <span class="process-math">\(m \ge 0\)</span> <em class="emphasis">and</em> all <span class="process-math">\(n \ge 0\)</span> at the same time. For each such pair <span class="process-math">\((m,n)\text{,}\)</span> let <span class="process-math">\(P(m,n)\)</span> be the statement <span class="process-math">\(F_mF_n + F_{m+1}F_{n+1} = F_{m+n+1}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-8-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+</div>
+<article class="task exercise-like" id="exercises_seq-strong-induction-8-5"><h5 class="heading"><span class="codenumber">(a)</span></h5>
+<div class="para" id="exercises_seq-strong-induction-8-5-1-1">First fix <span class="process-math">\(m = 0\text{,}\)</span> and give a proof by mathematical induction that <span class="process-math">\(P(0,n)\)</span> holds for all <span class="process-math">\(n \ge 0\text{.}\)</span> Note that this proof will be very easy.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-8-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Task 7.a"><a href="#exercises_seq-strong-induction-8-5" title="Copy heading and permalink for Task 7.a" aria-label="Copy heading and permalink for Task 7.a">🔗</a></div></article><article class="task exercise-like" id="exercises_seq-strong-induction-8-6"><h5 class="heading"><span class="codenumber">(b)</span></h5>
+<div class="para" id="exercises_seq-strong-induction-8-6-1-1">Now fix an arbitrary <span class="process-math">\(n\text{,}\)</span> and give a proof by <em class="emphasis">strong</em> mathematical induction that <span class="process-math">\(P(m,n)\)</span> holds for all <span class="process-math">\(m \ge 0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-8-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Task 7.b"><a href="#exercises_seq-strong-induction-8-6" title="Copy heading and permalink for Task 7.b" aria-label="Copy heading and permalink for Task 7.b">🔗</a></div></article><article class="task exercise-like" id="exercises_seq-strong-induction-8-7"><h5 class="heading"><span class="codenumber">(c)</span></h5>
+<div class="para" id="exercises_seq-strong-induction-8-7-1-1">You can now conclude that <span class="process-math">\(P(m,n)\)</span> holds for all <span class="process-math">\(m,n\ge 0\text{.}\)</span> Do you believe that? Explain why this sort of induction is valid. For example, why do your proofs above guarantee that <span class="process-math">\(P(2,3)\)</span> is true?<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-8-7-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Task 7.c"><a href="#exercises_seq-strong-induction-8-7" title="Copy heading and permalink for Task 7.c" aria-label="Copy heading and permalink for Task 7.c">🔗</a></div></article><div class="autopermalink" data-description="Exercise 7"><a href="#exercises_seq-strong-induction-8" title="Copy heading and permalink for Exercise 7" aria-label="Copy heading and permalink for Exercise 7">🔗</a></div></article><article class="exercise exercise-like" id="exercises_seq-strong-induction-9"><h4 class="heading"><span class="codenumber">8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_seq-strong-induction-9-2-1">Given a square, you can cut the square into smaller squares by cutting along lines parallel to the sides of the original square (these lines do not need to travel the entire side length of the original square). For example, by cutting along the lines below, you will divide a square into 6 smaller squares:<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-9-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:32.5%;margin-right:32.5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/exercises_seq-strong-induction-9-2-2-1.svg" role="img" class="contained" alt="One large square with five squares of half the side length wrapping around the top and right side, forming an even larger square."></div></div></div> <div class="para" id="exercises_seq-strong-induction-9-2-3">Prove, using strong induction, that it is possible to cut a square into <span class="process-math">\(n\)</span> smaller squares for any <span class="process-math">\(n \ge 6\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-9-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_seq-strong-induction-9-3" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="hint solution-like knowl__content">
+<div class="para" id="exercises_seq-strong-induction-9-3-1">You will need three base cases.  This is a very good hint actually, as it suggests that to prove <span class="process-math">\(P(n)\)</span> is true, you would want to use the fact that <span class="process-math">\(P(n-3)\)</span> is true.  So somehow you need to increase the number of squares by 3.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_seq-strong-induction-9-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Hint 8.1"><a href="#exercises_seq-strong-induction-9-3" title="Copy heading and permalink for Hint 8.1" aria-label="Copy heading and permalink for Hint 8.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 8"><a href="#exercises_seq-strong-induction-9" title="Copy heading and permalink for Exercise 8" aria-label="Copy heading and permalink for Exercise 8">🔗</a></div></article><div class="autopermalink" data-description="Exercises: Additional Exercises"><a href="#exercises_seq-strong-induction" title="Copy heading and permalink for Exercises: Additional Exercises" aria-label="Copy heading and permalink for Exercises: Additional Exercises">🔗</a></div></section><div class="autopermalink" data-description="Section 4.6: Strong Induction"><a href="#sec_seq-strong-induction" title="Copy heading and permalink for Section 4.6: Strong Induction" aria-label="Copy heading and permalink for Section 4.6: Strong Induction">🔗</a></div></section></div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="sec_seq-induction.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Top</span></a><a class="next-button button" href="sec_sequences-conc.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="feedback-link" href="mailto:oscar.levin@unco.edu" target="_blank">Feedback</a><a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="runtime/reader-support/runestone-credit-logo.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="runtime/reader-support/mathjax-credit-logo.png" alt="MathJax logo"></a>
+</div>
+<nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Program — Bahasa Indonesia</a><a href="https://discrete.openmathbooks.org/dmoi4/">Original author’s website ↗</a><a href="frontmatter.html">Book contents</a></nav><nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B10" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">English — B10</a> · <a data-program-home data-course-card data-course-id="B10" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Bahasa Indonesia — B10</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B10" href="https://discrete.openmathbooks.org/dmoi4/">Original source — Original author’s reader — Discrete Mathematics: An Open Introduction, 4th edition</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="frontmatter.html">Open related page</a></nav>
+</body>
+</html>

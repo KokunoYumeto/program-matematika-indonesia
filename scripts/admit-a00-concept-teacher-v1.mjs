@@ -1,6 +1,7 @@
 // Add this consumer to the existing A00 adapter, never replace its native corpus.
 import assert from 'node:assert/strict';
 import {createHash} from 'node:crypto';
+import {spawnSync} from 'node:child_process';
 import {mkdir,readFile,writeFile} from 'node:fs/promises';
 import {dirname,resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -19,8 +20,16 @@ assert.equal(validation.checks.deterministic_second_build,true);assert.equal(val
 assert.ok(validation.checks.negative_fixtures.length>=11);assert.ok(validation.checks.negative_fixtures.every(row=>row.result==='rejected'));
 for(const source of manifest.generators)assert.deepEqual(await fact(source.path),source);
 assert.equal(pack.result,'pass');assert.equal(pack.sha256,(await fact(base+'/'+pack.path)).sha256);
+// Admission verifies the bytes that will actually be copied, not only an older
+// successful QA receipt. The read-only replay also checks every ZIP member.
+assert.deepEqual(await fact(base+'/input/source-lock.json'),{...manifest.input,path:base+'/input/source-lock.json'});
+for(const item of manifest.outputs)assert.deepEqual(await fact(base+'/'+item.path),{...item,path:base+'/'+item.path});
+const packageReplay=spawnSync('python',['-B',resolve(root,'scripts/package_a00_concept_teacher_v1.py'),'--verify-only'],
+  {cwd:root,encoding:'utf8',timeout:30000,maxBuffer:1024*1024});
+assert.equal(packageReplay.status,0,`A00 package/loose-file replay failed: ${packageReplay.stderr||packageReplay.error||''}`);
 const outputs=manifest.outputs.map(item=>item.path);
 const lock=await load(base+'/input/source-lock.json');
+for(const item of lock.snapshots)assert.deepEqual(await fact(base+'/input/'+item.path),{...item,path:base+'/input/'+item.path});
 outputs.push(...lock.snapshots.map(item=>'input/'+item.path),'input/source-lock.json','manifest.json','validation.json',pack.path,'package.json');
 for(const path of outputs){
   const target=path.startsWith('views/')?path.slice(6):path;

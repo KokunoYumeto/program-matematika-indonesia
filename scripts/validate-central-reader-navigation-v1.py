@@ -487,6 +487,13 @@ def main() -> int:
                 for path in html_files
             }
             declared_reader_files = set(declared_by_relative.values())
+            fragment_relatives = row.get('embedded_fragment_paths', [])
+            if len(fragment_relatives) != len(set(fragment_relatives)) or not set(fragment_relatives).issubset(declared_by_relative):
+                raise ValueError(f"{row['root']}: invalid embedded fragment closure")
+            fragments = {declared_by_relative[value] for value in fragment_relatives}
+            for fragment in fragments:
+                if 'name="b10-fragment-url-base" content="document"' not in fragment.read_text(encoding='utf-8'):
+                    raise ValueError(f"{fragment}: fragment document-relative URL marker absent")
             closure = row.get("navigation_closure")
             if len(html_files) > 1 and not isinstance(closure, dict):
                 raise ValueError(
@@ -539,6 +546,15 @@ def main() -> int:
                 reader_outbound[resolved_path] = article_targets(
                     path, path.read_text(encoding="utf-8"), contract["site_origin"]
                 ) & declared_reader_files
+                if fragments:
+                    # These links expand source content rather than changing the URL.
+                    # Their destination must be an explicitly typed local excerpt.
+                    text = path.read_text(encoding='utf-8')
+                    for match in re.finditer(r'data-knowl="([^"]+)"', text):
+                        target, _fragment = resolve_href(path, match.group(1))
+                        if target.resolve() not in fragments:
+                            raise ValueError(f"{path}: undeclared embedded excerpt {match.group(1)}")
+                        reader_outbound[resolved_path].add(target.resolve())
                 native_home_links = [
                     link for link in parser.home_links if not link["placement"]
                 ]
@@ -639,6 +655,7 @@ def main() -> int:
                 "root": row["root"],
                 "state": row["state"],
                 "html_documents": len(html_files),
+                "embedded_fragment_documents": len(fragments),
                 "program_home_links_minimum": 2 * len(html_files),
                 "contents_links_required": len(html_files) - 1,
                 "entry_path": entry_relative,

@@ -1,0 +1,1468 @@
+<!DOCTYPE html>
+<!--********************************************-->
+<!--*       Generated from PreTeXt source      *-->
+<!--*                                          *-->
+<!--*         https://pretextbook.org          *-->
+<!--*                                          *-->
+<!--********************************************-->
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: denver                         *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Generating Functions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link rel="stylesheet" href="runtime/reader-support/material-symbols-local.css">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="external/custom-styles.css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math",
+    "renderActions": {
+      "findScript": [
+        10,
+        function (doc) {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(function(node) {
+                var display = !!node.type.match(/; *mode=display/);
+                var math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+                var text = document.createTextNode('');
+                node.parentNode.replaceChild(text, node);
+                math.start = {node: text, delim: '', n: 0};
+                math.end = {node: text, delim: '', n: 0};
+                doc.math.push(math);
+            });
+        },
+        ""
+      ]
+    }
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="runtime/mathjax/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="Discrete Mathematics">
+<meta property="book:author" content="
+      Oscar Levin">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '8.2.5';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/prefix-runtime.18d8728f6d56e11d.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.b388362b5f43738a.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.8086b62682b271d1.css">
+<script src="https://sagecell.sagemath.org/static/embedded_sagecell.js"></script><script src="_static/pretext/js/pretext-webwork/2.20/pretext-webwork.js"></script><script src="https://webwork-ptx.aimath.org/webwork2_files/node_modules/iframe-resizer/js/iframeResizer.min.js"></script><script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="runtime/prism/components/prism-core.min.js"></script><script src="runtime/prism/plugins/autoloader/prism-autoloader.min.js"></script><script src="runtime/prism/plugins/line-numbers/prism-line-numbers.min.js" integrity="sha512-dubtf8xMHSQlExGRQ5R7toxHLgSDZ0K7AunqPWHXmJQ8XyVIG19S1T95gBxlAeGOK02P4Da2RTnQz0Za0H0ebQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="runtime/prism/plugins/line-highlight/prism-line-highlight.min.js" integrity="sha512-93uCmm0q+qO5Lb1huDqr7tywS8A2TFA+1/WHvyiWaK6/pvsFl6USnILagntBx8JnVbQH5s3n0vQZY6xNthNfKA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="runtime/lunr/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+<link rel="stylesheet" href="program-navigation.css"></head>
+<body id="dmoi-4" class="pretext book ignore-math">
+<nav data-central-surface-navigation="v1" data-placement="top" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B10" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">English — B10</a> · <a data-program-home data-course-card data-course-id="B10" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Bahasa Indonesia — B10</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B10" href="https://discrete.openmathbooks.org/dmoi4/">Original source — Original author’s reader — Discrete Mathematics: An Open Introduction, 4th edition</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="frontmatter.html">Open related page</a></nav><nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Program — Bahasa Indonesia</a><a href="https://discrete.openmathbooks.org/dmoi4/">Original author’s website ↗</a><a href="frontmatter.html">Book contents</a></nav><aside class="program-reader-note">Original English by Oscar Levin. This unofficial mirror includes local math and search assets and frozen exercise statements. Remote computation, live checking and external websites still need internet access. <a href="https://discrete.openmathbooks.org/dmoi4/">Use the original website for its live services.</a></aside>
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner">
+<a id="logo-link" class="logo-link" target="_blank" href="http://discrete.openmathbooks.org/dmoi4.html"><img src="external/images/cover4.png" alt="Logo image"></a><div class="title-container">
+<h1 class="heading"><a href="dmoi4.html"><span class="title">Discrete Mathematics</span> <span class="subtitle">An Open Introduction, 4th Edition</span></a></h1>
+<p class="byline">Oscar Levin</p>
+</div>
+</div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5d2;</span><span class="name">Contents</span></button><a class="index-button button" href="backmatter-5.html" title="Index"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe88e;</span><span class="name">Index</span></a><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe8b6;</span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="embed-button" class="embed-button button" title="Embed this page"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe86f;</span><span class="name">Embed</span></button><div class="embed-popup hidden" id="embed-popup">
+<p>Copy the code below to embed this page in your own website or LMS page.</p>
+<div class="embed-code-container">
+<textarea class="embed-code-textbox" id="embed-code-textbox" readonly aria-label="textbox"><iframe src="https://example.com/embed" width="100%" height="1000"></iframe></textarea><button class="copy-embed-button button" id="copy-embed-button" title="Copy embed code"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe14d;</span><span class="name">Copy</span></button>
+</div>
+</div>
+<button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe51c;</span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="ch_additionalTopics.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="up-button button" href="ch_additionalTopics.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Up</span></a><a class="next-button button" href="sec_addtops-numbth.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\usepackage{cancel}
+\def\d{\displaystyle} 
+\def\N{\mathbb N} 
+\def\B{\mathbf B} 
+\def\Z{\mathbb Z} 
+\def\Q{\mathbb Q} 
+\def\R{\mathbb R} 
+\def\C{\mathbb C} 
+\def\U{\mathcal U} 
+\def\x{\mathbf{x}}
+\def\y{\mathbf{y}}
+\def\X{\mathcal{X}}
+\def\Y{\mathcal{Y}}
+\def\pow{\mathcal P} 
+\def\inv{^{-1}} 
+\def\st{:} 
+\def\iff{\leftrightarrow} 
+\def\Iff{\Leftrightarrow} 
+\def\imp{\rightarrow} 
+\def\Imp{\Rightarrow} 
+\def\isom{\cong} 
+
+\def\bar{\overline} 
+\def\card#1{\left| #1 \right|} 
+\def\twoline#1#2{\begin{pmatrix}#1 \\ #2 \end{pmatrix}} 
+
+\def\mchoose#1#2{
+  \left.\mathchoice
+    {\left(\kern-0.48em\binom{#1}{#2}\kern-0.48em\right)}
+    {\big(\kern-0.30em\binom{\smash{#1}}{\smash{#2}}\kern-0.30em\big)}
+    {\left(\kern-0.30em\binom{\smash{#1}}{\smash{#2}}\kern-0.30em\right)}
+    {\left(\kern-0.30em\binom{\smash{#1}}{\smash{#2}}\kern-0.30em\right)}
+  \right.}
+\def\o{\circ}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth3 focused" data-preexpanded-levels="1" data-max-levels="3"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="frontmatter.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="front-colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-dedication"><div class="toc-title-box"><a href="frontmatter-4.html" class="internal"><span class="title">Dedication</span></a></div></li>
+<li class="toc-item toc-acknowledgement"><div class="toc-title-box"><a href="frontmatter-5.html" class="internal"><span class="title">Acknowledgements</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="preface.html" class="internal"><span class="title">Preface</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="frontmatter-7.html" class="internal"><span class="title">How to Use This Book</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_intro.html" class="internal"><span class="codenumber">0</span> <span class="title">Introduction and Preliminaries</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intro-intro.html" class="internal"><span class="codenumber">0.1</span> <span class="title">What is Discrete Mathematics?</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_intro-intro.html#rqs-intro-intro" class="internal"><span class="codenumber">0.1</span> <span class="title">Reading Questions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_intro-structures.html" class="internal"><span class="codenumber">0.2</span> <span class="title">Discrete Structures</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#sec_intro-structures-2" class="internal"><span class="title">Introduction</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-sets" class="internal"><span class="title">Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-functions" class="internal"><span class="title">Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-sequences" class="internal"><span class="title">Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec-relations" class="internal"><span class="title">Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-graphs" class="internal"><span class="title">Graphs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_intro-structures.html#subsec_structures-even-more" class="internal"><span class="title">Even More Structures</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_intro-structures.html#rqs-intro-structures" class="internal"><span class="title">Reading Questions</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_logic.html" class="internal"><span class="codenumber">1</span> <span class="title">Logic and Proofs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-statements.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Mathematical Statements</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-statements.html#sec_logic-statements-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-statements.html#PA-logic-statements" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-statements.html#atomic-molecular-statements" class="internal"><span class="title">Atomic and Molecular Statements</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-statements.html#subsec_logic-statements-quant" class="internal"><span class="title">Quantifiers and Predicates</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-statements.html#rqs-logic-statements" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-statements.html#practice_intro-statements" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-statements.html#exercises_intro-statements" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-implications.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Implications</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-implications.html#subsec-introduction" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-implications.html#ws-preview-implications" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-implications.html#subsec_implications" class="internal"><span class="title">Understanding the Truth Table</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-implications.html#subsec-related-statements" class="internal"><span class="title">Related Statements</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-implications.html#rqs-logic-implications" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-implications.html#practice-logic-implications" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-implications.html#ex-logic-implications" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-rules.html" class="internal"><span class="codenumber">1.3</span> <span class="title">Rules of Logic</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-rules.html#PA-logic-prop" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-4" class="internal"><span class="title">Truth Tables</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-5" class="internal"><span class="title">Logical Equivalence</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-6" class="internal"><span class="title">Equivalence for Quantified Statements</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-rules.html#sec_logic-rules-7" class="internal"><span class="title">Deductions</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-rules.html#rqs-logic-prop" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-rules.html#practice-logic-rules" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-rules.html#exercises-logic-rules" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-proofs.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Proofs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-proofs.html#logic-proofs-intro" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-proofs.html#PA-logic-proofs" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#sec_logic-proofs-4" class="internal"><span class="title">Direct Proof</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#ssec_contrapositive-proof" class="internal"><span class="title">Proof by Contrapositive</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#sec_logic-proofs-6" class="internal"><span class="title">Proof by Contradiction</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-proofs.html#subsec-summary-of-proof-styles" class="internal"><span class="title">Summary of Proof Styles</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-proofs.html#rqs-logic-proof" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-proofs.html#practice_logic-proofs" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-proofs.html#exercises_logic-proofs" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-structures.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Proofs about Discrete Structures</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_logic-structures.html#logic-structures-intro" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_logic-structures.html#PA-logic-structures" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#sec_logic-structures-4" class="internal"><span class="title">Proofs about Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#subsec-logic-proofs-functions" class="internal"><span class="title">Proofs about Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#subsec-proofs-about-relations" class="internal"><span class="title">Proofs about Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_logic-structures.html#subsec-proofs-about-graphs" class="internal"><span class="title">Proofs about Graphs</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_logic-structures.html#rqs-logic-structures" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-structures.html#practice-logic-structures" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-structures.html#exercises-logic-structures" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_logic-conc.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_logic-conc.html#exercises_logic-conc" class="internal"><span class="codenumber">1.6</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_graphtheory.html" class="internal"><span class="codenumber">2</span> <span class="title">Graph Theory</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-intro.html" class="internal"><span class="codenumber">2.1</span> <span class="title">Problems and Definitions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-intro.html#subsec-gt-intro-preview" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-intro.html#PA-gt-intro" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-intro.html#sec_gt-intro-5" class="internal"><span class="title">What is a Graph?</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-intro.html#rqs-gt-intro" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-intro.html#practice_gt-intro" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-intro.html#exercises_gt-intro" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_trees.html" class="internal"><span class="codenumber">2.2</span> <span class="title">Trees</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_trees.html#sec_trees-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_trees.html#PA-gt-trees" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trees.html#sec_trees-4" class="internal"><span class="title">Properties of Trees</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trees.html#sec_trees-5" class="internal"><span class="title">Spanning Trees</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_trees.html#subsec-rooted-trees" class="internal"><span class="title">Rooted Trees</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_trees.html#rqs-gt-trees" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trees.html#practice_gt-trees" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_trees.html#exercises_gt-trees" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-planar.html" class="internal"><span class="codenumber">2.3</span> <span class="title">Planar Graphs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-planar.html#PA-gt-planar" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-4" class="internal"><span class="title">Euler’s Formula for Planar Graphs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-5" class="internal"><span class="title">Non-planar Graphs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-planar.html#sec_gt-planar-6" class="internal"><span class="title">Polyhedra</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-planar.html#rqs-gt-planar" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-planar.html#practice_gt-planar" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-planar.html#exercises_gt-planar" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-paths.html" class="internal"><span class="codenumber">2.4</span> <span class="title">Euler Trails and Circuits</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-paths.html#sec_gt-paths-14" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-paths.html#PA-gt-paths" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-paths.html#sec_gt-paths-15" class="internal"><span class="title">Conditions for Euler Trails</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-paths.html#gt-ham-paths" class="internal"><span class="title">Hamilton Paths</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-paths.html#rqs-gt-paths" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-paths.html#practice_gt-paths" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-paths.html#exercises_gt-paths" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_coloring.html" class="internal"><span class="codenumber">2.5</span> <span class="title">Coloring</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_coloring.html#sec_coloring-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_coloring.html#PA-coloring-vertices" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_coloring.html#sec_coloring-4" class="internal"><span class="title">Coloring Vertices</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_coloring.html#sec_coloring-5" class="internal"><span class="title">Coloring Edges</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_coloring.html#rqs-gt-coloring" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_coloring.html#practice_gt-coloring" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_coloring.html#exercises_gt-coloring" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-relations.html" class="internal"><span class="codenumber">2.6</span> <span class="title">Relations and Graphs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_gt-relations.html#gt-relations-section-previw" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_gt-relations.html#PA-gt-relations" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec-relations-generally" class="internal"><span class="title">Relations Generally</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec-properties-of-relations" class="internal"><span class="title">Properties of Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec_equivalence-relations" class="internal"><span class="title">Equivalence Relations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_gt-relations.html#subsec-equivalence-classes-and-partitions" class="internal"><span class="title">Equivalence Classes and Partitions</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_gt-relations.html#rqs-gt-relations" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-relations.html#practice_gt-relations" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-relations.html#exercises_gt-relations" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_matchings.html" class="internal"><span class="codenumber">2.7</span> <span class="title">Matching in Bipartite Graphs</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_matchings.html#exercises_gt-matchings" class="internal"><span class="codenumber">2.7</span> <span class="title">Exercises</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_gt-conc.html" class="internal"><span class="codenumber">2.8</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_gt-conc.html#exercises_gt-conc" class="internal"><span class="codenumber">2.8</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_counting.html" class="internal"><span class="codenumber">3</span> <span class="title">Counting</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-pascal.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Pascal’s Arithmetical Triangle</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-pascal.html#PA-counting-pascal" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-5" class="internal"><span class="title">Lattice Paths</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#subsec-counting-binom-bitstrings" class="internal"><span class="title">Bit Strings</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-7" class="internal"><span class="title">Subsets and Pizzas</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-pascal.html#sec_counting-pascal-8" class="internal"><span class="title">Algebra?</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-pascal.html#rqs-counting-pascal" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-pascal.html#practice_counting-binom" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-pascal.html#exercises_counting-binom" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-combine-outcomes.html" class="internal"><span class="codenumber">3.2</span> <span class="title">Combining Outcomes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#sec_counting-combine-outcomes-7" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#PA-counting-combine" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#sec_counting-combine-outcomes-8" class="internal"><span class="title">What are <em class="emphasis">Outcomes</em>?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#sec_counting-combine-outcomes-9" class="internal"><span class="title">The Sum and Product Principles</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#subsec-sum-product" class="internal"><span class="title">Combining Principles</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#rqs-counting-addmult" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#practice_counting-combine-outcomes" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combine-outcomes.html#exercises_counting-combine-outcomes" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-non-disjoint.html" class="internal"><span class="codenumber">3.3</span> <span class="title">Non-Disjoint Outcomes</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-non-disjoint.html#sec_counting-non-disjoint-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#PA-counting-non-disjoint" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#subsec_counting-venn" class="internal"><span class="title">Counting with Venn Diagrams</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#subsec-pie" class="internal"><span class="title">The Principle of Inclusion/Exclusion</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#subsec-overlaps-and-the-product-principle" class="internal"><span class="title">Overlaps and the Product Principle</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#rqs-counting-non-disjoint" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#practice_counting-repeats" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-non-disjoint.html#exercises_counting-repeats" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-combperm.html" class="internal"><span class="codenumber">3.4</span> <span class="title">Combinations and Permutations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-combperm.html#sec_counting-combperm-5" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-combperm.html#PA-counting-combperm" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combperm.html#subsec-counting-sequences" class="internal"><span class="title">Counting Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combperm.html#subsec-combinations" class="internal"><span class="title">Counting Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-combperm.html#subsec-quotient-principle" class="internal"><span class="title">The Quotient Principle</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-combperm.html#rqs-counting-combperm" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combperm.html#practice_counting-combperm" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-combperm.html#exercises_counting-combperm" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_counting-multisets.html" class="internal"><span class="codenumber">3.5</span> <span class="title">Counting Multisets</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_counting-multisets.html#sec_counting-multisets-8" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_counting-multisets.html#PA-couting-multisets" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-multisets.html#subsec-cookies-kids" class="internal"><span class="title">Have Some Cookies</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_counting-multisets.html#subsec-representing-multisets-with-bit-strings" class="internal"><span class="title">Representing Multisets with Bit Strings</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_counting-multisets.html#rqs-counting-multisets" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-multisets.html#exercises_stars-and-bars" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_counting-multisets.html#exercises_multisets" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_comb-proofs.html" class="internal"><span class="codenumber">3.6</span> <span class="title">Combinatorial Proofs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_comb-proofs.html#sec_comb-proofs-5" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_comb-proofs.html#Activity-13-combinatorial-proofs" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_comb-proofs.html#subsec_patternsPascal" class="internal"><span class="title">Patterns in Pascal’s Triangle</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_comb-proofs.html#subsec_moreProofs" class="internal"><span class="title">More Proofs</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_comb-proofs.html#rqs-counting-proofs" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_comb-proofs.html#practice-comb-proofs" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_comb-proofs.html#exercises_comb-proofs" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec-counting-probability.html" class="internal"><span class="codenumber">3.7</span> <span class="title">Applications to Probability</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec-counting-probability.html#sec-counting-probability-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec-counting-probability.html#PA-counting-probability" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec-counting-probability.html#subsec-computing-probabilities" class="internal"><span class="title">Computing Probabilities</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec-counting-probability.html#subsec-probability-rules" class="internal"><span class="title">Probability Rules</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec-counting-probability.html#sec-counting-probability-6" class="internal"><span class="title">Conditional Probability</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec-counting-probability.html#rqs-counting-probability" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec-counting-probability.html#practice-counting-probability" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec-counting-probability.html#ex-counting-probability" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_advPIE.html" class="internal"><span class="codenumber">3.8</span> <span class="title">Advanced Counting Using PIE</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_advPIE.html#sec_advPIE-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_advPIE.html#PA-counting-advPIE" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_advPIE.html#subsec-multset-pie" class="internal"><span class="title">PIE for Multisets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_advPIE.html#subsec_derangements" class="internal"><span class="title">Counting Derangements</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_advPIE.html#sec_advPIE-7" class="internal"><span class="title">Counting Functions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_advPIE.html#practice-counting-advPIE" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_advPIE.html#exercises_counting-advPIE" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_count-conc.html" class="internal"><span class="codenumber">3.9</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_count-conc.html#exercises_count-conc" class="internal"><span class="codenumber">3.9</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_sequences.html" class="internal"><span class="codenumber">4</span> <span class="title">Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq_intro.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Describing Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq_intro.html#subsec-preview" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq_intro.html#PA-seq-basic" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq_intro.html#subsec-formulas-for-sequences" class="internal"><span class="title">Sequences and Formulas</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq_intro.html#subsec-partial-sums" class="internal"><span class="title">Partial Sums and Differences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq_intro.html#subsec-seq-python" class="internal"><span class="title">Sequences in python</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq_intro.html#rqs-seq-basics" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq_intro.html#practice_seq_basics" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq_intro.html#exercises_seq_basics" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-growth.html" class="internal"><span class="codenumber">4.2</span> <span class="title">Rate of Growth</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-growth.html#sec_seq-growth-3" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-growth.html#PA-seq-growth" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-growth.html#subsec-arithmetic" class="internal"><span class="title">Arithmetic Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-growth.html#subsec-geometric-sequences" class="internal"><span class="title">Geometric Sequences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-growth.html#subsec-beyond-arithmetic-and-geometric-sequences" class="internal"><span class="title">Beyond Arithmetic and Geometric Sequences</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-growth.html#rqs-seq-arithgeom" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-growth.html#practice_seq-growth" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-growth.html#exercises_seq-growth" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-polynomial.html" class="internal"><span class="codenumber">4.3</span> <span class="title">Polynomial Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-polynomial.html#sec_seq-polynomial-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-polynomial.html#PA-seq-polynomial" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-polynomial.html#sec_seq-polynomial-5" class="internal"><span class="title">Summing Arithmetic Sequences: Reverse and Add</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-polynomial.html#subsec-seq-higher-poly" class="internal"><span class="title">Higher Degree Polynomials</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-polynomial.html#sec_seq-polynomial-7" class="internal"><span class="title">Solving Systems of Equations with Technology</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-polynomial.html#rqs-seq-polyfit" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-polynomial.html#practice_seq-polynomial" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-polynomial.html#exercises_seq-polynomial" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-exponential.html" class="internal"><span class="codenumber">4.4</span> <span class="title">Exponential Sequences</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-exponential.html#sec_seq-exponential-4" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-exponential.html#PA-seq-exponential" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-exponential.html#subsec-sum-geometric" class="internal"><span class="title">Summing Geometric Sequences: Multiply, Shift, and Subtract</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-exponential.html#sec_seq-exponential-6" class="internal"><span class="title">The Characteristic Root Technique</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-exponential.html#rqs-seq-recurrence" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-exponential.html#practice-sec-recurrence" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-exponential.html#exercises-sec-recurrence" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-induction.html" class="internal"><span class="codenumber">4.5</span> <span class="title">Proof by Induction</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-induction.html#subsec-induction-preview" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-induction.html#PA-seq-induction" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-induction.html#subsec_induction-recursion" class="internal"><span class="title">Recursive Reasoning</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-induction.html#subsec_induction-formproofs" class="internal"><span class="title">Formalizing Proofs</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-induction.html#subsec_induction-examples" class="internal"><span class="title">Examples</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-induction.html#rqs-seq-induction" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-induction.html#practice-sec-induction" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-induction.html#exercises_seq-induction" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_seq-strong-induction.html" class="internal"><span class="codenumber">4.6</span> <span class="title">Strong Induction</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_seq-strong-induction.html#subsec-going-farther-back" class="internal"><span class="title">Section Preview</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-worksheet"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#PA-strong-indcution" class="internal"><span class="title">Preview Activity</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#sec_seq-strong-induction-6" class="internal"><span class="title">Divide and Conquer</span></a></div></li>
+<li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#rqs-seq-strong-induction" class="internal"><span class="title">Reading Questions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#practice-sec-strong-induction" class="internal"><span class="title">Practice Problems</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_seq-strong-induction.html#exercises_seq-strong-induction" class="internal"><span class="title">Additional Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_sequences-conc.html" class="internal"><span class="codenumber">4.7</span> <span class="title">Chapter Summary</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_sequences-conc.html#exercises_seq-conc" class="internal"><span class="codenumber">4.7</span> <span class="title">Chapter Review</span></a></div></li></ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="ch_structures.html" class="internal"><span class="codenumber">5</span> <span class="title">Discrete Structures Revisited</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_structures-sets.html" class="internal"><span class="codenumber">5.1</span> <span class="title">Sets</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#subsec_notation" class="internal"><span class="title">Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#sec_structures-sets-4" class="internal"><span class="title">Relationships between Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#sec_structures-sets-5" class="internal"><span class="title">Operations on Sets</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-sets.html#sec_structures-sets-6" class="internal"><span class="title">Venn Diagrams</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_structures-sets.html#exercises_intro-sets" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_structures-functions.html" class="internal"><span class="codenumber">5.2</span> <span class="title">Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-functions.html#sec_structures-functions-3" class="internal"><span class="title">Describing Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_structures-functions.html#subsec_surj-inj-bij" class="internal"><span class="title">Surjections, Injections, and Bijections</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_structures-functions.html#sec_structures-functions-5" class="internal"><span class="title">Image and Inverse Image</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-reading-questions"><div class="toc-title-box"><a href="sec_structures-functions.html#rqs-intro-functions" class="internal"><span class="title">Reading Questions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_structures-functions.html#exercises_intro-functions" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="ch_additionalTopics.html" class="internal"><span class="codenumber">6</span> <span class="title">Additional Topics</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="sec_addtops-genfun.html" class="internal"><span class="codenumber">6.1</span> <span class="title">Generating Functions</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-4" class="internal"><span class="title">Building Generating Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-5" class="internal"><span class="title">Differencing</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-6" class="internal"><span class="title">Multiplication and Partial Sums</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-genfun.html#sec_addtops-genfun-7" class="internal"><span class="title">Solving Recurrence Relations with Generating Functions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_addtops-genfun.html#exercises_addtops-genfun" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_addtops-numbth.html" class="internal"><span class="codenumber">6.2</span> <span class="title">Introduction to Number Theory</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-4" class="internal"><span class="title">Divisibility</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-5" class="internal"><span class="title">Remainder Classes</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-6" class="internal"><span class="title">Properties of Congruence</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-7" class="internal"><span class="title">Solving Congruences</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_addtops-numbth.html#sec_addtops-numbth-8" class="internal"><span class="title">Solving Linear Diophantine Equations</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_addtops-numbth.html#exercises_addtops-numbth" class="internal"><span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="backmatter.html" class="internal"><span class="title">Backmatter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="backmatter-2.html" class="internal"><span class="codenumber">A</span> <span class="title">Selected Hints</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="backmatter-3.html" class="internal"><span class="codenumber">B</span> <span class="title">Selected Solutions</span></a></div></li>
+<li class="toc-item toc-appendix"><div class="toc-title-box"><a href="backmatter-4.html" class="internal"><span class="codenumber">C</span> <span class="title">List of Symbols</span></a></div></li>
+<li class="toc-item toc-index"><div class="toc-title-box"><a href="backmatter-5.html" class="internal"><span class="title">Index</span></a></div></li>
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="backmatter-6.html" class="internal"><span class="title">Colophon</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="section" id="sec_addtops-genfun"><h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Generating Functions</span>
+</h2>
+<section class="introduction" id="sec_addtops-genfun-3"><div class="para" id="sec_addtops-genfun-3-1">There is an extremely powerful tool in discrete mathematics used to manipulate sequences called the generating function. The idea is this: instead of an infinite sequence (for example: <span class="process-math">\(2, 3, 5, 8, 12, \ldots\)</span>) we look at a single function which encodes the sequence. But not a function that gives the <span class="process-math">\(n\)</span>th term as output. Instead, a function whose power series (like from calculus) “displays” the terms of the sequence. So for example, we would look at the power series <span class="process-math">\(2 + 3x + 5x^2 + 8x^3 + 12x^4 + \cdots\)</span> which displays the sequence <span class="process-math">\(2, 3, 5, 8, 12, \ldots\)</span> as coefficients.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-3-2">
+<div class="para">An infinite power series is simply an infinite sum of terms of the form <span class="process-math">\(c_nx^n\)</span> were <span class="process-math">\(c_n\)</span> is some constant. So we might write a power series like this:</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\sum_{k=0}^\infty c_k x^k\text{.}
+\end{equation*}
+</div>
+<div class="para">or expanded like this</div>
+<div class="displaymath process-math">
+\begin{equation*}
+c_0 + c_1x + c_2x^2 + c_3x^3 + c_4x^4 + c_5x^5 + \cdots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-3-3">
+<div class="para">When viewed in the context of generating functions, we call such a power series a <em class="emphasis">generating series</em>. The generating series generates the sequence</div>
+<div class="displaymath process-math">
+\begin{equation*}
+c_0, c_1, c_2, c_3, c_4, c_5, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-3-4">In other words, the sequence generated by a generating series is simply the sequence of <em class="emphasis">coefficients</em> of the infinite polynomial.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_addtops-genfun-3-5"><h3 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h3>
+<div class="para" id="sec_addtops-genfun-3-5-1-1">What sequence is represented by the generating series <span class="process-math">\(3 + 8x^2 + x^3 + \frac{x^5}{7} + 100x^6 + \cdots\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="sec_addtops-genfun-3-5-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="sec_addtops-genfun-3-5-2-1">
+<div class="para">We just read off the coefficients of each <span class="process-math">\(x^n\)</span> term. So <span class="process-math">\(a_0 = 3\)</span> since the coefficient of <span class="process-math">\(x^0\)</span> is 3 (<span class="process-math">\(x^0 = 1\)</span> so this is the constant term). What is <span class="process-math">\(a_1\text{?}\)</span> It is NOT 8, since 8 is the coefficient of <span class="process-math">\(x^2\text{,}\)</span> so 8 is the term <span class="process-math">\(a_2\)</span> of the sequence. To find <span class="process-math">\(a_1\)</span> we need to look for the coefficient of <span class="process-math">\(x^1\)</span> which in this case is 0. So <span class="process-math">\(a_1 = 0\text{.}\)</span> Continuing, we have <span class="process-math">\(a_2 = 8\text{,}\)</span> <span class="process-math">\(a_3 = 1\text{,}\)</span> <span class="process-math">\(a_4 = 0\text{,}\)</span> and <span class="process-math">\(a_5 = \frac{1}{7}\text{.}\)</span> So we have the sequence</div>
+<div class="displaymath process-math">
+\begin{equation*}
+3, 0, 8, 1, 0, \frac{1}{7}, 100, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-3-5-2-2">Note that when discussing generating functions, we always start our sequence with <span class="process-math">\(a_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-5-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 6.1.1.1"><a href="#sec_addtops-genfun-3-5-2" title="Copy heading and permalink for Solution 6.1.1.1" aria-label="Copy heading and permalink for Solution 6.1.1.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 6.1.1"><a href="#sec_addtops-genfun-3-5" title="Copy heading and permalink for Example 6.1.1" aria-label="Copy heading and permalink for Example 6.1.1">🔗</a></div></article><div class="para" id="sec_addtops-genfun-3-6">Now you might very naturally ask why we would do such a thing. One reason is that encoding a sequence with a power series helps us keep track of which term is which in the sequence. For example, if we write the sequence <span class="process-math">\(1, 3, 4, 6, 9, \ldots, 24, 41,\ldots\)</span> it is impossible to determine which term <span class="process-math">\(24\)</span> is (even if we agreed that the first term was supposed to be <span class="process-math">\(a_0\)</span>). However, if we wrote the generating series instead, we would have <span class="process-math">\(1 + 3x + 4x^2 + 6x^3 + 9x^4 + \cdots + 24 x^{17} + 41 x^{18} + \cdots\text{.}\)</span> Now it is clear that 24 is the 17th term of the sequence (that is, <span class="process-math">\(a_{17} = 24\)</span>). Of course to get this benefit we could have displayed our sequence in any number of ways, perhaps <span class="process-math">\(\fbox{1}_0 \fbox{3}_1 \fbox{4}_2 \fbox{6}_3 \fbox{9}_4 \cdots \fbox{24}_{17}\fbox{41}_{18}\cdots\text{,}\)</span> but we do not do this. The reason is that the generating series looks like an ordinary power series (although we are interpreting it differently) so we can do things with it that we ordinarily do with power series such as write down what it converges to.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-3-7">
+<div class="para">For example, from calculus we know that the power series <span class="process-math">\(1 + x + \frac{x^2}{2} + \frac{x^3}{6} + \frac{x^4}{24} + \cdots + \frac{x^n}{n!} + \cdots\)</span> converges to the function <span class="process-math">\(e^x\text{.}\)</span> So we can use <span class="process-math">\(e^x\)</span> as a way of talking about the sequence of coefficients of the power series for <span class="process-math">\(e^x\text{.}\)</span> When we write down a nice compact function which has an infinite power series that we view as a generating series, then we call that function a <em class="emphasis">generating function</em>. In this example, we would say</div>
+<div class="displaymath process-math">
+\begin{equation*}
+1, 1, \frac{1}{2}, \frac{1}{6}, \frac{1}{24}, \ldots, \frac{1}{n!}, \ldots \mbox{ has generating function }  e^x\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-3-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></section><section class="subsection" id="sec_addtops-genfun-4"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Building Generating Functions</span>
+</h3>
+<div class="para" id="sec_addtops-genfun-4-2">The <span class="process-math">\(e^x\)</span> example is very specific. We have a rather odd sequence, and the only reason we know its generating function is because we happen to know the Taylor series for <span class="process-math">\(e^x\text{.}\)</span> Our goal now is to gather some tools to build the generating function of a particular given sequence.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-3">
+<div class="para">Let’s see what the generating functions are for some very simple sequences. The simplest of all: 1, 1, 1, 1, 1, …. What does the <em class="emphasis">generating series</em> look like? It is simply <span class="process-math">\(1 + x + x^2 + x^3 + x^4 + \cdots\text{.}\)</span> Now, can we find a closed formula for this power series? Yes! This particular series is really just a geometric series with common ratio <span class="process-math">\(x\text{.}\)</span> So if we use our “multiply, shift and subtract” technique from <a href="sec_seq-exponential.html" class="internal" title="Section 4.4: Exponential Sequences">Section 4.4</a>, we have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_seq-exponential.html" id="sec_addtops-genfun-4-3-7">
+\begin{align*}
+S \amp  = 1 + x + x^2 + x^3 + \cdots\\
+\underline{-\qquad xS} \amp  \underline{\,\, = ~~~~~~ x + x^2 + x^3 + x^4 + \cdots}\\
+(1-x)S \amp  = 1
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-4">
+<div class="para">Therefore we see that</div>
+<div class="displaymath process-math">
+\begin{equation*}
+1 + x + x^2 + x^3 \cdots = \dfrac{1}{1-x}\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-4-5">You might remember from calculus that this is only true on the interval of convergence for the power series, in this case when <span class="process-math">\(|x| \lt 1\text{.}\)</span> That is true for us, but we don’t care. We are never going to plug anything in for <span class="process-math">\(x\text{,}\)</span> so as long as there is some value of <span class="process-math">\(x\)</span> for which the generating function and generating series agree, we are happy. And in this case we are happy.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="assemblage assemblage-like" id="sec_addtops-genfun-4-6"><h4 class="heading"><span class="title"><span class="process-math">\(1,1,1,\ldots\)</span>.</span></h4>
+<div class="para" id="sec_addtops-genfun-4-6-2">The generating function for <span class="process-math">\(1,1,1,1,1,1,\ldots\)</span> is <span class="process-math">\(\dfrac{1}{1-x}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-6-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Summary: 1,1,1,\ldots"><a href="#sec_addtops-genfun-4-6" title="Copy heading and permalink for Summary: 1,1,1,\ldots" aria-label="Copy heading and permalink for Summary: 1,1,1,\ldots">🔗</a></div></article><div class="para logical" id="sec_addtops-genfun-4-7">
+<div class="para">Let’s use this basic generating function to find generating functions for more sequences. What if we replace <span class="process-math">\(x\)</span> by <span class="process-math">\(-x\text{.}\)</span> We get</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{1+x} = 1 - x + x^2 - x^3 + \cdots \mbox{ which generates }  1, -1, 1, -1, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-8">
+<div class="para">If we replace <span class="process-math">\(x\)</span> by <span class="process-math">\(3x\)</span> we get</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{1-3x} = 1 + 3x + 9x^2 + 27x^3 + \cdots \mbox{ which generates }  1, 3, 9, 27, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-9">
+<div class="para">By replacing the <span class="process-math">\(x\)</span> in <span class="process-math">\(\frac{1}{1-x}\)</span> we can get generating functions for a variety of sequences, but not all. For example, you cannot plug in anything for <span class="process-math">\(x\)</span> to get the generating function for <span class="process-math">\(2,2,2,2, \ldots\text{.}\)</span> However, we are not lost yet. Notice that each term of <span class="process-math">\(2, 2, 2, 2, \ldots\)</span> is the result of multiplying the terms of <span class="process-math">\(1, 1, 1, 1, \ldots\)</span> by the constant 2. So multiply the generating function by 2 as well.</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{2}{1-x} = 2 + 2x + 2x^2 + 2x^3 + \cdots \mbox{ which generates }  2, 2, 2, 2, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-10">
+<div class="para">Similarly, to find the generating function for the sequence <span class="process-math">\(3, 9, 27, 81, \ldots\text{,}\)</span> we note that this sequence is the result of multiplying each term of <span class="process-math">\(1, 3, 9, 27, \ldots\)</span> by 3. Since we have the generating function for <span class="process-math">\(1, 3, 9, 27, \ldots\)</span> we can say</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{3}{1-3x} = 3\cdot 1 + 3\cdot 3x + 3\cdot 9x^2 + 3\cdot 27x^3 + \cdots \mbox{ which generates }  3, 9, 27, 81, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-11">
+<div class="para">What about the sequence <span class="process-math">\(2, 4, 10, 28, 82, \ldots\text{?}\)</span> Here the terms are always 1 more than powers of 3. That is, we have added the sequences <span class="process-math">\(1,1,1,1,\ldots\)</span> and <span class="process-math">\(1,3,9, 27,\ldots\)</span> term by term. Therefore we can get a generating function by adding the respective generating functions:</div>
+<div class="displaymath process-math" id="sec_addtops-genfun-4-11-4">
+\begin{align*}
+2 + 4x + 10x^2 + 28x^3 + \cdots  \amp  = (1 + 1) + (1 + 3)x + (1 + 9)x^2 + (1 + 27)x^3 + \cdots\\
+\amp  = 1 + x + x^2 + x^3 + \cdots + 1 + 3x + 9x^2 + 27x^3 + \cdots\\
+\amp  = \frac{1}{1-x} + \frac{1}{1-3x}
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-12">
+<div class="para">The fun does not stop there: if we replace <span class="process-math">\(x\)</span> in our original generating function by <span class="process-math">\(x^2\)</span> we get</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{1-x^2} = 1 + x^2  + x^4 + x^6\cdots \mbox{ which generates }  1, 0, 1, 0, 1, 0, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-13">
+<div class="para">How could we get <span class="process-math">\(0,1,0,1,0,1,\ldots\text{?}\)</span> Start with the previous sequence and <em class="emphasis">shift</em> it over by 1. But how do you do this? To see how shifting works, let’s first try to get the generating function for the sequence <span class="process-math">\(0, 1, 3, 9, 27, \ldots\text{.}\)</span> We know that <span class="process-math">\(\frac{1}{1-3x} = 1 + 3x + 9x^2 + 27x^3 + \cdots\text{.}\)</span> To get the zero out front, we need the generating series to look like <span class="process-math">\(x + 3x^2 + 9x^3 + 27x^4+ \cdots\)</span> (so there is no constant term). Multiplying by <span class="process-math">\(x\)</span> has this effect. So the generating function for <span class="process-math">\(0, 1, 3, 9, 27, \ldots\)</span> is <span class="process-math">\(\frac{x}{1-3x}\text{.}\)</span> This will also work to get the generating function for <span class="process-math">\(0,1,0,1,0,1,\ldots\text{:}\)</span>
+</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{x}{1-x^2} = x + x^3 + x^5 + \cdots \mbox{ which generates }  0, 1, 0, 1, 0 , 1 \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-4-14">
+<div class="para">What if we add the sequences <span class="process-math">\(1,0,1,0,1,0,\ldots\)</span> and <span class="process-math">\(0,1,0,1,0,1,\ldots\)</span> term by term? We should get <span class="process-math">\(1,1,1,1,1,1\ldots\text{.}\)</span> What happens when we add the generating functions? It works (try it)!</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{1-x^2} + \frac{x}{1-x^2} = \frac{1}{1-x}\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-4-15">Here’s a sneaky one: what happens if you take the <em class="emphasis">derivative</em> of <span class="process-math">\(\frac{1}{1-x}\text{?}\)</span> We get <span class="process-math">\(\frac{1}{(1-x)^2}\text{.}\)</span> On the other hand, if we differentiate term by term in the power series, we get <span class="process-math">\((1 + x + x^2 + x^3 + \cdots)' = 1 + 2x + 3x^2 + 4x^3 + \cdots\)</span> which is the generating series for <span class="process-math">\(1, 2, 3, 4, \ldots\text{.}\)</span> This says<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-15" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="assemblage assemblage-like" id="sec_addtops-genfun-4-16"><h4 class="heading"><span class="title"><span class="process-math">\(1,2,3,\ldots\)</span>.</span></h4>
+<div class="para" id="sec_addtops-genfun-4-16-2">The generating function for <span class="process-math">\(1, 2, 3, 4, 5, \ldots\)</span> is <span class="process-math">\(\d\frac{1}{(1-x)^2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-16-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Summary: 1,2,3,\ldots"><a href="#sec_addtops-genfun-4-16" title="Copy heading and permalink for Summary: 1,2,3,\ldots" aria-label="Copy heading and permalink for Summary: 1,2,3,\ldots">🔗</a></div></article><div class="para" id="sec_addtops-genfun-4-17">Take a second derivative: <span class="process-math">\(\frac{2}{(1-x)^3} = 2 + 6x + 12x^2 + 20x^3 + \cdots\text{.}\)</span> So <span class="process-math">\(\frac{1}{(1-x)^3} = 1 + 3x + 6x^2 + 10x^3 + \cdots\)</span> is a generating function for the triangular numbers, <span class="process-math">\(1,3,6,10\ldots\)</span> (although here we have <span class="process-math">\(a_0 = 1\)</span> while <span class="process-math">\(T_0 = 0\)</span> usually).<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-4-17" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection: Building Generating Functions"><a href="#sec_addtops-genfun-4" title="Copy heading and permalink for Subsection: Building Generating Functions" aria-label="Copy heading and permalink for Subsection: Building Generating Functions">🔗</a></div></section><section class="subsection" id="sec_addtops-genfun-5"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Differencing</span>
+</h3>
+<div class="para" id="sec_addtops-genfun-5-3">We have seen how to find generating functions from <span class="process-math">\(\frac{1}{1-x}\)</span> using multiplication (by a constant or by <span class="process-math">\(x\)</span>), substitution, addition, and differentiation. To use each of these, you must notice a way to transform the sequence <span class="process-math">\(1,1,1,1,1\ldots\)</span> into your desired sequence. This is not always easy. It is also not really the way we have analyzed sequences. One thing we have considered often is the sequence of differences between terms of a sequence. This will turn out to be helpful in finding generating functions as well. The sequence of differences is often simpler than the original sequence. So if we know a generating function for the differences, we would like to use this to find a generating function for the original sequence.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-5-4">
+<div class="para">For example, consider the sequence <span class="process-math">\(2, 4, 10, 28, 82, \ldots\text{.}\)</span> How could we move to the sequence of first differences: <span class="process-math">\(2, 6, 18, 54,\ldots\text{?}\)</span> We want to subtract 2 from the 4, 4 from the 10, 10 from the 28, and so on. So if we subtract (term by term) the sequence <span class="process-math">\(0, 2, 4, 10, 28,\ldots\)</span> from <span class="process-math">\(2, 4, 10, 28\ldots\text{,}\)</span> we will be set. We can get the generating function for <span class="process-math">\(0,2,4,10,28,\ldots\)</span> from the generating function for <span class="process-math">\(2,4,10,28\ldots\)</span> by multiplying by <span class="process-math">\(x\text{.}\)</span> Use <span class="process-math">\(A\)</span> to represent the generating function for <span class="process-math">\(2, 4, 10, 28, 82, \ldots\)</span> Then:</div>
+<div class="displaymath process-math" id="sec_addtops-genfun-5-4-10">
+\begin{align*}
+A \amp  = 2 + 4x + 10x^2 +28x^3 + 82x^4 + \cdots\\
+\underline{-\qquad xA} \amp  \underline{\,\,= 0 + 2x + 4x^2 + 10x^3 + 28 x^4 + 82x^5 + \cdots}\\
+(1-x)A \amp  = 2 + 2x + 6x^2 + 18x^3 + 54x^4 + \cdots
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-5-5">While we don’t get exactly the sequence of differences, we do get something close. In this particular case, we already know the generating function <span class="process-math">\(A\)</span> (we found it in the previous section) but most of the time we will use this differencing technique to <em class="emphasis">find</em> <span class="process-math">\(A\text{:}\)</span> if we have the generating function for the sequence of differences, we can then solve for <span class="process-math">\(A\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_addtops-genfun-5-6"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_addtops-genfun-5-6-1-1">Find a generating function for <span class="process-math">\(1, 3, 5, 7, 9,\ldots\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="sec_addtops-genfun-5-6-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="sec_addtops-genfun-5-6-2-1">
+<div class="para">Notice that the sequence of differences is constant. We know how to find the generating function for any constant sequence. So denote the generating function for <span class="process-math">\(1, 3, 5, 7, 9, \ldots\)</span> by <span class="process-math">\(A\text{.}\)</span> We have</div>
+<div class="displaymath process-math" id="sec_addtops-genfun-5-6-2-1-3">
+\begin{align*}
+A \amp  = 1 + 3x + 5x^2 + 7x^3 + 9x^4 + \cdots\\
+\underline{-\qquad xA} \amp  \underline{\,\,= 0 + x + 3x^2 +  5x^3 + 7x^4 + 9x^5 + \cdots}\\
+(1-x)A \amp  = 1 + 2x + 2x^2 + 2x^3 + 2x^4 + \cdots
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-6-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-5-6-2-2">
+<div class="para">We know that <span class="process-math">\(2x + 2x^2 + 2x^3 + 2x^4 + \cdots = \dfrac{2x}{1-x}\text{.}\)</span> Thus</div>
+<div class="displaymath process-math">
+\begin{equation*}
+(1-x)A = 1 + \frac{2x}{1-x}\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-6-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-5-6-2-3">
+<div class="para">Now solve for <span class="process-math">\(A\text{:}\)</span>
+</div>
+<div class="displaymath process-math">
+\begin{equation*}
+A = \frac{1}{1-x} + \frac{2x}{(1-x)^2} = \frac{1+x}{(1-x)^2}\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-6-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-5-6-2-4">Does this make sense? Before we simplified the two fractions into one, we were adding the generating function for the sequence <span class="process-math">\(1,1,1,1,\ldots\)</span> to the generating function for the sequence <span class="process-math">\(0, 2, 4, 6, 8, 10, \ldots\)</span> (remember <span class="process-math">\(\frac{1}{(1-x)^2}\)</span> generates <span class="process-math">\(1,2,3,4,5, \ldots\text{,}\)</span> multiplying by <span class="process-math">\(2x\)</span> shifts it over, putting the zero out front, and doubles each term). If we add these term by term, we get the correct sequence <span class="process-math">\(1,3,5,7, 9, \ldots\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-6-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 6.1.2.1"><a href="#sec_addtops-genfun-5-6-2" title="Copy heading and permalink for Solution 6.1.2.1" aria-label="Copy heading and permalink for Solution 6.1.2.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 6.1.2"><a href="#sec_addtops-genfun-5-6" title="Copy heading and permalink for Example 6.1.2" aria-label="Copy heading and permalink for Example 6.1.2">🔗</a></div></article><div class="para" id="sec_addtops-genfun-5-7">Now that we have a generating function for the odd numbers, we can use that to find the generating function for the squares:<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_addtops-genfun-5-8"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_addtops-genfun-5-8-1-1">Find the generating function for <span class="process-math">\(1, 4, 9, 16, \ldots\text{.}\)</span> Note we take <span class="process-math">\(1 = a_0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="sec_addtops-genfun-5-8-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="sec_addtops-genfun-5-8-2-1">
+<div class="para">Again we call the generating function for the sequence <span class="process-math">\(A\text{.}\)</span> Using differencing:</div>
+<div class="displaymath process-math" id="sec_addtops-genfun-5-8-2-1-2">
+\begin{align*}
+A \amp  = 1 + 4x + 9x^2 + 16x^3 + \cdots\\
+\underline{-\qquad xA} \amp  \underline{\,\, = 0 + x + 4x^2 + 9x^3 + 16x^4 + \cdots}\\
+(1-x)A \amp  = 1 + 3x + 5x^2 + 7x^3 + \cdots
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-8-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-5-8-2-2">Since <span class="process-math">\(1 + 3x + 5x^2 + 7x^3 + \cdots = \d\frac{1+x}{(1-x)^2}\)</span> we have <span class="process-math">\(A = \d\frac{1+x}{(1-x)^3}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-8-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 6.1.3.1"><a href="#sec_addtops-genfun-5-8-2" title="Copy heading and permalink for Solution 6.1.3.1" aria-label="Copy heading and permalink for Solution 6.1.3.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 6.1.3"><a href="#sec_addtops-genfun-5-8" title="Copy heading and permalink for Example 6.1.3" aria-label="Copy heading and permalink for Example 6.1.3">🔗</a></div></article><div class="para" id="sec_addtops-genfun-5-9">In each of the examples above, we found the difference between consecutive terms which gave us a sequence of differences for which we knew a generating function. We can generalize this to more complicated relationships between terms of the sequence. For example, if we know that the sequence satisfies the recurrence relation <span class="process-math">\(a_n = 3a_{n-1} - 2a_{n-2}\text{?}\)</span> In other words, if we take a term of the sequence and subtract 3 times the previous term and then add 2 times the term before that, we get 0 (since <span class="process-math">\(a_n - 3a_{n-1} + 2a_{n-2} = 0\)</span>). That will hold for all but the first two terms of the sequence. So after the first two terms, the sequence of results of these calculations would be a sequence of 0’s, for which we definitely know a generating function.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_addtops-genfun-5-10"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_addtops-genfun-5-10-1-1">The sequence <span class="process-math">\(1, 3, 7, 15, 31, 63, \ldots\)</span> satisfies the recurrence relation <span class="process-math">\(a_n = 3a_{n-1} - 2a_{n-2}\text{.}\)</span> Find the generating function for the sequence.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-10-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="sec_addtops-genfun-5-10-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="sec_addtops-genfun-5-10-2-1">
+<div class="para">Call the generating function for the sequence <span class="process-math">\(A\text{.}\)</span> We have</div>
+<div class="displaymath process-math" id="sec_addtops-genfun-5-10-2-1-2">
+\begin{align*}
+A \amp  = 1 + 3x + 7x^2 + 15x^3 + 31x^4 + \cdots + a_nx^n + \cdots\\
+-3xA \amp  = 0 - 3x - 9x^2 - 21x^3 - 45x^4 - \cdots - 3a_{n-1}x^n - \cdots\\
+\underline{+~~~2x^2A_{~}^{~^{~}}} \amp  \underline{\,\, = 0 + 0x + 2x^2 + 6x^3 + 14x^4 + \cdots + 2a_{n-2}x^n + \cdots}\\
+(1-3x+2x^2)A \amp  = 1
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-10-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-5-10-2-2">We multiplied <span class="process-math">\(A\)</span> by <span class="process-math">\(-3x\)</span> which shifts every term over one spot and multiplies them by <span class="process-math">\(-3\text{.}\)</span> On the third line, we multiplied <span class="process-math">\(A\)</span> by <span class="process-math">\(2x^2\text{,}\)</span> which shifted every term over two spots and multiplied them by 2. When we add up the corresponding terms, we are taking each term, subtracting 3 times the previous term, and adding 2 times the term before that. This will happen for each term after <span class="process-math">\(a_1\)</span> because <span class="process-math">\(a_n - 3a_{n-1} + 2a_{n-2} = 0\text{.}\)</span> In general, we might have two terms from the beginning of the generating series, although in this case the second term happens to be 0 as well.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-10-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-5-10-2-3">
+<div class="para">Now we just need to solve for <span class="process-math">\(A\text{:}\)</span>
+</div>
+<div class="displaymath process-math">
+\begin{equation*}
+A = \frac{1}{1 - 3x + 2x^2}\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-5-10-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 6.1.4.1"><a href="#sec_addtops-genfun-5-10-2" title="Copy heading and permalink for Solution 6.1.4.1" aria-label="Copy heading and permalink for Solution 6.1.4.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 6.1.4"><a href="#sec_addtops-genfun-5-10" title="Copy heading and permalink for Example 6.1.4" aria-label="Copy heading and permalink for Example 6.1.4">🔗</a></div></article><div class="autopermalink" data-description="Subsection: Differencing"><a href="#sec_addtops-genfun-5" title="Copy heading and permalink for Subsection: Differencing" aria-label="Copy heading and permalink for Subsection: Differencing">🔗</a></div></section><section class="subsection" id="sec_addtops-genfun-6"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Multiplication and Partial Sums</span>
+</h3>
+<div class="para logical" id="sec_addtops-genfun-6-3">
+<div class="para">What happens to the sequences when you multiply two generating functions? Let’s see: <span class="process-math">\(A = a_0 + a_1x + a_2x^2 + \cdots\)</span> and <span class="process-math">\(B = b_0 + b_1x + b_2x^2 + \cdots\text{.}\)</span> To multiply <span class="process-math">\(A\)</span> and <span class="process-math">\(B\text{,}\)</span> we need to do a lot of distributing (infinite FOIL?) but keep in mind we will group like terms and only need to write down the first few terms to see the pattern. The constant term is <span class="process-math">\(a_0b_0\text{.}\)</span> The coefficient of <span class="process-math">\(x\)</span> is <span class="process-math">\(a_0b_1 + a_1b_0\text{.}\)</span> And so on. We get:</div>
+<div class="displaymath process-math">
+\begin{equation*}
+AB = a_0b_0 + (a_0b_1 + a_1b_0)x + (a_0b_2 + a_1b_1 + a_2b_0)x^2 + (a_0b_3 + a_1b_2 + a_2b_1 + a_3b_0)x^3 + \cdots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-6-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_addtops-genfun-6-4"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_addtops-genfun-6-4-1-1">“Multiply” the sequence <span class="process-math">\(1, 2, 3, 4, \ldots\)</span> by the sequence <span class="process-math">\(1, 2, 4, 8, 16, \ldots\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-6-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="sec_addtops-genfun-6-4-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="sec_addtops-genfun-6-4-2-1">
+<div class="para">The new constant term is just <span class="process-math">\(1 \cdot 1\text{.}\)</span> The next term will be <span class="process-math">\(1\cdot 2 + 2 \cdot 1 = 4\text{.}\)</span> The next term: <span class="process-math">\(1 \cdot 4 + 2 \cdot 2 + 3 \cdot 1 = 11\text{.}\)</span> One more: <span class="process-math">\(1 \cdot 8 + 2 \cdot 4 + 3 \cdot 2 + 4 \cdot 1 = 26\text{.}\)</span> The resulting sequence is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+1, 4, 11, 26, 57, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-6-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-6-4-2-2">Since the generating function for <span class="process-math">\(1,2,3,4, \ldots\)</span> is <span class="process-math">\(\frac{1}{(1-x)^2}\)</span> and the generating function for <span class="process-math">\(1,2,4,8, 16, \ldots\)</span> is <span class="process-math">\(\frac{1}{1-2x}\text{,}\)</span> we have that the generating function for <span class="process-math">\(1,4, 11, 26, 57, \ldots\)</span> is <span class="process-math">\(\frac{1}{(1-x)^2(1-2x)}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-6-4-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 6.1.5.1"><a href="#sec_addtops-genfun-6-4-2" title="Copy heading and permalink for Solution 6.1.5.1" aria-label="Copy heading and permalink for Solution 6.1.5.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 6.1.5"><a href="#sec_addtops-genfun-6-4" title="Copy heading and permalink for Example 6.1.5" aria-label="Copy heading and permalink for Example 6.1.5">🔗</a></div></article><div class="para" id="sec_addtops-genfun-6-5">Consider the special case when you multiply a sequence by <span class="process-math">\(1, 1, 1, \ldots\text{.}\)</span> For example, multiply <span class="process-math">\(1,1,1,\ldots\)</span> by <span class="process-math">\(1, 2, 3, 4, 5\ldots\text{.}\)</span> The first term is <span class="process-math">\(1\cdot 1 = 1\text{.}\)</span> Then <span class="process-math">\(1\cdot 2 + 1 \cdot 1 = 3\text{.}\)</span> Then <span class="process-math">\(1\cdot 3 + 1\cdot 2 + 1 \cdot 1 = 6\text{.}\)</span> The next term will be 10. We are getting the triangular numbers. More precisely, we get the sequence of partial sums of <span class="process-math">\(1,2,3,4,5, \ldots\text{.}\)</span> In terms of generating functions, we take <span class="process-math">\(\frac{1}{1-x}\)</span> (generating <span class="process-math">\(1,1,1,1,1\ldots\)</span>) and multiply it by <span class="process-math">\(\frac{1}{(1-x)^2}\)</span> (generating <span class="process-math">\(1,2,3,4,5,\ldots\)</span>) and this gives <span class="process-math">\(\frac{1}{(1-x)^3}\text{.}\)</span> This should not be a surprise as we found the same generating function for the triangular numbers earlier.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-6-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_addtops-genfun-6-6">The point is, if you need to find a generating function for the sum of the first <span class="process-math">\(n\)</span> terms of a particular sequence, and you know the generating function for <em class="emphasis">that</em> sequence, you can multiply it by <span class="process-math">\(\frac{1}{1-x}\text{.}\)</span> To go back from the sequence of partial sums to the original sequence, you look at the sequence of differences. When you get the sequence of differences you end up multiplying by <span class="process-math">\(1-x\text{,}\)</span> or equivalently, dividing by <span class="process-math">\(\frac{1}{1-x}\text{.}\)</span> Multiplying by <span class="process-math">\(\frac{1}{1-x}\)</span> gives partial sums, dividing by <span class="process-math">\(\frac{1}{1-x}\)</span> gives differences.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-6-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection: Multiplication and Partial Sums"><a href="#sec_addtops-genfun-6" title="Copy heading and permalink for Subsection: Multiplication and Partial Sums" aria-label="Copy heading and permalink for Subsection: Multiplication and Partial Sums">🔗</a></div></section><section class="subsection" id="sec_addtops-genfun-7"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Solving Recurrence Relations with Generating Functions</span>
+</h3>
+<div class="para" id="sec_addtops-genfun-7-4">We conclude with an example of one of the many reasons studying generating functions is helpful. We can use generating functions to solve recurrence relations.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="example example-like" id="sec_addtops-genfun-7-5"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">6.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="sec_addtops-genfun-7-5-1-1">Solve the recurrence relation <span class="process-math">\(a_n = 3a_{n-1} - 2a_{n-2}\)</span> with initial conditions <span class="process-math">\(a_0 = 1\)</span> and <span class="process-math">\(a_1 = 3\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="sec_addtops-genfun-7-5-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="sec_addtops-genfun-7-5-2-1">We saw in an example above that this recurrence relation gives the sequence <span class="process-math">\(1, 3, 7, 15, 31, 63, \ldots\)</span> which has generating function <span class="process-math">\(\dfrac{1}{1 - 3x + 2x^2}\text{.}\)</span> We did this by calling the generating function <span class="process-math">\(A\)</span> and then computing <span class="process-math">\(A - 3xA + 2x^2A\)</span> which was just 1, since every other term canceled out.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-7-5-2-2">
+<div class="para">But how does knowing the generating function help us? First, break up the generating function into two simpler ones. For this, we can use partial fraction decomposition. Start by factoring the denominator:</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{1-3x + 2x^2} = \frac{1}{(1-x)(1-2x)}\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-7-5-2-3">
+<div class="para">Partial fraction decomposition tells us that we can write this faction as the sum of two fractions (we decompose the given fraction):</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{(1-x)(1-2x)} = \frac{a}{1-x} + \frac{b}{1-2x} \text{ ~~ for some constants } a \text{ and } b\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-7-5-2-4">
+<div class="para">To find <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> we add the two decomposed fractions using a common denominator. This gives</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{(1-x)(1-2x)} = \frac{a(1-2x) + b(1-x)}{(1-x)(1-2x)}\text{.}
+\end{equation*}
+</div>
+<div class="para">so</div>
+<div class="displaymath process-math">
+\begin{equation*}
+1 = a(1-2x) + b(1-x)\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-7-5-2-5">
+<div class="para">This must be true for all values of <span class="process-math">\(x\text{.}\)</span> If <span class="process-math">\(x = 1\text{,}\)</span> then the equation becomes <span class="process-math">\(1 = -a\)</span> so <span class="process-math">\(a = -1\text{.}\)</span> When <span class="process-math">\(x = \frac{1}{2}\)</span> we get <span class="process-math">\(1 = b/2\)</span> so <span class="process-math">\(b = 2\text{.}\)</span> This tells us that we can decompose the fraction like this:</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{1}{(1-x)(1-2x)} = \frac{-1}{1-x} + \frac{2}{1-2x}\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-7-5-2-6">
+<div class="para">This completes the partial fraction decomposition. Notice that these two fractions are generating functions we know. In fact, we should be able to expand each of them.</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{-1}{1-x} = -1 - x - x^2 -x^3 - x^4 - \cdots \mbox{ which generates }  -1, -1, -1, -1, -1, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="displaymath process-math">
+\begin{equation*}
+\frac{2}{1-2x} = 2 + 4x + 8x^2 + 16x^3 + 32x^4 + \cdots \mbox{ which generates }  2, 4, 8, 16, 32, \ldots\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_addtops-genfun-7-5-2-7">
+<div class="para">We can give a closed formula for the <span class="process-math">\(n\)</span>th term of each of these sequences. The first is just <span class="process-math">\(a_n = -1\text{.}\)</span> The second is <span class="process-math">\(a_n = 2^{n+1}\text{.}\)</span> The sequence we are interested in is just the sum of these, so the solution to the recurrence relation is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+a_n = 2^{n+1} - 1\text{.}
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-5-2-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 6.1.6.1"><a href="#sec_addtops-genfun-7-5-2" title="Copy heading and permalink for Solution 6.1.6.1" aria-label="Copy heading and permalink for Solution 6.1.6.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Example 6.1.6"><a href="#sec_addtops-genfun-7-5" title="Copy heading and permalink for Example 6.1.6" aria-label="Copy heading and permalink for Example 6.1.6">🔗</a></div></article><div class="para" id="sec_addtops-genfun-7-6">We can now add generating functions to our list of methods for solving recurrence relations.<div class="autopermalink" data-description="Paragraph"><a href="#sec_addtops-genfun-7-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Subsection: Solving Recurrence Relations with Generating Functions"><a href="#sec_addtops-genfun-7" title="Copy heading and permalink for Subsection: Solving Recurrence Relations with Generating Functions" aria-label="Copy heading and permalink for Subsection: Solving Recurrence Relations with Generating Functions">🔗</a></div></section><section class="exercises" id="exercises_addtops-genfun"><h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber"></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<article class="exercise exercise-like" id="exercises_addtops-genfun-1"><h4 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercises_addtops-genfun-1-1-1">
+<div class="para">Find the generating function for each of the following sequences by relating them back to a sequence with known generating function.</div>
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-1-1-1-1">
+<li id="exercises_addtops-genfun-1-1-1-1-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-1-1-1-1"><span class="process-math">\(4,4,4,4,4,\ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.a"><a href="#exercises_addtops-genfun-1-1-1-1-1" title="Copy heading and permalink for Item 1.a" aria-label="Copy heading and permalink for Item 1.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-1-1-1-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-1-1-1-2"><span class="process-math">\(2, 4, 6, 8, 10, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.b"><a href="#exercises_addtops-genfun-1-1-1-1-2" title="Copy heading and permalink for Item 1.b" aria-label="Copy heading and permalink for Item 1.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-1-1-1-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-1-1-1-3"><span class="process-math">\(0,0,0,2,4,6,8,10,\ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.c"><a href="#exercises_addtops-genfun-1-1-1-1-3" title="Copy heading and permalink for Item 1.c" aria-label="Copy heading and permalink for Item 1.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-1-1-1-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-1-1-1-4"><span class="process-math">\(1, 5, 25, 125, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.d"><a href="#exercises_addtops-genfun-1-1-1-1-4" title="Copy heading and permalink for Item 1.d" aria-label="Copy heading and permalink for Item 1.d">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-1-1-1-5">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-1-1-1-5"><span class="process-math">\(1, -3, 9, -27, 81, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.e"><a href="#exercises_addtops-genfun-1-1-1-1-5" title="Copy heading and permalink for Item 1.e" aria-label="Copy heading and permalink for Item 1.e">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-1-1-1-6">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-1-1-1-6"><span class="process-math">\(1, 0, 5, 0, 25, 0, 125, 0, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.f"><a href="#exercises_addtops-genfun-1-1-1-1-6" title="Copy heading and permalink for Item 1.f" aria-label="Copy heading and permalink for Item 1.f">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-1-1-1-7">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-1-1-1-7"><span class="process-math">\(0, 1, 0, 0, 2, 0, 0, 3, 0, 0, 4, 0, 0, 5, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.g"><a href="#exercises_addtops-genfun-1-1-1-1-7" title="Copy heading and permalink for Item 1.g" aria-label="Copy heading and permalink for Item 1.g">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-1-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="exercises_addtops-genfun-1-2-1">
+<ol class="lower-alpha lower-alpha-level-1 cols3" id="exercises_addtops-genfun-1-2-1-1">
+<li id="exercises_addtops-genfun-1-2-1-1-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-2-1-1-1"><span class="process-math">\(\dfrac{4}{1-x}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.a"><a href="#exercises_addtops-genfun-1-2-1-1-1" title="Copy heading and permalink for Item 1.a" aria-label="Copy heading and permalink for Item 1.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-2-1-1-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-2-1-1-2"><span class="process-math">\(\dfrac{2}{(1-x)^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.b"><a href="#exercises_addtops-genfun-1-2-1-1-2" title="Copy heading and permalink for Item 1.b" aria-label="Copy heading and permalink for Item 1.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-2-1-1-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-2-1-1-3"><span class="process-math">\(\dfrac{2x^3}{(1-x)^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.c"><a href="#exercises_addtops-genfun-1-2-1-1-3" title="Copy heading and permalink for Item 1.c" aria-label="Copy heading and permalink for Item 1.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-2-1-1-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-2-1-1-4"><span class="process-math">\(\dfrac{1}{1-5x}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.d"><a href="#exercises_addtops-genfun-1-2-1-1-4" title="Copy heading and permalink for Item 1.d" aria-label="Copy heading and permalink for Item 1.d">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-2-1-1-5">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-2-1-1-5"><span class="process-math">\(\dfrac{1}{1+3x}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.e"><a href="#exercises_addtops-genfun-1-2-1-1-5" title="Copy heading and permalink for Item 1.e" aria-label="Copy heading and permalink for Item 1.e">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-2-1-1-6">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-2-1-1-6"><span class="process-math">\(\dfrac{1}{1-5x^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.f"><a href="#exercises_addtops-genfun-1-2-1-1-6" title="Copy heading and permalink for Item 1.f" aria-label="Copy heading and permalink for Item 1.f">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-1-2-1-1-7">
+<div class="para" id="p-derived-exercises_addtops-genfun-1-2-1-1-7"><span class="process-math">\(\dfrac{x}{(1-x^3)^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 1.g"><a href="#exercises_addtops-genfun-1-2-1-1-7" title="Copy heading and permalink for Item 1.g" aria-label="Copy heading and permalink for Item 1.g">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 1.1"><a href="#exercises_addtops-genfun-1-2" title="Copy heading and permalink for Solution 1.1" aria-label="Copy heading and permalink for Solution 1.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 1"><a href="#exercises_addtops-genfun-1" title="Copy heading and permalink for Exercise 1" aria-label="Copy heading and permalink for Exercise 1">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-2"><h4 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercises_addtops-genfun-2-1-1">
+<div class="para">Find the sequence generated by the following generating functions:</div>
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-2-1-1-1">
+<li id="exercises_addtops-genfun-2-1-1-1-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-1-1-1-1"><span class="process-math">\(\dfrac{4x}{1-x}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.a"><a href="#exercises_addtops-genfun-2-1-1-1-1" title="Copy heading and permalink for Item 2.a" aria-label="Copy heading and permalink for Item 2.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-1-1-1-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-1-1-1-2"><span class="process-math">\(\dfrac{1}{1-4x}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.b"><a href="#exercises_addtops-genfun-2-1-1-1-2" title="Copy heading and permalink for Item 2.b" aria-label="Copy heading and permalink for Item 2.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-1-1-1-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-1-1-1-3"><span class="process-math">\(\dfrac{x}{1+x}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.c"><a href="#exercises_addtops-genfun-2-1-1-1-3" title="Copy heading and permalink for Item 2.c" aria-label="Copy heading and permalink for Item 2.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-1-1-1-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-1-1-1-4"><span class="process-math">\(\dfrac{3x}{(1+x)^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.d"><a href="#exercises_addtops-genfun-2-1-1-1-4" title="Copy heading and permalink for Item 2.d" aria-label="Copy heading and permalink for Item 2.d">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-1-1-1-5">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-1-1-1-5">
+<span class="process-math">\(\dfrac{1+x+x^2}{(1-x)^2}\)</span> (Hint: multiplication).</div>
+<div class="autopermalink" data-description="Item 2.e"><a href="#exercises_addtops-genfun-2-1-1-1-5" title="Copy heading and permalink for Item 2.e" aria-label="Copy heading and permalink for Item 2.e">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-2-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="exercises_addtops-genfun-2-2-1">
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-2-2-1-1">
+<li id="exercises_addtops-genfun-2-2-1-1-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-2-1-1-1"><span class="process-math">\(0, 4, 4, 4, 4, 4, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.a"><a href="#exercises_addtops-genfun-2-2-1-1-1" title="Copy heading and permalink for Item 2.a" aria-label="Copy heading and permalink for Item 2.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-2-1-1-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-2-1-1-2"><span class="process-math">\(1, 4, 16, 64, 256, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.b"><a href="#exercises_addtops-genfun-2-2-1-1-2" title="Copy heading and permalink for Item 2.b" aria-label="Copy heading and permalink for Item 2.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-2-1-1-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-2-1-1-3"><span class="process-math">\(0, 1, -1, 1, -1, 1, -1, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.c"><a href="#exercises_addtops-genfun-2-2-1-1-3" title="Copy heading and permalink for Item 2.c" aria-label="Copy heading and permalink for Item 2.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-2-1-1-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-2-1-1-4"><span class="process-math">\(0, 3, -6, 9, -12, 15, -18, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.d"><a href="#exercises_addtops-genfun-2-2-1-1-4" title="Copy heading and permalink for Item 2.d" aria-label="Copy heading and permalink for Item 2.d">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-2-2-1-1-5">
+<div class="para" id="p-derived-exercises_addtops-genfun-2-2-1-1-5"><span class="process-math">\(1, 3, 6, 9, 12, 15, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 2.e"><a href="#exercises_addtops-genfun-2-2-1-1-5" title="Copy heading and permalink for Item 2.e" aria-label="Copy heading and permalink for Item 2.e">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 2.1"><a href="#exercises_addtops-genfun-2-2" title="Copy heading and permalink for Solution 2.1" aria-label="Copy heading and permalink for Solution 2.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 2"><a href="#exercises_addtops-genfun-2" title="Copy heading and permalink for Exercise 2" aria-label="Copy heading and permalink for Exercise 2">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-3"><h4 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercises_addtops-genfun-3-1-1">
+<div class="para">Show how you can get the generating function for the triangular numbers in three different ways:</div>
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-3-1-1-1">
+<li id="exercises_addtops-genfun-3-1-1-1-1">
+<div class="para" id="exercises_addtops-genfun-3-1-1-1-1-1">Take two derivatives of the generating function for <span class="process-math">\(1,1,1,1,1, \ldots\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-3-1-1-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.a"><a href="#exercises_addtops-genfun-3-1-1-1-1" title="Copy heading and permalink for Item 3.a" aria-label="Copy heading and permalink for Item 3.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-3-1-1-1-2">
+<div class="para" id="exercises_addtops-genfun-3-1-1-1-2-1">Use differencing.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-3-1-1-1-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.b"><a href="#exercises_addtops-genfun-3-1-1-1-2" title="Copy heading and permalink for Item 3.b" aria-label="Copy heading and permalink for Item 3.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-3-1-1-1-3">
+<div class="para" id="exercises_addtops-genfun-3-1-1-1-3-1">Multiply two known generating functions.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-3-1-1-1-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 3.c"><a href="#exercises_addtops-genfun-3-1-1-1-3" title="Copy heading and permalink for Item 3.c" aria-label="Copy heading and permalink for Item 3.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3"><a href="#exercises_addtops-genfun-3" title="Copy heading and permalink for Exercise 3" aria-label="Copy heading and permalink for Exercise 3">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-4"><h4 class="heading"><span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-4-1-1">Use differencing to find the generating function for <span class="process-math">\(4, 5, 7, 10, 14, 19, 25, \ldots\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-4-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-4-2-1">Call the generating function <span class="process-math">\(A\text{.}\)</span> Compute <span class="process-math">\(A - xA = 4 + x + 2x^2 + 3x^3 + 4x^4 + \cdots\text{.}\)</span> Thus <span class="process-math">\(A - xA = 4 + \dfrac{x}{(1-x)^2}\text{.}\)</span> Solving for <span class="process-math">\(A\)</span> gives <span class="process-math">\(\d\frac{4}{1-x} + \frac{x}{(1-x)^3}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 4.1"><a href="#exercises_addtops-genfun-4-2" title="Copy heading and permalink for Solution 4.1" aria-label="Copy heading and permalink for Solution 4.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 4"><a href="#exercises_addtops-genfun-4" title="Copy heading and permalink for Exercise 4" aria-label="Copy heading and permalink for Exercise 4">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-5"><h4 class="heading"><span class="codenumber">5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-5-1-1">Find a generating function for the sequence with recurrence relation <span class="process-math">\(a_n = 3a_{n-1} - a_{n-2}\)</span> with initial terms <span class="process-math">\(a_0 = 1\)</span> and <span class="process-math">\(a_1 = 5\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-5-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-5-2-1">
+<span class="process-math">\(\dfrac{1+2x}{1-3x + x^2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 5.1"><a href="#exercises_addtops-genfun-5-2" title="Copy heading and permalink for Solution 5.1" aria-label="Copy heading and permalink for Solution 5.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 5"><a href="#exercises_addtops-genfun-5" title="Copy heading and permalink for Exercise 5" aria-label="Copy heading and permalink for Exercise 5">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-6"><h4 class="heading"><span class="codenumber">6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-6-1-1">Use the recurrence relation for the Fibonacci numbers to find the generating function for the Fibonacci sequence.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-6-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-6-2-1">Compute <span class="process-math">\(A - xA - x^2A\)</span> and then solve for <span class="process-math">\(A\text{.}\)</span> The generating function will be <span class="process-math">\(\dfrac{x}{1-x-x^2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-6-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 6.1"><a href="#exercises_addtops-genfun-6-2" title="Copy heading and permalink for Solution 6.1" aria-label="Copy heading and permalink for Solution 6.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 6"><a href="#exercises_addtops-genfun-6" title="Copy heading and permalink for Exercise 6" aria-label="Copy heading and permalink for Exercise 6">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-7"><h4 class="heading"><span class="codenumber">7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-7-1-1">Use multiplication to find the generating function for the sequence of partial sums of Fibonacci numbers, <span class="process-math">\(S_0, S_1, S_2, \ldots\)</span> where <span class="process-math">\(S_0 = F_0\text{,}\)</span> <span class="process-math">\(S_1 = F_0 + F_1\text{,}\)</span> <span class="process-math">\(S_2 = F_0 + F_1 + F_2\text{,}\)</span> <span class="process-math">\(S_3 = F_0 + F_1 + F_2 + F_3\)</span> and so on.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-7-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-7-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-7-2-1">
+<span class="process-math">\(\dfrac{x}{(1-x)(1-x-x^2)}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-7-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 7.1"><a href="#exercises_addtops-genfun-7-2" title="Copy heading and permalink for Solution 7.1" aria-label="Copy heading and permalink for Solution 7.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 7"><a href="#exercises_addtops-genfun-7" title="Copy heading and permalink for Exercise 7" aria-label="Copy heading and permalink for Exercise 7">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-8"><h4 class="heading"><span class="codenumber">8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-8-1-1">Find the generating function for the sequence with closed formula <span class="process-math">\(a_n = 2(5^n) + 7(-3)^n\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-8-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-8-2-1">
+<span class="process-math">\(\dfrac{2}{1-5x} + \dfrac{7}{1+3x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-8-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 8.1"><a href="#exercises_addtops-genfun-8-2" title="Copy heading and permalink for Solution 8.1" aria-label="Copy heading and permalink for Solution 8.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 8"><a href="#exercises_addtops-genfun-8" title="Copy heading and permalink for Exercise 8" aria-label="Copy heading and permalink for Exercise 8">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-9"><h4 class="heading"><span class="codenumber">9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-9-1-1">Find a closed formula for the <span class="process-math">\(n\)</span>th term of the sequence with generating function <span class="process-math">\(\dfrac{3x}{1-4x} + \dfrac{1}{1-x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-9-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-9-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-9-2-1">
+<span class="process-math">\(a_n = 3\cdot 4^{n-1} + 1\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-9-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 9.1"><a href="#exercises_addtops-genfun-9-2" title="Copy heading and permalink for Solution 9.1" aria-label="Copy heading and permalink for Solution 9.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 9"><a href="#exercises_addtops-genfun-9" title="Copy heading and permalink for Exercise 9" aria-label="Copy heading and permalink for Exercise 9">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-10"><h4 class="heading"><span class="codenumber">10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-10-1-1">Find <span class="process-math">\(a_7\)</span> for the sequence with generating function <span class="process-math">\(\dfrac{2}{(1-x)^2}\cdot\dfrac{x}{1-x-x^2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-10-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-10-2" class="hint solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Hint</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="hint solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-10-2-1">You should “multiply” the two sequences.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-10-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Hint 10.1"><a href="#exercises_addtops-genfun-10-2" title="Copy heading and permalink for Hint 10.1" aria-label="Copy heading and permalink for Hint 10.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 10"><a href="#exercises_addtops-genfun-10" title="Copy heading and permalink for Exercise 10" aria-label="Copy heading and permalink for Exercise 10">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-11"><h4 class="heading"><span class="codenumber">11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-11-1-1">Explain how we know that <span class="process-math">\(\dfrac{1}{(1-x)^2}\)</span> is the generating function for <span class="process-math">\(1, 2, 3, 4, \ldots\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-11-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 11"><a href="#exercises_addtops-genfun-11" title="Copy heading and permalink for Exercise 11" aria-label="Copy heading and permalink for Exercise 11">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-12"><h4 class="heading"><span class="codenumber">12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercises_addtops-genfun-12-1-1">
+<div class="para">Starting with the generating function for <span class="process-math">\(1,2,3,4, \ldots\text{,}\)</span> find a generating function for each of the following sequences.</div>
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-12-1-1-2">
+<li id="exercises_addtops-genfun-12-1-1-2-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-1-1-2-1"><span class="process-math">\(1, 0, 2, 0, 3, 0, 4,\ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 12.a"><a href="#exercises_addtops-genfun-12-1-1-2-1" title="Copy heading and permalink for Item 12.a" aria-label="Copy heading and permalink for Item 12.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-12-1-1-2-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-1-1-2-2"><span class="process-math">\(1, -2, 3, -4, 5, -6, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 12.b"><a href="#exercises_addtops-genfun-12-1-1-2-2" title="Copy heading and permalink for Item 12.b" aria-label="Copy heading and permalink for Item 12.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-12-1-1-2-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-1-1-2-3"><span class="process-math">\(0, 3, 6, 9, 12, 15, 18, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 12.c"><a href="#exercises_addtops-genfun-12-1-1-2-3" title="Copy heading and permalink for Item 12.c" aria-label="Copy heading and permalink for Item 12.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-12-1-1-2-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-1-1-2-4">
+<span class="process-math">\(0, 3, 9, 18, 30, 45, 63,\ldots\text{.}\)</span> (Hint: relate this sequence to the previous one.)</div>
+<div class="autopermalink" data-description="Item 12.d"><a href="#exercises_addtops-genfun-12-1-1-2-4" title="Copy heading and permalink for Item 12.d" aria-label="Copy heading and permalink for Item 12.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-12-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-12-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="exercises_addtops-genfun-12-2-1">
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-12-2-1-1">
+<li id="exercises_addtops-genfun-12-2-1-1-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-2-1-1-1"><span class="process-math">\(\frac{1}{(1-x^2)^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 12.a"><a href="#exercises_addtops-genfun-12-2-1-1-1" title="Copy heading and permalink for Item 12.a" aria-label="Copy heading and permalink for Item 12.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-12-2-1-1-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-2-1-1-2"><span class="process-math">\(\frac{1}{(1+x)^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 12.b"><a href="#exercises_addtops-genfun-12-2-1-1-2" title="Copy heading and permalink for Item 12.b" aria-label="Copy heading and permalink for Item 12.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-12-2-1-1-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-2-1-1-3"><span class="process-math">\(\frac{3x}{(1-x)^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 12.c"><a href="#exercises_addtops-genfun-12-2-1-1-3" title="Copy heading and permalink for Item 12.c" aria-label="Copy heading and permalink for Item 12.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-12-2-1-1-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-12-2-1-1-4">
+<span class="process-math">\(\frac{3x}{(1-x)^3}\text{.}\)</span> (partial sums).</div>
+<div class="autopermalink" data-description="Item 12.d"><a href="#exercises_addtops-genfun-12-2-1-1-4" title="Copy heading and permalink for Item 12.d" aria-label="Copy heading and permalink for Item 12.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-12-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 12.1"><a href="#exercises_addtops-genfun-12-2" title="Copy heading and permalink for Solution 12.1" aria-label="Copy heading and permalink for Solution 12.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 12"><a href="#exercises_addtops-genfun-12" title="Copy heading and permalink for Exercise 12" aria-label="Copy heading and permalink for Exercise 12">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-13"><h4 class="heading"><span class="codenumber">13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercises_addtops-genfun-13-1-1">
+<div class="para">You may assume that <span class="process-math">\(1, 1, 2, 3, 5, 8,\ldots\)</span> has generating function <span class="process-math">\(\dfrac{1}{1-x-x^2}\)</span> (because it does). Use this fact to find the sequence generated by each of the following generating functions.</div>
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-13-1-1-3">
+<li id="exercises_addtops-genfun-13-1-1-3-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-1-1-3-1"><span class="process-math">\(\frac{x^2}{1-x-x^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.a"><a href="#exercises_addtops-genfun-13-1-1-3-1" title="Copy heading and permalink for Item 13.a" aria-label="Copy heading and permalink for Item 13.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-13-1-1-3-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-1-1-3-2"><span class="process-math">\(\frac{1}{1-x^2-x^4}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.b"><a href="#exercises_addtops-genfun-13-1-1-3-2" title="Copy heading and permalink for Item 13.b" aria-label="Copy heading and permalink for Item 13.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-13-1-1-3-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-1-1-3-3"><span class="process-math">\(\frac{1}{1-3x-9x^2}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.c"><a href="#exercises_addtops-genfun-13-1-1-3-3" title="Copy heading and permalink for Item 13.c" aria-label="Copy heading and permalink for Item 13.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-13-1-1-3-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-1-1-3-4"><span class="process-math">\(\frac{1}{(1-x-x^2)(1-x)}\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.d"><a href="#exercises_addtops-genfun-13-1-1-3-4" title="Copy heading and permalink for Item 13.d" aria-label="Copy heading and permalink for Item 13.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-13-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-13-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para logical" id="exercises_addtops-genfun-13-2-1">
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-13-2-1-1">
+<li id="exercises_addtops-genfun-13-2-1-1-1">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-2-1-1-1"><span class="process-math">\(0,0,1,1,2,3,5,8, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.a"><a href="#exercises_addtops-genfun-13-2-1-1-1" title="Copy heading and permalink for Item 13.a" aria-label="Copy heading and permalink for Item 13.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-13-2-1-1-2">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-2-1-1-2"><span class="process-math">\(1, 0, 1, 0, 2, 0, 3, 0, 5, 0, 8, 0, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.b"><a href="#exercises_addtops-genfun-13-2-1-1-2" title="Copy heading and permalink for Item 13.b" aria-label="Copy heading and permalink for Item 13.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-13-2-1-1-3">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-2-1-1-3"><span class="process-math">\(1, 3, 18, 81, 405, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.c"><a href="#exercises_addtops-genfun-13-2-1-1-3" title="Copy heading and permalink for Item 13.c" aria-label="Copy heading and permalink for Item 13.c">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-13-2-1-1-4">
+<div class="para" id="p-derived-exercises_addtops-genfun-13-2-1-1-4"><span class="process-math">\(1, 2, 4, 7, 12, 20, \ldots\text{.}\)</span></div>
+<div class="autopermalink" data-description="Item 13.d"><a href="#exercises_addtops-genfun-13-2-1-1-4" title="Copy heading and permalink for Item 13.d" aria-label="Copy heading and permalink for Item 13.d">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-13-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 13.1"><a href="#exercises_addtops-genfun-13-2" title="Copy heading and permalink for Solution 13.1" aria-label="Copy heading and permalink for Solution 13.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 13"><a href="#exercises_addtops-genfun-13" title="Copy heading and permalink for Exercise 13" aria-label="Copy heading and permalink for Exercise 13">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-14"><h4 class="heading"><span class="codenumber">14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-14-1-1">Find the generating function for the sequence <span class="process-math">\(1, -2, 4, -8, 16, \ldots\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-14-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 14"><a href="#exercises_addtops-genfun-14" title="Copy heading and permalink for Exercise 14" aria-label="Copy heading and permalink for Exercise 14">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-15"><h4 class="heading"><span class="codenumber">15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para" id="exercises_addtops-genfun-15-1-1">Find the generating function for the sequence <span class="process-math">\(1, 1, 1, 2, 3, 4, 5, 6, \ldots\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-15-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="solutions"><details id="exercises_addtops-genfun-15-2" class="solution solution-like born-hidden-knowl"><summary class="knowl__link"><span class="type">Solution</span><span class="period heading-divison-mark heading-divison-mark__period">.</span></summary><div class="solution solution-like knowl__content">
+<div class="para" id="exercises_addtops-genfun-15-2-1">
+<span class="process-math">\(\frac{x^3}{(1-x)^2} + \frac{1}{1-x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-15-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Solution 15.1"><a href="#exercises_addtops-genfun-15-2" title="Copy heading and permalink for Solution 15.1" aria-label="Copy heading and permalink for Solution 15.1">🔗</a></div>
+</div></details></div>
+<div class="autopermalink" data-description="Exercise 15"><a href="#exercises_addtops-genfun-15" title="Copy heading and permalink for Exercise 15" aria-label="Copy heading and permalink for Exercise 15">🔗</a></div></article><article class="exercise exercise-like" id="exercises_addtops-genfun-16"><h4 class="heading"><span class="codenumber">16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h4>
+<div class="para logical" id="exercises_addtops-genfun-16-1-1">
+<div class="para">Suppose <span class="process-math">\(A\)</span> is the generating function for the sequence <span class="process-math">\(3, 5, 9, 15, 23, 33, \ldots\text{.}\)</span>
+</div>
+<ol class="lower-alpha lower-alpha-level-1" id="exercises_addtops-genfun-16-1-1-3">
+<li id="exercises_addtops-genfun-16-1-1-3-1">
+<div class="para" id="exercises_addtops-genfun-16-1-1-3-1-1">Find a generating function (in terms of <span class="process-math">\(A\)</span>) for the sequence of differences between terms.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-16-1-1-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 16.a"><a href="#exercises_addtops-genfun-16-1-1-3-1" title="Copy heading and permalink for Item 16.a" aria-label="Copy heading and permalink for Item 16.a">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-16-1-1-3-2">
+<div class="para" id="exercises_addtops-genfun-16-1-1-3-2-1">Write the sequence of differences between terms and find a generating function for it (without referencing <span class="process-math">\(A\)</span>).<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-16-1-1-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 16.b"><a href="#exercises_addtops-genfun-16-1-1-3-2" title="Copy heading and permalink for Item 16.b" aria-label="Copy heading and permalink for Item 16.b">🔗</a></div>
+</li>
+<li id="exercises_addtops-genfun-16-1-1-3-3">
+<div class="para" id="exercises_addtops-genfun-16-1-1-3-3-1">Use your answers to parts (a) and (b) to find the generating function for the original sequence.<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-16-1-1-3-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item 16.c"><a href="#exercises_addtops-genfun-16-1-1-3-3" title="Copy heading and permalink for Item 16.c" aria-label="Copy heading and permalink for Item 16.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#exercises_addtops-genfun-16-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 16"><a href="#exercises_addtops-genfun-16" title="Copy heading and permalink for Exercise 16" aria-label="Copy heading and permalink for Exercise 16">🔗</a></div></article><div class="autopermalink" data-description="Exercises"><a href="#exercises_addtops-genfun" title="Copy heading and permalink for Exercises" aria-label="Copy heading and permalink for Exercises">🔗</a></div></section><div class="autopermalink" data-description="Section 6.1: Generating Functions"><a href="#sec_addtops-genfun" title="Copy heading and permalink for Section 6.1: Generating Functions" aria-label="Copy heading and permalink for Section 6.1: Generating Functions">🔗</a></div></section></div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="ch_additionalTopics.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cb;</span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5ce;</span><span class="name">Top</span></a><a class="next-button button" href="sec_addtops-numbth.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true">&#xe5cc;</span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="feedback-link" href="mailto:oscar.levin@unco.edu" target="_blank">Feedback</a><a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewBox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="runtime/reader-support/runestone-credit-logo.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="runtime/reader-support/mathjax-credit-logo.png" alt="MathJax logo"></a>
+</div>
+<nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Program — Bahasa Indonesia</a><a href="https://discrete.openmathbooks.org/dmoi4/">Original author’s website ↗</a><a href="frontmatter.html">Book contents</a></nav><nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B10" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B10">English — B10</a> · <a data-program-home data-course-card data-course-id="B10" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B10">Bahasa Indonesia — B10</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B10" href="https://discrete.openmathbooks.org/dmoi4/">Original source — Original author’s reader — Discrete Mathematics: An Open Introduction, 4th edition</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="frontmatter.html">Open related page</a></nav>
+</body>
+</html>

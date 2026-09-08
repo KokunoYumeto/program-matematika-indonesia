@@ -1769,10 +1769,20 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 29);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 75);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 440);
-assert.equal(centralNavigation.summary.classified_html_documents, 443);
+assert.equal(centralNavigation.summary.course_surface_roots, 30);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 79);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 997);
+assert.equal(centralNavigation.summary.classified_html_documents, 1000);
+const b10Reader = centralNavigation.readers.find(row => row.course_id === 'B10' && row.locale === 'en');
+assert.equal(b10Reader.root, 'docs/en/courses/B10/reader');
+assert.equal(b10Reader.html_documents, 553);
+assert.equal(b10Reader.standalone_reader_pages, 83);
+assert.equal(b10Reader.embedded_fragment_paths.length, 470);
+const b10EnglishAdmission = await readJson('docs/en/courses/B10/B10_ORIGINAL_ENGLISH_ADMISSION_V1.json');
+assert.equal(b10EnglishAdmission.translation_performed, false);
+assert.equal(b10EnglishAdmission.coverage.selected_exercises, 768);
+assert.equal(b10EnglishAdmission.coverage.source_provided_solutions, 520);
+assert.equal(b10EnglishAdmission.source_revision, '82336dc87d77c3f18d2cdbc8ec1e74eb3ba38799');
 assert.deepEqual(Object.fromEntries(centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/a10')
   .documents.map(({path, locale}) => [path, locale])), {
   'A10.html': 'id', 'A10-en.html': 'en', 'A10-pengajar.html': 'id', 'A10-pengajar-en.html': 'en',
