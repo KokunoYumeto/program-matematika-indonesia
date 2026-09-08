@@ -733,9 +733,9 @@ for (const id of ['A00', 'A10', 'B10', 'C30', 'C40', 'C80', 'C130', 'D20', 'D60'
   assert.equal(byId[id].layers.interoperability.semantic_adapter.contract_version, '2.3.1');
 }
 const a10Adapter = byId.A10.layers.interoperability.semantic_adapter;
-assert.equal(a10Adapter.mapping_scope, 'capsule_only');
+assert.equal(a10Adapter.mapping_scope, 'existing_v231_capsule_plus_native_module_exercise_terminology_correction_rights_and_translation_metadata_consumer');
 assert.deepEqual(
-  a10Adapter.evidence,
+  a10Adapter.evidence.slice(0, 5),
   [
     {
       kind: 'central_adapter_manifest',
@@ -774,19 +774,32 @@ assert.deepEqual(
     },
   ],
 );
+assert.deepEqual(a10Adapter.evidence.slice(5).map(({kind})=>kind), [
+  'a10_learning_capability_manifest', 'a10_independent_capability_validation',
+  'a10_native_record_ledger', 'a10_terminology_history',
+]);
 for (const evidence of a10Adapter.evidence) {
   const bytes = await readFile(resolve(project, evidence.locator));
   assert.equal(bytes.length, evidence.bytes, `A10/${evidence.kind}: evidence byte-count drift.`);
   assert.equal(sha256(bytes), evidence.sha256, `A10/${evidence.kind}: evidence SHA-256 drift.`);
 }
-assert.equal(byId.A10.layers.curriculum.unit_identity_status, 'unknown');
-assert.equal(byId.A10.layers.translation.ledger_status, 'unknown');
+assert.equal(byId.A10.layers.curriculum.unit_identity_status, 'verified');
+assert.equal(byId.A10.layers.translation.ledger_status, 'verified');
 assert.equal(byId.A10.layers.translation.terminology_status, 'in_progress');
 assert.equal(byId.A10.layers.translation.rights_status, 'unknown');
 assert.equal(byId.A10.layers.translation.corrections_status, 'in_progress');
 assert.equal(byId.A10.layers.production.build_status, 'unknown');
 assert.equal(byId.A10.layers.production.deterministic_replay_status, 'unknown');
-assert.equal(byId.A10.layers.educator.unit_alignment_status, 'unknown');
+assert.equal(byId.A10.layers.educator.unit_alignment_status, 'verified');
+assert.ok(byId.A10.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub'
+  && tool.href==='backend/a10/A10.html'));
+const a10CapabilityCheck=JSON.parse(await readFile(resolve(project,'backend/course-capsule-v1/adapters/a10-capability-v1/validation.json'),'utf8'));
+assert.equal(a10CapabilityCheck.result,'pass');
+assert.equal(a10CapabilityCheck.checks.independent_second_build_byte_identical,true);
+assert.equal(a10CapabilityCheck.counts.exercises,9406);
+assert.equal(a10CapabilityCheck.counts.solutions,6106);
+assert.equal(a10CapabilityCheck.counts.missing_solutions,3300);
+assert.equal(a10CapabilityCheck.navigation_tests.module_filter_cases,984);
 for (const id of ['C30', 'C40']) {
   const adapter = byId[id].layers.interoperability.semantic_adapter;
   assert.equal(adapter.mapping_scope, 'reversible_native_two_course_chapter_route_adapter');

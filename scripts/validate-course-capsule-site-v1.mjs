@@ -15,6 +15,33 @@ const sortValue = (value) => {
 };
 const canonicalJson = (value) => JSON.stringify(sortValue(value), null, 2) + '\n';
 const logicalFiles = [
+  'backend/a10/A10.html',
+  'backend/a10/A10-en.html',
+  'backend/a10/A10-pengajar.html',
+  'backend/a10/A10-pengajar-en.html',
+  'backend/a10/capabilities.json',
+  'backend/a10/claim-boundary.json',
+  'backend/a10/validation.json',
+  'backend/a10/manifest.json',
+  'backend/a10/source-lock.json',
+  'backend/a10/learning-map.json',
+  'backend/a10/data/concept-index.jsonl',
+  'backend/a10/data/corrections-index.jsonl',
+  'backend/a10/data/exercise-index.jsonl',
+  'backend/a10/data/module-index.jsonl',
+  'backend/a10/data/native-record-ledger.json',
+  'backend/a10/data/pedagogical-relation-index.jsonl',
+  'backend/a10/data/placement-index.jsonl',
+  'backend/a10/data/rights-index.jsonl',
+  'backend/a10/data/terms-index.jsonl',
+  'backend/a10/data/terminology-history-index.jsonl',
+  'backend/a10/data/translation-index.jsonl',
+  'backend/a10/data/unit-reference-index.jsonl',
+  'backend/a10/data/pdf-route-evidence.json',
+  'backend/a10/data/english-source-mirror.json',
+  'backend/a10/data/learning-map.json',
+  'backend/a10/data/capabilities.json',
+  'backend/a10/data/claim-boundary.json',
   'backend/coverage.html',
   'backend/program-backend-coverage.json',
   'backend/index.html',
@@ -355,6 +382,27 @@ assert.deepEqual(rows, jsonlRows);
 assert.equal(new Set(rows.map(({ course_id }) => course_id)).size, 40);
 assert.equal(rows.filter(({ course }) => course.state === 'published').length, 40);
 assert.equal(rows.filter(({ course }) => course.state === 'production').length, 0);
+const a10Live=rows.find(row=>row.course_id==='A10');
+const a10Validation=JSON.parse(docsBytes['backend/a10/validation.json'].toString('utf8'));
+const a10Caps=JSON.parse(docsBytes['backend/a10/capabilities.json'].toString('utf8'));
+assert.equal(a10Live.layers.interoperability.semantic_adapter.contract_version,'2.3.1');
+assert.equal(a10Live.layers.educator.status,'verified');
+assert.equal(a10Live.layers.educator.unit_alignment_status,'verified');
+assert.ok(a10Live.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub' && tool.href==='backend/a10/A10.html'));
+assert.equal(a10Validation.result,'pass');
+assert.equal(a10Validation.navigation_tests.module_filter_cases,984);
+assert.equal(a10Validation.checks.independent_second_build_byte_identical,true);
+assert.deepEqual(a10Caps.counts,a10Validation.counts);
+assert.equal(a10Caps.counts.exercises,9406);
+assert.equal(a10Caps.counts.solutions,6106);
+assert.equal(a10Caps.counts.missing_solutions,3300);
+assert.equal(a10Caps.counts.verified_exercise_reading_routes,0);
+for(const path of ['backend/a10/A10.html','backend/a10/A10-en.html','backend/a10/A10-pengajar.html','backend/a10/A10-pengajar-en.html']){
+  const page=docsBytes[path].toString('utf8');
+  assert.ok(page.includes('data/rights-index.jsonl'));
+  assert.ok(!page.includes('href="../data/'));
+  assert.ok(page.includes('id="a10-data"'));
+}
 assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 34);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
@@ -486,8 +534,10 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 30);
-assert.equal(authorityToolIds.length, 40);
+assert.equal(Object.keys(authorityToolsByCourse).length, 31);
+assert.equal(authorityToolIds.length, 41);
+assert.equal(new Set(authorityToolIds).size, authorityToolIds.length, 'Duplicate public learner-tool identity.');
+assert.deepEqual(authorityToolsByCourse.A10.map(({ tool_id }) => tool_id), ['a10.open_learner_hub']);
 assert.equal(manifest.summary.learner_tool_course_count, Object.keys(authorityToolsByCourse).length);
 assert.equal(manifest.summary.learner_tool_count, authorityToolIds.length);
 assert.equal(manifest.summary.published_count, 40);
@@ -502,8 +552,8 @@ assert.equal(validation.state, 'pass');
 assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
-assert.equal(validation.checks.learner_tool_course_count, 30);
-assert.equal(validation.checks.learner_tool_count, 40);
+assert.equal(validation.checks.learner_tool_course_count, 31);
+assert.equal(validation.checks.learner_tool_count, 41);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 

@@ -104,7 +104,7 @@ for role in ('A30', 'B95', 'C140'):
 assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_central_manager_not_yet_verified'
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
-assert roles['A10']['common_adapter']['mapping_scope'] == 'capsule_only'
+assert roles['A10']['common_adapter']['mapping_scope'] == 'existing_v231_capsule_plus_native_module_exercise_terminology_correction_rights_and_translation_metadata_consumer'
 assert roles['A10']['common_adapter']['github_public_evidence'] == 'not_established'
 assert roles['A10']['common_adapter']['zenodo_preservation'] == 'not_established'
 assert roles['A10']['common_adapter']['public_package'] is None
@@ -114,20 +114,25 @@ assert [row['kind'] for row in roles['A10']['common_adapter']['local_evidence']]
     'deterministic_generic_validation_receipt',
     'a10_semantic_validation_receipt',
     'public_release_authority',
+    'a10_learning_capability_manifest',
+    'a10_independent_capability_validation',
+    'a10_native_record_ledger',
+    'a10_terminology_history',
 ]
-assert roles['A10']['learner']['relationship'] == 'no_common_adapter_consumption_proven'
-assert roles['A10']['learner']['tools'] == []
-assert roles['A10']['dimensions']['curriculum']['unit_identity'] == 'unknown'
+assert roles['A10']['learner']['relationship'] == 'central_navigator_consumes_native_metadata_projection_pdf_runtime_adapter_consumption_not_claimed'
+assert len(roles['A10']['learner']['tools']) == 1
+assert roles['A10']['learner']['tools'][0]['href'] == '../backend/a10/A10.html'
+assert roles['A10']['dimensions']['curriculum']['unit_identity'] == 'verified'
 assert roles['A10']['dimensions']['source_translation_ledger'] == {
     'corrections': 'in_progress',
-    'ledger': 'unknown',
+    'ledger': 'verified',
 }
 assert roles['A10']['dimensions']['terminology']['register'] == 'in_progress'
 assert roles['A10']['dimensions']['reproducible_production'] == {
     'build': 'unknown',
     'replay': 'unknown',
 }
-assert roles['A10']['dimensions']['educator']['unit_alignment'] == 'unknown'
+assert roles['A10']['dimensions']['educator']['unit_alignment'] == 'verified'
 assert roles['A20']['common_adapter']['status'] == 'verified'
 assert roles['A20']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['A20']['common_adapter']['mapping_scope'] == (

@@ -1751,10 +1751,14 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 28);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 71);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 346);
-assert.equal(centralNavigation.summary.classified_html_documents, 349);
+assert.equal(centralNavigation.summary.course_surface_roots, 29);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 75);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 350);
+assert.equal(centralNavigation.summary.classified_html_documents, 353);
+assert.deepEqual(Object.fromEntries(centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/a10')
+  .documents.map(({path, locale}) => [path, locale])), {
+  'A10.html': 'id', 'A10-en.html': 'en', 'A10-pengajar.html': 'id', 'A10-pengajar-en.html': 'en',
+});
 assert.deepEqual(
   centralNavigation.course_surfaces.find(({root: surfaceRoot}) => surfaceRoot === 'docs/backend/d30'),
   {

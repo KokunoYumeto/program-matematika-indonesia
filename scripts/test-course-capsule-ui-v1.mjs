@@ -143,7 +143,7 @@ for (const [name, fetch] of [
   const a10 = courses.find(course => course.course_id === 'A10');
   assert.equal(a10.layers.interoperability.semantic_adapter.status, 'verified');
   assert.equal(a10.layers.interoperability.semantic_adapter.contract_version, '2.3.1');
-  assert.equal(a10.layers.interoperability.semantic_adapter.mapping_scope, 'capsule_only');
+  assert.equal(a10.layers.interoperability.semantic_adapter.mapping_scope, 'existing_v231_capsule_plus_native_module_exercise_terminology_correction_rights_and_translation_metadata_consumer');
   assert.deepEqual(
     a10.layers.interoperability.semantic_adapter.evidence.map(({ kind }) => kind),
     [
@@ -152,10 +152,16 @@ for (const [name, fetch] of [
       'deterministic_generic_validation_receipt',
       'a10_semantic_validation_receipt',
       'public_release_authority',
+      'a10_learning_capability_manifest',
+      'a10_independent_capability_validation',
+      'a10_native_record_ledger',
+      'a10_terminology_history',
     ],
   );
-  assert.equal(a10.layers.curriculum.unit_identity_status, 'unknown');
-  assert.equal(a10.layers.translation.ledger_status, 'unknown');
+  assert.equal(a10.layers.curriculum.unit_identity_status, 'verified');
+  assert.equal(a10.layers.translation.ledger_status, 'verified');
+  assert.equal(a10.layers.educator.unit_alignment_status, 'verified');
+  assert.ok(a10.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub' && tool.href==='backend/a10/A10.html'));
   assert.equal(a10.layers.translation.terminology_status, 'in_progress');
   assert.equal(a10.layers.translation.rights_status, 'unknown');
   assert.equal(a10.layers.translation.corrections_status, 'in_progress');
@@ -573,8 +579,8 @@ for (const [name, fetch] of [
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-// B95 and the complete C140 C5 capability are verified on the live 40-role surface.
-assert.deepEqual(educatorCounts, { verified: 25, available_unverified: 9, in_progress: 0, unknown: 6 });
+// A10 adds verified module/exercise selection, not an official teacher manual.
+assert.deepEqual(educatorCounts, { verified: 26, available_unverified: 8, in_progress: 0, unknown: 6 });
 console.log(JSON.stringify({
   state: 'pass', test_kind: 'actual_module_dom_stub_not_browser',
   source_sha256: createHash('sha256').update(source).digest('hex'),

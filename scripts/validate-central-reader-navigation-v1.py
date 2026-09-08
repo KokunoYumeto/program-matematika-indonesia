@@ -24,6 +24,8 @@ class NavigationParser(HTMLParser):
         self.navigation_markers = 0
         self.surface_navigation_markers = 0
         self.surface_navigation_placements: list[str] = []
+        self.surface_navigation_names: list[str] = []
+        self.html_language = ""
         self.home_links: list[dict[str, str]] = []
         self.program_root_links: list[dict[str, str]] = []
         self.contents_links: list[dict[str, str]] = []
@@ -34,12 +36,15 @@ class NavigationParser(HTMLParser):
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
         values = {key.lower(): value or "" for key, value in attrs}
+        if tag.lower() == "html":
+            self.html_language = values.get("lang", "")
         if tag.lower() == "nav" and values.get("data-program-navigation") == "v1":
             self.navigation_markers += 1
         if tag.lower() == "nav" and values.get("data-central-surface-navigation") == "v1":
             self.surface_navigation_markers += 1
             self._surface_placement = values.get("data-placement", "")
             self.surface_navigation_placements.append(self._surface_placement)
+            self.surface_navigation_names.append(values.get("aria-label", ""))
         if tag.lower() != "a":
             return
         row = {
@@ -76,6 +81,21 @@ class NavigationParser(HTMLParser):
             self._active.pop()
         elif tag.lower() == "nav" and self._surface_placement:
             self._surface_placement = ""
+
+
+def validate_document_locale(path: Path, parser: NavigationParser, document: dict, interfaces: dict) -> None:
+    """A mixed-language surface binds its shell language per document."""
+    if "locale" not in document:
+        return
+    document_locale = document["locale"]
+    if document_locale not in interfaces:
+        raise ValueError(f"{path}: unknown document interface locale {document_locale}")
+    expected_language = interfaces[document_locale]["language_tag"]
+    expected_navigation_name = interfaces[document_locale]["navigation"]["aria"]
+    if parser.html_language != expected_language:
+        raise ValueError(f"{path}: document language disagrees with interface locale")
+    if parser.surface_navigation_names != [expected_navigation_name] * 2:
+        raise ValueError(f"{path}: navigation shell language disagrees with document locale")
 
 
 def load_json(path: Path) -> dict[str, object]:
@@ -809,6 +829,7 @@ def main() -> int:
                 if not isinstance(ids, list) or not ids or len(ids) != len(set(ids)):
                     raise ValueError(f"{path}: invalid course target list")
                 parser = html_parser(path)
+                validate_document_locale(path, parser, document, interfaces)
                 surface_outbound[resolved_path] = article_targets(
                     path, path.read_text(encoding="utf-8"), contract["site_origin"]
                 )

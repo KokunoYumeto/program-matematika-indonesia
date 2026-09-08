@@ -285,6 +285,9 @@ def main() -> int:
                 )
             for document in surface["documents"]:
                 logical = (Path(surface["root"]) / document["path"]).as_posix()
+                document_locale = document.get("locale", surface["locale"])
+                if document_locale not in interfaces:
+                    raise ValueError(f"{logical}: unknown document interface locale {document_locale}")
                 ids = list(document["course_ids"])
                 if not ids or len(ids) != len(set(ids)) or not set(ids).issubset(course_ids):
                     raise ValueError(f"{logical}: invalid course-card binding {ids}")
@@ -294,12 +297,12 @@ def main() -> int:
                 register({
                     "logical": logical,
                     "role": "course_surface",
-                    "locale": surface["locale"],
+                    "locale": document_locale,
                     "state": surface["state"],
                     "course_ids": ids,
                     "course_targets": course_targets(ids),
                     "program_targets": program_targets(),
-                    "original_targets": original_targets(ids, surface["locale"]),
+                    "original_targets": original_targets(ids, document_locale),
                     "contents": [root / value for value in contents_paths],
                 })
 

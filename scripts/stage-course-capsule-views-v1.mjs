@@ -7,6 +7,10 @@ import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const sha256=bytes=>createHash('sha256').update(bytes).digest('hex');
 const mappings=[
+  ['backend/course-capsule-v1/adapters/a10-capability-v1/views/A10.html','docs/backend/a10/A10.html'],
+  ['backend/course-capsule-v1/adapters/a10-capability-v1/views/A10-en.html','docs/backend/a10/A10-en.html'],
+  ['backend/course-capsule-v1/adapters/a10-capability-v1/views/A10-pengajar.html','docs/backend/a10/A10-pengajar.html'],
+  ['backend/course-capsule-v1/adapters/a10-capability-v1/views/A10-pengajar-en.html','docs/backend/a10/A10-pengajar-en.html'],
   ['backend/course-capsule-v1/adapters/d80-capability-v1/views/D80.html','docs/backend/d80/D80.html'],
   ['backend/course-capsule-v1/adapters/d80-capability-v1/views/D80-pengajar.html','docs/backend/d80/D80-pengajar.html'],
   ['backend/course-capsule-v1/adapters/d100-capability-v1/views/D100.html','docs/backend/d100/D100.html'],
@@ -40,6 +44,13 @@ for(const [source,target] of mappings){
   const sourcePayload=await readFile(resolve(root,source));
   let payload=sourcePayload;
   let projection='byte-identical';
+  if(target.startsWith('docs/backend/a10/')){
+    const original=sourcePayload.toString('utf8');
+    assert.equal(original.split('../data/').length-1,6);
+    assert.equal(original.split('../validation.json').length-1,1);
+    payload=Buffer.from(original.replaceAll('../data/','data/').replaceAll('../validation.json','validation.json'),'utf8');
+    projection='public-directory-link-depth';
+  }
   if(target==='docs/backend/d90/D90-pengajar.html'){
     const original=sourcePayload.toString('utf8');
     assert.equal(original.split('../data/').length-1,4,`${source}: expected four adapter-relative governance links.`);
@@ -77,5 +88,5 @@ for(const [source,target] of mappings){
   assert.deepEqual(readback,payload,`${target}: staged view differs from adapter source.`);
   rows.push({source,target,projection,source_bytes:sourcePayload.length,source_sha256:sha256(sourcePayload),bytes:payload.length,sha256:sha256(payload)});
 }
-assert.equal(rows.length,26);
+assert.equal(rows.length,30);
 console.log(JSON.stringify({status:'pass',mode:'source-bound-public-projections',files:rows},null,2));

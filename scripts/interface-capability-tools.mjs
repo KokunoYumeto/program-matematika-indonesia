@@ -12,6 +12,7 @@ export const originalIndonesianBilingualValidationInput = 'backend/course-capsul
 export const navigationOverlayInput = 'backend/authority/central-course-surface-navigation-overlay-v1.json';
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
+  'a10.open_learner_hub':['A10','course_reader','backend/a10/A10.html'],
   'a20.open_learner_hub':['A20','course_reader','backend/a20/A20.html'],
   'a30.open_learner_hub':['A30','course_reader','backend/a30/A30.html'],
   'b40.open_learner_hub':['B40','course_reader','backend/b40/B40.html'],
