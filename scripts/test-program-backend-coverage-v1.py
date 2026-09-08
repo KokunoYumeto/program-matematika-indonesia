@@ -17,6 +17,7 @@ INPUTS = {
     'published': 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
     'clpRoutes': 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
     'clpView': 'docs/backend/clp/validation.json',
+    'a10Integration': 'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
     'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
     'a30Validation': 'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json',
@@ -81,7 +82,7 @@ assert model['summary']['zenodo_evidenced_roles'] == len(inputs['published']['ad
 assert model['summary']['locally_validated_adapter_roles'] == 40
 assert model['summary']['roles_without_validated_common_adapter'] == 0
 assert model['summary']['locally_represented_families'] == 33
-assert model['summary']['github_evidenced_roles'] == 39
+assert model['summary']['github_evidenced_roles'] == 40
 assert {
     role for role, row in roles.items()
     if row['common_adapter']['status'] not in ('verified', 'legacy_verified')
@@ -105,7 +106,31 @@ assert roles['B80']['common_adapter']['zenodo_preservation'] == 'assigned_to_cen
 assert roles['A10']['common_adapter']['status'] == 'verified'
 assert roles['A10']['common_adapter']['contract'] == '2.3.1'
 assert roles['A10']['common_adapter']['mapping_scope'] == 'existing_v231_capsule_plus_native_module_exercise_terminology_correction_rights_and_translation_metadata_consumer'
-assert roles['A10']['common_adapter']['github_public_evidence'] == 'not_established'
+assert roles['A10']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
+assert roles['A10']['common_adapter']['public_readback'] == {
+    'path': INPUTS['a10Integration'],
+    'bytes': (ROOT / INPUTS['a10Integration']).stat().st_size,
+    'sha256': hashlib.sha256((ROOT / INPUTS['a10Integration']).read_bytes()).hexdigest(),
+    'source_commit': '82b6bdbf5e306d39b351be1de58b7dc4d53314b1',
+    'verified_source_and_pages_pairs': 28,
+}
+readback = inputs['a10Integration']
+assert readback['state'] == 'pass' and readback['anonymous'] is True
+assert readback['credentials_used'] is False and readback['ambient_credentials_disabled'] is True
+assert readback['source_commit'] == '82b6bdbf5e306d39b351be1de58b7dc4d53314b1'
+assert readback['base_commit'] == '2105672d5786e88c3c7458f05cb6e53d9fc9b288'
+assert readback['expected_files'] == readback['verified_files'] == len(readback['files']) == 168
+assert not readback['failures']
+expected = {(row['surface'], row['path']): row for row in readback['expected_jobs']}
+verified = {(row['surface'], row['path']): row for row in readback['files']}
+assert len(expected) == len(verified) == 168 and set(expected) == set(verified)
+for key, row in verified.items():
+    assert row['http_status'] == 200
+    assert all(row[field] == expected[key][field] for field in ('url', 'bytes', 'sha256'))
+    if row['surface'] == 'pages' and row['path'].startswith('docs/backend/a10/'):
+        source = verified['source', row['path']]
+        assert (row['bytes'], row['sha256']) == (source['bytes'], source['sha256'])
+assert sum(key[0] == 'pages' and key[1].startswith('docs/backend/a10/') for key in verified) == 28
 assert roles['A10']['common_adapter']['zenodo_preservation'] == 'not_established'
 assert roles['A10']['common_adapter']['public_package'] is None
 assert [row['kind'] for row in roles['A10']['common_adapter']['local_evidence']] == [
@@ -852,6 +877,10 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('clp_view_not_pass', 'clpView', lambda value: value.update(state='fail')),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
+        ('a10_nonanonymous', 'a10Integration', lambda value: value.update(anonymous=False)),
+        ('a10_missing_english_teacher', 'a10Integration', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/a10/A10-pengajar-en.html'])),
+        ('a10_readback_hash_drift', 'a10Integration', lambda value: value['files'][0].update(sha256='0' * 64)),
+        ('a10_wrong_source_commit', 'a10Integration', lambda value: value.update(source_commit='0' * 40)),
         ('a20_missing_teacher_readback', 'a20', lambda value: value.update(files=[row for row in value['files'] if row['path'] != 'docs/backend/a20/A20-pengajar.html'])),
         ('a30_manifest_contract', 'a30Manifest', lambda value: value.update(contract='wrong-contract/0')),
         ('a30_validation_not_pass', 'a30Validation', lambda value: value.update(result='FAIL')),

@@ -10,6 +10,7 @@ const sources={
   published:'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
   clpRoutes:'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
   clpView:'docs/backend/clp/validation.json',
+  a10Integration:'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
   a20:'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
   a30Manifest:'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
   a30Validation:'backend/course-capsule-v1/adapters/a30-capability-v1/validation.json',
@@ -115,6 +116,38 @@ assert.equal(data.clpRoutes.summary.native_html_claimed,false);assert.equal(data
 assert.equal(data.clpView.state,'pass');
 assert.deepEqual(data.clpView.source,{path:sources.clpRoutes,bytes:bytes.clpRoutes.length,sha256:sha256(bytes.clpRoutes)});
 assert.equal(new Set(data.capsules.map(row=>row.course_id)).size,40,'Duplicate course role.');
+assert.equal(data.a10Integration.schema,'combined-backend-increment-public-readback/1');
+assert.equal(data.a10Integration.state,'pass');assert.equal(data.a10Integration.anonymous,true);
+assert.equal(data.a10Integration.credentials_used,false);assert.equal(data.a10Integration.ambient_credentials_disabled,true);
+assert.equal(data.a10Integration.source_commit,'82b6bdbf5e306d39b351be1de58b7dc4d53314b1');
+assert.equal(data.a10Integration.base_commit,'2105672d5786e88c3c7458f05cb6e53d9fc9b288');
+assert.equal(data.a10Integration.expected_files,168);assert.equal(data.a10Integration.verified_files,168);
+assert.equal(data.a10Integration.expected_jobs.length,168);assert.equal(data.a10Integration.files.length,168);
+assert.deepEqual(data.a10Integration.failures,[]);
+const a10Jobs=new Map(data.a10Integration.expected_jobs.map(row=>[row.surface+':'+row.path,row]));
+assert.equal(a10Jobs.size,168);const a10Verified=new Map();
+for(const row of data.a10Integration.files){
+  const key=row.surface+':'+row.path;assert.ok(!a10Verified.has(key));
+  const expected=a10Jobs.get(key);assert.ok(expected);assert.equal(row.http_status,200);
+  for(const field of ['url','bytes','sha256'])assert.equal(row[field],expected[field]);
+  assert.ok(row.bytes>0);assert.match(row.sha256,/^[a-f0-9]{64}$/);a10Verified.set(key,row);
+}
+const a10PublicPaths=['A10.html','A10-en.html','A10-pengajar.html','A10-pengajar-en.html',
+  'manifest.json','validation.json','source-lock.json','learning-map.json','capabilities.json','claim-boundary.json',
+  'data/capabilities.json','data/claim-boundary.json','data/concept-index.jsonl','data/corrections-index.jsonl',
+  'data/english-source-mirror.json','data/exercise-index.jsonl','data/html-route-evidence.json','data/learning-map.json',
+  'data/module-index.jsonl','data/native-record-ledger.json','data/pdf-route-evidence.json',
+  'data/pedagogical-relation-index.jsonl','data/placement-index.jsonl','data/rights-index.jsonl',
+  'data/terminology-history-index.jsonl','data/terms-index.jsonl','data/translation-index.jsonl','data/unit-reference-index.jsonl'];
+for(const filename of a10PublicPaths){
+  const path='docs/backend/a10/'+filename;
+  const source=a10Verified.get('source:'+path),page=a10Verified.get('pages:'+path);
+  assert.ok(source&&page,`Missing A10 public source/Pages pair: ${filename}`);
+  assert.equal(source.bytes,page.bytes);assert.equal(source.sha256,page.sha256);
+  assert.equal(source.url,'https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia/'+data.a10Integration.source_commit+'/'+path);
+  assert.equal(page.url,'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/a10/'+filename);
+  if(filename.endsWith('.html'))assert.equal(page.content_type.split(';')[0],'text/html');
+}
 assert.equal(data.a20.schema,'a20-integration-public-readback/1');
 assert.equal(data.a20.state,'pass');assert.equal(data.a20.anonymous,true);assert.equal(data.a20.credentials_used,false);
 assert.equal(data.a20.source_commit,'a2729467c523ca2327a112e24145cab2aad56c38');
@@ -461,6 +494,7 @@ const rows=data.capsules.map(capsule=>{
   }
   const integrated=['verified','legacy_verified'].includes(adapter.status);
   const publicRow=frozenPublished.get(role);
+  if(role==='A10')assert.equal(adapter.status,'verified');
   const packet=publicRow?frozenPackages.get(publicRow.adapter_package_id):null;
   if(publicRow){
     assert.ok(packet,`${role}: published binding without a package`);
@@ -487,9 +521,10 @@ const rows=data.capsules.map(capsule=>{
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
-      github_public_evidence:publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='B95'?'native_anonymous_release_asset_readback':role==='C140'?'native_anonymous_release_and_pages_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A30'?'new_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
+      github_public_evidence:role==='A10'?'new_anonymous_source_and_pages_readback':publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='B95'?'native_anonymous_release_asset_readback':role==='C140'?'native_anonymous_release_and_pages_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A30'?'new_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
       zenodo_preservation:publicRow?'frozen_public_readback':role==='D50'?'new_embedded_successor_readback':role==='B80'?'assigned_to_central_manager_not_yet_verified':'not_established',
       ...(gap?{admission:{status:'pass',receipt:{path:sources.gapAdmission,bytes:bytes.gapAdmission.length,sha256:sha256(bytes.gapAdmission)},package:gap.package,twin:gap.twin,spec:gap.spec,public_embedding:gapPublicEmbedding}}:{}),
+      ...(role==='A10'?{public_readback:{path:sources.a10Integration,bytes:bytes.a10Integration.length,sha256:sha256(bytes.a10Integration),source_commit:data.a10Integration.source_commit,verified_source_and_pages_pairs:a10PublicPaths.length}}:{}),
       local_evidence:adapter.evidence??[],
       public_package:packet?{url:packet.public_asset_url,bytes:packet.archive.bytes,sha256:packet.archive.sha256,
         central_record:`https://doi.org/${data.published.snapshot.central_release_record_doi}`} : role==='D50'?{
@@ -549,7 +584,7 @@ const summary={roles:40,native_families:33,locally_validated_adapter_roles:integ
   native_capability_parity_complete:nativeCapabilityParityVerifiedRoles===40,
   overall_program_backend_complete:commonExchangeLayerComplete&&nativeCapabilityParityVerifiedRoles===40&&rows.every(row=>row.whole_course_backend_completion==='verified')};
 assert.equal(summary.locally_validated_adapter_roles+summary.roles_without_validated_common_adapter,40);
-const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-07',scope:'Backend integration, not textbook translation progress.',
+const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-08',scope:'Backend integration, not textbook translation progress.',
   evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Common exchange-layer completion and native capability parity are reported separately. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. A30 has complete anonymous native GitHub/Zenodo release readback plus a central integration readback covering ten source/derived files and three changed Pages routes. A30, B95, and C140 adapter packets were preserved and anonymously read back in central v0.63.24. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
   evidence:Object.entries(sources).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),
   admission:{receipt:{path:sources.gapAdmission,bytes:bytes.gapAdmission.length,sha256:sha256(bytes.gapAdmission)},roles:gapRoles,public_embedding:gapPublicEmbedding},summary,roles:rows};
