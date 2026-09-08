@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Related Rates</title>
+
+
+<link rel="stylesheet" href="runtime/reader-support/material-symbols-local.css">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="external/RQS.css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="runtime/mathjax/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="CLP-1 Differential Calculus">
+<meta property="book:author" content="Joel Feldman">
+<meta property="book:author" content="Andrew Rechnitzer">
+<meta property="book:author" content="Elyse Yeager">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '8.2.5';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/prefix-runtime.18d8728f6d56e11d.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.b388362b5f43738a.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.8086b62682b271d1.css">
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="runtime/lunr/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+<link rel="stylesheet" href="program-navigation.css"></head>
+<body class="pretext book ignore-math">
+<nav data-central-surface-navigation="v1" data-placement="top" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B20" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">English — B20</a> · <a data-program-home data-course-card data-course-id="B20" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Bahasa Indonesia — B20</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B20" href="https://personal.math.ubc.ca/~CLP/CLP1/">Original source — Original authors’ website — CLP-1 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="front.html">Open related page</a></nav><nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP1/">Original authors’ website ↗</a><a href="front.html">Book contents</a></nav>
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="clp_1_dc.html"><span class="title">CLP-1 Differential Calculus</span></a></h1>
+<p class="byline">Joel Feldman, Andrew Rechnitzer, Elyse Yeager</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Contents</span></button><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="sec_vel_acc.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="up-button button" href="chap_appl_deriv.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Up</span></a><a class="next-button button" href="sec_ExpGthDecay.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}\newcommand{\dee}[1]{\mathrm{d}#1}
+\newcommand{\half}{ \frac{1}{2} }
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ts}{\textstyle}
+\newcommand{\es}{ {\varnothing}}
+\newcommand{\st}{ {\mbox{ s.t. }} }
+\newcommand{\pow}[1]{ \mathcal{P}\left(#1\right) }
+\newcommand{\set}[1]{ \left\{#1\right\} }
+\newcommand{\lin}{{\text{LIN}}}
+\newcommand{\quot}{{\text{QR}}}
+\newcommand{\simp}{{\text{SMP}}}
+\newcommand{\diff}[2]{ \frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\bdiff}[2]{ \frac{\mathrm{d}}{\mathrm{d}#2} \left( #1 \right)}
+\newcommand{\ddiff}[3]{ \frac{\mathrm{d}^#1#2}{\mathrm{d}{#3}^#1}}
+\renewcommand{\neg}{ {\sim} }
+\newcommand{\limp}{ {\;\Rightarrow\;} }
+\newcommand{\nimp}{ {\;\not\Rightarrow\;} }
+\newcommand{\liff}{ {\;\Leftrightarrow\;} }
+\newcommand{\niff}{ {\;\not\Leftrightarrow\;} }
+\newcommand{\De}{\Delta}
+\newcommand{\bbbn}{\mathbb{N}}
+\newcommand{\bbbr}{\mathbb{R}}
+\newcommand{\bbbp}{\mathbb{P}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\Si}{\Sigma}
+
+\newcommand{\arccsc}{\mathop{\mathrm{arccsc}}}
+\newcommand{\arcsec}{\mathop{\mathrm{arcsec}}}
+\newcommand{\arccot}{\mathop{\mathrm{arccot}}}
+\newcommand{\erf}{\mathop{\mathrm{erf}}}
+\newcommand{\smsum}{\mathop{{\ts \sum}}}
+\newcommand{\atp}[2]{ \genfrac{}{}{0in}{}{#1}{#2} }
+
+\newcommand{\ave}{\mathrm{ave}}
+\newcommand{\llt}{\left \lt }
+\newcommand{\rgt}{\right \gt }
+
+
+\newcommand{\YEaxis}[2]{\draw[help lines] (-#1,0)--(#1,0) node[right]{$x$};\draw[help lines] (0,-#2)--(0,#2) node[above]{$y$};}
+
+\newcommand{\YEaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$x$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YEtaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+\newcommand{\YEtaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$}; \draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YExcoord}[2]{\draw (#1,.2)--(#1,-.2) node[below]{$#2$};}
+\newcommand{\YEycoord}[2]{\draw (.2,#1)--(-.2,#1) node[left]{$#2$};}
+\newcommand{\YEnxcoord}[2]{\draw (#1,-.2)--(#1,.2) node[above]{$#2$};}
+\newcommand{\YEnycoord}[2]{\draw (-.2,#1)--(.2,#1) node[right]{$#2$};}
+
+\newcommand{\YEstickfig}[3]{
+\draw (#1,#2) arc(-90:270:2mm);
+\draw (#1,#2)--(#1,#2-.5) (#1-.25,#2-.75)--(#1,#2-.5)--(#1+.25,#2-.75) (#1-.2,#2-.2)--(#1+.2,#2-.2);}
+
+
+\newcommand{\IBP}[7]{
+\begin{array}{|c  | l | l |}
+\hline
+\color{red}{\text{Option 1:}}
+&amp; u=#2
+&amp;\color{red}{\dee{u}=#3 ~ \dee{#1}}
+\\
+&amp; \dee{v}=#5~\dee{#1}
+&amp;\color{red}{v=#7}
+\\
+\hline
+\color{blue}{\text{Option 2:}}
+&amp; u=#5
+&amp;\color{blue}{\dee{u}=#6 ~ \dee{#1}}
+\\
+&amp;\dee{v}=#2 \dee{#1}
+&amp;\color{blue}{v=#4}
+\\
+\hline
+\end{array}
+}
+
+
+\renewcommand{\textcolor}[2]{{\color{#1}{#2}}}
+
+
+\newcommand{\trigtri}[4]{
+\begin{tikzpicture}
+\draw (-.5,0)--(2,0)--(2,1.5)--cycle;
+\draw (1.8,0) |- (2,.2);
+\draw[double] (0,0) arc(0:30:.5cm);
+\draw (0,.2) node[right]{$#1$};
+\draw (1,-.5) node{$#2$};
+\draw (2,.75) node[right]{$#3$};
+\draw (.6,1.1) node[rotate=30]{$#4$};
+\end{tikzpicture}}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="front.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="front-colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="front-4.html" class="internal"><span class="title">Preface</span></a></div></li>
+<li class="toc-item toc-dedication"><div class="toc-title-box"><a href="front-5.html" class="internal"><span class="title">Dedication</span></a></div></li>
+<li class="toc-item toc-acknowledgement"><div class="toc-title-box"><a href="front-6.html" class="internal"><span class="title">Acknowledgements</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="front-7.html" class="internal"><span class="title">Using the exercises in this book</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="front-8.html" class="internal"><span class="title">Feedback about the text</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_basics.html" class="internal"><span class="codenumber">0</span> <span class="title">The basics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_0_1.html" class="internal"><span class="codenumber">0.1</span> <span class="title">Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_0_1.html#sec_0_1-3" class="internal"><span class="codenumber">0.1.1</span> <span class="title">More on Real Numbers</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_sets.html" class="internal"><span class="codenumber">0.2</span> <span class="title">Sets</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_0_3.html" class="internal"><span class="codenumber">0.3</span> <span class="title">Other Important Sets</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_0_3.html#sec_0_3-3" class="internal"><span class="codenumber">0.3.1</span> <span class="title">More on Sets</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_0_4.html" class="internal"><span class="codenumber">0.4</span> <span class="title">Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_parsing.html" class="internal"><span class="codenumber">0.5</span> <span class="title">Parsing Formulas</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_inverse_functions.html" class="internal"><span class="codenumber">0.6</span> <span class="title">Inverse Functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_limits.html" class="internal"><span class="codenumber">1</span> <span class="title">Limits</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_first_lim.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Drawing Tangents and a First Limit</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_first_lim.html#sec_first_lim-2" class="internal"><span class="codenumber">1.1.1</span> <span class="title">Drawing Tangents and a First Limit</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_first_lim.html#sec_first_lim-3" class="internal"><span class="codenumber">1.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_velocity.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Another Limit and Computing Velocity</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_velocity.html#sec_velocity-2" class="internal"><span class="codenumber">1.2.1</span> <span class="title">Another Limit and Computing Velocity</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_velocity.html#sec_velocity-3" class="internal"><span class="codenumber">1.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_lim_func.html" class="internal"><span class="codenumber">1.3</span> <span class="title">The Limit of a Function</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_lim_func.html#sec_lim_func-2" class="internal"><span class="codenumber">1.3.1</span> <span class="title">The Limit of a Function</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_lim_func.html#sec_lim_func-3" class="internal"><span class="codenumber">1.3.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_1_4.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Calculating Limits with Limit Laws</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_4.html#sec_1_4-2" class="internal"><span class="codenumber">1.4.1</span> <span class="title">Calculating Limits with Limit Laws</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_1_4.html#sec_1_4-3" class="internal"><span class="codenumber">1.4.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_1_5.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Limits at Infinity</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_5.html#sec_1_5-2" class="internal"><span class="codenumber">1.5.1</span> <span class="title">Limits at Infinity</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_1_5.html#sec_1_5-3" class="internal"><span class="codenumber">1.5.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_1_6.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Continuity</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-2" class="internal"><span class="codenumber">1.6.1</span> <span class="title">Continuity</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-3" class="internal"><span class="codenumber">1.6.2</span> <span class="title">Quick Aside — One-sided Continuity</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-4" class="internal"><span class="codenumber">1.6.3</span> <span class="title">Back to the Main Text</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-5" class="internal"><span class="codenumber">1.6.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_opt_formal_limit.html" class="internal"><span class="codenumber">1.7</span> <span class="title">(Optional) — Making the Informal a Little More Formal</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_lim_inf_formal.html" class="internal"><span class="codenumber">1.8</span> <span class="title">(Optional) — Making Infinite Limits a Little More Formal</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_proof_arith_lim.html" class="internal"><span class="codenumber">1.9</span> <span class="title">(Optional) — Proving the Arithmetic of Limits</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_deriv.html" class="internal"><span class="codenumber">2</span> <span class="title">Derivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_1.html" class="internal"><span class="codenumber">2.1</span> <span class="title">Revisiting Tangent Lines</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_1.html#sec_2_1-2" class="internal"><span class="codenumber">2.1.1</span> <span class="title">Revisiting Tangent Lines</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_1.html#sec_2_1-3" class="internal"><span class="codenumber">2.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_def_deriv.html" class="internal"><span class="codenumber">2.2</span> <span class="title">Definition of the Derivative</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-3" class="internal"><span class="codenumber">2.2.1</span> <span class="title">An Important Point (and Some Notation)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-4" class="internal"><span class="codenumber">2.2.2</span> <span class="title">Back to Computing Some Derivatives</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-5" class="internal"><span class="codenumber">2.2.3</span> <span class="title">Where is the Derivative Undefined?</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-6" class="internal"><span class="codenumber">2.2.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_3.html" class="internal"><span class="codenumber">2.3</span> <span class="title">Interpretations of the Derivative</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_3.html#sec_2_3-3" class="internal"><span class="codenumber">2.3.1</span> <span class="title">Instantaneous Rate of Change</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_3.html#sec_2_3-4" class="internal"><span class="codenumber">2.3.2</span> <span class="title">Slope</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_3.html#sec_2_3-5" class="internal"><span class="codenumber">2.3.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_4.html" class="internal"><span class="codenumber">2.4</span> <span class="title">Arithmetic of Derivatives - a Differentiation Toolbox</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_4.html#sec_2_4-2" class="internal"><span class="codenumber">2.4.1</span> <span class="title">Arithmetic of Derivatives - a Differentiation Toolbox</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_4.html#sec_2_4-3" class="internal"><span class="codenumber">2.4.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_proof_arith_deriv.html" class="internal"><span class="codenumber">2.5</span> <span class="title">Proofs of the Arithmetic of Derivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_proof_arith_deriv.html#sec_proof_arith_deriv-3" class="internal"><span class="codenumber">2.5.1</span> <span class="title">Proof of the Linearity of Differentiation (Theorem 2.4.2)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_proof_arith_deriv.html#sec_proof_arith_deriv-4" class="internal"><span class="codenumber">2.5.2</span> <span class="title">Proof of the Product Rule (Theorem 2.4.3)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_proof_arith_deriv.html#sec_proof_arith_deriv-5" class="internal"><span class="codenumber">2.5.3</span> <span class="title">(Optional) — Proof of the Quotient Rule (Theorem 2.4.5)</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_6.html" class="internal"><span class="codenumber">2.6</span> <span class="title">Using the Arithmetic of Derivatives –  Examples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_6.html#sec_2_6-2" class="internal"><span class="codenumber">2.6.1</span> <span class="title">Using the Arithmetic of Derivatives –  Examples</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_6.html#sec_2_6-3" class="internal"><span class="codenumber">2.6.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_exp_func.html" class="internal"><span class="codenumber">2.7</span> <span class="title">Derivatives of Exponential Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-3" class="internal"><span class="codenumber">2.7.1</span> <span class="title">Whirlwind Review of Logarithms</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-3-3" class="internal"><span class="codenumber">2.7.1.1</span> <span class="title">Logarithmic Functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-4" class="internal"><span class="codenumber">2.7.2</span> <span class="title">Back to that Limit</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-5" class="internal"><span class="codenumber">2.7.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_diff_trig.html" class="internal"><span class="codenumber">2.8</span> <span class="title">Derivatives of Trigonometric Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-3" class="internal"><span class="codenumber">2.8.1</span> <span class="title">These Proofs are Optional, the Results are Not.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-4" class="internal"><span class="codenumber">2.8.2</span> <span class="title">Step 1: <span class="process-math">\(\mathbf{\diff{}{x} \{ \sin x \} \big|_{x=0}}\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-5" class="internal"><span class="codenumber">2.8.3</span> <span class="title">Proof that <span class="process-math">\(\mathbf{\lim\limits_{h\rightarrow 0}\tfrac{\sin h}{h}=1}\)</span></span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-6" class="internal"><span class="codenumber">2.8.4</span> <span class="title">Step 2: <span class="process-math">\(\mathbf{\diff{}{x} \{ \cos x \} \big|_{x=0}}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-6-3" class="internal"><span class="codenumber">2.8.4.1</span> <span class="title">Method 1 — Multiply by the “Conjugate”</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-6-4" class="internal"><span class="codenumber">2.8.4.2</span> <span class="title">Method 2 — via the Double Angle Formula</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-7" class="internal"><span class="codenumber">2.8.5</span> <span class="title">Step 3: <span class="process-math">\(\diff{}{x} \{ \sin x \}\)</span> and <span class="process-math">\(\diff{}{x} \{ \cos x\}\)</span> for General <span class="process-math">\(x\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-8" class="internal"><span class="codenumber">2.8.6</span> <span class="title">Step 4: the Remaining Trigonometric Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-9" class="internal"><span class="codenumber">2.8.7</span> <span class="title">Summary</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-10" class="internal"><span class="codenumber">2.8.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_chain_rule.html" class="internal"><span class="codenumber">2.9</span> <span class="title">One More Tool  – the Chain Rule</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-3" class="internal"><span class="codenumber">2.9.1</span> <span class="title">Statement of the Chain Rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-4" class="internal"><span class="codenumber">2.9.2</span> <span class="title">(Optional) — Derivation of the Chain Rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-5" class="internal"><span class="codenumber">2.9.3</span> <span class="title">Chain Rule Examples</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-6" class="internal"><span class="codenumber">2.9.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_diff_logs.html" class="internal"><span class="codenumber">2.10</span> <span class="title">The Natural Logarithm</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_logs.html#sec_diff_logs-3" class="internal"><span class="codenumber">2.10.1</span> <span class="title">Back to <span class="process-math">\(\mathbf{\diff{}{x} a^x}\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_logs.html#sec_diff_logs-4" class="internal"><span class="codenumber">2.10.2</span> <span class="title">Logarithmic Differentiation</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_diff_logs.html#sec_diff_logs-5" class="internal"><span class="codenumber">2.10.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_11.html" class="internal"><span class="codenumber">2.11</span> <span class="title">Implicit Differentiation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_11.html#sec_2_11-2" class="internal"><span class="codenumber">2.11.1</span> <span class="title">Implicit Differentiation</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_11.html#sec_2_11-3" class="internal"><span class="codenumber">2.11.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_invTrig.html" class="internal"><span class="codenumber">2.12</span> <span class="title">Inverse Trigonometric Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_invTrig.html#sec_invTrig-3" class="internal"><span class="codenumber">2.12.1</span> <span class="title">Derivatives of Inverse Trig Functions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_invTrig.html#sec_invTrig-4" class="internal"><span class="codenumber">2.12.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_mvt.html" class="internal"><span class="codenumber">2.13</span> <span class="title">The Mean Value Theorem</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-3" class="internal"><span class="codenumber">2.13.1</span> <span class="title">Rolle’s Theorem</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-4" class="internal"><span class="codenumber">2.13.2</span> <span class="title">Back to the MVT</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-5" class="internal"><span class="codenumber">2.13.3</span> <span class="title">(Optional) — Why is the MVT True</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#warning_mvt" class="internal"><span class="codenumber">2.13.4</span> <span class="title">Be Careful with Hypotheses</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-7" class="internal"><span class="codenumber">2.13.5</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_higher_diff.html" class="internal"><span class="codenumber">2.14</span> <span class="title">Higher Order Derivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_higher_diff.html#sec_higher_diff-2" class="internal"><span class="codenumber">2.14.1</span> <span class="title">Higher Order Derivatives</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_higher_diff.html#sec_higher_diff-3" class="internal"><span class="codenumber">2.14.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_cont_deriv.html" class="internal"><span class="codenumber">2.15</span> <span class="title">(Optional) — Is <span class="process-math">\(\lim_{x\to c}f'(x)\)</span> Equal to <span class="process-math">\(f'(c)\text{?}\)</span></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="chap_appl_deriv.html" class="internal"><span class="codenumber">3</span> <span class="title">Applications of derivatives</span></a></div>
+<ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_vel_acc.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Velocity and Acceleration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_vel_acc.html#sec_vel_acc-2" class="internal"><span class="codenumber">3.1.1</span> <span class="title">Velocity and Acceleration</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_vel_acc.html#sec_vel_acc-3" class="internal"><span class="codenumber">3.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="sec_rrates.html" class="internal"><span class="codenumber">3.2</span> <span class="title">Related Rates</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_rrates.html#sec_rrates-2" class="internal"><span class="codenumber">3.2.1</span> <span class="title">Related Rates</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_rrates.html#sec_rrates-3" class="internal"><span class="codenumber">3.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_ExpGthDecay.html" class="internal"><span class="codenumber">3.3</span> <span class="title">Exponential Growth and Decay</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#ssec_carbon" class="internal"><span class="codenumber">3.3.1</span> <span class="title">Carbon Dating</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_newtonCooling" class="internal"><span class="codenumber">3.3.2</span> <span class="title">Newton’s Law of Cooling</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_ExpGthDecay.html#ssec_pop" class="internal"><span class="codenumber">3.3.3</span> <span class="title">Population Growth</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#ssec_pop-3" class="internal"><span class="codenumber">3.3.3.1</span> <span class="title">(Optional) — Logistic Population Growth</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-2" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises for § 3.3.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-3" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises for § 3.3.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-4" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises for § 3.3.3</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-5" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Further problems for § 3.3</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_DIFFTaylor.html" class="internal"><span class="codenumber">3.4</span> <span class="title">Taylor Polynomials</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_const_approx" class="internal"><span class="codenumber">3.4.1</span> <span class="title">Zeroth Approximation — the Constant Approximation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_first_approx" class="internal"><span class="codenumber">3.4.2</span> <span class="title">First Approximation — the Linear Approximation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_second_approx" class="internal"><span class="codenumber">3.4.3</span> <span class="title">Second Approximation — the Quadratic Approximation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_sigma" class="internal"><span class="codenumber">3.4.4</span> <span class="title">Whirlwind Tour of Summation Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_poly" class="internal"><span class="codenumber">3.4.5</span> <span class="title">Still Better Approximations — Taylor Polynomials</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_eg" class="internal"><span class="codenumber">3.4.6</span> <span class="title">Some Examples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_est_change" class="internal"><span class="codenumber">3.4.7</span> <span class="title">Estimating Change and <span class="process-math">\(\De x\text{,}\)</span> <span class="process-math">\(\De y\)</span> Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_more" class="internal"><span class="codenumber">3.4.8</span> <span class="title">Further Examples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_error" class="internal"><span class="codenumber">3.4.9</span> <span class="title">The Error in the Taylor Polynomial Approximations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#subsec_GMVT" class="internal"><span class="codenumber">3.4.10</span> <span class="title">(Optional) — Derivation of the Error Formulae</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-2" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-3" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-4" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.3</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-5" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.4</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-6" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.5</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-7" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.6</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-8" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.7</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-9" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.8</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-10" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Further problems for § 3.4</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_optimise.html" class="internal"><span class="codenumber">3.5</span> <span class="title">Optimisation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_optimise.html#ssec_maxmin" class="internal"><span class="codenumber">3.5.1</span> <span class="title">Local and Global Maxima and Minima</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_optimise.html#ssec_find_maxmin" class="internal"><span class="codenumber">3.5.2</span> <span class="title">Finding Global Maxima and Minima</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_optimise.html#sec_opt_eg" class="internal"><span class="codenumber">3.5.3</span> <span class="title">Max/Min Examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6-2" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises for § 3.5.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6-3" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises for § 3.5.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6-4" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises for § 3.5.3</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_curve_sketch.html" class="internal"><span class="codenumber">3.6</span> <span class="title">Sketching Graphs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_DIA" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Domain, Intercepts and Asymptotes</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_FD" class="internal"><span class="codenumber">3.6.2</span> <span class="title">First Derivative — Increasing or Decreasing</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_SD" class="internal"><span class="codenumber">3.6.3</span> <span class="title">Second Derivative — Concavity</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_SYM" class="internal"><span class="codenumber">3.6.4</span> <span class="title">Symmetries</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_check" class="internal"><span class="codenumber">3.6.5</span> <span class="title">A Checklist for Sketching</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_check-3" class="internal"><span class="codenumber">3.6.5.1</span> <span class="title">A Sketching Checklist</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_SE" class="internal"><span class="codenumber">3.6.6</span> <span class="title">Sketching Examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-2" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-3" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-4" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.3</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-5" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.4</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-6" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.6</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_4_7.html" class="internal"><span class="codenumber">3.7</span> <span class="title">L’Hôpital’s Rule, Indeterminate Forms</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_4_7.html#sec_4_7-2" class="internal"><span class="codenumber">3.7.1</span> <span class="title">L’Hôpital’s Rule and Indeterminate Forms</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#sec_4_7-2-3" class="internal"><span class="codenumber">3.7.1.1</span> <span class="title">Optional — Proof of Part (b) of l’Hôpital’s Rule</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_1" class="internal"><span class="codenumber">3.7.2</span> <span class="title">Standard Examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2" class="internal"><span class="codenumber">3.7.3</span> <span class="title">Variations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-3" class="internal"><span class="codenumber">3.7.3.1</span> <span class="title">Limits at <span class="process-math">\(\pm \infty\)</span></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-4" class="internal"><span class="codenumber">3.7.3.2</span> <span class="title"><span class="process-math">\(\frac{\infty}{\infty}\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-5" class="internal"><span class="codenumber">3.7.3.3</span> <span class="title">Optional — Proof of l’Hôpital’s Rule for <span class="process-math">\(\frac\infty\infty\)</span></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-6" class="internal"><span class="codenumber">3.7.3.4</span> <span class="title"><span class="process-math">\(0\cdot\infty\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-7" class="internal"><span class="codenumber">3.7.3.5</span> <span class="title"><span class="process-math">\(\infty-\infty\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-8" class="internal"><span class="codenumber">3.7.3.6</span> <span class="title"><span class="process-math">\(1^\infty\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-9" class="internal"><span class="codenumber">3.7.3.7</span> <span class="title"><span class="process-math">\(0^0\)</span>indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-10" class="internal"><span class="codenumber">3.7.3.8</span> <span class="title"><span class="process-math">\(\infty^0\)</span> indeterminate form</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_4_7.html#sec_4_7-5" class="internal"><span class="codenumber">3.7.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="clp_1_dc-7.html" class="internal"><span class="codenumber">4</span> <span class="title">Towards Integral Calculus</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_antidiff.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Introduction to Antiderivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_antidiff.html#sec_antidiff-2" class="internal"><span class="codenumber">4.1.1</span> <span class="title">Introduction to Antiderivatives</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_antidiff.html#sec_antidiff-3" class="internal"><span class="codenumber">4.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="clp_1_dc-8.html" class="internal"><span class="title">Appendices</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_highschool.html" class="internal"><span class="codenumber">A</span> <span class="title">High School Material</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_simtri.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Similar Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_2.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Pythagoras</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_3.html" class="internal"><span class="codenumber">A.3</span> <span class="title">Trigonometry — Definitions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_rad_arc_sec.html" class="internal"><span class="codenumber">A.4</span> <span class="title">Radians, Arcs and Sectors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_trig_graphs.html" class="internal"><span class="codenumber">A.5</span> <span class="title">Trigonometry — Graphs</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_6.html" class="internal"><span class="codenumber">A.6</span> <span class="title">Trigonometry — Special Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_7.html" class="internal"><span class="codenumber">A.7</span> <span class="title">Trigonometry — Simple Identities</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_trig_add.html" class="internal"><span class="codenumber">A.8</span> <span class="title">Trigonometry — Add and Subtract Angles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_inv_trig.html" class="internal"><span class="codenumber">A.9</span> <span class="title">Inverse Trig Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_areas.html" class="internal"><span class="codenumber">A.10</span> <span class="title">Areas</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_volumes.html" class="internal"><span class="codenumber">A.11</span> <span class="title">Volumes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_powers.html" class="internal"><span class="codenumber">A.12</span> <span class="title">Powers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_logs.html" class="internal"><span class="codenumber">A.13</span> <span class="title">Logarithms</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_must_deriv.html" class="internal"><span class="codenumber">A.14</span> <span class="title">You Should be Able to Derive</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="chap_app_B.html" class="internal"><span class="codenumber">B</span> <span class="title">Origin of Trig, Area and Volume Formulas</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_1.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Theorems about Triangles</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_1.html#ssec_B_1_1" class="internal"><span class="codenumber">B.1.1</span> <span class="title">Thales’ Theorem</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_1.html#ssec_B_1_2" class="internal"><span class="codenumber">B.1.2</span> <span class="title">Pythagoras</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_2.html" class="internal"><span class="codenumber">B.2</span> <span class="title">Trigonometry</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_rad_deg" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Angles — Radians vs Degrees</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_2" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Trig Function Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_3" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Important Triangles</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_4" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Some More Simple Identities</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_5" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Identities — Adding Angles</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_6" class="internal"><span class="codenumber">B.2.6</span> <span class="title">Identities — Double-angle Formulas</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_7" class="internal"><span class="codenumber">B.2.7</span> <span class="title">Identities — Extras</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_7-2" class="internal"><span class="codenumber">B.2.7.1</span> <span class="title">Sums to Products</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_7-3" class="internal"><span class="codenumber">B.2.7.2</span> <span class="title">Products to sums</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_B_3.html" class="internal"><span class="codenumber">B.3</span> <span class="title">Inverse Trigonometric Functions</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_4.html" class="internal"><span class="codenumber">B.4</span> <span class="title">Cosine and Sine Laws</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_4.html#app_cosine_law" class="internal"><span class="codenumber">B.4.1</span> <span class="title">Cosine Law or Law of Cosines</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_4.html#ssec_B_4_2" class="internal"><span class="codenumber">B.4.2</span> <span class="title">Sine Law or Law of Sines</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_5.html" class="internal"><span class="codenumber">B.5</span> <span class="title">Circles, cones and spheres</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_5.html#ssec_B_5_1" class="internal"><span class="codenumber">B.5.1</span> <span class="title">Where Does the Formula for the Area of a Circle Come From?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_5.html#apendix_volume" class="internal"><span class="codenumber">B.5.2</span> <span class="title">Where Do These Volume Formulas Come From?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_root_finding.html" class="internal"><span class="codenumber">C</span> <span class="title">Root Finding</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_1.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Newton’s Method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_2.html" class="internal"><span class="codenumber">C.2</span> <span class="title">The Error Behaviour of Newton’s Method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_3.html" class="internal"><span class="codenumber">C.3</span> <span class="title">The false position (regula falsi) method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_4.html" class="internal"><span class="codenumber">C.4</span> <span class="title">The secant method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_5.html" class="internal"><span class="codenumber">C.5</span> <span class="title">The Error Behaviour of the Secant Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_hint.html" class="internal"><span class="codenumber">D</span> <span class="title">Hints for Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_answ.html" class="internal"><span class="codenumber">E</span> <span class="title">Answers to Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_soln.html" class="internal"><span class="codenumber">F</span> <span class="title">Solutions to Exercises</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="section" id="sec_rrates"><h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Related Rates</span>
+</h2>
+<section class="subsection" id="sec_rrates-2"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Related Rates</span>
+</h3>
+<div class="para" id="sec_rrates-2-2">Consider the following problem<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<blockquote class="blockquote" id="sec_rrates-2-3">
+<div class="para" id="sec_rrates-2-3-1">A spherical balloon is being inflated at a rate of <span class="process-math">\(13cm^3/sec\text{.}\)</span> How fast is the radius changing when the balloon has radius <span class="process-math">\(15cm\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-3-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Quotation"><a href="#sec_rrates-2-3" title="Copy heading and permalink for Quotation" aria-label="Copy heading and permalink for Quotation">🔗</a></div>
+</blockquote>
+<div class="para logical" id="sec_rrates-2-4">
+<div class="para">There are several pieces of information in the statement:</div>
+<ul class="disc" id="sec_rrates-2-4-1">
+<li id="sec_rrates-2-4-1-1">
+<div class="para" id="p-derived-sec_rrates-2-4-1-1">The balloon is spherical</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-2-4-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_rrates-2-4-1-2">
+<div class="para" id="p-derived-sec_rrates-2-4-1-2">The volume is changing at a rate of <span class="process-math">\(13cm^3/sec\)</span> — so we need variables for volume (in <span class="process-math">\(cm^3\)</span>) and time (in <span class="process-math">\(sec\)</span>). Good choices are <span class="process-math">\(V\)</span> and <span class="process-math">\(t\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-2-4-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_rrates-2-4-1-3">
+<div class="para" id="p-derived-sec_rrates-2-4-1-3">We are asked for the rate at which the radius is changing — so we need a variable for radius and units. A good choice is <span class="process-math">\(r\text{,}\)</span> measured in <span class="process-math">\(cm\)</span> — since volume is measured in <span class="process-math">\(cm^3\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-2-4-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">Since the balloon is a sphere we know <details class="ptx-footnote" aria-live="polite" id="sec_rrates-2-4-2"><summary class="ptx-footnote__number" title="Footnote 3.2.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents">If you don’t know the formula for the volume of a sphere, now is a good time to revise by looking at Appendix <a href="sec_volumes.html" class="internal" title="Section A.11: Volumes">A.11</a>.</div></details> that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_volumes.html" id="sec_rrates-2-4-3">
+\begin{align*}
+V &amp;= \frac{4}{3} \pi r^3
+\end{align*}
+</div>
+<div class="para">Since both the volume and radius are changing with time, both <span class="process-math">\(V\)</span> and <span class="process-math">\(r\)</span> are implicitly functions of time; we could really write</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_volumes.html" id="sec_rrates-2-4-6">
+\begin{align*}
+V(t) &amp;= \frac{4}{3}\pi r(t)^3
+\end{align*}
+</div>
+<div class="para">We are told the rate at which the volume is changing and we need to find the rate at which the radius is changing. That is, from a knowledge of <span class="process-math">\(\diff{V}{t}\text{,}\)</span> find the related rate <details class="ptx-footnote" aria-live="polite" id="sec_rrates-2-4-8"><summary class="ptx-footnote__number" title="Footnote 3.2.2"><sup> 2 </sup></summary><div class="ptx-footnote__contents">Related rate problems are problems in which you are given the rate of change of one quantity and are to determine the rate of change of another, related, quantity.</div></details> <span class="process-math">\(\diff{r}{t}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rrates-2-5">
+<div class="para">In this case, we can just differentiate our equation by <span class="process-math">\(t\)</span> to get</div>
+<div class="displaymath process-math" id="sec_rrates-2-5-2">
+\begin{align*}
+\diff{V}{t} &amp;= 4 \pi r^2 \diff{r}{t}\\
+\end{align*}
+<div class="para intertext">This can then be rearranged to give</div>
+\begin{align*}
+\diff{r}{t} &amp;= \frac{1}{4\pi r^2} \diff{V}{t}
+\end{align*}
+</div>
+<div class="para">Now we were told that <span class="process-math">\(\diff{V}{t} = 13\text{,}\)</span> so</div>
+<div class="displaymath process-math" id="sec_rrates-2-5-4">
+\begin{align*}
+\diff{r}{t} &amp;= \frac{13}{4\pi r^2}
+\end{align*}
+</div>
+<div class="para">We were also told that the radius is <span class="process-math">\(15cm\text{,}\)</span> so at that moment in time</div>
+<div class="displaymath process-math" id="sec_rrates-2-5-6">
+\begin{align*}
+\diff{r}{t} &amp;= \frac{13}{\pi 4 \times 15^2}
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_rrates-2-6">
+<div class="para">This is a very typical example of a related rate problem. This section is really just a collection of problems, but all will follow a similar pattern.</div>
+<ul class="disc" id="sec_rrates-2-6-1">
+<li id="sec_rrates-2-6-1-1">
+<div class="para" id="p-derived-sec_rrates-2-6-1-1">The statement of the problem will tell you quantities that must be related (above it was volume, radius and, implicitly, time).</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-2-6-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_rrates-2-6-1-2">
+<div class="para" id="p-derived-sec_rrates-2-6-1-2">Typically a little geometry (or some physics or…) will allow you to relate these quantities (above it was the formula that links the volume of a sphere to its radius).</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-2-6-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_rrates-2-6-1-3">
+<div class="para" id="p-derived-sec_rrates-2-6-1-3">Implicit differentiation will then allow you to link the rate of change of one quantity to another.</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-2-6-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rrates-2-7">Another balloon example<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_3_2_1" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">A rising balloon.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_3_2_1-2">Consider a helium balloon rising vertically from a fixed point 200m away from you. You are trying to work out how fast it is rising. Now — computing the velocity directly is difficult, but you can measure angles. You observe that when it is at an angle of <span class="process-math">\(\pi/4\)</span> its angle is changing by <span class="process-math">\(0.05\)</span> radians per second.<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_3_2_1-3">
+<ul class="disc" id="eg_3_2_1-3-1">
+<li id="eg_3_2_1-3-1-1">
+<div class="para" id="eg_3_2_1-3-1-1-1">Start by drawing a picture with the relevant variables<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_1-3-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:12.5%;margin-right:12.5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/balloon1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_1-3-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_1-3-1-2">
+<div class="para" id="p-derived-eg_3_2_1-3-1-2">So denote the angle to be <span class="process-math">\(\theta\)</span> (in radians), the height of the balloon (in m) by <span class="process-math">\(h\)</span> and time (in seconds) by <span class="process-math">\(t\text{.}\)</span> Then trigonometry tells us<div class="displaymath process-math" id="eg_3_2_1-3-1-2-4">
+\begin{align*}
+h &amp;= 200 \cdot \tan \theta
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_1-3-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_1-3-1-3">
+<div class="para" id="p-derived-eg_3_2_1-3-1-3">Differentiating allows us to relate the rates of change<div class="displaymath process-math" id="eg_3_2_1-3-1-3-1">
+\begin{align*}
+\diff{h}{t} &amp;= 200 \sec^2 \theta \cdot \diff{\theta}{t}
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_1-3-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_1-3-1-4">
+<div class="para" id="p-derived-eg_3_2_1-3-1-4">We are told that when <span class="process-math">\(\theta =\pi/4\)</span> we observe <span class="process-math">\(\diff{\theta}{t} =
+0.05\text{,}\)</span> so<div class="displaymath process-math" id="eg_3_2_1-3-1-4-3">
+\begin{align*}
+\diff{h}{t} &amp;= 200 \cdot \sec^2(\pi/4) \cdot 0.05\\
+&amp;= 200 \cdot 0.05 \cdot \left( \sqrt{2} \right)^2\\
+&amp;= 200 \cdot \frac{5}{100} \cdot 2\\
+&amp;= 20 m/s
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_1-3-1-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_1-3-1-5">
+<div class="para" id="p-derived-eg_3_2_1-3-1-5">So the balloon is rising at a rate of 20m/s.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_1-3-1-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.1: A rising balloon"><a href="#eg_3_2_1" title="Copy heading and permalink for Example 3.2.1: A rising balloon" aria-label="Copy heading and permalink for Example 3.2.1: A rising balloon">🔗</a></div></article></details><div class="para" id="sec_rrates-2-9">The following problem is perhaps <em class="emphasis">the</em> classic related rate problem.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-9" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_3_2_2" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">A sliding ladder.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_3_2_2-2">A 5m ladder is leaning against a wall. The floor is quite slippery and the base of the ladder slides out from the wall at a rate of <span class="process-math">\(1m/s\text{.}\)</span> How fast is the top of the ladder sliding down the wall when the base of the ladder is 3m from the wall?<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_3_2_2-3">
+<ul class="disc" id="eg_3_2_2-3-1">
+<li id="eg_3_2_2-3-1-1">
+<div class="para" id="eg_3_2_2-3-1-1-1">A good first step is to draw a picture stating all relevant quantities. This will also help us define variables and units.<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_2-3-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/ladder1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_2-3-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_2-3-1-2">
+<div class="para" id="p-derived-eg_3_2_2-3-1-2">So now define <span class="process-math">\(x(t)\)</span> to be the distance between the bottom of the ladder and the wall, at time <span class="process-math">\(t\text{,}\)</span> and let <span class="process-math">\(y(t)\)</span> be the distance between the top of the ladder and the ground at time <span class="process-math">\(t\text{.}\)</span> Measure time in seconds, but both distances in meters.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_2-3-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_2-3-1-3">
+<div class="para" id="p-derived-eg_3_2_2-3-1-3">We can relate the quantities using Pythagoras:<div class="displaymath process-math" id="eg_3_2_2-3-1-3-1">
+\begin{align*}
+x^2 + y^2 &amp;= 5^2
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_2-3-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_2-3-1-4">
+<div class="para" id="p-derived-eg_3_2_2-3-1-4">Differentiating with respect to time then gives<div class="displaymath process-math" id="eg_3_2_2-3-1-4-1">
+\begin{align*}
+2x \diff{x}{t} + 2y \diff{y}{t} &amp;= 0
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_2-3-1-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_2-3-1-5">
+<div class="para" id="p-derived-eg_3_2_2-3-1-5">We know that <span class="process-math">\(\diff{x}{t} = 1\)</span> and <span class="process-math">\(x=3\text{,}\)</span> so<div class="displaymath process-math" id="eg_3_2_2-3-1-5-3">
+\begin{align*}
+6 \cdot 1 + 2y \diff{y}{t} &amp;= 0
+\end{align*}
+</div>but we need to determine <span class="process-math">\(y\)</span> before we can go further. Thankfully we know that <span class="process-math">\(x^2+y^2=25\)</span> and <span class="process-math">\(x=3\text{,}\)</span> so <span class="process-math">\(y^2=25-9=16\)</span> and <details class="ptx-footnote" aria-live="polite" id="eg_3_2_2-3-1-5-8"><summary class="ptx-footnote__number" title="Footnote 3.2.3"><sup> 3 </sup></summary><div class="ptx-footnote__contents">Since the ladder isn’t buried in the ground, we can discard the solution <span class="process-math">\(y=-4\text{.}\)</span>
+</div></details> so <span class="process-math">\(y=4\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_2-3-1-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_2-3-1-6">
+<div class="para" id="p-derived-eg_3_2_2-3-1-6">So finally putting everything together<div class="displaymath process-math" id="eg_3_2_2-3-1-6-1">
+\begin{align*}
+6 \cdot 1 + 8 \diff{y}{t} &amp;= 0\\
+\diff{y}{t} &amp;= - \frac{3}{4} m/s.
+\end{align*}
+</div>Thus the top of the ladder is sliding towards the floor at a rate of <span class="process-math">\(\frac{3}{4} m/s\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_2-3-1-6" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.2: A sliding ladder"><a href="#eg_3_2_2" title="Copy heading and permalink for Example 3.2.2: A sliding ladder" aria-label="Copy heading and permalink for Example 3.2.2: A sliding ladder">🔗</a></div></article></details><div class="para" id="sec_rrates-2-11">The next example is complicated by the rates of change being stated not just as “the rate of change per unit time” but instead being stated as “the percentage rate of change per unit time”. If a quantity <span class="process-math">\(f\)</span> is changing with rate <span class="process-math">\(\diff{f}{t}\text{,}\)</span> then we can say that<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<blockquote class="blockquote" id="sec_rrates-2-12">
+<div class="para" id="sec_rrates-2-12-1">
+<span class="process-math">\(f\)</span> is changing at a rate of <span class="process-math">\(\ds 100 \cdot \frac{\diff{f}{t}}{f}\)</span> percent.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-12-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Quotation"><a href="#sec_rrates-2-12" title="Copy heading and permalink for Quotation" aria-label="Copy heading and permalink for Quotation">🔗</a></div>
+</blockquote>
+<div class="para logical" id="sec_rrates-2-13">
+<div class="para">Thus if, at time <span class="process-math">\(t\text{,}\)</span> <span class="process-math">\(f\)</span> has rate of change <span class="process-math">\(r\%\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="sec_rrates-2-13-4">
+\begin{gather*}
+100\frac{f'(t)}{f(t)}=r
+\implies f'(t) =\frac{r}{100} f(t)
+\end{gather*}
+</div>
+<div class="para">so that if <span class="process-math">\(h\)</span> is a very small time increment</div>
+<div class="displaymath process-math" id="sec_rrates-2-13-6">
+\begin{gather*}
+\frac{f(t+h) - f(t)}{h} \approx \frac{r}{100} f(t)
+\implies f(t+h) \approx f(t) + \frac{rh}{100} f(t)
+\end{gather*}
+</div>
+<div class="para">That is, over a very small time interval <span class="process-math">\(h\text{,}\)</span> <span class="process-math">\(f\)</span> increases by the fraction <span class="process-math">\(\frac{rh}{100}\)</span> of its value at time <span class="process-math">\(t\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-13" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_rrates-2-14">So armed with this, let’s look at the problem.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_percentGrowth" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Percentage rate of change of <span class="process-math">\(R=PQ\)</span>.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_percentGrowth-2">The quantities <span class="process-math">\(P,\ Q\)</span> and <span class="process-math">\(R\)</span> are functions of time and are related by the equation <span class="process-math">\(R=PQ\text{.}\)</span> Assume that <span class="process-math">\(P\)</span> is increasing instantaneously at the rate of <span class="process-math">\(8\%\)</span> per year (meaning that <span class="process-math">\(100\frac{P'}{P}=8\)</span>) and that <span class="process-math">\(Q\)</span> is decreasing instantaneously at the rate of <span class="process-math">\(2\%\)</span> per year (meaning that <span class="process-math">\(100\frac{Q'}{Q}=-2\)</span>). Determine the percentage rate of change for <span class="process-math">\(R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#eg_percentGrowth-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_percentGrowth-3">
+<div class="para">
+<em class="alert">Solution</em> This one is a little different — we are given the variables and the formula, so no picture drawing or defining required. Though we do need to define a time variable — let <span class="process-math">\(t\)</span> denote time in years.</div>
+<ul class="disc" id="eg_percentGrowth-3-5">
+<li id="eg_percentGrowth-3-5-1">
+<div class="para" id="p-derived-eg_percentGrowth-3-5-1">Since <span class="process-math">\(R(t) = P(t)\cdot Q(t)\)</span> we can differentiate with respect to <span class="process-math">\(t\)</span> to get<div class="displaymath process-math" id="eg_percentGrowth-3-5-1-3">
+\begin{align*}
+\diff{R}{t} &amp;= P Q' + Q P'
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_percentGrowth-3-5-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_percentGrowth-3-5-2">
+<div class="para" id="p-derived-eg_percentGrowth-3-5-2">But we need the percentage change in <span class="process-math">\(R\text{,}\)</span> namely<div class="displaymath process-math" id="eg_percentGrowth-3-5-2-2">
+\begin{align*}
+100 \frac{R'}{R} &amp;= 100 \frac{PQ' +QP'}{R}\\
+\end{align*}
+<div class="para intertext">but <span class="process-math">\(R = PQ\text{,}\)</span> so rewrite it as</div>
+\begin{align*}
+&amp;= 100 \frac{PQ' +QP'}{PQ}\\
+&amp;= 100 \frac{PQ'}{PQ} + 100 \frac{QP'}{PQ}\\
+&amp;= 100 \frac{Q'}{Q} + 100 \frac{P'}{P}
+\end{align*}
+</div>so we have stated the instantaneous percentage rate of change in <span class="process-math">\(R\)</span> as the sum of the percentage rate of change in <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_percentGrowth-3-5-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_percentGrowth-3-5-3">
+<div class="para" id="p-derived-eg_percentGrowth-3-5-3">We know the percentage rate of change of <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\text{,}\)</span> so<div class="displaymath process-math" id="eg_percentGrowth-3-5-3-3">
+\begin{align*}
+100 \frac{R'}{R} &amp;= -2 + 8 =6
+\end{align*}
+</div>That is, the instantaneous percentage rate of change of <span class="process-math">\(R\)</span> is 6<span class="process-math">\(\%\)</span> per year.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_percentGrowth-3-5-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_percentGrowth-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.3: Percentage rate of change of R=PQ"><a href="#eg_percentGrowth" title="Copy heading and permalink for Example 3.2.3: Percentage rate of change of R=PQ" aria-label="Copy heading and permalink for Example 3.2.3: Percentage rate of change of R=PQ">🔗</a></div></article></details><div class="para" id="sec_rrates-2-16">Yet another falling object example.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_fallingBall" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The shadow of a falling ball.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_fallingBall-2">A ball is dropped from a height of <span class="process-math">\(49\)</span>m above level ground. The height of the ball at time <span class="process-math">\(t\)</span> is <span class="process-math">\(h(t)=49-4.9 t^2\)</span> m. A light, which is also <span class="process-math">\(49\)</span>m above the ground, is <span class="process-math">\(10\)</span>m to the left of the ball’s original position. As the ball descends, the shadow of the ball caused by the light moves across the ground. How fast is the shadow moving one second after the ball is dropped?<div class="autopermalink" data-description="Paragraph"><a href="#eg_fallingBall-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_fallingBall-3">
+<div class="para">
+<em class="alert">Solution</em> There is quite a bit going on in this example, so read carefully.</div>
+<ul class="disc" id="eg_fallingBall-3-2">
+<li id="eg_fallingBall-3-2-1">
+<div class="para" id="eg_fallingBall-3-2-1-1">First a diagram; the one below is perhaps a bit over the top.<div class="autopermalink" data-description="Paragraph"><a href="#eg_fallingBall-3-2-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:5%;margin-right:5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/falling_ball.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fallingBall-3-2-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fallingBall-3-2-2">
+<div class="para" id="p-derived-eg_fallingBall-3-2-2">Let’s call <span class="process-math">\(s(t)\)</span> the distance from the shadow to the point on the ground directly underneath the ball.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fallingBall-3-2-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fallingBall-3-2-3">
+<div class="para" id="p-derived-eg_fallingBall-3-2-3">By similar triangles we see that<div class="displaymath process-math" id="eg_fallingBall-3-2-3-1">
+\begin{gather*}
+\frac{4.9 t^2}{10}=\frac{49-4.9 t^2}{s(t)}
+\end{gather*}
+</div>We can then solve for <span class="process-math">\(s(t)\)</span> by just multiplying both sides by <span class="process-math">\(\frac{10}{4.9 t^2}s(t)\text{.}\)</span> This gives<div class="displaymath process-math" id="eg_fallingBall-3-2-3-4">
+\begin{gather*}
+s(t)=10\frac{49-4.9 t^2}{4.9 t^2}=\frac{100}{t^2}-10
+\end{gather*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fallingBall-3-2-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fallingBall-3-2-4">
+<div class="para" id="p-derived-eg_fallingBall-3-2-4">Differentiating with respect to <span class="process-math">\(t\)</span> will then give us the rates,<div class="displaymath process-math" id="eg_fallingBall-3-2-4-2">
+\begin{gather*}
+s'(t)=-2\frac{100}{t^3}
+\end{gather*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fallingBall-3-2-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fallingBall-3-2-5">
+<div class="para" id="p-derived-eg_fallingBall-3-2-5">So, at <span class="process-math">\(t=1\text{,}\)</span> <span class="process-math">\(s'(1)=-200\)</span>m/sec. That is, the shadow is moving to the left at <span class="process-math">\(200\)</span>m/sec.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fallingBall-3-2-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_fallingBall-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.4: The shadow of a falling ball"><a href="#eg_fallingBall" title="Copy heading and permalink for Example 3.2.4: The shadow of a falling ball" aria-label="Copy heading and permalink for Example 3.2.4: The shadow of a falling ball">🔗</a></div></article></details><div class="para" id="sec_rrates-2-18">A more nautical example.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-18" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_3_2_3" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">The distance between moving boats.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_3_2_3-2">
+<div class="para">Two boats spot each other in the ocean at midday — boat <span class="process-math">\(A\)</span> is 15km west of boat <span class="process-math">\(B\text{.}\)</span> Boat <span class="process-math">\(A\)</span> is travelling east at 3km/h and boat <span class="process-math">\(B\)</span> is travelling north at 4km/h. How fast is the distance between the boats changing at 3pm?</div>
+<ul class="disc" id="eg_3_2_3-2-6">
+<li id="eg_3_2_3-2-6-1">
+<div class="para" id="eg_3_2_3-2-6-1-1">First we draw a picture.<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_3-2-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/boats1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_3-2-6-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_3-2-6-2">
+<div class="para" id="p-derived-eg_3_2_3-2-6-2">Let <span class="process-math">\(x(t)\)</span> be the distance at time <span class="process-math">\(t\text{,}\)</span> in km, from boat <span class="process-math">\(A\)</span> to the original position of boat <span class="process-math">\(B\)</span> (i.e. to the position of boat <span class="process-math">\(B\)</span> at noon). And let <span class="process-math">\(y(t)\)</span> be the distance at time <span class="process-math">\(t\text{,}\)</span> in km, of boat <span class="process-math">\(B\)</span> from its original position. And let <span class="process-math">\(z(t)\)</span> be the distance between the two boats at time <span class="process-math">\(t\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_3-2-6-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_3-2-6-3">
+<div class="para" id="p-derived-eg_3_2_3-2-6-3">Additionally we are told that <span class="process-math">\(x'=-3\)</span> and <span class="process-math">\(y'=4\)</span> — notice that <span class="process-math">\(x'  \lt 0\)</span> since that distance is getting smaller with time, while <span class="process-math">\(y' \gt 0\)</span> since that distance is increasing with time.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_3-2-6-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_3-2-6-4">
+<div class="para" id="p-derived-eg_3_2_3-2-6-4">Further at <span class="process-math">\(3pm\)</span> boat <span class="process-math">\(A\)</span> has travelled 9km towards the original position of boat <span class="process-math">\(B\text{,}\)</span> so <span class="process-math">\(x=15-9 = 6\text{,}\)</span> while boat <span class="process-math">\(B\)</span> has travelled 12km away from its original position, so <span class="process-math">\(y=12\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_3-2-6-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_3-2-6-5">
+<div class="para" id="p-derived-eg_3_2_3-2-6-5">The distances <span class="process-math">\(x,y\)</span> and <span class="process-math">\(z\)</span> form a right-angled triangle, and Pythagoras tells us that<div class="displaymath process-math" id="eg_3_2_3-2-6-5-3">
+\begin{align*}
+z^2 &amp;= x^2 + y^2.
+\end{align*}
+</div>At 3pm we know <span class="process-math">\(x=6,y=12\)</span> so<div class="displaymath process-math" id="eg_3_2_3-2-6-5-5">
+\begin{align*}
+z^2 &amp;= 36 + 144 = 180\\
+z&amp;= \sqrt{180} = 6\sqrt{5}.
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_3-2-6-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_3_2_3-2-6-6">
+<div class="para" id="p-derived-eg_3_2_3-2-6-6">Differentiating then gives<div class="displaymath process-math" id="eg_3_2_3-2-6-6-1">
+\begin{align*}
+2z \diff{z}{t} &amp;= 2x \diff{x}{t} + 2y \diff{y}{t}\\
+&amp;= 12 \cdot (-3) + 24 \cdot(4)\\
+&amp;= 60.\\
+\end{align*}
+<div class="para intertext">Dividing through by <span class="process-math">\(2z = 12\sqrt{5}\)</span> then gives</div>
+\begin{align*}
+\diff{z}{t} &amp;= \frac{60}{12\sqrt{5}} = \frac{5}{\sqrt{5}} = \sqrt{5}
+\end{align*}
+</div>So the distance between the boats is increasing at <span class="process-math">\(\sqrt{5} km/h\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_3_2_3-2-6-6" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_3_2_3-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.5: The distance between moving boats"><a href="#eg_3_2_3" title="Copy heading and permalink for Example 3.2.5: The distance between moving boats" aria-label="Copy heading and permalink for Example 3.2.5: The distance between moving boats">🔗</a></div></article></details><div class="para" id="sec_rrates-2-20">One last one before we move on to another topic.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-2-20" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_fuel" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Fuel level in a cylindrical tank.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_fuel-2">Consider a cylindrical fuel tank of radius <span class="process-math">\(r\)</span> and length <span class="process-math">\(L\)</span> (in some appropriate units) that is lying on its side. Suppose that fuel is being pumped into the tank at a rate <span class="process-math">\(q\text{.}\)</span> At what rate is the fuel level rising?<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:37.5%;margin-right:37.5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/fuel1.svg" role="img" class="contained"></div></div></div>
+<div class="para" id="eg_fuel-4">
+<em class="alert">Solution</em> If the tank were vertical everything would be much easier. Unfortunately the tank is on its side, so we are going to have to work a bit harder to establish the relation between the depth and volume. Also notice that we have not been supplied with units for this problem — so we do not need to state the units of our variables.<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_fuel-5">
+<ul class="disc" id="eg_fuel-5-1">
+<li id="eg_fuel-5-1-1">
+<div class="para" id="eg_fuel-5-1-1-1">Again — draw a picture. Here is an end view of the tank; the shaded part of the circle  is filled with fuel.<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:35%;margin-right:35%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/fuel2.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-2">
+<div class="para" id="p-derived-eg_fuel-5-1-2">Let us denote by <span class="process-math">\(V(t)\)</span> the volume of fuel in the tank at time <span class="process-math">\(t\)</span> and by <span class="process-math">\(h(t)\)</span> the fuel level at time <span class="process-math">\(t\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-3">
+<div class="para" id="p-derived-eg_fuel-5-1-3">We have been told that <span class="process-math">\(V'(t)=q\)</span> and have been asked to determine <span class="process-math">\(h'(t)\text{.}\)</span> While it is possible to do so by finding a formula relating <span class="process-math">\(V(t)\)</span> and <span class="process-math">\(h(t)\text{,}\)</span> it turns out to be quite a bit easier to first find a formula relating <span class="process-math">\(V\)</span> and the angle <span class="process-math">\(\theta\)</span> shown in the end view. We can then translate this back into a formula in terms of <span class="process-math">\(h\)</span> using the relation<div class="displaymath process-math" id="eg_fuel-5-1-3-8">
+\begin{align*}
+h(t) &amp;= r - r\cos \theta(t).
+\end{align*}
+</div>Once we know <span class="process-math">\(\theta'(t)\text{,}\)</span> we can easily obtain <span class="process-math">\(h'(t)\)</span> by differentiating the above equation.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-3" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-4">
+<div class="para" id="p-derived-eg_fuel-5-1-4">The computation that follows below gets a little involved in places, so we will drop the “<span class="process-math">\((t)\)</span>” on the variables <span class="process-math">\(V,h\)</span> and <span class="process-math">\(\theta\text{.}\)</span> The reader must never forget that these three quantities are really functions of time, while <span class="process-math">\(r\)</span> and <span class="process-math">\(L\)</span> are constants that do not depend on time.</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-4" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-5">
+<div class="para" id="eg_fuel-5-1-5-1">The volume of fuel is <span class="process-math">\(L\)</span> times the cross–sectional area filled by the fuel. That is,<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0.5%;margin-right:0.5%;grid-template-columns:25.2525252525253% 5.05050505050505% 20.2020202020202% 20.2020202020202% 25.2525252525253%;column-gap:1%;">
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-2-1"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-2-2">
+<span class="process-math">\(V = \)</span><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-2-3">
+<span class="process-math">\(L \times\)</span> Area of<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><img src="external/text/figs/fuel3.svg" role="img" class="contained"></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-2-5"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+</div></div>
+<div class="para" id="eg_fuel-5-1-5-3">While we do not have a canned formula for the area of a chord of a circle like this, it is easy to express the area of the chord in terms of two areas that we can compute.<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sbsgroup">
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0.0625%;margin-right:0.0625%;grid-template-columns:7.008760951188986% 5.006257822277847% 22.0275344180225% 20.0250312891114% 18.0225281602002% 20.0250312891114% 0% 7.008760951188986%;column-gap:0.125%;">
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-1-1"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-1-2">
+<span class="process-math">\(V\)</span><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-1-3">
+<span class="process-math">\(= L\times\text{Area of}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><img src="external/text/figs/fuel3.svg" role="img" class="contained"></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-1-5"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-1-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-1-6"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-1-6" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-1-7"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-1-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-1-8"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-1-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+</div></div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0.0625%;margin-right:0.0625%;grid-template-columns:7.008760951188986% 5.006257822277847% 22.0275344180225% 20.0250312891114% 18.0225281602002% 20.0250312891114% 0% 7.008760951188986%;column-gap:0.125%;">
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-2-1"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-2-2"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-2-3">
+<span class="process-math">\(= L\times\bigg[ \text{Area of}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><img src="external/text/figs/fuel4.svg" role="img" class="contained"></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-2-5">- Area of<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><img src="external/text/figs/fuel5.svg" role="img" class="contained"></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-2-7">
+<span class="process-math">\(\bigg]\)</span><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-2-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="sbspanel sbspanel--middle middle" style=""><div class="para" id="eg_fuel-5-1-5-4-2-8"><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-5-4-2-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div></div></div>
+</div></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-5" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-6">
+<div class="para" id="eg_fuel-5-1-6-1">The piece of pie<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:41%;margin-right:41%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/fuel4.svg" role="img" class="contained"></div></div></div>
+<div class="para" id="eg_fuel-5-1-6-3">is the fraction <span class="process-math">\(\tfrac{2\theta}{2\pi}\)</span> of the full circle, so its area is <span class="process-math">\(\tfrac{2\theta}{2\pi}\pi r^2=\theta r^2\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-6-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-6" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-7">
+<div class="para" id="eg_fuel-5-1-7-1">The triangle<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-7-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:41%;margin-right:41%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/fuel5.svg" role="img" class="contained"></div></div></div>
+<div class="para" id="eg_fuel-5-1-7-3">has height <span class="process-math">\(r\cos\theta\)</span> and base <span class="process-math">\(2r\sin\theta\)</span> and hence has area <span class="process-math">\(\frac{1}{2}(r\cos\theta)(2r\sin\theta)=r^2\sin\theta\cos\theta =
+\frac{r^2}{2} \sin(2\theta)\text{,}\)</span> where we have used a double-angle formula (see Appendix <a href="sec_must_deriv.html" class="internal" title="Section A.14: Highschool Material You Should be Able to Derive">A.14</a>).<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-7-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-7" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-8">
+<div class="para" id="p-derived-eg_fuel-5-1-8">Subbing these two areas into the above expression for <span class="process-math">\(V\)</span> gives<div class="displaymath process-math" id="eg_fuel-5-1-8-2">
+\begin{align*}
+V &amp; = L\times\left[\theta r^2- \frac{r^2}{2}\sin2\theta\right]
+= \frac{Lr^2}{2} \big[2\theta-\sin2\theta \big]
+\end{align*}
+</div>Oof!</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-8" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-9">
+<div class="para" id="p-derived-eg_fuel-5-1-9">Now we can differentiate to find the rate of change. Recalling that <span class="process-math">\(V=V(t)\)</span> and <span class="process-math">\(\theta=\theta(t)\text{,}\)</span> while <span class="process-math">\(r\)</span> and <span class="process-math">\(L\)</span> are constants,<div class="displaymath process-math" id="eg_fuel-5-1-9-5">
+\begin{align*}
+V'
+&amp;=\frac{Lr^2}{2} \left[ 2\theta' - 2\cos2\theta \cdot \theta' \right]\\
+&amp;= Lr^2 \cdot \theta' \cdot \left[1 - \cos2\theta \right]
+\end{align*}
+</div>Solving this for <span class="process-math">\(\theta'\)</span> and using <span class="process-math">\(V'=q\)</span> gives<div class="displaymath process-math" id="eg_fuel-5-1-9-8">
+\begin{align*}
+\theta' &amp;= \frac{q}{Lr^2 (1-\cos2\theta)}
+\end{align*}
+</div>This is the rate at which <span class="process-math">\(\theta\)</span> is changing, but we need the rate at which <span class="process-math">\(h\)</span> is changing. We get this from<div class="displaymath process-math" id="eg_fuel-5-1-9-11">
+\begin{align*}
+h &amp;= r - r\cos \theta &amp; \text{differentiating this gives}\\
+h' &amp;= r\sin\theta \cdot \theta'
+\end{align*}
+</div>Substituting our expression for <span class="process-math">\(\theta'\)</span> into the expression for <span class="process-math">\(h'\)</span> gives<div class="displaymath process-math" id="eg_fuel-5-1-9-14">
+\begin{align*}
+h' &amp;= r\sin\theta \cdot \frac{q}{Lr^2 (1-\cos2\theta)}
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-9" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-10">
+<div class="para" id="p-derived-eg_fuel-5-1-10">We can clean this up a bit more — recall more double-angle formulas <details class="ptx-footnote" aria-live="polite" id="eg_fuel-5-1-10-2"><summary class="ptx-footnote__number" title="Footnote 3.2.4"><sup> 4 </sup></summary><div class="ptx-footnote__contents">Take another look at Appendix <a href="sec_must_deriv.html" class="internal" title="Section A.14: Highschool Material You Should be Able to Derive">A.14</a>.</div></details><div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/sec_must_deriv.html" id="eg_fuel-5-1-10-3">
+\begin{align*}
+h'
+&amp;= r\sin\theta \cdot \frac{q}{Lr^2 (1-\cos2\theta)} &amp; \text{substitute $\cos2\theta =
+1-2\sin^2\theta$}\\
+&amp;= r\sin\theta \cdot \frac{q}{Lr^2 \cdot 2\sin^2\theta} &amp; \text{now cancel $r$'s and a $\sin\theta$}\\
+&amp;= \frac{q}{2Lr\sin\theta}
+\end{align*}
+</div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-10" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-11">
+<div class="para" id="eg_fuel-5-1-11-1">But we can clean this up even more — instead of writing this rate in terms of <span class="process-math">\(\theta\)</span> it is more natural to write it in terms of <span class="process-math">\(h\)</span> (since the initial problem is stated in terms of <span class="process-math">\(h\)</span>). From the triangle<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-11-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:41%;margin-right:41%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/fuel6.svg" role="img" class="contained"></div></div></div>
+<div class="para logical" id="eg_fuel-5-1-11-3">
+<div class="para">and by Pythagoras we have</div>
+<div class="displaymath process-math" id="eg_fuel-5-1-11-3-1">
+\begin{gather*}
+\sin\theta =\frac{\sqrt{r^2-(r-h)^2}}{r}=\frac{\sqrt{2rh-h^2}}{r}
+\end{gather*}
+</div>
+<div class="para">and hence</div>
+<div class="displaymath process-math" id="eg_fuel-5-1-11-3-2">
+\begin{gather*}
+h' = \frac{q}{2L\sqrt{2rh-h^2}}.
+\end{gather*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5-1-11-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-11" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_fuel-5-1-12">
+<div class="para" id="p-derived-eg_fuel-5-1-12">As a check, notice that <span class="process-math">\(h'\)</span> becomes undefined when <span class="process-math">\(h \lt 0\)</span> and also when <span class="process-math">\(h \gt 2r\text{,}\)</span> because then the argument of the square root in the denominator is negative. Both make sense — the fuel level in the tank must obey <span class="process-math">\(0\le h\le 2r\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item"><a href="#eg_fuel-5-1-12" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_fuel-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 3.2.6: Fuel level in a cylindrical tank"><a href="#eg_fuel" title="Copy heading and permalink for Example 3.2.6: Fuel level in a cylindrical tank" aria-label="Copy heading and permalink for Example 3.2.6: Fuel level in a cylindrical tank">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection 3.2.1: Related Rates"><a href="#sec_rrates-2" title="Copy heading and permalink for Subsection 3.2.1: Related Rates" aria-label="Copy heading and permalink for Subsection 3.2.1: Related Rates">🔗</a></div></section><section class="exercises" id="sec_rrates-3"><h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">3.2.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<div class="exercisegroup" id="sec_rrates-3-1">
+<h4 class="heading"><span class="title">
+  Exercises — Stage 1
+.</span></h4>
+<div class="introduction" id="sec_rrates-3-1-2"></div>
+<div class="exercisegroup-exercises"><article class="exercise-like boxed" id="sec_rrates-3-1-3"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_rrates-3-1-3-1-1">
+<div class="para">Suppose the quantities <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\)</span> are related by the formula <span class="process-math">\(P=Q^3\text{.}\)</span> <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\)</span> are changing with respect to time, <span class="process-math">\(t\text{.}\)</span> Given this information, which of the following are problems you could solve?</div>
+<ol class="lower-roman ol-marker-2" id="sec_rrates-3-1-3-1-1-7">
+<li id="sec_rrates-3-1-3-1-1-7-1">
+<div class="para" id="p-derived-sec_rrates-3-1-3-1-1-7-1">Given <span class="process-math">\(\ds\diff{P}{t}(0)\text{,}\)</span> find <span class="process-math">\(\ds\diff{Q}{t}(0)\text{.}\)</span> (Remember: the notation <span class="process-math">\(\ds\diff{P}{t}(0)\)</span> means the derivative of <span class="process-math">\(P\)</span> with respect to <span class="process-math">\(t\)</span> at the time <span class="process-math">\(t=0\text{.}\)</span>)</div>
+<div class="autopermalink" data-description="Item 3.2.2.1.i"><a href="#sec_rrates-3-1-3-1-1-7-1" title="Copy heading and permalink for Item 3.2.2.1.i" aria-label="Copy heading and permalink for Item 3.2.2.1.i">🔗</a></div>
+</li>
+<li id="sec_rrates-3-1-3-1-1-7-2">
+<div class="para" id="p-derived-sec_rrates-3-1-3-1-1-7-2">Given <span class="process-math">\(\ds\diff{P}{t}(0)\)</span> and the value of <span class="process-math">\(Q\)</span> when <span class="process-math">\(t=0\text{,}\)</span> find <span class="process-math">\(\ds\diff{Q}{t}(0)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 3.2.2.1.ii"><a href="#sec_rrates-3-1-3-1-1-7-2" title="Copy heading and permalink for Item 3.2.2.1.ii" aria-label="Copy heading and permalink for Item 3.2.2.1.ii">🔗</a></div>
+</li>
+<li id="sec_rrates-3-1-3-1-1-7-3">
+<div class="para" id="p-derived-sec_rrates-3-1-3-1-1-7-3">Given <span class="process-math">\(\ds\diff{Q}{t}(0)\text{,}\)</span> find <span class="process-math">\(\ds\diff{P}{t}(0)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 3.2.2.1.iii"><a href="#sec_rrates-3-1-3-1-1-7-3" title="Copy heading and permalink for Item 3.2.2.1.iii" aria-label="Copy heading and permalink for Item 3.2.2.1.iii">🔗</a></div>
+</li>
+<li id="sec_rrates-3-1-3-1-1-7-4">
+<div class="para" id="p-derived-sec_rrates-3-1-3-1-1-7-4">Given <span class="process-math">\(\ds\diff{Q}{t}(0)\)</span>  and the value of <span class="process-math">\(P\)</span> when <span class="process-math">\(t=0\text{,}\)</span> find <span class="process-math">\(\ds\diff{P}{t}(0)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 3.2.2.1.iv"><a href="#sec_rrates-3-1-3-1-1-7-4" title="Copy heading and permalink for Item 3.2.2.1.iv" aria-label="Copy heading and permalink for Item 3.2.2.1.iv">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-1-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.1"><a href="#sec_rrates-3-1-3" title="Copy heading and permalink for Exercise 3.2.2.1" aria-label="Copy heading and permalink for Exercise 3.2.2.1">🔗</a></div></article></div>
+<div class="autopermalink" data-description="Exercise Group 3.2.2.1–1: 
+  Exercises — Stage 1
+"><a href="#sec_rrates-3-1" title="Copy heading and permalink for Exercise Group 3.2.2.1–1: 
+  Exercises — Stage 1
+" aria-label="Copy heading and permalink for Exercise Group 3.2.2.1–1: 
+  Exercises — Stage 1
+">🔗</a></div>
+</div>
+<div class="exercisegroup" id="sec_rrates-3-2">
+<h4 class="heading"><span class="title">
+Exercises — Stage 2
+.</span></h4>
+<div class="introduction" id="sec_rrates-3-2-2"><div class="para" id="sec_rrates-3-2-2-1">For problems <a href="sec_rrates.html#s3_2relationshipfirst" class="xref" data-knowl="./knowl/xref/s3_2relationshipfirst.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.2: (✳)">3.2.2.2</a> through <a href="sec_rrates.html#s3_2relationshiplast" class="xref" data-knowl="./knowl/xref/s3_2relationshiplast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.4: (✳)">3.2.2.4</a>, the relationship between several variables is explicitly given. Use this information to relate their rates of change.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="introduction" id="sec_rrates-3-2-6"><div class="para" id="sec_rrates-3-2-6-1">For Questions <a href="sec_rrates.html#s3_2Pythagorusfirst" class="xref" data-knowl="./knowl/xref/s3_2Pythagorusfirst.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.5: (✳)">3.2.2.5</a> through <a href="sec_rrates.html#s3_2Pythagoruslast" class="xref" data-knowl="./knowl/xref/s3_2Pythagoruslast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.9: (✳)">3.2.2.9</a>, look for a way to use the Pythagorean Theorem.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-6-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="introduction" id="sec_rrates-3-2-12"><div class="para" id="sec_rrates-3-2-12-1">For Questions <a href="sec_rrates.html#s3_2trianglesfirst" class="xref" data-knowl="./knowl/xref/s3_2trianglesfirst.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.10">3.2.2.10</a> through <a href="sec_rrates.html#s3_2triangleslast" class="xref" data-knowl="./knowl/xref/s3_2triangleslast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.14">3.2.2.14</a>, look for tricks from trigonometry.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-12-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="introduction" id="sec_rrates-3-2-18"><div class="para" id="sec_rrates-3-2-18-1">For Questions <a href="sec_rrates.html#s3_2annulus" class="xref" data-knowl="./knowl/xref/s3_2annulus.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.15: (✳)">3.2.2.15</a> through <a href="sec_rrates.html#s3_2formulaslast" class="xref" data-knowl="./knowl/xref/s3_2formulaslast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.20">3.2.2.20</a>, you’ll need to know formulas for volume or area.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-18-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like boxed" id="s3_2relationshipfirst"><h5 class="heading">
+<span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="s3_2relationshipfirst-2-1">A point is moving on the unit circle <span class="process-math">\(\set{ (x, y)\;:\; x^2 + y^2 = 1 }\)</span> in the <span class="process-math">\(xy\)</span>--plane. At <span class="process-math">\((2/\sqrt{5}, 1/\sqrt{5})\text{,}\)</span> its <span class="process-math">\(y\)</span>--coordinate is increasing at rate 3. What is the rate of change of its <span class="process-math">\(x\)</span>--coordinate?<div class="autopermalink" data-description="Paragraph"><a href="#s3_2relationshipfirst-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.2: (✳)"><a href="#s3_2relationshipfirst" title="Copy heading and permalink for Exercise 3.2.2.2: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.2: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-2-4"><h5 class="heading">
+<span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_rrates-3-2-4-2-1">The quantities <span class="process-math">\(P,\ Q\)</span> and <span class="process-math">\(R\)</span> are functions of time and are related by the equation <span class="process-math">\(R=PQ\text{.}\)</span> Assume that <span class="process-math">\(P\)</span> is increasing instantaneously at the rate of <span class="process-math">\(8\%\)</span> per year and that <span class="process-math">\(Q\)</span> is decreasing instantaneously at the rate of <span class="process-math">\(2\%\)</span> per year. That is, <span class="process-math">\(\dfrac{P'}{P}=0.08\)</span> and <span class="process-math">\(\dfrac{Q'}{Q}=-0.02\text{.}\)</span> Determine the percentage rate of change for <span class="process-math">\(R\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-4-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.3: (✳)"><a href="#sec_rrates-3-2-4" title="Copy heading and permalink for Exercise 3.2.2.3: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.3: (✳)">🔗</a></div></article><article class="exercise-like" id="s3_2relationshiplast"><h5 class="heading">
+<span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para logical" id="s3_2relationshiplast-2-1">
+<div class="para">Three quantities, <span class="process-math">\(F\text{,}\)</span> <span class="process-math">\(P\)</span> and <span class="process-math">\(Q\)</span> all depend upon time <span class="process-math">\(t\)</span> and are related by the equation</div>
+<div class="displaymath process-math">
+\begin{equation*}
+F=\frac{P}{Q}
+\end{equation*}
+</div>
+<ol class="lower-alpha ol-marker-1" id="s3_2relationshiplast-2-1-6">
+<li id="s3_2FPQ1">
+<div class="para" id="p-derived-s3_2FPQ1">Assume that at a particular moment in time <span class="process-math">\(P=25\)</span> and <span class="process-math">\(P\)</span> is increasing at the instantaneous rate of 5 units/min. At the same moment, <span class="process-math">\(Q=5\)</span> and <span class="process-math">\(Q\)</span> is increasing at the instantaneous rate of 1 unit/min. What is the instantaneous rate of change in <span class="process-math">\(F\)</span> at this moment?</div>
+<div class="autopermalink" data-description="Item 3.2.2.4.a"><a href="#s3_2FPQ1" title="Copy heading and permalink for Item 3.2.2.4.a" aria-label="Copy heading and permalink for Item 3.2.2.4.a">🔗</a></div>
+</li>
+<li id="s3_2FPQ2">
+<div class="para" id="p-derived-s3_2FPQ2">Assume that at another moment in time <span class="process-math">\(P\)</span> is increasing at the instantaneous rate of <span class="process-math">\(10\%\)</span> and <span class="process-math">\(Q\)</span> is decreasing at the instantaneous rate <span class="process-math">\(5\%\text{.}\)</span> What can you conclude about the rate of change of <span class="process-math">\(F\)</span> at this moment?</div>
+<div class="autopermalink" data-description="Item 3.2.2.4.b"><a href="#s3_2FPQ2" title="Copy heading and permalink for Item 3.2.2.4.b" aria-label="Copy heading and permalink for Item 3.2.2.4.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#s3_2relationshiplast-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.4: (✳)"><a href="#s3_2relationshiplast" title="Copy heading and permalink for Exercise 3.2.2.4: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.4: (✳)">🔗</a></div></article><article class="exercise-like" id="s3_2Pythagorusfirst"><h5 class="heading">
+<span class="codenumber">5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="s3_2Pythagorusfirst-2-1">Two particles move in the Cartesian plane. Particle A travels on the <span class="process-math">\(x\)</span>-axis starting at  <span class="process-math">\((10,0)\)</span> and moving towards the origin with a speed of <span class="process-math">\(2\)</span> units per second. Particle B travels on the <span class="process-math">\(y\)</span>-axis starting at <span class="process-math">\((0,12)\)</span> and moving towards the origin with a speed of <span class="process-math">\(3\)</span> units per second. What is the rate of change of the distance between the two particles when particle A reaches the point <span class="process-math">\((4,0)\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s3_2Pythagorusfirst-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.5: (✳)"><a href="#s3_2Pythagorusfirst" title="Copy heading and permalink for Exercise 3.2.2.5: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.5: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-2-8"><h5 class="heading">
+<span class="codenumber">6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_rrates-3-2-8-2-1">Two particles <span class="process-math">\(A\)</span> and <span class="process-math">\(B\)</span> are placed on the Cartesian plane at <span class="process-math">\((0,0)\)</span> and <span class="process-math">\((3,0)\)</span> respectively. At time 0, both start to move in the <span class="process-math">\(+y\)</span> direction. Particle <span class="process-math">\(A\)</span> moves at 3 units per second, while <span class="process-math">\(B\)</span> moves at <span class="process-math">\(2\)</span> units per second. How fast is the distance between the particles changing when particle <span class="process-math">\(A\)</span> is at a distance of <span class="process-math">\(5\)</span> units from <span class="process-math">\(B\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-8-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.6: (✳)"><a href="#sec_rrates-3-2-8" title="Copy heading and permalink for Exercise 3.2.2.6: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.6: (✳)">🔗</a></div></article><article class="exercise-like boxed" id="sec_rrates-3-2-9"><h5 class="heading">
+<span class="codenumber">7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_rrates-3-2-9-2-1">Ship A is 400 miles directly south of Hawaii and is sailing south at 20 miles/hour. Ship B is 300 miles directly east of Hawaii and is sailing west at 15 miles/hour. At what rate is the distance between the ships changing?<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-9-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.7: (✳)"><a href="#sec_rrates-3-2-9" title="Copy heading and permalink for Exercise 3.2.2.7: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.7: (✳)">🔗</a></div></article><article class="exercise-like boxed" id="sec_rrates-3-2-10"><h5 class="heading">
+<span class="codenumber">8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_rrates-3-2-10-2-1">Two tall sticks are vertically planted into the ground, separated by a distance of <span class="process-math">\(30\)</span> cm. We simultaneously put two snails at the base of each stick. The two snails then begin to climb their respective sticks. The first snail is moving with a speed of <span class="process-math">\(25\)</span> cm per minute, while the second snail is moving with a speed of <span class="process-math">\(15\)</span> cm per minute. What is the rate of change of the distance between the two snails when the first snail reaches <span class="process-math">\(100\)</span> cm above the ground?<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-10-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.8: (✳)"><a href="#sec_rrates-3-2-10" title="Copy heading and permalink for Exercise 3.2.2.8: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.8: (✳)">🔗</a></div></article><article class="exercise-like" id="s3_2Pythagoruslast"><h5 class="heading">
+<span class="codenumber">9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="s3_2Pythagoruslast-2-1">A <span class="process-math">\(20\)</span>m long extension ladder leaning against a wall starts collapsing in on itself at a rate of <span class="process-math">\(2\)</span>m/s, while the foot of the ladder remains a constant <span class="process-math">\(5\)</span>m from the wall. How fast is the ladder moving down the wall after <span class="process-math">\(3.5\)</span> seconds?<div class="autopermalink" data-description="Paragraph"><a href="#s3_2Pythagoruslast-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.9: (✳)"><a href="#s3_2Pythagoruslast" title="Copy heading and permalink for Exercise 3.2.2.9: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.9: (✳)">🔗</a></div></article><article class="exercise-like boxed" id="s3_2trianglesfirst"><h5 class="heading"><span class="codenumber">10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s3_2trianglesfirst-1-1">A watering trough has a cross section shaped like an isosceles trapezoid. The trough is 2 metres long, 50 cm high, 1 metre wide at the top, and 60 cm wide at the bottom.<div class="autopermalink" data-description="Paragraph"><a href="#s3_2trianglesfirst-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:12.5%;margin-right:12.5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2trianglesfirst-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para" id="s3_2trianglesfirst-1-3">A pig is drinking water from the trough at a rate of 3 litres per minute. When the height of the water is 25 cm, how fast is the height decreasing?<div class="autopermalink" data-description="Paragraph"><a href="#s3_2trianglesfirst-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.10"><a href="#s3_2trianglesfirst" title="Copy heading and permalink for Exercise 3.2.2.10" aria-label="Copy heading and permalink for Exercise 3.2.2.10">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-2-14"><h5 class="heading"><span class="codenumber">11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_rrates-3-2-14-1-1">A tank is 5 metres long, and has a trapezoidal cross section with the dimensions shown below.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-14-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_rrates-3-2-14-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para" id="sec_rrates-3-2-14-1-3">A hose is filling the tank up at a rate of one litre per second. How fast is the height of the water increasing when the water is 10 centimetres deep?<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-14-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.11"><a href="#sec_rrates-3-2-14" title="Copy heading and permalink for Exercise 3.2.2.11" aria-label="Copy heading and permalink for Exercise 3.2.2.11">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-2-15"><h5 class="heading"><span class="codenumber">12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_rrates-3-2-15-1-1">
+<div class="para">A rocket is blasting off, 2 kilometres away from you. You and the rocket start at the same height. The height of the rocket in kilometres, <span class="process-math">\(t\)</span> hours after liftoff, is given by</div>
+<div class="displaymath process-math">
+\begin{equation*}
+h(t)=61750t^2
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-15-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="sec_rrates-3-2-15-1-2">How fast (in radians per second) is your line of sight rotating to keep looking at the rocket, one minute after liftoff?<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-15-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.12"><a href="#sec_rrates-3-2-15" title="Copy heading and permalink for Exercise 3.2.2.12" aria-label="Copy heading and permalink for Exercise 3.2.2.12">🔗</a></div></article><article class="exercise-like boxed" id="sec_rrates-3-2-16"><h5 class="heading">
+<span class="codenumber">13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para logical" id="sec_rrates-3-2-16-2-1">
+<div class="para">A high speed train is traveling at 2 km/min along a straight track. The train is moving away from a movie camera which is located 0.5 km from the track.</div>
+<ol class="lower-alpha ol-marker-1" id="sec_rrates-3-2-16-2-1-1">
+<li id="s3_2train1">
+<div class="para" id="p-derived-s3_2train1">How fast is the distance between the train and the camera increasing when they are 1.3 km apart?</div>
+<div class="autopermalink" data-description="Item 3.2.2.13.a"><a href="#s3_2train1" title="Copy heading and permalink for Item 3.2.2.13.a" aria-label="Copy heading and permalink for Item 3.2.2.13.a">🔗</a></div>
+</li>
+<li id="s3_2train2">
+<div class="para" id="p-derived-s3_2train2">Assuming that the camera is always pointed at the train, how fast (in radians per min) is the camera rotating when the train and the camera are 1.3 km apart?</div>
+<div class="autopermalink" data-description="Item 3.2.2.13.b"><a href="#s3_2train2" title="Copy heading and permalink for Item 3.2.2.13.b" aria-label="Copy heading and permalink for Item 3.2.2.13.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-16-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.13: (✳)"><a href="#sec_rrates-3-2-16" title="Copy heading and permalink for Exercise 3.2.2.13: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.13: (✳)">🔗</a></div></article><article class="exercise-like" id="s3_2triangleslast"><h5 class="heading"><span class="codenumber">14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s3_2triangleslast-1-1">A clock has a minute hand that is 10 cm long, and an hour hand that is 5 cm long. Let <span class="process-math">\(D\)</span> be the distance between the tips of the two hands. How fast is <span class="process-math">\(D\)</span> decreasing at 4:00?<div class="autopermalink" data-description="Paragraph"><a href="#s3_2triangleslast-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:33.5%;margin-right:33.5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2triangleslast-1-2-1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Exercise 3.2.2.14"><a href="#s3_2triangleslast" title="Copy heading and permalink for Exercise 3.2.2.14" aria-label="Copy heading and permalink for Exercise 3.2.2.14">🔗</a></div></article><article class="exercise-like" id="s3_2annulus"><h5 class="heading">
+<span class="codenumber">15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="s3_2annulus-2-1">Find the rate of change of the area of the annulus <span class="process-math">\(\{ (x, y) \;:\; r^2 \le x^2 + y^2 \le R^2 \}\text{.}\)</span> (i.e. the points inside the circle of radius <span class="process-math">\(R\)</span> but outside the circle of radius <span class="process-math">\(r\)</span>) if <span class="process-math">\(R = 3 \;\mathrm{cm}\text{,}\)</span> <span class="process-math">\(r = 1\;\mathrm{cm}\text{,}\)</span> <span class="process-math">\(\ds\diff{R}{t} = 2\;\frac{\mathrm{cm}}{\mathrm{s}}\text{,}\)</span> and <span class="process-math">\(\ds\diff{r}{t} = 7\;\frac{\mathrm{cm}}{\mathrm{s}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s3_2annulus-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:33.5%;margin-right:33.5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2annulus-2-2-1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Exercise 3.2.2.15: (✳)"><a href="#s3_2annulus" title="Copy heading and permalink for Exercise 3.2.2.15: (✳)" aria-label="Copy heading and permalink for Exercise 3.2.2.15: (✳)">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-2-20"><h5 class="heading"><span class="codenumber">16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_rrates-3-2-20-1-1">Two spheres are centred at the same point. The radius <span class="process-math">\(R\)</span> of the bigger sphere at time <span class="process-math">\(t\)</span> is given by <span class="process-math">\(R(t)=10+2t\text{,}\)</span> while the radius <span class="process-math">\(r\)</span> of the smaller sphere is given by <span class="process-math">\(r(t)=6t\text{,}\)</span> <span class="process-math">\(t \ge 0\text{.}\)</span> How fast is the volume between the spheres (inside the big sphere and outside the small sphere) changing when the bigger sphere has a radius twice as large as the smaller?<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-20-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.16"><a href="#sec_rrates-3-2-20" title="Copy heading and permalink for Exercise 3.2.2.16" aria-label="Copy heading and permalink for Exercise 3.2.2.16">🔗</a></div></article><article class="exercise-like boxed" id="sec_rrates-3-2-21"><h5 class="heading"><span class="codenumber">17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_rrates-3-2-21-1-1">You attach two sticks together at their ends, and stick the other ends in the mud. One stick is 150 cm long, and the other is 200 cm.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-21-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:12.5%;margin-right:12.5%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_rrates-3-2-21-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para" id="sec_rrates-3-2-21-1-3">The structure starts out being 1.4 metres high at its peak, but the sticks slide, and the height decreases at a constant rate of three centimetres per minute. How quickly is the area of the triangle (formed by the two sticks and the level ground) changing when the height of the structure is 120 cm?<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-21-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.17"><a href="#sec_rrates-3-2-21" title="Copy heading and permalink for Exercise 3.2.2.17" aria-label="Copy heading and permalink for Exercise 3.2.2.17">🔗</a></div></article><article class="exercise-like" id="s3_2segment"><h5 class="heading"><span class="codenumber">18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s3_2segment-1-1">The circular lid of a salt shaker has radius 8. There is a cut-out to allow the salt to pour out of the lid, and a door that rotates around to cover the cut-out. The door is a quarter-circle of radius 7 cm. The cut-out has the shape of a quarter-annulus with outer radius 6 cm and inner radius 1 cm. If the uncovered area of the cut-out is <span class="process-math">\(A\)</span> cm<span class="process-math">\(^2\text{,}\)</span> then the salt flows out at <span class="process-math">\(\frac{1}{5}A\)</span> cm<span class="process-math">\(^3\)</span> per second.<div class="autopermalink" data-description="Paragraph"><a href="#s3_2segment-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:9.25%;margin-right:9.25%;grid-template-columns:36.8098159509202% 40.4907975460123%;column-gap:18.5%;">
+<div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2segment-1-2-1.svg" role="img" class="contained"></div>
+<div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2segment-1-2-2.svg" role="img" class="contained"></div>
+</div></div> <div class="para" id="s3_2segment-1-3">Recall: an annulus is the set of points inside one circle and outside another,  like a flat doughnut (see Question <a href="sec_rrates.html#s3_2annulus" class="xref" data-knowl="./knowl/xref/s3_2annulus.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 3.2.2.15: (✳)">3.2.2.15</a>).<div class="autopermalink" data-description="Paragraph"><a href="#s3_2segment-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:12.5%;margin-right:12.5%;grid-template-columns:33.3333333333333% 33.3333333333333%;column-gap:25%;">
+<div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2segment-1-4-1.svg" role="img" class="contained"></div>
+<div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2segment-1-4-2.svg" role="img" class="contained"></div>
+</div></div> <div class="para" id="s3_2segment-1-5">While pouring out salt, you spin the door around the lid at a constant rate of <span class="process-math">\(\frac{\pi}{6}\)</span> radians per second, covering more and more of the cut-out. When exactly half of the cut-out is covered, how fast is the flow of salt changing?<div class="autopermalink" data-description="Paragraph"><a href="#s3_2segment-1-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.18"><a href="#s3_2segment" title="Copy heading and permalink for Exercise 3.2.2.18" aria-label="Copy heading and permalink for Exercise 3.2.2.18">🔗</a></div></article><article class="exercise-like boxed" id="sec_rrates-3-2-23"><h5 class="heading"><span class="codenumber">19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_rrates-3-2-23-1-1">A cylindrical sewer pipe with radius 1 metre has a vertical rectangular door that slides  in front of it to block the flow of water, as shown below. If the uncovered area of the pipe is <span class="process-math">\(A\)</span> m<span class="process-math">\(^2\text{,}\)</span> then the flow of water through the pipe is <span class="process-math">\(\frac{1}{5}A\)</span> cubic metres per second.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-23-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para" id="sec_rrates-3-2-23-1-2">The door slides over the pipe, moving vertically at a rate of 1 centimetre per second. How fast is the flow of water changing when the door covers the top 25 centimetres of the pipe?<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-2-23-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_rrates-3-2-23-1-3-1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Exercise 3.2.2.19"><a href="#sec_rrates-3-2-23" title="Copy heading and permalink for Exercise 3.2.2.19" aria-label="Copy heading and permalink for Exercise 3.2.2.19">🔗</a></div></article><article class="exercise-like boxed" id="s3_2formulaslast"><h5 class="heading"><span class="codenumber">20<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s3_2formulaslast-1-1">A martini glass is shaped like a cone, with top diameter 10 cm and side length 10 cm.<div class="autopermalink" data-description="Paragraph"><a href="#s3_2formulaslast-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/s3_2formulaslast-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para" id="s3_2formulaslast-1-3">When the liquid in the glass is 7 cm high, it is evaporating at a rate of 5 mL per minute. How fast is the height of the liquid decreasing?<div class="autopermalink" data-description="Paragraph"><a href="#s3_2formulaslast-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.20"><a href="#s3_2formulaslast" title="Copy heading and permalink for Exercise 3.2.2.20" aria-label="Copy heading and permalink for Exercise 3.2.2.20">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 3.2.2.2–20: 
+Exercises — Stage 2
+"><a href="#sec_rrates-3-2" title="Copy heading and permalink for Exercise Group 3.2.2.2–20: 
+Exercises — Stage 2
+" aria-label="Copy heading and permalink for Exercise Group 3.2.2.2–20: 
+Exercises — Stage 2
+">🔗</a></div>
+</div>
+<div class="exercisegroup" id="sec_rrates-3-3">
+<h4 class="heading"><span class="title">
+Exercises — Stage 3
+.</span></h4>
+<div class="introduction" id="sec_rrates-3-3-2"></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like boxed" id="sec_rrates-3-3-3"><h5 class="heading"><span class="codenumber">21<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_rrates-3-3-3-1-1">A floating buoy is anchored to the bottom of a river. As the river flows, the buoy is pulled in the direction of flow until its 2-metre rope is taut. A sensor at the anchor reads the angle <span class="process-math">\(\theta\)</span> between the rope and the riverbed, as shown in the diagram below. This data is used to measure the depth <span class="process-math">\(D\)</span> of water in the river, which depends on time.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_rrates-3-3-3-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para logical" id="sec_rrates-3-3-3-1-3">
+<ol class="lower-alpha ol-marker-1" id="sec_rrates-3-3-3-1-3-1">
+<li id="sec_rrates-3-3-3-1-3-1-1">
+<div class="para" id="p-derived-sec_rrates-3-3-3-1-3-1-1">If <span class="process-math">\(\theta = \dfrac{\pi}{4}\)</span> and <span class="process-math">\(\ds\diff{\theta}{t}=0.25\;\frac{\mathrm{rad}}{\mathrm{hr}}\text{,}\)</span> how fast is the depth <span class="process-math">\(D\)</span> of the water changing?</div>
+<div class="autopermalink" data-description="Item 3.2.2.21.a"><a href="#sec_rrates-3-3-3-1-3-1-1" title="Copy heading and permalink for Item 3.2.2.21.a" aria-label="Copy heading and permalink for Item 3.2.2.21.a">🔗</a></div>
+</li>
+<li id="sec_rrates-3-3-3-1-3-1-2">
+<div class="para" id="p-derived-sec_rrates-3-3-3-1-3-1-2">A measurement shows <span class="process-math">\(\ds\diff{\theta}{t}=0\text{,}\)</span> but <span class="process-math">\(\ds\diff{D}{t}\neq0\text{.}\)</span> Under what circumstances does this occur?</div>
+<div class="autopermalink" data-description="Item 3.2.2.21.b"><a href="#sec_rrates-3-3-3-1-3-1-2" title="Copy heading and permalink for Item 3.2.2.21.b" aria-label="Copy heading and permalink for Item 3.2.2.21.b">🔗</a></div>
+</li>
+<li id="sec_rrates-3-3-3-1-3-1-3">
+<div class="para" id="p-derived-sec_rrates-3-3-3-1-3-1-3">A measurement shows <span class="process-math">\(\ds\diff{\theta}{t} \gt 0\text{,}\)</span> but <span class="process-math">\(\ds\diff{D}{t} \lt 0\text{.}\)</span> Under what circumstances does this occur?</div>
+<div class="autopermalink" data-description="Item 3.2.2.21.c"><a href="#sec_rrates-3-3-3-1-3-1-3" title="Copy heading and permalink for Item 3.2.2.21.c" aria-label="Copy heading and permalink for Item 3.2.2.21.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-3-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.21"><a href="#sec_rrates-3-3-3" title="Copy heading and permalink for Exercise 3.2.2.21" aria-label="Copy heading and permalink for Exercise 3.2.2.21">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-3-4"><h5 class="heading"><span class="codenumber">22<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_rrates-3-3-4-1-1">A point is moving in the <span class="process-math">\(xy\)</span>-plane along the quadrilateral shown below.<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:17%;margin-right:17%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_rrates-3-3-4-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para logical" id="sec_rrates-3-3-4-1-3">
+<ol class="lower-alpha ol-marker-1" id="sec_rrates-3-3-4-1-3-1">
+<li id="sec_rrates-3-3-4-1-3-1-1">
+<div class="para" id="p-derived-sec_rrates-3-3-4-1-3-1-1">When the point is at <span class="process-math">\((0,-2)\text{,}\)</span> it is moving to the right. An observer stationed at the origin must turn at a rate of one radian per second to keep looking directly at the point. How fast is the point moving?</div>
+<div class="autopermalink" data-description="Item 3.2.2.22.a"><a href="#sec_rrates-3-3-4-1-3-1-1" title="Copy heading and permalink for Item 3.2.2.22.a" aria-label="Copy heading and permalink for Item 3.2.2.22.a">🔗</a></div>
+</li>
+<li id="sec_rrates-3-3-4-1-3-1-2">
+<div class="para" id="p-derived-sec_rrates-3-3-4-1-3-1-2">When the point is at <span class="process-math">\((0,2)\text{,}\)</span> its <span class="process-math">\(x\)</span>-coordinate is increasing at a rate of one unit per second. How fast it its <span class="process-math">\(y\)</span>-coordinate changing? How fast is  the point moving?</div>
+<div class="autopermalink" data-description="Item 3.2.2.22.b"><a href="#sec_rrates-3-3-4-1-3-1-2" title="Copy heading and permalink for Item 3.2.2.22.b" aria-label="Copy heading and permalink for Item 3.2.2.22.b">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-4-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.22"><a href="#sec_rrates-3-3-4" title="Copy heading and permalink for Exercise 3.2.2.22" aria-label="Copy heading and permalink for Exercise 3.2.2.22">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-3-5"><h5 class="heading"><span class="codenumber">23<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_rrates-3-3-5-1-1">You have a cylindrical water bottle 20 cm high, filled with water. Its cross section is a circle of radius 5. You slowly smoosh the sides, so the cross section becomes an ellipse with major axis (widest part) <span class="process-math">\(2a\)</span> and minor axis (skinniest part) <span class="process-math">\(2b\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_rrates-3-3-5-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para logical" id="sec_rrates-3-3-5-1-3">
+<div class="para">After <span class="process-math">\(t\)</span> seconds of smooshing the bottle, <span class="process-math">\(a=5+t\)</span> cm. The perimeter of the cross section is unchanged as the bottle deforms. The perimeter of an ellipse is actually quite difficult to calculate, but we will use an approximation derived by Ramanujan and assume that the perimeter <span class="process-math">\(p\)</span> of our ellipse is</div>
+<div class="displaymath process-math">
+\begin{equation*}
+p \approx \pi\left[3(a+b)-\sqrt{(a+3b)(3a+b)}\right].
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-5-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para logical" id="sec_rrates-3-3-5-1-4">
+<div class="para">The area of an ellipse is <span class="process-math">\(\pi a b\text{.}\)</span>
+</div>
+<ol class="lower-alpha ol-marker-1" id="sec_rrates-3-3-5-1-4-2">
+<li id="sec_rrates-3-3-5-1-4-2-1">
+<div class="para" id="p-derived-sec_rrates-3-3-5-1-4-2-1">Give an equation that relates <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> (and no other variables).</div>
+<div class="autopermalink" data-description="Item 3.2.2.23.a"><a href="#sec_rrates-3-3-5-1-4-2-1" title="Copy heading and permalink for Item 3.2.2.23.a" aria-label="Copy heading and permalink for Item 3.2.2.23.a">🔗</a></div>
+</li>
+<li id="sec_rrates-3-3-5-1-4-2-2">
+<div class="para" id="p-derived-sec_rrates-3-3-5-1-4-2-2">Give an expression for the volume of the bottle as it is being smooshed, in terms of <span class="process-math">\(a\)</span> and <span class="process-math">\(b\)</span> (and no other variables).</div>
+<div class="autopermalink" data-description="Item 3.2.2.23.b"><a href="#sec_rrates-3-3-5-1-4-2-2" title="Copy heading and permalink for Item 3.2.2.23.b" aria-label="Copy heading and permalink for Item 3.2.2.23.b">🔗</a></div>
+</li>
+<li id="sec_rrates-3-3-5-1-4-2-3">
+<div class="para" id="p-derived-sec_rrates-3-3-5-1-4-2-3">Suppose the bottle was full when its cross section was a circle. How fast is the water spilling out when <span class="process-math">\(a\)</span> is twice as big as <span class="process-math">\(b\text{?}\)</span>
+</div>
+<div class="autopermalink" data-description="Item 3.2.2.23.c"><a href="#sec_rrates-3-3-5-1-4-2-3" title="Copy heading and permalink for Item 3.2.2.23.c" aria-label="Copy heading and permalink for Item 3.2.2.23.c">🔗</a></div>
+</li>
+</ol>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-5-1-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.23"><a href="#sec_rrates-3-3-5" title="Copy heading and permalink for Exercise 3.2.2.23" aria-label="Copy heading and permalink for Exercise 3.2.2.23">🔗</a></div></article><article class="exercise-like" id="sec_rrates-3-3-6"><h5 class="heading"><span class="codenumber">24<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_rrates-3-3-6-1-1">
+<div class="para">The quantities <span class="process-math">\(A\text{,}\)</span> <span class="process-math">\(B\text{,}\)</span> <span class="process-math">\(C\text{,}\)</span> and <span class="process-math">\(D\)</span> all depend on time, and are related by the formula</div>
+<div class="displaymath process-math">
+\begin{equation*}
+AB=\log\left(C^2+D^2+1\right).
+\end{equation*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="para logical" id="sec_rrates-3-3-6-1-2">
+<div class="para">At time <span class="process-math">\(t=10\text{,}\)</span> the following values are known:</div>
+<ul class="disc" id="sec_rrates-3-3-6-1-2-2">
+<li id="sec_rrates-3-3-6-1-2-2-1">
+<div class="para" id="p-derived-sec_rrates-3-3-6-1-2-2-1"><span class="process-math">\(\displaystyle A=0\)</span></div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-3-3-6-1-2-2-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="sec_rrates-3-3-6-1-2-2-2">
+<div class="para" id="p-derived-sec_rrates-3-3-6-1-2-2-2">
+<span class="process-math">\(\ds\diff{A}{t}=2\)</span> units per second</div>
+<div class="autopermalink" data-description="Item"><a href="#sec_rrates-3-3-6-1-2-2-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">What is <span class="process-math">\(B\)</span> when <span class="process-math">\(t=10\text{?}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_rrates-3-3-6-1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 3.2.2.24"><a href="#sec_rrates-3-3-6" title="Copy heading and permalink for Exercise 3.2.2.24" aria-label="Copy heading and permalink for Exercise 3.2.2.24">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 3.2.2.21–24: 
+Exercises — Stage 3
+"><a href="#sec_rrates-3-3" title="Copy heading and permalink for Exercise Group 3.2.2.21–24: 
+Exercises — Stage 3
+" aria-label="Copy heading and permalink for Exercise Group 3.2.2.21–24: 
+Exercises — Stage 3
+">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercises 3.2.2"><a href="#sec_rrates-3" title="Copy heading and permalink for Exercises 3.2.2" aria-label="Copy heading and permalink for Exercises 3.2.2">🔗</a></div></section><div class="autopermalink" data-description="Section 3.2: Related Rates"><a href="#sec_rrates" title="Copy heading and permalink for Section 3.2: Related Rates" aria-label="Copy heading and permalink for Section 3.2: Related Rates">🔗</a></div></section></div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="sec_vel_acc.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Top</span></a><a class="next-button button" href="sec_ExpGthDecay.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="feedback-link" href="mailto:clp@ugrad.math.ubc.ca?subject=clp1-pretext" target="_blank">Feedback</a><a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="runtime/reader-support/runestone-credit-logo.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="runtime/reader-support/mathjax-credit-logo.png" alt="MathJax logo"></a>
+</div>
+<nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP1/">Original authors’ website ↗</a><a href="front.html">Book contents</a></nav><nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B20" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">English — B20</a> · <a data-program-home data-course-card data-course-id="B20" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Bahasa Indonesia — B20</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B20" href="https://personal.math.ubc.ca/~CLP/CLP1/">Original source — Original authors’ website — CLP-1 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="front.html">Open related page</a></nav>
+</body>
+</html>

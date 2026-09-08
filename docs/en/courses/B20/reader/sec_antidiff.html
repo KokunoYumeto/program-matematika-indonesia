@@ -1,0 +1,1401 @@
+<!DOCTYPE html>
+<html lang="en-US" dir="ltr">
+<!--******************************************-->
+<!--*  Authored with PreTeXt                 *-->
+<!--*  pretextbook.org                       *-->
+<!--*  Theme: default-modern                 *-->
+<!--*  Palette:                              *-->
+<!--******************************************-->
+<head xmlns:og="http://ogp.me/ns#" xmlns:book="https://ogp.me/ns/book#">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Introduction to Antiderivatives</title>
+
+
+<link rel="stylesheet" href="runtime/reader-support/material-symbols-local.css">
+<link href="_static/pretext/css/theme.css" rel="stylesheet" type="text/css">
+<link href="_static/pretext/css/ol-markers.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="external/RQS.css">
+<script>
+var runestoneMathReady = new Promise((resolve) => window.rsMathReady = resolve);
+window.MathJax = {
+  "tex": {
+    "inlineMath": [
+      [
+        "\\(",
+        "\\)"
+      ]
+    ],
+    "tags": "none",
+    "tagSide": "right",
+    "tagIndent": ".8em",
+    "packages": {
+      "[+]": [
+        "base",
+        "extpfeil",
+        "ams",
+        "amscd",
+        "color",
+        "newcommand",
+        "knowl"
+      ]
+    }
+  },
+  "options": {
+    "ignoreHtmlClass": "tex2jax_ignore|ignore-math",
+    "processHtmlClass": "process-math"
+  },
+  "chtml": {
+    "scale": 0.98,
+    "mtextInheritFont": true
+  },
+  "loader": {
+    "load": [
+      "input/asciimath",
+      "[tex]/extpfeil",
+      "[tex]/amscd",
+      "[tex]/color",
+      "[tex]/newcommand",
+      "[pretext]/mathjaxknowl3.js"
+    ],
+    "paths": {
+      "pretext": "_static/pretext/js/lib"
+    }
+  },
+  "startup": {
+    pageReady() {
+      return MathJax.startup.defaultPageReady().then(function () {
+      console.log("in ready function");
+      rsMathReady();
+      }
+    )}
+  }
+};
+</script><script src="runtime/mathjax/es5/tex-chtml.js"></script><meta name="Keywords" content="Authored in PreTeXt">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta property="og:type" content="book">
+<meta property="book:title" content="CLP-1 Differential Calculus">
+<meta property="book:author" content="Joel Feldman">
+<meta property="book:author" content="Andrew Rechnitzer">
+<meta property="book:author" content="Elyse Yeager">
+<script src="_static/pretext/js/lib/jquery.min.js"></script><script src="_static/pretext/js/lib/jquery.sticky.js"></script><script src="_static/pretext/js/lib/jquery.espy.min.js"></script><script src="_static/pretext/js/pretext.js"></script><script src="_static/pretext/js/pretext_add_on.js?x=1"></script><script src="_static/pretext/js/user_preferences.js"></script><!--** eBookCongig is necessary to configure interactive       **-->
+<!--** Runestone components to run locally in reader's browser **-->
+<!--** No external communication:                              **-->
+<!--**     log level is 0, Runestone Services are disabled     **-->
+<script type="text/javascript">
+eBookConfig = {};
+eBookConfig.useRunestoneServices = false;
+eBookConfig.host = 'http://127.0.0.1:8000';
+eBookConfig.course = 'PTX_Course_Title_Here';
+eBookConfig.basecourse = 'PTX_Base_Course';
+eBookConfig.isLoggedIn = false;
+eBookConfig.email = '';
+eBookConfig.isInstructor = false;
+eBookConfig.logLevel = 0;
+eBookConfig.username = '';
+eBookConfig.readings = null;
+eBookConfig.activities = null;
+eBookConfig.downloadsEnabled = false;
+eBookConfig.allow_pairs = false;
+eBookConfig.enableScratchAC = false;
+eBookConfig.build_info = "";
+eBookConfig.python3 = null;
+eBookConfig.runestone_version = '8.2.5';
+eBookConfig.jobehost = '';
+eBookConfig.proxyuri_runs = '';
+eBookConfig.proxyuri_files = '';
+eBookConfig.enable_chatcodes =  false;
+</script>
+<!--*** Runestone Services ***-->
+<script src="_static/prefix-runtime.18d8728f6d56e11d.bundle.js"></script><script src="_static/prefix-926.5c7038c8ef173faf.bundle.js"></script><script src="_static/prefix-runestone.b388362b5f43738a.bundle.js"></script><link rel="stylesheet" type="text/css" href="_static/prefix-926.229729d09512acc9.css">
+<link rel="stylesheet" type="text/css" href="_static/prefix-runestone.8086b62682b271d1.css">
+<script src="_static/pretext/js/lti_iframe_resizer.js"></script><script src="runtime/lunr/lunr.min.js" integrity="sha512-4xUl/d6D6THrAnXAwGajXkoWaeMNwEKK4iNfq5DotEbLPAfk6FSxSP3ydNxqDgCw1c/0Z1Jg6L8h2j+++9BZmg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script><script src="lunr-pretext-search-index.js" async=""></script><script src="_static/pretext/js/pretext_search.js"></script><script src="_static/pretext/js/lib/knowl.js"></script><!--knowl.js code controls Sage Cells within knowls--><script>sagecellEvalName='Evaluate (Sage)';
+</script>
+<link rel="stylesheet" href="program-navigation.css"></head>
+<body class="pretext book ignore-math">
+<nav data-central-surface-navigation="v1" data-placement="top" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B20" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">English — B20</a> · <a data-program-home data-course-card data-course-id="B20" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Bahasa Indonesia — B20</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B20" href="https://personal.math.ubc.ca/~CLP/CLP1/">Original source — Original authors’ website — CLP-1 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="front.html">Open related page</a></nav><nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP1/">Original authors’ website ↗</a><a href="front.html">Book contents</a></nav>
+<a class="assistive" href="#ptx-content">Skip to main content</a><header id="ptx-masthead" class="ptx-masthead"><div class="ptx-banner"><div class="title-container">
+<h1 class="heading"><a href="clp_1_dc.html"><span class="title">CLP-1 Differential Calculus</span></a></h1>
+<p class="byline">Joel Feldman, Andrew Rechnitzer, Elyse Yeager</p>
+</div></div></header><nav id="ptx-navbar" class="ptx-navbar navbar"><div class="ptx-navbar-contents">
+<button class="toc-toggle button" title="Contents"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Contents</span></button><div class="searchbox">
+<div class="searchwidget"><button id="searchbutton" class="searchbutton button" type="button" title="Search book"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Search Book</span></button></div>
+<div id="searchresultsplaceholder" class="searchresultsplaceholder" style="display: none">
+<div class="search-results-controls">
+<input aria-label="Search term" id="ptxsearch" class="ptxsearch" type="text" name="terms" placeholder="Search term"><button title="Close search" id="closesearchresults" class="closesearchresults"><span class="material-symbols-outlined">close</span></button>
+</div>
+<h2 class="search-results-heading">Search Results: </h2>
+<div id="searchempty" class="searchempty"><span>No results.</span></div>
+<ol id="searchresults" class="searchresults"></ol>
+</div>
+</div>
+<span class="nav-other-controls"><button id="light-dark-button" class="light-dark-button button" title="Dark Mode"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Dark Mode</span></button></span><span class="treebuttons"><a class="previous-button button" href="clp_1_dc-7.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="up-button button" href="clp_1_dc-7.html" title="Up"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Up</span></a><a class="next-button button" href="clp_1_dc-8.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a></span>
+</div></nav><div id="latex-macros" class="hidden-content process-math" style="display:none"><span class="process-math">\(\require{cancel}\newcommand{\dee}[1]{\mathrm{d}#1}
+\newcommand{\half}{ \frac{1}{2} }
+\newcommand{\ds}{\displaystyle}
+\newcommand{\ts}{\textstyle}
+\newcommand{\es}{ {\varnothing}}
+\newcommand{\st}{ {\mbox{ s.t. }} }
+\newcommand{\pow}[1]{ \mathcal{P}\left(#1\right) }
+\newcommand{\set}[1]{ \left\{#1\right\} }
+\newcommand{\lin}{{\text{LIN}}}
+\newcommand{\quot}{{\text{QR}}}
+\newcommand{\simp}{{\text{SMP}}}
+\newcommand{\diff}[2]{ \frac{\mathrm{d}#1}{\mathrm{d}#2}}
+\newcommand{\bdiff}[2]{ \frac{\mathrm{d}}{\mathrm{d}#2} \left( #1 \right)}
+\newcommand{\ddiff}[3]{ \frac{\mathrm{d}^#1#2}{\mathrm{d}{#3}^#1}}
+\renewcommand{\neg}{ {\sim} }
+\newcommand{\limp}{ {\;\Rightarrow\;} }
+\newcommand{\nimp}{ {\;\not\Rightarrow\;} }
+\newcommand{\liff}{ {\;\Leftrightarrow\;} }
+\newcommand{\niff}{ {\;\not\Leftrightarrow\;} }
+\newcommand{\De}{\Delta}
+\newcommand{\bbbn}{\mathbb{N}}
+\newcommand{\bbbr}{\mathbb{R}}
+\newcommand{\bbbp}{\mathbb{P}}
+\newcommand{\cI}{\mathcal{I}}
+\newcommand{\cR}{\mathcal{R}}
+\newcommand{\cV}{\mathcal{V}}
+\newcommand{\Si}{\Sigma}
+
+\newcommand{\arccsc}{\mathop{\mathrm{arccsc}}}
+\newcommand{\arcsec}{\mathop{\mathrm{arcsec}}}
+\newcommand{\arccot}{\mathop{\mathrm{arccot}}}
+\newcommand{\erf}{\mathop{\mathrm{erf}}}
+\newcommand{\smsum}{\mathop{{\ts \sum}}}
+\newcommand{\atp}[2]{ \genfrac{}{}{0in}{}{#1}{#2} }
+
+\newcommand{\ave}{\mathrm{ave}}
+\newcommand{\llt}{\left \lt }
+\newcommand{\rgt}{\right \gt }
+
+
+\newcommand{\YEaxis}[2]{\draw[help lines] (-#1,0)--(#1,0) node[right]{$x$};\draw[help lines] (0,-#2)--(0,#2) node[above]{$y$};}
+
+\newcommand{\YEaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$x$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YEtaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$};\draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+\newcommand{\YEtaaxis}[4]{\draw[help lines] (-#1,0)--(#2,0) node[right]{$t$}; \draw[help lines] (0,-#3)--(0,#4) node[above]{$y$};}
+
+\newcommand{\YExcoord}[2]{\draw (#1,.2)--(#1,-.2) node[below]{$#2$};}
+\newcommand{\YEycoord}[2]{\draw (.2,#1)--(-.2,#1) node[left]{$#2$};}
+\newcommand{\YEnxcoord}[2]{\draw (#1,-.2)--(#1,.2) node[above]{$#2$};}
+\newcommand{\YEnycoord}[2]{\draw (-.2,#1)--(.2,#1) node[right]{$#2$};}
+
+\newcommand{\YEstickfig}[3]{
+\draw (#1,#2) arc(-90:270:2mm);
+\draw (#1,#2)--(#1,#2-.5) (#1-.25,#2-.75)--(#1,#2-.5)--(#1+.25,#2-.75) (#1-.2,#2-.2)--(#1+.2,#2-.2);}
+
+
+\newcommand{\IBP}[7]{
+\begin{array}{|c  | l | l |}
+\hline
+\color{red}{\text{Option 1:}}
+&amp; u=#2
+&amp;\color{red}{\dee{u}=#3 ~ \dee{#1}}
+\\
+&amp; \dee{v}=#5~\dee{#1}
+&amp;\color{red}{v=#7}
+\\
+\hline
+\color{blue}{\text{Option 2:}}
+&amp; u=#5
+&amp;\color{blue}{\dee{u}=#6 ~ \dee{#1}}
+\\
+&amp;\dee{v}=#2 \dee{#1}
+&amp;\color{blue}{v=#4}
+\\
+\hline
+\end{array}
+}
+
+
+\renewcommand{\textcolor}[2]{{\color{#1}{#2}}}
+
+
+\newcommand{\trigtri}[4]{
+\begin{tikzpicture}
+\draw (-.5,0)--(2,0)--(2,1.5)--cycle;
+\draw (1.8,0) |- (2,.2);
+\draw[double] (0,0) arc(0:30:.5cm);
+\draw (0,.2) node[right]{$#1$};
+\draw (1,-.5) node{$#2$};
+\draw (2,.75) node[right]{$#3$};
+\draw (.6,1.1) node[rotate=30]{$#4$};
+\end{tikzpicture}}
+\newcommand{\lt}{&lt;}
+\newcommand{\gt}{&gt;}
+\newcommand{\amp}{&amp;}
+\definecolor{fillinmathshade}{gray}{0.9}
+\newcommand{\fillinmath}[1]{\mathchoice{\colorbox{fillinmathshade}{$\displaystyle     \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\textstyle        \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptstyle      \phantom{\,#1\,}$}}{\colorbox{fillinmathshade}{$\scriptscriptstyle\phantom{\,#1\,}$}}}
+\)</span></div>
+<div class="ptx-page">
+<div id="ptx-sidebar" class="ptx-sidebar"><nav id="ptx-toc" class="ptx-toc depth2 focused" data-preexpanded-levels="0" data-max-levels="2"><ul class="structural toc-item-list contains-active">
+<li class="toc-item toc-frontmatter">
+<div class="toc-title-box"><a href="front.html" class="internal"><span class="title">Front Matter</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-colophon"><div class="toc-title-box"><a href="front-colophon.html" class="internal"><span class="title">Colophon</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="front-4.html" class="internal"><span class="title">Preface</span></a></div></li>
+<li class="toc-item toc-dedication"><div class="toc-title-box"><a href="front-5.html" class="internal"><span class="title">Dedication</span></a></div></li>
+<li class="toc-item toc-acknowledgement"><div class="toc-title-box"><a href="front-6.html" class="internal"><span class="title">Acknowledgements</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="front-7.html" class="internal"><span class="title">Using the exercises in this book</span></a></div></li>
+<li class="toc-item toc-preface"><div class="toc-title-box"><a href="front-8.html" class="internal"><span class="title">Feedback about the text</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_basics.html" class="internal"><span class="codenumber">0</span> <span class="title">The basics</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_0_1.html" class="internal"><span class="codenumber">0.1</span> <span class="title">Numbers</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_0_1.html#sec_0_1-3" class="internal"><span class="codenumber">0.1.1</span> <span class="title">More on Real Numbers</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_sets.html" class="internal"><span class="codenumber">0.2</span> <span class="title">Sets</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_0_3.html" class="internal"><span class="codenumber">0.3</span> <span class="title">Other Important Sets</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_0_3.html#sec_0_3-3" class="internal"><span class="codenumber">0.3.1</span> <span class="title">More on Sets</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_0_4.html" class="internal"><span class="codenumber">0.4</span> <span class="title">Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_parsing.html" class="internal"><span class="codenumber">0.5</span> <span class="title">Parsing Formulas</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_inverse_functions.html" class="internal"><span class="codenumber">0.6</span> <span class="title">Inverse Functions</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_limits.html" class="internal"><span class="codenumber">1</span> <span class="title">Limits</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_first_lim.html" class="internal"><span class="codenumber">1.1</span> <span class="title">Drawing Tangents and a First Limit</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_first_lim.html#sec_first_lim-2" class="internal"><span class="codenumber">1.1.1</span> <span class="title">Drawing Tangents and a First Limit</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_first_lim.html#sec_first_lim-3" class="internal"><span class="codenumber">1.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_velocity.html" class="internal"><span class="codenumber">1.2</span> <span class="title">Another Limit and Computing Velocity</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_velocity.html#sec_velocity-2" class="internal"><span class="codenumber">1.2.1</span> <span class="title">Another Limit and Computing Velocity</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_velocity.html#sec_velocity-3" class="internal"><span class="codenumber">1.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_lim_func.html" class="internal"><span class="codenumber">1.3</span> <span class="title">The Limit of a Function</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_lim_func.html#sec_lim_func-2" class="internal"><span class="codenumber">1.3.1</span> <span class="title">The Limit of a Function</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_lim_func.html#sec_lim_func-3" class="internal"><span class="codenumber">1.3.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_1_4.html" class="internal"><span class="codenumber">1.4</span> <span class="title">Calculating Limits with Limit Laws</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_4.html#sec_1_4-2" class="internal"><span class="codenumber">1.4.1</span> <span class="title">Calculating Limits with Limit Laws</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_1_4.html#sec_1_4-3" class="internal"><span class="codenumber">1.4.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_1_5.html" class="internal"><span class="codenumber">1.5</span> <span class="title">Limits at Infinity</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_5.html#sec_1_5-2" class="internal"><span class="codenumber">1.5.1</span> <span class="title">Limits at Infinity</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_1_5.html#sec_1_5-3" class="internal"><span class="codenumber">1.5.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_1_6.html" class="internal"><span class="codenumber">1.6</span> <span class="title">Continuity</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-2" class="internal"><span class="codenumber">1.6.1</span> <span class="title">Continuity</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-3" class="internal"><span class="codenumber">1.6.2</span> <span class="title">Quick Aside — One-sided Continuity</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-4" class="internal"><span class="codenumber">1.6.3</span> <span class="title">Back to the Main Text</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_1_6.html#sec_1_6-5" class="internal"><span class="codenumber">1.6.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_opt_formal_limit.html" class="internal"><span class="codenumber">1.7</span> <span class="title">(Optional) — Making the Informal a Little More Formal</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_lim_inf_formal.html" class="internal"><span class="codenumber">1.8</span> <span class="title">(Optional) — Making Infinite Limits a Little More Formal</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_proof_arith_lim.html" class="internal"><span class="codenumber">1.9</span> <span class="title">(Optional) — Proving the Arithmetic of Limits</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_deriv.html" class="internal"><span class="codenumber">2</span> <span class="title">Derivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_1.html" class="internal"><span class="codenumber">2.1</span> <span class="title">Revisiting Tangent Lines</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_1.html#sec_2_1-2" class="internal"><span class="codenumber">2.1.1</span> <span class="title">Revisiting Tangent Lines</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_1.html#sec_2_1-3" class="internal"><span class="codenumber">2.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_def_deriv.html" class="internal"><span class="codenumber">2.2</span> <span class="title">Definition of the Derivative</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-3" class="internal"><span class="codenumber">2.2.1</span> <span class="title">An Important Point (and Some Notation)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-4" class="internal"><span class="codenumber">2.2.2</span> <span class="title">Back to Computing Some Derivatives</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-5" class="internal"><span class="codenumber">2.2.3</span> <span class="title">Where is the Derivative Undefined?</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_def_deriv.html#sec_def_deriv-6" class="internal"><span class="codenumber">2.2.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_3.html" class="internal"><span class="codenumber">2.3</span> <span class="title">Interpretations of the Derivative</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_3.html#sec_2_3-3" class="internal"><span class="codenumber">2.3.1</span> <span class="title">Instantaneous Rate of Change</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_3.html#sec_2_3-4" class="internal"><span class="codenumber">2.3.2</span> <span class="title">Slope</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_3.html#sec_2_3-5" class="internal"><span class="codenumber">2.3.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_4.html" class="internal"><span class="codenumber">2.4</span> <span class="title">Arithmetic of Derivatives - a Differentiation Toolbox</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_4.html#sec_2_4-2" class="internal"><span class="codenumber">2.4.1</span> <span class="title">Arithmetic of Derivatives - a Differentiation Toolbox</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_4.html#sec_2_4-3" class="internal"><span class="codenumber">2.4.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_proof_arith_deriv.html" class="internal"><span class="codenumber">2.5</span> <span class="title">Proofs of the Arithmetic of Derivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_proof_arith_deriv.html#sec_proof_arith_deriv-3" class="internal"><span class="codenumber">2.5.1</span> <span class="title">Proof of the Linearity of Differentiation (Theorem 2.4.2)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_proof_arith_deriv.html#sec_proof_arith_deriv-4" class="internal"><span class="codenumber">2.5.2</span> <span class="title">Proof of the Product Rule (Theorem 2.4.3)</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_proof_arith_deriv.html#sec_proof_arith_deriv-5" class="internal"><span class="codenumber">2.5.3</span> <span class="title">(Optional) — Proof of the Quotient Rule (Theorem 2.4.5)</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_6.html" class="internal"><span class="codenumber">2.6</span> <span class="title">Using the Arithmetic of Derivatives –  Examples</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_6.html#sec_2_6-2" class="internal"><span class="codenumber">2.6.1</span> <span class="title">Using the Arithmetic of Derivatives –  Examples</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_6.html#sec_2_6-3" class="internal"><span class="codenumber">2.6.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_exp_func.html" class="internal"><span class="codenumber">2.7</span> <span class="title">Derivatives of Exponential Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-3" class="internal"><span class="codenumber">2.7.1</span> <span class="title">Whirlwind Review of Logarithms</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-3-3" class="internal"><span class="codenumber">2.7.1.1</span> <span class="title">Logarithmic Functions</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-4" class="internal"><span class="codenumber">2.7.2</span> <span class="title">Back to that Limit</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_exp_func.html#sec_exp_func-5" class="internal"><span class="codenumber">2.7.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_diff_trig.html" class="internal"><span class="codenumber">2.8</span> <span class="title">Derivatives of Trigonometric Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-3" class="internal"><span class="codenumber">2.8.1</span> <span class="title">These Proofs are Optional, the Results are Not.</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-4" class="internal"><span class="codenumber">2.8.2</span> <span class="title">Step 1: <span class="process-math">\(\mathbf{\diff{}{x} \{ \sin x \} \big|_{x=0}}\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-5" class="internal"><span class="codenumber">2.8.3</span> <span class="title">Proof that <span class="process-math">\(\mathbf{\lim\limits_{h\rightarrow 0}\tfrac{\sin h}{h}=1}\)</span></span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-6" class="internal"><span class="codenumber">2.8.4</span> <span class="title">Step 2: <span class="process-math">\(\mathbf{\diff{}{x} \{ \cos x \} \big|_{x=0}}\)</span></span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-6-3" class="internal"><span class="codenumber">2.8.4.1</span> <span class="title">Method 1 — Multiply by the “Conjugate”</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-6-4" class="internal"><span class="codenumber">2.8.4.2</span> <span class="title">Method 2 — via the Double Angle Formula</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-7" class="internal"><span class="codenumber">2.8.5</span> <span class="title">Step 3: <span class="process-math">\(\diff{}{x} \{ \sin x \}\)</span> and <span class="process-math">\(\diff{}{x} \{ \cos x\}\)</span> for General <span class="process-math">\(x\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-8" class="internal"><span class="codenumber">2.8.6</span> <span class="title">Step 4: the Remaining Trigonometric Functions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-9" class="internal"><span class="codenumber">2.8.7</span> <span class="title">Summary</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_diff_trig.html#sec_diff_trig-10" class="internal"><span class="codenumber">2.8.8</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_chain_rule.html" class="internal"><span class="codenumber">2.9</span> <span class="title">One More Tool  – the Chain Rule</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-3" class="internal"><span class="codenumber">2.9.1</span> <span class="title">Statement of the Chain Rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-4" class="internal"><span class="codenumber">2.9.2</span> <span class="title">(Optional) — Derivation of the Chain Rule</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-5" class="internal"><span class="codenumber">2.9.3</span> <span class="title">Chain Rule Examples</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_chain_rule.html#sec_chain_rule-6" class="internal"><span class="codenumber">2.9.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_diff_logs.html" class="internal"><span class="codenumber">2.10</span> <span class="title">The Natural Logarithm</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_logs.html#sec_diff_logs-3" class="internal"><span class="codenumber">2.10.1</span> <span class="title">Back to <span class="process-math">\(\mathbf{\diff{}{x} a^x}\)</span></span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_diff_logs.html#sec_diff_logs-4" class="internal"><span class="codenumber">2.10.2</span> <span class="title">Logarithmic Differentiation</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_diff_logs.html#sec_diff_logs-5" class="internal"><span class="codenumber">2.10.3</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_2_11.html" class="internal"><span class="codenumber">2.11</span> <span class="title">Implicit Differentiation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_2_11.html#sec_2_11-2" class="internal"><span class="codenumber">2.11.1</span> <span class="title">Implicit Differentiation</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_2_11.html#sec_2_11-3" class="internal"><span class="codenumber">2.11.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_invTrig.html" class="internal"><span class="codenumber">2.12</span> <span class="title">Inverse Trigonometric Functions</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_invTrig.html#sec_invTrig-3" class="internal"><span class="codenumber">2.12.1</span> <span class="title">Derivatives of Inverse Trig Functions</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_invTrig.html#sec_invTrig-4" class="internal"><span class="codenumber">2.12.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_mvt.html" class="internal"><span class="codenumber">2.13</span> <span class="title">The Mean Value Theorem</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-3" class="internal"><span class="codenumber">2.13.1</span> <span class="title">Rolle’s Theorem</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-4" class="internal"><span class="codenumber">2.13.2</span> <span class="title">Back to the MVT</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-5" class="internal"><span class="codenumber">2.13.3</span> <span class="title">(Optional) — Why is the MVT True</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_mvt.html#warning_mvt" class="internal"><span class="codenumber">2.13.4</span> <span class="title">Be Careful with Hypotheses</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_mvt.html#sec_mvt-7" class="internal"><span class="codenumber">2.13.5</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_higher_diff.html" class="internal"><span class="codenumber">2.14</span> <span class="title">Higher Order Derivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_higher_diff.html#sec_higher_diff-2" class="internal"><span class="codenumber">2.14.1</span> <span class="title">Higher Order Derivatives</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_higher_diff.html#sec_higher_diff-3" class="internal"><span class="codenumber">2.14.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_cont_deriv.html" class="internal"><span class="codenumber">2.15</span> <span class="title">(Optional) — Is <span class="process-math">\(\lim_{x\to c}f'(x)\)</span> Equal to <span class="process-math">\(f'(c)\text{?}\)</span></span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-chapter">
+<div class="toc-title-box"><a href="chap_appl_deriv.html" class="internal"><span class="codenumber">3</span> <span class="title">Applications of derivatives</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_vel_acc.html" class="internal"><span class="codenumber">3.1</span> <span class="title">Velocity and Acceleration</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_vel_acc.html#sec_vel_acc-2" class="internal"><span class="codenumber">3.1.1</span> <span class="title">Velocity and Acceleration</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_vel_acc.html#sec_vel_acc-3" class="internal"><span class="codenumber">3.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_rrates.html" class="internal"><span class="codenumber">3.2</span> <span class="title">Related Rates</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_rrates.html#sec_rrates-2" class="internal"><span class="codenumber">3.2.1</span> <span class="title">Related Rates</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_rrates.html#sec_rrates-3" class="internal"><span class="codenumber">3.2.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_ExpGthDecay.html" class="internal"><span class="codenumber">3.3</span> <span class="title">Exponential Growth and Decay</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#ssec_carbon" class="internal"><span class="codenumber">3.3.1</span> <span class="title">Carbon Dating</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_newtonCooling" class="internal"><span class="codenumber">3.3.2</span> <span class="title">Newton’s Law of Cooling</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_ExpGthDecay.html#ssec_pop" class="internal"><span class="codenumber">3.3.3</span> <span class="title">Population Growth</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#ssec_pop-3" class="internal"><span class="codenumber">3.3.3.1</span> <span class="title">(Optional) — Logistic Population Growth</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-2" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises for § 3.3.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-3" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises for § 3.3.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-4" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Exercises for § 3.3.3</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_ExpGthDecay.html#sec_ExpGthDecay-7-5" class="internal"><span class="codenumber">3.3.4</span> <span class="title">Further problems for § 3.3</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_DIFFTaylor.html" class="internal"><span class="codenumber">3.4</span> <span class="title">Taylor Polynomials</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_const_approx" class="internal"><span class="codenumber">3.4.1</span> <span class="title">Zeroth Approximation — the Constant Approximation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_first_approx" class="internal"><span class="codenumber">3.4.2</span> <span class="title">First Approximation — the Linear Approximation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_second_approx" class="internal"><span class="codenumber">3.4.3</span> <span class="title">Second Approximation — the Quadratic Approximation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_sigma" class="internal"><span class="codenumber">3.4.4</span> <span class="title">Whirlwind Tour of Summation Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_poly" class="internal"><span class="codenumber">3.4.5</span> <span class="title">Still Better Approximations — Taylor Polynomials</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_eg" class="internal"><span class="codenumber">3.4.6</span> <span class="title">Some Examples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_est_change" class="internal"><span class="codenumber">3.4.7</span> <span class="title">Estimating Change and <span class="process-math">\(\De x\text{,}\)</span> <span class="process-math">\(\De y\)</span> Notation</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_more" class="internal"><span class="codenumber">3.4.8</span> <span class="title">Further Examples</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#ssec_taylor_error" class="internal"><span class="codenumber">3.4.9</span> <span class="title">The Error in the Taylor Polynomial Approximations</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#subsec_GMVT" class="internal"><span class="codenumber">3.4.10</span> <span class="title">(Optional) — Derivation of the Error Formulae</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-2" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-3" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-4" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.3</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-5" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.4</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-6" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.5</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-7" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.6</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-8" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.7</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-9" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Exercises for § 3.4.8</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_DIFFTaylor.html#sec_DIFFTaylor-14-10" class="internal"><span class="codenumber">3.4.11</span> <span class="title">Further problems for § 3.4</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_optimise.html" class="internal"><span class="codenumber">3.5</span> <span class="title">Optimisation</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_optimise.html#ssec_maxmin" class="internal"><span class="codenumber">3.5.1</span> <span class="title">Local and Global Maxima and Minima</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_optimise.html#ssec_find_maxmin" class="internal"><span class="codenumber">3.5.2</span> <span class="title">Finding Global Maxima and Minima</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_optimise.html#sec_opt_eg" class="internal"><span class="codenumber">3.5.3</span> <span class="title">Max/Min Examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6-2" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises for § 3.5.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6-3" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises for § 3.5.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_optimise.html#sec_optimise-6-4" class="internal"><span class="codenumber">3.5.4</span> <span class="title">Exercises for § 3.5.3</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_curve_sketch.html" class="internal"><span class="codenumber">3.6</span> <span class="title">Sketching Graphs</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_DIA" class="internal"><span class="codenumber">3.6.1</span> <span class="title">Domain, Intercepts and Asymptotes</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_FD" class="internal"><span class="codenumber">3.6.2</span> <span class="title">First Derivative — Increasing or Decreasing</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_SD" class="internal"><span class="codenumber">3.6.3</span> <span class="title">Second Derivative — Concavity</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_SYM" class="internal"><span class="codenumber">3.6.4</span> <span class="title">Symmetries</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_check" class="internal"><span class="codenumber">3.6.5</span> <span class="title">A Checklist for Sketching</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_check-3" class="internal"><span class="codenumber">3.6.5.1</span> <span class="title">A Sketching Checklist</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_curve_sketch.html#ssec_sketch_SE" class="internal"><span class="codenumber">3.6.6</span> <span class="title">Sketching Examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-2" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.1</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-3" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.2</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-4" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.3</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-5" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.4</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_curve_sketch.html#sec_curve_sketch-9-6" class="internal"><span class="codenumber">3.6.7</span> <span class="title">Exercises for § 3.6.6</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_4_7.html" class="internal"><span class="codenumber">3.7</span> <span class="title">L’Hôpital’s Rule, Indeterminate Forms</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_4_7.html#sec_4_7-2" class="internal"><span class="codenumber">3.7.1</span> <span class="title">L’Hôpital’s Rule and Indeterminate Forms</span></a></div>
+<ul class="structural toc-item-list"><li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#sec_4_7-2-3" class="internal"><span class="codenumber">3.7.1.1</span> <span class="title">Optional — Proof of Part (b) of l’Hôpital’s Rule</span></a></div></li></ul>
+</li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_1" class="internal"><span class="codenumber">3.7.2</span> <span class="title">Standard Examples</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2" class="internal"><span class="codenumber">3.7.3</span> <span class="title">Variations</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-3" class="internal"><span class="codenumber">3.7.3.1</span> <span class="title">Limits at <span class="process-math">\(\pm \infty\)</span></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-4" class="internal"><span class="codenumber">3.7.3.2</span> <span class="title"><span class="process-math">\(\frac{\infty}{\infty}\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-5" class="internal"><span class="codenumber">3.7.3.3</span> <span class="title">Optional — Proof of l’Hôpital’s Rule for <span class="process-math">\(\frac\infty\infty\)</span></span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-6" class="internal"><span class="codenumber">3.7.3.4</span> <span class="title"><span class="process-math">\(0\cdot\infty\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-7" class="internal"><span class="codenumber">3.7.3.5</span> <span class="title"><span class="process-math">\(\infty-\infty\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-8" class="internal"><span class="codenumber">3.7.3.6</span> <span class="title"><span class="process-math">\(1^\infty\)</span> indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-9" class="internal"><span class="codenumber">3.7.3.7</span> <span class="title"><span class="process-math">\(0^0\)</span>indeterminate form</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_4_7.html#ssec_3_7_2-10" class="internal"><span class="codenumber">3.7.3.8</span> <span class="title"><span class="process-math">\(\infty^0\)</span> indeterminate form</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_4_7.html#sec_4_7-5" class="internal"><span class="codenumber">3.7.4</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-chapter contains-active">
+<div class="toc-title-box"><a href="clp_1_dc-7.html" class="internal"><span class="codenumber">4</span> <span class="title">Towards Integral Calculus</span></a></div>
+<ul class="structural toc-item-list contains-active"><li class="toc-item toc-section contains-active">
+<div class="toc-title-box"><a href="sec_antidiff.html" class="internal"><span class="codenumber">4.1</span> <span class="title">Introduction to Antiderivatives</span></a></div>
+<ul class="structural toc-item-list active">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_antidiff.html#sec_antidiff-2" class="internal"><span class="codenumber">4.1.1</span> <span class="title">Introduction to Antiderivatives</span></a></div></li>
+<li class="toc-item toc-exercises"><div class="toc-title-box"><a href="sec_antidiff.html#sec_antidiff-3" class="internal"><span class="codenumber">4.1.2</span> <span class="title">Exercises</span></a></div></li>
+</ul>
+</li></ul>
+</li>
+<li class="toc-item toc-backmatter">
+<div class="toc-title-box"><a href="clp_1_dc-8.html" class="internal"><span class="title">Appendices</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_highschool.html" class="internal"><span class="codenumber">A</span> <span class="title">High School Material</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_simtri.html" class="internal"><span class="codenumber">A.1</span> <span class="title">Similar Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_2.html" class="internal"><span class="codenumber">A.2</span> <span class="title">Pythagoras</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_3.html" class="internal"><span class="codenumber">A.3</span> <span class="title">Trigonometry — Definitions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_rad_arc_sec.html" class="internal"><span class="codenumber">A.4</span> <span class="title">Radians, Arcs and Sectors</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_trig_graphs.html" class="internal"><span class="codenumber">A.5</span> <span class="title">Trigonometry — Graphs</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_6.html" class="internal"><span class="codenumber">A.6</span> <span class="title">Trigonometry — Special Triangles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_A_7.html" class="internal"><span class="codenumber">A.7</span> <span class="title">Trigonometry — Simple Identities</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_trig_add.html" class="internal"><span class="codenumber">A.8</span> <span class="title">Trigonometry — Add and Subtract Angles</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_inv_trig.html" class="internal"><span class="codenumber">A.9</span> <span class="title">Inverse Trig Functions</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="app_sec_areas.html" class="internal"><span class="codenumber">A.10</span> <span class="title">Areas</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_volumes.html" class="internal"><span class="codenumber">A.11</span> <span class="title">Volumes</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_powers.html" class="internal"><span class="codenumber">A.12</span> <span class="title">Powers</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_logs.html" class="internal"><span class="codenumber">A.13</span> <span class="title">Logarithms</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_must_deriv.html" class="internal"><span class="codenumber">A.14</span> <span class="title">You Should be Able to Derive</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="chap_app_B.html" class="internal"><span class="codenumber">B</span> <span class="title">Origin of Trig, Area and Volume Formulas</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_1.html" class="internal"><span class="codenumber">B.1</span> <span class="title">Theorems about Triangles</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_1.html#ssec_B_1_1" class="internal"><span class="codenumber">B.1.1</span> <span class="title">Thales’ Theorem</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_1.html#ssec_B_1_2" class="internal"><span class="codenumber">B.1.2</span> <span class="title">Pythagoras</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_2.html" class="internal"><span class="codenumber">B.2</span> <span class="title">Trigonometry</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_rad_deg" class="internal"><span class="codenumber">B.2.1</span> <span class="title">Angles — Radians vs Degrees</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_2" class="internal"><span class="codenumber">B.2.2</span> <span class="title">Trig Function Definitions</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_3" class="internal"><span class="codenumber">B.2.3</span> <span class="title">Important Triangles</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_4" class="internal"><span class="codenumber">B.2.4</span> <span class="title">Some More Simple Identities</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_5" class="internal"><span class="codenumber">B.2.5</span> <span class="title">Identities — Adding Angles</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_6" class="internal"><span class="codenumber">B.2.6</span> <span class="title">Identities — Double-angle Formulas</span></a></div></li>
+<li class="toc-item toc-subsection">
+<div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_7" class="internal"><span class="codenumber">B.2.7</span> <span class="title">Identities — Extras</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_7-2" class="internal"><span class="codenumber">B.2.7.1</span> <span class="title">Sums to Products</span></a></div></li>
+<li class="toc-item toc-subsubsection"><div class="toc-title-box"><a href="sec_B_2.html#ssec_B_2_7-3" class="internal"><span class="codenumber">B.2.7.2</span> <span class="title">Products to sums</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_B_3.html" class="internal"><span class="codenumber">B.3</span> <span class="title">Inverse Trigonometric Functions</span></a></div></li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_4.html" class="internal"><span class="codenumber">B.4</span> <span class="title">Cosine and Sine Laws</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_4.html#app_cosine_law" class="internal"><span class="codenumber">B.4.1</span> <span class="title">Cosine Law or Law of Cosines</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_4.html#ssec_B_4_2" class="internal"><span class="codenumber">B.4.2</span> <span class="title">Sine Law or Law of Sines</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-section">
+<div class="toc-title-box"><a href="sec_B_5.html" class="internal"><span class="codenumber">B.5</span> <span class="title">Circles, cones and spheres</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_5.html#ssec_B_5_1" class="internal"><span class="codenumber">B.5.1</span> <span class="title">Where Does the Formula for the Area of a Circle Come From?</span></a></div></li>
+<li class="toc-item toc-subsection"><div class="toc-title-box"><a href="sec_B_5.html#apendix_volume" class="internal"><span class="codenumber">B.5.2</span> <span class="title">Where Do These Volume Formulas Come From?</span></a></div></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toc-item toc-appendix">
+<div class="toc-title-box"><a href="app_root_finding.html" class="internal"><span class="codenumber">C</span> <span class="title">Root Finding</span></a></div>
+<ul class="structural toc-item-list">
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_1.html" class="internal"><span class="codenumber">C.1</span> <span class="title">Newton’s Method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_2.html" class="internal"><span class="codenumber">C.2</span> <span class="title">The Error Behaviour of Newton’s Method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_3.html" class="internal"><span class="codenumber">C.3</span> <span class="title">The false position (regula falsi) method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_4.html" class="internal"><span class="codenumber">C.4</span> <span class="title">The secant method</span></a></div></li>
+<li class="toc-item toc-section"><div class="toc-title-box"><a href="sec_C_5.html" class="internal"><span class="codenumber">C.5</span> <span class="title">The Error Behaviour of the Secant Method</span></a></div></li>
+</ul>
+</li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_hint.html" class="internal"><span class="codenumber">D</span> <span class="title">Hints for Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_answ.html" class="internal"><span class="codenumber">E</span> <span class="title">Answers to Exercises</span></a></div></li>
+<li class="toc-item toc-solutions"><div class="toc-title-box"><a href="app_soln.html" class="internal"><span class="codenumber">F</span> <span class="title">Solutions to Exercises</span></a></div></li>
+</ul>
+</li>
+</ul></nav></div>
+<main class="ptx-main"><div id="ptx-content" class="ptx-content"><section class="section" id="sec_antidiff"><h2 class="heading hide-type">
+<span class="type">Section</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Introduction to Antiderivatives</span>
+</h2>
+<section class="subsection" id="sec_antidiff-2"><h3 class="heading hide-type">
+<span class="type">Subsection</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.1</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Introduction to Antiderivatives</span>
+</h3>
+<div class="para logical" id="sec_antidiff-2-2">
+<div class="para">So far in the course we have learned how to determine the rate of change (i.e. the  derivative) of a given function. That is</div>
+<div class="displaymath process-math" id="sec_antidiff-2-2-1">
+\begin{gather*}
+\text{given a function } f(x) \text{ find } \diff{f}{x}.
+\end{gather*}
+</div>
+<div class="para">Along the way we developed an understanding of limits, which allowed us to define  instantaneous rates of change — the derivative. We then went on to develop a number of  applications of derivatives to modelling and approximation. In this last section we want  to just introduce the idea of antiderivatives. That is</div>
+<div class="displaymath process-math" id="sec_antidiff-2-2-3">
+\begin{gather*}
+\text{given a derivative } \diff{f}{x} \text{ find the original function } f(x).
+\end{gather*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_antidiff-2-3">
+<div class="para">For example — say we know that</div>
+<div class="displaymath process-math" id="sec_antidiff-2-3-2">
+\begin{align*}
+\diff{f}{x} &amp;= x^2
+\end{align*}
+</div>
+<div class="para">and we want to find <span class="process-math">\(f(x)\text{.}\)</span> From our previous experience differentiating we know  that derivatives of polynomials are again polynomials. So we guess that our  unknown function <span class="process-math">\(f(x)\)</span> is a polynomial. Further we know that when we  differentiate <span class="process-math">\(x^n\)</span> we get <span class="process-math">\(n x^{n-1}\)</span> — multiply by the exponent and reduce  the exponent by 1. So to end up with a derivative of <span class="process-math">\(x^2\)</span> we need to have  differentiated an <span class="process-math">\(x^3\text{.}\)</span> But <span class="process-math">\(\diff{}{x} x^3 = 3x^2\text{,}\)</span> so we need to divide both  sides by 3 to get the answer we want. That is</div>
+<div class="displaymath process-math" id="sec_antidiff-2-3-11">
+\begin{align*}
+\diff{}{x} \left(\frac{1}{3}x^3 \right) &amp;= x^2
+\end{align*}
+</div>
+<div class="para">However we know that the derivative of a constant is zero, so we also have</div>
+<div class="displaymath process-math" id="sec_antidiff-2-3-12">
+\begin{align*}
+\diff{}{x} \left(\frac{1}{3}x^3 +1 \right) &amp;= x^2\\
+\end{align*}
+<div class="para intertext">and</div>
+\begin{align*}
+\diff{}{x} \left(\frac{1}{3}x^3 - \pi \right) &amp;= x^2
+\end{align*}
+</div>
+<div class="para">At this point it will really help the discussion to give a name to what we are doing.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="definition definition-like" id="def_antiderivative"><h4 class="heading">
+<span class="type">Definition</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.1</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para logical" id="def_antiderivative-1-1">
+<div class="para">A function <span class="process-math">\(F(x)\)</span> that satisfies</div>
+<div class="displaymath process-math" id="def_antiderivative-1-1-2">
+\begin{align*}
+\diff{}{x} F(x) &amp;= f(x)
+\end{align*}
+</div>
+<div class="para">is called an antiderivative of <span class="process-math">\(f(x)\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#def_antiderivative-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Definition 4.1.1"><a href="#def_antiderivative" title="Copy heading and permalink for Definition 4.1.1" aria-label="Copy heading and permalink for Definition 4.1.1">🔗</a></div></article><div class="para" id="sec_antidiff-2-5">Notice the use of the indefinite article there — <em class="emphasis">an</em> antiderivative. This is  precisely because we can always add or subtract a constant to an antiderivative and  when we differentiate we’ll get the same answer.  We can write this as a lemma,  but it is actually just Corollary <a href="sec_mvt.html#cor_equal_diff" class="xref" data-knowl="./knowl/xref/cor_equal_diff.html" data-reveal-label="Reveal" data-close-label="Close" title="Corollary 2.13.13">2.13.13</a> (from back in the section  on the mean-value theorem) in disguise.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<article class="lemma theorem-like" id="lem_4_1_1"><h4 class="heading">
+<span class="type">Lemma</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.2</span><span class="period heading-divison-mark heading-divison-mark__period">.</span>
+</h4>
+<div class="para" id="lem_4_1_1-1-1">Let <span class="process-math">\(F(x)\)</span> be an antiderivative of <span class="process-math">\(f(x)\text{,}\)</span> then for any constant <span class="process-math">\(c\text{,}\)</span> the function  <span class="process-math">\(F(x)+c\)</span> is also an antiderivative of <span class="process-math">\(f(x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#lem_4_1_1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Lemma 4.1.2"><a href="#lem_4_1_1" title="Copy heading and permalink for Lemma 4.1.2" aria-label="Copy heading and permalink for Lemma 4.1.2">🔗</a></div></article><div class="para logical" id="sec_antidiff-2-7">
+<div class="para">Because of this lemma we typically write antiderivatives with “<span class="process-math">\(+c\)</span>” tacked on the  end. That is, if we know that <span class="process-math">\(F'(x)=f(x)\text{,}\)</span> then we would state that  <em class="emphasis">the</em> antiderivative of <span class="process-math">\(f(x)\)</span> is</div>
+<div class="displaymath process-math" id="sec_antidiff-2-7-5">
+\begin{gather*}
+F(x)+c
+\end{gather*}
+</div>
+<div class="para">where this “<span class="process-math">\(+c\)</span>” is there to remind us that we can always add or subtract some  constant and it will still be an antiderivative of <span class="process-math">\(f(x)\text{.}\)</span> Hence the antiderivative of  <span class="process-math">\(x^2\)</span> is</div>
+<div class="displaymath process-math" id="sec_antidiff-2-7-9">
+\begin{gather*}
+\frac{1}{3}x^3 + c
+\end{gather*}
+</div>
+<div class="para">Similarly, the antiderivative of <span class="process-math">\(x^4\)</span> is</div>
+<div class="displaymath process-math" id="sec_antidiff-2-7-11">
+\begin{gather*}
+\frac{1}{5}x^5 + c
+\end{gather*}
+</div>
+<div class="para">and for <span class="process-math">\(\sqrt{x} = x^{1/2}\)</span> it is</div>
+<div class="displaymath process-math" id="sec_antidiff-2-7-13">
+\begin{gather*}
+\frac{2}{3}x^{3/2} + c
+\end{gather*}
+</div>
+<div class="para">This last one is tricky (at first glance) — but we can always check our answer by  differentiating.</div>
+<div class="displaymath process-math" id="sec_antidiff-2-7-15">
+\begin{align*}
+\diff{}{x} \left(\frac{2}{3}x^{3/2} + c \right) &amp;=
+\frac{2}{3} \cdot \frac{3}{2} x^{1/2} + 0 &amp; \checkmark
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-7" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_antidiff-2-8">Now in order to determine the value of <span class="process-math">\(c\)</span> we need more information. For example, we  might be asked<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-8" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<blockquote class="blockquote" id="sec_antidiff-2-9">
+<div class="para" id="sec_antidiff-2-9-1">Given that <span class="process-math">\(g'(t) = t^2\)</span> and <span class="process-math">\(g(3)=7\)</span> find <span class="process-math">\(g(t)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-9-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Quotation"><a href="#sec_antidiff-2-9" title="Copy heading and permalink for Quotation" aria-label="Copy heading and permalink for Quotation">🔗</a></div>
+</blockquote>
+<div class="para logical" id="sec_antidiff-2-10">
+<div class="para">We are given the derivative and one piece of additional information and from these  two facts we need to find the original function. From our work above we know that</div>
+<div class="displaymath process-math" id="sec_antidiff-2-10-1">
+\begin{align*}
+g(t) &amp;= \frac{1}{3}t^3 + c
+\end{align*}
+</div>
+<div class="para">and we can find <span class="process-math">\(c\)</span> from the other piece of information</div>
+<div class="displaymath process-math" id="sec_antidiff-2-10-3">
+\begin{align*}
+7 = g(3) &amp;= \frac{1}{3} \cdot 27 + c = 9+c
+\end{align*}
+</div>
+<div class="para">Hence <span class="process-math">\(c=-2\)</span> and so</div>
+<div class="displaymath process-math" id="sec_antidiff-2-10-5">
+\begin{align*}
+g(t) &amp;= \frac{1}{3}t^3 -2
+\end{align*}
+</div>
+<div class="para">We can then very easily check our answer by recomputing <span class="process-math">\(g(3)\)</span> and <span class="process-math">\(g'(t)\text{.}\)</span> This is a  good habit to get into.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-10" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_antidiff-2-11">
+<div class="para">Finding antiderivatives of polynomials is generally not too hard. We just  need to use the rule</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eg_diff_log_abs_x.html" id="sec_antidiff-2-11-1">
+\begin{gather*}
+\text{if } f(x) = x^n \text{ then } F(x) = \frac{1}{n+1} x^{n+1} + c.
+\end{gather*}
+</div>
+<div class="para">Of course this breaks down when <span class="process-math">\(n=-1\text{.}\)</span> In order to find an antiderivative  for <span class="process-math">\(f(x)=\frac{1}{x}\)</span> we need to remember that <span class="process-math">\(\diff{}{x}\log x =  \frac{1}{x}\text{,}\)</span> and more generally that <span class="process-math">\(\diff{}{x}\log |x| = \frac{1}{x}\text{.}\)</span> See  Example <a href="sec_diff_logs.html#eg_diff_log_abs_x" class="xref" data-knowl="./knowl/xref/eg_diff_log_abs_x.html" data-reveal-label="Reveal" data-close-label="Close" title="Example 2.10.4: The derivative of \log|x|">2.10.4</a>. So</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eg_diff_log_abs_x.html" id="sec_antidiff-2-11-8">
+\begin{gather*}
+\text{if } f(x)=\frac{1}{x}
+\text{ then } F(x) = \log|x| + c
+\end{gather*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-11" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="sec_antidiff-2-12">
+<div class="para">Note however, that both <span class="process-math">\(\frac{1}{x}\)</span> and <span class="process-math">\(\log|x|\)</span> are not defined at <span class="process-math">\(x=0\text{.}\)</span> If you are interested, for example, in functions that are defined all <span class="process-math">\(x\ne 0\text{,}\)</span> then,  for any constants <span class="process-math">\(c_1\)</span> and <span class="process-math">\(c_2\text{,}\)</span>
+</div>
+<div class="displaymath process-math">
+\begin{equation*}
+F(x)=\left\{\begin{array}{rl}
+\log |x| + c_1 &amp; x \gt 0\\
+\log |x| + c_2 &amp; x \lt 0
+\end{array}\right.
+\end{equation*}
+</div>
+<div class="para">obeys <span class="process-math">\(F'(x) = \frac{1}{x}\)</span> for all <span class="process-math">\(x\ne 0\text{.}\)</span> However, typically, in applications, either all of the <span class="process-math">\(x\)</span>’s of interest are strictly positive, or all of the <span class="process-math">\(x\)</span>’s of interest are negative.  In both of those cases, the general <span class="process-math">\(F(x)\)</span> is <span class="process-math">\(\log|x| + c\text{.}\)</span> So, typically, in tables of antiderivatives, the antiderivative of <span class="process-math">\(1/x\)</span> is listed as <span class="process-math">\(\log|x| + c\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-12" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_antidiff_poly" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.3</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Antiderivative of <span class="process-math">\(3x^5-7x^2+2x+3 + x^{-1} - x^{-2}\)</span>.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_antidiff_poly-2">
+<div class="para">Let <span class="process-math">\(f(x) = 3x^5-7x^2+2x+3 + x^{-1} - x^{-2}\text{.}\)</span> Then the antiderivative of <span class="process-math">\(f(x)\)</span> is</div>
+<div class="displaymath process-math" id="eg_antidiff_poly-2-3">
+\begin{align*}
+F(x) &amp;= \frac{3}{6}x^6 - \frac{7}{3}x^3 + \frac{2}{2}x^2 + 3x +\log|x| - \frac{1}{-1}
+x^{-1} + c &amp; \text{clean it up}\\
+&amp;= \frac{1}{2}x^6 - \frac{7}{3}x^3 +  x^2 + 3x +\log|x| + x^{-1} + c
+\end{align*}
+</div>
+<div class="para">Now to check we should differentiate and hopefully we get back to where we started</div>
+<div class="displaymath process-math" id="eg_antidiff_poly-2-4">
+\begin{align*}
+F'(x) &amp;= \frac{6}{2}x^5 - \frac{7}{3} \cdot 3 x^2 +  2 x + 3 + \frac{1}{x} - x^{-2}\\
+&amp;= 3 x^5 - 7 x^2 +  2 x + 3 + \frac{1}{x} - x^{-2} &amp; \checkmark
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_antidiff_poly-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.3: Antiderivative of 3x^5-7x^2+2x+3 + x^{-1} - x^{-2}"><a href="#eg_antidiff_poly" title="Copy heading and permalink for Example 4.1.3: Antiderivative of 3x^5-7x^2+2x+3 + x^{-1} - x^{-2}" aria-label="Copy heading and permalink for Example 4.1.3: Antiderivative of 3x^5-7x^2+2x+3 + x^{-1} - x^{-2}">🔗</a></div></article></details><div class="para" id="sec_antidiff-2-14">In your next calculus course you will develop a lot of machinery to help you find antiderivatives. At this stage about all that we can do is continue the sort of thing we have done. Think about the derivatives we know and  work backwards. So, for example, we can take a list of derivatives<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-14" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel fixed-width sbspanel--top top" style=""><table class="tabular">
+<tr>
+<td class="l m b1 r1 l1 t1 lines"><span class="process-math">\(F(x)\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(1\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(x^n\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\sin x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\cos x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\tan x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(e^x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\ln |x|\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\arcsin x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\arctan x\)</span></td>
+</tr>
+<tr>
+<td class="l m b1 r1 l1 t0 lines"><span class="process-math">\(f(x)=\diff{}{x}F(x)\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(0\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(nx^{n-1}\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\cos x\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(-\sin x\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\sec^2 x\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(e^x\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\frac{1}{x}\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\frac{1}{\sqrt{1-x^2}}\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\frac{1}{1+x^2}\)</span></td>
+</tr>
+</table></div></div></div>
+<div class="para" id="sec_antidiff-2-16">and flip it upside down to give the tables of antiderivatives.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-16" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel fixed-width sbspanel--top top" style=""><table class="tabular">
+<tr>
+<td class="l m b1 r1 l1 t1 lines"><span class="process-math">\(f(x)=\diff{}{x}F(x)\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(0\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(nx^{n-1}\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\cos x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(-\sin x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\sec^2 x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(e^x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\frac{1}{x}\)</span></td>
+</tr>
+<tr>
+<td class="l m b1 r1 l1 t0 lines"><span class="process-math">\(F(x)\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(x^n+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\sin x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\cos x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\tan x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(e^x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\ln |x|+c\)</span></td>
+</tr>
+</table></div></div></div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel fixed-width sbspanel--top top" style=""><table class="tabular">
+<tr>
+<td class="l m b1 r1 l1 t1 lines"><span class="process-math">\(f(x)=\diff{}{x}F(x)\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\frac{1}{\sqrt{1-x^2}}\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\frac{1}{1+x^2}\)</span></td>
+</tr>
+<tr>
+<td class="l m b1 r1 l1 t0 lines"><span class="process-math">\(F(x)\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\arcsin x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\arctan x+c\)</span></td>
+</tr>
+</table></div></div></div>
+<div class="para" id="sec_antidiff-2-19">Here <span class="process-math">\(c\)</span> is just a constant — any constant. But we can do  a little more; clean up <span class="process-math">\(x^n\)</span> by dividing by <span class="process-math">\(n\)</span> and then replacing <span class="process-math">\(n\)</span> by <span class="process-math">\(n+1\text{.}\)</span> Similarly we can tweak <span class="process-math">\(\sin x\)</span> by multiplying by <span class="process-math">\(-1\text{:}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-19" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel fixed-width sbspanel--top top" style=""><table class="tabular">
+<tr>
+<td class="l m b1 r1 l1 t1 lines"><span class="process-math">\(f(x)=\diff{}{x}F(x)\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(0\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(x^{n}\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\cos x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\sin x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\sec^2 x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(e^x\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\frac{1}{x}\)</span></td>
+</tr>
+<tr>
+<td class="l m b1 r1 l1 t0 lines"><span class="process-math">\(F(x)\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\frac{1}{n+1}x^{n+1}+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\sin x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(-\cos x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\tan x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(e^x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\ln |x|+c\)</span></td>
+</tr>
+</table></div></div></div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel fixed-width sbspanel--top top" style=""><table class="tabular">
+<tr>
+<td class="l m b1 r1 l1 t1 lines"><span class="process-math">\(f(x)=\diff{}{x}F(x)\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\frac{1}{\sqrt{1-x^2}}\)</span></td>
+<td class="l m b1 r1 l0 t1 lines"><span class="process-math">\(\frac{1}{1+x^2}\)</span></td>
+</tr>
+<tr>
+<td class="l m b1 r1 l1 t0 lines"><span class="process-math">\(F(x)\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\arcsin x+c\)</span></td>
+<td class="l m b1 r1 l0 t0 lines"><span class="process-math">\(\arctan x+c\)</span></td>
+</tr>
+</table></div></div></div>
+<div class="para" id="sec_antidiff-2-22">Here are a couple more examples.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-22" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_4_1_1" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.4</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Antiderivatives of <span class="process-math">\(\sin x, \cos 2x\)</span> and <span class="process-math">\(\frac{1}{1+4x^2}\)</span>.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_4_1_1-2">
+<div class="para">Consider the functions</div>
+<div class="displaymath process-math" id="eg_4_1_1-2-1">
+\begin{align*}
+f(x) &amp;= \sin x + \cos 2x &amp; g(x) &amp;= \frac{1}{1+4x^2}
+\end{align*}
+</div>
+<div class="para">Find their antiderivatives.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_4_1_1-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_4_1_1-3">
+<div class="para">
+<em class="alert">Solution</em> The first one we can almost just look up our table. Let <span class="process-math">\(F\)</span> be the  antiderivative of <span class="process-math">\(f\text{,}\)</span> then</div>
+<div class="displaymath process-math" id="eg_4_1_1-3-4">
+\begin{align*}
+F(x) &amp;= -\cos x + \sin 2x + c &amp; \text{is not quite right}.
+\end{align*}
+</div>
+<div class="para">When we differentiate to check things, we get a factor of two coming from the  chain rule. Hence to compensate for that we multiply <span class="process-math">\(\sin2x\)</span> by <span class="process-math">\(\frac{1}{2}\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="eg_4_1_1-3-7">
+\begin{align*}
+F(x) &amp;= -\cos x + \frac{1}{2} \sin 2x + c
+\end{align*}
+</div>
+<div class="para">Differentiating this shows that we have the right answer.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_4_1_1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_4_1_1-4">
+<div class="para">Similarly, if we use <span class="process-math">\(G\)</span> to denote the antiderivative of <span class="process-math">\(g\text{,}\)</span> then it appears  that <span class="process-math">\(G\)</span> is nearly <span class="process-math">\(\arctan x\text{.}\)</span> To get this extra factor of <span class="process-math">\(4\)</span> we need to  substitute <span class="process-math">\(x \mapsto 2x\text{.}\)</span> So we try</div>
+<div class="displaymath process-math" id="eg_4_1_1-4-7">
+\begin{align*}
+G(x) &amp;= \arctan(2x)+c  &amp; \text{which is nearly correct}.
+\end{align*}
+</div>
+<div class="para">Differentiating this gives us</div>
+<div class="displaymath process-math" id="eg_4_1_1-4-8">
+\begin{align*}
+G'(x) &amp;= \frac{2}{1+(2x)^2} = 2g(x)
+\end{align*}
+</div>
+<div class="para">Hence we should multiply by <span class="process-math">\(\frac{1}{2}\text{.}\)</span> This gives us</div>
+<div class="displaymath process-math" id="eg_4_1_1-4-10">
+\begin{align*}
+G(x) &amp;= \frac{1}{2} \arctan(2x) + c.
+\end{align*}
+</div>
+<div class="para">We can then check that this is, in fact, correct just by differentiating.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_4_1_1-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.4: Antiderivatives of \sin x, \cos 2x and \frac{1}{1+4x^2}"><a href="#eg_4_1_1" title="Copy heading and permalink for Example 4.1.4: Antiderivatives of \sin x, \cos 2x and \frac{1}{1+4x^2}" aria-label="Copy heading and permalink for Example 4.1.4: Antiderivatives of \sin x, \cos 2x and \frac{1}{1+4x^2}">🔗</a></div></article></details><div class="para" id="sec_antidiff-2-24">Now let’s do a more substantial example.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-24" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_antiDerivA" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.5</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Position as antiderivative of velocity.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_antiDerivA-2">Suppose that we are driving to class. We start at <span class="process-math">\(x=0\)</span> at time <span class="process-math">\(t=0\text{.}\)</span> Our velocity is <span class="process-math">\(v(t) = 50\sin(t)\text{.}\)</span> The class is at <span class="process-math">\(x=25\text{.}\)</span> When do we get there?<div class="autopermalink" data-description="Paragraph"><a href="#eg_antiDerivA-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_antiDerivA-3">
+<div class="para">
+<em class="alert">Solution</em> Let’s denote by <span class="process-math">\(x(t)\)</span> our position at time <span class="process-math">\(t\text{.}\)</span> We are told that</div>
+<ul class="disc" id="eg_antiDerivA-3-4">
+<li id="eg_antiDerivA-3-4-1">
+<div class="para" id="p-derived-eg_antiDerivA-3-4-1"><span class="process-math">\(\displaystyle x(0) = 0\)</span></div>
+<div class="autopermalink" data-description="Item"><a href="#eg_antiDerivA-3-4-1" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+<li id="eg_antiDerivA-3-4-2">
+<div class="para" id="p-derived-eg_antiDerivA-3-4-2"><span class="process-math">\(\displaystyle x'(t) = 50\sin t\)</span></div>
+<div class="autopermalink" data-description="Item"><a href="#eg_antiDerivA-3-4-2" title="Copy heading and permalink for Item" aria-label="Copy heading and permalink for Item">🔗</a></div>
+</li>
+</ul>
+<div class="para">We have to determine <span class="process-math">\(x(t)\)</span> and then find the time <span class="process-math">\(T\)</span> that obeys <span class="process-math">\(x(T)=25\text{.}\)</span> Now armed with our table above we know that the antiderivative of <span class="process-math">\(\sin  t\)</span> is just <span class="process-math">\(-\cos t\text{.}\)</span> We can check this:</div>
+<div class="displaymath process-math" id="eg_antiDerivA-3-10">
+\begin{align*}
+\diff{}{t}\left(-\cos t\right) &amp;= \sin t
+\end{align*}
+</div>
+<div class="para">We can then get the factor of <span class="process-math">\(50\)</span> by multiplying both sides of the above equation by 50:</div>
+<div class="displaymath process-math" id="eg_antiDerivA-3-12">
+\begin{align*}
+\diff{}{t}\left(-50\cos t\right) &amp;= 50\sin t
+\end{align*}
+</div>
+<div class="para">And of course, this is just <em class="emphasis">an</em> antiderivative of <span class="process-math">\(50\sin t\text{;}\)</span> to write down the  general antiderivative we just add a constant <span class="process-math">\(c\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="eg_antiDerivA-3-16">
+\begin{align*}
+\diff{}{t}\left(-50\cos t + c\right) &amp;= 50\sin t
+\end{align*}
+</div>
+<div class="para">Since <span class="process-math">\(v(t) = \diff{}{t}x(t)\text{,}\)</span> this antiderivative is <span class="process-math">\(x(t)\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="eg_antiDerivA-3-19">
+\begin{align*}
+x(t) &amp;= -50\cos t + c
+\end{align*}
+</div>
+<div class="para">To determine <span class="process-math">\(c\)</span> we make use of the other piece of information we are given, namely</div>
+<div class="displaymath process-math" id="eg_antiDerivA-3-21">
+\begin{align*}
+x(0) &amp;= 0.\\
+\end{align*}
+<div class="para intertext">Substituting this in gives us</div>
+\begin{align*}
+x(0) &amp;= -50\cos 0 + c = -50+c
+\end{align*}
+</div>
+<div class="para">Hence we must have <span class="process-math">\(c=50\)</span> and so</div>
+<div class="displaymath process-math" id="eg_antiDerivA-3-23">
+\begin{align*}
+x(t) &amp;= -50\cos t + 50 = 50(1-\cos t).
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_antiDerivA-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_antiDerivA-4">
+<div class="para">Now that we have our position as a function of time, we can determine how long it takes  us to arrive there. That is, we can find the time <span class="process-math">\(T\)</span> so that <span class="process-math">\(x(T)=25\text{.}\)</span>
+</div>
+<div class="displaymath process-math" id="eg_antiDerivA-4-3">
+\begin{align*}
+25 = x(T) &amp;= 50(1-\cos T) &amp; \text{so}\\
+\frac{1}{2} &amp;= 1-\cos T\\
+-\frac{1}{2} &amp;= -\cos T\\
+\frac{1}{2} &amp;= \cos T.
+\end{align*}
+</div>
+<div class="para">Recalling our special triangles, we see that <span class="process-math">\(T=\frac{\pi}{3}\text{.}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_antiDerivA-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.5: Position as antiderivative of velocity"><a href="#eg_antiDerivA" title="Copy heading and permalink for Example 4.1.5: Position as antiderivative of velocity" aria-label="Copy heading and permalink for Example 4.1.5: Position as antiderivative of velocity">🔗</a></div></article></details><div class="para" id="sec_antidiff-2-26">The example below shows how antiderivatives arise naturally when studying differential equations.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-26" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_4_1_2" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.6</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Theorem 3.3.2 revisited..</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para" id="eg_4_1_2-2">Back in Section <a href="sec_ExpGthDecay.html" class="internal" title="Section 3.3: Exponential Growth and Decay — a First Look at Differential Equations">3.3</a> we encountered a simple differential  equation, namely equation <a href="sec_ExpGthDecay.html#eq_carbonDating" class="xref" data-knowl="./knowl/xref/eq_carbonDating.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 3.3.1: Radioactive decay">3.3.1</a>. We were able to solve this  equation by guessing the answer and then checking it carefully. We can derive  the solution more systematically by using antiderivatives.<div class="autopermalink" data-description="Paragraph"><a href="#eg_4_1_2-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_4_1_2-3">
+<div class="para">Recall equation <a href="sec_ExpGthDecay.html#eq_carbonDating" class="xref" data-knowl="./knowl/xref/eq_carbonDating.html" data-reveal-label="Reveal" data-close-label="Close" title="Equation 3.3.1: Radioactive decay">3.3.1</a>:</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_carbonDating.html ./knowl/xref/sec_diff_logs.html" id="eg_4_1_2-3-3">
+\begin{align*}
+\diff{Q}{t} &amp;= -k Q
+\end{align*}
+</div>
+<div class="para">where <span class="process-math">\(Q(t)\)</span> is the amount of radioactive material at time <span class="process-math">\(t\)</span> and we assume  <span class="process-math">\(Q(t)  \gt  0\text{.}\)</span> Take this equation and divide both sides by <span class="process-math">\(Q(t)\)</span> to get</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/eq_carbonDating.html ./knowl/xref/sec_diff_logs.html" id="eg_4_1_2-3-8">
+\begin{align*}
+\frac{1}{Q(t)} \diff{Q}{t} &amp;= -k
+\end{align*}
+</div>
+<div class="para">At this point we should <details class="ptx-footnote" aria-live="polite" id="eg_4_1_2-3-9"><summary class="ptx-footnote__number" title="Footnote 4.1.1"><sup> 1 </sup></summary><div class="ptx-footnote__contents">Well — perhaps it is better to say “notice  that”. Let’s not make this a moral point.</div></details> think that the left-hand side is  familiar. Now is a good moment to look back at logarithmic differentiation in Section <a href="sec_diff_logs.html" class="internal" title="Section 2.10: The Natural Logarithm">2.10</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_4_1_2-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_4_1_2-4">
+<div class="para">The left-hand side is just the derivative of <span class="process-math">\(\log Q(t)\text{:}\)</span>
+</div>
+<div class="displaymath process-math" id="eg_4_1_2-4-2">
+\begin{align*}
+\diff{}{t}\left( \log Q(t) \right) &amp;= \frac{1}{Q(t)} \diff{Q}{t}\\
+&amp;= -k
+\end{align*}
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_4_1_2-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_4_1_2-5">
+<div class="para">So to solve this equation, we are really being asked to find all functions  <span class="process-math">\(\log Q(t)\)</span> having derivative <span class="process-math">\(-k\text{.}\)</span> That is, we need to find  all  antiderivatives of <span class="process-math">\(-k\text{.}\)</span> Of course that is just <span class="process-math">\(-kt + c\text{.}\)</span> Hence we must have</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_growthDEsoln.html" id="eg_4_1_2-5-5">
+\begin{align*}
+\log Q(t) &amp;= -kt +c
+\end{align*}
+</div>
+<div class="para">and then taking the exponential of both sides gives</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_growthDEsoln.html" id="eg_4_1_2-5-6">
+\begin{align*}
+Q(t) &amp;= e^{-kt+c} = e^c \cdot e^{-kt}  = C e^{-kt}
+\end{align*}
+</div>
+<div class="para">where <span class="process-math">\(C = e^c\text{.}\)</span> This is precisely Theorem <a href="sec_ExpGthDecay.html#thm_growthDEsoln" class="xref" data-knowl="./knowl/xref/thm_growthDEsoln.html" data-reveal-label="Reveal" data-close-label="Close" title="Theorem 3.3.2">3.3.2</a>.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_4_1_2-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.6: Theorem 3.3.2 revisited."><a href="#eg_4_1_2" title="Copy heading and permalink for Example 4.1.6: Theorem 3.3.2 revisited." aria-label="Copy heading and permalink for Example 4.1.6: Theorem 3.3.2 revisited.">🔗</a></div></article></details><div class="para" id="sec_antidiff-2-28">The above is a small example of the interplay between antiderivatives and differential equations.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-28" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para" id="sec_antidiff-2-29">Here is another example of how we might use antidifferentiation to compute areas or volumes.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-2-29" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<details id="eg_vol_cone" class="example example-like born-hidden-knowl"><summary class="knowl__link"><h4 class="heading">
+<span class="type">Example</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.7</span><span class="period heading-divison-mark heading-divison-mark__period">.</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Volume of a cone.</span>
+</h4></summary><article class="example example-like knowl__content"><div class="para logical" id="eg_vol_cone-2">
+<div class="para">We know (especially if one has revised the material in the appendix and  Appendix <a href="sec_B_5.html#apendix_volume" class="internal" title="Subsection B.5.2: Where Do These Volume Formulas Come From?">B.5.2</a> in particular) that the volume of a right-circular cone is</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/apendix_volume.html ./knowl/xref/apendix_volume.html" id="eg_vol_cone-2-3">
+\begin{align*}
+V &amp;= \frac{\pi}{3} r^2h
+\end{align*}
+</div>
+<div class="para">where <span class="process-math">\(h\)</span> is the height of the cone and <span class="process-math">\(r\)</span> is the radius of its base. Now, the  derivation of this formula given in Appendix <a href="sec_B_5.html#apendix_volume" class="internal" title="Subsection B.5.2: Where Do These Volume Formulas Come From?">B.5.2</a> is not too  simple. We present an alternate proof here that uses antiderivatives.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_vol_cone-2" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="sidebyside"><div class="sbsrow" style="margin-left:0%;margin-right:0%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="external/text/figs/cones.svg" role="img" class="contained"></div></div></div>
+<div class="para" id="eg_vol_cone-4">Consider cutting off a portion of the cone so that its new height is <span class="process-math">\(x\)</span>  (rather than <span class="process-math">\(h\)</span>). Call the volume of the resulting smaller cone <span class="process-math">\(V(x)\text{.}\)</span> We are  going to determine <span class="process-math">\(V(x)\)</span> for all <span class="process-math">\(x\ge 0\text{,}\)</span> including <span class="process-math">\(x=h\text{,}\)</span> by first evaluating  <span class="process-math">\(V'(x)\)</span> and <span class="process-math">\(V(0)\)</span> (which is obviously <span class="process-math">\(0\)</span>).<div class="autopermalink" data-description="Paragraph"><a href="#eg_vol_cone-4" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="para logical" id="eg_vol_cone-5">
+<div class="para">Call the radius of the base of the new smaller cone <span class="process-math">\(y\)</span> (rather than <span class="process-math">\(r\)</span>). By  similar triangles we know that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-3">
+\begin{align*}
+\frac{r}{h} &amp;= \frac{y}{x}.
+\end{align*}
+</div>
+<div class="para">Now keep <span class="process-math">\(x\)</span> and <span class="process-math">\(y\)</span> fixed and consider cutting off a little more of the cone so  its height is <span class="process-math">\(X\text{.}\)</span> When we do so, the radius of the base changes from <span class="process-math">\(y\)</span> to  <span class="process-math">\(Y\)</span> and again by similar triangles we know that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-9">
+\begin{align*}
+\frac{Y}{X} &amp;= \frac{y}{x} = \frac{r}{h}
+\end{align*}
+</div>
+<div class="para">The change in volume is then</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-10">
+\begin{gather*}
+V(x) - V(X)
+\end{gather*}
+</div>
+<div class="para">Of course if we knew the formula for the volume of a cone, then we could compute  the above exactly. However, even without knowing the volume of a cone, it is  easy to derive upper and lower bounds on this quantity. The piece removed  has bottom radius <span class="process-math">\(y\)</span> and top radius <span class="process-math">\(Y\text{.}\)</span> Hence its volume is bounded above  and below by the cylinders of height <span class="process-math">\(x-X\)</span> and with radius <span class="process-math">\(y\)</span> and <span class="process-math">\(Y\)</span>  respectively. Hence</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-16">
+\begin{align*}
+\pi Y^2 (x-X) &amp; \leq V(x)-V(X) \leq \pi y^2 (x-X)
+\end{align*}
+</div>
+<div class="para">since the volume of a cylinder is just the area of its base times its height. Now massage  this expression a little</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-17">
+\begin{align*}
+\pi Y^2 &amp; \leq \frac{V(x)-V(X)}{x-X} \leq \pi y^2
+\end{align*}
+</div>
+<div class="para">The middle term now looks like a derivative; all we need to do is take the limit  as <span class="process-math">\(X \to x\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-19">
+\begin{align*}
+\lim_{X\to x} \pi Y^2 &amp; \leq \lim_{X\to x} \frac{V(x)-V(X)}{x-X} \leq
+\lim_{X\to x} \pi y^2
+\end{align*}
+</div>
+<div class="para">The rightmost term is independent of <span class="process-math">\(X\)</span> and so is just <span class="process-math">\(\pi y^2\text{.}\)</span> In the  leftmost term, as <span class="process-math">\(X \to x\text{,}\)</span> we must have that <span class="process-math">\(Y \to y\text{.}\)</span> Hence the leftmost  term is just <span class="process-math">\(\pi y^2\text{.}\)</span> Then by the squeeze theorem (Theorem <a href="sec_1_4.html#thm_squeeze" class="xref" data-knowl="./knowl/xref/thm_squeeze.html" data-reveal-label="Reveal" data-close-label="Close" title="Theorem 1.4.18: Squeeze theorem (or sandwich theorem or pinch theorem)">1.4.18</a>)  we know that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-27">
+\begin{align*}
+\diff{V}{x} = \lim_{X\to x} \frac{V(x)-V(X)}{x-X} &amp;= \pi y^2.
+\end{align*}
+</div>
+<div class="para">But we know that</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-28">
+\begin{align*}
+y &amp;= \frac{r}{h} \cdot x
+\end{align*}
+</div>
+<div class="para">so</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-29">
+\begin{align*}
+\diff{V}{x} &amp;= \pi \left( \frac{r}{h} \right)^2 x^2
+\end{align*}
+</div>
+<div class="para">Now we can antidifferentiate to get back to <span class="process-math">\(V\text{:}\)</span>
+</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-31">
+\begin{align*}
+V(x) &amp;= \frac{\pi}{3} \left( \frac{r}{h} \right)^2 x^3 + c
+\end{align*}
+</div>
+<div class="para">To determine <span class="process-math">\(c\)</span> notice that when <span class="process-math">\(x=0\)</span> the volume of the cone is just zero and  so <span class="process-math">\(c=0\text{.}\)</span> Thus</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-35">
+\begin{align*}
+V(x) &amp;= \frac{\pi}{3} \left( \frac{r}{h} \right)^2 x^3
+\end{align*}
+</div>
+<div class="para">and so when <span class="process-math">\(x=h\)</span> we are left with</div>
+<div class="displaymath process-math" data-contains-math-knowls="./knowl/xref/thm_squeeze.html" id="eg_vol_cone-5-37">
+\begin{align*}
+V(h) &amp;= \frac{\pi}{3} \left( \frac{r}{h} \right)^2 h^3 = \frac{\pi}{3} r^2 h
+\end{align*}
+</div>
+<div class="para">as required.</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#eg_vol_cone-5" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Example 4.1.7: Volume of a cone"><a href="#eg_vol_cone" title="Copy heading and permalink for Example 4.1.7: Volume of a cone" aria-label="Copy heading and permalink for Example 4.1.7: Volume of a cone">🔗</a></div></article></details><div class="autopermalink" data-description="Subsection 4.1.1: Introduction to Antiderivatives"><a href="#sec_antidiff-2" title="Copy heading and permalink for Subsection 4.1.1: Introduction to Antiderivatives" aria-label="Copy heading and permalink for Subsection 4.1.1: Introduction to Antiderivatives">🔗</a></div></section><section class="exercises" id="sec_antidiff-3"><h3 class="heading hide-type">
+<span class="type">Exercises</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="codenumber">4.1.2</span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">Exercises</span>
+</h3>
+<div class="exercisegroup" id="sec_antidiff-3-1">
+<h4 class="heading"><span class="title">
+  Exercises — Stage 1
+.</span></h4>
+<div class="introduction" id="sec_antidiff-3-1-2"></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like" id="sec_antidiff-3-1-3"><h5 class="heading"><span class="codenumber">1<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-1-3-1-1">Let <span class="process-math">\(f(x)\)</span> be  a function with derivative <span class="process-math">\(f'(x)\text{.}\)</span> What is the most general antiderivative of <span class="process-math">\(f'(x)\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-1-3-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.1"><a href="#sec_antidiff-3-1-3" title="Copy heading and permalink for Exercise 4.1.2.1" aria-label="Copy heading and permalink for Exercise 4.1.2.1">🔗</a></div></article><article class="exercise-like boxed" id="sec_antidiff-3-1-4"><h5 class="heading"><span class="codenumber">2<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-1-4-1-1">On the graph below, the black curve is <span class="process-math">\(y=f(x)\text{.}\)</span> Which of the coloured curves is an antiderivative of <span class="process-math">\(f(x)\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-1-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:10%;margin-right:10%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_antidiff-3-1-4-1-2-1.svg" role="img" class="contained"></div></div></div>
+<div class="autopermalink" data-description="Exercise 4.1.2.2"><a href="#sec_antidiff-3-1-4" title="Copy heading and permalink for Exercise 4.1.2.2" aria-label="Copy heading and permalink for Exercise 4.1.2.2">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 4.1.2.1–2: 
+  Exercises — Stage 1
+"><a href="#sec_antidiff-3-1" title="Copy heading and permalink for Exercise Group 4.1.2.1–2: 
+  Exercises — Stage 1
+" aria-label="Copy heading and permalink for Exercise Group 4.1.2.1–2: 
+  Exercises — Stage 1
+">🔗</a></div>
+</div>
+<div class="exercisegroup" id="sec_antidiff-3-2">
+<h4 class="heading"><span class="title">
+Exercises — Stage 2
+.</span></h4>
+<div class="introduction" id="sec_antidiff-3-2-2"><div class="para" id="sec_antidiff-3-2-2-1">In Questions <a href="sec_antidiff.html#s4_1antifirst" class="xref" data-knowl="./knowl/xref/s4_1antifirst.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.3">4.1.2.3</a> through <a href="sec_antidiff.html#s4_1antilast" class="xref" data-knowl="./knowl/xref/s4_1antilast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.12">4.1.2.12</a>, you are asked to find the antiderivative of a function. Phrased like this, we mean the <em class="emphasis">most general</em> antiderivative. These will all include some added constant. The table after Example <a href="sec_antidiff.html#eg_antidiff_poly" class="xref" data-knowl="./knowl/xref/eg_antidiff_poly.html" data-reveal-label="Reveal" data-close-label="Close" title="Example 4.1.3: Antiderivative of 3x^5-7x^2+2x+3 + x^{-1} - x^{-2}">4.1.3</a> might be of help.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="introduction" id="sec_antidiff-3-2-13"><div class="para" id="sec_antidiff-3-2-13-1">In Questions <a href="sec_antidiff.html#s4_1initfirst" class="xref" data-knowl="./knowl/xref/s4_1initfirst.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.13">4.1.2.13</a> through <a href="sec_antidiff.html#s4_1initlast" class="xref" data-knowl="./knowl/xref/s4_1initlast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.16">4.1.2.16</a>, you are asked to find a specific antiderivative of a function. In this case, you should be able to solve for the entire function--no unknown constants floating about.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-13-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="introduction" id="sec_antidiff-3-2-18"><div class="para" id="sec_antidiff-3-2-18-1">In Questions <a href="sec_antidiff.html#s4_1applyfirst" class="xref" data-knowl="./knowl/xref/s4_1applyfirst.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.17">4.1.2.17</a> through <a href="sec_antidiff.html#s4_1applylast" class="xref" data-knowl="./knowl/xref/s4_1applylast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.19">4.1.2.19</a>, we will explore some simple situations where antiderivatives might arise.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-18-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like boxed" id="s4_1antifirst"><h5 class="heading"><span class="codenumber">3<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1antifirst-1-1">Find the  antiderivative of <span class="process-math">\(f(x)=3x^2+5x^4+10x-9\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1antifirst-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.3"><a href="#s4_1antifirst" title="Copy heading and permalink for Exercise 4.1.2.3" aria-label="Copy heading and permalink for Exercise 4.1.2.3">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-2-4"><h5 class="heading"><span class="codenumber">4<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-4-1-1">Find the  antiderivative of <span class="process-math">\(f(x)=\dfrac{3}{5}x^7-18x^4+x\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-4-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.4"><a href="#sec_antidiff-3-2-4" title="Copy heading and permalink for Exercise 4.1.2.4" aria-label="Copy heading and permalink for Exercise 4.1.2.4">🔗</a></div></article><article class="exercise-like boxed" id="sec_antidiff-3-2-5"><h5 class="heading"><span class="codenumber">5<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-5-1-1">Find the antiderivative of <span class="process-math">\(f(x)=4\sqrt[3]{x}-\dfrac{9}{2x^{2.7}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-5-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.5"><a href="#sec_antidiff-3-2-5" title="Copy heading and permalink for Exercise 4.1.2.5" aria-label="Copy heading and permalink for Exercise 4.1.2.5">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-2-6"><h5 class="heading"><span class="codenumber">6<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-6-1-1">Find the  antiderivative of <span class="process-math">\(f(x)=\dfrac{1}{7\sqrt{x}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.6"><a href="#sec_antidiff-3-2-6" title="Copy heading and permalink for Exercise 4.1.2.6" aria-label="Copy heading and permalink for Exercise 4.1.2.6">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-2-7"><h5 class="heading"><span class="codenumber">7<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-7-1-1">Find the antiderivative of <span class="process-math">\(f(x)=e^{5x+11}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-7-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.7"><a href="#sec_antidiff-3-2-7" title="Copy heading and permalink for Exercise 4.1.2.7" aria-label="Copy heading and permalink for Exercise 4.1.2.7">🔗</a></div></article><article class="exercise-like boxed" id="sec_antidiff-3-2-8"><h5 class="heading"><span class="codenumber">8<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-8-1-1">Find the antiderivative of <span class="process-math">\(f(x)=3\sin(5x)+7\cos(13x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.8"><a href="#sec_antidiff-3-2-8" title="Copy heading and permalink for Exercise 4.1.2.8" aria-label="Copy heading and permalink for Exercise 4.1.2.8">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-2-9"><h5 class="heading"><span class="codenumber">9<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-9-1-1">Find the antiderivative of <span class="process-math">\(f(x)=\sec^2(x+1)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-9-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.9"><a href="#sec_antidiff-3-2-9" title="Copy heading and permalink for Exercise 4.1.2.9" aria-label="Copy heading and permalink for Exercise 4.1.2.9">🔗</a></div></article><article class="exercise-like boxed" id="sec_antidiff-3-2-10"><h5 class="heading"><span class="codenumber">10<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-10-1-1">Find the antiderivative of <span class="process-math">\(f(x)=\dfrac{1}{x+2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-10-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.10"><a href="#sec_antidiff-3-2-10" title="Copy heading and permalink for Exercise 4.1.2.10" aria-label="Copy heading and permalink for Exercise 4.1.2.10">🔗</a></div></article><article class="exercise-like" id="s4_1arcsin1"><h5 class="heading"><span class="codenumber">11<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1arcsin1-1-1">Find the antiderivative of <span class="process-math">\(f(x)=\dfrac{7}{\sqrt{3-3x^2}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1arcsin1-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.11"><a href="#s4_1arcsin1" title="Copy heading and permalink for Exercise 4.1.2.11" aria-label="Copy heading and permalink for Exercise 4.1.2.11">🔗</a></div></article><article class="exercise-like boxed" id="s4_1antilast"><h5 class="heading"><span class="codenumber">12<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1antilast-1-1">Find the antiderivative of <span class="process-math">\(f(x)=\dfrac{1}{1+25x^2}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1antilast-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.12"><a href="#s4_1antilast" title="Copy heading and permalink for Exercise 4.1.2.12" aria-label="Copy heading and permalink for Exercise 4.1.2.12">🔗</a></div></article><article class="exercise-like boxed" id="s4_1initfirst"><h5 class="heading"><span class="codenumber">13<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1initfirst-1-1">Find the function <span class="process-math">\(f(x)\)</span> with <span class="process-math">\(f'(x)=3x^2-9x+4\)</span> and <span class="process-math">\(f(1)=10\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1initfirst-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.13"><a href="#s4_1initfirst" title="Copy heading and permalink for Exercise 4.1.2.13" aria-label="Copy heading and permalink for Exercise 4.1.2.13">🔗</a></div></article><article class="exercise-like boxed" id="sec_antidiff-3-2-15"><h5 class="heading"><span class="codenumber">14<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-2-15-1-1">Find the function <span class="process-math">\(f(x)\)</span> with <span class="process-math">\(f'(x)=\cos(2x)\)</span> and <span class="process-math">\(f(\pi)=\pi\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-15-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.14"><a href="#sec_antidiff-3-2-15" title="Copy heading and permalink for Exercise 4.1.2.14" aria-label="Copy heading and permalink for Exercise 4.1.2.14">🔗</a></div></article><article class="exercise-like" id="s4_1log"><h5 class="heading"><span class="codenumber">15<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1log-1-1">Find the function <span class="process-math">\(f(x)\)</span> that is defined and obeys <span class="process-math">\(f'(x)=\dfrac{1}{x}\)</span> for all <span class="process-math">\(x\lt 0\text{,}\)</span> and also obeys <span class="process-math">\(f(-1)=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1log-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.15"><a href="#s4_1log" title="Copy heading and permalink for Exercise 4.1.2.15" aria-label="Copy heading and permalink for Exercise 4.1.2.15">🔗</a></div></article><article class="exercise-like" id="s4_1initlast"><h5 class="heading"><span class="codenumber">16<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1initlast-1-1">Find the function <span class="process-math">\(f(x)\)</span> with <span class="process-math">\(f'(x)=\dfrac{1}{\sqrt{1-x^2}}+1\)</span> and <span class="process-math">\(f(1)=-\dfrac{\pi}{2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1initlast-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.16"><a href="#s4_1initlast" title="Copy heading and permalink for Exercise 4.1.2.16" aria-label="Copy heading and permalink for Exercise 4.1.2.16">🔗</a></div></article><article class="exercise-like boxed" id="s4_1applyfirst"><h5 class="heading"><span class="codenumber">17<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1applyfirst-1-1">Suppose a population of bacteria at time <span class="process-math">\(t\)</span> (measured in hours) is growing at a rate of <span class="process-math">\(100e^{2t}\)</span> individuals per hour. Starting at time <span class="process-math">\(t=0\text{,}\)</span> how long will it take the initial colony to increase by 300 individuals?<div class="autopermalink" data-description="Paragraph"><a href="#s4_1applyfirst-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.17"><a href="#s4_1applyfirst" title="Copy heading and permalink for Exercise 4.1.2.17" aria-label="Copy heading and permalink for Exercise 4.1.2.17">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-2-20"><h5 class="heading"><span class="codenumber">18<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="sec_antidiff-3-2-20-1-1">
+<div class="para">Your bank account at time <span class="process-math">\(t\)</span> (measured in years) is growing at a rate of</div>
+<div class="displaymath process-math">
+\begin{equation*}
+1500e^{\tfrac{t}{50}}
+\end{equation*}
+</div>
+<div class="para">dollars per year. How much money is in your account at time <span class="process-math">\(t\text{?}\)</span>
+</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-2-20-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.18"><a href="#sec_antidiff-3-2-20" title="Copy heading and permalink for Exercise 4.1.2.18" aria-label="Copy heading and permalink for Exercise 4.1.2.18">🔗</a></div></article><article class="exercise-like" id="s4_1applylast"><h5 class="heading"><span class="codenumber">19<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para logical" id="s4_1applylast-1-1">
+<div class="para">At time <span class="process-math">\(t\)</span> during a particular day, <span class="process-math">\(0 \leq t \leq 24\text{,}\)</span> your house consumes energy at a rate of</div>
+<div class="displaymath process-math">
+\begin{equation*}
+0.5\sin\left(\frac{\pi}{24}t\right)+0.25
+\end{equation*}
+</div>
+<div class="para">kW. (Your consumption was smallest in the middle of the night, and peaked at noon.) How much energy did your house consume in that day?</div>
+<div class="autopermalink" data-description="Paragraph"><a href="#s4_1applylast-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.19"><a href="#s4_1applylast" title="Copy heading and permalink for Exercise 4.1.2.19" aria-label="Copy heading and permalink for Exercise 4.1.2.19">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 4.1.2.3–19: 
+Exercises — Stage 2
+"><a href="#sec_antidiff-3-2" title="Copy heading and permalink for Exercise Group 4.1.2.3–19: 
+Exercises — Stage 2
+" aria-label="Copy heading and permalink for Exercise Group 4.1.2.3–19: 
+Exercises — Stage 2
+">🔗</a></div>
+</div>
+<div class="exercisegroup" id="sec_antidiff-3-3">
+<h4 class="heading"><span class="title">
+Exercises — Stage 3
+.</span></h4>
+<div class="introduction" id="sec_antidiff-3-3-2"></div>
+<div class="introduction" id="sec_antidiff-3-3-4"><div class="para" id="sec_antidiff-3-3-4-1">For Questions <a href="sec_antidiff.html#s4_1rulesfirst" class="xref" data-knowl="./knowl/xref/s4_1rulesfirst.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.21">4.1.2.21</a> through <a href="sec_antidiff.html#s4_1ruleslast" class="xref" data-knowl="./knowl/xref/s4_1ruleslast.html" data-reveal-label="Reveal" data-close-label="Close" title="Exercise 4.1.2.26">4.1.2.26</a>, you are again asked to find the  antiderivatives of certain functions. In general, finding antiderivatives can be extremely difficult--indeed, it will form the main topic of next semester’s calculus course. However, you can work out the antiderivatives of the functions below using what you’ve learned so far about derivatives.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-4-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div></div>
+<div class="exercisegroup-exercises">
+<article class="exercise-like" id="sec_antidiff-3-3-3"><h5 class="heading">
+<span class="codenumber">20<span class="period heading-divison-mark heading-divison-mark__period">.</span></span><span class="space heading-divison-mark heading-divison-mark__space"> </span><span class="title">(✳).</span>
+</h5>
+<div class="para" id="sec_antidiff-3-3-3-2-1">Let <span class="process-math">\(f(x)=2\sin^{-1}\sqrt{x}\)</span> and <span class="process-math">\(g(x)=\sin^{-1}(2x-1)\text{.}\)</span> Find the derivative of <span class="process-math">\(f(x)-g(x)\)</span> and simplify your answer. What does the answer imply about the relation between <span class="process-math">\(f(x)\)</span> and <span class="process-math">\(g(x)\text{?}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-3-2-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.20: (✳)"><a href="#sec_antidiff-3-3-3" title="Copy heading and permalink for Exercise 4.1.2.20: (✳)" aria-label="Copy heading and permalink for Exercise 4.1.2.20: (✳)">🔗</a></div></article><article class="exercise-like" id="s4_1rulesfirst"><h5 class="heading"><span class="codenumber">21<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1rulesfirst-1-1">Find the  antiderivative of <span class="process-math">\(f(x)=2\cos(2x)\cos(3x)-3\sin(2x)\sin(3x)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1rulesfirst-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.21"><a href="#s4_1rulesfirst" title="Copy heading and permalink for Exercise 4.1.2.21" aria-label="Copy heading and permalink for Exercise 4.1.2.21">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-3-6"><h5 class="heading"><span class="codenumber">22<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-3-6-1-1">Find the  antiderivative of <span class="process-math">\(f(x)=\dfrac{(x^2+1)e^x-e^x(2x)}{(x^2+1)^2}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-6-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.22"><a href="#sec_antidiff-3-3-6" title="Copy heading and permalink for Exercise 4.1.2.22" aria-label="Copy heading and permalink for Exercise 4.1.2.22">🔗</a></div></article><article class="exercise-like boxed" id="s4_1chain"><h5 class="heading"><span class="codenumber">23<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1chain-1-1">Find the antiderivative of <span class="process-math">\(f(x)=3x^2e^{x^3}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1chain-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.23"><a href="#s4_1chain" title="Copy heading and permalink for Exercise 4.1.2.23" aria-label="Copy heading and permalink for Exercise 4.1.2.23">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-3-8"><h5 class="heading"><span class="codenumber">24<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-3-8-1-1">Find the  antiderivative of <span class="process-math">\(f(x)=5x\sin(x^2)\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-8-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.24"><a href="#sec_antidiff-3-3-8" title="Copy heading and permalink for Exercise 4.1.2.24" aria-label="Copy heading and permalink for Exercise 4.1.2.24">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-3-9"><h5 class="heading"><span class="codenumber">25<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-3-9-1-1">Find the  antiderivative of <span class="process-math">\(f(x)=e^{\log x}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-9-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.25"><a href="#sec_antidiff-3-3-9" title="Copy heading and permalink for Exercise 4.1.2.25" aria-label="Copy heading and permalink for Exercise 4.1.2.25">🔗</a></div></article><article class="exercise-like boxed" id="s4_1ruleslast"><h5 class="heading"><span class="codenumber">26<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="s4_1ruleslast-1-1">Find the antiderivative of <span class="process-math">\(f(x)=\dfrac{7}{\sqrt{3-x^2}}\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#s4_1ruleslast-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.26"><a href="#s4_1ruleslast" title="Copy heading and permalink for Exercise 4.1.2.26" aria-label="Copy heading and permalink for Exercise 4.1.2.26">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-3-11"><h5 class="heading"><span class="codenumber">27<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-3-11-1-1">Imagine forming a solid by revolving the parabola <span class="process-math">\(y=x^2+1\)</span> around the <span class="process-math">\(x\)</span>-axis, as in the picture below.<div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-11-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div> <div class="sidebyside"><div class="sbsrow" style="margin-left:10%;margin-right:10%;grid-template-columns:100%;column-gap:0%;"><div class="sbspanel sbspanel--top top" style=""><img src="generated/latex-image/sec_antidiff-3-3-11-1-2-1.svg" role="img" class="contained"></div></div></div> <div class="para" id="sec_antidiff-3-3-11-1-3">Use the method of Example <a href="sec_antidiff.html#eg_vol_cone" class="xref" data-knowl="./knowl/xref/eg_vol_cone.html" data-reveal-label="Reveal" data-close-label="Close" title="Example 4.1.7: Volume of a cone">4.1.7</a> to find the volume of such an object if the segment of the parabola that we rotate runs from <span class="process-math">\(x=-H\)</span> to <span class="process-math">\(x=H\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-11-1-3" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.27"><a href="#sec_antidiff-3-3-11" title="Copy heading and permalink for Exercise 4.1.2.27" aria-label="Copy heading and permalink for Exercise 4.1.2.27">🔗</a></div></article><article class="exercise-like" id="sec_antidiff-3-3-12"><h5 class="heading"><span class="codenumber">28<span class="period heading-divison-mark heading-divison-mark__period">.</span></span></h5>
+<div class="para" id="sec_antidiff-3-3-12-1-1">Find all functions <span class="process-math">\(f(x)\)</span> that are defined and obey <span class="process-math">\(f'(x)=\dfrac{1}{x}\)</span> for all <span class="process-math">\(x\ne 0\text{,}\)</span> and also obey <span class="process-math">\(f(-1)=0\text{.}\)</span><div class="autopermalink" data-description="Paragraph"><a href="#sec_antidiff-3-3-12-1-1" title="Copy heading and permalink for Paragraph" aria-label="Copy heading and permalink for Paragraph">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercise 4.1.2.28"><a href="#sec_antidiff-3-3-12" title="Copy heading and permalink for Exercise 4.1.2.28" aria-label="Copy heading and permalink for Exercise 4.1.2.28">🔗</a></div></article>
+</div>
+<div class="autopermalink" data-description="Exercise Group 4.1.2.20–28: 
+Exercises — Stage 3
+"><a href="#sec_antidiff-3-3" title="Copy heading and permalink for Exercise Group 4.1.2.20–28: 
+Exercises — Stage 3
+" aria-label="Copy heading and permalink for Exercise Group 4.1.2.20–28: 
+Exercises — Stage 3
+">🔗</a></div>
+</div>
+<div class="autopermalink" data-description="Exercises 4.1.2"><a href="#sec_antidiff-3" title="Copy heading and permalink for Exercises 4.1.2" aria-label="Copy heading and permalink for Exercises 4.1.2">🔗</a></div></section><div class="autopermalink" data-description="Section 4.1: Introduction to Antiderivatives"><a href="#sec_antidiff" title="Copy heading and permalink for Section 4.1: Introduction to Antiderivatives" aria-label="Copy heading and permalink for Section 4.1: Introduction to Antiderivatives">🔗</a></div></section></div>
+<div id="ptx-content-footer" class="ptx-content-footer">
+<a class="previous-button button" href="clp_1_dc-7.html" title="Previous"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Prev</span></a><a class="top-button button" href="#" title="Top"><span class="icon material-symbols-outlined" aria-hidden="true"></span><span class="name">Top</span></a><a class="next-button button" href="clp_1_dc-8.html" title="Next"><span class="name">Next</span><span class="icon material-symbols-outlined" aria-hidden="true"></span></a>
+</div></main>
+</div>
+<div id="ptx-page-footer" class="ptx-page-footer">
+<a class="feedback-link" href="mailto:clp@ugrad.math.ubc.ca?subject=clp1-pretext" target="_blank">Feedback</a><a class="pretext-link" href="https://pretextbook.org" title="PreTeXt"><div class="logo"><svg xmlns="http://www.w3.org/2000/svg" height="100%" viewbox="338 3000 8772 6866" role="img"><title>PreTeXt logo</title><g style="stroke-width:.025in; stroke:currentColor; fill:none"><polyline points="472,3590 472,9732 " style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round; "></polyline><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,9448 A 4660 4660  0  0  1  8598  9259"></path><path style="stroke-width:174;stroke-linecap:butt;" d="M 4488,9685 A 4228 4228  0  0  0   472  9732"></path><path style="stroke-width:126;stroke-linecap:butt;" d="M 4724,3590 A 4241 4241  0  0  1  8598  3496"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,3496  A 4241 4241  0  0  1  4724  3590"></path><path style="stroke-width:126;stroke-linecap:round;" d="M 850,9259  A 4507 4507  0  0  1  4724  9448"></path><polyline points="5385,4299 4062,8125" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8598,3496 8598,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="850,3496 850,9259" style="stroke-width:126; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="4960,9685 4488,9685" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="3070,4582 1889,6141 3070,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="6418,4582 7600,6141 6418,7700" style="stroke-width:300; stroke-linejoin:miter; stroke-linecap:round;"></polyline><polyline points="8976,3590 8976,9732" style="stroke-width:174; stroke-linejoin:miter; stroke-linecap:round;"></polyline><path style="stroke-width:174;stroke-linecap:butt;" d="M 4960,9685 A 4228 4228  0  0  1  8976  9732"></path></g></svg></div></a><a class="runestone-link" href="https://runestone.academy" title="Runestone Academy"><img class="logo" src="runtime/reader-support/runestone-credit-logo.png" alt="Runstone Academy logo"></a><a class="mathjax-link" href="https://www.mathjax.org" title="MathJax"><img class="logo" src="runtime/reader-support/mathjax-credit-logo.png" alt="MathJax logo"></a>
+</div>
+<nav class="program-paired-access" aria-label="Program and original book"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">Mathematics program — English</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Program — Bahasa Indonesia</a><a href="https://personal.math.ubc.ca/~CLP/CLP1/">Original authors’ website ↗</a><a href="front.html">Book contents</a></nav><nav data-central-surface-navigation="v1" data-placement="bottom" aria-label="Mathematics Program navigation"><span>Program:</span> <a data-program-home data-course-card data-course-id="B20" data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B20">English — B20</a> · <a data-program-home data-course-card data-course-id="B20" data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/#course-B20">Bahasa Indonesia — B20</a> · <a data-program-root data-interface-locale="en" href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics Program home</a> · <a data-program-root data-interface-locale="id" href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Beranda Program Matematika</a> · <a data-authoritative-original data-original-source="authoritative-original" data-course-id="B20" href="https://personal.math.ubc.ca/~CLP/CLP1/">Original source — Original authors’ website — CLP-1 textbook, problems and PDFs</a> · <a data-course-surface-contents href="index.html">Open related page</a> · <a data-course-surface-contents href="front.html">Open related page</a></nav>
+</body>
+</html>
