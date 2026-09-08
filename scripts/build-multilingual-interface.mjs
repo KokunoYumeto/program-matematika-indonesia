@@ -108,13 +108,19 @@ const capabilityRuntimeTools = admittedCapabilityTools.map((tool) => ({
   tool_id: tool.tool_id,
 }));
 const capabilityRuntime = 'const capabilityTools = ' + JSON.stringify(capabilityRuntimeTools) + ';';
+const localeSource = await read('docs/interface/locales.js');
+// Keep these developer-only header notes in source, not in every offline page.
+// No data, runtime code, rights notice or learner text is removed.
+const localeHeader = localeSource.match(/^(?:\/\/[^\n]*\n){3}/)?.[0] || '';
+if (!localeHeader.startsWith('// Presentation and resource bindings only.')) throw new Error('Locale header changed; inspect before compacting');
+const localeRuntime = localeSource.slice(localeHeader.length);
 const sources = [
   // Carry the effective catalog once in the offline payload; native inputs are
   // still hash-bound below. No course source or backend is changed.
   'const authorityCourses = ' + JSON.stringify(interfaceCourses) + ';\nconst topics = ' + JSON.stringify(interfaceTopics) + ';\nconst materializeLiveCourses = rows => rows;',
   await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
   await read('docs/interface/central-hosted-readers.js'),
-  await read('docs/learner-state.js'), await read('docs/interface/locales.js'), await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read(hostedSurfaceIdentityModulePath), await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
+  await read('docs/learner-state.js'), localeRuntime, await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read(hostedSurfaceIdentityModulePath), await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
@@ -143,10 +149,12 @@ function renderDocument(locale, offline, paired = false) {
     + '<link rel="alternate" type="application/json" title="Learner access manifest" href="' + siteOrigin + 'interface/learner-access-manifest.json">\n'
     + supportedLocales.map((code) => '<link rel="alternate" hreflang="' + localeMetadata[code].languageTag + '" href="' + siteOrigin + localeMetadata[code].routeSegment + '/">').join('\n')
     + '\n<link rel="alternate" hreflang="x-default" href="' + siteOrigin + '">\n'
-    + '<meta property="og:title" content="' + esc(t.title) + '">\n<meta property="og:description" content="' + esc(t.description) + '">\n'
+    // Offline files do not need remote social-card metadata. Keep their title,
+    // description, canonical/source links and all learner content intact.
+    + (offline ? '' : '<meta property="og:title" content="' + esc(t.title) + '">\n<meta property="og:description" content="' + esc(t.description) + '">\n'
     + '<meta property="og:type" content="website">\n<meta property="og:url" content="' + canonical + '">\n'
     + '<meta property="og:image" content="' + siteOrigin + 'og.png">\n<meta name="twitter:card" content="summary_large_image">\n'
-    + '<meta name="twitter:title" content="' + esc(t.title) + '">\n<meta name="twitter:description" content="' + esc(t.description) + '">\n<meta name="twitter:image" content="' + siteOrigin + 'og.png">\n'
+    + '<meta name="twitter:title" content="' + esc(t.title) + '">\n<meta name="twitter:description" content="' + esc(t.description) + '">\n<meta name="twitter:image" content="' + siteOrigin + 'og.png">\n')
     + (offline ? '<style>\n' + css + '\n</style>' : '<link rel="stylesheet" href="../interface/styles.css">')
     + '\n</head>\n<body>\n<a class="skip-link" href="#katalog">' + t.skip + '</a>'
     + '<header class="site-header"><div class="header-inner"><a class="brand" href="#top">' + esc(t.shortTitle) + '</a>'

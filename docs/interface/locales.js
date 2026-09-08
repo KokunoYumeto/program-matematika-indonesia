@@ -237,6 +237,7 @@ export const englishResources = {
   A30: [
     englishMirror('Program-hosted complete English HTML reader — 87 modules', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/A30/reader/', 'HTML', { modules:87, assets:1873, nativeIds:46359, sourceRevision:'789b54099106b071d1d32bfcee454fed72eb4768' }),
     english('Original publisher reader — OpenStax Precalculus 2e', 'https://openstax.org/books/precalculus-2e/pages/1-introduction-to-functions'),
+    englishMirror('Complete English reader and original source — offline ZIP', 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.28/A30-Precalculus-2e-original-English-reader-source-v1.zip', 'HTML ZIP', { bytes:107409313, sha256:'ad4c91eb6af25d38ef835df9ffd0654346558ea75dff71e6299015f96de0d11f', offlineAfterDownload:true }),
   ],
   B10: [english('Discrete Mathematics: An Open Introduction, 4th edition', 'https://discrete.openmathbooks.org/dmoi4/')],
   B20: [english('CLP-1: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP1/clp_1_dc/index.html')],
