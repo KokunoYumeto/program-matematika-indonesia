@@ -15,6 +15,7 @@ const sortValue = (value) => {
 };
 const canonicalJson = (value) => JSON.stringify(sortValue(value), null, 2) + '\n';
 const logicalFiles = [
+  ...['B10.html','B10-en.html','B10-pengajar.html','B10-pengajar-en.html','b10.css','b10-controls.js','b10-model.js','b10-ui.js','data/model.json','learning-map.json','source-manifest.json','manifest.json','validation.json','package.json','B10-selection-offline.zip'].map(p=>'backend/b10/'+p),
   'backend/a00/A00.html',
   'backend/a00/A00-en.html',
   'backend/a00/A00-pengajar.html',
@@ -425,7 +426,7 @@ for(const path of ['backend/a10/A10.html','backend/a10/A10-en.html','backend/a10
   assert.ok(!page.includes('href="../data/'));
   assert.ok(page.includes('id="a10-data"'));
 }
-assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 34);
+assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 35);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -556,8 +557,16 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 31);
-assert.equal(authorityToolIds.length, 42);
+assert.equal(Object.keys(authorityToolsByCourse).length, 32);
+assert.equal(authorityToolIds.length, 43);
+assert.deepEqual(authorityToolsByCourse.B10.map(x=>x.tool_id),['b10-selection-v1']);
+const b10Public=JSON.parse(docsBytes['backend/b10/manifest.json']);
+assert.equal(b10Public.schema,'b10-selection-public-manifest/1');
+const b10Expected=logicalFiles.filter(p=>p.startsWith('backend/b10/')&&p!=='backend/b10/manifest.json').map(p=>p.slice('backend/b10/'.length)).sort();
+const b10Names=b10Public.files.map(file=>file.path);
+assert.equal(new Set(b10Names).size,b10Names.length,'Duplicate B10 public manifest entry.');
+assert.deepEqual(b10Names.slice().sort(),b10Expected,'Incomplete B10 public manifest inventory.');
+for(const file of b10Public.files){const bytes=docsBytes['backend/b10/'+file.path];assert.ok(bytes);assert.equal(bytes.length,file.bytes);assert.equal(sha256(bytes),file.sha256);}
 assert.deepEqual(authorityToolsByCourse.A00.map(({tool_id})=>tool_id),['a00-assessment-map-v1','a00-concept-teacher-v1']);
 assert.equal(new Set(authorityToolIds).size, authorityToolIds.length, 'Duplicate public learner-tool identity.');
 assert.deepEqual(authorityToolsByCourse.A10.map(({ tool_id }) => tool_id), ['a10.open_learner_hub']);
@@ -575,8 +584,8 @@ assert.equal(validation.state, 'pass');
 assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
-assert.equal(validation.checks.learner_tool_course_count, 31);
-assert.equal(validation.checks.learner_tool_count, 42);
+assert.equal(validation.checks.learner_tool_course_count, 32);
+assert.equal(validation.checks.learner_tool_count, 43);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 
@@ -1877,7 +1886,7 @@ const receipt = {
     prerequisite_dag_visited: 40,
     published_rows: 40,
     production_rows: 0,
-    educator_rows: 34,
+    educator_rows: 35,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,

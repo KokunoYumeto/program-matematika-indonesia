@@ -545,8 +545,8 @@ assert.deepEqual(publicBaseline.successor, {
 });
 assert.equal(learnerTools.$schema, JSON.parse(learnerToolsSchemaBytes.toString('utf8')).$id);
 assert.deepEqual(learnerTools.courses, learnerToolsRows);
-assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130', 'B95', 'C140']);
-assert.equal(learnerTools.courses.length, 7);
+assert.deepEqual(Object.keys(learnerToolsByCourseId), ['A00', 'C30', 'C40', 'C80', 'C130', 'B95', 'C140', 'B10']);
+assert.equal(learnerTools.courses.length, 8);
 const a00LearnerTool = learnerToolsByCourseId.A00?.[0];
 assert.ok(a00LearnerTool, 'A00 harus memiliki alat latihan pelajar.');
 assert.equal(a00LearnerTool.tool_id, 'a00-assessment-map-v1');
@@ -565,6 +565,7 @@ for (const [courseId, toolId, href] of [
   ['C130', 'c130-operations-research-course-map-v1', 'backend/c130/C130.html'],
   ['B95', 'b95.open_learner_hub', 'backend/b95/B95.html'],
   ['C140', 'c140.open_learner_hub', 'backend/c140/C140.html'],
+  ['B10', 'b10-selection-v1', 'backend/b10/B10.html'],
 ]) {
   const tool = learnerToolsByCourseId[courseId]?.[0];
   assert.ok(tool, `${courseId} harus memiliki alat belajar terverifikasi.`);
@@ -1769,10 +1770,10 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 30);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 79);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1827);
-assert.equal(centralNavigation.summary.classified_html_documents, 1830);
+assert.equal(centralNavigation.summary.course_surface_roots, 31);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 83);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1831);
+assert.equal(centralNavigation.summary.classified_html_documents, 1834);
 const b30Reader = centralNavigation.readers.find(row => row.course_id === 'B30' && row.locale === 'en');
 assert.equal(b30Reader.root, 'docs/en/courses/B30/reader');
 assert.equal(b30Reader.html_documents, 424);

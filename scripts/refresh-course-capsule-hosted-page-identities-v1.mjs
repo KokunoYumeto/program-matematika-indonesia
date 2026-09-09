@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {readFile, writeFile} from 'node:fs/promises';
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {sealB10} from './seal-b10-selection-public-v1.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const overridePath='backend/course-capsule-v1/authority/integration-overrides-v1.json';
@@ -81,8 +82,9 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
 }
 // B95 and C140 each contribute educator evidence plus a hub resource over one
 // central hosted page.
-assert.equal(educatorFactCount,56,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,29,'Integration educator hosted-page closure changed.');
+assert.equal(educatorFactCount,59,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,31,'Integration educator hosted-page closure changed.');
+for(const path of ['docs/backend/b10/B10-pengajar.html','docs/backend/b10/B10-pengajar-en.html'])assert.ok(educatorPagePaths.has(path));
 for(const path of ['docs/backend/a00/A00-pengajar.html','docs/backend/a00/A00-pengajar-en.html'])
   assert.ok(educatorPagePaths.has(path),`${path}: A00 educator view is missing.`);
 for(const path of ['docs/backend/a10/A10-pengajar.html','docs/backend/a10/A10-pengajar-en.html'])
@@ -115,4 +117,5 @@ const receipt={
   changes,
 };
 await writeFile(resolve(root,receiptPath),JSON.stringify(receipt,null,2)+'\n');
+await sealB10();
 console.log(JSON.stringify({status:'pass',output:receipt.output,scope:receipt.scope,receipt:fact(receiptPath,await readFile(resolve(root,receiptPath)))},null,2));

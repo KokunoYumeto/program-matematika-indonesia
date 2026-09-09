@@ -579,8 +579,12 @@ for (const [name, fetch] of [
   scenarios.push('success_all_views_filters_search_reset_and_public_evidence_links');
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
-// A00 adds verified concept/module selection, not an official teacher manual.
-assert.deepEqual(educatorCounts, { verified: 27, available_unverified: 7, in_progress: 0, unknown: 6 });
+// A00 and B10 add verified selection tools, not official teacher manuals.
+assert.deepEqual(educatorCounts, { verified: 28, available_unverified: 7, in_progress: 0, unknown: 5 });
+const b10Course=courses.find(row=>row.course_id==='B10');
+assert.equal(b10Course.layers.educator.unit_alignment_status,'verified');
+assert.ok(b10Course.layers.learner.tools.some(row=>row.tool_id==='b10-selection-v1'));
+for(const id of ['teacher','teacher-en','model','offline'])assert.ok(b10Course.layers.educator.resources.some(row=>row.id==='B10:selection-'+id&&row.status==='verified'));
 const a00ConceptCourse=courses.find(row=>row.course_id==='A00');
 assert.equal(a00ConceptCourse.layers.educator.unit_alignment_status,'verified');
 assert.deepEqual(a00ConceptCourse.layers.learner.tools.map(row=>row.tool_id),['a00-assessment-map-v1','a00-concept-teacher-v1']);
