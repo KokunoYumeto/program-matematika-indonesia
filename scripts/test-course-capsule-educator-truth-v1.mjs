@@ -17,6 +17,9 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
   { name: 'd60_learner_tool_cannot_be_removed', id: 'D60', mutate: row=>{row.layers.learner.tools=[];}, error: /learner tools drift from authority/ },
+  { name: 'd20_learner_tool_cannot_be_removed', id: 'D20', mutate: row=>{row.layers.learner.tools=[];}, error: /learner tools drift from authority/ },
+  { name: 'd20_teacher_resource_cannot_be_removed', id: 'D20', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },
+  { name: 'd20_teacher_alignment_cannot_drift', id: 'D20', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },
   { name: 'd60_teacher_resource_cannot_be_removed', id: 'D60', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },
   { name: 'd60_teacher_alignment_cannot_drift', id: 'D60', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },
   { name: 'a20_educator_resource_cannot_be_removed', id: 'A20', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(resource=>resource.id!=='A20:educator-hub-v1');}, error: /missing\/duplicate educator resource/ },

@@ -1,5 +1,10 @@
 import assert from 'node:assert/strict';
 import {build as buildD60} from './build-d60-surface-v1.mjs';
+import {build as buildD20} from './build-d20-surface-v1.mjs';
+
+await buildD20();
+await import('./test-d20-surface-v1.mjs');
+await import('./admit-d20-surface-v1.mjs');
 
 // D60 is projected from the already admitted native tables, then independently
 // tested and admitted before the common reversible navigation shell is applied.

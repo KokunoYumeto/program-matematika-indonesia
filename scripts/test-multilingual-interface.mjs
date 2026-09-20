@@ -252,7 +252,7 @@ const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEng
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
-assert.equal(capabilityTools.length,47);
+assert.equal(capabilityTools.length,48);
 for(const courseId of ['A00','A10']) {
   const bindings=resourceBindings(interfaceCourses.find(course=>course.id===courseId),'en');
   for(const tool of existingEnglishProjected.filter(row=>row.courseId===courseId)) {
@@ -271,6 +271,12 @@ for(const mutate of [
   assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
 }
 const d60Capability = capabilityTools.find(tool => tool.tool_id === 'd60.open_learner_hub');
+const d20Capability = capabilityTools.find(tool => tool.tool_id === 'd20.open_learner_hub');
+assert.equal(d20Capability.courseId,'D20');
+assert.equal(d20Capability.href,'backend/d20/D20.html');
+assert.equal(d20Capability.contentLanguage,'id');
+for(const locale of ['id','en'])assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='D20'),locale).some(row=>row.href===`${siteOrigin}backend/d20/D20.html`&&row.accessRole==='tool'));
+assert.equal(capsules.find(c=>c.course_id==='D20').layers.educator.unit_alignment_status,'verified');
 assert.equal(d60Capability.courseId, 'D60');
 assert.equal(d60Capability.href, 'backend/d60/D60.html');
 assert.equal(d60Capability.contentLanguage, 'id');
