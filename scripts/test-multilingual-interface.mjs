@@ -19,6 +19,8 @@ import {
   projectCapabilityTools,
   projectClpCapabilityTools,
   projectOriginalIndonesianBilingualTools,
+  projectExistingEnglishCapabilityTools,
+  existingEnglishCapabilityInputs,
   capabilityInput,
   clpCapabilityInput,
   clpCapabilityValidationInput,
@@ -245,10 +247,37 @@ for(const tool of clpProjected) tool.evidence={path:clpCapabilityValidationInput
 const originalManifestBytes=await readFile(resolve(root,originalIndonesianBilingualManifestInput));
 const originalValidationBytes=await readFile(resolve(root,originalIndonesianBilingualValidationInput));
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
-assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected],capabilityTools);
+const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
+const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
+assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
-assert.equal(capabilityTools.length,42);
+assert.equal(capabilityTools.length,47);
+for(const courseId of ['A00','A10']) {
+  const bindings=resourceBindings(interfaceCourses.find(course=>course.id===courseId),'en');
+  for(const tool of existingEnglishProjected.filter(row=>row.courseId===courseId)) {
+    assert.ok(bindings.some(row=>row.accessRole==='tool'&&row.contentLanguage==='en'&&row.href===siteOrigin+tool.href));
+    assert.equal(tool.primary,false);
+    assert.equal(tool.machine_data_is_learner_destination,false);
+  }
+}
+for(const mutate of [
+  value=>{value.course_id='B40';},
+  value=>{value.outputs=value.outputs.filter(row=>row.path!=='views/A10-en.html');},
+  value=>{value.counts.modules=0;},
+]) {
+  const changed={...existingEnglishInputs}, key='docs/backend/a10/manifest.json';
+  const manifest=JSON.parse(changed[key]); mutate(manifest); changed[key]=Buffer.from(JSON.stringify(manifest));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
+const d60Capability = capabilityTools.find(tool => tool.tool_id === 'd60.open_learner_hub');
+assert.equal(d60Capability.courseId, 'D60');
+assert.equal(d60Capability.href, 'backend/d60/D60.html');
+assert.equal(d60Capability.contentLanguage, 'id');
+for (const locale of ['id', 'en']) assert.ok(resourceBindings(interfaceCourses.find(c => c.id === 'D60'), locale).some(row => row.href === `${siteOrigin}backend/d60/D60.html` && row.accessRole === 'tool'));
+const d60Educator = capsules.find(c => c.course_id === 'D60').layers.educator;
+assert.equal(d60Educator.unit_alignment_status, 'verified');
+assert.ok(d60Educator.resources.some(r => r.id === 'D60:educator-hub-en-v1' && r.status === 'verified'));
 const a10Capability=capabilityTools.filter(tool=>tool.courseId==='A10' && tool.tool_id==='a10.open_learner_hub');
 assert.equal(a10Capability.length,1);
 assert.equal(a10Capability[0].href,'backend/a10/A10.html');
@@ -302,6 +331,7 @@ for(const hub of [d30LearnerHub,d30EducatorHub]){
 assert.deepEqual(capabilityToolSupplementSources,[
   {path:clpCapabilityInput,bytes:clpCapabilityBytes.length,sha256:createHash('sha256').update(clpCapabilityBytes).digest('hex')},
   {path:originalIndonesianBilingualManifestInput,bytes:originalManifestBytes.length,sha256:createHash('sha256').update(originalManifestBytes).digest('hex')},
+  ...existingEnglishCapabilityInputs.map(path=>({path,bytes:existingEnglishInputs[path].length,sha256:createHash('sha256').update(existingEnglishInputs[path]).digest('hex')})),
 ]);
 for(const mutate of [
   value=>{value.tools[0].href='backend/b80/B80.html';},
@@ -797,10 +827,12 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // Preserve a compact payload while retaining typed access roles,
     // evidence-bound mirrors and all admitted learner tools. A10 adds 3,834 raw
     // bytes / 1,214 gzip bytes to the largest previous map (499,524 / 101,516
-    // now). Keep the requested capability and use bounded 512 KiB / 128 KiB
+    // now). D60 plus the four existing A00/A10 English tools bring the largest
+    // map to 525,880 bytes. Keep these useful capabilities with a bounded
+    // 536 KiB raw ceiling; the 128 KiB compressed ceiling remains unchanged.
     // engineering ceilings, not the former 101,000-byte near-baseline cutoff.
     // The exact complete payload and online/offline parity are tested below.
-    assert.ok(Buffer.byteLength(html) < 512 * 1024, 'Offline map size budget');
+    assert.ok(Buffer.byteLength(html) < 536 * 1024, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 128 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     // Compact payload must preserve all effective data, not just course counts.

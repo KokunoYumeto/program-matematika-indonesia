@@ -46,8 +46,8 @@ for(const [courseId,tools] of Object.entries(overrides.learner_tools??{}).sort((
 // B95 and C140 are intentionally sourced from the dedicated learner-tool
 // authority, so they must not also appear in integration-overrides.
 // A10 adds one learner navigator and two educator views to the prior closure.
-assert.equal(toolCount,34,'Integration learner-tool closure changed.');
-assert.equal(pagePaths.size,31,'Integration hosted-page closure changed.');
+assert.equal(toolCount,35,'Integration learner-tool closure changed.');
+assert.equal(pagePaths.size,32,'Integration hosted-page closure changed.');
 assert.ok(overrides.learner_tools.A10.some(tool=>tool.tool_id==='a10.open_learner_hub'
   && tool.page.path==='docs/backend/a10/A10.html'),'A10 navigator binding is missing.');
 
@@ -82,8 +82,8 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
 }
 // B95 and C140 each contribute educator evidence plus a hub resource over one
 // central hosted page.
-assert.equal(educatorFactCount,59,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,31,'Integration educator hosted-page closure changed.');
+assert.equal(educatorFactCount,62,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,33,'Integration educator hosted-page closure changed.');
 for(const path of ['docs/backend/b10/B10-pengajar.html','docs/backend/b10/B10-pengajar-en.html'])assert.ok(educatorPagePaths.has(path));
 for(const path of ['docs/backend/a00/A00-pengajar.html','docs/backend/a00/A00-pengajar-en.html'])
   assert.ok(educatorPagePaths.has(path),`${path}: A00 educator view is missing.`);

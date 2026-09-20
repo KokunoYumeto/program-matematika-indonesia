@@ -10,6 +10,11 @@ export const clpCapabilityValidationInput = 'docs/backend/clp/validation.json';
 export const originalIndonesianBilingualManifestInput = 'backend/course-capsule-v1/localizations/original-indonesian-bilingual-v1/manifest.json';
 export const originalIndonesianBilingualValidationInput = 'backend/course-capsule-v1/localizations/original-indonesian-bilingual-v1/validation.json';
 export const navigationOverlayInput = 'backend/authority/central-course-surface-navigation-overlay-v1.json';
+export const existingEnglishCapabilityInputs = ['a00', 'a10'].flatMap(role => [
+  ...['manifest.json', 'validation.json'].map(file => `docs/backend/${role}/${file}`),
+  ...['-en.html', '-pengajar-en.html'].map(suffix =>
+    `backend/course-capsule-v1/adapters/${role === 'a00' ? 'a00-concept-teacher-v1' : 'a10-capability-v1'}/views/${role.toUpperCase()}${suffix}`),
+]);
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
   'a10.open_learner_hub':['A10','course_reader','backend/a10/A10.html'],
@@ -30,6 +35,7 @@ const contracts = {
   'c140.open_learner_hub':['C140','course_reader','backend/c140/C140.html'],
   'd10.open_learner_hub':['D10','course_reader','backend/d10/D10.html'],
   'd40.open_learner_hub':['D40','course_reader','backend/d40/D40.html'],
+  'd60.open_learner_hub':['D60','course_reader','backend/d60/D60.html'],
   'd70.open_learner_hub':['D70','course_reader','backend/d70/D70.html'],
   'd80.open_learner_hub':['D80','course_reader','backend/d80/D80.html'],
   'd90.open_learner_hub':['D90','course_reader','backend/d90/D90.html'],
@@ -176,6 +182,60 @@ export function projectOriginalIndonesianBilingualTools(manifest, validation, co
   }
   return structuredClone(manifest.tools);
 }
+// Source-bound existing English interfaces, not new corpus translations.
+export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
+  const tools = [];
+  for (const role of ['A00', 'A10']) {
+    assert.ok(courseIds.includes(role));
+    const base = `docs/backend/${role.toLowerCase()}/`;
+    const manifestBytes = inputs[base + 'manifest.json'];
+    const validationBytes = inputs[base + 'validation.json'];
+    const manifest = JSON.parse(manifestBytes), validation = JSON.parse(validationBytes);
+    assert.equal(manifest.course_id, role);
+    assert.equal(manifest.schema, role === 'A00' ? 'a00-concept-teacher-manifest/1' : 'a10-capability-manifest/1');
+    assert.equal(validation.result, 'pass');
+    assert.equal(validation.schema, role === 'A00' ? 'a00-concept-teacher-validation/1' : 'a10-capability-validation/1');
+    assert.equal(role === 'A00' ? validation.manifest.sha256 : validation.manifest_sha256, hash(manifestBytes));
+    assert.deepEqual(validation.counts, manifest.counts);
+    const outputs = new Map(manifest.outputs.map(fact => [fact.path, fact]));
+    assert.equal(outputs.size, manifest.outputs.length);
+    const projectFact = (nativePath, publicPath) => {
+      const fact = outputs.get(nativePath);
+      assert.ok(fact, `${role}: missing admitted output ${nativePath}`);
+      assert.ok(Number.isSafeInteger(fact.bytes) && fact.bytes > 0);
+      assert.match(fact.sha256, /^[a-f0-9]{64}$/);
+      return {...fact, path: base + publicPath};
+    };
+    for (const educator of [false, true]) {
+      const filename = `${role}${educator ? '-pengajar' : ''}-en.html`;
+      const nativePath = `backend/course-capsule-v1/adapters/${role === 'A00' ? 'a00-concept-teacher-v1' : 'a10-capability-v1'}/views/${filename}`;
+      const native = inputs[nativePath], nativeFact = projectFact(`views/${filename}`, filename);
+      assert.equal(native.length, nativeFact.bytes);
+      assert.equal(hash(native), nativeFact.sha256);
+      let body = native.toString('utf8').replaceAll('../data/', 'data/');
+      body = role === 'A00' ? body.replaceAll('../input/', 'input/') : body.replaceAll('../validation.json', 'validation.json');
+      const bodyBytes = Buffer.from(body);
+      tools.push({
+        courseId: role, contentLanguage: 'en', labelLanguage: 'en',
+        tool_id: `${role.toLowerCase()}.open_${educator ? 'educator' : 'learner'}_hub.en`,
+        action_kind: educator ? 'reference' : 'practice_diagnostic_map', href: `backend/${role.toLowerCase()}/${filename}`,
+        label: `${role} · ${educator ? 'English educator map' : 'English concepts, modules and exercises'}`,
+        scope: `${manifest.counts.modules} modules; ${manifest.counts.concepts} concepts; shared native identities and source evidence`,
+        limitations: [
+          'An English interface to existing native metadata, not an Everyday-English rewrite.',
+          'Linked evidence retains its declared source language; this does not claim every linked item is English.',
+          'Source-supplied solutions and explicit missing solutions remain distinct; no new answers are generated.',
+          'Adapter validation is not proof of whole-book native build or full backend parity.',
+        ],
+        state: 'verified', primary: false, machine_data_is_learner_destination: false,
+        page: {path: base + filename, bytes: bodyBytes.length, sha256: hash(bodyBytes)},
+        resource: projectFact('data/learning-map.json', 'data/learning-map.json'),
+        evidence: {path: base + 'validation.json', bytes: validationBytes.length, sha256: hash(validationBytes)},
+      });
+    }
+  }
+  return tools;
+}
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));
   const clpBytes = await readFile(resolve(root, clpCapabilityInput));
@@ -189,7 +249,9 @@ export async function syncCapabilityTools(root, courseIds) {
   const originalTools = projectOriginalIndonesianBilingualTools(
     JSON.parse(originalManifestBytes), JSON.parse(originalValidationBytes), courseIds,
   );
-  const tools = [...projectCapabilityTools(JSON.parse(bytes), courseIds), ...clpTools, ...originalTools];
+  const existingInputs = Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path => [path, await readFile(resolve(root, path))])));
+  const existingTools = projectExistingEnglishCapabilityTools(existingInputs, courseIds);
+  const tools = [...projectCapabilityTools(JSON.parse(bytes), courseIds), ...clpTools, ...originalTools, ...existingTools];
   const facts = [...new Map(tools.flatMap(t=>[t.page,t.resource,t.evidence]).map(f=>[f.path,f])).values()];
   const overlay = JSON.parse(await readFile(resolve(root,navigationOverlayInput),'utf8'));
   assert.equal(overlay.schema,'central-course-surface-navigation-overlay-v1');
@@ -212,6 +274,7 @@ export async function syncCapabilityTools(root, courseIds) {
   const supplementSources = [
     {path:clpCapabilityInput,bytes:clpBytes.length,sha256:hash(clpBytes)},
     {path:originalIndonesianBilingualManifestInput,bytes:originalManifestBytes.length,sha256:hash(originalManifestBytes)},
+    ...existingEnglishCapabilityInputs.map(path => ({path, bytes: existingInputs[path].length, sha256: hash(existingInputs[path])})),
   ];
   await writeFile(resolve(root,'docs/interface/capability-tools.js'),
     '// Generated read-only projection of admitted native capabilities; not a backend admission.\n'

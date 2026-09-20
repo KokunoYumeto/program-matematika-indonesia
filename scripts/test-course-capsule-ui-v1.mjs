@@ -580,7 +580,10 @@ for (const [name, fetch] of [
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
 // A00 and B10 add verified selection tools, not official teacher manuals.
-assert.deepEqual(educatorCounts, { verified: 28, available_unverified: 7, in_progress: 0, unknown: 5 });
+assert.deepEqual(educatorCounts, { verified: 29, available_unverified: 6, in_progress: 0, unknown: 5 });
+const d60Course=courses.find(row=>row.course_id==='D60');
+assert.equal(d60Course.layers.educator.unit_alignment_status,'verified');
+assert.ok(d60Course.layers.learner.tools.some(row=>row.tool_id==='d60.open_learner_hub'));
 const b10Course=courses.find(row=>row.course_id==='B10');
 assert.equal(b10Course.layers.educator.unit_alignment_status,'verified');
 assert.ok(b10Course.layers.learner.tools.some(row=>row.tool_id==='b10-selection-v1'));

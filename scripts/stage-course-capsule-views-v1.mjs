@@ -1,4 +1,11 @@
 import assert from 'node:assert/strict';
+import {build as buildD60} from './build-d60-surface-v1.mjs';
+
+// D60 is projected from the already admitted native tables, then independently
+// tested and admitted before the common reversible navigation shell is applied.
+await buildD60();
+await import('./test-d60-surface-v1.mjs');
+await import('./admit-d60-surface-v1.mjs');
 import {createHash} from 'node:crypto';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {dirname, resolve} from 'node:path';
