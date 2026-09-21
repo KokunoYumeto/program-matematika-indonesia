@@ -824,7 +824,9 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
         'Standalone document may only link relatively to a registered program entry point.',
       );
     } else assert.equal(file, 'index.html', 'Standalone document must have no relative dependency: ' + match[1]);
-    const target = resolve(root, 'docs', meta.routeSegment, match[1], match[1].endsWith('/') ? 'index.html' : '');
+    // A content-addressed stylesheet query is a URL component, not a filename.
+    const relativePath = match[1].split(/[?#]/)[0];
+    const target = resolve(root, 'docs', meta.routeSegment, relativePath, relativePath.endsWith('/') ? 'index.html' : '');
     await readFile(target);
   }
   sizes.push({ locale, file, bytes: Buffer.byteLength(html), gzipBytes: gzipSync(html).length });
@@ -943,4 +945,5 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
   }
 }
 await import('./validate-federated-hosted-reader-navigation-v1.mjs');
+await import('./test-library-navigation-v1.mjs');
 console.log(JSON.stringify({ status: 'pass', courses: ids.length, edges: 83, locales: supportedLocales, tests: ['graph-identity','explicit-language-bindings','static-40-course-catalogs','all-internal-fragments','safe-https-links','offline-script-execution','search-and-reset','course-history','shared-progress','storage-unavailable','receipt-hashes','rendered-language-anchors','paired-static-local-closure','standalone-online-fallback','file-and-unicode-paths','history-rejection-current-view','navigation-no-progress-data','isolated-progress-import','federated-hosted-reader-navigation-registry'], sizes }));

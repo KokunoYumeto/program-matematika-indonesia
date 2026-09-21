@@ -35,3 +35,21 @@ producer evidence, not newly repeated integration checks.
 No book text is copied, no unpublished reader URL is invented, and interface
 language is not misrepresented as the content language of every linked work.
 Publication/readback is tracked separately from these local checks.
+
+## Reciprocal program navigation
+
+The program generator places a localized Library link in the header and footer
+of both language interfaces and their standalone/paired offline maps. The root
+language chooser also links the Library. These are online navigation links;
+offline maps do not pretend to contain the Library or linked books.
+
+`node scripts/test-library-navigation-v1.mjs` verifies all six localized
+documents and the root chooser, including twelve rejected broken-link fixtures.
+The regular multilingual-interface test suite runs it automatically.
+
+The integration check also found and fixed an existing narrow-screen grid
+minimum-width defect. With the final stylesheet, Indonesian online cards and
+the English offline map have no horizontal overflow at 320/390-pixel viewport
+settings. Versioned stylesheet URLs prevent an older cached stylesheet from
+concealing the fix. This is a bounded navigation/layout check, not blanket
+accessibility certification.

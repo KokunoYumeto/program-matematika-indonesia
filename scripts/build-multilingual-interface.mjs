@@ -29,6 +29,11 @@ const centralNavigationContractBytes = await readFile(resolve(interfaceRoot, 'ba
 const centralNavigationOverlayBytes = await readFile(resolve(interfaceRoot, 'backend/authority/central-course-surface-navigation-overlay-v1.json'));
 const centralNavigationContract = JSON.parse(centralNavigationContractBytes);
 const centralNavigationOverlay = JSON.parse(centralNavigationOverlayBytes);
+const libraryHub = centralNavigationContract.reciprocal_hubs.find(row => row.id === 'mathematics-library');
+if (!libraryHub || libraryHub.public_url !== siteOrigin + 'library/' || !supportedLocales.every(locale => libraryHub.labels?.[locale])) {
+  throw new Error('Verified Library navigation binding is missing');
+}
+const libraryLink = locale => '<a data-library-link="v1" href="' + libraryHub.public_url + '">' + escapeMarkup(libraryHub.labels[locale]) + '</a>';
 if (centralNavigationContract.schema !== 'central-reader-navigation-v1' || centralNavigationOverlay.schema !== 'central-course-surface-navigation-overlay-v1' || centralNavigationOverlay.status !== 'pass') {
   throw new Error('Central hosted-surface authority is incomplete');
 }
@@ -90,6 +95,7 @@ const { interfaceCourses, interfaceTopics, coursePresentation, renderCourseCard,
 const { capabilityTools: admittedCapabilityTools } = await import('../docs/interface/capability-tools.js');
 const read = (path) => readFile(resolve(interfaceRoot, path), 'utf8');
 const css = await read('docs/interface/styles.css');
+const cssRevision = createHash('sha256').update(css).digest('hex').slice(0,12);
 const stripExports = (code) => code.replace(/^export (const|function) /gm, '$1 ');
 const stripImports = (code) => code.replace(/^import[\s\S]*?from ['"][^'"]+['"];\r?\n/gm, '');
 // Keep the complete admitted objects and file inventory in the hash-bound source,
@@ -155,10 +161,10 @@ function renderDocument(locale, offline, paired = false) {
     + '<meta property="og:type" content="website">\n<meta property="og:url" content="' + canonical + '">\n'
     + '<meta property="og:image" content="' + siteOrigin + 'og.png">\n<meta name="twitter:card" content="summary_large_image">\n'
     + '<meta name="twitter:title" content="' + esc(t.title) + '">\n<meta name="twitter:description" content="' + esc(t.description) + '">\n<meta name="twitter:image" content="' + siteOrigin + 'og.png">\n')
-    + (offline ? '<style>\n' + css + '\n</style>' : '<link rel="stylesheet" href="../interface/styles.css">')
+    + (offline ? '<style>\n' + css + '\n</style>' : '<link rel="stylesheet" href="../interface/styles.css?v=' + cssRevision + '">')
     + '\n</head>\n<body>\n<a class="skip-link" href="#katalog">' + t.skip + '</a>'
     + '<header class="site-header"><div class="header-inner"><a class="brand" href="#top">' + esc(t.shortTitle) + '</a>'
-    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a></nav>'
+    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + libraryLink(locale) + '</nav>'
     + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + '</nav></div></header>'
     + '<main id="top"><section class="intro"><h1>' + esc(t.title) + '</h1><p>' + esc(t.description) + '</p></section>'
     + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://doi.org/10.5281/zenodo.22059707">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
@@ -176,7 +182,7 @@ function renderDocument(locale, offline, paired = false) {
     + '<p id="empty-state" hidden>' + t.none + '</p><div class="course-grid" id="course-grid">' + interfaceCourses.map((c) => renderCourseCard(c, locale)).join('\n') + '</div></section>'
     + '<section id="about"><h2>' + t.about + '</h2><p>' + t.aboutText + '</p><p class="footnote">' + t.bindingNote + '</p>'
     + exceptions
-    + '</section></main><footer><nav><a href="' + siteOrigin + 'backend/index.html">' + t.sharedBackend + '</a><a href="https://kokunoyumeto.github.io/OpenLogic-translations/">' + t.openLogicHub + '</a><a href="' + siteOrigin + '">' + t.legacy + '</a><a href="https://github.com/KokunoYumeto/program-matematika-indonesia">GitHub</a></nav><p>' + t.footer + '</p></footer>'
+    + '</section></main><footer><nav><a href="' + siteOrigin + 'backend/index.html">' + t.sharedBackend + '</a>' + libraryLink(locale) + '<a href="https://kokunoyumeto.github.io/OpenLogic-translations/">' + t.openLogicHub + '</a><a href="' + siteOrigin + '">' + t.legacy + '</a><a href="https://github.com/KokunoYumeto/program-matematika-indonesia">GitHub</a></nav><p>' + t.footer + '</p></footer>'
     + (offline ? '<script>\n' + inlineScript + '\n</script>' : '<script type="module" src="../interface/app.js"></script>') + '\n</body>\n</html>\n';
 }
 const outputFiles = [{
@@ -209,7 +215,8 @@ const rootLocaleLinks = supportedLocales.map((locale) => {
 }).join('\n');
 const rootLocalePattern = new RegExp(rootLocaleStart + '[\\s\\S]*?' + rootLocaleEnd);
 if (!rootLocalePattern.test(rootIndexSource)) throw new Error('Root locale chooser markers are missing');
-const rootIndexTarget = rootIndexSource.replace(rootLocalePattern, rootLocaleStart + '\n' + rootLocaleLinks + '\n      ' + rootLocaleEnd);
+const rootLibraryLink = '      <a data-library-link="v1" href="' + libraryHub.public_url + '">Perpustakaan / Library</a>';
+const rootIndexTarget = rootIndexSource.replace(rootLocalePattern, rootLocaleStart + '\n' + rootLocaleLinks + '\n' + rootLibraryLink + '\n      ' + rootLocaleEnd);
 await writeFile(rootIndexPath, rootIndexTarget, 'utf8');
 const rootLocaleChooser = {
   path: 'docs/index.html',
