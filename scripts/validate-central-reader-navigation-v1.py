@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import json
+import runpy
 import re
 import sys
 from html import unescape
@@ -979,6 +980,11 @@ def main() -> int:
                         raise ValueError(f"{path}: generic program-return link has no label")
                 if matches != 2:
                     raise ValueError(f"{path}: generic surface needs exact top/bottom program returns")
+            elif row.get("navigation_provider") == "sealed-library-v1":
+                if row["document"] != "docs/library/index.html":
+                    raise ValueError("Library navigation provider cannot exempt another page")
+                library = runpy.run_path(str(ROOT / "scripts/library-handoff-v1.py"))
+                library["validate"](ROOT)
             elif parser.surface_navigation_markers:
                 raise ValueError(f"{path}: program root must not carry a redundant return overlay")
             generic_results.append({
