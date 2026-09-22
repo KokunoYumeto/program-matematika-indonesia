@@ -40,9 +40,30 @@ Paket sumber alat berisi masukan metadata yang dibekukan dan semua skrip untuk
 membangun ulang alat ini. Buku tidak disalin atau diubah. Kode sumber dan
 bahan buku tetap berada pada
 [rilis sumber D50](https://github.com/KokunoYumeto/brenner-differentialgeometrie-id/releases/tag/v1.0.1).
-Pada pemeriksaan 22 September 2026, repositori sumber belum memiliki situs
-GitHub Pages. Karena itu, alat ini **belum** dinyatakan terhubung sebagai alat
-pelajar daring baru dalam indeks pusat.
+Repositori sumber tidak memiliki situs GitHub Pages. Karena itu, proyeksi pusat
+memasang bacaan terverifikasi di `docs/backend/d50/reader/`, tanpa mengubah teks
+sumber. Halaman `index.html`, `index.en.html`, `teacher.html`, dan
+`teacher.en.html` menghubungkan pemilih ke bacaan tersebut. English adalah
+bahasa antarmuka, bukan klaim terjemahan buku baru.
+
+Untuk mereproduksi proyeksi daring dari akar repositori:
+
+1. Unduh ZIP HTML dan ZIP sumber v1.0.1 dari rilis asli ke satu direktori.
+2. Jalankan `python -B scripts/stage-d50-reader-v1.py --release-dir DIREKTORI`.
+   Tambahkan `--verify-public` untuk pemeriksaan unduhan anonim baru.
+3. Jalankan `node scripts/build-d50-hosted-v1.mjs`, kemudian
+   `python -B scripts/test-d50-hosted-v1.py`.
+4. Dalam repositori program lengkap, jalankan admission D50 dan pembangunan
+   backend bersama; navigasi tambahan dapat dihapus tepat untuk memeriksa
+   kembali byte bacaan asli.
+
+`geometri-diferensial-lengkap.id.tex` memuat seluruh 199 berkas sumber LaTeX
+(driver rilis dan 198 masukan), bukan master kosong. Letakkan berkas itu di
+`build/complete-stage/build/` dari ZIP sumber untuk menggunakan gambar dan
+dependensi aslinya. Perakitan tidak menyunting matematika. Pemeriksaan ini
+membuktikan identitas dan kelengkapan masukan; belum mengulang kompilasi PDF.
+`delivery/` mencatat identitas sumber publik dan tujuh uji kerusakan yang ditolak.
+Paket alat tidak menduplikasi 69 MB sumber buku; tautan dan hash-nya dipertahankan.
 
 ## Pemeriksaan dan reproduksi
 
@@ -72,7 +93,13 @@ with `node scripts/test-d50-surface-v1.mjs`. Extract the original hash-verified
 HTML archive into `portable/reader/`, then open `portable/index.en.html` or
 `portable/teacher.en.html`. The exact archive URL and hashes are in the reader
 witness. The source package reproduces the tool; it does not silently include
-or replace the textbook. Central hosted delivery remains unfinished.
+or replace the textbook. The hosted projection preserves the released reader
+with reversible programme navigation. Rebuild using `stage-d50-reader-v1.py
+--release-dir DIRECTORY`, `build-d50-hosted-v1.mjs`, and `test-d50-hosted-v1.py`.
+The original public HTML/source ZIPs are external, hash-bound dependencies.
+The direct cumulative TeX assembles 199 files (driver plus 198 inputs); media remain in the
+original source ZIP. No new PDF compilation is claimed. Public deployment is
+established only by the separate release readback.
 
 Metadata integration, tool code and this explanation: **OpenAI Codex — GPT-6
 Astra, Ultra effort**. Source-edition attribution: **OpenAI Codex gpt-5.6-sol,

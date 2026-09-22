@@ -17,6 +17,7 @@
       placeholder_slots_count:map.placeholder_slots.length,placeholder_slots_are_exercises:false,
       prerequisites:map.prerequisites,concept_relations:map.concept_relations,rights:map.rights,
       source_witness:map.source_witness,reader:map.reader,reader_archive:map.reader_archive,
+      hosted_reader_url:map.hosted_reader_url??null,
       limitations:map.limitations[language],new_solutions_generated:false,full_reader_in_this_json:false};
   };
   globalThis.D50_PLAN_API={filter,plan};
@@ -38,8 +39,8 @@
   const label=k=>kinds[k]?.[en?1:0]??k;
   const title=u=>u.title||label(u.kind)+' · '+(u.kind==='lecture_worksheet_pair'?u.order:u.source_record.source_display_id??u.source_record.source_local_id??u.id);
   if(document.body.dataset.mode==='teacher'){
-    document.querySelector('nav a[href="index.html"]').href='teacher.html';
-    document.querySelector('nav a[href="index.en.html"]').href='teacher.en.html';
+    document.querySelector('nav:not([data-central-surface-navigation]) a[href="index.html"]').href='teacher.html';
+    document.querySelector('nav:not([data-central-surface-navigation]) a[href="index.en.html"]').href='teacher.en.html';
   }
   const byId=new Map(map.units.map(u=>[u.id,u])),chosen=new Set();let page=0,shown=[];const size=30;
   const option=(id,value,text)=>{const e=el('option',text);e.value=value;$(id).append(e);};

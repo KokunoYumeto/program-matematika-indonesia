@@ -11,6 +11,7 @@ from html import unescape
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+from central_course_navigation_scope_v1 import course_surface_exclusions, reader_course_targets
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -596,6 +597,7 @@ def main() -> int:
                     declared_by_relative[value]
                     for value in overlay_links.get(relative, [])
                 )
+                expected_contents.extend(reader_course_targets(row, contract, ROOT))
                 if len(expected_contents) != len(set(expected_contents)):
                     raise ValueError(
                         f"{row['root']}: duplicate reader overlay target for {relative}"
@@ -830,7 +832,9 @@ def main() -> int:
             documents = group.get("documents")
             if not isinstance(documents, list) or not documents:
                 raise ValueError(f"{group['root']}: course-surface document map is empty")
-            actual = {path.relative_to(root).as_posix() for path in configured_html(root)}
+            actual = {path.relative_to(root).as_posix() for path in configured_html(
+                root, course_surface_exclusions(group, contract)
+            )}
             declared = {row["path"] for row in documents}
             if len(declared) != len(documents) or actual != declared:
                 raise ValueError(

@@ -11,6 +11,7 @@ import re
 import sys
 from pathlib import Path
 from urllib.parse import urlsplit
+from central_course_navigation_scope_v1 import course_surface_exclusions, reader_course_targets
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -275,8 +276,7 @@ def main() -> int:
             declared = {document["path"] for document in surface["documents"]}
             actual = {
                 path.relative_to(root).as_posix()
-                for path in root.rglob("*.html")
-                if path.is_file()
+                for path in configured_html(root, course_surface_exclusions(surface, contract))
             }
             if actual != declared:
                 raise ValueError(
@@ -399,7 +399,8 @@ def main() -> int:
                     "course_targets": course_targets(ids),
                     "program_targets": program_targets(),
                     "original_targets": original_targets(ids, reader["locale"]),
-                    "contents": [root / value for value in related_relatives],
+                    "contents": [root / value for value in related_relatives]
+                    + reader_course_targets(reader, contract, ROOT),
                 })
 
         for surface in contract["generic_surfaces"]:
@@ -478,6 +479,10 @@ def main() -> int:
                 "script": fact(
                     Path(__file__).resolve().relative_to(ROOT).as_posix(),
                     Path(__file__).resolve().read_bytes(),
+                ),
+                "scope_helper": fact(
+                    "scripts/central_course_navigation_scope_v1.py",
+                    (ROOT / "scripts/central_course_navigation_scope_v1.py").read_bytes(),
                 ),
                 "learner_access_manifest": fact(
                     ACCESS_MANIFEST_PATH.relative_to(ROOT).as_posix(),

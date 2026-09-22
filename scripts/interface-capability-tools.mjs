@@ -35,6 +35,7 @@ const contracts = {
   'c140.open_learner_hub':['C140','course_reader','backend/c140/C140.html'],
   'd10.open_learner_hub':['D10','course_reader','backend/d10/D10.html'],
   'd40.open_learner_hub':['D40','course_reader','backend/d40/D40.html'],
+  'd50.open_learner_hub':['D50','course_reader','backend/d50/index.html'],
   'd60.open_learner_hub':['D60','course_reader','backend/d60/D60.html'],
   'd20.open_learner_hub':['D20','course_reader','backend/d20/D20.html'],
   'd70.open_learner_hub':['D70','course_reader','backend/d70/D70.html'],

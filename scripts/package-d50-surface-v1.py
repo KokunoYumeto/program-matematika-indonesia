@@ -11,9 +11,13 @@ assert receipt['state'] == 'pass'
 files = [Path('scripts') / name for name in [
     'intake-d50-surface-v1.py', 'build-d50-surface-v1.mjs',
     'd50-study-plan-ui-v1.js', 'test-d50-surface-v1.mjs',
-    'preview-d50-surface-v1.py', 'package-d50-surface-v1.py']]
+    'preview-d50-surface-v1.py', 'package-d50-surface-v1.py',
+    'stage-d50-reader-v1.py', 'build-d50-hosted-v1.mjs', 'test-d50-hosted-v1.py',
+    'admit-d50-surface-v1.mjs', 'central_surface_navigation_overlay_v1.py',
+    'test-d50-source-package-v1.py']]
 files += [base / name for name in ['README.md', 'tests.json', 'browser-qa.json']]
 files += [p.relative_to(root) for p in (root / base / 'input').iterdir() if p.is_file()]
+files += [p.relative_to(root) for p in (root / base / 'delivery').iterdir() if p.is_file()]
 files += [base / 'portable' / fact['path'] for fact in receipt['deterministic_replay']['outputs']]
 lock = json.loads((root / base / 'input/source-lock.json').read_text(encoding='utf-8'))
 files.append(Path(lock['authority']['path']))

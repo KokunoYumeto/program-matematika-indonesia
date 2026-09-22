@@ -14,7 +14,17 @@ const sortValue = (value) => {
   return value;
 };
 const canonicalJson = (value) => JSON.stringify(sortValue(value), null, 2) + '\n';
+const d50HostedValidation = JSON.parse(await readFile(resolve(project, 'docs/backend/d50/validation.json'), 'utf8'));
+assert.equal(d50HostedValidation.state, 'pass');
+const d50DeliveryFiles = [
+  ...d50HostedValidation.files.map(row => row.path),
+  ...d50HostedValidation.reader_members.map(row => 'reader/' + row.path),
+  'validation.json',
+];
+assert.equal(d50DeliveryFiles.length, 56);
+assert.equal(new Set(d50DeliveryFiles).size, 56);
 const logicalFiles = [
+  ...d50DeliveryFiles.map(path => 'backend/d50/' + path),
   ...['B10.html','B10-en.html','B10-pengajar.html','B10-pengajar-en.html','b10.css','b10-controls.js','b10-model.js','b10-ui.js','data/model.json','learning-map.json','source-manifest.json','manifest.json','validation.json','package.json','B10-selection-offline.zip'].map(p=>'backend/b10/'+p),
   'backend/a00/A00.html',
   'backend/a00/A00-en.html',
@@ -557,8 +567,19 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 32);
-assert.equal(authorityToolIds.length, 43);
+assert.equal(Object.keys(authorityToolsByCourse).length, 35);
+assert.equal(authorityToolIds.length, 46);
+for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
+  assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
+    [{tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
+  const capsule=rows.find(row=>row.course_id===course);
+  assert.equal(capsule.layers.educator.unit_alignment_status,'verified');
+}
+const d50HostedMap=JSON.parse(docsBytes['backend/d50/learning-map.json']);
+assert.equal(d50HostedMap.units.length,1223);
+assert.equal(d50HostedMap.content_locale,'id-ID');
+assert.equal(d50HostedValidation.new_translation,false);
+assert.equal(d50HostedValidation.source_body_unchanged,true);
 assert.deepEqual(authorityToolsByCourse.B10.map(x=>x.tool_id),['b10-selection-v1']);
 const b10Public=JSON.parse(docsBytes['backend/b10/manifest.json']);
 assert.equal(b10Public.schema,'b10-selection-public-manifest/1');
@@ -584,8 +605,8 @@ assert.equal(validation.state, 'pass');
 assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
-assert.equal(validation.checks.learner_tool_course_count, 32);
-assert.equal(validation.checks.learner_tool_count, 43);
+assert.equal(validation.checks.learner_tool_course_count, 35);
+assert.equal(validation.checks.learner_tool_count, 46);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 

@@ -43,6 +43,8 @@ assert.equal(plan.units.length,731);assert.equal(plan.supporting_units.length,20
 assert.equal(plan.semantic_exam_groups.length,119);assert.equal(plan.placeholder_slots_count,24);
 assert.equal(plan.placeholder_slots_are_exercises,false);assert.equal(plan.new_solutions_generated,false);
 assert.equal(plan.full_reader_in_this_json,false);assert.equal(plan.content_locale,'id-ID');
+assert.equal(plan.hosted_reader_url,null);
+assert.equal(api.plan({...map,hosted_reader_url:'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d50/reader/index.html'},[all[0]],'en').hosted_reader_url,'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d50/reader/index.html');
 assert.deepEqual(plan.units,map.units.filter(u=>u.practice));
 assert.equal(api.filter(map,'','practice').length,731);assert.equal(api.filter(map,'','lecture_worksheet_pair').length,29);
 assert.equal(api.filter(map,'o011-exam-f01-slot-011','exam_problem_occurrence').length,1);

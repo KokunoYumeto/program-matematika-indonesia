@@ -252,7 +252,13 @@ const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEng
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
-assert.equal(capabilityTools.length,48);
+assert.equal(capabilityTools.length,49);
+const d50Capability=capabilityTools.find(tool=>tool.tool_id==='d50.open_learner_hub');
+assert.equal(d50Capability.courseId,'D50');
+assert.equal(d50Capability.href,'backend/d50/index.html');
+assert.equal(d50Capability.contentLanguage,'id');
+for(const locale of ['id','en'])assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='D50'),locale).some(row=>row.href===`${siteOrigin}backend/d50/index.html`&&row.accessRole==='tool'));
+assert.equal(capsules.find(c=>c.course_id==='D50').layers.educator.unit_alignment_status,'verified');
 for(const courseId of ['A00','A10']) {
   const bindings=resourceBindings(interfaceCourses.find(course=>course.id===courseId),'en');
   for(const tool of existingEnglishProjected.filter(row=>row.courseId===courseId)) {

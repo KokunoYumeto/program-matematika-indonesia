@@ -538,6 +538,8 @@ const rows=data.capsules.map(capsule=>{
         ?'central_view_consumes_verified_route_projection_pdf_runtime_adapter_consumption_not_claimed'
         :role==='A10' && capsule.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub')
           ?'central_navigator_consumes_native_metadata_projection_pdf_runtime_adapter_consumption_not_claimed'
+        :role==='D50' && capsule.layers.learner.tools.some(tool=>tool.tool_id==='d50.open_learner_hub')
+          ?'central_selector_consumes_hash_bound_native_metadata_and_verified_html_routes'
         :['A20','A30','B40','B80','B90','B95','C60','C70','C110','C120','C140','D10','D30','D40','D70','D80','D90','D100','D120'].includes(role)||['lebl-learning-capability/1','geometry-learning-capability/1','topology-learning-capability/1'].includes(adapter.contract_version)
           ?'directly_consumes_adapter_outputs'
           :publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
@@ -584,8 +586,8 @@ const summary={roles:40,native_families:33,locally_validated_adapter_roles:integ
   native_capability_parity_complete:nativeCapabilityParityVerifiedRoles===40,
   overall_program_backend_complete:commonExchangeLayerComplete&&nativeCapabilityParityVerifiedRoles===40&&rows.every(row=>row.whole_course_backend_completion==='verified')};
 assert.equal(summary.locally_validated_adapter_roles+summary.roles_without_validated_common_adapter,40);
-const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-21',scope:'Backend integration, not textbook translation progress.',
-  refresh_scope:'D60 and D20 learner/teacher integration refreshed. Unchanged native evidence retains its own earlier dates; this is not a fresh audit of all source textbooks.',
+const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-22',scope:'Backend integration, not textbook translation progress.',
+  refresh_scope:'D50 learner/teacher delivery added after D60 and D20. Unchanged native evidence retains its own earlier dates; this is not a fresh audit of all source textbooks.',
   evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Common exchange-layer completion and native capability parity are reported separately. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. A30 has complete anonymous native GitHub/Zenodo release readback plus a central integration readback covering ten source/derived files and three changed Pages routes. A30, B95, and C140 adapter packets were preserved and anonymously read back in central v0.63.24. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
   evidence:Object.entries(sources).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),
   admission:{receipt:{path:sources.gapAdmission,bytes:bytes.gapAdmission.length,sha256:sha256(bytes.gapAdmission)},roles:gapRoles,public_embedding:gapPublicEmbedding},summary,roles:rows};

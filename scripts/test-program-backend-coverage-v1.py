@@ -629,8 +629,9 @@ assert [row['kind'] for row in roles['D50']['common_adapter']['local_evidence']]
     'independent_package_audit',
     'central_publication_binding',
 ]
-assert roles['D50']['learner']['relationship'] == 'no_common_adapter_consumption_proven'
-assert roles['D50']['learner']['tools'] == []
+assert roles['D50']['learner']['relationship'] == 'central_selector_consumes_hash_bound_native_metadata_and_verified_html_routes'
+assert len(roles['D50']['learner']['tools']) == 1
+assert roles['D50']['learner']['tools'] == [{'label': 'D50 · Geometri Diferensial', 'href': '../backend/d50/index.html'}]
 assert roles['D50']['dimensions']['curriculum']['unit_identity'] == 'verified'
 assert roles['D50']['dimensions']['source_translation_ledger'] == {
     'corrections': 'verified',
@@ -641,7 +642,7 @@ assert roles['D50']['dimensions']['reproducible_production'] == {
     'build': 'unknown',
     'replay': 'unknown',
 }
-assert roles['D50']['dimensions']['educator']['unit_alignment'] == 'unknown'
+assert roles['D50']['dimensions']['educator']['unit_alignment'] == 'verified'
 assert roles['D70']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D70']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D70']['learner']['tools']) == 1

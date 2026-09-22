@@ -14,6 +14,9 @@ const approvedInterfaceRoots = new Set([
   'interface',
   ...Object.values(localeMetadata).map(({ routeSegment }) => routeSegment),
 ]);
+const libraryAuthority=JSON.parse(await readFile(resolve(project,'backend/authority/library-handoff-v1.json'),'utf8'));
+assert.deepEqual(libraryAuthority.deploy_only.map(row=>row.path).sort(),['index.html','library.js','registry.json','styles.css']);
+const approvedLibraryFiles=new Set(libraryAuthority.deploy_only.map(row=>'library/'+row.path));
 for (const [locale, { routeSegment }] of Object.entries(localeMetadata)) {
   const localeRoot = resolve(source, routeSegment);
   assert.equal(dirname(localeRoot).toLowerCase(), source.toLowerCase(), `Rute locale keluar atau bersarang: ${locale}`);
@@ -120,6 +123,7 @@ await cp(source, target, {
     }
     if (name === 'data' || name === 'schema' || name.startsWith('schema/')) return true;
     if (name === 'backend' || name.startsWith('backend/')) return true;
+    if (name === 'library' || approvedLibraryFiles.has(name)) return true;
     // Preserve central learner route wrappers for the hosted mirror.  These
     // pages contain navigation and links only; owner-native prose remains on
     // the canonical course reader.
@@ -467,4 +471,11 @@ for (const row of d100EnglishManifest.reader.files) {
 assert.equal(d100EnglishBytes, d100EnglishManifest.reader.bytes, 'D100 English: jumlah byte penutupan berbeda.');
 assert.equal(d100EnglishAggregate.digest('hex'), d100EnglishManifest.reader.aggregate_sha256, 'D100 English: hash agregat penutupan berbeda.');
 
+for(const row of libraryAuthority.deploy_only){
+  const logical='library/'+row.path;
+  const left=await readFile(resolve(source,logical)),right=await readFile(resolve(target,logical));
+  assert.equal(left.length,row.bytes,logical+': sealed Library byte count changed');
+  assert.equal(sha256(left),row.sha256.toLowerCase(),logical+': sealed Library hash changed');
+  assert.deepEqual(right,left,logical+': Library mirror differs');
+}
 console.log('Static hub synchronized to public/hub with exact bytes.');

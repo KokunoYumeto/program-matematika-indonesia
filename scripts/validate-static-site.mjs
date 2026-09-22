@@ -1317,8 +1317,9 @@ const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, {
 // capability links. Each language route has its own separately measured
 // offline/closure budget.
 // A00 adds one explicit concept/teacher tool with page, model and QA hashes.
-// Retain the compressed budget; allow 2 KB for this additional shipped metadata.
-assert.ok(shellRawBytes <= 214_000, `Shell melewati 214.000 byte: ${shellRawBytes}.`);
+// The current bilingual/Library entry measures 214,089 raw bytes. Reserve a
+// further 2 KB for explicit navigation; retain the existing compressed budget.
+assert.ok(shellRawBytes <= 216_000, `Shell melewati 216.000 byte: ${shellRawBytes}.`);
 assert.ok(shellGzipBytes <= 54_000, `Shell gzip melewati 54.000 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -1770,10 +1771,19 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 31);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 83);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1831);
-assert.equal(centralNavigation.summary.classified_html_documents, 1834);
+assert.equal(centralNavigation.summary.course_surface_roots, 34);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 95);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1844);
+assert.equal(centralNavigation.summary.classified_html_documents, 1848);
+for (const course of ['d20','d50','d60']) {
+  const surface=centralNavigation.course_surfaces.find(row=>row.root===`docs/backend/${course}`);
+  assert.equal(surface.documents.length,4);
+  assert.ok(surface.documents.every(row=>row.course_ids.includes(course.toUpperCase())));
+}
+const d50Reader=centralNavigation.readers.find(row=>row.course_id==='D50');
+assert.equal(d50Reader.root,'docs/backend/d50/reader');
+assert.equal(d50Reader.html_documents,1);
+assert.deepEqual(d50Reader.related_course_surface_paths,['docs/backend/d50/index.html','docs/backend/d50/teacher.html']);
 const b30Reader = centralNavigation.readers.find(row => row.course_id === 'B30' && row.locale === 'en');
 assert.equal(b30Reader.root, 'docs/en/courses/B30/reader');
 assert.equal(b30Reader.html_documents, 424);

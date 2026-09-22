@@ -25,10 +25,16 @@ def main():
     p.add_argument('--commit', required=True)
     p.add_argument('--receipt', type=Path, required=True)
     p.add_argument('--source-only', action='store_true')
+    p.add_argument('--expected-file-count', type=int,
+                   help='Exact reviewed commit inventory size when it exceeds the default 100-file check boundary')
     args = p.parse_args()
     commit = git('rev-parse', '--verify', args.commit + '^{commit}').decode().strip()
-    paths = git('diff-tree', '--no-commit-id', '--name-only', '-r', commit).decode().splitlines()
-    assert 1 <= len(paths) <= 100, 'Unexpected publication boundary'
+    paths = git('diff-tree', '--no-commit-id', '--name-only', '-z', '-r', commit).decode('utf-8').rstrip('\0').split('\0')
+    if args.expected_file_count is None:
+        assert 1 <= len(paths) <= 100, 'Unexpected publication boundary'
+    else:
+        assert 1 <= args.expected_file_count <= 250
+        assert len(paths) == args.expected_file_count, 'Reviewed commit inventory changed'
     receipt = {'schema': 'backend-increment-public-readback/1', 'commit': commit,
                'repository': f'https://github.com/{REPO}', 'anonymous': True,
                'credentials_used': False, 'source_only': args.source_only,
