@@ -34,6 +34,12 @@ if (!libraryHub || libraryHub.public_url !== siteOrigin + 'library/' || !support
   throw new Error('Verified Library navigation binding is missing');
 }
 const libraryLink = locale => '<a data-library-link="v1" href="' + libraryHub.public_url + '">' + escapeMarkup(libraryHub.labels[locale]) + '</a>';
+const openCoursesHub = centralNavigationContract.reciprocal_hubs.find(row => row.id === 'open-mathematics-courses');
+if (!openCoursesHub || openCoursesHub.public_url !== 'https://kokunoyumeto.github.io/open-mathematics-courses/' || !supportedLocales.every(locale => openCoursesHub.labels?.[locale])) {
+  throw new Error('Verified open-courses navigation binding is missing');
+}
+// A separate English site: the link names its content language for every interface locale.
+const openCoursesLink = locale => '<a data-open-courses-link="v1" href="' + openCoursesHub.public_url + '" hreflang="en">' + escapeMarkup(openCoursesHub.labels[locale]) + '</a>';
 if (centralNavigationContract.schema !== 'central-reader-navigation-v1' || centralNavigationOverlay.schema !== 'central-course-surface-navigation-overlay-v1' || centralNavigationOverlay.status !== 'pass') {
   throw new Error('Central hosted-surface authority is incomplete');
 }
@@ -164,7 +170,7 @@ function renderDocument(locale, offline, paired = false) {
     + (offline ? '<style>\n' + css + '\n</style>' : '<link rel="stylesheet" href="../interface/styles.css?v=' + cssRevision + '">')
     + '\n</head>\n<body>\n<a class="skip-link" href="#katalog">' + t.skip + '</a>'
     + '<header class="site-header"><div class="header-inner"><a class="brand" href="#top">' + esc(t.shortTitle) + '</a>'
-    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + libraryLink(locale) + '</nav>'
+    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + libraryLink(locale) + openCoursesLink(locale) + '</nav>'
     + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + '</nav></div></header>'
     + '<main id="top"><section class="intro"><h1>' + esc(t.title) + '</h1><p>' + esc(t.description) + '</p></section>'
     + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://doi.org/10.5281/zenodo.22059707">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
