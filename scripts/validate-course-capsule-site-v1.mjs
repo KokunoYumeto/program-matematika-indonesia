@@ -23,7 +23,30 @@ const d50DeliveryFiles = [
 ];
 assert.equal(d50DeliveryFiles.length, 56);
 assert.equal(new Set(d50DeliveryFiles).size, 56);
+const d110HostedValidation = JSON.parse(await readFile(resolve(project, 'docs/backend/d110/validation.json'), 'utf8'));
+assert.equal(d110HostedValidation.schema, 'd110-hosted-surface/1');
+assert.equal(d110HostedValidation.state, 'pass');
+const d110DeliveryFiles = [...d110HostedValidation.files.map(row => row.path), 'validation.json'];
+assert.equal(new Set(d110DeliveryFiles).size, d110DeliveryFiles.length, 'D110 hosted inventory contains a duplicate or self reference.');
+for (const path of ['index.html', 'index.en.html', 'teacher.html', 'teacher.en.html', 'data.js', 'd110-ui.js', 'd110.css', 'learning-map.json']) {
+  assert.ok(d110DeliveryFiles.includes(path), `Missing D110 hosted dependency: ${path}`);
+}
+const d110NavigationOverlay=JSON.parse(await readFile(resolve(project,'backend/authority/central-course-surface-navigation-overlay-v1.json')));
+for (const fact of d110HostedValidation.files) {
+  assert.match(fact.path, /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/, 'D110 hosted inventory path must be a local filename.');
+  const bytes = await readFile(resolve(project, 'docs/backend/d110', fact.path));
+  if (bytes.length !== fact.bytes || sha256(bytes) !== fact.sha256) {
+    assert.ok(fact.path.endsWith('.html'),'Non-HTML D110 identity drift');
+    const path='docs/backend/d110/'+fact.path;
+    const overlay=d110NavigationOverlay.files.find(row=>row.document===path);
+    assert.ok(overlay,'D110 navigation overlay missing');
+    assert.deepEqual(overlay.source_body,{...fact,path});
+    assert.deepEqual(overlay.hosted_surface,identity(path,bytes));
+    assert.equal(overlay.source_body_replay_exact,true);
+  }
+}
 const logicalFiles = [
+  ...d110DeliveryFiles.map(path => 'backend/d110/' + path),
   ...d50DeliveryFiles.map(path => 'backend/d50/' + path),
   ...['B10.html','B10-en.html','B10-pengajar.html','B10-pengajar-en.html','b10.css','b10-controls.js','b10-model.js','b10-ui.js','data/model.json','learning-map.json','source-manifest.json','manifest.json','validation.json','package.json','B10-selection-offline.zip'].map(p=>'backend/b10/'+p),
   'backend/a00/A00.html',
@@ -436,7 +459,7 @@ for(const path of ['backend/a10/A10.html','backend/a10/A10-en.html','backend/a10
   assert.ok(!page.includes('href="../data/'));
   assert.ok(page.includes('id="a10-data"'));
 }
-assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 35);
+assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 36);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -567,8 +590,8 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 35);
-assert.equal(authorityToolIds.length, 46);
+assert.equal(Object.keys(authorityToolsByCourse).length, 36);
+assert.equal(authorityToolIds.length, 47);
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
     [{tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
@@ -605,8 +628,8 @@ assert.equal(validation.state, 'pass');
 assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
-assert.equal(validation.checks.learner_tool_course_count, 35);
-assert.equal(validation.checks.learner_tool_count, 46);
+assert.equal(validation.checks.learner_tool_course_count, 36);
+assert.equal(validation.checks.learner_tool_count, 47);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 

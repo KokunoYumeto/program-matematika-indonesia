@@ -249,10 +249,31 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
+assert.equal(existingEnglishProjected.length,5);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
-assert.equal(capabilityTools.length,49);
+// Preserve the existing inventory while admitting the D110 language routes.
+assert.equal(capabilityTools.filter(tool=>tool.courseId!=='D110').length,49);
+assert.equal(capabilityTools.length,51);
+const d110Capability=capabilityTools.find(tool=>tool.tool_id==='d110.open_learner_hub');
+assert.equal(d110Capability.courseId,'D110');
+assert.equal(d110Capability.href,'backend/d110/index.html');
+assert.equal(d110Capability.contentLanguage,'id');
+assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='D110'),'id').some(row=>row.href===`${siteOrigin}backend/d110/index.html`&&row.accessRole==='tool'));
+const d110EnglishCapability=capabilityTools.find(tool=>tool.tool_id==='d110.open_learner_hub.en');
+assert.equal(d110EnglishCapability.courseId,'D110');
+assert.equal(d110EnglishCapability.href,'backend/d110/index.en.html');
+assert.equal(d110EnglishCapability.contentLanguage,'en');
+assert.equal(d110EnglishCapability.labelLanguage,'en');
+for(const tool of [d110Capability,d110EnglishCapability]) {
+  assert.equal(tool.state,'verified');
+  assert.equal(tool.primary,false);
+  assert.equal(tool.machine_data_is_learner_destination,false);
+}
+assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='D110'),'en').some(row=>row.href===`${siteOrigin}backend/d110/index.en.html`&&row.accessRole==='tool'&&row.contentLanguage==='en'));
+assert.equal(capsules.find(c=>c.course_id==='D110').layers.educator.unit_alignment_status,'verified');
+for(const id of ['D110:educator-hub-v1','D110:educator-hub-en-v1'])assert.ok(capsules.find(c=>c.course_id==='D110').layers.educator.resources.some(row=>row.id===id&&row.status==='verified'));
 const d50Capability=capabilityTools.find(tool=>tool.tool_id==='d50.open_learner_hub');
 assert.equal(d50Capability.courseId,'D50');
 assert.equal(d50Capability.href,'backend/d50/index.html');
@@ -274,6 +295,33 @@ for(const mutate of [
 ]) {
   const changed={...existingEnglishInputs}, key='docs/backend/a10/manifest.json';
   const manifest=JSON.parse(changed[key]); mutate(manifest); changed[key]=Buffer.from(JSON.stringify(manifest));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
+for(const mutate of [
+  value=>{value.files=value.files.filter(row=>row.path!=='index.en.html');},
+  value=>{value.new_translation=true;},
+  value=>{value.lean_execution=true;},
+]) {
+  const changed={...existingEnglishInputs}, key='docs/backend/d110/validation.json';
+  const validation=JSON.parse(changed[key]); mutate(validation); changed[key]=Buffer.from(JSON.stringify(validation));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
+{
+  const changed={...existingEnglishInputs}, key='docs/backend/d110/learning-map.json';
+  changed[key]=Buffer.concat([changed[key],Buffer.from(' ')]);
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
+for(const mutate of [
+  value=>{value.course_id='D50';},
+  value=>{value.limitations.en=[];},
+]) {
+  const changed={...existingEnglishInputs}, mapKey='docs/backend/d110/learning-map.json', validationKey='docs/backend/d110/validation.json';
+  const map=JSON.parse(changed[mapKey]); mutate(map); changed[mapKey]=Buffer.from(JSON.stringify(map));
+  const validation=JSON.parse(changed[validationKey]);
+  Object.assign(validation.files.find(row=>row.path==='learning-map.json'),{
+    bytes:changed[mapKey].length,sha256:createHash('sha256').update(changed[mapKey]).digest('hex'),
+  });
+  changed[validationKey]=Buffer.from(JSON.stringify(validation));
   assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
 }
 const d60Capability = capabilityTools.find(tool => tool.tool_id === 'd60.open_learner_hub');

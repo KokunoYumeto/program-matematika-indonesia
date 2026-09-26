@@ -16,6 +16,11 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
   : value && typeof value === 'object'
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
+  { name: 'd110_learner_tool_cannot_be_removed', id: 'D110', mutate: row=>{row.layers.learner.tools=[];}, error: /learner tools drift from authority/ },
+  { name: 'd110_teacher_resource_cannot_be_removed', id: 'D110', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },
+  { name: 'd110_teacher_hash_cannot_drift', id: 'D110', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='D110:educator-hub-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
+  { name: 'd110_teacher_alignment_cannot_drift', id: 'D110', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },
+  { name: 'd110_native_mathml_cannot_be_invented', id: 'D110', mutate: row=>{row.layers.learner.capabilities.mathml='verified';}, error: /learner capability authority drift/ },
   { name: 'd60_learner_tool_cannot_be_removed', id: 'D60', mutate: row=>{row.layers.learner.tools=[];}, error: /learner tools drift from authority/ },
   { name: 'd20_learner_tool_cannot_be_removed', id: 'D20', mutate: row=>{row.layers.learner.tools=[];}, error: /learner tools drift from authority/ },
   { name: 'd20_teacher_resource_cannot_be_removed', id: 'D20', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },

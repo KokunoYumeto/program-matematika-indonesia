@@ -10,11 +10,11 @@ export const clpCapabilityValidationInput = 'docs/backend/clp/validation.json';
 export const originalIndonesianBilingualManifestInput = 'backend/course-capsule-v1/localizations/original-indonesian-bilingual-v1/manifest.json';
 export const originalIndonesianBilingualValidationInput = 'backend/course-capsule-v1/localizations/original-indonesian-bilingual-v1/validation.json';
 export const navigationOverlayInput = 'backend/authority/central-course-surface-navigation-overlay-v1.json';
-export const existingEnglishCapabilityInputs = ['a00', 'a10'].flatMap(role => [
+export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role => [
   ...['manifest.json', 'validation.json'].map(file => `docs/backend/${role}/${file}`),
   ...['-en.html', '-pengajar-en.html'].map(suffix =>
     `backend/course-capsule-v1/adapters/${role === 'a00' ? 'a00-concept-teacher-v1' : 'a10-capability-v1'}/views/${role.toUpperCase()}${suffix}`),
-]);
+]), 'docs/backend/d110/validation.json', 'docs/backend/d110/learning-map.json'];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
   'a10.open_learner_hub':['A10','course_reader','backend/a10/A10.html'],
@@ -43,6 +43,7 @@ const contracts = {
   'd90.open_learner_hub':['D90','course_reader','backend/d90/D90.html'],
   'd30.open_learner_hub':['D30','course_reader','backend/d30/D30.html'],
   'd100.open_learner_hub':['D100','course_reader','backend/d100/D100.html'],
+  'd110.open_learner_hub':['D110','course_reader','backend/d110/index.html'],
   'd120.open_learner_hub':['D120','course_reader','backend/d120/D120.html'],
 };
 for(const role of ['B70','C10','C20','C50']) for(const [suffix,kind,file] of [
@@ -185,6 +186,53 @@ export function projectOriginalIndonesianBilingualTools(manifest, validation, co
   return structuredClone(manifest.tools);
 }
 // Source-bound existing English interfaces, not new corpus translations.
+export function projectD110EnglishCapabilityTools(inputs, courseIds) {
+  assert.ok(courseIds.includes('D110'));
+  const base = 'docs/backend/d110/';
+  const validationBytes = inputs[base + 'validation.json'];
+  const mapBytes = inputs[base + 'learning-map.json'];
+  const validation = JSON.parse(validationBytes), map = JSON.parse(mapBytes);
+  assert.equal(validation.schema, 'd110-hosted-surface/1');
+  assert.equal(validation.state, 'pass');
+  assert.deepEqual(validation.interface_locales, ['id', 'en']);
+  assert.equal(validation.new_translation, false);
+  assert.equal(validation.lean_execution, false);
+  assert.equal(map.schema, 'd110-study-map/1');
+  assert.equal(map.course_id, 'D110');
+  assert.equal(map.solutions_generated, false);
+  assert.equal(map.lean_compilation_performed, false);
+  assert.deepEqual(validation.counts, map.counts);
+  assert.equal(map.counts.units, map.units.length);
+  assert.equal(map.counts.practice_flags, map.units.filter(unit => unit.practice === true).length);
+  assert.equal(map.counts.chapters, map.chapters.length);
+  assert.equal(map.counts.sections, map.sections.length);
+  const outputs = new Map(validation.files.map(fact => [fact.path, fact]));
+  assert.equal(outputs.size, validation.files.length);
+  const projectFact = filename => {
+    const fact = outputs.get(filename);
+    assert.ok(fact, 'D110: missing validated output ' + filename);
+    assert.ok(Number.isSafeInteger(fact.bytes) && fact.bytes > 0);
+    assert.match(fact.sha256, /^[a-f0-9]{64}$/);
+    return {...fact, path: base + filename};
+  };
+  const page = projectFact('index.en.html');
+  const resource = projectFact('learning-map.json');
+  assert.equal(mapBytes.length, resource.bytes);
+  assert.equal(hash(mapBytes), resource.sha256);
+  assert.ok(Array.isArray(map.limitations.en) && map.limitations.en.length > 0);
+  assert.ok(map.limitations.en.every(text => typeof text === 'string' && text.length > 0));
+  return [{
+    courseId: 'D110', contentLanguage: 'en', labelLanguage: 'en',
+    tool_id: 'd110.open_learner_hub.en', action_kind: 'course_reader',
+    href: 'backend/d110/index.en.html',
+    label: 'D110 · English study selection and source support',
+    scope: `${map.counts.units.toLocaleString('en-US')} native units, ${map.counts.practice_flags} exercise-marked units and ${map.counts.sections} reading sections; source identities and recorded support are preserved`,
+    limitations: structuredClone(map.limitations.en),
+    state: 'verified', primary: false, machine_data_is_learner_destination: false,
+    page, resource,
+    evidence: {path: base + 'validation.json', bytes: validationBytes.length, sha256: hash(validationBytes)},
+  }];
+}
 export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
   const tools = [];
   for (const role of ['A00', 'A10']) {
@@ -236,7 +284,7 @@ export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
       });
     }
   }
-  return tools;
+  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds)];
 }
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));

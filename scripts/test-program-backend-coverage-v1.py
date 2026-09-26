@@ -643,6 +643,22 @@ assert roles['D50']['dimensions']['reproducible_production'] == {
     'replay': 'unknown',
 }
 assert roles['D50']['dimensions']['educator']['unit_alignment'] == 'verified'
+assert roles['D110']['common_adapter']['status'] == 'verified'
+assert roles['D110']['common_adapter']['contract'] == '2.3.1'
+assert roles['D110']['learner']['relationship'] == 'central_selector_consumes_hash_bound_native_metadata_and_verified_html_routes'
+assert len(roles['D110']['learner']['tools']) == 1
+assert roles['D110']['learner']['tools'][0]['href'] == '../backend/d110/index.html'
+assert roles['D110']['dimensions']['curriculum']['unit_identity'] == 'verified'
+assert roles['D110']['educator']['status'] == 'verified'
+assert roles['D110']['educator']['unit_alignment'] == 'verified'
+assert {r['id'] for r in roles['D110']['educator']['resources']} >= {
+    'D110:educator-hub-v1', 'D110:educator-hub-en-v1'}
+# Selector use does not upgrade the pre-existing native production evidence.
+d110_capsule = next(row for row in inputs['capsules'] if row['course_id'] == 'D110')
+assert roles['D110']['dimensions']['reproducible_production'] == {
+    'build': d110_capsule['layers']['production']['build_status'],
+    'replay': d110_capsule['layers']['production']['deterministic_replay_status'],
+}
 assert roles['D70']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D70']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D70']['learner']['tools']) == 1

@@ -1771,11 +1771,11 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 34);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 95);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1844);
-assert.equal(centralNavigation.summary.classified_html_documents, 1848);
-for (const course of ['d20','d50','d60']) {
+assert.equal(centralNavigation.summary.course_surface_roots, 35);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 99);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1848);
+assert.equal(centralNavigation.summary.classified_html_documents, 1852);
+for (const course of ['d20','d50','d60','d110']) {
   const surface=centralNavigation.course_surfaces.find(row=>row.root===`docs/backend/${course}`);
   assert.equal(surface.documents.length,4);
   assert.ok(surface.documents.every(row=>row.course_ids.includes(course.toUpperCase())));
