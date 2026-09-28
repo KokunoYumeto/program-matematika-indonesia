@@ -45,7 +45,30 @@ for (const fact of d110HostedValidation.files) {
     assert.equal(overlay.source_body_replay_exact,true);
   }
 }
+const clpTeacherValidation = JSON.parse(await readFile(resolve(project, 'docs/backend/clp/teacher-validation.json')));
+assert.equal(clpTeacherValidation.schema, 'clp-teacher-hosted/1');
+assert.equal(clpTeacherValidation.state, 'pass');
+assert.deepEqual(clpTeacherValidation.course_counts, {B20:695,B30:596,B50:497,B60:410});
+assert.deepEqual(clpTeacherValidation.precise_target_exercise_alignment, {B20:false,B30:true,B50:true,B60:true});
+const clpTeacherFiles = [...clpTeacherValidation.files.map(row => row.path), 'teacher-validation.json'];
+assert.equal(clpTeacherFiles.length, 17);
+assert.equal(new Set(clpTeacherFiles).size, 17);
+for (const row of clpTeacherValidation.files) {
+  assert.match(row.path, /^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);
+  assert.ok(!row.path.includes('..'));
+  const path='docs/backend/clp/'+row.path;
+  const bytes=await readFile(resolve(project,path));
+  if(bytes.length!==row.bytes || sha256(bytes)!==row.sha256) {
+    assert.ok(row.path.endsWith('.html'),'Non-HTML CLP planner identity drift');
+    const overlay=d110NavigationOverlay.files.find(f=>f.document===path);
+    assert.ok(overlay,'CLP planner navigation overlay missing');
+    assert.deepEqual(overlay.source_body,{...row,path});
+    assert.deepEqual(overlay.hosted_surface,identity(path,bytes));
+    assert.equal(overlay.source_body_replay_exact,true);
+  }
+}
 const logicalFiles = [
+  ...clpTeacherFiles.map(path => 'backend/clp/' + path),
   ...d110DeliveryFiles.map(path => 'backend/d110/' + path),
   ...d50DeliveryFiles.map(path => 'backend/d50/' + path),
   ...['B10.html','B10-en.html','B10-pengajar.html','B10-pengajar-en.html','b10.css','b10-controls.js','b10-model.js','b10-ui.js','data/model.json','learning-map.json','source-manifest.json','manifest.json','validation.json','package.json','B10-selection-offline.zip'].map(p=>'backend/b10/'+p),
@@ -459,7 +482,12 @@ for(const path of ['backend/a10/A10.html','backend/a10/A10-en.html','backend/a10
   assert.ok(!page.includes('href="../data/'));
   assert.ok(page.includes('id="a10-data"'));
 }
-assert.equal(rows.filter((row) => row.layers.educator.features.length || row.layers.educator.resources.length).length, 36);
+// Declared material, verified material and precise unit alignment are distinct.
+// C130 declares features without verified resources; B20's planner is verified
+// but its translated exercise mapping remains file-level only.
+assert.deepEqual(sortedIds(rows.filter(row => !row.layers.educator.features.length && !row.layers.educator.resources.length).map(row => row.course_id)), ['C30', 'C40', 'C80']);
+assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.status !== 'verified').map(row => row.course_id)), sortedIds(['C30', 'C40', 'C80', 'C130']));
+assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), sortedIds(['B20', 'C30', 'C40', 'C80', 'C130']));
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -590,8 +618,8 @@ assert.equal(rows.filter((row) => row.learner_directed && row.open_access_policy
 for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityToolsByCourse[row.course_id] ?? [], `${row.course_id}: public capsule learner-tool drift.`);
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
-assert.equal(Object.keys(authorityToolsByCourse).length, 36);
-assert.equal(authorityToolIds.length, 47);
+assert.deepEqual(sortedIds(Object.keys(authorityToolsByCourse)), sortedIds(rows.map(row => row.course_id)));
+assert.equal(authorityToolIds.length, 51);
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
     [{tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
@@ -628,8 +656,8 @@ assert.equal(validation.state, 'pass');
 assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
-assert.equal(validation.checks.learner_tool_course_count, 36);
-assert.equal(validation.checks.learner_tool_count, 47);
+assert.equal(validation.checks.learner_tool_course_count, 40);
+assert.equal(validation.checks.learner_tool_count, 51);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 
@@ -1930,7 +1958,10 @@ const receipt = {
     prerequisite_dag_visited: 40,
     published_rows: 40,
     production_rows: 0,
-    educator_rows: 35,
+    educator_rows: rows.filter(row=>row.layers.educator.resources.length>0).length,
+    declared_educator_rows: rows.filter(row=>row.layers.educator.features.length || row.layers.educator.resources.length).length,
+    verified_educator_rows: rows.filter(row=>row.layers.educator.status==='verified').length,
+    verified_educator_alignment_rows: rows.filter(row=>row.layers.educator.unit_alignment_status==='verified').length,
     semantic_adapter_rows: expectedLiveAdapterRoles.length + expectedCapabilityAdapterRoles.length,
     semantic_adapter_packages: clpSuccessorIndex.packages.length + expectedCapabilityPackageCount,
     contract_2_3_1_roles: expectedLiveAdapterRoles.length,

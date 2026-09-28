@@ -16,6 +16,10 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
   : value && typeof value === 'object'
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
+  { name: 'clp1_file_alignment_cannot_be_promoted', id: 'B20', mutate: row=>{row.layers.educator.unit_alignment_status='verified';}, error: /native status needs capability-specific evidence/ },
+  { name: 'clp2_planner_cannot_be_removed', id: 'B30', mutate: row=>{row.layers.learner.tools=[];}, error: /learner tools drift from authority/ },
+  { name: 'clp3_paired_formats_do_not_erase_teacher_binding', id: 'B50', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },
+  { name: 'clp4_teacher_identity_cannot_drift', id: 'B60', mutate: row=>{row.layers.educator.resources.find(r=>r.id==='B60:clp-teacher-en').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'd110_learner_tool_cannot_be_removed', id: 'D110', mutate: row=>{row.layers.learner.tools=[];}, error: /learner tools drift from authority/ },
   { name: 'd110_teacher_resource_cannot_be_removed', id: 'D110', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },
   { name: 'd110_teacher_hash_cannot_drift', id: 'D110', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='D110:educator-hub-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },

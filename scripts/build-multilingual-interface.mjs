@@ -40,6 +40,8 @@ if (!openCoursesHub || openCoursesHub.public_url !== 'https://kokunoyumeto.githu
 }
 // A separate English site: the link names its content language for every interface locale.
 const openCoursesLink = locale => '<a data-open-courses-link="v1" href="' + openCoursesHub.public_url + '" hreflang="en">' + escapeMarkup(openCoursesHub.labels[locale]) + '</a>';
+// Additive starter, not a fully translated forty-course interface locale.
+const chineseStarterLink = '<a data-chinese-starter="v1" href="' + siteOrigin + 'zh/" lang="zh-Hans-CN" hreflang="zh-Hans-CN">中文（起步版）</a>';
 if (centralNavigationContract.schema !== 'central-reader-navigation-v1' || centralNavigationOverlay.schema !== 'central-course-surface-navigation-overlay-v1' || centralNavigationOverlay.status !== 'pass') {
   throw new Error('Central hosted-surface authority is incomplete');
 }
@@ -120,6 +122,21 @@ const capabilityRuntimeTools = admittedCapabilityTools.map((tool) => ({
   tool_id: tool.tool_id,
 }));
 const capabilityRuntime = 'const capabilityTools = ' + JSON.stringify(capabilityRuntimeTools) + ';';
+// Lossless tuple encoding avoids repeating the same origin, path and field names
+// for every offline identity. Keep the complete online evidence module unchanged.
+const hostedIdentityTuples = Object.entries(hostedSurfaceIdentities).map(([url, identity]) => {
+  const {sourceBody, hostedSurface} = identity;
+  if (!url.startsWith(siteOrigin)
+      || Object.keys(identity).sort().join(',') !== 'hostedSurface,sourceBody'
+      || [sourceBody, hostedSurface].some(row => Object.keys(row).sort().join(',') !== 'bytes,path,sha256')
+      || sourceBody.path !== hostedSurface.path) {
+    throw new Error('Hosted identity shape changed; inspect before compacting: ' + url);
+  }
+  return [url.slice(siteOrigin.length), sourceBody.path, sourceBody.bytes, sourceBody.sha256, hostedSurface.bytes, hostedSurface.sha256];
+});
+const hostedIdentityRuntime = 'const hostedSurfaceIdentities = Object.freeze(Object.fromEntries('
+  + JSON.stringify(hostedIdentityTuples)
+  + '.map(([url,path,sb,sh,hb,hh])=>[siteOrigin+url,{sourceBody:{bytes:sb,path,sha256:sh},hostedSurface:{bytes:hb,path,sha256:hh}}])));';
 const localeSource = await read('docs/interface/locales.js');
 // Keep these developer-only header notes in source, not in every offline page.
 // No data, runtime code, rights notice or learner text is removed.
@@ -132,7 +149,7 @@ const sources = [
   'const authorityCourses = ' + JSON.stringify(interfaceCourses) + ';\nconst topics = ' + JSON.stringify(interfaceTopics) + ';\nconst materializeLiveCourses = rows => rows;',
   await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
   await read('docs/interface/central-hosted-readers.js'),
-  await read('docs/learner-state.js'), localeRuntime, await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), await read(hostedSurfaceIdentityModulePath), await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
+  await read('docs/learner-state.js'), localeRuntime, await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), hostedIdentityRuntime, await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
@@ -171,7 +188,7 @@ function renderDocument(locale, offline, paired = false) {
     + '\n</head>\n<body>\n<a class="skip-link" href="#katalog">' + t.skip + '</a>'
     + '<header class="site-header"><div class="header-inner"><a class="brand" href="#top">' + esc(t.shortTitle) + '</a>'
     + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + libraryLink(locale) + openCoursesLink(locale) + '</nav>'
-    + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + '</nav></div></header>'
+    + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + chineseStarterLink + '</nav></div></header>'
     + '<main id="top"><section class="intro"><h1>' + esc(t.title) + '</h1><p>' + esc(t.description) + '</p></section>'
     + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://doi.org/10.5281/zenodo.22059707">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
     + '<p class="footnote">' + (paired ? t.pairedHelp : t.standaloneHelp) + '</p>'
@@ -222,7 +239,7 @@ const rootLocaleLinks = supportedLocales.map((locale) => {
 const rootLocalePattern = new RegExp(rootLocaleStart + '[\\s\\S]*?' + rootLocaleEnd);
 if (!rootLocalePattern.test(rootIndexSource)) throw new Error('Root locale chooser markers are missing');
 const rootLibraryLink = '      <a data-library-link="v1" href="' + libraryHub.public_url + '">Perpustakaan / Library</a>';
-const rootIndexTarget = rootIndexSource.replace(rootLocalePattern, rootLocaleStart + '\n' + rootLocaleLinks + '\n' + rootLibraryLink + '\n      ' + rootLocaleEnd);
+const rootIndexTarget = rootIndexSource.replace(rootLocalePattern, rootLocaleStart + '\n' + rootLocaleLinks + '\n      ' + chineseStarterLink + '\n' + rootLibraryLink + '\n      ' + rootLocaleEnd);
 await writeFile(rootIndexPath, rootIndexTarget, 'utf8');
 const rootLocaleChooser = {
   path: 'docs/index.html',

@@ -17,6 +17,8 @@ INPUTS = {
     'published': 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
     'clpRoutes': 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json',
     'clpView': 'docs/backend/clp/validation.json',
+    'clpTeacher': 'docs/backend/clp/teacher-validation.json',
+    'clpTeacherTests': 'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json',
     'a10Integration': 'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
     'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -505,12 +507,18 @@ clp_route_identity = {
 for role in ('B20', 'B30', 'B50', 'B60'):
     assert roles[role]['common_adapter']['contract'] == '2.3.1'
     assert roles[role]['learner']['relationship'] == (
-        'central_view_consumes_verified_route_projection_'
+        'central_planner_consumes_native_exercise_metadata_'
         'pdf_runtime_adapter_consumption_not_claimed'
     )
-    assert len(roles[role]['learner']['tools']) == 1
-    assert roles[role]['learner']['tools'][0]['href'] == '../backend/clp/' + role + '.html'
-    assert roles[role]['dimensions']['learner']['central_tools'] == 1
+    assert len(roles[role]['learner']['tools']) == 2
+    assert {t['href'] for t in roles[role]['learner']['tools']} == {
+        '../backend/clp/' + role + '.html', '../backend/clp/' + role + '.teacher.html'}
+    assert roles[role]['dimensions']['learner']['central_tools'] == 2
+    assert roles[role]['educator']['unit_alignment'] == ('available_unverified' if role == 'B20' else 'verified')
+    assert roles[role]['educator']['assignment_exercises'] == {'B20': 695, 'B30': 596, 'B50': 497, 'B60': 410}[role]
+    assert roles[role]['educator']['alignment_scope'] == (
+        'source_exercise_identity_and_translated_file_only' if role == 'B20'
+        else 'source_and_target_structural_exercise_identity')
     same_locator = [
         row for row in roles[role]['common_adapter']['local_evidence']
         if row.get('locator') == clp_route_path
@@ -892,6 +900,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('missing_public_packet', 'published', lambda value: value['packages'].clear()),
         ('clp_route_count', 'clpRoutes', lambda value: value['summary'].update(action_count=6)),
         ('clp_view_not_pass', 'clpView', lambda value: value.update(state='fail')),
+        ('clp_teacher_false_alignment', 'clpTeacher', lambda value: value['precise_target_exercise_alignment'].update(B20=True)),
+        ('clp_teacher_double_format_count', 'clpTeacher', lambda value: value['course_counts'].update(B50=994)),
+        ('clp_teacher_test_not_pass', 'clpTeacherTests', lambda value: value.update(state='fail')),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
         ('a10_nonanonymous', 'a10Integration', lambda value: value.update(anonymous=False)),

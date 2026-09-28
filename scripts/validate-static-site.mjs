@@ -1318,9 +1318,11 @@ const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, {
 // offline/closure budget.
 // A00 adds one explicit concept/teacher tool with page, model and QA hashes.
 // The current bilingual/Library entry measures 214,089 raw bytes. Reserve a
-// further 2 KB for explicit navigation; retain the existing compressed budget.
+// further 2 KB for explicit navigation. The additive Chinese chooser raises
+// the observed gzip size from 53,955 to 54,030 bytes; reserve 256 bytes of
+// compressed navigation headroom without removing any existing content.
 assert.ok(shellRawBytes <= 216_000, `Shell melewati 216.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 54_000, `Shell gzip melewati 54.000 byte: ${shellGzipBytes}.`);
+assert.ok(shellGzipBytes <= 54_256, `Shell gzip melewati 54.256 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),
@@ -1772,9 +1774,22 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 35);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 99);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1848);
-assert.equal(centralNavigation.summary.classified_html_documents, 1852);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 107);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1856);
+assert.equal(centralNavigation.summary.classified_html_documents, 1861);
+const clpSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/clp');
+assert.deepEqual(clpSurface.documents.map(row => row.path).sort(), [
+  'CLP.html', ...['B20','B30','B50','B60'].flatMap(role => [role+'.html',role+'.teacher.html',role+'.teacher.en.html']),
+].sort());
+for (const role of ['B20','B30','B50','B60']) {
+  for (const [suffix, locale] of [['teacher.html','id'],['teacher.en.html','en']]) {
+    const page = clpSurface.documents.find(row => row.path === role+'.'+suffix);
+    assert.equal(page.locale, locale);
+    assert.deepEqual(page.course_ids, [role]);
+    assert.ok(page.contents_paths.includes(role+'.html'));
+    assert.ok(page.contents_paths.includes(role+(locale==='id'?'.teacher.en.html':'.teacher.html')));
+  }
+}
 for (const course of ['d20','d50','d60','d110']) {
   const surface=centralNavigation.course_surfaces.find(row=>row.root===`docs/backend/${course}`);
   assert.equal(surface.documents.length,4);

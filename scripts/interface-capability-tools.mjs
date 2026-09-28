@@ -14,9 +14,14 @@ export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role =
   ...['manifest.json', 'validation.json'].map(file => `docs/backend/${role}/${file}`),
   ...['-en.html', '-pengajar-en.html'].map(suffix =>
     `backend/course-capsule-v1/adapters/${role === 'a00' ? 'a00-concept-teacher-v1' : 'a10-capability-v1'}/views/${role.toUpperCase()}${suffix}`),
-]), 'docs/backend/d110/validation.json', 'docs/backend/d110/learning-map.json'];
+]), 'docs/backend/d110/validation.json', 'docs/backend/d110/learning-map.json',
+  'docs/backend/clp/teacher-validation.json', ...['B20','B30','B50','B60'].map(r=>`docs/backend/clp/${r}.teacher.json`)];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
+  'b20.clp_assignment_planner':['B20','reference','backend/clp/B20.teacher.html'],
+  'b30.clp_assignment_planner':['B30','reference','backend/clp/B30.teacher.html'],
+  'b50.clp_assignment_planner':['B50','reference','backend/clp/B50.teacher.html'],
+  'b60.clp_assignment_planner':['B60','reference','backend/clp/B60.teacher.html'],
   'a10.open_learner_hub':['A10','course_reader','backend/a10/A10.html'],
   'a20.open_learner_hub':['A20','course_reader','backend/a20/A20.html'],
   'a30.open_learner_hub':['A30','course_reader','backend/a30/A30.html'],
@@ -67,7 +72,8 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.equal(tool.primary, false);
     assert.equal(tool.machine_data_is_learner_destination, false);
     assert.ok(tool.label && tool.scope && tool.limitations.length);
-    assert.match(tool.href, /^backend\/[a-z0-9-]+\/[a-zA-Z0-9-]+\.html$/);
+    assert.match(tool.href, /^backend\/[a-z0-9-]+\/[a-zA-Z0-9.-]+\.html$/);
+    assert.ok(!tool.href.includes('..'));
     assert.equal(tool.page.path, 'docs/'+tool.href);
     for (const fact of [tool.page, tool.resource, tool.evidence]) {
       assert.match(fact.path, /^docs\/backend\/[a-z0-9-]+\/[a-zA-Z0-9.-]+$/);
@@ -233,6 +239,30 @@ export function projectD110EnglishCapabilityTools(inputs, courseIds) {
     evidence: {path: base + 'validation.json', bytes: validationBytes.length, sha256: hash(validationBytes)},
   }];
 }
+export function projectClpEnglishTeacherTools(inputs, courseIds) {
+  const base='docs/backend/clp/',bytes=inputs[base+'teacher-validation.json'];
+  const v=JSON.parse(bytes);
+  assert.equal(v.schema,'clp-teacher-hosted/1');assert.equal(v.state,'pass');
+  assert.equal(v.source_translation_created,false);assert.equal(v.book_prose_copied,false);
+  assert.deepEqual(v.interface_locales,['id','en']);
+  assert.deepEqual(v.course_counts,{B20:695,B30:596,B50:497,B60:410});
+  assert.deepEqual(v.precise_target_exercise_alignment,{B20:false,B30:true,B50:true,B60:true});
+  const files=new Map(v.files.map(f=>[f.path,f]));assert.equal(files.size,v.files.length);
+  return ['B20','B30','B50','B60'].map(role=>{
+    assert.ok(courseIds.includes(role));
+    const file=role+'.teacher.json',data=inputs[base+file],map=JSON.parse(data),bound=files.get(file);
+    assert.ok(bound);assert.equal(bound.bytes,data.length);assert.equal(bound.sha256,hash(data));
+    assert.equal(map.schema,'clp-teacher-selection/1');assert.equal(map.course_id,role);
+    assert.equal(map.questions.length,v.course_counts[role]);assert.equal(map.exercise_count,map.questions.length);
+    const page=files.get(role+'.teacher.en.html');assert.ok(page);assert.ok(map.limitations.en.length>100);
+    assert.equal(page.path,role+'.teacher.en.html');
+    assert.ok(Number.isSafeInteger(page.bytes)&&page.bytes>0);assert.match(page.sha256,/^[a-f0-9]{64}$/);
+    assert.equal(new Set(map.questions.map(q=>q.id)).size,map.questions.length);
+    return {courseId:role,contentLanguage:'en',labelLanguage:'en',tool_id:role.toLowerCase()+'.clp_assignment_planner.en',action_kind:'reference',href:'backend/clp/'+page.path,
+      label:role+' · English CLP assignment planner',scope:`${map.exercise_count} exercises from the frozen Indonesian-edition source; original identities, format distinctions and recorded support`,limitations:[map.limitations.en],state:'verified',primary:false,machine_data_is_learner_destination:false,
+      page:{...page,path:base+page.path},resource:{...bound,path:base+file},evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}};
+  });
+}
 export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
   const tools = [];
   for (const role of ['A00', 'A10']) {
@@ -284,7 +314,7 @@ export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
       });
     }
   }
-  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds)];
+  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds)];
 }
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));

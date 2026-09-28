@@ -15,6 +15,7 @@ import { finalEditions, finalEditionSource } from '../docs/interface/final-editi
 import { validateFinalEditions, finalEditionInput } from './interface-final-editions.mjs';
 import {capabilityTools, capabilityToolSource, capabilityToolSupplementSources} from '../docs/interface/capability-tools.js';
 import {supplementalReaders} from '../docs/interface/supplemental-readers.js';
+import {hostedSurfaceIdentities} from '../docs/interface/hosted-surface-identities.js';
 import {
   projectCapabilityTools,
   projectClpCapabilityTools,
@@ -249,13 +250,38 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,5);
+assert.equal(existingEnglishProjected.length,9);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
-// Preserve the existing inventory while admitting the D110 language routes.
-assert.equal(capabilityTools.filter(tool=>tool.courseId!=='D110').length,49);
-assert.equal(capabilityTools.length,51);
+// Preserve every previous tool while adding four bilingual CLP planners.
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')).length,51);
+assert.equal(capabilityTools.length,59);
+for(const role of ['B20','B30','B50','B60']) {
+  const capsule=capsules.find(c=>c.course_id===role);
+  assert.equal(capsule.layers.curriculum.unit_identity_status,'verified');
+  assert.equal(capsule.layers.educator.unit_alignment_status,role==='B20'?'available_unverified':'verified');
+  for(const locale of ['id','en']) {
+    const href=`backend/clp/${role}.teacher${locale==='en'?'.en':''}.html`;
+    const tool=capabilityTools.find(t=>t.tool_id===role.toLowerCase()+'.clp_assignment_planner'+(locale==='en'?'.en':''));
+    assert.equal(tool.href,href);assert.equal(tool.contentLanguage,locale);
+    assert.equal(tool.primary,false);assert.equal(tool.machine_data_is_learner_destination,false);
+    assert.ok(resourceBindings(interfaceCourses.find(c=>c.id===role),locale).some(r=>r.href===siteOrigin+href&&r.accessRole==='tool'));
+    assert.ok(capsule.layers.educator.resources.some(r=>r.id===role+':clp-teacher-'+locale&&r.status==='verified'));
+  }
+}
+for(const mutate of [
+  v=>{v.precise_target_exercise_alignment.B20=true;},
+  v=>{v.files=v.files.filter(f=>f.path!=='B30.teacher.en.html');},
+  v=>{v.book_prose_copied=true;},
+  v=>{v.course_counts.B50=994;},
+  v=>{v.interface_locales=['id'];},
+  v=>{v.files.find(f=>f.path==='B60.teacher.json').sha256='0'.repeat(64);},
+]) {
+  const changed={...existingEnglishInputs},key='docs/backend/clp/teacher-validation.json';
+  const value=JSON.parse(changed[key]);mutate(value);changed[key]=Buffer.from(JSON.stringify(value));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
 const d110Capability=capabilityTools.find(tool=>tool.tool_id==='d110.open_learner_hub');
 assert.equal(d110Capability.courseId,'D110');
 assert.equal(d110Capability.href,'backend/d110/index.html');
@@ -897,6 +923,7 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     assert.ok(Buffer.byteLength(html) < 536 * 1024, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 128 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
+    assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');
     // Compact payload must preserve all effective data, not just course counts.
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(interfaceCourses)',run.context)),JSON.parse(JSON.stringify(interfaceCourses)));
     for (const c of interfaceCourses) {

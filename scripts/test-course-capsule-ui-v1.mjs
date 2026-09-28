@@ -580,7 +580,14 @@ for (const [name, fetch] of [
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
 // A00 and B10 add verified selection tools, not official teacher manuals.
-assert.deepEqual(educatorCounts, { verified: 32, available_unverified: 4, in_progress: 0, unknown: 4 });
+assert.deepEqual(educatorCounts, { verified: 36, available_unverified: 1, in_progress: 0, unknown: 3 });
+assert.deepEqual(courses.filter(c=>c.layers.educator.status==='available_unverified').map(c=>c.course_id),['C130']);
+assert.deepEqual(courses.filter(c=>c.layers.educator.status==='unknown').map(c=>c.course_id),['C30','C40','C80']);
+for(const role of ['B20','B30','B50','B60']) {
+  const row=courses.find(c=>c.course_id===role);
+  assert.equal(row.layers.educator.unit_alignment_status,role==='B20'?'available_unverified':'verified');
+  assert.ok(row.layers.learner.tools.some(t=>t.href===`backend/clp/${role}.teacher.html`));
+}
 const d110Course=courses.find(row=>row.course_id==='D110');
 assert.equal(d110Course.layers.curriculum.unit_identity_status,'verified');
 assert.equal(d110Course.layers.educator.unit_alignment_status,'verified');

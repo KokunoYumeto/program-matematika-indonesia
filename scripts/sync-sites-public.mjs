@@ -12,6 +12,7 @@ const target = resolve(publicRoot, 'hub');
 assert.ok(target.startsWith(`${publicRoot}${sep}`), 'Target sinkronisasi keluar dari public/.');
 const approvedInterfaceRoots = new Set([
   'interface',
+  'zh', // Chinese starter, not a complete supported interface locale.
   ...Object.values(localeMetadata).map(({ routeSegment }) => routeSegment),
 ]);
 const libraryAuthority=JSON.parse(await readFile(resolve(project,'backend/authority/library-handoff-v1.json'),'utf8'));
