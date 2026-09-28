@@ -17,6 +17,11 @@ function publication(value) {
 }
 
 export const liveCoursePublications = Object.freeze({
+  C80: publication({
+    edition: 'https://github.com/KokunoYumeto/OpenLogic-id/releases/download/id-olp-0722-20260814/08_OPENLOGIC_id_STANDALONE_READER_ALL_722_20260905.pdf',
+    zenodo: 'https://doi.org/10.5281/zenodo.21932786',
+    note: 'PDF gabungan: 1.255 halaman (1.116 utama + 139 suplemen), 642 + 80 unit. Kedua komponen cocok halaman demi halaman; bukan audit terjemahan. Pemetaan latihan belum selesai.',
+  }),
   A10: publication({
     learner: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A10/reader/index.html',
     reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/id-ID/courses/A10/reader/index.html',

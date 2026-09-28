@@ -64,8 +64,8 @@ const expected = new Map([
   [paths.judsonChapters, { bytes: 33323, sha256: '5e806d9866a619e381d37058288aa95e6af841252f66d9106aa7d5a265a11200' }],
   [paths.openLogicAdmission, { bytes: 13623, sha256: '2a86c41e92f9c9ef7e215448967998504bd4c16e7ba8e680d795d155aebef9a7' }],
   [paths.openLogicManifest, { bytes: 22315, sha256: '01974670c902a50d3e0166214f665286e0030a270a781a56413976be52ca4b01' }],
-  [paths.openLogicRoute, { bytes: 2485, sha256: 'e4a859bae966c0cc6272a814273c882b79cb7136f83ae83c147559c530921414' }],
-  [paths.openLogicValidation, { bytes: 2867, sha256: 'bdb7b1d7d2c8803dae9d3bc2ef83701abeacb18f306fb324a2b3f376d1c97efc' }],
+  [paths.openLogicRoute, { bytes: 4052, sha256: '591ae9d85fdf03bbb24b78663fde165a85c24b1155fdb8671f8632b767edb2fa' }],
+  [paths.openLogicValidation, { bytes: 3888, sha256: 'e2f8af1970737a0b2f179bd4364152c41eb04caad2d4a01b157ea8ef6ab825d0' }],
   [paths.c130Admission, { bytes: 4889, sha256: 'b311ab7d2a6a86af40174d051fbd8ef273a8536b34f0af77b76e5a1ce9b3397e' }],
   [paths.c130Manifest, { bytes: 22488, sha256: 'cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239' }],
   [paths.c130Route, { bytes: 9930, sha256: '8114562c963295577d8f845719061febed5993b5cbbe5fc4beb8ba235d7fd709' }],
@@ -311,7 +311,10 @@ assert.equal(openLogicManifest.package_id, openLogicAdmission.package_id);
 assert.equal(openLogicManifest.dataset_id, openLogicAdmission.dataset_id);
 assert.equal(openLogicManifest.extension_id, openLogicAdmission.extension_id);
 assert.deepEqual(openLogicAdmission.archive, openLogicRoute.adapter.archive);
-assert.equal(openLogicRoute.primary_learner_action.pages, 1116);
+assert.equal(openLogicRoute.primary_learner_action.pages, 1255);
+assert.equal(openLogicRoute.predecessor_learner_action.pages, 1116);
+assert.equal(openLogicRoute.current_reader_evidence.ordered_page_text_equal, 1255);
+assert.equal(openLogicRoute.current_reader_evidence.exercise_alignment_complete, false);
 assert.equal(openLogicAdmission.semantic_counts.units, 722);
 assert.equal(openLogicAdmission.semantic_counts.native_html_claimed, false);
 assert.equal(openLogicAdmission.semantic_counts.unit_or_page_anchors_claimed, false);
@@ -367,7 +370,7 @@ const openLogicPackage = {
   },
   dataset_id: openLogicManifest.dataset_id,
   extension_id: openLogicManifest.extension_id,
-  scope_note: 'Adapter mempertahankan 722 identitas OLP dan menautkan PDF Indonesia 1.116 halaman sebagai permukaan belajar utama; tidak ada HTML atau jangkar turunan yang ditebak.',
+  scope_note: 'Paket adapter beku mempertahankan 722 identitas OLP dan catatan pembaca terdahulu 1.116 halaman. Rute pelajar saat ini menautkan PDF gabungan 1.255 halaman, termasuk 80 unit suplemen; tidak ada HTML atau jangkar turunan yang ditebak.',
 };
 packages.push(openLogicPackage);
 packageByRole.set('C80', openLogicPackage);

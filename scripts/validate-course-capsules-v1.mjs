@@ -816,11 +816,11 @@ assert.equal(c80Adapter.mapping_scope, 'reversible_native_course_route_adapter')
 assert.deepEqual(c80Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
 assert.equal(c80Adapter.evidence[0].sha256, '01974670c902a50d3e0166214f665286e0030a270a781a56413976be52ca4b01');
 assert.equal(c80Adapter.evidence[1].sha256, '2a86c41e92f9c9ef7e215448967998504bd4c16e7ba8e680d795d155aebef9a7');
-assert.equal(c80Adapter.evidence[2].sha256, 'bdb7b1d7d2c8803dae9d3bc2ef83701abeacb18f306fb324a2b3f376d1c97efc');
+assert.equal(c80Adapter.evidence[2].sha256, 'e2f8af1970737a0b2f179bd4364152c41eb04caad2d4a01b157ea8ef6ab825d0');
 assert.equal(byId.C80.layers.learner.tools.length, 1);
 assert.equal(byId.C80.layers.learner.tools[0].href, 'backend/openlogic/C80.html');
 assert.equal(byId.C80.layers.learner.tools[0].primary, true);
-assert.equal(byId.C80.layers.learner.tools[0].resource.sha256, 'e4a859bae966c0cc6272a814273c882b79cb7136f83ae83c147559c530921414');
+assert.equal(byId.C80.layers.learner.tools[0].resource.sha256, '591ae9d85fdf03bbb24b78663fde165a85c24b1155fdb8671f8632b767edb2fa');
 const c130Adapter = byId.C130.layers.interoperability.semantic_adapter;
 assert.equal(c130Adapter.mapping_scope, 'reversible_native_course_route_adapter');
 assert.deepEqual(c130Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
