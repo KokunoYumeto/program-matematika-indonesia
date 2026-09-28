@@ -19,6 +19,8 @@ INPUTS = {
     'clpView': 'docs/backend/clp/validation.json',
     'clpTeacher': 'docs/backend/clp/teacher-validation.json',
     'clpTeacherTests': 'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json',
+    'judsonTeacher': 'docs/backend/judson/teacher-validation.json',
+    'judsonTeacherTests': 'backend/course-capsule-v1/adapters/judson-teacher-v1/tests.json',
     'a10Integration': 'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
     'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -499,6 +501,18 @@ assert roles['B40']['educator']['unit_alignment'] == 'verified'
 assert roles['B40']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['B40']['common_adapter']['zenodo_preservation'] == 'not_established'
 clp_route_path = INPUTS['clpRoutes']
+for role, count in [('C30', 610), ('C40', 303)]:
+    row = roles[role]
+    assert row['learner']['relationship'] == 'central_planner_consumes_native_exercise_and_support_metadata_with_verified_html_routes'
+    assert row['educator']['unit_alignment'] == row['educator']['status'] == 'verified'
+    assert row['educator']['assignment_exercises'] == count
+    assert row['educator']['alignment_scope'] == 'source_and_target_structural_exercise_identity'
+    assert row['educator']['supplied_solutions'] == 0
+    assert row['educator']['response_slots_are_answers'] is False
+    assert {r['id'] for r in row['educator']['resources']} >= {role + ':judson-teacher-id', role + ':judson-teacher-en'}
+    assert {t['href'] for t in row['learner']['tools']} == {'../backend/judson/' + role + '.html', '../backend/judson/' + role + '.teacher.html'}
+assert inputs['judsonTeacher']['primary_reader_counts'] == {'web': 814, 'sage': 99}
+assert inputs['judsonTeacher']['support_counts'] == {'supplied_hints': 213, 'empty_response_slots': 116, 'supplied_responses': 0, 'supplied_solutions': 0}
 clp_route_bytes = (ROOT / clp_route_path).read_bytes()
 clp_route_identity = {
     'bytes': len(clp_route_bytes),
@@ -903,6 +917,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('clp_teacher_false_alignment', 'clpTeacher', lambda value: value['precise_target_exercise_alignment'].update(B20=True)),
         ('clp_teacher_double_format_count', 'clpTeacher', lambda value: value['course_counts'].update(B50=994)),
         ('clp_teacher_test_not_pass', 'clpTeacherTests', lambda value: value.update(state='fail')),
+        ('judson_empty_slots_are_not_answers', 'judsonTeacher', lambda value: value['support_counts'].update(supplied_responses=116)),
+        ('judson_sage_exercises_not_lost', 'judsonTeacher', lambda value: value['primary_reader_counts'].update(sage=0)),
+        ('judson_native_check_required', 'judsonTeacherTests', lambda value: value['native_checks'].update(source_archive_rehashed=False)),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
         ('a10_nonanonymous', 'a10Integration', lambda value: value.update(anonymous=False)),

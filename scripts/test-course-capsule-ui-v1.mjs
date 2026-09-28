@@ -580,9 +580,15 @@ for (const [name, fetch] of [
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
 // A00 and B10 add verified selection tools, not official teacher manuals.
-assert.deepEqual(educatorCounts, { verified: 36, available_unverified: 1, in_progress: 0, unknown: 3 });
+assert.deepEqual(educatorCounts, { verified: 38, available_unverified: 1, in_progress: 0, unknown: 1 });
 assert.deepEqual(courses.filter(c=>c.layers.educator.status==='available_unverified').map(c=>c.course_id),['C130']);
-assert.deepEqual(courses.filter(c=>c.layers.educator.status==='unknown').map(c=>c.course_id),['C30','C40','C80']);
+assert.deepEqual(courses.filter(c=>c.layers.educator.status==='unknown').map(c=>c.course_id),['C80']);
+for(const role of ['C30','C40']) {
+  const row=courses.find(c=>c.course_id===role);
+  assert.equal(row.layers.educator.unit_alignment_status,'verified');
+  assert.ok(row.layers.learner.tools.some(t=>t.href===`backend/judson/${role}.teacher.html`));
+  for(const lang of ['id','en'])assert.ok(row.layers.educator.resources.some(r=>r.id===role+':judson-teacher-'+lang&&r.status==='verified'));
+}
 for(const role of ['B20','B30','B50','B60']) {
   const row=courses.find(c=>c.course_id===role);
   assert.equal(row.layers.educator.unit_alignment_status,role==='B20'?'available_unverified':'verified');

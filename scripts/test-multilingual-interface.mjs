@@ -250,13 +250,37 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,9);
+assert.equal(existingEnglishProjected.length,11);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
 // Preserve every previous tool while adding four bilingual CLP planners.
-assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')).length,51);
-assert.equal(capabilityTools.length,59);
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')).length,51);
+assert.equal(capabilityTools.length,63);
+for(const role of ['C30','C40']) {
+  const capsule=capsules.find(c=>c.course_id===role);
+  assert.equal(capsule.layers.curriculum.unit_identity_status,'verified');
+  assert.equal(capsule.layers.educator.unit_alignment_status,'verified');
+  for(const locale of ['id','en']) {
+    const href=`backend/judson/${role}.teacher${locale==='en'?'.en':''}.html`;
+    const tool=capabilityTools.find(t=>t.tool_id===role.toLowerCase()+'.judson_assignment_planner'+(locale==='en'?'.en':''));
+    assert.equal(tool.href,href);assert.equal(tool.contentLanguage,locale);
+    assert.equal(tool.primary,false);assert.equal(tool.machine_data_is_learner_destination,false);
+    assert.ok(resourceBindings(interfaceCourses.find(c=>c.id===role),locale).some(r=>r.href===siteOrigin+href&&r.accessRole==='tool'));
+    assert.ok(capsule.layers.educator.resources.some(r=>r.id===role+':judson-teacher-'+locale&&r.status==='verified'));
+  }
+}
+for(const mutate of [
+  v=>{v.precise_target_exercise_alignment.C30=false;},
+  v=>{v.support_counts.supplied_responses=116;},
+  v=>{v.primary_reader_counts.sage=0;},
+  v=>{v.files=v.files.filter(f=>f.path!=='C40.teacher.en.html');},
+  v=>{v.files.find(f=>f.path==='C30.teacher.json').sha256='0'.repeat(64);},
+]) {
+  const changed={...existingEnglishInputs},key='docs/backend/judson/teacher-validation.json';
+  const value=JSON.parse(changed[key]);mutate(value);changed[key]=Buffer.from(JSON.stringify(value));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
 for(const role of ['B20','B30','B50','B60']) {
   const capsule=capsules.find(c=>c.course_id===role);
   assert.equal(capsule.layers.curriculum.unit_identity_status,'verified');

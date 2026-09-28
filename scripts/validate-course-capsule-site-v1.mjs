@@ -68,6 +68,27 @@ for (const row of clpTeacherValidation.files) {
   }
 }
 const logicalFiles = [
+  ...await (async()=>{
+    const v=JSON.parse(await readFile(resolve(project,'docs/backend/judson/teacher-validation.json')));
+    assert.equal(v.schema,'judson-teacher-hosted/1');assert.equal(v.state,'pass');
+    assert.deepEqual(v.course_counts,{C30:610,C40:303});
+    assert.deepEqual(v.support_counts,{supplied_hints:213,empty_response_slots:116,supplied_responses:0,supplied_solutions:0});
+    const files=[...v.files.map(f=>f.path),'teacher-validation.json'];
+    assert.equal(files.length,13);assert.equal(new Set(files).size,13);
+    for(const row of v.files){
+      assert.match(row.path,/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);assert.ok(!row.path.includes('..'));
+      const path='docs/backend/judson/'+row.path,bytes=await readFile(resolve(project,path));
+      if(bytes.length!==row.bytes||sha256(bytes)!==row.sha256){
+        assert.ok(row.path.endsWith('.html'),'Non-HTML Judson identity drift');
+        const overlay=d110NavigationOverlay.files.find(f=>f.document===path);
+        assert.ok(overlay,'Judson planner navigation overlay missing');
+        assert.deepEqual(overlay.source_body,{...row,path});
+        assert.deepEqual(overlay.hosted_surface,identity(path,bytes));
+        assert.equal(overlay.source_body_replay_exact,true);
+      }
+    }
+    return files.map(f=>'backend/judson/'+f);
+  })(),
   ...clpTeacherFiles.map(path => 'backend/clp/' + path),
   ...d110DeliveryFiles.map(path => 'backend/d110/' + path),
   ...d50DeliveryFiles.map(path => 'backend/d50/' + path),
@@ -485,9 +506,9 @@ for(const path of ['backend/a10/A10.html','backend/a10/A10-en.html','backend/a10
 // Declared material, verified material and precise unit alignment are distinct.
 // C130 declares features without verified resources; B20's planner is verified
 // but its translated exercise mapping remains file-level only.
-assert.deepEqual(sortedIds(rows.filter(row => !row.layers.educator.features.length && !row.layers.educator.resources.length).map(row => row.course_id)), ['C30', 'C40', 'C80']);
-assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.status !== 'verified').map(row => row.course_id)), sortedIds(['C30', 'C40', 'C80', 'C130']));
-assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), sortedIds(['B20', 'C30', 'C40', 'C80', 'C130']));
+assert.deepEqual(sortedIds(rows.filter(row => !row.layers.educator.features.length && !row.layers.educator.resources.length).map(row => row.course_id)), ['C80']);
+assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.status !== 'verified').map(row => row.course_id)), sortedIds(['C80', 'C130']));
+assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), sortedIds(['B20', 'C80', 'C130']));
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -619,7 +640,7 @@ for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityTool
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
 assert.deepEqual(sortedIds(Object.keys(authorityToolsByCourse)), sortedIds(rows.map(row => row.course_id)));
-assert.equal(authorityToolIds.length, 51);
+assert.equal(authorityToolIds.length, 53);
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
     [{tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
@@ -657,7 +678,7 @@ assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
 assert.equal(validation.checks.learner_tool_course_count, 40);
-assert.equal(validation.checks.learner_tool_count, 51);
+assert.equal(validation.checks.learner_tool_count, 53);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 
@@ -1885,8 +1906,8 @@ assert.equal(featureAdoption.snapshot_id, v23AdapterIndexV2.snapshot.snapshot_id
 assert.equal(comparisonEvidence.snapshot_id, v23AdapterIndexV2.snapshot.snapshot_id);
 assert.equal(snapshotV2Receipt.status, 'pass');
 assert.deepEqual(snapshotV2Receipt.summary, v23AdapterIndexV2.summary);
-assert.deepEqual(authorityToolsByCourse.C30.map(({ tool_id }) => tool_id), ['judson-c30-chapter-map-v1']);
-assert.deepEqual(authorityToolsByCourse.C40.map(({ tool_id }) => tool_id), ['judson-c40-chapter-map-v1']);
+assert.deepEqual(authorityToolsByCourse.C30.map(({ tool_id }) => tool_id).sort(), ['c30.judson_assignment_planner','judson-c30-chapter-map-v1']);
+assert.deepEqual(authorityToolsByCourse.C40.map(({ tool_id }) => tool_id).sort(), ['c40.judson_assignment_planner','judson-c40-chapter-map-v1']);
 assert.deepEqual(authorityToolsByCourse.C80.map(({ tool_id }) => tool_id), ['c80-openlogic-course-map-v1']);
 assert.deepEqual(authorityToolsByCourse.C130.map(({ tool_id }) => tool_id), ['c130-operations-research-course-map-v1']);
 assert.equal(openLogicValidation.state, 'pass');

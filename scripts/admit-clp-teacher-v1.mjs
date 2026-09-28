@@ -55,6 +55,7 @@ assert.equal(entry.documents.length,13);
 nav.summary.course_surface_html_documents=nav.course_surfaces.reduce((n,s)=>n+s.documents.length,0);
 nav.summary.classified_html_documents=nav.summary.reader_html_documents+nav.summary.gateway_html_documents+nav.summary.course_surface_html_documents+nav.summary.generic_html_documents;
 nav.summary.navigation_overlay_documents=nav.summary.reader_html_documents+nav.summary.gateway_html_documents+nav.summary.course_surface_html_documents+nav.generic_surfaces.filter(s=>s.navigation_required).length;
-assert.equal(nav.summary.course_surface_html_documents,107);
+assert.equal(nav.summary.course_surface_html_documents,111);
+assert.equal(nav.course_surfaces.find(s=>s.root==='docs/backend/judson').documents.length,6);
 await writeFile(resolve(root,navPath),JSON.stringify(nav,null,2)+'\n');
 console.log(JSON.stringify({state:'admitted-pending-publication',roles,precise_target_alignment_roles:roles.filter(r=>r!=='B20'),clp1_file_boundary_preserved:true}));

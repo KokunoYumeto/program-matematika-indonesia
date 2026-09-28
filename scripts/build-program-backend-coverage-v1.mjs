@@ -12,6 +12,8 @@ const sources={
   clpView:'docs/backend/clp/validation.json',
   clpTeacher:'docs/backend/clp/teacher-validation.json',
   clpTeacherTests:'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json',
+  judsonTeacher:'docs/backend/judson/teacher-validation.json',
+  judsonTeacherTests:'backend/course-capsule-v1/adapters/judson-teacher-v1/tests.json',
   a10Integration:'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
   a20:'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
   a30Manifest:'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -123,6 +125,15 @@ assert.equal(data.clpTeacherTests.native_exercises_individually_checked,2198);
 assert.deepEqual(data.clpTeacher.course_counts,{B20:695,B30:596,B50:497,B60:410});
 assert.deepEqual(data.clpTeacher.precise_target_exercise_alignment,{B20:false,B30:true,B50:true,B60:true});
 assert.deepEqual(data.clpTeacher.input_identity,data.clpTeacherTests.input_identity);
+assert.equal(data.judsonTeacher.schema,'judson-teacher-hosted/1');
+assert.equal(data.judsonTeacher.state,'pass');assert.equal(data.judsonTeacherTests.state,'pass');
+assert.deepEqual(data.judsonTeacher.course_counts,{C30:610,C40:303});
+assert.deepEqual(data.judsonTeacher.precise_target_exercise_alignment,{C30:true,C40:true});
+assert.deepEqual(data.judsonTeacher.support_counts,{supplied_hints:213,empty_response_slots:116,supplied_responses:0,supplied_solutions:0});
+assert.deepEqual(data.judsonTeacher.primary_reader_counts,{web:814,sage:99});
+assert.equal(data.judsonTeacher.verified_current_reader_anchors,913);
+assert.deepEqual(data.judsonTeacherTests.native_checks,{all_native_exercises:913,all_native_support_edges:329,all_source_target_subtrees:1242,source_archive_rehashed:true});
+assert.deepEqual(data.judsonTeacher.input_identity,data.judsonTeacherTests.input_identity);
 assert.deepEqual(data.clpView.source,{path:sources.clpRoutes,bytes:bytes.clpRoutes.length,sha256:sha256(bytes.clpRoutes)});
 assert.equal(new Set(data.capsules.map(row=>row.course_id)).size,40,'Duplicate course role.');
 assert.equal(data.a10Integration.schema,'combined-backend-increment-public-readback/1');
@@ -550,6 +561,8 @@ const rows=data.capsules.map(capsule=>{
       unit_identity:capsule.layers.curriculum.unit_identity_status,
       relationship:clpRoles.includes(role)
         ?'central_planner_consumes_native_exercise_metadata_pdf_runtime_adapter_consumption_not_claimed'
+        :['C30','C40'].includes(role)
+          ?'central_planner_consumes_native_exercise_and_support_metadata_with_verified_html_routes'
         :role==='A10' && capsule.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub')
           ?'central_navigator_consumes_native_metadata_projection_pdf_runtime_adapter_consumption_not_claimed'
         :['D50','D110'].includes(role) && capsule.layers.learner.tools.some(tool=>tool.tool_id===role.toLowerCase()+'.open_learner_hub')
@@ -558,7 +571,8 @@ const rows=data.capsules.map(capsule=>{
           ?'directly_consumes_adapter_outputs'
           :publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources,
-      ...(clpRoles.includes(role)?{assignment_exercises:data.clpTeacher.course_counts[role],alignment_scope:role==='B20'?'source_exercise_identity_and_translated_file_only':'source_and_target_structural_exercise_identity'}:{})},
+      ...(clpRoles.includes(role)?{assignment_exercises:data.clpTeacher.course_counts[role],alignment_scope:role==='B20'?'source_exercise_identity_and_translated_file_only':'source_and_target_structural_exercise_identity'}:{}),
+      ...(['C30','C40'].includes(role)?{assignment_exercises:data.judsonTeacher.course_counts[role],alignment_scope:'source_and_target_structural_exercise_identity',supplied_solutions:0,response_slots_are_answers:false}: {})},
     dimensions:{
       curriculum:{course_graph:capsule.layers.curriculum.status,unit_identity:capsule.layers.curriculum.unit_identity_status},
       source_translation_ledger:{ledger:capsule.layers.translation.ledger_status,corrections:capsule.layers.translation.corrections_status},
@@ -601,8 +615,8 @@ const summary={roles:40,native_families:33,locally_validated_adapter_roles:integ
   native_capability_parity_complete:nativeCapabilityParityVerifiedRoles===40,
   overall_program_backend_complete:commonExchangeLayerComplete&&nativeCapabilityParityVerifiedRoles===40&&rows.every(row=>row.whole_course_backend_completion==='verified')};
 assert.equal(summary.locally_validated_adapter_roles+summary.roles_without_validated_common_adapter,40);
-const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-27',scope:'Backend integration, not textbook translation progress.',
-  refresh_scope:'Bilingual CLP assignment planners consume 2,198 native exercise identities. B30/B50/B60 preserve structural source-target alignment; B20 remains translated-file alignment only. Existing D110 and other consumers are preserved. Unchanged native evidence retains its own earlier dates; this is not a fresh audit of all source textbooks.',
+const model={schema:'program-backend-coverage/1',recorded_date:'2026-09-28',scope:'Backend integration, not textbook translation progress.',
+  refresh_scope:'Bilingual Judson C30/C40 planners consume 913 source-target exercise identities and 329 support edges: 213 populated hints and 116 empty response slots, not answers. 99 Sage-only exercises remain accessible through their separate reader profile. Existing CLP planners preserve 2,198 exercise identities; B20 remains translated-file alignment only. Unchanged native evidence retains its own earlier dates; this is not a fresh audit of all source textbooks.',
   evidence_semantics:'Unknown means not proved by common-layer evidence, not absent native work. Common exchange-layer completion and native capability parity are reported separately. Frozen public readback is historical, not a fresh network recheck. A20 has an anonymous exact source-and-Pages readback over its integration commit. A30 has complete anonymous native GitHub/Zenodo release readback plus a central integration readback covering ten source/derived files and three changed Pages routes. A30, B95, and C140 adapter packets were preserved and anonymously read back in central v0.63.24. D30 is a direct locally validated zero-copy adapter whose GitHub evidence preserves the native repository, commit/tree, and anonymous reader readback; its central adapter publication is not inferred. D50 has a fresh exact GitHub release-asset readback and an exact adapter member inside the anonymously verified Zenodo successor navigator; it is not represented as a top-level Zenodo file.',
   evidence:Object.entries(sources).map(([key,path])=>({path,bytes:bytes[key].length,sha256:sha256(bytes[key])})),
   admission:{receipt:{path:sources.gapAdmission,bytes:bytes.gapAdmission.length,sha256:sha256(bytes.gapAdmission)},roles:gapRoles,public_embedding:gapPublicEmbedding},summary,roles:rows};

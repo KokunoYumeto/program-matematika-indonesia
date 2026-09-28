@@ -15,9 +15,12 @@ export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role =
   ...['-en.html', '-pengajar-en.html'].map(suffix =>
     `backend/course-capsule-v1/adapters/${role === 'a00' ? 'a00-concept-teacher-v1' : 'a10-capability-v1'}/views/${role.toUpperCase()}${suffix}`),
 ]), 'docs/backend/d110/validation.json', 'docs/backend/d110/learning-map.json',
-  'docs/backend/clp/teacher-validation.json', ...['B20','B30','B50','B60'].map(r=>`docs/backend/clp/${r}.teacher.json`)];
+  'docs/backend/clp/teacher-validation.json', ...['B20','B30','B50','B60'].map(r=>`docs/backend/clp/${r}.teacher.json`),
+  'docs/backend/judson/teacher-validation.json', ...['C30','C40'].map(r=>`docs/backend/judson/${r}.teacher.json`)];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
+  'c30.judson_assignment_planner':['C30','reference','backend/judson/C30.teacher.html'],
+  'c40.judson_assignment_planner':['C40','reference','backend/judson/C40.teacher.html'],
   'b20.clp_assignment_planner':['B20','reference','backend/clp/B20.teacher.html'],
   'b30.clp_assignment_planner':['B30','reference','backend/clp/B30.teacher.html'],
   'b50.clp_assignment_planner':['B50','reference','backend/clp/B50.teacher.html'],
@@ -263,6 +266,32 @@ export function projectClpEnglishTeacherTools(inputs, courseIds) {
       page:{...page,path:base+page.path},resource:{...bound,path:base+file},evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}};
   });
 }
+export function projectJudsonEnglishTeacherTools(inputs, courseIds) {
+  const base='docs/backend/judson/',bytes=inputs[base+'teacher-validation.json'],v=JSON.parse(bytes);
+  assert.equal(v.schema,'judson-teacher-hosted/1');assert.equal(v.state,'pass');
+  assert.equal(v.source_translation_created,false);assert.equal(v.book_prose_copied,false);
+  assert.deepEqual(v.interface_locales,['id','en']);assert.deepEqual(v.course_counts,{C30:610,C40:303});
+  assert.deepEqual(v.precise_target_exercise_alignment,{C30:true,C40:true});
+  assert.deepEqual(v.support_counts,{supplied_hints:213,empty_response_slots:116,supplied_responses:0,supplied_solutions:0});
+  assert.deepEqual(v.primary_reader_counts,{web:814,sage:99});assert.equal(v.verified_current_reader_anchors,913);
+  const files=new Map(v.files.map(f=>[f.path,f]));assert.equal(files.size,v.files.length);
+  return ['C30','C40'].map(role=>{
+    assert.ok(courseIds.includes(role));
+    const file=role+'.teacher.json',data=inputs[base+file],map=JSON.parse(data),bound=files.get(file);
+    assert.ok(bound);assert.equal(bound.bytes,data.length);assert.equal(bound.sha256,hash(data));
+    assert.equal(map.schema,'judson-teacher-selection/1');assert.equal(map.course_id,role);
+    assert.equal(map.questions.length,v.course_counts[role]);assert.equal(map.exercise_count,map.questions.length);
+    assert.equal(new Set(map.questions.map(q=>q.id)).size,map.questions.length);
+    assert.ok(map.questions.every(q=>q.supplied_response_count===0&&q.supplied_solution_count===0));
+    const page=files.get(role+'.teacher.en.html');assert.ok(page);assert.ok(map.limitations.en.length>100);
+    assert.ok(Number.isSafeInteger(page.bytes)&&page.bytes>0);assert.match(page.sha256,/^[a-f0-9]{64}$/);
+    return {courseId:role,contentLanguage:'en',labelLanguage:'en',tool_id:role.toLowerCase()+'.judson_assignment_planner.en',
+      action_kind:'reference',href:'backend/judson/'+page.path,label:role+' · English abstract algebra assignment planner',
+      scope:`${map.exercise_count} source/target exercise identities; ${map.hint_count} populated hints; ${map.response_slot_count} empty response slots, not supplied answers`,
+      limitations:[map.limitations.en],state:'verified',primary:false,machine_data_is_learner_destination:false,
+      page:{...page,path:base+page.path},resource:{...bound,path:base+file},evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}};
+  });
+}
 export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
   const tools = [];
   for (const role of ['A00', 'A10']) {
@@ -314,7 +343,7 @@ export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
       });
     }
   }
-  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds)];
+  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds)];
 }
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));

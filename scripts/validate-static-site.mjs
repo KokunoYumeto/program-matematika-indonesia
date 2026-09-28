@@ -1774,9 +1774,21 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 35);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 107);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1856);
-assert.equal(centralNavigation.summary.classified_html_documents, 1861);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 111);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1860);
+assert.equal(centralNavigation.summary.classified_html_documents, 1865);
+const judsonSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/judson');
+assert.deepEqual(judsonSurface.documents.map(row => row.path).sort(),
+  ['C30','C40'].flatMap(role => [role+'.html',role+'.teacher.html',role+'.teacher.en.html']).sort());
+for (const role of ['C30','C40']) {
+  for (const [suffix, locale] of [['teacher.html','id'],['teacher.en.html','en']]) {
+    const page = judsonSurface.documents.find(row => row.path === role+'.'+suffix);
+    assert.equal(page.locale, locale);
+    assert.deepEqual(page.course_ids, [role]);
+    assert.ok(page.contents_paths.includes(role+'.html'));
+    assert.ok(page.contents_paths.includes(role+(locale==='id'?'.teacher.en.html':'.teacher.html')));
+  }
+}
 const clpSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/clp');
 assert.deepEqual(clpSurface.documents.map(row => row.path).sort(), [
   'CLP.html', ...['B20','B30','B50','B60'].flatMap(role => [role+'.html',role+'.teacher.html',role+'.teacher.en.html']),
