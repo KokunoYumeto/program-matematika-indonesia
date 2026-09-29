@@ -27,9 +27,12 @@ def pack(path, files):
 
 def main():
     scripts = ['intake-clp-teacher-v1.py', 'build-clp-teacher-v1.py', 'test-clp-teacher-v1.py',
-               'test-clp-teacher-ui-v1.mjs', 'package-clp-teacher-v1.py', 'build-clp-teacher-hosted-v1.py']
+               'test-clp-teacher-ui-v1.mjs', 'package-clp-teacher-v1.py', 'build-clp-teacher-hosted-v1.py',
+               'map-clp1-navigation-v1.py', 'test-clp1-navigation-v1.py']
     paths = [ROOT/'scripts'/name for name in scripts]
     paths += [BASE/p for p in ('input/native-exercises.json', 'input/source-lock.json', 'ui/teacher.js', 'ui/teacher.css', 'README.md')]
+    paths += [BASE/p for p in ('clp1-navigation.json','clp1-navigation-validation.json',
+                              'input/clp1-file-bridges.json','input/clp1-navigation-lock.json')]
     # Retain the exact license texts from the frozen producer editions; no new
     # internet lookup or alteration of legal wording is needed.
     license_inputs = [

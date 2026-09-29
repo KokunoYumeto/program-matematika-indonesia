@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {loadClp1Evidence,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const checkPublic = process.argv.includes('--public');
@@ -49,7 +50,9 @@ const clpTeacherValidation = JSON.parse(await readFile(resolve(project, 'docs/ba
 assert.equal(clpTeacherValidation.schema, 'clp-teacher-hosted/1');
 assert.equal(clpTeacherValidation.state, 'pass');
 assert.deepEqual(clpTeacherValidation.course_counts, {B20:695,B30:596,B50:497,B60:410});
-assert.deepEqual(clpTeacherValidation.precise_target_exercise_alignment, {B20:false,B30:true,B50:true,B60:true});
+const clp1Evidence=await loadClp1Evidence(project);
+const clpTeacherTests=JSON.parse(await readFile(resolve(project,'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json')));
+validateClp1Evidence(clp1Evidence.data,clp1Evidence.bytes,clpTeacherValidation,clpTeacherTests);
 const clpTeacherFiles = [...clpTeacherValidation.files.map(row => row.path), 'teacher-validation.json'];
 assert.equal(clpTeacherFiles.length, 17);
 assert.equal(new Set(clpTeacherFiles).size, 17);
@@ -582,7 +585,8 @@ for(const path of ['backend/a10/A10.html','backend/a10/A10-en.html','backend/a10
 }
 // Declared material, verified material and precise unit alignment are distinct.
 // C130 verifies the 227 selected exercise/activity references, not all native
-// solution locations. B20's translated exercise mapping remains file-level only.
+// solution locations. B20 adds structural spans and printed start pages; its
+// original native file-only states remain immutable beneath that overlay.
 assert.deepEqual(sortedIds(rows.filter(row => !row.layers.educator.features.length && !row.layers.educator.resources.length).map(row => row.course_id)), []);
 const c80Teacher = rows.find(row => row.course_id === 'C80').layers.educator;
 assert.equal(c80Teacher.status, 'verified');
@@ -605,7 +609,7 @@ for(const lang of ['id','en']){
   assert.equal(resource.bytes,docsBytes[path].length);assert.equal(resource.sha256,sha256(docsBytes[path]));
 }
 assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.status !== 'verified').map(row => row.course_id)), []);
-assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), ['B20']);
+assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), []);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));

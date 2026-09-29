@@ -3,6 +3,7 @@ import {readFile, writeFile} from 'node:fs/promises';
 import {resolve} from 'node:path';
 import {createHash} from 'node:crypto';
 import {learnerToolsByCourseId} from '../docs/learner-tools.js';
+import {clp1EvidencePaths,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
 
 export const capabilityInput = 'docs/data/course-capsule-v1/course-capsules.json';
 export const clpCapabilityInput = 'backend/course-capsule-v1/authority/clp-family-v231/learner-reader-actions-v1.json';
@@ -18,7 +19,8 @@ export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role =
   'docs/backend/clp/teacher-validation.json', ...['B20','B30','B50','B60'].map(r=>`docs/backend/clp/${r}.teacher.json`),
   'docs/backend/judson/teacher-validation.json', ...['C30','C40'].map(r=>`docs/backend/judson/${r}.teacher.json`),
   'docs/backend/openlogic-teacher/teacher-validation.json','docs/backend/openlogic-teacher/C80.teacher.json',
-  'docs/backend/c130-teacher/teacher-validation.json','docs/backend/c130-teacher/planner-model.json'];
+  'docs/backend/c130-teacher/teacher-validation.json','docs/backend/c130-teacher/planner-model.json',
+  ...Object.values(clp1EvidencePaths),'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json'];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
   'c130.assignment_planner':['C130','reference','backend/c130-teacher/C130.teacher.html'],
@@ -253,7 +255,9 @@ export function projectClpEnglishTeacherTools(inputs, courseIds) {
   assert.equal(v.source_translation_created,false);assert.equal(v.book_prose_copied,false);
   assert.deepEqual(v.interface_locales,['id','en']);
   assert.deepEqual(v.course_counts,{B20:695,B30:596,B50:497,B60:410});
-  assert.deepEqual(v.precise_target_exercise_alignment,{B20:false,B30:true,B50:true,B60:true});
+  const navBytes=Object.fromEntries(Object.entries(clp1EvidencePaths).map(([key,path])=>[key,inputs[path]]));
+  const navData=Object.fromEntries(Object.entries(navBytes).map(([key,value])=>[key,JSON.parse(value)]));
+  validateClp1Evidence(navData,navBytes,v,JSON.parse(inputs['backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json']));
   const files=new Map(v.files.map(f=>[f.path,f]));assert.equal(files.size,v.files.length);
   return ['B20','B30','B50','B60'].map(role=>{
     assert.ok(courseIds.includes(role));
@@ -265,6 +269,12 @@ export function projectClpEnglishTeacherTools(inputs, courseIds) {
     assert.equal(page.path,role+'.teacher.en.html');
     assert.ok(Number.isSafeInteger(page.bytes)&&page.bytes>0);assert.match(page.sha256,/^[a-f0-9]{64}$/);
     assert.equal(new Set(map.questions.map(q=>q.id)).size,map.questions.length);
+    if(role==='B20'){
+      assert.deepEqual(map.navigation_identity,v.b20_navigation.mapping);
+      assert.deepEqual(map.navigation_reader,v.b20_navigation.reader);
+      assert.deepEqual(map.questions.map(q=>q.navigation).sort((a,b)=>a.native_id.localeCompare(b.native_id)),
+        [...navData.clp1Navigation.questions].sort((a,b)=>a.native_id.localeCompare(b.native_id)));
+    }
     return {courseId:role,contentLanguage:'en',labelLanguage:'en',tool_id:role.toLowerCase()+'.clp_assignment_planner.en',action_kind:'reference',href:'backend/clp/'+page.path,
       label:role+' · English CLP assignment planner',scope:`${map.exercise_count} exercises from the frozen Indonesian-edition source; original identities, format distinctions and recorded support`,limitations:[map.limitations.en],state:'verified',primary:false,machine_data_is_learner_destination:false,
       page:{...page,path:base+page.path},resource:{...bound,path:base+file},evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}};

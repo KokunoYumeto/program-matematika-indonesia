@@ -42,6 +42,22 @@ def load(base=BASE):
     return json.loads(b), lock
 
 
+def load_navigation(base=BASE):
+    lock = json.loads((base/'input/clp1-navigation-lock.json').read_bytes())
+    raw = (base/'clp1-navigation.json').read_bytes()
+    checks = (base/'clp1-navigation-validation.json').read_bytes()
+    assert lock['schema'] == 'clp1-navigation-lock/1'
+    assert lock['mapping'] == {'bytes':len(raw),'sha256':sha(raw)}
+    assert lock['validation'] == {'bytes':len(checks),'sha256':sha(checks)}
+    validation = json.loads(checks)
+    assert validation['state'] == 'pass' and len(validation['source_pdf_replays']) == 2
+    assert validation['independent_annotation_comparison']['matched_supports'] == 2010
+    data = json.loads(raw)
+    assert data['inputs']['native']['sha256'] == lock['native_sha256']
+    assert validation['mapping'] == lock['mapping']
+    return data, lock
+
+
 def unique(items, key):
     out = {key(x): x for x in items}
     assert len(out) == len(items), 'Duplicate identity'
@@ -67,7 +83,7 @@ def compact_unit(u, profile):
             'topology_state': u.get('topology_state'), 'topology_delta_id': u.get('topology_delta_id')}
 
 
-def project(native):
+def project(native, navigation=None):
     assert native['schema'] == 'clp-teacher-native-input/1' and native['zero_book_prose'] is True
     assert set(native['profiles']) == set(PROFILES)
     common = unique(native['common_exercises'], lambda r: (r['profile'], r['native_id']))
@@ -163,20 +179,45 @@ def project(native):
             'source_members': p['members'], 'exercise_count': len(questions), 'section_count': len({x['section'] for x in questions}),
             'component_vectors': dict(sorted(vectors.items())), 'questions': questions})
     assert sum(c['exercise_count'] for c in courses) == len(common) == 2198
-    return {'schema': 'clp-teacher-selection/1', 'courses': courses, 'book_prose_copied': False,
+    model = {'schema': 'clp-teacher-selection/1', 'courses': courses, 'book_prose_copied': False,
         'integration_provenance': {'model': 'gpt-6-astra', 'effort': 'ultra', 'work': 'source-preserving planner integration; no book translation', 'primary_turn_context_utc': '2026-09-27T03:16:18.538Z'},
         'pdf_page_or_html_anchors_claimed': False, 'source_exercises': 2198, 'format_surfaces_are_not_extra_exercises': True,
         'limitations': {'id': 'Perencana tugas berdasarkan identitas sumber, bukan lembar soal siap cetak. Isi soal tetap berada dalam buku. Korpus beku ini mengikuti versi sumber edisi Bahasa Indonesia; antarmuka Inggris tidak menyatakan cakupan atau penomoran yang sama dengan edisi Inggris lainnya. CLP1 hanya memiliki pemetaan ke berkas terjemahan, bukan ke lokasi tiap soal. Nomor kelompok/lokal berasal dari struktur sumber dan belum tentu sama dengan nomor tercetak. Ketiadaan petunjuk berarti tidak tercatat dalam backend ini. Tidak ada klaim nomor halaman PDF atau jangkar pembaca HTML.',
                         'en': 'An assignment planner using source identities, not a printable worksheet. Exercise text remains in the books. This frozen corpus follows the Indonesian edition source snapshot; the English interface does not assert coverage or numbering of other English editions. CLP1 has translated-file alignment only, not per-exercise target locations. Group/local numbers describe the source structure and need not equal printed numbering. A missing hint means none is recorded in this backend. No PDF page or HTML reader anchors are claimed.'}}
+    if navigation is not None:
+        data, lock = navigation
+        course = next(c for c in courses if c['course_id']=='B20')
+        qmap = unique(data['questions'],lambda q:q['native_id'])
+        assert set(qmap) == {q['native_id'] for q in course['questions']}
+        reader = next(r for r in course['readers']['actions'] if r['role']=='problembook')
+        assert reader['sha256'] == data['reader']['sha256'] and reader['url'] == data['reader']['url']
+        for q in course['questions']:
+            nav = qmap[q['native_id']]
+            assert q['id'] == nav['common_id']
+            surface = q['surfaces'][0]
+            assert nav['source_content_sha256'] == surface['source']['content_sha256']
+            assert nav['native_translation_state'] == surface['translation_state']
+            for kind in ('hint','answer','solution'):
+                assert {s['native_id'] for s in nav['supports'] if s['kind']==kind} == {s['id'] for s in surface['components'][kind]}
+            q['navigation'] = nav
+        course['navigation_identity'] = lock['mapping']
+        course['navigation_reader'] = data['reader']
+        course['limitations'] = {
+            'id':'Perencana tugas dengan rujukan soal, bukan lembar soal siap cetak. Pemetaan tambahan CLP1 menghubungkan 695 soal, 620 petunjuk, 695 jawaban, dan 695 penyelesaian ke rentang sumber terjemahan dan halaman awal PDF Bahasa Indonesia yang diverifikasi. Identitas dan status historis backend asli tetap dipertahankan, termasuk 30 soal yang diterjemahkan dalam berkas induk. Nomor PDF bukan nomor halaman tercetak. Tautan membutuhkan jaringan; untuk membaca luring, unduh PDF secara terpisah dan gunakan nomor PDF yang ditampilkan. Tidak adanya petunjuk berarti tidak tercatat (75 soal). Ini pemeriksaan struktur dan navigasi, bukan peninjauan baru atas kebenaran matematika atau mutu terjemahan. Antarmuka Inggris tetap memakai buku Bahasa Indonesia; tidak menyatakan kesamaan nomor soal dengan edisi Inggris lain.',
+            'en':'An assignment planner with exercise references, not a printable worksheet. The additive CLP1 mapping connects 695 questions, 620 hints, 695 answers and 695 solutions to verified translated-source spans and start pages in the Indonesian PDF. Native identities and historical states remain unchanged, including 30 questions translated in their parent files. PDF numbers are not printed page numbers. Links require a connection; for offline reading, download the PDF separately and use the displayed PDF page numbers. A missing hint means none is recorded (75 exercises). This checks structure and navigation, not mathematical correctness or translation quality anew. The English interface still uses the Indonesian book and does not assert coverage or numbering of other English editions.'}
+        model['pdf_page_or_html_anchors_claimed'] = True
+        model['pdf_navigation_courses'] = ['B20']
+    return model
 
 
 def render(course, lang, model):
     en = lang == 'en'
+    limitations = course.get('limitations',model['limitations'])
     words = ({'title': 'CLP assignment planner', 'section': 'Source section', 'all': 'All sections', 'filter': 'Support filter', 'every': 'All exercises', 'hint': 'With a recorded hint', 'nohint': 'Without a recorded hint', 'multi': 'Multiple solutions on a surface', 'search': 'Search identifier or source path', 'select': 'Select visible exercises', 'clear': 'Clear selection', 'export': 'Download assignment JSON', 'import': 'Load assignment JSON', 'print': 'Print selection', 'back': 'Books and downloads', 'details': 'Source locations and support', 'choose': 'Select', 'sources': 'Source metadata (reusable)', 'offline': 'Works offline after downloading this directory. Books require separate downloads.'}
              if en else {'title': 'Perencana tugas CLP', 'section': 'Bagian sumber', 'all': 'Semua bagian', 'filter': 'Saring bantuan', 'every': 'Semua soal', 'hint': 'Dengan petunjuk tercatat', 'nohint': 'Tanpa petunjuk tercatat', 'multi': 'Beberapa penyelesaian pada satu format', 'search': 'Cari identitas atau jalur sumber', 'select': 'Pilih soal yang tampil', 'clear': 'Hapus pilihan', 'export': 'Unduh tugas JSON', 'import': 'Muat tugas JSON', 'print': 'Cetak pilihan', 'back': 'Buku dan unduhan', 'details': 'Lokasi sumber dan bantuan', 'choose': 'Pilih', 'sources': 'Metadata sumber (dapat digunakan kembali)', 'offline': 'Berfungsi luring setelah direktori ini diunduh. Buku perlu diunduh secara terpisah.'})
     role = course['course_id']
     choices = ''.join(f'<option value="{escape(s, quote=True)}">{escape(s)}</option>' for s in dict.fromkeys(q['section'] for q in course['questions']))
-    payload = encoded({'model': {**course, 'schema': model['schema'], 'limitations': model['limitations'], 'input_identity': model['input_identity']}, 'locale': lang, 'words': words}).decode().replace('<', '\\u003c').replace('&', '\\u0026')
+    payload = encoded({'model': {**course, 'schema': model['schema'], 'limitations': limitations, 'input_identity': model['input_identity']}, 'locale': lang, 'words': words}).decode().replace('<', '\\u003c').replace('&', '\\u0026')
     links = ' · '.join(f'<a href="{r}.teacher{ ".en" if en else "" }.html">{r}</a>' for r in PROFILES.values())
     reader = course['readers']
     original = reader['authoritative_original']
@@ -188,22 +229,24 @@ def render(course, lang, model):
     return f'''<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{role} · {words['title']}</title><link rel="stylesheet" href="teacher.css"></head>
 <body><a class="skip" href="#main">{'Skip to exercises' if en else 'Langsung ke soal'}</a><header><nav>{links}</nav><nav aria-label="{'Language' if en else 'Bahasa'}"><a lang="id" href="{role}.teacher.html">Bahasa Indonesia</a> · <a lang="en" href="{role}.teacher.en.html">English</a></nav><h1>{role} · {words['title']}</h1><p>{course['exercise_count']} {'distinct exercises' if en else 'soal berbeda'} · {course['section_count']} {'source sections' if en else 'bagian sumber'}</p>
-<p>{escape(model['limitations'][lang])}</p><p><a href="#books">{words['back']}</a> · <a href="{role}.teacher.json">{words['sources']}</a></p><details id="books"><summary>{words['back']}</summary><ul>{book_links}</ul></details></header>
+<p>{escape(limitations[lang])}</p><p><a href="#books">{words['back']}</a> · <a href="{role}.teacher.json">{words['sources']}</a></p><details id="books"><summary>{words['back']}</summary><ul>{book_links}</ul></details></header>
 <main id="main"><section class="controls"><label>{words['section']}<select id="section"><option value="">{words['all']}</option>{choices}</select></label><label>{words['filter']}<select id="support"><option value="">{words['every']}</option><option value="hint">{words['hint']}</option><option value="nohint">{words['nohint']}</option><option value="multi">{words['multi']}</option></select></label><label>{words['search']}<input type="search" id="search"></label>
-<div class="actions"><button id="select-visible">{words['select']}</button><button id="clear">{words['clear']}</button><button id="export">{words['export']}</button><label class="import">{words['import']}<input type="file" id="import" accept="application/json,.json"></label><button id="print">{words['print']}</button></div></section><p id="status" role="status" aria-live="polite"></p><p id="error" role="alert"></p><div id="exercises"></div><noscript>{'Enable JavaScript to select exercises, or use the linked JSON data.' if en else 'Aktifkan JavaScript untuk memilih soal, atau gunakan data JSON yang ditautkan.'}</noscript></main>
+<div class="actions"><button id="select-visible">{words['select']}</button><button id="clear">{words['clear']}</button><button id="export">{words['export']}</button><label class="import">{words['import']}<input type="file" id="import" accept="application/json,.json"></label><button id="print">{words['print']}</button></div></section>
+<details id="exchange"><summary>{'Copy or paste assignment JSON' if en else 'Salin atau tempel JSON tugas'}</summary><p>{'Export also places the JSON here. Copy it manually if downloads are unavailable. Paste a saved assignment and load it to restore your selection.' if en else 'Ekspor juga menampilkan JSON di sini. Salin secara manual jika unduhan tidak tersedia. Tempel tugas yang disimpan, lalu muat untuk memulihkan pilihan.'}</p><button id="show-json">{'Show selected assignment JSON' if en else 'Tampilkan JSON tugas terpilih'}</button><label for="assignment-text">{'Assignment JSON' if en else 'JSON tugas'}</label><textarea id="assignment-text" rows="8" spellcheck="false"></textarea><button id="load-text">{'Load pasted assignment' if en else 'Muat tugas yang ditempel'}</button></details>
+<p id="status" role="status" aria-live="polite"></p><p id="error" role="alert"></p><div id="exercises"></div><noscript>{'Enable JavaScript to select exercises, or use the linked JSON data.' if en else 'Aktifkan JavaScript untuk memilih soal, atau gunakan data JSON yang ditautkan.'}</noscript></main>
 <footer><p>{words['offline']}</p><p>{'The original CLP authors are Joel Feldman, Andrew Rechnitzer and Elyse Yeager. Native rights identities are retained for every exercise; CC BY-NC-SA 4.0.' if en else 'Penulis asli CLP adalah Joel Feldman, Andrew Rechnitzer, dan Elyse Yeager. Identitas hak sumber dipertahankan pada setiap soal; CC BY-NC-SA 4.0.'}</p><p>{'Planner integration produced by OpenAI Codex — gpt-6-astra, Ultra effort. This is not a new translation or a claim of human review.' if en else 'Integrasi perencana dibuat oleh OpenAI Codex — gpt-6-astra, tingkat upaya Ultra. Ini bukan terjemahan baru atau klaim peninjauan manusia.'}</p></footer>
 <script id="planner-data" type="application/json">{payload}</script><script src="teacher.js"></script></body></html>'''
 
 
 def build(output, base=BASE):
     native, lock = load(base)
-    model = project(native)
+    model = project(native,load_navigation(base))
     model['input_identity'] = lock
     output.mkdir(parents=True, exist_ok=True)
     files = {}
     for course in model['courses']:
         role = course['course_id']
-        files[f'{role}.teacher.json'] = encoded({**course, 'schema': model['schema'], 'limitations': model['limitations'], 'input_identity': lock})
+        files[f'{role}.teacher.json'] = encoded({**course, 'schema': model['schema'], 'limitations': course.get('limitations',model['limitations']), 'input_identity': lock})
         for lang in ('id', 'en'):
             files[f'{role}.teacher' + ('.en' if lang == 'en' else '') + '.html'] = render(course, lang, model).encode()
     files['teacher-map.json'] = encoded(model)

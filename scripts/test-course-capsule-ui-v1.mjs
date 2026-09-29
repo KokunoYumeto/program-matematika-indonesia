@@ -597,7 +597,7 @@ for(const role of ['C30','C40']) {
 }
 for(const role of ['B20','B30','B50','B60']) {
   const row=courses.find(c=>c.course_id===role);
-  assert.equal(row.layers.educator.unit_alignment_status,role==='B20'?'available_unverified':'verified');
+  assert.equal(row.layers.educator.unit_alignment_status,'verified');
   assert.ok(row.layers.learner.tools.some(t=>t.href===`backend/clp/${role}.teacher.html`));
 }
 const d110Course=courses.find(row=>row.course_id==='D110');

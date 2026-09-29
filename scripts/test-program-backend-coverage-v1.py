@@ -12,6 +12,9 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = 'scripts/build-program-backend-coverage-v1.mjs'
 INPUTS = {
+    'clp1Navigation': 'backend/course-capsule-v1/adapters/clp-teacher-v1/clp1-navigation.json',
+    'clp1NavigationValidation': 'backend/course-capsule-v1/adapters/clp-teacher-v1/clp1-navigation-validation.json',
+    'clp1NavigationLock': 'backend/course-capsule-v1/adapters/clp-teacher-v1/input/clp1-navigation-lock.json',
     'capsules': 'backend/course-capsule-v1/generated/course-capsules.json',
     'families': 'backend/course-capsule-v1/authority/clp-family-v231/modular-backend-pattern-index-v2.1.json',
     'published': 'backend/course-capsule-v1/authority/clp-family-v231/v23-adapter-index-v2.json',
@@ -557,10 +560,10 @@ for role in ('B20', 'B30', 'B50', 'B60'):
     assert {t['href'] for t in roles[role]['learner']['tools']} == {
         '../backend/clp/' + role + '.html', '../backend/clp/' + role + '.teacher.html'}
     assert roles[role]['dimensions']['learner']['central_tools'] == 2
-    assert roles[role]['educator']['unit_alignment'] == ('available_unverified' if role == 'B20' else 'verified')
+    assert roles[role]['educator']['unit_alignment'] == 'verified'
     assert roles[role]['educator']['assignment_exercises'] == {'B20': 695, 'B30': 596, 'B50': 497, 'B60': 410}[role]
     assert roles[role]['educator']['alignment_scope'] == (
-        'source_exercise_identity_and_translated_file_only' if role == 'B20'
+        'source_target_structural_spans_and_pdf_start_pages_not_semantic_review' if role == 'B20'
         else 'source_and_target_structural_exercise_identity')
     same_locator = [
         row for row in roles[role]['common_adapter']['local_evidence']
@@ -918,7 +921,7 @@ def coverage_without_surface_overlay(payload: bytes) -> bytes:
 mutations = []
 with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
     sandbox = Path(temporary)
-    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs'] + list(INPUTS.values()):
+    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs'] + list(INPUTS.values()):
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
@@ -943,7 +946,11 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('missing_public_packet', 'published', lambda value: value['packages'].clear()),
         ('clp_route_count', 'clpRoutes', lambda value: value['summary'].update(action_count=6)),
         ('clp_view_not_pass', 'clpView', lambda value: value.update(state='fail')),
-        ('clp_teacher_false_alignment', 'clpTeacher', lambda value: value['precise_target_exercise_alignment'].update(B20=True)),
+        ('clp_teacher_alignment_cannot_disappear', 'clpTeacher', lambda value: value['precise_target_exercise_alignment'].update(B20=False)),
+        ('clp_teacher_mapping_identity_drift', 'clpTeacher', lambda value: value['b20_navigation']['mapping'].update(sha256='0'*64)),
+        ('clp_teacher_missing_printed_support', 'clp1Navigation', lambda value: value['questions'][0]['supports'].pop()),
+        ('clp_teacher_unverified_replay', 'clp1NavigationValidation', lambda value: value['source_pdf_replays'].pop()),
+        ('clp_teacher_changed_source_lock', 'clp1NavigationLock', lambda value: value.update(native_sha256='0'*64)),
         ('clp_teacher_double_format_count', 'clpTeacher', lambda value: value['course_counts'].update(B50=994)),
         ('clp_teacher_test_not_pass', 'clpTeacherTests', lambda value: value.update(state='fail')),
         ('judson_empty_slots_are_not_answers', 'judsonTeacher', lambda value: value['support_counts'].update(supplied_responses=116)),

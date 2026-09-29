@@ -321,7 +321,7 @@ for(const mutate of [
 for(const role of ['B20','B30','B50','B60']) {
   const capsule=capsules.find(c=>c.course_id===role);
   assert.equal(capsule.layers.curriculum.unit_identity_status,'verified');
-  assert.equal(capsule.layers.educator.unit_alignment_status,role==='B20'?'available_unverified':'verified');
+  assert.equal(capsule.layers.educator.unit_alignment_status,'verified');
   for(const locale of ['id','en']) {
     const href=`backend/clp/${role}.teacher${locale==='en'?'.en':''}.html`;
     const tool=capabilityTools.find(t=>t.tool_id===role.toLowerCase()+'.clp_assignment_planner'+(locale==='en'?'.en':''));
@@ -332,7 +332,8 @@ for(const role of ['B20','B30','B50','B60']) {
   }
 }
 for(const mutate of [
-  v=>{v.precise_target_exercise_alignment.B20=true;},
+  v=>{v.precise_target_exercise_alignment.B20=false;},
+  v=>{v.b20_navigation.mapping.sha256='0'.repeat(64);},
   v=>{v.files=v.files.filter(f=>f.path!=='B30.teacher.en.html');},
   v=>{v.book_prose_copied=true;},
   v=>{v.course_counts.B50=994;},

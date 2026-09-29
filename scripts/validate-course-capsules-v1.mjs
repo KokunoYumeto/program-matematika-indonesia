@@ -6,8 +6,13 @@ import { dirname, isAbsolute, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { courses as authorityCourses } from '../docs/courses.js';
 import { materializeLiveCourses } from '../docs/live-course-publications.js';
+import {loadClp1Evidence,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
+const clp1Evidence=await loadClp1Evidence(project);
+validateClp1Evidence(clp1Evidence.data,clp1Evidence.bytes,
+  JSON.parse(await readFile(resolve(project,'docs/backend/clp/teacher-validation.json'))),
+  JSON.parse(await readFile(resolve(project,'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json'))));
 const valueOf = (name, fallback = null) => process.argv.find((value) => value.startsWith(`--${name}=`))?.slice(name.length + 3) ?? fallback;
 const resolveArgument = (value) => isAbsolute(value) ? value : resolve(project, value);
 const outputRoot = resolveArgument(valueOf('output-root', 'backend/course-capsule-v1'));

@@ -14,6 +14,14 @@ def main():
     built = json.loads((b.BASE/'site/teacher-build.json').read_bytes())
     assert tests['state'] == package['state'] == 'pass'
     assert tests['input_identity'] == built['input_identity']
+    navigation, nav_lock = b.load_navigation()
+    assert tests['b20_navigation_identity'] == nav_lock['mapping']
+    assert tests['b20_printed_reader_links'] == 2705
+    assert tests['other_clp_profiles_unchanged'] is True
+    b20 = json.loads((b.BASE/'site/B20.teacher.json').read_bytes())
+    assert b20['navigation_identity'] == nav_lock['mapping']
+    assert b20['navigation_reader'] == navigation['reader']
+    assert {q['native_id']:q['navigation'] for q in b20['questions']} == {q['native_id']:q for q in navigation['questions']}
     outputs = {}
     for f in built['files']:
         data = (b.BASE/'site'/f['path']).read_bytes()
@@ -28,7 +36,11 @@ def main():
     outputs[zipped['path']] = payload
     report = {'schema': 'clp-teacher-hosted/1', 'state': 'pass', 'course_counts': b.COUNTS,
               'interface_locales': ['id', 'en'], 'source_translation_created': False,
-              'book_prose_copied': False, 'precise_target_exercise_alignment': {'B20': False, 'B30': True, 'B50': True, 'B60': True},
+              'book_prose_copied': False, 'precise_target_exercise_alignment': {'B20': True, 'B30': True, 'B50': True, 'B60': True},
+              'b20_navigation': {'mapping':nav_lock['mapping'],'validation':nav_lock['validation'],
+                  'counts':navigation['counts'],'reader':navigation['reader'],
+                  'printed_reader_links':2705,'native_states_preserved':True,
+                  'scope':'source_target_structural_spans_and_pdf_start_pages_not_semantic_review'},
               'files': [{'path': p, 'bytes': len(v), 'sha256': b.sha(v)} for p, v in sorted(outputs.items())],
               'input_identity': built['input_identity'], 'public_deployment_verified': False}
     outputs['teacher-validation.json'] = b.encoded(report)

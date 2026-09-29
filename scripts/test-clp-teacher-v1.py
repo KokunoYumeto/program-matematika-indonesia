@@ -61,15 +61,25 @@ def check_exact(native, model):
                     assert relation_ids == expected
         assert course['component_vectors'] == b.VECTORS[course['course_id']]
     assert visited == set(common)
-    assert model['book_prose_copied'] is False and model['pdf_page_or_html_anchors_claimed'] is False
+    assert model['book_prose_copied'] is False and model['pdf_page_or_html_anchors_claimed'] is True
+    assert model['pdf_navigation_courses'] == ['B20']
     assert 'Korpus beku' in model['limitations']['id']
     assert 'does not assert coverage or numbering of other English editions' in model['limitations']['en']
 
 
 def main():
     native, lock = b.load()
-    model = b.project(native)
+    navigation = b.load_navigation()
+    model = b.project(native,navigation)
     check_exact(native, model)
+    baseline = b.project(native)
+    for old, new in zip(baseline['courses'],model['courses']):
+        if new['course_id'] != 'B20':
+            assert old == new, 'Unrelated CLP profile changed'
+        else:
+            for prior,current in zip(old['questions'],new['questions']):
+                stripped = {k:v for k,v in current.items() if k != 'navigation'}
+                assert prior == stripped, 'Native exercise was rewritten by the overlay'
     fixtures = []
     def rejects(name, edit):
         altered = copy.deepcopy(native)
@@ -106,6 +116,7 @@ def main():
                 html = (a/name).read_text(encoding='utf-8')
                 assert f'<html lang="{lang}">' in html and 'type="application/json"' in html
                 assert 'aria-live="polite"' in html and 'type="search"' in html
+                assert 'id="assignment-text"' in html and 'id="show-json"' in html and 'id="load-text"' in html
                 assert 'gpt-6-astra' in html and 'Ultra' in html
                 assert '<script src="http' not in html and 'fetch(' not in html
                 payload = html.split('<script id="planner-data" type="application/json">')[1].split('</script>')[0]
@@ -116,6 +127,8 @@ def main():
     result = {'schema': 'clp-teacher-tests/1', 'state': 'pass', 'native_exercises_individually_checked': 2198,
               'course_counts': b.COUNTS, 'component_vectors': b.VECTORS, 'hostile_fixtures': fixtures,
               'two_clean_builds_byte_identical': True, 'input_identity': lock,
+              'b20_navigation_identity':navigation[1]['mapping'],
+              'b20_printed_reader_links':2705, 'other_clp_profiles_unchanged':True,
               'public_deployment_claimed': False, 'whole_program_complete': False}
     (b.BASE/'tests.json').write_bytes(b.encoded(result))
     print(json.dumps(result))
