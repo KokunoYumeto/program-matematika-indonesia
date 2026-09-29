@@ -559,6 +559,7 @@ for (const [name, fetch] of [
   assert.equal(visibleCount(), 1);
   assert.match(f.element('#course-grid').innerHTML, /href="\.\.\/backend\/openlogic\/C80\.html"/);
   assert.match(f.element('#course-grid').innerHTML, /Buka Open Logic lengkap/);
+  assert.match(f.element('#course-grid').innerHTML, /href="\.\.\/backend\/openlogic-teacher\/C80\.teacher\.html"/);
   assert.match(f.element('#course-grid').innerHTML, /class="learner-tool primary"/);
   f.element('#course-search').value = 'C130';
   f.fire(f.element('#course-search'), 'input');
@@ -580,9 +581,10 @@ for (const [name, fetch] of [
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
 // A00 and B10 add verified selection tools, not official teacher manuals.
-assert.deepEqual(educatorCounts, { verified: 38, available_unverified: 1, in_progress: 0, unknown: 1 });
+assert.deepEqual(educatorCounts, { verified: 39, available_unverified: 1, in_progress: 0, unknown: 0 });
 assert.deepEqual(courses.filter(c=>c.layers.educator.status==='available_unverified').map(c=>c.course_id),['C130']);
-assert.deepEqual(courses.filter(c=>c.layers.educator.status==='unknown').map(c=>c.course_id),['C80']);
+assert.deepEqual(courses.filter(c=>c.layers.educator.status==='unknown').map(c=>c.course_id),[]);
+assert.equal(courses.find(c=>c.course_id==='C80').layers.educator.unit_alignment_status,'verified');
 for(const role of ['C30','C40']) {
   const row=courses.find(c=>c.course_id===role);
   assert.equal(row.layers.educator.unit_alignment_status,'verified');

@@ -184,9 +184,11 @@ const c80 = rows.find(({ course_id }) => course_id === 'C80');
 assert.equal(c80.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(c80.layers.interoperability.semantic_adapter.contract_version, '2.3.1');
 assert.equal(c80.layers.interoperability.semantic_adapter.mapping_scope, 'reversible_native_course_route_adapter');
-assert.equal(c80.layers.learner.tools.length, 1);
-assert.equal(c80.layers.learner.tools[0].href, 'backend/openlogic/C80.html');
-assert.equal(c80.layers.learner.tools[0].primary, true);
+assert.equal(c80.layers.learner.tools.length, 2);
+assert.equal(c80.layers.learner.tools.find(tool=>tool.href==='backend/openlogic/C80.html').primary, true);
+assert.ok(c80.layers.learner.tools.some(tool=>tool.tool_id==='c80.openlogic_assignment_planner'
+  && tool.href==='backend/openlogic-teacher/C80.teacher.html'));
+assert.equal(c80.layers.educator.unit_alignment_status,'verified');
 const c130 = rows.find(({ course_id }) => course_id === 'C130');
 assert.equal(c130.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(c130.layers.interoperability.semantic_adapter.contract_version, '2.3.1');

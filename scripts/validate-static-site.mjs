@@ -436,7 +436,17 @@ assert.equal(integrationOverrides.native_capabilities.D100.terminology.status, '
 const c80Capsule = courseCapsules.find(({ course_id }) => course_id === 'C80');
 assert.ok(c80Capsule, 'Kapsul C80 harus tersedia.');
 assert.equal(c80Capsule.layers.interoperability.semantic_adapter.status, 'verified');
-assert.deepEqual(c80Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['c80-openlogic-course-map-v1']);
+assert.deepEqual(c80Capsule.layers.learner.tools.map(({ tool_id }) => tool_id).sort(), ['c80-openlogic-course-map-v1', 'c80.openlogic_assignment_planner']);
+const c80Planner = c80Capsule.layers.learner.tools.find(tool => tool.tool_id === 'c80.openlogic_assignment_planner');
+assert.equal(c80Planner.href, 'backend/openlogic-teacher/C80.teacher.html');
+assert.equal(c80Planner.primary, false);
+assert.equal(c80Capsule.layers.educator.status, 'verified');
+assert.equal(c80Capsule.layers.educator.unit_alignment_status, 'verified');
+assert.equal(openLogicRoute.teacher_assignment_action.counts.printed_occurrences, 442);
+assert.equal(openLogicRoute.teacher_assignment_action.solutions_audited, false);
+for (const lang of ['id', 'en']) {
+  assert.ok(openLogicHtmlBytes.toString('utf8').includes(openLogicRoute.teacher_assignment_action[lang]));
+}
 const c130Capsule = courseCapsules.find(({ course_id }) => course_id === 'C130');
 assert.ok(c130Capsule, 'Kapsul C130 harus tersedia.');
 assert.equal(c130Capsule.layers.interoperability.semantic_adapter.status, 'verified');
@@ -1777,10 +1787,15 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 35);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 111);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1860);
-assert.equal(centralNavigation.summary.classified_html_documents, 1865);
+assert.equal(centralNavigation.summary.course_surface_roots, 36);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 113);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1862);
+assert.equal(centralNavigation.summary.classified_html_documents, 1867);
+const openLogicTeacherSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/openlogic-teacher');
+assert.deepEqual(openLogicTeacherSurface.documents, [
+  {path: 'C80.teacher.html', locale: 'id', course_ids: ['C80'], contents_paths: ['C80.teacher.en.html']},
+  {path: 'C80.teacher.en.html', locale: 'en', course_ids: ['C80'], contents_paths: ['C80.teacher.html']},
+]);
 const judsonSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/judson');
 assert.deepEqual(judsonSurface.documents.map(row => row.path).sort(),
   ['C30','C40'].flatMap(role => [role+'.html',role+'.teacher.html',role+'.teacher.en.html']).sort());

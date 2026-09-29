@@ -14,6 +14,8 @@ const sources={
   clpTeacherTests:'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json',
   judsonTeacher:'docs/backend/judson/teacher-validation.json',
   judsonTeacherTests:'backend/course-capsule-v1/adapters/judson-teacher-v1/tests.json',
+  openlogicTeacher:'docs/backend/openlogic-teacher/teacher-validation.json',
+  openlogicTeacherTests:'backend/course-capsule-v1/adapters/openlogic-teacher-v1/build-tests.json',
   a10Integration:'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
   a20:'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
   a30Manifest:'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -134,6 +136,20 @@ assert.deepEqual(data.judsonTeacher.primary_reader_counts,{web:814,sage:99});
 assert.equal(data.judsonTeacher.verified_current_reader_anchors,913);
 assert.deepEqual(data.judsonTeacherTests.native_checks,{all_native_exercises:913,all_native_support_edges:329,all_source_target_subtrees:1242,source_archive_rehashed:true});
 assert.deepEqual(data.judsonTeacher.input_identity,data.judsonTeacherTests.input_identity);
+assert.equal(data.openlogicTeacher.schema,'openlogic-teacher-hosted/1');
+assert.equal(data.openlogicTeacher.state,'pass');assert.equal(data.openlogicTeacherTests.state,'pass');
+assert.deepEqual(data.openlogicTeacher.counts,data.openlogicTeacherTests.counts);
+assert.equal(data.openlogicTeacher.counts.printed_occurrences,442);
+assert.equal(data.openlogicTeacher.counts.rendered_source_problems,427);
+assert.equal(data.openlogicTeacher.counts.tag_disabled,10);
+assert.equal(data.openlogicTeacher.counts.missing_deferred_flush,1);
+assert.equal(data.openlogicTeacher.solutions_audited,false);
+assert.equal(data.openlogicTeacher.precise_rendered_exercise_alignment,true);
+assert.equal(data.openlogicTeacher.all_source_exercises_accounted_for,true);
+assert.equal(data.openlogicTeacherTests.all_source_problems_accounted_for,438);
+assert.equal(data.openlogicTeacher.edition_binding,data.openlogicTeacherTests.edition_binding);
+assert.deepEqual(data.openlogicTeacher.evidence['build-tests.json'],{bytes:bytes.openlogicTeacherTests.length,sha256:sha256(bytes.openlogicTeacherTests)});
+assert.deepEqual(data.openlogicTeacher.input_identities,data.openlogicTeacherTests.input_identities);
 assert.deepEqual(data.clpView.source,{path:sources.clpRoutes,bytes:bytes.clpRoutes.length,sha256:sha256(bytes.clpRoutes)});
 assert.equal(new Set(data.capsules.map(row=>row.course_id)).size,40,'Duplicate course role.');
 assert.equal(data.a10Integration.schema,'combined-backend-increment-public-readback/1');
@@ -563,6 +579,8 @@ const rows=data.capsules.map(capsule=>{
         ?'central_planner_consumes_native_exercise_metadata_pdf_runtime_adapter_consumption_not_claimed'
         :['C30','C40'].includes(role)
           ?'central_planner_consumes_native_exercise_and_support_metadata_with_verified_html_routes'
+        :role==='C80'
+          ?'central_planner_consumes_source_target_and_printed_occurrence_mapping_with_explicit_source_only_records'
         :role==='A10' && capsule.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub')
           ?'central_navigator_consumes_native_metadata_projection_pdf_runtime_adapter_consumption_not_claimed'
         :['D50','D110'].includes(role) && capsule.layers.learner.tools.some(tool=>tool.tool_id===role.toLowerCase()+'.open_learner_hub')
@@ -572,7 +590,8 @@ const rows=data.capsules.map(capsule=>{
           :publicRow?.learner_runtime_relationship??'no_common_adapter_consumption_proven'},
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources,
       ...(clpRoles.includes(role)?{assignment_exercises:data.clpTeacher.course_counts[role],alignment_scope:role==='B20'?'source_exercise_identity_and_translated_file_only':'source_and_target_structural_exercise_identity'}:{}),
-      ...(['C30','C40'].includes(role)?{assignment_exercises:data.judsonTeacher.course_counts[role],alignment_scope:'source_and_target_structural_exercise_identity',supplied_solutions:0,response_slots_are_answers:false}: {})},
+      ...(['C30','C40'].includes(role)?{assignment_exercises:data.judsonTeacher.course_counts[role],alignment_scope:'source_and_target_structural_exercise_identity',supplied_solutions:0,response_slots_are_answers:false}: {}),
+      ...(role==='C80'?{assignment_exercises:442,distinct_rendered_source_exercises:427,tag_disabled_source_exercises:10,unflushed_source_exercises:1,alignment_scope:'source_target_and_printed_occurrence_identity_with_explicit_unrendered_sources',solutions_audited:false}:{})},
     dimensions:{
       curriculum:{course_graph:capsule.layers.curriculum.status,unit_identity:capsule.layers.curriculum.unit_identity_status},
       source_translation_ledger:{ledger:capsule.layers.translation.ledger_status,corrections:capsule.layers.translation.corrections_status},

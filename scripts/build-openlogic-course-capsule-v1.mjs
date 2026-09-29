@@ -133,6 +133,15 @@ assert.equal(course.state, 'published');
 assert.equal(course.edition, pdf.url);
 assert.equal(course.repository, owner.repository);
 
+const teacherPath = 'docs/backend/openlogic-teacher/teacher-validation.json';
+const teacherBytes = await readFile(resolve(root, teacherPath));
+const teacher = JSON.parse(teacherBytes);
+assert.equal(teacher.schema, 'openlogic-teacher-hosted/1');
+assert.equal(teacher.state, 'pass');
+assert.equal(teacher.counts.printed_occurrences, 442);
+assert.equal(teacher.counts.rendered_source_problems, 427);
+assert.equal(teacher.all_source_exercises_accounted_for, true);
+assert.equal(teacher.solutions_audited, false);
 const route = {
   schema_id: 'interlanguage/openlogic-c80-learner-route/v1',
   recorded_at: '2026-09-28',
@@ -147,6 +156,11 @@ const route = {
   },
   primary_learner_action: { kind: 'linked_pdf', locale: 'id-ID', ...pdf },
   current_reader_coverage: currentReader.components,
+  teacher_assignment_action: {
+    id: '../openlogic-teacher/C80.teacher.html', en: '../openlogic-teacher/C80.teacher.en.html',
+    evidence: { path: teacherPath, ...identify(teacherBytes) },
+    counts: teacher.counts, solutions_audited: false,
+  },
   current_reader_evidence: { path: currentReaderPath, ...identify(currentReaderBytes), ...currentReader.verification },
   predecessor_learner_action: { kind: 'linked_pdf', locale: 'id-ID', ...legacyPdf },
   adapter: {
@@ -180,7 +194,8 @@ const html = `<!doctype html>
 <div class="learner-actions"><a class="primary" href="${escape(pdf.url)}">Baca PDF Bahasa Indonesia — 1.255 halaman</a></div>
 <p class="notice">1.116 halaman pembaca utama + 139 halaman suplemen. Seluruh teks dan geometri halaman PDF gabungan telah dibandingkan dengan kedua komponennya. Ini bukan pemeriksaan ulang mutu terjemahan atau klaim aksesibilitas PDF yang lengkap.</p>
 <section aria-labelledby="closure-title"><h2 id="closure-title">Apa yang tersedia</h2><div class="facts"><div><strong>722</strong>unit sumber: 642 utama + 80 suplemen</div><div><strong>1.255</strong>halaman dalam satu pembaca</div><div><strong>1.117</strong>halaman fisik awal suplemen</div></div>
-<p>Pemetaan latihan ke perangkat pengajar masih dikerjakan. Jumlah blok latihan dalam sumber tidak disamakan dengan jumlah kemunculannya dalam PDF: beberapa berkas digunakan kembali dan sebagian isi bersyarat.</p></section>
+<p><a href="../openlogic-teacher/C80.teacher.html">Buka perencana tugas OpenLogic</a> · <a href="../openlogic-teacher/C80.teacher.en.html" lang="en">English interface</a></p>
+<p>Pilih dari 442 kemunculan tercetak yang dipetakan ke 427 soal sumber berbeda. Sepuluh soal dinonaktifkan oleh tag edisi dan satu tidak tercetak karena pemicu pencetakan tertunda tidak dijalankan; semuanya tetap dicatat terpisah. Jawaban, petunjuk, dan penyelesaian belum diaudit.</p></section>
 <section aria-labelledby="source-title"><h2 id="source-title">Sumber yang dapat disunting</h2><ul>
 <li><a href="https://github.com/KokunoYumeto/OpenLogic-id/releases/download/id-olp-0722-20260814/01_OPENLOGIC_id_EDITABLE_SOURCES_OLP-0722.zip">Unduh sumber terjemahan utama (ZIP)</a></li>
 <li><a href="https://github.com/KokunoYumeto/OpenLogic-id/releases/download/id-olp-0722-20260814/05_OPENLOGIC_id_SUPPLEMENT_SOURCES_80_20260904.zip">Unduh sumber dan penggerak suplemen (ZIP)</a></li>
@@ -194,7 +209,7 @@ const html = `<!doctype html>
 <li><a href="${escape(legacyPdf.url)}">Pembaca utama terdahulu — 1.116 halaman</a></li>
 <li><a href="https://doi.org/${escape(owner.version_doi)}">Arsip versi terdahulu (${escape(owner.version_doi)})</a></li>
 <li><a href="https://doi.org/${escape(owner.concept_doi)}">Seluruh versi pada Zenodo</a></li>
-</ul><p>Pembaca HTML native, pemetaan semua latihan, mesin asesmen, dan kepatuhan PDF/UA belum diklaim. Pembaca utama terdahulu tetap dapat diakses.</p></details></main></body></html>
+</ul><p>Pemetaan soal tercetak tersedia melalui perencana tugas; ini tidak mengubah catatan adapter terdahulu. Pembaca HTML native, mesin asesmen, dan kepatuhan PDF/UA belum diklaim. Pembaca utama terdahulu tetap dapat diakses.</p></details></main></body></html>
 `;
 const htmlBytes = Buffer.from(html);
 assert.ok(html.indexOf(pdf.url) < html.indexOf('machine-evidence'), 'PDF must precede machine evidence');
@@ -213,6 +228,7 @@ const validation = {
   semantic_counts: route.adapter,
   current_reader_evidence: route.current_reader_evidence,
   current_reader_coverage: route.current_reader_coverage,
+  teacher_assignment_action: route.teacher_assignment_action,
   pdf_is_first_learner_action: true,
   machine_data_is_secondary: true,
   javascript_required: false,

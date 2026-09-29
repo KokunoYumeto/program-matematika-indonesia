@@ -250,13 +250,31 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,11);
+assert.equal(existingEnglishProjected.length,12);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
 // Preserve every previous tool while adding four bilingual CLP planners.
-assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')).length,51);
-assert.equal(capabilityTools.length,63);
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')).length,51);
+assert.equal(capabilityTools.length,65);
+for(const locale of ['id','en']) {
+  const suffix=locale==='en'?'.en':'';
+  const tool=capabilityTools.find(t=>t.tool_id==='c80.openlogic_assignment_planner'+suffix);
+  assert.equal(tool.href,'backend/openlogic-teacher/C80.teacher'+suffix+'.html');
+  assert.equal(tool.contentLanguage,locale);assert.equal(tool.primary,false);
+  assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='C80'),locale).some(r=>r.href===siteOrigin+tool.href&&r.accessRole==='tool'));
+}
+for(const mutate of [
+  v=>{v.solutions_audited=true;},
+  v=>{v.counts.printed_occurrences=438;},
+  v=>{v.edition_binding='0'.repeat(64);},
+  v=>{v.files=v.files.filter(f=>f.path!=='C80.teacher.en.html');},
+  v=>{v.files.find(f=>f.path==='C80.teacher.json').sha256='0'.repeat(64);},
+]) {
+  const changed={...existingEnglishInputs},key='docs/backend/openlogic-teacher/teacher-validation.json';
+  const value=JSON.parse(changed[key]);mutate(value);changed[key]=Buffer.from(JSON.stringify(value));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
 for(const role of ['C30','C40']) {
   const capsule=capsules.find(c=>c.course_id===role);
   assert.equal(capsule.layers.curriculum.unit_identity_status,'verified');

@@ -16,6 +16,9 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
   : value && typeof value === 'object'
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
+  { name: 'openlogic_planner_cannot_be_removed', id: 'C80', mutate: row=>{row.layers.learner.tools=row.layers.learner.tools.filter(t=>t.tool_id!=='c80.openlogic_assignment_planner');}, error: /learner tools drift from authority/ },
+  { name: 'openlogic_teacher_hash_cannot_drift', id: 'C80', mutate: row=>{row.layers.educator.resources.find(r=>r.id==='C80:openlogic-teacher-en').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
+  { name: 'openlogic_teacher_alignment_cannot_disappear', id: 'C80', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },
   { name: 'judson_c30_planner_cannot_be_removed', id: 'C30', mutate: row=>{row.layers.learner.tools=row.layers.learner.tools.filter(t=>t.tool_id!=='c30.judson_assignment_planner');}, error: /learner tools drift from authority/ },
   { name: 'judson_c40_teacher_resource_cannot_be_removed', id: 'C40', mutate: row=>{row.layers.educator.resources=[];}, error: /missing\/duplicate educator resource/ },
   { name: 'judson_c30_teacher_identity_cannot_drift', id: 'C30', mutate: row=>{row.layers.educator.resources.find(r=>r.id==='C30:judson-teacher-en').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },

@@ -21,6 +21,8 @@ INPUTS = {
     'clpTeacherTests': 'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json',
     'judsonTeacher': 'docs/backend/judson/teacher-validation.json',
     'judsonTeacherTests': 'backend/course-capsule-v1/adapters/judson-teacher-v1/tests.json',
+    'openlogicTeacher': 'docs/backend/openlogic-teacher/teacher-validation.json',
+    'openlogicTeacherTests': 'backend/course-capsule-v1/adapters/openlogic-teacher-v1/build-tests.json',
     'a10Integration': 'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
     'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -501,6 +503,16 @@ assert roles['B40']['educator']['unit_alignment'] == 'verified'
 assert roles['B40']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['B40']['common_adapter']['zenodo_preservation'] == 'not_established'
 clp_route_path = INPUTS['clpRoutes']
+assert roles['C80']['educator']['status'] == 'verified'
+assert roles['C80']['educator']['unit_alignment'] == 'verified'
+assert roles['C80']['educator']['assignment_exercises'] == 442
+assert roles['C80']['educator']['distinct_rendered_source_exercises'] == 427
+assert roles['C80']['educator']['tag_disabled_source_exercises'] == 10
+assert roles['C80']['educator']['unflushed_source_exercises'] == 1
+assert roles['C80']['educator']['solutions_audited'] is False
+assert {r['id'] for r in roles['C80']['educator']['resources']} >= {'C80:openlogic-teacher-id','C80:openlogic-teacher-en'}
+assert '../backend/openlogic-teacher/C80.teacher.html' in {t['href'] for t in roles['C80']['learner']['tools']}
+assert inputs['openlogicTeacher']['counts'] == inputs['openlogicTeacherTests']['counts']
 for role, count in [('C30', 610), ('C40', 303)]:
     row = roles[role]
     assert row['learner']['relationship'] == 'central_planner_consumes_native_exercise_and_support_metadata_with_verified_html_routes'
@@ -920,6 +932,11 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('judson_empty_slots_are_not_answers', 'judsonTeacher', lambda value: value['support_counts'].update(supplied_responses=116)),
         ('judson_sage_exercises_not_lost', 'judsonTeacher', lambda value: value['primary_reader_counts'].update(sage=0)),
         ('judson_native_check_required', 'judsonTeacherTests', lambda value: value['native_checks'].update(source_archive_rehashed=False)),
+        ('openlogic_unverified_alignment', 'openlogicTeacher', lambda value: value.update(precise_rendered_exercise_alignment=False)),
+        ('openlogic_unaccounted_sources', 'openlogicTeacher', lambda value: value.update(all_source_exercises_accounted_for=False)),
+        ('openlogic_invented_solutions', 'openlogicTeacher', lambda value: value.update(solutions_audited=True)),
+        ('openlogic_wrong_edition', 'openlogicTeacher', lambda value: value.update(edition_binding='0' * 64)),
+        ('openlogic_unbound_tests', 'openlogicTeacher', lambda value: value['evidence']['build-tests.json'].update(sha256='0' * 64)),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
         ('a10_nonanonymous', 'a10Integration', lambda value: value.update(anonymous=False)),
