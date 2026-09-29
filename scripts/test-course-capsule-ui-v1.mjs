@@ -455,8 +455,10 @@ for (const [name, fetch] of [
   assert.equal(c120.layers.educator.unit_alignment_status,'verified');
   assert.ok(c120.layers.educator.resources.some(r=>r.id==='C120:educator-hub-v1'&&r.status==='verified'));
   assert.ok(c120.layers.educator.resources.some(r=>r.id==='C120:educator-map-v1'&&r.status==='verified'));
-  assert.equal(c120.layers.learner.capabilities.semantic_html,'available_unverified');
-  assert.equal(c120.layers.learner.capabilities.mathml,'available_unverified');
+  assert.equal(c120.layers.learner.capabilities.semantic_html,'verified');
+  assert.equal(c120.layers.learner.capabilities.mathml,'verified');
+  assert.equal(c120.layers.learner.status,'verified');
+  assert.equal(c120.layers.learner.primary.sha256,'ed9ed31275cdac9e6054a5a6dcefbb0a12bd0ab899f461af9dfe9b7821c5b558');
   const c110=courses.find(c=>c.course_id==='C110');
   assert.equal(c110.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
   assert.equal(c110.layers.learner.tools.length,1);

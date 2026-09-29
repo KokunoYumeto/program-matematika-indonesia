@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 import { courses as authorityCourses } from '../docs/courses.js';
 import { materializeLiveCourses } from '../docs/live-course-publications.js';
 import {loadClp1Evidence,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
+import {loadC120Delivery,validateC120DeliveryOverride} from './c120-delivery-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const clp1Evidence=await loadClp1Evidence(project);
@@ -76,6 +77,9 @@ const d40Readback = JSON.parse(d40ReadbackBytes.toString('utf8'));
 const learnerTools = JSON.parse(learnerToolsBytes.toString('utf8'));
 const learnerDelivery = JSON.parse(await readFile(paths.learnerDelivery, 'utf8'));
 const deliveryById = Object.fromEntries(learnerDelivery.courses.map((row) => [row.course_id, row]));
+if (deliveryById.C120.primary.status === 'verified') {
+  validateC120DeliveryOverride(deliveryById.C120, await loadC120Delivery(project));
+}
 assert.equal(Object.keys(deliveryById).length, 40, 'Learner delivery must contain forty unique courses.');
 const nativePackages = JSON.parse(await readFile(paths.nativePackages, 'utf8'));
 const nativePackageEvidence = await readFile(resolve(project, 'backend/course-capsule-v1/validation', nativePackages.evidence.name));

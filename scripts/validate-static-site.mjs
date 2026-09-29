@@ -519,7 +519,9 @@ assert.equal(c120Capsule.layers.interoperability.semantic_adapter.contract_versi
 assert.deepEqual(c120Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['c120.open_learner_hub']);
 assert.equal(c120Capsule.layers.translation.ledger_status, 'verified');
 assert.equal(c120Capsule.layers.educator.unit_alignment_status, 'verified');
-assert.equal(c120Capsule.layers.learner.capabilities.semantic_html, 'available_unverified');
+assert.equal(c120Capsule.layers.learner.capabilities.semantic_html, 'verified');
+assert.equal(c120Capsule.layers.learner.capabilities.mathml, 'verified');
+assert.equal(c120Capsule.layers.learner.primary.sha256, 'ed9ed31275cdac9e6054a5a6dcefbb0a12bd0ab899f461af9dfe9b7821c5b558');
 assert.deepEqual(designPolicyPublicBytes, designPolicyAuthorityBytes, 'Salinan publik kebijakan desain backend harus identik byte demi byte.');
 assert.deepEqual(designPolicyPublicSchemaBytes, designPolicySchemaBytes, 'Salinan publik skema kebijakan desain backend harus identik byte demi byte.');
 assert.deepEqual(publicBaselinePublicBytes, publicBaselineAuthorityBytes, 'Salinan publik baseline v0.62.12 harus identik byte demi byte.');

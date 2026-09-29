@@ -4,8 +4,10 @@ import { dirname,resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { json,sha256 } from './native-catalog-exchange-v1.mjs';
 import {clp1EvidencePaths,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
+import {c120DeliveryInputs,loadC120Delivery} from './c120-delivery-evidence-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const sources={
+  ...Object.fromEntries(c120DeliveryInputs.map((path,index)=>[`c120Delivery${index}`,path])),
   ...clp1EvidencePaths,
   capsules:'backend/course-capsule-v1/generated/course-capsules.json',
   families:'backend/course-capsule-v1/authority/clp-family-v231/modular-backend-pattern-index-v2.1.json',
@@ -69,6 +71,7 @@ const sources={
 const bytes=Object.fromEntries(await Promise.all(Object.entries(sources).map(async([key,path])=>[key,await readFile(resolve(root,path))])));
 const binarySourceKeys=new Set(['gapZipA30','gapZipB95','gapZipC140']);
 const data=Object.fromEntries(Object.entries(bytes).filter(([key])=>!binarySourceKeys.has(key)).map(([key,value])=>[key,JSON.parse(value)]));
+const c120Delivery=await loadC120Delivery(root);
 // The v2.3.1 admission receipt is an additive package witness.  It must not
 // replace native course truth, but every package/twin/spec identity must remain
 // discoverable from the central coverage matrix.
@@ -570,6 +573,14 @@ const rows=data.capsules.map(capsule=>{
     capsule.layers.federation.status,
     adapter.status,
   ];
+  if(role==='C120') {
+    assert.equal(capsule.layers.learner.status,'verified');
+    assert.equal(capsule.layers.learner.primary.sha256,c120Delivery.files.get('index.html').sha256);
+    assert.equal(capsule.layers.learner.primary.bytes,c120Delivery.files.get('index.html').bytes);
+    assert.equal(capsule.layers.learner.primary.url,c120Delivery.manifest.reader);
+    assert.equal(capsule.layers.learner.capabilities.semantic_html,'verified');
+    assert.equal(capsule.layers.learner.capabilities.mathml,'verified');
+  }
   const nativeCapabilityParityComplete=parityStatuses.every(status=>['verified','not_applicable'].includes(status));
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},

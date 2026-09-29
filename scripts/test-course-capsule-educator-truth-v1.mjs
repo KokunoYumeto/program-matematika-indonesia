@@ -101,6 +101,8 @@ const tests = [
   { name: 'c120_educator_hash_cannot_drift', id: 'C120', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='C120:educator-hub-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'c120_educator_alignment_cannot_drift', id: 'C120', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },
   { name: 'c120_translation_ledger_cannot_be_downgraded', id: 'C120', mutate: row=>{row.layers.translation.ledger_status='unknown';}, error: /native status needs capability-specific evidence/ },
+  { name: 'c120_verified_mathml_cannot_be_downgraded', id: 'C120', mutate: row=>{row.layers.learner.capabilities.mathml='available_unverified';}, error: /learner capability authority drift/ },
+  { name: 'c120_verified_html_cannot_be_downgraded', id: 'C120', mutate: row=>{row.layers.learner.capabilities.semantic_html='available_unverified';}, error: /learner capability authority drift/ },
   { name: 'c110_educator_resource_cannot_be_removed', id: 'C110', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(resource=>resource.id!=='C110:educator-hub-v1');}, error: /missing\/duplicate educator resource/ },
   { name: 'c110_educator_hash_cannot_drift', id: 'C110', mutate: row=>{row.layers.educator.resources.find(resource=>resource.id==='C110:educator-hub-v1').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'c110_educator_alignment_cannot_drift', id: 'C110', mutate: row=>{row.layers.educator.unit_alignment_status='unknown';}, error: /native status needs capability-specific evidence/ },

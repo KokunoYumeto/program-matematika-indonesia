@@ -5,6 +5,7 @@ import { dirname, extname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { courses as authorityCourses } from '../docs/courses.js';
 import { materializeLiveCourses } from '../docs/live-course-publications.js';
+import {loadC120Delivery, validateC120DeliveryOverride} from './c120-delivery-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const paths = {
@@ -42,6 +43,7 @@ const [coursesBytes, overlayBytes, overridesBytes, schemaBytes] = await Promise.
 ]);
 const overrides = JSON.parse(overridesBytes.toString('utf8'));
 assert.equal(overrides.schema_version, '1.0.0');
+if (overrides.courses.C120) validateC120DeliveryOverride(overrides.courses.C120, await loadC120Delivery(project));
 const effectiveCourses = materializeLiveCourses(authorityCourses);
 assert.equal(effectiveCourses.length, 40, 'Learner delivery requires exactly 40 effective courses.');
 assert.equal(new Set(effectiveCourses.map(({ id }) => id)).size, 40, 'Course IDs must be unique.');

@@ -12,6 +12,12 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = 'scripts/build-program-backend-coverage-v1.mjs'
 INPUTS = {
+    'c120Delivery0': 'backend/course-capsule-v1/adapters/c120-delivery-v1/input-manifest.json',
+    'c120Delivery1': 'backend/course-capsule-v1/adapters/c120-delivery-v1/published-tree.json',
+    'c120Delivery2': 'backend/course-capsule-v1/adapters/c120-delivery-v1/deployed-readback.json',
+    'c120Delivery3': 'backend/course-capsule-v1/adapters/c120-delivery-v1/deployed-structural-audit.json',
+    'c120Delivery4': 'backend/course-capsule-v1/adapters/c120-capability-v1/data/learning-map.json',
+    'c120Delivery5': 'backend/course-capsule-v1/adapters/c120-delivery-v1/deployment-replay.json',
     'clp1Navigation': 'backend/course-capsule-v1/adapters/clp-teacher-v1/clp1-navigation.json',
     'clp1NavigationValidation': 'backend/course-capsule-v1/adapters/clp-teacher-v1/clp1-navigation-validation.json',
     'clp1NavigationLock': 'backend/course-capsule-v1/adapters/clp-teacher-v1/input/clp1-navigation-lock.json',
@@ -618,6 +624,11 @@ assert roles['C120']['dimensions']['source_translation_ledger']['ledger'] == 've
 assert roles['C120']['dimensions']['terminology']['register'] == 'verified'
 assert roles['C120']['dimensions']['reproducible_production']['build'] == 'verified'
 assert roles['C120']['dimensions']['reproducible_production']['replay'] == 'verified'
+assert roles['C120']['dimensions']['learner']['delivery'] == 'verified'
+assert roles['C120']['dimensions']['accessibility']['semantic_html'] == 'verified'
+assert roles['C120']['dimensions']['accessibility']['mathml'] == 'verified'
+assert roles['C120']['native_capability_parity_completion'] == 'verified'
+assert roles['C120']['whole_course_backend_completion'] == 'not_yet_proven'
 assert roles['C60']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['C60']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['C60']['learner']['tools']) == 1
@@ -921,7 +932,9 @@ def coverage_without_surface_overlay(payload: bytes) -> bytes:
 mutations = []
 with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
     sandbox = Path(temporary)
-    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs'] + list(INPUTS.values()):
+    deployment = ['backend/course-capsule-v1/adapters/c120-delivery-v1/deployment/' + p for p in
+                  ['.github/workflows/pages.yml', 'program-navigation.json', 'scripts/program_navigation.py', 'scripts/reseal_reader_manifests.py']]
+    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs', 'scripts/c120-delivery-evidence-v1.mjs'] + list(INPUTS.values()) + deployment:
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
@@ -940,6 +953,10 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
             assert candidate == actual, path
 
     cases = [
+        ('c120_delivery_incomplete', 'c120Delivery2', lambda value: value.update(state='incomplete')),
+        ('c120_delivery_missing_public_file', 'c120Delivery2', lambda value: value['files'].pop()),
+        ('c120_delivery_changed_main_content', 'c120Delivery3', lambda value: value['html_comparisons'][0].update(main_dom_equal=False)),
+        ('c120_delivery_missing_reseal', 'c120Delivery5', lambda value: value['transformations'].pop()),
         ('duplicate_role', 'capsules', lambda value: value.__setitem__(1, copy.deepcopy(value[0]))),
         ('missing_role', 'capsules', lambda value: value.pop()),
         ('duplicate_family_role', 'families', lambda value: value['families'][1]['roles'].append('A00')),
