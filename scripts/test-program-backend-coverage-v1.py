@@ -23,6 +23,8 @@ INPUTS = {
     'judsonTeacherTests': 'backend/course-capsule-v1/adapters/judson-teacher-v1/tests.json',
     'openlogicTeacher': 'docs/backend/openlogic-teacher/teacher-validation.json',
     'openlogicTeacherTests': 'backend/course-capsule-v1/adapters/openlogic-teacher-v1/build-tests.json',
+    'c130Teacher': 'docs/backend/c130-teacher/teacher-validation.json',
+    'c130TeacherTests': 'backend/course-capsule-v1/adapters/c130-teacher-v1/validation.json',
     'a10Integration': 'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
     'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -513,6 +515,21 @@ assert roles['C80']['educator']['solutions_audited'] is False
 assert {r['id'] for r in roles['C80']['educator']['resources']} >= {'C80:openlogic-teacher-id','C80:openlogic-teacher-en'}
 assert '../backend/openlogic-teacher/C80.teacher.html' in {t['href'] for t in roles['C80']['learner']['tools']}
 assert inputs['openlogicTeacher']['counts'] == inputs['openlogicTeacherTests']['counts']
+assert roles['C130']['learner']['relationship'] == 'central_planner_consumes_source_bound_exercise_and_activity_pdf_mapping_with_explicit_unmapped_solutions'
+assert roles['C130']['educator']['status'] == roles['C130']['educator']['unit_alignment'] == 'verified'
+for key, value in {'assignment_exercises':203, 'selectable_learning_items':227, 'checkpoints':12, 'visual_activities':12, 'manual_materials':192, 'other_solution_passages':104, 'unmapped_other_solution_sources':28, 'source_only_legacy_exercises':4}.items():
+    assert roles['C130']['educator'][key] == value
+assert roles['C130']['educator']['all_native_solution_alignment'] is False
+assert roles['C130']['educator']['solver_results_reexecuted'] is False
+assert roles['C130']['whole_course_backend_completion'] == 'not_yet_proven'
+assert {r['id'] for r in roles['C130']['educator']['resources']} >= {'C130:teacher-id','C130:teacher-en'}
+assert '../backend/c130-teacher/C130.teacher.html' in {t['href'] for t in roles['C130']['learner']['tools']}
+assert inputs['c130Teacher']['counts']['selectable_learning_items'] == 227
+assert inputs['c130Teacher']['unmapped_other_solution_sources'] == 28
+assert inputs['c130Teacher']['precise_selected_exercise_and_activity_alignment'] is True
+assert inputs['c130Teacher']['all_native_solution_alignment'] is False
+c130_test_bytes = (ROOT / INPUTS['c130TeacherTests']).read_bytes()
+assert inputs['c130Teacher']['evidence']['validation.json'] == {'bytes':len(c130_test_bytes),'sha256':hashlib.sha256(c130_test_bytes).hexdigest()}
 for role, count in [('C30', 610), ('C40', 303)]:
     row = roles[role]
     assert row['learner']['relationship'] == 'central_planner_consumes_native_exercise_and_support_metadata_with_verified_html_routes'
@@ -937,6 +954,12 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('openlogic_invented_solutions', 'openlogicTeacher', lambda value: value.update(solutions_audited=True)),
         ('openlogic_wrong_edition', 'openlogicTeacher', lambda value: value.update(edition_binding='0' * 64)),
         ('openlogic_unbound_tests', 'openlogicTeacher', lambda value: value['evidence']['build-tests.json'].update(sha256='0' * 64)),
+        ('c130_selected_alignment_unproven', 'c130Teacher', lambda value: value.update(precise_selected_exercise_and_activity_alignment=False)),
+        ('c130_unmapped_solutions_hidden', 'c130Teacher', lambda value: value.update(unmapped_other_solution_sources=0)),
+        ('c130_all_native_alignment_overclaim', 'c130Teacher', lambda value: value.update(all_native_solution_alignment=True)),
+        ('c130_solver_replay_overclaim', 'c130Teacher', lambda value: value.update(solver_results_reexecuted=True)),
+        ('c130_visual_activities_dropped', 'c130Teacher', lambda value: value['counts'].update(visual_activities=0)),
+        ('c130_unbound_mapping_test', 'c130Teacher', lambda value: value['evidence']['validation.json'].update(sha256='0' * 64)),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
         ('a10_nonanonymous', 'a10Integration', lambda value: value.update(anonymous=False)),

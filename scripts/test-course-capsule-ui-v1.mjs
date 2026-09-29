@@ -566,6 +566,7 @@ for (const [name, fetch] of [
   assert.equal(visibleCount(), 1);
   assert.match(f.element('#course-grid').innerHTML, /href="\.\.\/backend\/c130\/C130\.html"/);
   assert.match(f.element('#course-grid').innerHTML, /Buka Riset Operasi — Buku 1/);
+  assert.match(f.element('#course-grid').innerHTML, /href="\.\.\/backend\/c130-teacher\/C130\.teacher\.html"/);
   assert.match(f.element('#course-grid').innerHTML, /class="learner-tool primary"/);
   f.element('#course-search').value = 'zzzz_no_matching_course';
   f.fire(f.element('#course-search'), 'input');
@@ -581,8 +582,11 @@ for (const [name, fetch] of [
 }
 const educatorCounts = Object.fromEntries(['verified', 'available_unverified', 'in_progress', 'unknown'].map((status) => [status, courses.filter((course) => course.layers.educator.status === status).length]));
 // A00 and B10 add verified selection tools, not official teacher manuals.
-assert.deepEqual(educatorCounts, { verified: 39, available_unverified: 1, in_progress: 0, unknown: 0 });
-assert.deepEqual(courses.filter(c=>c.layers.educator.status==='available_unverified').map(c=>c.course_id),['C130']);
+assert.deepEqual(educatorCounts, { verified: 40, available_unverified: 0, in_progress: 0, unknown: 0 });
+assert.deepEqual(courses.filter(c=>c.layers.educator.status==='available_unverified').map(c=>c.course_id),[]);
+const c130TeacherCourse=courses.find(c=>c.course_id==='C130');
+assert.equal(c130TeacherCourse.layers.educator.unit_alignment_status,'verified');
+for(const lang of ['id','en'])assert.ok(c130TeacherCourse.layers.educator.resources.some(r=>r.id==='C130:teacher-'+lang&&r.status==='verified'));
 assert.deepEqual(courses.filter(c=>c.layers.educator.status==='unknown').map(c=>c.course_id),[]);
 assert.equal(courses.find(c=>c.course_id==='C80').layers.educator.unit_alignment_status,'verified');
 for(const role of ['C30','C40']) {

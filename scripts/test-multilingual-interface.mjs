@@ -250,13 +250,32 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,12);
+assert.equal(existingEnglishProjected.length,13);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
 // Preserve every previous tool while adding four bilingual CLP planners.
-assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')).length,51);
-assert.equal(capabilityTools.length,65);
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')).length,51);
+assert.equal(capabilityTools.length,67);
+for(const locale of ['id','en']) {
+  const suffix=locale==='en'?'.en':'',tool=capabilityTools.find(t=>t.tool_id==='c130.assignment_planner'+suffix);
+  assert.equal(tool.href,'backend/c130-teacher/C130.teacher'+suffix+'.html');
+  assert.equal(tool.contentLanguage,locale);assert.equal(tool.primary,false);
+  assert.ok(tool.limitations.every(text=>!tool.scope.includes(text)), 'C130 scope must not repeat the limitation paragraph');
+  assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='C130'),locale).some(r=>r.href===siteOrigin+tool.href&&r.accessRole==='tool'));
+}
+for(const mutate of [
+  v=>{v.precise_selected_exercise_and_activity_alignment=false;},
+  v=>{v.all_native_solution_alignment=true;},
+  v=>{v.unmapped_other_solution_sources=0;},
+  v=>{v.reader_language='en';},
+  v=>{delete v.files['C130.teacher.en.html'];},
+  v=>{v.files['planner-model.json'].sha256='0'.repeat(64);},
+]) {
+  const changed={...existingEnglishInputs},key='docs/backend/c130-teacher/teacher-validation.json';
+  const value=JSON.parse(changed[key]);mutate(value);changed[key]=Buffer.from(JSON.stringify(value));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
 for(const locale of ['id','en']) {
   const suffix=locale==='en'?'.en':'';
   const tool=capabilityTools.find(t=>t.tool_id==='c80.openlogic_assignment_planner'+suffix);

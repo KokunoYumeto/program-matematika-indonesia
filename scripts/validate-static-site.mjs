@@ -450,7 +450,13 @@ for (const lang of ['id', 'en']) {
 const c130Capsule = courseCapsules.find(({ course_id }) => course_id === 'C130');
 assert.ok(c130Capsule, 'Kapsul C130 harus tersedia.');
 assert.equal(c130Capsule.layers.interoperability.semantic_adapter.status, 'verified');
-assert.deepEqual(c130Capsule.layers.learner.tools.map(({ tool_id }) => tool_id), ['c130-operations-research-course-map-v1']);
+assert.deepEqual(c130Capsule.layers.learner.tools.map(({ tool_id }) => tool_id).sort(), ['c130-operations-research-course-map-v1','c130.assignment_planner']);
+assert.equal(c130Capsule.layers.learner.tools.find(t=>t.tool_id==='c130.assignment_planner').href,'backend/c130-teacher/C130.teacher.html');
+assert.equal(c130Capsule.layers.educator.status,'verified');
+for(const lang of ['id','en'])assert.ok(c130Capsule.layers.educator.resources.some(r=>r.id==='C130:teacher-'+lang&&r.status==='verified'));
+for(const name of ['C130.teacher.en.html','C130.teacher.html','c130-teacher-source-v1.zip','mapping.json','planner-model.json','teacher-validation.json','teacher.css','teacher.js']){
+  assert.deepEqual(await readFile(resolve(root,'public/hub/backend/c130-teacher',name)),await readFile(resolve(root,'docs/backend/c130-teacher',name)),`C130 mirror differs: ${name}`);
+}
 for (const courseId of ['A10']) {
   const capsule = courseCapsules.find(({ course_id }) => course_id === courseId);
   assert.equal(capsule.layers.translation.terminology_status, 'in_progress');
@@ -1787,10 +1793,15 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 36);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 113);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1862);
-assert.equal(centralNavigation.summary.classified_html_documents, 1867);
+assert.equal(centralNavigation.summary.course_surface_roots, 37);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 115);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1864);
+assert.equal(centralNavigation.summary.classified_html_documents, 1869);
+const c130TeacherSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/c130-teacher');
+assert.deepEqual(c130TeacherSurface.documents,[
+  {path:'C130.teacher.html',locale:'id',course_ids:['C130'],contents_paths:['C130.teacher.en.html']},
+  {path:'C130.teacher.en.html',locale:'en',course_ids:['C130'],contents_paths:['C130.teacher.html']},
+]);
 const openLogicTeacherSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/openlogic-teacher');
 assert.deepEqual(openLogicTeacherSurface.documents, [
   {path: 'C80.teacher.html', locale: 'id', course_ids: ['C80'], contents_paths: ['C80.teacher.en.html']},

@@ -16,6 +16,8 @@ const sources={
   judsonTeacherTests:'backend/course-capsule-v1/adapters/judson-teacher-v1/tests.json',
   openlogicTeacher:'docs/backend/openlogic-teacher/teacher-validation.json',
   openlogicTeacherTests:'backend/course-capsule-v1/adapters/openlogic-teacher-v1/build-tests.json',
+  c130Teacher:'docs/backend/c130-teacher/teacher-validation.json',
+  c130TeacherTests:'backend/course-capsule-v1/adapters/c130-teacher-v1/validation.json',
   a10Integration:'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
   a20:'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
   a30Manifest:'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -150,6 +152,14 @@ assert.equal(data.openlogicTeacherTests.all_source_problems_accounted_for,438);
 assert.equal(data.openlogicTeacher.edition_binding,data.openlogicTeacherTests.edition_binding);
 assert.deepEqual(data.openlogicTeacher.evidence['build-tests.json'],{bytes:bytes.openlogicTeacherTests.length,sha256:sha256(bytes.openlogicTeacherTests)});
 assert.deepEqual(data.openlogicTeacher.input_identities,data.openlogicTeacherTests.input_identities);
+assert.equal(data.c130Teacher.schema,'c130-teacher-hosted/1');
+assert.equal(data.c130Teacher.state,'pass');assert.equal(data.c130TeacherTests.state,'pass');
+assert.deepEqual(data.c130Teacher.evidence['validation.json'],{bytes:bytes.c130TeacherTests.length,sha256:sha256(bytes.c130TeacherTests)});
+for(const [key,value] of Object.entries({selectable_learning_items:227,selectable_reader_exercises:203,checkpoints:12,checkpoint_answers:12,visual_activities:12,manual_materials:192,other_native_solutions:132,source_bound_without_printed_mapping:28,source_only_legacy_exercises:4}))assert.equal(data.c130Teacher.counts[key],value,`C130 count drift: ${key}`);
+assert.equal(data.c130Teacher.precise_selected_exercise_and_activity_alignment,true);
+assert.equal(data.c130Teacher.all_native_solution_alignment,false);
+assert.equal(data.c130Teacher.unmapped_other_solution_sources,28);
+assert.equal(data.c130Teacher.solver_results_reexecuted,false);
 assert.deepEqual(data.clpView.source,{path:sources.clpRoutes,bytes:bytes.clpRoutes.length,sha256:sha256(bytes.clpRoutes)});
 assert.equal(new Set(data.capsules.map(row=>row.course_id)).size,40,'Duplicate course role.');
 assert.equal(data.a10Integration.schema,'combined-backend-increment-public-readback/1');
@@ -581,6 +591,8 @@ const rows=data.capsules.map(capsule=>{
           ?'central_planner_consumes_native_exercise_and_support_metadata_with_verified_html_routes'
         :role==='C80'
           ?'central_planner_consumes_source_target_and_printed_occurrence_mapping_with_explicit_source_only_records'
+        :role==='C130'
+          ?'central_planner_consumes_source_bound_exercise_and_activity_pdf_mapping_with_explicit_unmapped_solutions'
         :role==='A10' && capsule.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub')
           ?'central_navigator_consumes_native_metadata_projection_pdf_runtime_adapter_consumption_not_claimed'
         :['D50','D110'].includes(role) && capsule.layers.learner.tools.some(tool=>tool.tool_id===role.toLowerCase()+'.open_learner_hub')
@@ -591,7 +603,8 @@ const rows=data.capsules.map(capsule=>{
     educator:{status:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status,resources:capsule.layers.educator.resources,
       ...(clpRoles.includes(role)?{assignment_exercises:data.clpTeacher.course_counts[role],alignment_scope:role==='B20'?'source_exercise_identity_and_translated_file_only':'source_and_target_structural_exercise_identity'}:{}),
       ...(['C30','C40'].includes(role)?{assignment_exercises:data.judsonTeacher.course_counts[role],alignment_scope:'source_and_target_structural_exercise_identity',supplied_solutions:0,response_slots_are_answers:false}: {}),
-      ...(role==='C80'?{assignment_exercises:442,distinct_rendered_source_exercises:427,tag_disabled_source_exercises:10,unflushed_source_exercises:1,alignment_scope:'source_target_and_printed_occurrence_identity_with_explicit_unrendered_sources',solutions_audited:false}:{})},
+      ...(role==='C80'?{assignment_exercises:442,distinct_rendered_source_exercises:427,tag_disabled_source_exercises:10,unflushed_source_exercises:1,alignment_scope:'source_target_and_printed_occurrence_identity_with_explicit_unrendered_sources',solutions_audited:false}:{}),
+      ...(role==='C130'?{assignment_exercises:203,selectable_learning_items:227,checkpoints:12,visual_activities:12,manual_materials:192,other_solution_passages:104,unmapped_other_solution_sources:28,source_only_legacy_exercises:4,alignment_scope:'selected_exercises_checkpoints_answers_and_visual_activities_not_all_native_solutions',all_native_solution_alignment:false,solver_results_reexecuted:false}:{})},
     dimensions:{
       curriculum:{course_graph:capsule.layers.curriculum.status,unit_identity:capsule.layers.curriculum.unit_identity_status},
       source_translation_ledger:{ledger:capsule.layers.translation.ledger_status,corrections:capsule.layers.translation.corrections_status},
@@ -606,6 +619,7 @@ const rows=data.capsules.map(capsule=>{
     layers:Object.fromEntries(Object.entries(capsule.layers).map(([name,layer])=>[name,{status:layer.status,
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
+      ...(role==='C130'?['Pemetaan saat ini mencakup 203 soal, 12 cek pemahaman beserta jawaban, dan 12 kegiatan visual. Sebanyak 104 penyelesaian lain mempunyai tautan bagian teks, sedangkan 28 sumber penyelesaian masih memerlukan pemetaan halaman. Empat soal sumber lama tidak dicetak dalam PDF ini. Hasil solver belum dijalankan ulang; antarmuka Inggris tetap membuka buku Bahasa Indonesia.']:[]),
       ...(!integrated?['Periksa backend asli dan implementasikan adapter bersama beserta penggunaan nyata oleh pelajar/pengajar.']:[]),
       ...(capsule.layers.translation.ledger_status!=='verified'?['Buktikan ledger sumber/penerjemahan asli; status ini tidak menyatakan terjemahan belum selesai.']:[]),
       ...(capsule.layers.translation.terminology_status!=='verified'?['Periksa register istilah dan kaitannya dengan teks serta alternatif istilah.']:[]),

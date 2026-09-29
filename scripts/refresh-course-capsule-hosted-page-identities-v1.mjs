@@ -47,8 +47,10 @@ for(const [courseId,tools] of Object.entries(overrides.learner_tools??{}).sort((
 // authority, so they must not also appear in integration-overrides.
 // A10 adds one learner navigator and two educator views to the prior closure.
 // C80 contributes one new planner page and one learner-tool binding.
-assert.equal(toolCount,45,'Integration learner-tool closure changed.');
-assert.equal(pagePaths.size,42,'Integration hosted-page closure changed.');
+assert.equal(toolCount,46,'Integration learner-tool closure changed.');
+assert.equal(pagePaths.size,43,'Integration hosted-page closure changed.');
+assert.ok(overrides.learner_tools.C130.some(tool=>tool.tool_id==='c130.assignment_planner'
+  && tool.page.path==='docs/backend/c130-teacher/C130.teacher.html'),'C130 planner binding is missing.');
 assert.ok(overrides.learner_tools.C80.some(tool=>tool.tool_id==='c80.openlogic_assignment_planner'
   && tool.page.path==='docs/backend/openlogic-teacher/C80.teacher.html'),'C80 planner binding is missing.');
 for(const role of ['C30','C40'])assert.ok(pagePaths.has(`docs/backend/judson/${role}.teacher.html`));
@@ -90,8 +92,9 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
 // B95 and C140 each contribute educator evidence plus a hub resource over one
 // central hosted page.
 // C80 contributes primary educator evidence plus two localized resources.
-assert.equal(educatorFactCount,92,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,53,'Integration educator hosted-page closure changed.');
+assert.equal(educatorFactCount,95,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,55,'Integration educator hosted-page closure changed.');
+for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/c130-teacher/C130.teacher${suffix}.html`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/openlogic-teacher/C80.teacher${suffix}.html`));
 for(const role of ['C30','C40'])for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/judson/${role}.teacher${suffix}.html`));
 for(const role of ['B20','B30','B50','B60'])for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/clp/${role}.teacher${suffix}.html`));

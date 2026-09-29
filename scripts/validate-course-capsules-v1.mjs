@@ -838,10 +838,16 @@ assert.deepEqual(c130Adapter.evidence.map(({ kind }) => kind), ['central_adapter
 assert.equal(c130Adapter.evidence[0].sha256, 'cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239');
 assert.equal(c130Adapter.evidence[1].sha256, 'b311ab7d2a6a86af40174d051fbd8ef273a8536b34f0af77b76e5a1ce9b3397e');
 assert.equal(c130Adapter.evidence[2].sha256, '6d9fa92226d7eee2ab29aba647d3cca0cee80b6cc2ee0bb0e14642216f9c8ae7');
-assert.equal(byId.C130.layers.learner.tools.length, 1);
+assert.equal(byId.C130.layers.learner.tools.length, 2);
 assert.equal(byId.C130.layers.learner.tools[0].href, 'backend/c130/C130.html');
 assert.equal(byId.C130.layers.learner.tools[0].primary, true);
 assert.equal(byId.C130.layers.learner.tools[0].resource.sha256, '8114562c963295577d8f845719061febed5993b5cbbe5fc4beb8ba235d7fd709');
+const c130Planner=byId.C130.layers.learner.tools.find(t=>t.tool_id==='c130.assignment_planner');
+assert.equal(c130Planner.href,'backend/c130-teacher/C130.teacher.html');
+assert.equal(c130Planner.resource.sha256,'0e4d1c6684f8d7bc2660841f2628fd417f7dbfda18ac4a4a262bbd3b3e1b075b');
+assert.equal(byId.C130.layers.educator.status,'verified');
+assert.equal(byId.C130.layers.educator.unit_alignment_status,'verified');
+for(const locale of ['id','en'])assert.ok(byId.C130.layers.educator.resources.some(r=>r.id==='C130:teacher-'+locale&&r.status==='verified'));
 for (const id of ['A10']) {
   assert.equal(byId[id].layers.translation.terminology_status, 'in_progress');
   assert.equal(byId[id].layers.translation.corrections_status, 'in_progress');

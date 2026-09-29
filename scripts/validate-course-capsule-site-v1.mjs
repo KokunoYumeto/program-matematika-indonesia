@@ -112,6 +112,38 @@ assert.deepEqual(openLogicTeacherModel.counts, openLogicTeacherValidation.counts
 assert.equal(openLogicTeacherModel.questions.length, 442);
 assert.equal(openLogicTeacherModel.source_only.length, 11);
 const logicalFiles = [
+  ...await (async()=>{
+    const base='backend/course-capsule-v1/adapters/c130-teacher-v1';
+    const v=JSON.parse(await readFile(resolve(project,'docs/backend/c130-teacher/teacher-validation.json')));
+    assert.equal(v.schema,'c130-teacher-hosted/1');assert.equal(v.state,'pass');
+    assert.equal(v.precise_selected_exercise_and_activity_alignment,true);
+    assert.equal(v.all_native_solution_alignment,false);assert.equal(v.unmapped_other_solution_sources,28);
+    assert.equal(v.solver_results_reexecuted,false);assert.equal(v.reader_language,'id');
+    assert.deepEqual(v.interface_locales,['id','en']);
+    assert.equal(v.counts.selectable_learning_items,227);assert.equal(v.counts.selectable_reader_exercises,203);
+    const files=[...Object.keys(v.files),'teacher-validation.json'];
+    assert.deepEqual([...files].sort(),['C130.teacher.en.html','C130.teacher.html','c130-teacher-source-v1.zip','mapping.json','planner-model.json','teacher-validation.json','teacher.css','teacher.js']);
+    for(const [name,fact] of Object.entries(v.files)){
+      const path='docs/backend/c130-teacher/'+name,b=await readFile(resolve(project,path));
+      if(b.length!==fact.bytes||sha256(b)!==fact.sha256){
+        assert.ok(name.endsWith('.html'),'Non-HTML C130 planner identity drift');
+        const overlay=d110NavigationOverlay.files.find(f=>f.document===path);
+        assert.ok(overlay,'C130 planner navigation overlay missing');
+        assert.deepEqual(overlay.source_body,{path,...fact});
+        assert.deepEqual(overlay.hosted_surface,identity(path,b));
+        assert.equal(overlay.source_body_replay_exact,true);
+      }
+    }
+    for(const [name,fact] of Object.entries(v.evidence)){
+      const b=await readFile(resolve(project,base,name));
+      assert.deepEqual({bytes:b.length,sha256:sha256(b)},fact,`C130 evidence drift: ${name}`);
+    }
+    const model=JSON.parse(await readFile(resolve(project,'docs/backend/c130-teacher/planner-model.json')));
+    assert.equal(model.questions.length,227);
+    assert.equal(model.supplementary_solutions.length,132);
+    assert.equal(model.supplementary_solutions.filter(r=>r.page===null).length,28);
+    return files.map(name=>'backend/c130-teacher/'+name);
+  })(),
   ...openLogicTeacherFiles.map(path => 'backend/openlogic-teacher/' + path),
   ...await (async()=>{
     const v=JSON.parse(await readFile(resolve(project,'docs/backend/judson/teacher-validation.json')));
@@ -549,8 +581,8 @@ for(const path of ['backend/a10/A10.html','backend/a10/A10-en.html','backend/a10
   assert.ok(page.includes('id="a10-data"'));
 }
 // Declared material, verified material and precise unit alignment are distinct.
-// C130 declares features without verified resources; B20's planner is verified
-// but its translated exercise mapping remains file-level only.
+// C130 verifies the 227 selected exercise/activity references, not all native
+// solution locations. B20's translated exercise mapping remains file-level only.
 assert.deepEqual(sortedIds(rows.filter(row => !row.layers.educator.features.length && !row.layers.educator.resources.length).map(row => row.course_id)), []);
 const c80Teacher = rows.find(row => row.course_id === 'C80').layers.educator;
 assert.equal(c80Teacher.status, 'verified');
@@ -564,8 +596,16 @@ for (const lang of ['id', 'en']) {
   assert.equal(resource.bytes, docsBytes[path].length);
   assert.equal(resource.sha256, sha256(docsBytes[path]));
 }
-assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.status !== 'verified').map(row => row.course_id)), sortedIds(['C130']));
-assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), sortedIds(['B20', 'C130']));
+const c130Teacher=rows.find(row=>row.course_id==='C130').layers.educator;
+assert.deepEqual(c130Teacher.features,['activities_labs','exercise_bank','remix_selectors']);
+for(const lang of ['id','en']){
+  const resource=c130Teacher.resources.find(r=>r.id==='C130:teacher-'+lang);
+  const path='backend/c130-teacher/C130.teacher'+(lang==='en'?'.en':'')+'.html';
+  assert.equal(resource.url,'https://kokunoyumeto.github.io/program-matematika-indonesia/'+path);
+  assert.equal(resource.bytes,docsBytes[path].length);assert.equal(resource.sha256,sha256(docsBytes[path]));
+}
+assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.status !== 'verified').map(row => row.course_id)), []);
+assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), ['B20']);
 // The v2 snapshot below remains immutable at nine bindings. The live capsules
 // additionally admit the four CLP roles; test the exact role set, not just a count.
 assert.deepEqual(sortedIds(rows.filter((row) => ['verified', 'legacy_verified'].includes(row.layers.interoperability.semantic_adapter.status) && row.layers.interoperability.semantic_adapter.contract_version === '2.3.1').map(({ course_id }) => course_id)), sortedIds(expectedLiveAdapterRoles));
@@ -697,7 +737,7 @@ for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityTool
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
 assert.deepEqual(sortedIds(Object.keys(authorityToolsByCourse)), sortedIds(rows.map(row => row.course_id)));
-assert.equal(authorityToolIds.length, 54);
+assert.equal(authorityToolIds.length, 55);
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
     [{tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
@@ -735,7 +775,7 @@ assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
 assert.equal(validation.checks.learner_tool_course_count, 40);
-assert.equal(validation.checks.learner_tool_count, 54);
+assert.equal(validation.checks.learner_tool_count, 55);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 
@@ -1966,7 +2006,7 @@ assert.deepEqual(snapshotV2Receipt.summary, v23AdapterIndexV2.summary);
 assert.deepEqual(authorityToolsByCourse.C30.map(({ tool_id }) => tool_id).sort(), ['c30.judson_assignment_planner','judson-c30-chapter-map-v1']);
 assert.deepEqual(authorityToolsByCourse.C40.map(({ tool_id }) => tool_id).sort(), ['c40.judson_assignment_planner','judson-c40-chapter-map-v1']);
 assert.deepEqual(authorityToolsByCourse.C80.map(({ tool_id }) => tool_id).sort(), ['c80-openlogic-course-map-v1', 'c80.openlogic_assignment_planner']);
-assert.deepEqual(authorityToolsByCourse.C130.map(({ tool_id }) => tool_id), ['c130-operations-research-course-map-v1']);
+assert.deepEqual(authorityToolsByCourse.C130.map(({ tool_id }) => tool_id).sort(), ['c130-operations-research-course-map-v1','c130.assignment_planner']);
 assert.equal(openLogicValidation.state, 'pass');
 assert.equal(openLogicValidation.semantic_counts.native_units, 722);
 assert.equal(openLogicValidation.semantic_counts.reader_reachable_units, 642);

@@ -17,9 +17,11 @@ export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role =
 ]), 'docs/backend/d110/validation.json', 'docs/backend/d110/learning-map.json',
   'docs/backend/clp/teacher-validation.json', ...['B20','B30','B50','B60'].map(r=>`docs/backend/clp/${r}.teacher.json`),
   'docs/backend/judson/teacher-validation.json', ...['C30','C40'].map(r=>`docs/backend/judson/${r}.teacher.json`),
-  'docs/backend/openlogic-teacher/teacher-validation.json','docs/backend/openlogic-teacher/C80.teacher.json'];
+  'docs/backend/openlogic-teacher/teacher-validation.json','docs/backend/openlogic-teacher/C80.teacher.json',
+  'docs/backend/c130-teacher/teacher-validation.json','docs/backend/c130-teacher/planner-model.json'];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
+  'c130.assignment_planner':['C130','reference','backend/c130-teacher/C130.teacher.html'],
   'c80.openlogic_assignment_planner':['C80','reference','backend/openlogic-teacher/C80.teacher.html'],
   'c30.judson_assignment_planner':['C30','reference','backend/judson/C30.teacher.html'],
   'c40.judson_assignment_planner':['C40','reference','backend/judson/C40.teacher.html'],
@@ -313,6 +315,23 @@ export function projectOpenLogicEnglishTeacherTools(inputs, courseIds) {
     page:{...page,path:base+page.path},resource:{...bound,path:base+'C80.teacher.json'},
     evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}}];
 }
+export function projectC130EnglishTeacherTools(inputs, courseIds) {
+  const base='docs/backend/c130-teacher/',bytes=inputs[base+'teacher-validation.json'],v=JSON.parse(bytes);
+  assert.equal(v.schema,'c130-teacher-hosted/1');assert.equal(v.state,'pass');assert.ok(courseIds.includes('C130'));
+  assert.equal(v.reader_language,'id');assert.equal(v.precise_selected_exercise_and_activity_alignment,true);
+  assert.equal(v.all_native_solution_alignment,false);assert.equal(v.unmapped_other_solution_sources,28);
+  const data=inputs[base+'planner-model.json'],model=JSON.parse(data),bound=v.files['planner-model.json'];
+  assert.deepEqual({bytes:data.length,sha256:hash(data)},bound);
+  assert.equal(model.questions.length,227);assert.equal(new Set(model.questions.map(q=>q.id)).size,227);
+  const page=v.files['C130.teacher.en.html'];assert.ok(page);
+  return [{courseId:'C130',contentLanguage:'en',labelLanguage:'en',tool_id:'c130.assignment_planner.en',
+    action_kind:'reference',href:'backend/c130-teacher/C130.teacher.en.html',label:'C130 · English Operations Research assignment planner',
+    scope:'203 exercises, twelve checkpoints with answers and twelve visual activities in the Indonesian Book 1 edition',
+    limitations:['English controls and navigation; linked textbook content is Indonesian, not an English edition.','104 additional solution passages mapped; 28 other solution sources remain page-unmapped. Solver results were not rerun.'],
+    state:'verified',primary:false,machine_data_is_learner_destination:false,
+    page:{...page,path:base+'C130.teacher.en.html'},resource:{...bound,path:base+'planner-model.json'},
+    evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}}];
+}
 export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
   const tools = [];
   for (const role of ['A00', 'A10']) {
@@ -364,7 +383,7 @@ export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
       });
     }
   }
-  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds)];
+  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds), ...projectC130EnglishTeacherTools(inputs, courseIds)];
 }
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));

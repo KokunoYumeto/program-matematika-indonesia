@@ -1,0 +1,38 @@
+{
+  "schema": "c130-browser-checks/1",
+  "state": "pass",
+  "scope": "Observed local planner interactions; not public deployment or whole-program verification",
+  "mapping_sha256": "ddec5f86a2e558748c946354b9dea0517c6acc6b4329bb3b81495c41a3ecefb3",
+  "assets": {
+    "C130.teacher.html": "554840958c19fe77e406c40c48cdb3041c7033930ba7dde69d0ca8ac2e50a50f",
+    "C130.teacher.en.html": "070bbc9e2c53aac9ffaf0a00a220e9ae19a02704b8db87c3c8091a2d859def38",
+    "teacher.js": "9a562575886334691f00dc31cc5f27cb1ba6feba7f83694d2ddb86427d3d6201",
+    "teacher.css": "5e23ceb1e4c8713a3233e32317792a7ef9ce67e48640fa4c5b4cb1b93d5ec638",
+    "planner-model.json": "0e4d1c6684f8d7bc2660841f2628fd417f7dbfda18ac4a4a262bbd3b3e1b075b"
+  },
+  "checks": {
+    "indonesian_graph_filter": "19 rows; G1 selected by keyboard; keyboard focus retained",
+    "local_pdf_links": "Exercise, manual and supplementary/static reference links switched to reader.pdf#page=...",
+    "indonesian_checkpoint_filter": "12 of 227 items; exact printed checkpoint numbers; answer-page links exposed",
+    "json_text_roundtrip": "12 checkpoint references exported, selection cleared, imported; 12 selected and localized success message",
+    "tampered_page_rejected": "Changed first page to 1; localized rejection; existing 12-item selection preserved",
+    "cross_interface_import": "Same Indonesian-interface export imported in English interface; 12 selected; first reader page 60",
+    "visual_activity_filter": "12 items, narrowed to two in chapter 15",
+    "responsive_dom": "1265px desktop has 1265px document width; mobile client/document 375px with a 610px table inside its own 343px horizontal scroller; viewport override reset",
+    "shared_return_navigation": "2026-09-29 continuation 89875815: actual header clicks from both shared-preview planners returned to /en/index.html#course-C130 and /id/index.html#course-C130; the corresponding C130 course card was read in each language.",
+    "english_program_binding": "English C130 course card exposes the English assignment planner and explicitly identifies its textbook content as Indonesian."
+  },
+  "delta_verification": {
+    "change": "Only each planner's return fragment changed from #C130 to #course-C130. Prior interaction results are retained for byte-identical JavaScript, CSS and planner model; shared navigation was freshly exercised on the changed HTML.",
+    "prior_html_sha256": {
+      "C130.teacher.html": "daba22571d7b52dbd352984a3ab26bcd9a1ba211d537cdf026d070b155af4e13",
+      "C130.teacher.en.html": "af87af04285a0a3608d482d7928e2ec4d5cb84118446cc8fb061645a0455bb6f"
+    }
+  },
+  "limitations": [
+    "In-app browser download event timed out; a saved download was not verified. The visible JSON copy/paste fallback completed the actual browser round trip.",
+    "File-picker import was not exercised; the same validation path is covered by JSON-text import and negative unit tests.",
+    "PDF targets and external visualization sites were not opened from this browser check. PDF byte and passage checks are recorded separately.",
+    "Full-page screenshot capture failed; viewport screenshot was saved. DOM dimensions independently showed no whole-document horizontal overflow."
+  ]
+}
