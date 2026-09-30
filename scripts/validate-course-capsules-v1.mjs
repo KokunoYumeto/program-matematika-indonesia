@@ -855,7 +855,7 @@ assert.equal(byId.C130.layers.learner.tools[0].primary, true);
 assert.equal(byId.C130.layers.learner.tools[0].resource.sha256, '8114562c963295577d8f845719061febed5993b5cbbe5fc4beb8ba235d7fd709');
 const c130Planner=byId.C130.layers.learner.tools.find(t=>t.tool_id==='c130.assignment_planner');
 assert.equal(c130Planner.href,'backend/c130-teacher/C130.teacher.html');
-assert.equal(c130Planner.resource.sha256,'0e4d1c6684f8d7bc2660841f2628fd417f7dbfda18ac4a4a262bbd3b3e1b075b');
+assert.equal(c130Planner.resource.sha256,'da96470e9faadf9b72e996c5262e08c92bf3df47913fee285ef4805da34f9f63');
 assert.equal(byId.C130.layers.educator.status,'verified');
 assert.equal(byId.C130.layers.educator.unit_alignment_status,'verified');
 for(const locale of ['id','en'])assert.ok(byId.C130.layers.educator.resources.some(r=>r.id==='C130:teacher-'+locale&&r.status==='verified'));

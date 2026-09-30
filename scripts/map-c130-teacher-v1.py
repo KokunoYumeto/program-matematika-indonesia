@@ -221,7 +221,7 @@ def map_all(cache):
                 question_by_id[r['to_id']]['supports'].append({'id':left['id'],'kind':left['unit_type'],
                     'native_relation_id':r['id'],'relation_basis':r['relation_type'],
                     'source':{k:left.get(k) for k in ['content_path','code_data_refs','asset_ids','parent_id','title_target']}})
-        support_navigation=map_support(files,native_spans,units,native['relations'],pdf)
+        support_navigation=map_support(files,native_spans,units,native['relations'],pdf,questions)
         counts={'native_units':1993,'native_relations':9545,'exact_individual_native_spans':530,
             'native_exercise_nodes':194,'source_only_legacy_exercises':4,'numbered_reader_exercises':184,
             'graph_practice_items':19,'graph_practice_native_ids':6,'additive_graph_practice_ids':13,

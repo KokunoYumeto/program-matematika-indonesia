@@ -329,7 +329,8 @@ export function projectC130EnglishTeacherTools(inputs, courseIds) {
   const base='docs/backend/c130-teacher/',bytes=inputs[base+'teacher-validation.json'],v=JSON.parse(bytes);
   assert.equal(v.schema,'c130-teacher-hosted/1');assert.equal(v.state,'pass');assert.ok(courseIds.includes('C130'));
   assert.equal(v.reader_language,'id');assert.equal(v.precise_selected_exercise_and_activity_alignment,true);
-  assert.equal(v.all_native_solution_alignment,false);assert.equal(v.unmapped_other_solution_sources,28);
+  assert.equal(v.all_native_solution_alignment,false);assert.equal(v.unmapped_other_solution_sources,16);
+  assert.equal(v.explicit_solution_heading_mappings,12);
   const data=inputs[base+'planner-model.json'],model=JSON.parse(data),bound=v.files['planner-model.json'];
   assert.deepEqual({bytes:data.length,sha256:hash(data)},bound);
   assert.equal(model.questions.length,227);assert.equal(new Set(model.questions.map(q=>q.id)).size,227);
@@ -337,7 +338,7 @@ export function projectC130EnglishTeacherTools(inputs, courseIds) {
   return [{courseId:'C130',contentLanguage:'en',labelLanguage:'en',tool_id:'c130.assignment_planner.en',
     action_kind:'reference',href:'backend/c130-teacher/C130.teacher.en.html',label:'C130 · English Operations Research assignment planner',
     scope:'203 exercises, twelve checkpoints with answers and twelve visual activities in the Indonesian Book 1 edition',
-    limitations:['English controls and navigation; linked textbook content is Indonesian, not an English edition.','104 additional solution passages mapped; 28 other solution sources remain page-unmapped. Solver results were not rerun.'],
+    limitations:['English controls and navigation; linked textbook content is Indonesian, not an English edition.','104 additional solution passages and twelve solution starts mapped; sixteen other solution sources remain page-unmapped. Solutions may continue on following pages. Solver results were not rerun.'],
     state:'verified',primary:false,machine_data_is_learner_destination:false,
     page:{...page,path:base+'C130.teacher.en.html'},resource:{...bound,path:base+'planner-model.json'},
     evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}}];

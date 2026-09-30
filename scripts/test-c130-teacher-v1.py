@@ -45,6 +45,8 @@ def audit_primary(data,files,pages):
             assert sha(text[a:end].encode())==complete['sha256']
             assert sha(text[b:end].encode())==complete['body_sha256']
     support={s['id']:s for s in data['support_navigation']['materials']};assert len(support)==168
+    questions={q['id']:q for q in data['questions']}
+    heading_count=0
     for s in support.values():
         text=normalize(files[s['source_span']['path']]);a,b=s['source_span']['normalized_character_range']
         for witness in s['witnesses']+s.get('visualization_titles',[]):
@@ -54,6 +56,24 @@ def audit_primary(data,files,pages):
             assert letters(text[x:y])==witness['normalized_witness']
             assert witness['normalized_witness'] in letters(pages[witness['page']])
         if s['page'] is not None:assert sha(pages[s['page']].encode())==s['page_text_sha256']
+        if 'solution_reference' in s:
+            heading_count+=1;reference=s['solution_reference'];source=reference['source_reference']
+            x,y=source['normalized_character_range'];assert a<=x<y<=b
+            assert text[x:y]==source['text'] and sha(text[x:y].encode())==source['sha256']
+            label=re.fullmatch(r'\s*\\begin\{solution\}\s*\(Latihan~\\ref\{([^{}]+)\}\)',source['text'])
+            assert label
+            q=questions[reference['question_id']]
+            assert q['source_span']['label']==label[1] and q['number']==reference['printed_number']
+            edges=[r for r in data['native_support_relations'] if r['relation_type']=='solves' and r['from_id']==s['id']]
+            assert len(edges)==1 and edges[0]['id']==reference['native_relation_id'] and edges[0]['to_id']==q['id']
+            pattern=re.compile(r'Penyelesaian\.\s*\(Latihan\s+'+re.escape(q['number'])+r'\)')
+            matches=[(page,m) for page,content in pages.items() for m in pattern.finditer(content)]
+            assert len(matches)==1
+            page,match=matches[0];w=reference['printed_witness']
+            assert page==reference['page']==s['page']
+            assert [match.start(),match.end()]==w['character_range'] and match[0]==w['text']
+            assert sha(pages[page].encode())==w['page_text_sha256']
+            assert s['printed_state']=='native-reference-and-unique-solution-heading'
         if s['kind']=='learningcheckpoint':
             answer=support[s['answer']['id']]
             assert s['source_span']['label']==answer['source_span']['label']
@@ -61,7 +81,8 @@ def audit_primary(data,files,pages):
             assert answer['printed_number']==s['reader']['printed_number']
             pattern=r'Cek\s+Pemahaman\s+'+re.escape(answer['printed_number'])+r'\b'
             assert re.search(pattern,pages[s['page']]) and re.search(pattern,pages[answer['page']])
-    assert sum(s['page'] is None for s in support.values())==28
+    assert heading_count==12
+    assert sum(s['page'] is None for s in support.values())==16
 
 
 def main():
@@ -100,6 +121,12 @@ def main():
     def checkpoint(d):return next(s for s in d['support_navigation']['materials'] if s['kind']=='learningcheckpoint')
     rejected(lambda d:checkpoint(d)['answer'].__setitem__('page',1))
     rejected(lambda d:checkpoint(d)['reader'].__setitem__('printed_number','999.1.1'))
+    def solution(d):return next(s for s in d['support_navigation']['materials'] if 'solution_reference' in s)
+    rejected(lambda d:solution(d)['solution_reference']['source_reference'].__setitem__('text','wrong'))
+    rejected(lambda d:solution(d)['solution_reference'].__setitem__('question_id','wrong'))
+    rejected(lambda d:solution(d)['solution_reference'].__setitem__('native_relation_id','wrong'))
+    rejected(lambda d:solution(d)['solution_reference']['printed_witness'].__setitem__('text','wrong'))
+    rejected(lambda d:solution(d).__setitem__('page',1))
     for rows in [[],[{},{}]]:
         try:mapping.require_one(rows,'negative')
         except ValueError:negative+=1

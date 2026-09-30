@@ -53,9 +53,40 @@ def visualization_titles(text,start,end,pages):
     return titles
 
 
-def map_support(files,native_spans,units,relations,pdf):
+def solution_heading(text,span,relations,questions,pages):
+    """Join an explicit source reference, native edge and unique printed heading.
+
+    The page is the start of the solution, not its full extent. Unlike a plain
+    exercise-number match, the printed prefix distinguishes repeated manual
+    headings and references in the question text. No fuzzy text matching.
+    """
+    start,end=span['normalized_character_range']
+    source=text[start:end]
+    match=re.match(r'\s*\\begin\{solution\}\s*\(Latihan~\\ref\{([^{}]+)\}\)',source)
+    if not match:return None
+    edges=[r for r in relations if r['relation_type']=='solves' and r['from_id']==span['id']]
+    if len(edges)!=1:raise ValueError('Missing or ambiguous native solution edge')
+    edge=edges[0];question=questions[edge['to_id']]
+    if question['kind']!='numbered-exercise' or question['source_span']['label']!=match.group(1):
+        raise ValueError('Exact solution source reference and question label disagree')
+    pattern=re.compile(r'Penyelesaian\.\s*\(Latihan\s+'+re.escape(question['number'])+r'\)')
+    matches=[(page,m) for page,content in pages.items() for m in pattern.finditer(content)]
+    if len(matches)!=1:raise ValueError('Printed solution heading missing or ambiguous')
+    page,witness=matches[0]
+    return {'question_id':question['id'],'native_relation_id':edge['id'],
+        'printed_number':question['number'],'page':page,
+        'source_reference':{'text':match[0],'sha256':sha(match[0].encode()),
+            'normalized_character_range':[start+match.start(),start+match.end()]},
+        'printed_witness':{'text':witness[0],'character_range':[witness.start(),witness.end()],
+            'page_text_sha256':sha(pages[page].encode())},
+        'mapping_method':'native-solves-edge-exact-source-reference-and-unique-printed-solution-heading',
+        'scope':'Start page only; not full solution extent or mathematical verification.'}
+
+
+def map_support(files,native_spans,units,relations,pdf,questions):
     page_text={i+1:page.get_text() for i,page in enumerate(pdf)}
     pages={i:letters(text) for i,text in page_text.items()}
+    question_by_id={q['id']:q for q in questions}
     names=pdf.resolve_names()
     checkpoint_anchors=sorted([{'destination':k,'page':v['page']+1} for k,v in names.items()
                               if k.startswith('tcb@cnt@learningcheckpoint*.')],key=lambda r:r['page'])
@@ -84,6 +115,11 @@ def map_support(files,native_spans,units,relations,pdf):
             row.update(visualization_titles=titles,page=titles[0]['page'],printed_state='exact-visualization-titles')
         elif s['type']=='answer' and not witnesses:
             raise ValueError('Checkpoint answer has no unique literal witness: '+s['id'])
+        elif s['type']=='solution' and not witnesses:
+            heading=solution_heading(text,s,relations,question_by_id,page_text)
+            if heading:
+                row.update(page=heading['page'],printed_state='native-reference-and-unique-solution-heading',
+                           solution_reference=heading)
         if row['page']:row['page_text_sha256']=sha(page_text[row['page']].encode())
         rows.append(row)
     by_id={r['id']:r for r in rows}
@@ -108,8 +144,10 @@ def map_support(files,native_spans,units,relations,pdf):
     return {'schema':'c130-support-navigation/1','materials':rows,
         'counts':{'checkpoints':12,'checkpoint_answers':12,'visual_activities':12,'other_native_solutions':132,
                   'unique_passage_or_anchor_mappings':sum(r['page'] is not None for r in rows),
+                  'explicit_solution_heading_mappings':sum('solution_reference' in r for r in rows),
                   'source_bound_without_printed_mapping':sum(r['page'] is None for r in rows)},
         'limits':['A literal passage link locates the matched part, not necessarily the start or full extent of a solution.',
+                  'Explicit solution-reference links locate a unique solution heading; the body may continue on following pages.',
                   'No external visualization availability, solver execution or mathematical correctness is established by these links.',
                   'Unmapped solution sources are retained explicitly; absent navigation is not a claim of absent mathematical content.']}
 
@@ -122,4 +160,23 @@ def fixtures():
     assert not literal_witnesses('% '+text,0,len(text)+2,{1:key})
     assert not literal_witnesses('$'+text+'$',0,len(text)+2,{1:key})
     assert not literal_witnesses(text,0,len(text),{1:key.replace('enough','different')})
-    return ['literal-unique','ambiguous-rejected','comments-excluded','math-excluded','changed-witness-rejected']
+    source=r'\begin{solution}(Latihan~\ref{ex:a})Some solution body.\end{solution}'
+    span={'id':'s','normalized_character_range':[0,len(source)]}
+    edge={'id':'r','relation_type':'solves','from_id':'s','to_id':'q'}
+    questions={'q':{'id':'q','kind':'numbered-exercise','number':'2.7','source_span':{'label':'ex:a'}}}
+    pages={1:'Latihan 2.7 (question)',2:'Penyelesaian. (Latihan 2.7) body',3:'Latihan 2.7 (manual)'}
+    result=solution_heading(source,span,[edge],questions,pages)
+    assert result['page']==2 and result['printed_number']=='2.7'
+    cases=[(source.replace('ex:a','ex:z'),[edge],pages),
+           (source,[edge,edge],pages),(source,[],pages),
+           (source,[edge],{**pages,4:pages[2]}),
+           (source,[edge],{1:pages[1],3:pages[3]})]
+    for body,edges,content in cases:
+        current={**span,'normalized_character_range':[0,len(body)]}
+        try:solution_heading(body,current,edges,questions,content)
+        except ValueError:pass
+        else:raise AssertionError('Invalid solution-heading mapping accepted')
+    return ['literal-unique','ambiguous-rejected','comments-excluded','math-excluded','changed-witness-rejected',
+            'solution-heading-excludes-manual-and-question','wrong-solution-label-rejected',
+            'duplicate-solution-edge-rejected','missing-solution-edge-rejected',
+            'ambiguous-solution-heading-rejected','missing-solution-heading-rejected']

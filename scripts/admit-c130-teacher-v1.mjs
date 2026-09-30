@@ -11,17 +11,18 @@ const hosted=await load(site+'/teacher-validation.json');
 assert.equal(hosted.schema,'c130-teacher-hosted/1');assert.equal(hosted.state,'pass');
 assert.equal(hosted.counts.selectable_learning_items,227);assert.equal(hosted.counts.selectable_reader_exercises,203);
 assert.equal(hosted.precise_selected_exercise_and_activity_alignment,true);
-assert.equal(hosted.all_native_solution_alignment,false);assert.equal(hosted.unmapped_other_solution_sources,28);
+assert.equal(hosted.all_native_solution_alignment,false);assert.equal(hosted.unmapped_other_solution_sources,16);
+assert.equal(hosted.explicit_solution_heading_mappings,12);
 for(const [name,value] of Object.entries(hosted.files))assert.deepEqual(await fact(site+'/'+name),{path:site+'/'+name,...value});
 for(const [name,value] of Object.entries(hosted.evidence))assert.deepEqual(await fact(base+'/'+name),{path:base+'/'+name,...value});
 const evidence=[];
 for(const [kind,p] of [['c130_source_reader_mapping',base+'/validation.json'],['c130_planner_tests',base+'/ui-tests.json'],['c130_teacher_surface',site+'/teacher-validation.json']]){
- const f=await fact(p);evidence.push({kind,locator:p,bytes:f.bytes,sha256:f.sha256,verified_date:'2026-09-29'});
+ const f=await fact(p);evidence.push({kind,locator:p,bytes:f.bytes,sha256:f.sha256,verified_date:'2026-09-30'});
 }
 const path='backend/course-capsule-v1/authority/integration-overrides-v1.json';
 const raw=await readFile(resolve(root,path),'utf8'),o=JSON.parse(raw),before=structuredClone(o);
 const scope='203 latihan, 12 cek pemahaman beserta jawaban dan 12 kegiatan visual dipetakan ke PDF Bahasa Indonesia.';
-const limitation='Dari 132 penyelesaian lain, 104 memiliki rujukan bagian teks dan 28 masih belum memiliki pemetaan halaman. Hasil solver tidak dijalankan ulang.';
+const limitation='Dari 132 penyelesaian lain, 104 memiliki rujukan bagian teks, 12 memiliki tautan awal penyelesaian, dan 16 masih belum memiliki pemetaan halaman. Isi penyelesaian dapat berlanjut ke halaman berikutnya. Hasil solver tidak dijalankan ulang.';
 const tool={tool_id:'c130.assignment_planner',label:'C130 · Perencana tugas Riset Operasi',
  href:'backend/c130-teacher/C130.teacher.html',action_kind:'reference',scope,state:'verified',primary:false,
  machine_data_is_learner_destination:false,page:await fact(site+'/C130.teacher.html'),
@@ -34,11 +35,11 @@ for(const lang of ['id','en']){
  const name='C130.teacher'+(lang==='en'?'.en':'')+'.html',f=await fact(site+'/'+name);
  resources.push({id:'C130:teacher-'+lang,title:lang==='en'?'C130 · Operations Research assignment planner':'C130 · Perencana tugas Riset Operasi',
   resource_type:'teacher-guide',status:'verified',url:'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/c130-teacher/'+name,
-  scope:lang==='en'?'203 exercises, twelve checkpoints with answers and twelve visual activities in the Indonesian PDF. Another 104 solution passages are mapped; 28 solution sources remain unmapped. No solver re-execution is claimed.':scope+' '+limitation,
+  scope:lang==='en'?'203 exercises, twelve checkpoints with answers and twelve visual activities in the Indonesian PDF. Another 104 solution passages and twelve solution starts are mapped; sixteen solution sources remain unmapped. Solutions may continue on following pages. No solver re-execution is claimed.':scope+' '+limitation,
   bytes:f.bytes,sha256:f.sha256});
 }
 const primary=resources.find(r=>r.id===ids[0]);
-o.educator_evidence.C130={...old,status:'verified',verified_date:'2026-09-29',locator:primary.url,bytes:primary.bytes,sha256:primary.sha256,
+o.educator_evidence.C130={...old,status:'verified',verified_date:'2026-09-30',locator:primary.url,bytes:primary.bytes,sha256:primary.sha256,
  features:['exercise_bank','remix_selectors','activities_labs'],resources};
 for(const key of Object.keys(before)){
  const a=structuredClone(before[key]),b=structuredClone(o[key]);
@@ -59,4 +60,4 @@ nav.summary.classified_html_documents=nav.summary.reader_html_documents+nav.summ
 nav.summary.navigation_overlay_documents=nav.summary.reader_html_documents+nav.summary.gateway_html_documents+nav.summary.course_surface_html_documents+nav.generic_surfaces.filter(s=>s.navigation_required).length;
 assert.equal(await readFile(resolve(root,navPath),'utf8'),navRaw,'Concurrent navigation edit');
 await writeFile(resolve(root,navPath),JSON.stringify(nav,null,2)+'\n');
-console.log(JSON.stringify({state:'locally-admitted-pending-publication',role:'C130',selectable_items:227,unmapped_other_solutions:28}));
+console.log(JSON.stringify({state:'locally-admitted-pending-publication',role:'C130',selectable_items:227,solution_starts:12,unmapped_other_solutions:16}));

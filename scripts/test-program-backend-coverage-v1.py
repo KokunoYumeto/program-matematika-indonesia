@@ -529,7 +529,7 @@ assert '../backend/openlogic-teacher/C80.teacher.html' in {t['href'] for t in ro
 assert inputs['openlogicTeacher']['counts'] == inputs['openlogicTeacherTests']['counts']
 assert roles['C130']['learner']['relationship'] == 'central_planner_consumes_source_bound_exercise_and_activity_pdf_mapping_with_explicit_unmapped_solutions'
 assert roles['C130']['educator']['status'] == roles['C130']['educator']['unit_alignment'] == 'verified'
-for key, value in {'assignment_exercises':203, 'selectable_learning_items':227, 'checkpoints':12, 'visual_activities':12, 'manual_materials':192, 'other_solution_passages':104, 'unmapped_other_solution_sources':28, 'source_only_legacy_exercises':4}.items():
+for key, value in {'assignment_exercises':203, 'selectable_learning_items':227, 'checkpoints':12, 'visual_activities':12, 'manual_materials':192, 'other_solution_passages':104, 'other_solution_starts':12, 'unmapped_other_solution_sources':16, 'source_only_legacy_exercises':4}.items():
     assert roles['C130']['educator'][key] == value
 assert roles['C130']['educator']['all_native_solution_alignment'] is False
 assert roles['C130']['educator']['solver_results_reexecuted'] is False
@@ -537,7 +537,8 @@ assert roles['C130']['whole_course_backend_completion'] == 'not_yet_proven'
 assert {r['id'] for r in roles['C130']['educator']['resources']} >= {'C130:teacher-id','C130:teacher-en'}
 assert '../backend/c130-teacher/C130.teacher.html' in {t['href'] for t in roles['C130']['learner']['tools']}
 assert inputs['c130Teacher']['counts']['selectable_learning_items'] == 227
-assert inputs['c130Teacher']['unmapped_other_solution_sources'] == 28
+assert inputs['c130Teacher']['unmapped_other_solution_sources'] == 16
+assert inputs['c130Teacher']['explicit_solution_heading_mappings'] == 12
 assert inputs['c130Teacher']['precise_selected_exercise_and_activity_alignment'] is True
 assert inputs['c130Teacher']['all_native_solution_alignment'] is False
 c130_test_bytes = (ROOT / INPUTS['c130TeacherTests']).read_bytes()
@@ -990,6 +991,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('openlogic_unbound_tests', 'openlogicTeacher', lambda value: value['evidence']['build-tests.json'].update(sha256='0' * 64)),
         ('c130_selected_alignment_unproven', 'c130Teacher', lambda value: value.update(precise_selected_exercise_and_activity_alignment=False)),
         ('c130_unmapped_solutions_hidden', 'c130Teacher', lambda value: value.update(unmapped_other_solution_sources=0)),
+        ('c130_solution_starts_hidden', 'c130Teacher', lambda value: value.update(explicit_solution_heading_mappings=0)),
+        ('c130_solution_start_count_drift', 'c130Teacher', lambda value: value['counts'].update(explicit_solution_heading_mappings=11)),
         ('c130_all_native_alignment_overclaim', 'c130Teacher', lambda value: value.update(all_native_solution_alignment=True)),
         ('c130_solver_replay_overclaim', 'c130Teacher', lambda value: value.update(solver_results_reexecuted=True)),
         ('c130_visual_activities_dropped', 'c130Teacher', lambda value: value['counts'].update(visual_activities=0)),

@@ -14,7 +14,7 @@ def main():
     assert all(r['state']=='pass' for r in [tests,ui,browser])
     assert tests['build']==build and tests['mapping']==build['mapping']
     assert tests['source_mapping_replays']==2 and tests['offline_source_zip_replay'] is True
-    assert ui['positive']==17 and ui['negative']==18 and tests['negative_cases']==13
+    assert ui['positive']==18 and ui['negative']==18 and tests['negative_cases']==18
     assert ui['script']==build['files']['teacher.js'] and ui['model']==build['files']['planner-model.json']
     assert browser['mapping_sha256']==build['mapping']['sha256']
     for name,value in browser['assets'].items():assert value==build['files'][name]['sha256']
@@ -24,7 +24,8 @@ def main():
     evidence={name:fact((BASE/name).read_bytes()) for name in ['validation.json','ui-tests.json','browser-checks.json']}
     report={'schema':'c130-teacher-hosted/1','state':'pass','course_id':'C130','counts':build['counts'],
         'precise_selected_exercise_and_activity_alignment':True,'all_native_solution_alignment':False,
-        'source_only_legacy_exercises':4,'unmapped_other_solution_sources':28,
+        'source_only_legacy_exercises':4,'unmapped_other_solution_sources':16,
+        'explicit_solution_heading_mappings':12,
         'mathematical_correctness_rechecked':False,'solver_results_reexecuted':False,'reader_language':'id',
         'interface_locales':['id','en'],'mapping':build['mapping'],'evidence':evidence,
         'files':{name:fact(raw) for name,raw in sorted(files.items())},'public_deployment_verified':False}

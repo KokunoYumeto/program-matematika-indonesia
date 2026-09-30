@@ -37,9 +37,12 @@ dari PDF, bukan nomor urut rekaan. Batas 192 bahan manual dipetakan dan di-hash
 terpisah dari header asli; header bukan keseluruhan isi jawaban.
 
 Sebanyak 104 dari 132 penyelesaian lain memiliki rujukan bagian teks yang cocok
-secara unik; 28 belum memiliki pemetaan halaman. Empat latihan cabang sumber
-lama tidak tercetak di PDF ini. Keadaan ini dicatat, bukan dihapus. Tautan bagian
-teks tidak menyatakan bahwa keseluruhan penyelesaian berada di satu halaman.
+secara unik. Dua belas lainnya kini mempunyai tautan awal penyelesaian yang
+menggabungkan rujukan sumber tepat, relasi asli, dan judul tercetak yang unik;
+16 masih belum memiliki pemetaan halaman. Empat latihan cabang sumber lama
+tidak tercetak di PDF ini. Keadaan ini dicatat, bukan dihapus. Tautan bagian
+teks atau halaman awal tidak menyatakan bahwa keseluruhan penyelesaian berada
+di satu halaman.
 
 Perencana bukan bukti bahwa seluruh kemampuan asli C130 atau seluruh program
 40 peran sudah terintegrasi. Hasil komputasi praktikum dan situs visualisasi
