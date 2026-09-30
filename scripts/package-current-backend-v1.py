@@ -105,6 +105,36 @@ def native_script_dependency(root, referrer, dependency, declarations):
             'scope': 'Optional native audit input, not a shared-capsule build dependency; download the exact native source ZIP separately.'}
 
 
+def preserved_native_source(root, referrer, dependency, declarations):
+    """Preserve exact native code used as an AST witness, not a claimed native run."""
+    safe_name(referrer)
+    safe_name(dependency)
+    matches = [r for r in declarations if referrer in r['referrers']
+               and r['archive_script_path'] == dependency]
+    if len(matches) != 1:
+        raise FileNotFoundError(dependency)
+    row = matches[0]
+    lock_fact, source_fact = row['source_lock'], row['preserved_source']
+    lock_path = local_path(root, lock_fact['path'])
+    if identity(lock_path) != {k: lock_fact[k] for k in ['bytes', 'sha256']}:
+        raise ValueError('Preserved native source lock identity differs')
+    source_path = local_path(root, source_fact['path'])
+    if identity(source_path) != {k: source_fact[k] for k in ['bytes', 'sha256']}:
+        raise ValueError('Preserved native code identity differs')
+    lock = json.loads(lock_path.read_bytes())
+    assert lock['schema'] == 'c130-native-ledger-lock/1'
+    authority = lock['native_alignment_authority']['exporter']
+    assert authority['member'] == dependency, 'Wrong native member'
+    assert {k: authority[k] for k in ['bytes', 'sha256']} == {k: source_fact[k] for k in ['bytes', 'sha256']}
+    archive = lock['archives']['backend']
+    assert archive['url'].startswith('https://') and archive['bytes'] > 0
+    assert re.fullmatch('[0-9a-f]{64}', archive['sha256'])
+    return {'referrer': referrer, 'archive_script_path': dependency,
+            'source_archive': archive, 'source_lock': lock_fact,
+            'preserved_source': source_fact,
+            'scope': 'Exact preserved native source for alignment/AST comparison; not a full native execution or native build dependency.'}
+
+
 def collect(root):
     scope = json.loads((root / POLICY).read_bytes())
     assert scope['schema'] == 'current-backend-package-scope/1'
@@ -169,6 +199,7 @@ def collect(root):
     # claimed to discover arbitrary dynamic file reads: isolated replay is required.
     checked = set()
     native_dependencies = []
+    preserved_dependencies = []
     while pending := [p for p in reasons if p not in checked and p.endswith(('.mjs', '.js', '.py'))]:
         for name in pending:
             checked.add(name)
@@ -193,6 +224,14 @@ def collect(root):
                 if (root / dep).is_file():
                     add(dep, 'source-dependency:' + name)
                 else:
+                    if any(name in r['referrers'] and dep == r['archive_script_path']
+                           for r in scope.get('preserved_native_source_references', [])):
+                        source = preserved_native_source(root, name, dep,
+                            scope['preserved_native_source_references'])
+                        add(source['source_lock']['path'], 'preserved-native-code-lock:' + name)
+                        add(source['preserved_source']['path'], 'preserved-native-code:' + name)
+                        preserved_dependencies.append(source)
+                        continue
                     external = native_script_dependency(root, name, dep,
                         scope.get('native_archive_script_references', []))
                     add(external['evidence']['path'], 'native-archive-command-evidence:' + name)
@@ -207,6 +246,8 @@ def collect(root):
             'whole_program_complete': False,
             'producer_corpora_included': False,
             'full_native_source_rebuild_claimed': False,
+            'preserved_native_source_dependencies': sorted(preserved_dependencies,
+                key=lambda r: (r['referrer'], r['archive_script_path'])),
             'external_native_script_dependencies': sorted(native_dependencies,
                 key=lambda r: (r['referrer'], r['archive_script_path'])),
             'verification_required': ['exact-member-readback', 'isolated-capsule-replay', 'runtime-tests']}

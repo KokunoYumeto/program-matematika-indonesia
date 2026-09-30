@@ -101,6 +101,55 @@ class PackageTests(unittest.TestCase):
         with self.assertRaisesRegex(AssertionError,'not evidenced'):
             pack.native_script_dependency(self.root,'fixtures/auditor.py','fixtures/unevidenced.py',declarations)
 
+    def preserved_source_fixture(self):
+        code = self.root / 'docs/native-code.py.txt'
+        code.write_bytes(b'def nonempty_blocks(text):\n    return text.split("\\n\\n")\n')
+        lock = self.root / 'docs/source-lock.json'
+        lock.write_text(json.dumps({'schema': 'c130-native-ledger-lock/1',
+            'native_alignment_authority': {'exporter': {'member': 'fixtures/native.py', **pack.identity(code)}},
+            'archives': {'backend': {'url': 'https://example.org/native.zip', 'bytes': 123, 'sha256': 'a' * 64}}}), encoding='utf-8')
+        return [{'referrers': ['fixtures/auditor.py'], 'archive_script_path': 'fixtures/native.py',
+            'source_lock': {'path': 'docs/source-lock.json', **pack.identity(lock)},
+            'preserved_source': {'path': 'docs/native-code.py.txt', **pack.identity(code)}}]
+
+    def test_preserved_native_source_has_exact_code_and_no_execution_claim(self):
+        row = pack.preserved_native_source(self.root, 'fixtures/auditor.py', 'fixtures/native.py', self.preserved_source_fixture())
+        self.assertEqual(row['preserved_source']['path'], 'docs/native-code.py.txt')
+        self.assertIn('not a full native execution', row['scope'])
+
+    def test_preserved_source_referrer_and_member_are_exact(self):
+        rules = self.preserved_source_fixture()
+        for referrer, member in [('fixtures/other.py', 'fixtures/native.py'), ('fixtures/auditor.py', 'fixtures/other.py')]:
+            with self.assertRaises(FileNotFoundError):
+                pack.preserved_native_source(self.root, referrer, member, rules)
+
+    def test_changed_preserved_native_code_rejects(self):
+        rules = self.preserved_source_fixture()
+        (self.root / 'docs/native-code.py.txt').write_bytes(b'changed')
+        with self.assertRaisesRegex(ValueError, 'code identity'):
+            pack.preserved_native_source(self.root, 'fixtures/auditor.py', 'fixtures/native.py', rules)
+
+    def test_changed_preserved_native_lock_rejects(self):
+        rules = self.preserved_source_fixture()
+        (self.root / 'docs/source-lock.json').write_bytes(b'changed')
+        with self.assertRaisesRegex(ValueError, 'lock identity'):
+            pack.preserved_native_source(self.root, 'fixtures/auditor.py', 'fixtures/native.py', rules)
+
+    def test_duplicate_preserved_native_source_refusals(self):
+        rules = self.preserved_source_fixture()
+        with self.assertRaises(FileNotFoundError):
+            pack.preserved_native_source(self.root, 'fixtures/auditor.py', 'fixtures/native.py', rules + rules)
+
+    def test_wrong_preserved_member_authority_rejects(self):
+        rules = self.preserved_source_fixture()
+        lock = self.root / 'docs/source-lock.json'
+        data = json.loads(lock.read_bytes())
+        data['native_alignment_authority']['exporter']['member'] = 'fixtures/other.py'
+        lock.write_text(json.dumps(data), encoding='utf-8')
+        rules[0]['source_lock'].update(pack.identity(lock))
+        with self.assertRaisesRegex(AssertionError, 'Wrong native member'):
+            pack.preserved_native_source(self.root, 'fixtures/auditor.py', 'fixtures/native.py', rules)
+
     def test_static_assets_and_extensionless_licence(self):
         (self.root/'docs/index.html').write_text('<link rel="stylesheet" href="style.css"><a href="COPYING">Licence</a>',encoding='utf-8')
         plan = {'files':[{'path':'docs/index.html'},{'path':'docs/example.json'}]}
