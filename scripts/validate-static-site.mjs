@@ -1796,9 +1796,22 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 37);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 115);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1864);
-assert.equal(centralNavigation.summary.classified_html_documents, 1869);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 117);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1866);
+assert.equal(centralNavigation.summary.classified_html_documents, 1871);
+// The two added pages expose native metadata, not new translated book bodies.
+const a00LedgerSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/a00');
+assert.equal(a00LedgerSurface.documents.length, 6);
+for (const [path, locale, learner, teacher, other] of [
+  ['ledger.html', 'id', 'A00.html', 'A00-pengajar.html', 'ledger-en.html'],
+  ['ledger-en.html', 'en', 'A00-en.html', 'A00-pengajar-en.html', 'ledger.html'],
+]) {
+  assert.deepEqual(a00LedgerSurface.documents.find(row => row.path === path),
+    {path, locale, course_ids: ['A00'], contents_paths: [learner, teacher, other]});
+  for (const parent of [learner, teacher]) {
+    assert.ok(a00LedgerSurface.documents.find(row => row.path === parent).contents_paths.includes(path));
+  }
+}
 const c130TeacherSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/c130-teacher');
 assert.deepEqual(c130TeacherSurface.documents,[
   {path:'C130.teacher.html',locale:'id',course_ids:['C130'],contents_paths:['C130.teacher.en.html']},

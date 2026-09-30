@@ -979,10 +979,13 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // bytes / 1,214 gzip bytes to the largest previous map (499,524 / 101,516
     // now). D60 plus the four existing A00/A10 English tools bring the largest
     // map to 525,880 bytes. Keep these useful capabilities with a bounded
-    // 536 KiB raw ceiling; the 128 KiB compressed ceiling remains unchanged.
+    // 540 KiB raw ceiling after adding the two A00 ledger evidence routes
+    // (largest map 549,071 bytes before the licence links). The prior 536 KiB
+    // threshold was exceeded by 207 bytes. The 128 KiB compressed ceiling
+    // remains unchanged; no learning data is dropped to satisfy this budget.
     // engineering ceilings, not the former 101,000-byte near-baseline cutoff.
     // The exact complete payload and online/offline parity are tested below.
-    assert.ok(Buffer.byteLength(html) < 536 * 1024, 'Offline map size budget');
+    assert.ok(Buffer.byteLength(html) < 540 * 1024, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 128 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');
