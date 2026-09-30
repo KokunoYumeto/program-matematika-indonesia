@@ -93,8 +93,9 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
 // central hosted page.
 // C80 contributes primary educator evidence plus two localized resources.
 // A00 exposes two localized native-ledger views without relabeling its book review.
-assert.equal(educatorFactCount,97,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,57,'Integration educator hosted-page closure changed.');
+assert.equal(educatorFactCount,99,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,59,'Integration educator hosted-page closure changed.');
+for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/clp/B20.terms${suffix}.html`));
 for(const page of ['ledger.html','ledger-en.html'])assert.ok(educatorPagePaths.has(`docs/backend/a00/${page}`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/c130-teacher/C130.teacher${suffix}.html`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/openlogic-teacher/C80.teacher${suffix}.html`));

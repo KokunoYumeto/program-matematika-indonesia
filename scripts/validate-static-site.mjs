@@ -1809,9 +1809,9 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 37);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 117);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1866);
-assert.equal(centralNavigation.summary.classified_html_documents, 1871);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 119);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1868);
+assert.equal(centralNavigation.summary.classified_html_documents, 1873);
 // The two added pages expose native metadata, not new translated book bodies.
 const a00LedgerSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/a00');
 assert.equal(a00LedgerSurface.documents.length, 6);
@@ -1849,8 +1849,23 @@ for (const role of ['C30','C40']) {
 }
 const clpSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/clp');
 assert.deepEqual(clpSurface.documents.map(row => row.path).sort(), [
+  'B20.terms.html','B20.terms.en.html',
   'CLP.html', ...['B20','B30','B50','B60'].flatMap(role => [role+'.html',role+'.teacher.html',role+'.teacher.en.html']),
 ].sort());
+for(const [suffix,locale] of [['','id'],['.en','en']]){
+  const name=`B20.terms${suffix}.html`;
+  const entry=clpSurface.documents.find(d=>d.path===name);
+  assert.equal(entry.locale,locale);assert.deepEqual(entry.course_ids,['B20']);
+  assert.ok(entry.contents_paths.includes(`B20.teacher${suffix}.html`));
+  assert.ok(clpSurface.documents.find(d=>d.path===`B20.teacher${suffix}.html`).contents_paths.includes(name));
+  const text=await readFile(resolve(root,'docs/backend/clp',name),'utf8');
+  assert.ok(text.includes('clp1.term.absolute_maximum')&&text.includes('maksimum absolut'));
+  assert.ok(text.includes('clp1.term.down')&&text.includes('cekung ke bawah'));
+  assert.deepEqual(await readFile(resolve(root,'public/hub/backend/clp',name)),Buffer.from(text));
+}
+const clpTerms=await readJson('docs/backend/clp/B20.terms.validation.json');
+assert.equal(clpTerms.terms,24);assert.equal(clpTerms.corrected_terms,3);
+assert.equal(clpTerms.semantic_canon_review,false);assert.equal(clpTerms.book_modified,false);
 for (const role of ['B20','B30','B50','B60']) {
   for (const [suffix, locale] of [['teacher.html','id'],['teacher.en.html','en']]) {
     const page = clpSurface.documents.find(row => row.path === role+'.'+suffix);

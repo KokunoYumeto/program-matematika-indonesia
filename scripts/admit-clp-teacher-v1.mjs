@@ -56,15 +56,20 @@ for(const role of roles)for(const lang of ['id','en']){
   const filename=`${role}.teacher${lang==='en'?'.en':''}.html`;
   const document={path:filename,locale:lang,course_ids:[role],contents_paths:[`${role}.teacher${lang==='en'?'':'.en'}.html`,role+'.html']};
   const found=entry.documents.findIndex(d=>d.path===filename);
-  if(found<0)entry.documents.push(document);else entry.documents[found]=document;
+  if(found<0)entry.documents.push(document);else {
+    document.contents_paths=[...new Set([...document.contents_paths,...entry.documents[found].contents_paths])];
+    entry.documents[found]=document;
+  }
 }
 for(const role of roles){const d=entry.documents.find(d=>d.path===role+'.html');d.contents_paths=[...new Set([...d.contents_paths,role+'.teacher.html'])];}
-assert.equal(entry.documents.length,13);
+const terminologyPages=entry.documents.filter(d=>['B20.terms.html','B20.terms.en.html'].includes(d.path));
+assert.ok([0,2].includes(terminologyPages.length));
+assert.equal(entry.documents.length,13+terminologyPages.length);
 nav.summary.course_surface_html_documents=nav.course_surfaces.reduce((n,s)=>n+s.documents.length,0);
 nav.summary.classified_html_documents=nav.summary.reader_html_documents+nav.summary.gateway_html_documents+nav.summary.course_surface_html_documents+nav.summary.generic_html_documents;
 nav.summary.navigation_overlay_documents=nav.summary.reader_html_documents+nav.summary.gateway_html_documents+nav.summary.course_surface_html_documents+nav.generic_surfaces.filter(s=>s.navigation_required).length;
 assert.deepEqual(nav.course_surfaces.filter(s=>s!==entry),otherSurfaces);
-assert.equal(nav.summary.course_surface_html_documents,13+otherSurfaces.reduce((n,s)=>n+s.documents.length,0));
+assert.equal(nav.summary.course_surface_html_documents,entry.documents.length+otherSurfaces.reduce((n,s)=>n+s.documents.length,0));
 assert.equal(nav.course_surfaces.find(s=>s.root==='docs/backend/judson').documents.length,6);
 await writeFile(resolve(root,navPath),JSON.stringify(nav,null,2)+'\n');
 console.log(JSON.stringify({state:'admitted-pending-publication',roles,precise_target_alignment_roles:roles,clp1_native_file_boundary_preserved:true,clp1_additive_printed_references:2705}));

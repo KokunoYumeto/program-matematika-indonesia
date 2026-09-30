@@ -16,6 +16,9 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
   : value && typeof value === 'object'
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
+  { name: 'clp1_terminology_consumer_cannot_disappear', id: 'B20', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(r=>r.id!=='B20:clp1-terms-id');}, error: /missing\/duplicate educator resource/ },
+  { name: 'clp1_terminology_consumer_hash_cannot_drift', id: 'B20', mutate: row=>{row.layers.educator.resources.find(r=>r.id==='B20:clp1-terms-en').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
+  { name: 'clp1_metadata_repair_is_not_canon_review', id: 'B20', mutate: row=>{row.layers.translation.terminology_status='verified';}, error: /native status needs capability-specific evidence/ },
   { name: 'd100_native_language_scope_cannot_disappear', id: 'D100', mutate: row=>{delete row.layers.translation.verification;}, error: /D100 translation verification scope/ },
   { name: 'd100_structural_audit_is_not_canon_review', id: 'D100', mutate: row=>{row.layers.translation.verification.semantic_canon_review='verified';}, error: /schema|const|validation/i },
   { name: 'c130_planner_cannot_be_removed', id: 'C130', mutate: row=>{row.layers.learner.tools=row.layers.learner.tools.filter(t=>t.tool_id!=='c130.assignment_planner');}, error: /learner tools drift from authority/ },
