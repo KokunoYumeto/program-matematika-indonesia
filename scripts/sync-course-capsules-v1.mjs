@@ -16,6 +16,12 @@ const successorSidecarTargets = [
 ];
 const successorSidecarAvailable = existsSync(resolve(project, successorSidecarSource));
 const mappings = [
+  // These three sealed teacher views use data/claim-boundary.json. Preserve
+  // their native links and the existing root copy; supply the exact alias too.
+  ...['a20','a30','b90'].map(role=>[
+    `backend/course-capsule-v1/adapters/${role}-capability-v1/data/claim-boundary.json`,
+    `docs/backend/${role}/data/claim-boundary.json`,
+  ]),
   ...d100IdFiles.map(name=>[`${d100IdBase}/${name}`,`docs/data/course-capsule-v1/d100-indonesian-evidence-v1/${name}`]),
   ['backend/course-capsule-v1/generated/course-capsules.jsonl', 'docs/data/course-capsule-v1/course-capsules.jsonl'],
   ['backend/course-capsule-v1/generated/course-capsules.json', 'docs/data/course-capsule-v1/course-capsules.json'],

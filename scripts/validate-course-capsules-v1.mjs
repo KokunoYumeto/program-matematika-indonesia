@@ -9,6 +9,7 @@ import { materializeLiveCourses } from '../docs/live-course-publications.js';
 import {loadClp1Evidence,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
 import {loadC120Delivery,validateC120DeliveryOverride} from './c120-delivery-evidence-v1.mjs';
 import {loadD100IndonesianEvidence,validateD100TranslationClaims,d100TranslationVerification} from './d100-indonesian-evidence-v1.mjs';
+import {validateLocalEvidenceIdentities} from './local-evidence-identities-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const clp1Evidence=await loadClp1Evidence(project);
@@ -826,7 +827,7 @@ assert.equal(c80Adapter.mapping_scope, 'reversible_native_course_route_adapter')
 assert.deepEqual(c80Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
 assert.equal(c80Adapter.evidence[0].sha256, '01974670c902a50d3e0166214f665286e0030a270a781a56413976be52ca4b01');
 assert.equal(c80Adapter.evidence[1].sha256, '2a86c41e92f9c9ef7e215448967998504bd4c16e7ba8e680d795d155aebef9a7');
-assert.equal(c80Adapter.evidence[2].sha256, 'e2f8af1970737a0b2f179bd4364152c41eb04caad2d4a01b157ea8ef6ab825d0');
+assert.equal(c80Adapter.evidence[2].sha256, '78971ddf68564c377467061a19e51d6bf77205345202dcbbcb7b808bf49857f3');
 assert.equal(byId.C80.layers.learner.tools.length, 2);
 const c80Reader=byId.C80.layers.learner.tools.find(tool=>tool.href==='backend/openlogic/C80.html');
 assert.equal(c80Reader.primary, true);
@@ -1023,6 +1024,8 @@ for (const input of manifest.inputs) {
   const bytes = await readFile(resolve(project, input.path));
   assert.deepEqual(input, { key: input.key, ...identity(input.path, bytes) }, `${input.path}: manifest identity drift.`);
 }
+
+await validateLocalEvidenceIdentities(project, capsules);
 
 const forbiddenPatterns = [
   /C:\\\\Users\\\\/i,

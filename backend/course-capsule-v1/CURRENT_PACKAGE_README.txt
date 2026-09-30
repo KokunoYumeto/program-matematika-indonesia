@@ -1,0 +1,50 @@
+PAKET BACKEND BERSAMA — 40 PERAN KURIKULUM
+
+Paket ini menyimpan versi kerja lapisan integrasi: identitas sumber, metadata
+terjemahan, peta belajar, hubungan latihan dan solusi, alat peserta belajar,
+bahan pengajar, kode adaptor, serta bukti dan pemeriksaan yang menyertainya.
+Paket ini bukan pernyataan bahwa semua kemampuan backend telah selesai.
+Status dan batas setiap kemampuan tetap tercatat pada masing-masing kursus.
+
+Kode pengemasan, perbaikan pemeriksaan identitas, dan panduan paket ini dibuat
+oleh OpenAI Codex — gpt-6-astra, Ultra effort. Atribusi ini hanya mencakup
+pekerjaan integrasi tersebut; bukan pengakuan kepengarangan, penerjemahan,
+penyuntingan manusia, atau peninjauan ahli atas buku yang dirujuk.
+
+Isi buku tetap berada dalam repositori dan arsip publik asalnya. Paket ini tidak
+menyalin seluruh korpus buku, tidak menjamin semua buku tersedia luring, dan tidak
+mengaku telah membangun ulang sumber asli semua penerbit. Untuk membaca buku
+yang ditautkan, gunakan koneksi internet atau unduh edisinya terlebih dahulu.
+Pembaca D50 yang disertakan masih memakai MathJax dari CDN untuk menampilkan
+rumus; bagian itu memerlukan jaringan. Daftar dependensi jaringan dicatat
+secara eksplisit pada runtime_boundary dalam manifest paket.
+
+Mulai: jalankan `python -m http.server 8000 --directory docs`, lalu buka
+http://localhost:8000/backend/ pada peramban. Layanan lokal diperlukan bagi
+alat yang mengambil data JSON; membuka berkas HTML langsung dapat dibatasi
+oleh kebijakan peramban. Tautan di luar paket tetap mengacu ke program daring.
+
+Pemutaran ulang kapsul: gunakan Node.js 22 dan Python 3.10+ dengan jsonschema.
+Lingkungan yang diuji: Node.js 22.17.0, Python 3.13.9, jsonschema 4.26.0,
+dan zlib 1.3.1. Kebutuhan Python dicatat pada
+scripts/current-backend-requirements-v1.txt. Pembuatan ulang ZIP dengan versi
+kompresor berbeda dapat menghasilkan byte ZIP berbeda meski isinya identik.
+Jalankan, dari akar hasil ekstraksi:
+  node scripts/build-course-capsules-v1.mjs --output-root=replay/a
+  node scripts/build-course-capsules-v1.mjs --output-root=replay/b
+  node scripts/validate-course-capsules-v1.mjs --output-root=replay/a --peer-output-root=replay/b
+  node scripts/test-course-capsule-ui-v1.mjs
+  node scripts/test-local-evidence-identities-v1.mjs
+
+CURRENT_BACKEND_PACKAGE_MANIFEST.json mencatat setiap berkas, ukuran, SHA-256,
+alasan penyertaan, dan bukti lokal untuk setiap peran. Pemutaran ulang ini
+menguji kapsul dan antarmuka bersama; bukan audit baru atas mutu terjemahan,
+penggunaan kanon, atau aksesibilitas seluruh buku.
+
+Panduan Inggris tambahan / additional English guide:
+This is the current shared integration snapshot, not the complete book corpus
+or a declaration that all backend work is finished. Serve the docs directory
+with a local HTTP server and open /backend/. Book links still need internet or
+separately downloaded editions. The commands above reproduce and validate the
+forty common capsules. Individual native-source rebuilds may require separately
+pinned upstream inputs. The manifest preserves those distinctions.

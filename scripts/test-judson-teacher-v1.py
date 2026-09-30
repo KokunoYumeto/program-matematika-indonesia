@@ -103,7 +103,12 @@ def main():
         n['reader_witnesses'][t['edition']+'/'+t['member']]['exercise_nodes'][t['fragment']]['class']='example'
     reject('nonexercise target',break_node)
     access=json.loads((BASE/'input/reader-access.json').read_bytes())
-    b.attach_current_routes(deepcopy(model),access)
+    routed=b.attach_current_routes(deepcopy(model),access)
+    for course in routed['courses']:
+        for locale in ['id','en']:
+            page=b.render(course,locale,routed)
+            assert f'href="../../{locale}/learning-map.html"' in page
+            assert '../learners.html' not in page and '../learners.en.html' not in page
     def reject_route(name,mutate):
         altered=deepcopy(access);mutate(altered)
         try:b.attach_current_routes(deepcopy(model),altered)

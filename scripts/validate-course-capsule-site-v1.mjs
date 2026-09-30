@@ -10,6 +10,15 @@ const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const checkPublic = process.argv.includes('--public');
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
 const identity = (path, bytes) => ({ path, bytes: bytes.length, sha256: sha256(bytes) });
+for (const role of ['a20','a30','b90']) {
+  const original = await readFile(resolve(project,`backend/course-capsule-v1/adapters/${role}-capability-v1/data/claim-boundary.json`));
+  for (const prefix of checkPublic ? ['docs','public/hub'] : ['docs']) {
+    const target = `${prefix}/backend/${role}/data/claim-boundary.json`;
+    assert.deepEqual(await readFile(resolve(project,target)),original,`${target}: teacher governance-link alias drift`);
+    const page = await readFile(resolve(project,`${prefix}/backend/${role}/${role.toUpperCase()}-pengajar.html`),'utf8');
+    assert.ok(page.includes('href="data/claim-boundary.json"'),`${role}: expected teacher governance link`);
+  }
+}
 const sortValue = (value) => {
   if (Array.isArray(value)) return value.map(sortValue);
   if (value && typeof value === 'object') return Object.fromEntries(Object.keys(value).sort().map((key) => [key, sortValue(value[key])]));
