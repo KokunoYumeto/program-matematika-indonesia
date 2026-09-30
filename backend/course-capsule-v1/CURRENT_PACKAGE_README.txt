@@ -41,6 +41,15 @@ alasan penyertaan, dan bukti lokal untuk setiap peran. Pemutaran ulang ini
 menguji kapsul dan antarmuka bersama; bukan audit baru atas mutu terjemahan,
 penggunaan kanon, atau aksesibilitas seluruh buku.
 
+Panduan peserta belajar dua bahasa bersumber pada docs/guides/start-v0.63.32.tex.
+Sumber itu lengkap dalam satu berkas dan memakai paket standar LaTeX:
+inputenc, fontenc, geometry, lmodern, xcolor, enumitem, dan hyperref.
+Pada Windows, jalankan scripts/build-learner-guide-v06332.ps1 untuk dua lintasan
+pdfLaTeX dengan mutex TeX bersama. Hasil masuk ke work/learner-guide-v06332.
+Di lingkungan terpisah, dua lintasan `pdflatex -halt-on-error -no-shell-escape
+docs/guides/start-v0.63.32.tex` membangun dokumen yang sama. Versi distribusi TeX
+dan font dapat memengaruhi byte PDF; identitas rilis dicatat terpisah.
+
 Panduan Inggris tambahan / additional English guide:
 This is the current shared integration snapshot, not the complete book corpus
 or a declaration that all backend work is finished. Serve the docs directory
@@ -48,3 +57,6 @@ with a local HTTP server and open /backend/. Book links still need internet or
 separately downloaded editions. The commands above reproduce and validate the
 forty common capsules. Individual native-source rebuilds may require separately
 pinned upstream inputs. The manifest preserves those distinctions.
+The complete bilingual learner-guide LaTeX is docs/guides/start-v0.63.32.tex.
+Build it with two pdfLaTeX passes and the standard packages listed above; the
+Windows build script also respects the machine-wide TeX mutex.
