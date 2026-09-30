@@ -80,6 +80,31 @@ def local_facts(value):
                 yield path, {'bytes': item['bytes'], 'sha256': item['sha256']}
 
 
+def native_script_dependency(root, referrer, dependency, declarations):
+    """Resolve only an explicitly declared, hash-bound command in a native ZIP."""
+    safe_name(referrer)
+    safe_name(dependency)
+    matches = [r for r in declarations if r['referrer'] == referrer
+               and dependency in r['archive_script_paths']]
+    if len(matches) != 1:
+        raise FileNotFoundError(dependency)
+    declaration = matches[0]
+    evidence = declaration['evidence']
+    path = local_path(root, evidence['path'])
+    if identity(path) != {k: evidence[k] for k in ['bytes', 'sha256']}:
+        raise ValueError('External native script evidence identity differs')
+    audit = json.loads(path.read_bytes())
+    assert audit['state'] == 'pass' and audit['all_source_checksums_verified'] is True
+    archive = audit['source_archive']
+    assert archive['anonymous'] is True and archive['url'].startswith('https://')
+    assert archive['bytes'] > 0 and re.fullmatch('[0-9a-f]{64}', archive['sha256'])
+    commands = audit['fresh_html_backend_replay']['commands']
+    assert any(c['exit_code'] == 0 and dependency in c['command'] for c in commands), 'Native command not evidenced'
+    return {'referrer': referrer, 'archive_script_path': dependency,
+            'source_archive': archive, 'evidence': evidence,
+            'scope': 'Optional native audit input, not a shared-capsule build dependency; download the exact native source ZIP separately.'}
+
+
 def collect(root):
     scope = json.loads((root / POLICY).read_bytes())
     assert scope['schema'] == 'current-backend-package-scope/1'
@@ -143,6 +168,7 @@ def collect(root):
     # Follow local code imports and explicitly named helper scripts. This is not
     # claimed to discover arbitrary dynamic file reads: isolated replay is required.
     checked = set()
+    native_dependencies = []
     while pending := [p for p in reasons if p not in checked and p.endswith(('.mjs', '.js', '.py'))]:
         for name in pending:
             checked.add(name)
@@ -164,7 +190,13 @@ def collect(root):
                         if target.is_file():
                             candidates.add(target.relative_to(root).as_posix())
             for dep in sorted(candidates):
-                add(dep, 'source-dependency:' + name)
+                if (root / dep).is_file():
+                    add(dep, 'source-dependency:' + name)
+                else:
+                    external = native_script_dependency(root, name, dep,
+                        scope.get('native_archive_script_references', []))
+                    add(external['evidence']['path'], 'native-archive-command-evidence:' + name)
+                    native_dependencies.append(external)
 
     files = []
     for name in sorted(reasons):
@@ -175,6 +207,8 @@ def collect(root):
             'whole_program_complete': False,
             'producer_corpora_included': False,
             'full_native_source_rebuild_claimed': False,
+            'external_native_script_dependencies': sorted(native_dependencies,
+                key=lambda r: (r['referrer'], r['archive_script_path'])),
             'verification_required': ['exact-member-readback', 'isolated-capsule-replay', 'runtime-tests']}
     spec = importlib.util.spec_from_file_location('runtime_audit', root / 'scripts/audit-current-backend-runtime-v1.py')
     runtime = importlib.util.module_from_spec(spec)

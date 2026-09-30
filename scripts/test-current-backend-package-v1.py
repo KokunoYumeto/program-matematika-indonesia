@@ -68,6 +68,39 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             pack.local_path(self.root, 'docs/missing.json')
 
+    def native_fixture(self):
+        path = self.root/'docs/native-audit.json'
+        path.write_text(json.dumps({'state':'pass','all_source_checksums_verified':True,
+            'source_archive':{'anonymous':True,'url':'https://example.org/native-source.zip','bytes':123,'sha256':'a'*64},
+            'fresh_html_backend_replay':{'commands':[{'command':['python','fixtures/native.py'],'exit_code':0}]}}), encoding='utf-8')
+        return [{'referrer':'fixtures/auditor.py','archive_script_paths':['fixtures/native.py'],
+                 'evidence':{'path':'docs/native-audit.json',**pack.identity(path)}}]
+
+    def test_declared_native_archive_command_has_explicit_boundary(self):
+        row = pack.native_script_dependency(self.root,'fixtures/auditor.py','fixtures/native.py',self.native_fixture())
+        self.assertEqual(row['archive_script_path'],'fixtures/native.py')
+        self.assertIn('not a shared-capsule build dependency',row['scope'])
+
+    def test_wrong_referrer_does_not_hide_missing_local_script(self):
+        with self.assertRaises(FileNotFoundError):
+            pack.native_script_dependency(self.root,'fixtures/other.py','fixtures/native.py',self.native_fixture())
+
+    def test_undeclared_native_script_rejects(self):
+        with self.assertRaises(FileNotFoundError):
+            pack.native_script_dependency(self.root,'fixtures/auditor.py','fixtures/missing.py',self.native_fixture())
+
+    def test_changed_native_evidence_rejects(self):
+        declarations = self.native_fixture()
+        (self.root/'docs/native-audit.json').write_bytes(b'changed')
+        with self.assertRaisesRegex(ValueError,'evidence identity'):
+            pack.native_script_dependency(self.root,'fixtures/auditor.py','fixtures/native.py',declarations)
+
+    def test_unevidenced_archive_command_rejects(self):
+        declarations = self.native_fixture()
+        declarations[0]['archive_script_paths'].append('fixtures/unevidenced.py')
+        with self.assertRaisesRegex(AssertionError,'not evidenced'):
+            pack.native_script_dependency(self.root,'fixtures/auditor.py','fixtures/unevidenced.py',declarations)
+
     def test_static_assets_and_extensionless_licence(self):
         (self.root/'docs/index.html').write_text('<link rel="stylesheet" href="style.css"><a href="COPYING">Licence</a>',encoding='utf-8')
         plan = {'files':[{'path':'docs/index.html'},{'path':'docs/example.json'}]}
