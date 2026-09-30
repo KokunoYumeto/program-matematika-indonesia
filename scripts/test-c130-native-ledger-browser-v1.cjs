@@ -33,6 +33,12 @@ let browser;
   await page.setViewportSize({width:1280,height:900});
   await page.goto(origin+'/backend/c130-native/ledger'+suffix+'.html',{waitUntil:'networkidle'});
   assert.equal(await page.locator('html').getAttribute('lang'),locale);
+  assert.equal(await page.locator('#location-review .location-proof').count(),21);
+  const proof=page.locator('#location-review .location-proof[data-segment-id="segment.r017.book1.ch07.text.block-133"]');
+  await proof.locator('summary').click();
+  assert.ok((await proof.innerText()).includes('42c1640cd736a36e55d812fa58c696edbaa56958b02a2cd17c2cc301d0b30179'));
+  const reviewResponse=await page.request.get(origin+'/backend/c130-native/location-review.json');
+  assert.equal(reviewResponse.status(),200);assert.equal((await reviewResponse.json()).records.length,21);
   const visible=()=>page.locator('.record:visible').count();
   assert.equal(await visible(),234);
   await page.locator('#kind').selectOption('term');assert.equal(await visible(),140);
@@ -50,6 +56,11 @@ let browser;
    assert.ok(await sourceIdentity.evaluate(el=>{const r=el.getBoundingClientRect();return r.top>=0&&r.bottom<=innerHeight;}),locale+' source identity is outside viewport');
    const dimensions=await page.evaluate(()=>({width:innerWidth,scroll:document.documentElement.scrollWidth}));
    assert.ok(dimensions.scroll<=dimensions.width+1,locale+' horizontal overflow at '+width);
+   await proof.scrollIntoViewIfNeeded();
+   assert.ok(await proof.locator('details').evaluate(el=>el.open),locale+' review proof is not expanded');
+   assert.ok((await page.evaluate(()=>document.documentElement.scrollWidth))<=width+1,locale+' review proof overflows at '+width);
+   if(shotRoot){await fs.mkdir(shotRoot,{recursive:true});await proof.screenshot({path:path.join(shotRoot,locale+'-'+width+'-alignment-proof.png')});}
+   await sourceIdentity.scrollIntoViewIfNeeded();
    if(shotRoot){await fs.mkdir(shotRoot,{recursive:true});await page.screenshot({path:path.join(shotRoot,locale+'-'+width+'.png')});}
    checks.push({locale,viewport_width:width,no_horizontal_overflow:true,filtered_record_and_source_reference_visible:true});
   }
@@ -67,8 +78,8 @@ let browser;
   assert.equal(await page.locator('html').getAttribute('lang'),locale==='id'?'en':'id');
  }
  assert.deepEqual(errors,[]);
- const inputs=await Promise.all(['docs/backend/c130-native/ledger.html','docs/backend/c130-native/ledger.en.html','docs/backend/c130-native/ledger.js','docs/backend/c130-native/ledger.css','scripts/test-c130-native-ledger-browser-v1.cjs'].map(fact));
- const report={schema:'c130-native-ledger-browser-checks/1',state:'pass',test_kind:'actual_headless_browser',browser_version:browser.version(),locales:2,visible_records:234,terms:140,corrections:94,filter_cases:18,source_details_opened:true,teacher_ledger_round_trip:true,language_switch:true,external_requests_blocked:true,page_errors:errors,checks,inputs,semantic_canon_review:false,overall_backend_complete:false};
+ const inputs=await Promise.all(['docs/backend/c130-native/ledger.html','docs/backend/c130-native/ledger.en.html','docs/backend/c130-native/ledger.js','docs/backend/c130-native/ledger.css','docs/backend/c130-native/location-review.json','scripts/test-c130-native-ledger-browser-v1.cjs'].map(fact));
+ const report={schema:'c130-native-ledger-browser-checks/1',state:'pass',test_kind:'actual_headless_browser',browser_version:browser.version(),locales:2,visible_records:234,terms:140,corrections:94,filter_cases:18,location_review_records:21,alignment_file_mismatch_visible:true,source_details_opened:true,teacher_ledger_round_trip:true,language_switch:true,external_requests_blocked:true,page_errors:errors,checks,inputs,semantic_canon_review:false,overall_backend_complete:false};
  await fs.writeFile(path.join(root,'backend/course-capsule-v1/adapters/c130-native-ledger-v1/browser-checks.json'),JSON.stringify(report,null,2)+'\n');
  console.log(JSON.stringify({state:report.state,test_kind:report.test_kind,filter_cases:report.filter_cases,viewports:checks.length,teacher_ledger_round_trip:true,language_switch:true}));
 })().catch(error=>{console.error(error);process.exitCode=1;}).finally(async()=>{if(browser)await browser.close();await new Promise(resolve=>server.close(resolve));});

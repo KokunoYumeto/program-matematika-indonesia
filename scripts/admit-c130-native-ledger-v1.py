@@ -29,8 +29,9 @@ def main(cache):
         assert result.returncode == 0, result.stderr
     validation, audit = load(BASE + '/validation.json'), load(BASE + '/audit.json')
     receipt = load(BASE + '/site/build-receipt.json')
-    assert validation['state'] == 'pass' and validation['consumer_negative_cases'] == 11
-    assert validation['semantic_canon_review'] is False and validation['unresolved_target_locations'] == 21
+    assert validation['state'] == 'pass' and validation['consumer_negative_cases'] == 19
+    assert validation['semantic_canon_review'] is False and validation['unresolved_target_locations'] == 0
+    assert validation['review_records'] == 21 and validation['native_alignment_whole_file_guard_mismatches'] == 1
     assert audit['native_digest_failures'] == 0 and audit['projection'] == fact(BASE + '/projection.json')
     assert receipt['projection'] == audit['projection']
     assert receipt['semantic_canon_review'] is False and receipt['overall_backend_complete'] is False
@@ -66,13 +67,13 @@ def main(cache):
             'title': 'C130 · Native terminology and correction records' if locale == 'en' else 'C130 · Istilah dan catatan koreksi asli',
             'resource_type': 'educator-data', 'status': 'verified',
             'url': 'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/c130-native/' + page,
-            'scope': '140 term choices and 94 correction records; 5,525 segment identities. Producer claims retained, not new semantic canon approval. Twenty-one target locations remain unresolved.' if locale == 'en' else '140 pilihan istilah dan 94 catatan koreksi; 5.525 identitas segmen. Klaim pembuat buku dipertahankan, bukan persetujuan kanon baru. Sebanyak 21 lokasi teks target belum pasti.',
+            'scope': '140 term choices and 94 correction records; 5,525 segment identities. All 21 old locator gaps resolved; one alignment-file identity mismatch remains. Producer claims retained, not new semantic canon approval.' if locale == 'en' else '140 pilihan istilah dan 94 catatan koreksi; 5.525 identitas segmen. Sebanyak 21 rujukan lama telah diperiksa; satu identitas berkas penggabungan masih berbeda. Klaim pembuat buku dipertahankan, bukan persetujuan kanon baru.',
             **fact(SITE + '/' + page)})
     tool = {'tool_id': 'c130.native_ledger', 'label': 'C130 · Cari istilah dan catatan koreksi',
         'href': 'backend/c130-native/ledger.html', 'action_kind': 'reference',
         'scope': '140 pilihan istilah dan 94 catatan koreksi asli dengan pencarian luring serta rujukan konsep dan sumber.',
         'state': 'verified', 'primary': False, 'machine_data_is_learner_destination': False,
-        'limitations': ['Catatan asli bukan bukti peninjauan kanon baru; 21 lokasi teks target belum pasti. Hubungan konsep bukan daftar kemunculan kata. Buku diunduh terpisah.'],
+        'limitations': ['Catatan asli bukan bukti peninjauan kanon baru. Sebanyak 21 rujukan lama telah diperiksa; satu identitas berkas penggabungan masih berbeda. Hubungan konsep bukan daftar kemunculan kata. Buku diunduh terpisah.'],
         'page': {'path': SITE + '/ledger.html', **fact(SITE + '/ledger.html')},
         'resource': {'path': SITE + '/projection.json', **fact(SITE + '/projection.json')},
         'evidence': {'path': SITE + '/build-receipt.json', **fact(SITE + '/build-receipt.json')}}
@@ -109,7 +110,8 @@ def main(cache):
     assert (ROOT / nav_path).read_bytes() == nav_raw, 'Concurrent navigation edit'
     save(nav_path, nav)
     print(json.dumps({'state': 'locally_admitted_pending_publication', 'role': 'C130', 'terms': 140,
-        'corrections': 94, 'unresolved_locations': 21, 'semantic_canon_review': False, 'other_roles_unchanged': True}))
+        'corrections': 94, 'unresolved_locations': 0, 'review_records': 21,
+        'native_alignment_whole_file_guard_mismatches': 1, 'semantic_canon_review': False, 'other_roles_unchanged': True}))
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()

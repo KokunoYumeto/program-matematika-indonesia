@@ -861,7 +861,7 @@ assert.equal(byId.C130.layers.educator.unit_alignment_status,'verified');
 for(const locale of ['id','en'])assert.ok(byId.C130.layers.educator.resources.some(r=>r.id==='C130:teacher-'+locale&&r.status==='verified'));
 const c130Ledger=byId.C130.layers.learner.tools.find(t=>t.tool_id==='c130.native_ledger');
 assert.equal(c130Ledger.href,'backend/c130-native/ledger.html');
-assert.equal(c130Ledger.resource.sha256,'d7e90acbb6414657fd99c6104175013aa69883b46842849ab842d3e24febd955');
+assert.equal(c130Ledger.resource.sha256,'a7be6b4961dc4aa53081c579cd5f2cdfd5a48db206ae5334ce2cbe966c4206d4');
 for(const locale of ['id','en'])assert.ok(byId.C130.layers.educator.resources.some(r=>r.id==='C130:native-ledger-'+locale&&r.status==='verified'));
 for(const field of ['ledger_status','terminology_status','corrections_status'])assert.equal(byId.C130.layers.translation[field],'available_unverified','C130 native records are not a fresh semantic canon review');
 for(const [kind,path] of [['c130_native_metadata_audit','audit.json'],['c130_native_ledger_validation','validation.json'],['c130_native_metadata_lock','input/source-lock.json']]){
@@ -874,9 +874,11 @@ for(const [kind,path] of [['c130_native_metadata_audit','audit.json'],['c130_nat
 }
 const c130LedgerCheck=JSON.parse(await readFile(resolve(project,'docs/backend/c130-native/validation.json'),'utf8'));
 assert.equal(c130LedgerCheck.state,'pass');
-assert.equal(c130LedgerCheck.consumer_negative_cases,11);
+assert.equal(c130LedgerCheck.consumer_negative_cases,19);
 assert.equal(c130LedgerCheck.semantic_canon_review,false);
-assert.equal(c130LedgerCheck.unresolved_target_locations,21);
+assert.equal(c130LedgerCheck.unresolved_target_locations,0);
+assert.equal(c130LedgerCheck.native_alignment_whole_file_guard_mismatches,1);
+assert.equal(c130LedgerCheck.review_records,21);
 assert.equal(c130LedgerCheck.segment_identities,5525);
 assert.equal(c130LedgerCheck.unit_identities,1993);
 for (const id of ['A10']) {

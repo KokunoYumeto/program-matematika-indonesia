@@ -135,18 +135,23 @@ const logicalFiles = [
     assert.equal(audit.state,'verified_metadata_with_explicit_gaps');
     assert.equal(audit.native_digest_failures,0);assert.equal(audit.native_manifest_files_verified,30);
     assert.equal(audit.semantic_canon_review,false);assert.equal(audit.whole_native_rebuild,false);
-    assert.equal(audit.segment_checks.target.text_not_found,2);assert.equal(audit.segment_checks.target.ambiguous_text_occurrences,19);
-    assert.equal(tested.state,'pass');assert.equal(tested.consumer_negative_cases,11);
-    assert.equal(tested.unresolved_target_locations,21);assert.equal(tested.isolated_source_zip_replay,true);
+    assert.deepEqual(audit.segment_checks.target,{declared_lines_exact_text:5184,declared_native_alignment_parts_exact_text:2,no_native_text:339});
+    assert.equal(audit.unresolved_target_locations,0);assert.equal(audit.native_alignment_whole_file_guard_mismatches,1);
+    assert.equal(tested.state,'pass');assert.equal(tested.consumer_negative_cases,19);
+    assert.equal(tested.unresolved_target_locations,0);assert.equal(tested.native_alignment_whole_file_guard_mismatches,1);assert.equal(tested.isolated_source_zip_replay,true);
+    const reviewBytes=await readFile(resolve(project,base+'location-review.json'));
+    assert.deepEqual({bytes:reviewBytes.length,sha256:sha256(reviewBytes)},audit.location_review);
+    const review=JSON.parse(reviewBytes);assert.equal(review.records.length,21);
+    for(const field of ['native_records_changed','semantic_canon_review','whole_native_rebuild','overall_backend_complete'])assert.equal(review[field],false);
     assert.deepEqual(v.projection,audit.projection);assert.deepEqual(v.files['projection.json'],audit.projection);
-    assert.equal(Object.keys(v.source_members).length,12);
+    assert.equal(Object.keys(v.source_members).length,14);
     for(const [path,fact] of Object.entries(v.source_members)){
       assert.ok(path.startsWith('scripts/')||path.startsWith('backend/course-capsule-v1/adapters/c130-'),'C130 source path escaped its scope');
       assert.ok(!path.split('/').includes('..'));
       const b=await readFile(resolve(project,path));assert.deepEqual({bytes:b.length,sha256:sha256(b)},fact,'C130 consumer source drift: '+path);
     }
     const files=[...Object.keys(v.files),'build-receipt.json','validation.json','source-lock.json'];
-    assert.deepEqual([...files].sort(),['audit.json','build-receipt.json','c130-native-ledger-source-v1.zip','ledger.css','ledger.en.html','ledger.html','ledger.js','projection.json','source-lock.json','validation.json']);
+    assert.deepEqual([...files].sort(),['audit.json','build-receipt.json','c130-native-ledger-source-v1.zip','ledger.css','ledger.en.html','ledger.html','ledger.js','location-review.json','projection.json','source-lock.json','validation.json']);
     for(const [name,fact] of Object.entries(v.files)){
       assert.match(name,/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);assert.ok(!name.includes('..'));
       const path=base+name,b=await readFile(resolve(project,path));

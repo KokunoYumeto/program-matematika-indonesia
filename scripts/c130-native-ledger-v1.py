@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 import hashlib
 import io
 import json
+import re
 from pathlib import Path, PurePosixPath
 import zipfile
 
@@ -25,6 +26,9 @@ EXPECTED_COUNTS = {'terms': 140, 'concepts': 128, 'corrections': 94,
                    'segments': 5525, 'units': 1993, 'rights': 21, 'relations': 9545}
 MONOLITH = '7c2ec930a7472021b37101f860b2b1846503fd52f4b495f863508cd91d741804'
 MANIFEST = 'f800590f07fafa47c7eb900dddc8cf99bbf5cb892218fa4ab1722677b7b2efa4'
+NATIVE_INPUT = 'c70da303e2feade5dd52092b8e15b722d0ea8cd5e26be63d8cb001739b55daba'
+NATIVE_EXPORTER = '3edee807a41c766c84efbda2a67b209b3d41a8afa7dbf00252ee3cdd846eedb9'
+LOCATION_BASELINE = 'bfb6fb2832a2659c24ba67576edc7a9373ae0f7d80e024ba921c88b481945a4f'
 SEGMENT_FIELDS = ['id', 'unit_id', 'parent_id', 'resource_id', 'rights_component_id',
                   'concept_ids', 'prerequisite_concept_ids', 'locale', 'status',
                   'source_target_relationship', 'translation_state', 'supersedes_id',
@@ -67,7 +71,9 @@ def normalized(raw):
 
 def text_location(text, content, start, end):
     """Prefer declared complete lines; never use fuzzy matching or invent a span."""
-    lines = text.splitlines()
+    # Native locations count LF, not every Unicode boundary recognized by
+    # str.splitlines(). A form feed inside graph source is not another LF.
+    lines = text.split('\n')
     if isinstance(start, int) and isinstance(end, int) and 1 <= start <= end <= len(lines):
         body = '\n'.join(lines[start - 1:end])
         if body == content or body.strip() == content:
@@ -82,6 +88,58 @@ def text_location(text, content, start, end):
     return {'state': 'unique_exact_text_relocated',
             'line_range': [text.count('\n', 0, position) + 1,
                            text.count('\n', 0, position + len(content)) + 1]}
+
+def native_blocks(text):
+    """Exact nonempty_blocks contract in the hash-bound native exporter."""
+    blocks, cursor = [], 0
+    for raw in re.split(r'\n[ \t]*\n+', text):
+        stripped = raw.strip()
+        if not stripped:
+            cursor += len(raw)
+            continue
+        start = text.find(raw, cursor)
+        if start < 0:
+            start = cursor
+        end = start + len(raw)
+        blocks.append({'text': stripped, 'line_start': text.count('\n', 0, start) + 1,
+                       'line_end': text.count('\n', 0, end) + 1})
+        cursor = end
+    return blocks
+
+def native_alignment_location(row, text, content, seed, authority):
+    """Reconstruct declared native parts; never guess a whitespace alignment."""
+    if not seed or seed.get('id') != row.get('unit_id') or seed.get('target_path') != row.get('target_path'):
+        return None
+    matches = [rule for rule in seed.get('target_block_alignment_overrides', [])
+               if rule.get('source_block_index') == row.get('source_block_index')]
+    if not matches:
+        return None
+    require(len(matches) == 1, 'Duplicate native alignment authority')
+    rule = matches[0]
+    parts = rule['target_parts']
+    require(parts and parts[0]['target_block_index'] == row.get('target_block_index'), 'Native alignment first index differs')
+    blocks, lines = native_blocks(text), text.splitlines()
+    witnesses, contents = [], []
+    for part in parts:
+        index = part['target_block_index']
+        require(isinstance(index, int) and 1 <= index <= len(blocks), 'Native alignment index out of bounds')
+        block = blocks[index - 1]
+        first, last = part.get('line_start', block['line_start']), part.get('line_end', block['line_end'])
+        require(isinstance(first, int) and isinstance(last, int) and
+                block['line_start'] <= first <= last <= block['line_end'], 'Native alignment slice out of bounds')
+        raw = '\n'.join(lines[first - 1:last])
+        contents.append(raw.strip())
+        witnesses.append({'target_block_index': index, 'line_range': [first, last],
+                          'raw_line_slice_sha256': sha(raw.encode()), 'stripped_part_sha256': sha(raw.strip().encode())})
+    extent = [min(part['line_range'][0] for part in witnesses), max(part['line_range'][1] for part in witnesses)]
+    require(extent == [row.get('target_line_start'), row.get('target_line_end')], 'Native alignment declared extent differs')
+    reconstructed = '\n\n'.join(contents)
+    if reconstructed != content:
+        return None
+    return {'state': 'declared_native_alignment_parts_exact_text', 'line_range': extent,
+            'alignment': {'authority': authority, 'source_block_index': rule['source_block_index'],
+                          'parts': witnesses, 'reconstructed_content_sha256': sha(reconstructed.encode()),
+                          'contract': 'frozen-native-exporter-strip-each-declared-part-then-double-LF-join'}}
 
 def index_by_id(rows, name):
     require(all(isinstance(r.get('id'), str) and r['id'] for r in rows), 'Missing ' + name + ' ID')
@@ -161,6 +219,14 @@ def intake(cache, dest):
         raw = backend.read('backend/dist/backend-v0.json')
         require(sha(raw) == MONOLITH, 'Native backend identity differs')
         native = json.loads(raw)
+        input_raw = backend.read('backend/input/backend-input.json')
+        exporter_raw = backend.read('scripts/export_backend.py')
+        require(sha(input_raw) == NATIVE_INPUT and sha(exporter_raw) == NATIVE_EXPORTER, 'Native alignment authority differs')
+        native_input = json.loads(input_raw)
+        file_units = index_by_id(native_input['file_units'], 'native file unit')
+        alignment_authority = {'input': {'member': 'backend/input/backend-input.json', **fact(input_raw)},
+                               'exporter': {'member': 'scripts/export_backend.py', **fact(exporter_raw),
+                                            'function_lines': {'nonempty_blocks': [1292, 1308], 'alignment_parts': [1793, 1832]}}}
         manifest_raw = backend.read('backend/dist/manifest.json')
         require(sha(manifest_raw) == MANIFEST, 'Native manifest differs')
         manifest = json.loads(manifest_raw)
@@ -189,13 +255,46 @@ def intake(cache, dest):
             if len(unique) != 1:
                 return {'state': 'conflicting_released_member_bytes', 'path': path}
             (kind, member), text = options[0]
-            return {'archive': kind, 'member': member,
-                    **text_location(text, content, row.get(side + '_line_start'), row.get(side + '_line_end'))}
+            location = text_location(text, content, row.get(side + '_line_start'), row.get(side + '_line_end'))
+            if side == 'target' and location['state'] == 'text_not_found':
+                seed = file_units.get(row.get('unit_id'))
+                if seed and seed.get('target_block_alignment_overrides'):
+                    aligned = native_alignment_location(row, text, content, seed, alignment_authority)
+                    if aligned:
+                        # A source-bound segment can still reconstruct exactly
+                        # when another part of the released file has changed.
+                        # Preserve that whole-file mismatch; do not certify it.
+                        expected = seed.get('expected_target_sha256')
+                        require(isinstance(expected, str) and len(expected) == 64, 'Missing native target-file guard')
+                        actual = fact(archives[kind].read(member))
+                        aligned['alignment']['target_file_guard'] = {
+                            'native_expected_sha256': expected, 'released_file': actual,
+                            'whole_file_guard_matches': expected == actual['sha256']}
+                        location = aligned
+            return {'archive': kind, 'member': member, **location}
         view = project(native, locate)
+        baseline_raw = (BASE / 'input/location-review-baseline.json').read_bytes()
+        require(sha(baseline_raw) == LOCATION_BASELINE, 'Location review baseline differs')
+        baseline = json.loads(baseline_raw)
+        segment_index = index_by_id(view['segments'], 'projected segment')
+        review_records = []
+        for prior_record in baseline['records']:
+            current = segment_index[prior_record['id']]
+            require(prior_record['native_record_sha256'] == current['canonical_native_record_sha256'], 'Native record changed during location repair')
+            review_records.append({**prior_record, 'after_target_verification': current['verification']['target']})
+        review = {'schema': 'c130-location-review/1', 'course_id': 'C130',
+                  'baseline': fact(baseline_raw), 'records': review_records,
+                  'native_alignment_authority': alignment_authority,
+                  'native_records_changed': False, 'semantic_canon_review': False,
+                  'whole_native_rebuild': False, 'overall_backend_complete': False}
+        save(dest / 'input/location-review-baseline.json', baseline_raw)
+        save(dest / 'location-review.json', review)
         lock = {'schema': 'c130-native-ledger-lock/1', 'archives': identities,
                 'native_manifest': fact(manifest_raw), 'native_monolith': fact(raw),
                 'native_manifest_members_checked': checked, 'native_tables_agree': sorted(EXPECTED_COUNTS),
                 'native_modified': False, 'public_bytes_redownloaded_this_pass': False,
+                'native_alignment_authority': alignment_authority,
+                'location_review_baseline': fact(baseline_raw),
                 'scope': 'Cached released bytes hash-bound to the previously verified public mapping input.'}
         snapshot = {name: native[name] for name in ['terms', 'concepts', 'corrections', 'rights']}
         lock['native_records_snapshot'] = fact(packed(snapshot))
@@ -207,6 +306,12 @@ def intake(cache, dest):
                   'projection': fact(packed(view)), 'counts': {k: len(view[k]) for k in ['terms', 'concepts', 'corrections', 'rights', 'segments', 'units']},
                   'segment_checks': {side: dict(Counter(s['verification'][side]['state'] for s in view['segments'])) for side in ['source', 'target']},
                   'native_digest_failures': len(view['audit']['issues']),
+                  'location_review': fact(packed(review)),
+                  'resolved_previously_unresolved_target_locations': len(review_records),
+                  'unresolved_target_locations': sum(r['verification']['target']['state'] not in
+                      {'no_native_text', 'declared_lines_exact_text', 'unique_exact_text_relocated', 'declared_native_alignment_parts_exact_text'} for r in view['segments']),
+                  'native_alignment_whole_file_guard_mismatches': sum(
+                      r['verification']['target'].get('alignment', {}).get('target_file_guard', {}).get('whole_file_guard_matches') is False for r in view['segments']),
                   'native_manifest_files_verified': len(checked), 'semantic_canon_review': False,
                   'whole_native_rebuild': False, 'overall_backend_complete': False}
         save(dest / 'audit.json', report)

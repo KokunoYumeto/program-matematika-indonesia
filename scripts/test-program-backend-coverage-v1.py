@@ -547,7 +547,10 @@ assert {r['id'] for r in roles['C130']['educator']['resources']} >= {'C130:nativ
 c130_native = roles['C130']['native_metadata_audit']
 assert c130_native['counts'] == {'concepts':128,'corrections':94,'rights':21,'segments':5525,'terms':140,'units':1993}
 assert c130_native['target_location_checks'] == inputs['c130NativeAudit']['segment_checks']['target']
-assert c130_native['unresolved_target_locations'] == 21
+assert c130_native['unresolved_target_locations'] == 0
+assert c130_native['resolved_previously_unresolved_target_locations'] == 21
+assert c130_native['native_alignment_whole_file_guard_mismatches'] == 1
+assert c130_native['location_review'] == inputs['c130NativeAudit']['location_review']
 assert c130_native['semantic_canon_review'] is c130_native['whole_native_rebuild'] is False
 assert c130_native['projection'] == inputs['c130NativeAudit']['projection']
 assert roles['C130']['dimensions']['source_translation_ledger']['ledger'] == 'available_unverified'
@@ -1037,13 +1040,13 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('c130_visual_activities_dropped', 'c130Teacher', lambda value: value['counts'].update(visual_activities=0)),
         ('c130_unbound_mapping_test', 'c130Teacher', lambda value: value['evidence']['validation.json'].update(sha256='0' * 64)),
         ('c130_native_ledger_count_drift', 'c130NativeAudit', lambda value: value['counts'].update(terms=139)),
-        ('c130_native_target_gaps_hidden', 'c130NativeAudit', lambda value: value['segment_checks']['target'].update(text_not_found=0)),
+        ('c130_native_file_identity_gap_hidden', 'c130NativeAudit', lambda value: value.update(native_alignment_whole_file_guard_mismatches=0)),
         ('c130_native_canon_overclaim', 'c130NativeAudit', lambda value: value.update(semantic_canon_review=True)),
         ('c130_native_rebuild_overclaim', 'c130NativeAudit', lambda value: value.update(whole_native_rebuild=True)),
         ('c130_native_projection_drift', 'c130NativeAudit', lambda value: value['projection'].update(sha256='0' * 64)),
         ('c130_native_validation_failed', 'c130NativeTests', lambda value: value.update(state='fail')),
         ('c130_native_consumer_guards_removed', 'c130NativeTests', lambda value: value.update(consumer_negative_cases=0)),
-        ('c130_native_validation_gaps_hidden', 'c130NativeTests', lambda value: value.update(unresolved_target_locations=0)),
+        ('c130_native_validation_stale_gaps', 'c130NativeTests', lambda value: value.update(unresolved_target_locations=21)),
         ('c130_native_source_changed', 'c130NativeLock', lambda value: value['native_monolith'].update(sha256='0' * 64)),
         ('c130_native_tables_not_compared', 'c130NativeLock', lambda value: value['native_tables_agree'].pop()),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),

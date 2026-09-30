@@ -357,15 +357,16 @@ export function projectC130EnglishLedgerTools(inputs, courseIds) {
   assert.equal(view.terms.length,140);assert.equal(view.corrections.length,94);
   assert.equal(view.segments.length,5525);assert.equal(view.units.length,1993);
   assert.equal(audit.native_digest_failures,0);assert.equal(audit.semantic_canon_review,false);
-  assert.equal(audit.segment_checks.target.text_not_found,2);
-  assert.equal(audit.segment_checks.target.ambiguous_text_occurrences,19);
+  assert.deepEqual(audit.segment_checks.target,{declared_lines_exact_text:5184,declared_native_alignment_parts_exact_text:2,no_native_text:339});
+  assert.equal(audit.unresolved_target_locations,0);
+  assert.equal(audit.native_alignment_whole_file_guard_mismatches,1);
   assert.equal(view.audit.semantic_canon_review,false);
   assert.ok(view.terms.every(t=>t.audit.semantic_canon_review===false));
   const page=receipt.files['ledger.en.html'];assert.ok(page);
   return [{courseId:'C130',contentLanguage:'en',labelLanguage:'en',tool_id:'c130.native_ledger.en',
     action_kind:'reference',href:'backend/c130-native/ledger.en.html',label:'C130 · Terminology and correction lookup',
     scope:'140 native terminology choices and 94 correction records, with offline search and concept/source references',
-    limitations:['English interface; original quotations retain their Indonesian or English language. The linked book is Indonesian.','Producer records are not new semantic canon approval. Twenty-one target locations remain unresolved; concept relationships do not establish literal term occurrences.'],
+    limitations:['English interface; original quotations retain their Indonesian or English language. The linked book is Indonesian.','Producer records are not new semantic canon approval. All 21 old locator gaps are resolved; one alignment-file identity mismatch remains. Concept relationships do not establish literal term occurrences.'],
     state:'verified',primary:false,machine_data_is_learner_destination:false,
     page:{...page,path:base+'ledger.en.html'},resource:{...receipt.projection,path:base+'projection.json'},
     evidence:{path:base+'build-receipt.json',bytes:receiptBytes.length,sha256:hash(receiptBytes)}}];

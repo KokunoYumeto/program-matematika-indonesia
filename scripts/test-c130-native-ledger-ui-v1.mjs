@@ -25,6 +25,10 @@ for(const name of ['ledger.html','ledger.en.html']){
  query.value='nonexistent-string-234';query.handler();assert.equal(visible(),0);checks++;
  kind.value='';query.value='';query.handler();assert.equal(visible(),234);checks++;
  assert.match(html,/aria-live="polite"/);
+ assert.equal([...html.matchAll(/class="location-proof" data-segment-id=/g)].length,21);
+ assert.match(html,/id="location-review"/);
+ assert.match(html,/href="location-review.json"/);
+ assert.match(html,/42c1640cd736a36e55d812fa58c696edbaa56958b02a2cd17c2cc301d0b30179/);
  assert.doesNotMatch(script,/fetch\(|localStorage|sessionStorage|XMLHttpRequest/);
 }
-console.log(JSON.stringify({state:'pass',locales:2,filter_checks:checks,offline_filtering:true}));
+console.log(JSON.stringify({state:'pass',locales:2,filter_checks:checks,location_review_records:21,offline_filtering:true}));
