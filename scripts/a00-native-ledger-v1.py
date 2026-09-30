@@ -13,6 +13,7 @@ import json
 from pathlib import Path
 import re
 import zipfile
+import a00_term_locations_v1 as term_locations
 
 ROOT = Path(__file__).resolve().parents[1]
 BASE = ROOT / 'backend/course-capsule-v1/adapters/a00-native-ledger-v1'
@@ -112,6 +113,23 @@ def intake(native, dest):
     save(dest / 'input/source-lock.json', lock)
 
 
+def freeze_term_locations(native, dest):
+    lock = json.loads((dest / 'input/source-lock.json').read_bytes())
+    raw = {r['path']: checked_path(dest / 'input', r['path']).read_bytes() for r in lock['snapshots']}
+    # Revalidate the original metadata before reading any native content.
+    for row in lock['snapshots']:
+        require(len(raw[row['path']]) == row['bytes'] and sha(raw[row['path']]) == row['sha256'], 'Snapshot identity differs')
+    prior = dict(lock)
+    prior.pop('term_locations', None)
+    data = normalize(raw, prior)
+    proof = term_locations.collect(data, native)
+    body = packed(proof)
+    lock['term_locations'] = {'path': 'term-locations.json', 'bytes': len(body), 'sha256': sha(body),
+                              'generator': fact(ROOT / 'scripts/a00_term_locations_v1.py')}
+    save(dest / 'input/term-locations.json', body)
+    save(dest / 'input/source-lock.json', lock)
+
+
 def normalize(raw, lock):
     manifest = json.loads(raw['native-manifest.json'])
     modules = manifest['modules']
@@ -174,12 +192,21 @@ def normalize(raw, lock):
         require(record['ledger_sha256'] == 'sha256:' + sha(raw['choices.csv']), 'Choice ledger identity drift')
         require(record['scope'] == witness['scope'] and record['evidence_basis'] == witness['evidence_basis'], 'Choice evidence drift')
         require(record.get('preferred_term', record.get('target_decision')) == witness['target_decision'], 'Choice changed')
-    return {'schema': 'a00-native-ledger-view/1', 'course_id': 'A00', 'scope': 'module_identity_and_native_choice_metadata',
+    data = {'schema': 'a00-native-ledger-view/1', 'course_id': 'A00', 'scope': 'module_identity_and_native_choice_metadata',
             'modules': output, 'terms': terms, 'corrections': corrections, 'source_map_discrepancies': discrepancies,
             'verification': {'target_files_byte_verified': 75, 'source_content_reread': False,
                              'semantic_canon_review': False, 'whole_native_rebuild': False,
                              'segment_level_choice_coverage': 'not_established', 'native_files_modified': False},
             'source_lock_sha256': sha(packed(lock))}
+    if lock.get('term_locations'):
+        witness = lock['term_locations']
+        require(witness['path'] == 'term-locations.json', 'Unsafe term proof path')
+        body = raw[witness['path']]
+        require(len(body) == witness['bytes'] and sha(body) == witness['sha256'], 'Term proof identity differs')
+        data['term_locations'] = term_locations.validate(json.loads(body), data)
+        data['verification']['lexical_target_location_matches'] = data['term_locations']['summary']['choice_variant_matches']
+        data['verification']['lexical_location_unwrapped_text_slots'] = data['term_locations']['summary']['unwrapped_text_slots']
+    return data
 
 
 def render(data, english=False):
@@ -198,29 +225,50 @@ def render(data, english=False):
         source_label = 'CNXML (English)' if english else 'CNXML (bahasa Inggris)'
         rows.append(f'<tr data-search="{mid}"><td>{r["ordinal"]}</td><th scope="row">{mid}</th><td>{r["source"]["bytes"]:,}</td><td>{r["target"]["bytes"]:,}</td><td><a href="{e(r["source"]["url"], quote=True)}">{source_label}</a>{details}</td></tr>')
     termrows = []
+    location_records = {row['choice_id']: row for row in data.get('term_locations', {}).get('choices', [])}
     for r in data['terms']:
         if not r.get('source_record_id'):
             continue
-        termrows.append(f'<tr data-search="{e(r["preferred_term"]+" "+r["source_term"]+" "+r["scope"], quote=True)}"><th scope="row">{e(r["preferred_term"])}</th><td>{e(r["source_term"])}</td><td>{e(r["scope"])}</td><td><code>{e(r["source_record_id"])}</code></td></tr>')
+        proof = location_records.get(r['id'])
+        details, module_search = '', ''
+        if proof:
+            module_search = ' '.join(sorted({hit['module_id'] for hit in proof['matches']}))
+            label = (f"{proof['match_count']} literal matches in {proof['module_count']} modules" if english else
+                     f"{proof['match_count']} kecocokan harfiah dalam {proof['module_count']} modul")
+            examples = []
+            for hit in proof['matches'][:8]:
+                anchor = hit['module_id'] + ('#' + hit['xml_id'] if hit['xml_id'] else '')
+                examples.append(f'<li><code>{e(anchor)}</code> · <code>{e(hit["xpath"])}</code><br><q lang="id">{e(hit["excerpt"])}</q><br><small>SHA-256: <code>{hit["block_text_sha256"]}</code></small></li>')
+            note = ('Up to eight contexts shown here; the JSON includes every matched range. Raw native scope is preserved, not approved. Zero matches do not prove a translation error.' if english else
+                    'Paling banyak delapan konteks ditampilkan di sini; JSON mencakup semua rentang yang cocok. Cakupan asli dipertahankan, bukan disetujui. Tidak adanya kecocokan bukan bukti kesalahan terjemahan.')
+            details = f'<details class="term-locations" data-choice-id="{e(r["id"], quote=True)}"><summary>{label}</summary><p>{note}</p><ol>{"".join(examples)}</ol></details>'
+        termrows.append(f'<tr data-search="{e(r["preferred_term"]+" "+r["source_term"]+" "+r["scope"]+" "+module_search, quote=True)}"><th scope="row" data-label="Bahasa Indonesia">{e(r["preferred_term"])}</th><td data-label="{"English" if english else "Bahasa Inggris"}">{e(r["source_term"])}</td><td data-label="{"Scope" if english else "Cakupan"}">{e(r["scope"])}</td><td data-label="ID"><code>{e(r["source_record_id"])}</code>{details}</td></tr>')
     termsnote = ('The 20 lexical choices are quoted from the native ledger. Its 36 other terms name concepts/course metadata. Bibliographic descriptions do not prove exact canon-passage consultation or occurrence-level verification. Those checks remain unfinished.' if english else
                  'Dua puluh pilihan istilah berikut dikutip dari ledger asli. Sebanyak 36 istilah lainnya merupakan label konsep/metadata mata kuliah. Keterangan bibliografi belum membuktikan pembacaan bagian kanon tertentu atau pemeriksaan setiap kemunculan istilah; pemeriksaan tersebut masih belum selesai.')
+    if location_records:
+        count = data['term_locations']['summary']['choice_variant_matches']
+        unwrapped = data['term_locations']['summary']['unwrapped_text_slots']
+        termsnote += (' ' + (f'The byte-bound concordance maps {count} choice/variant matches over the prose of 75 translated CNXML modules. It excludes metadata and MathML bodies; {unwrapped} residual text slots are also searched separately. Phrases are not joined across table cells or residual slots. Matching and raw scope do not establish semantic or canon approval; overlapping variants and the two distinct native sum choices are retained separately.' if english else
+                            f'Konkordansi yang terikat pada identitas byte memetakan {count} kecocokan pilihan/varian pada prosa dalam 75 modul CNXML terjemahan. Metadata dan isi MathML tidak disertakan; {unwrapped} slot teks di luar blok juga diperiksa secara terpisah. Frasa tidak digabungkan melintasi sel tabel atau slot sisa. Kecocokan dan cakupan asli bukan persetujuan makna atau kanon; varian yang bertumpang tindih serta dua pilihan asli untuk sum tetap dihitung terpisah.'))
     return f'''<!doctype html><html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{title}</title>
-<style>body{{max-width:76rem;margin:auto;padding:1.4rem;font:1rem/1.55 system-ui;background:#fafbf8;color:#172d29}}a{{color:#075e66}}nav{{display:flex;gap:1.2rem;flex-wrap:wrap}}.note{{padding:1rem;background:#e7eee7;border-left:4px solid #32756a}}input{{font:inherit;padding:.6rem;max-width:95%}}table{{border-collapse:collapse;width:100%}}th,td{{text-align:left;border-bottom:1px solid #cbd6ce;padding:.65rem;vertical-align:top}}code{{overflow-wrap:anywhere}}.table{{overflow-x:auto}}summary{{cursor:pointer}}:focus-visible{{outline:3px solid #9f5e00;outline-offset:3px}}</style></head><body>
+<style>body{{max-width:76rem;margin:auto;padding:1.4rem;font:1rem/1.55 system-ui;background:#fafbf8;color:#172d29}}a{{color:#075e66}}nav{{display:flex;gap:1.2rem;flex-wrap:wrap}}.note{{padding:1rem;background:#e7eee7;border-left:4px solid #32756a}}input{{font:inherit;padding:.6rem;max-width:95%}}table{{border-collapse:collapse;width:100%}}th,td{{text-align:left;border-bottom:1px solid #cbd6ce;padding:.65rem;vertical-align:top}}code{{overflow-wrap:anywhere}}.table{{overflow-x:auto}}summary{{cursor:pointer}}:focus-visible{{outline:3px solid #9f5e00;outline-offset:3px}}@media(max-width:700px){{.choices table,.choices tbody{{display:block}}.choices thead{{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}}.choices tr:not([hidden]){{display:block;border:1px solid #cbd6ce;border-radius:.4rem;margin:1rem 0;background:white}}.choices th,.choices td{{display:block;border:0;overflow-wrap:anywhere}}.choices th::before,.choices td::before{{content:attr(data-label);display:block;font-size:.8rem;font-weight:600;color:#46655f}}.choices ol{{padding-left:1.4rem}}.term-locations{{margin-top:.6rem}}}}</style></head><body>
 <nav aria-label="{'Navigation' if english else 'Navigasi'}"><a href="{course}">{'Learning map' if english else 'Peta belajar'}</a><a href="{teacher}">{'For teachers' if english else 'Untuk pengajar'}</a><a href="{other}">{'Bahasa Indonesia' if english else 'English'}</a></nav>
 <main><h1>{title}</h1><p class="note">{boundary}</p><p>{'75 modules · 20 lexical choices · 36 metadata terms · 75 correction/adverse records' if english else '75 modul · 20 pilihan istilah · 36 istilah metadata · 75 catatan koreksi/masalah'}</p>
 <label for="search">{'Find a module or term' if english else 'Cari modul atau istilah'}</label> <input id="search" type="search" placeholder="m81272 / bilangan"><p id="count" aria-live="polite"></p>
 <h2>{'Source and translation identities' if english else 'Identitas sumber dan terjemahan'}</h2><div class="table"><table><thead><tr><th>#</th><th>{'Module' if english else 'Modul'}</th><th>{'Source bytes (EN)' if english else 'Byte sumber (EN)'}</th><th>{'Translation bytes (ID)' if english else 'Byte terjemahan (ID)'}</th><th>{'Source and identity' if english else 'Sumber dan identitas'}</th></tr></thead><tbody>{''.join(rows)}</tbody></table></div>
-<h2>{'Native terminology choices' if english else 'Pilihan istilah asli'}</h2><p>{termsnote}</p><div class="table"><table><thead><tr><th>Bahasa Indonesia</th><th>{'English' if english else 'Bahasa Inggris'}</th><th>{'Scope' if english else 'Cakupan'}</th><th>ID</th></tr></thead><tbody>{''.join(termrows)}</tbody></table></div>
-<h2>{'Data and provenance' if english else 'Data dan asal-usul'}</h2><p><a href="native-ledger/ledger.json">{'Complete mapped ledger (JSON)' if english else 'Ledger lengkap (JSON)'}</a> · <a href="native-ledger/source-lock.json">{'Input identities' if english else 'Identitas masukan'}</a> · <a href="native-ledger/source.zip">{'Complete editable source (ZIP)' if english else 'Sumber lengkap yang dapat diedit (ZIP)'}</a></p><p>{'Native correction rationales and evidence descriptions are preserved verbatim in their original language in the JSON. No new approval of those claims is implied.' if english else 'Alasan koreksi dan uraian bukti asli disimpan persis dalam bahasa asalnya di JSON. Penyimpanan ini bukan persetujuan baru atas klaim tersebut.'}</p>
-<p>{'Interface and metadata integration: OpenAI Codex — gpt-6-astra, Ultra effort. Not a new translation of the book; no human review claimed.' if english else 'Antarmuka dan integrasi metadata: OpenAI Codex — gpt-6-astra, Ultra effort. Bukan terjemahan baru buku; tidak diklaim ada pemeriksaan manusia.'}</p></main>
+<h2>{'Native terminology choices' if english else 'Pilihan istilah asli'}</h2><p>{termsnote}</p><div class="table choices"><table><thead><tr><th>Bahasa Indonesia</th><th>{'English' if english else 'Bahasa Inggris'}</th><th>{'Scope' if english else 'Cakupan'}</th><th>ID</th></tr></thead><tbody>{''.join(termrows)}</tbody></table></div>
+<h2>{'Data and provenance' if english else 'Data dan asal-usul'}</h2><p><a href="native-ledger/ledger.json">{'Complete mapped ledger (JSON)' if english else 'Ledger lengkap (JSON)'}</a> · <a href="native-ledger/term-locations.json">{'All lexical locations (JSON)' if english else 'Semua lokasi harfiah (JSON)'}</a> · <a href="native-ledger/source-lock.json">{'Input identities' if english else 'Identitas masukan'}</a> · <a href="native-ledger/source.zip">{'Complete editable source (ZIP)' if english else 'Sumber lengkap yang dapat diedit (ZIP)'}</a></p><p>{'Native correction rationales and evidence descriptions are preserved verbatim in their original language in the JSON. No new approval of those claims is implied.' if english else 'Alasan koreksi dan uraian bukti asli disimpan persis dalam bahasa asalnya di JSON. Penyimpanan ini bukan persetujuan baru atas klaim tersebut.'}</p>
+<p>{'Original interface and metadata integration: OpenAI Codex — gpt-6-astra, Ultra effort. Lexical concordance and contextual review interface: OpenAI Codex — gpt-6.1-sol, Ultra effort. Not a new translation of the book; no human review claimed.' if english else 'Antarmuka asli dan integrasi metadata: OpenAI Codex — gpt-6-astra, Ultra effort. Konkordansi harfiah dan antarmuka pemeriksaan konteks: OpenAI Codex — gpt-6.1-sol, Ultra effort. Bukan terjemahan baru buku; tidak diklaim ada pemeriksaan manusia.'}</p></main>
 <footer><p>OpenStax · Prealgebra 2e · <a href="native-ledger/native-LICENSE.txt">CC BY-NC-SA 4.0</a> · <a href="native-ledger/rights.jsonl">{'Native component rights' if english else 'Hak setiap komponen asli'}</a>. {'Original rights records are preserved; the interface code licence does not relicense the native material.' if english else 'Catatan hak asli tetap dipertahankan; lisensi kode antarmuka tidak mengubah lisensi bahan asli.'}</p></footer>
 <script>const input=document.getElementById('search'), rows=[...document.querySelectorAll('[data-search]')]; function filter(){{const q=input.value.toLocaleLowerCase();let n=0;for(const row of rows){{row.hidden=!row.dataset.search.toLocaleLowerCase().includes(q);if(!row.hidden)n++;}}document.getElementById('count').textContent=n+' / '+rows.length;}}input.addEventListener('input',filter);filter();</script></body></html>'''.encode('utf-8')
 
 
 def build(dest):
     lock = json.loads((dest / 'input/source-lock.json').read_bytes())
+    if lock.get('term_locations'):
+        require(lock['term_locations']['generator'] == fact(ROOT / 'scripts/a00_term_locations_v1.py'), 'Concordance generator identity differs')
     raw = {}
-    for r in lock['snapshots']:
+    for r in lock['snapshots'] + ([lock['term_locations']] if lock.get('term_locations') else []):
         body = checked_path(dest / 'input', r['path']).read_bytes()
         require(len(body) == r['bytes'] and sha(body) == r['sha256'], 'Snapshot identity differs')
         raw[r['path']] = body
@@ -234,14 +282,14 @@ def build(dest):
     members = {prefix + name: (dest / name).read_bytes() for name in outputs}
     members.update({prefix + 'input/' + name: body for name, body in raw.items()})
     members[prefix + 'input/source-lock.json'] = (dest / 'input/source-lock.json').read_bytes()
-    for name in ['a00-native-ledger-v1.py','test-a00-native-ledger-v1.py','test-a00-native-ledger-ui-v1.mjs']:
+    for name in ['a00-native-ledger-v1.py','a00_term_locations_v1.py','test-a00-native-ledger-v1.py','test-a00-native-ledger-ui-v1.mjs']:
         members['scripts/' + name] = (ROOT / 'scripts' / name).read_bytes()
     members['LICENSE'] = (ROOT / 'LICENSE').read_bytes()
     members['README.txt'] = ('Bangun ulang / Rebuild: python -B scripts/a00-native-ledger-v1.py\n'
                             'Uji / Test: python -B scripts/test-a00-native-ledger-v1.py\n'
                             'Python 3 dan Node.js diperlukan / Python 3 and Node.js required.\n'
-                            'Paket berisi metadata dan sumber antarmuka, bukan isi buku.\n'
-                            'Metadata and interface sources only, not book bodies.\n').encode('utf-8')
+                            'Paket berisi metadata, cuplikan konkordansi terbatas dan sumber antarmuka, bukan buku lengkap.\n'
+                            'Metadata, bounded concordance excerpts and interface sources, not whole books.\n').encode('utf-8')
     members['README.txt'] += ('MIT: kode antarmuka / interface code. Catatan hak bahan asli / native material rights:\n'
                               + prefix + 'input/native-LICENSE.txt\n' + prefix + 'input/rights.jsonl\n').encode('utf-8')
     with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_DEFLATED, compresslevel=9) as z:
@@ -260,10 +308,14 @@ def build(dest):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--intake', type=Path)
+    parser.add_argument('--term-intake', type=Path)
     parser.add_argument('--destination', type=Path, default=BASE)
     args = parser.parse_args()
     if args.intake:
         intake(args.intake.resolve(), args.destination)
+        freeze_term_locations(args.intake.resolve(), args.destination)
+    elif args.term_intake:
+        freeze_term_locations(args.term_intake.resolve(), args.destination)
     result = build(args.destination)
     print(json.dumps({'status': 'pass', 'modules': len(result['modules']), 'terms': len(result['terms']),
                       'corrections': len(result['corrections']), 'discrepancies': len(result['source_map_discrepancies']),

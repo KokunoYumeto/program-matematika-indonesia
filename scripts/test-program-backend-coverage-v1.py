@@ -553,6 +553,16 @@ assert c130_native['native_alignment_whole_file_guard_mismatches'] == 1
 assert c130_native['location_review'] == inputs['c130NativeAudit']['location_review']
 assert c130_native['semantic_canon_review'] is c130_native['whole_native_rebuild'] is False
 assert c130_native['projection'] == inputs['c130NativeAudit']['projection']
+assert roles['C130']['next_required_work'][0] == (
+    f"Sebanyak {inputs['c130NativeAudit']['resolved_previously_unresolved_target_locations']} "
+    f"rujukan teks target lama telah diselesaikan; lokasi target yang belum terselesaikan: "
+    f"{inputs['c130NativeAudit']['unresolved_target_locations']}. Periksa perbedaan identitas "
+    f"pada {inputs['c130NativeAudit']['native_alignment_whole_file_guard_mismatches']} berkas "
+    "penggabungan serta pilihan istilah dan klaim kanon secara semantik. Kecocokan "
+    "lokasi teks bukan persetujuan baru terhadap setiap pilihan istilah."
+)
+assert not any('Selesaikan dua lokasi teks target' in note or '19 lokasi yang ambigu' in note
+               for note in roles['C130']['next_required_work'])
 assert roles['C130']['dimensions']['source_translation_ledger']['ledger'] == 'available_unverified'
 assert roles['C130']['dimensions']['terminology']['register'] == 'available_unverified'
 for key, evidence in zip(['c130NativeAudit','c130NativeTests','c130NativeLock'], c130_native['evidence']):
@@ -1040,6 +1050,8 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('c130_visual_activities_dropped', 'c130Teacher', lambda value: value['counts'].update(visual_activities=0)),
         ('c130_unbound_mapping_test', 'c130Teacher', lambda value: value['evidence']['validation.json'].update(sha256='0' * 64)),
         ('c130_native_ledger_count_drift', 'c130NativeAudit', lambda value: value['counts'].update(terms=139)),
+        ('c130_native_audit_stale_locator_gaps', 'c130NativeAudit', lambda value: value.update(unresolved_target_locations=21)),
+        ('c130_native_resolved_locator_count_drift', 'c130NativeAudit', lambda value: value.update(resolved_previously_unresolved_target_locations=20)),
         ('c130_native_file_identity_gap_hidden', 'c130NativeAudit', lambda value: value.update(native_alignment_whole_file_guard_mismatches=0)),
         ('c130_native_canon_overclaim', 'c130NativeAudit', lambda value: value.update(semantic_canon_review=True)),
         ('c130_native_rebuild_overclaim', 'c130NativeAudit', lambda value: value.update(whole_native_rebuild=True)),

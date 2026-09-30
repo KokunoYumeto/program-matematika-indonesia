@@ -21,6 +21,7 @@ for(const item of manifest.outputs)assert.deepEqual({bytes:item.bytes,sha256:ite
 const copies=[['views/ledger.html','ledger.html'],['views/ledger-en.html','ledger-en.html'],
   ['data/source.zip','native-ledger/source.zip'],
   ['data/ledger.json','native-ledger/ledger.json'],['input/source-lock.json','native-ledger/source-lock.json'],
+  ['input/term-locations.json','native-ledger/term-locations.json'],
   ['manifest.json','native-ledger/manifest.json']];
 const lock=await load(base+'/input/source-lock.json');
 for(const row of lock.snapshots)copies.push(['input/'+row.path,'native-ledger/'+row.path]);
@@ -49,6 +50,7 @@ const overridePath='backend/course-capsule-v1/authority/integration-overrides-v1
 const evidence=[];
 for(const [name,kind] of [['manifest.json','a00_native_ledger_manifest'],['input/source-lock.json','a00_native_ledger_source_lock']])
   evidence.push({kind,locator:base+'/'+name,...await fact(base+'/'+name),verified_date:'2026-09-30'});
+evidence.push({kind:'a00_lexical_target_locations',locator:base+'/input/term-locations.json',...await fact(base+'/input/term-locations.json'),verified_date:'2026-09-30'});
 const adapter=over.semantic_adapters.A00;
 adapter.evidence=[...adapter.evidence.filter(row=>!evidence.some(e=>e.kind===row.kind)),...evidence];
 // Presence and byte identity do not prove every native substantive choice.
@@ -60,7 +62,7 @@ for(const [suffix,title] of [['','Peta sumber dan istilah asli A00'],['-en','A00
   const page='ledger'+suffix+'.html';
   educator.resources.push({id:'A00:native-ledger'+suffix,title,resource_type:'educator-data',status:'verified',
     url:'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/a00/'+page,
-    scope:'75 identitas modul, 20 pilihan istilah, 36 label metadata dan 75 catatan koreksi/masalah. Identitas berkas diperiksa; peninjauan makna dan cakupan setiap kemunculan istilah belum dibuktikan.',
+    scope:suffix ? '75 module identities, 20 native lexical choices with byte-bound target-text locations, 36 metadata labels and 75 correction/issue records. Literal matches do not establish semantic/canon review or native scope applicability.' : '75 identitas modul, 20 pilihan istilah asli dengan lokasi teks target terikat byte, 36 label metadata dan 75 catatan koreksi/masalah. Kecocokan harfiah tidak membuktikan peninjauan makna/kanon atau penerapan cakupan asli.',
     ...await fact(publicBase+'/'+page)});
 }
 await save(overridePath,over);

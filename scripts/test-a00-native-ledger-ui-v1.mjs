@@ -6,6 +6,9 @@ for(const name of ['ledger.html','ledger-en.html']){
   const html=readFileSync(new URL(name,base),'utf8');
   const rows=[...html.matchAll(/<tr data-search="([^"]*)">/g)].map(match=>({dataset:{search:match[1]},hidden:false}));
   assert.equal(rows.length,95);
+  assert.equal([...html.matchAll(/class="term-locations" data-choice-id=/g)].length,20);
+  assert.match(html,/native-ledger\/term-locations\.json/);
+  assert.match(html,/<q lang="id">/);
   const input={value:'',addEventListener(event,handler){assert.equal(event,'input');this.handler=handler;}};
   const count={textContent:''};
   const document={getElementById(id){return id==='search'?input:count;},querySelectorAll(selector){assert.equal(selector,'[data-search]');return rows;}};
