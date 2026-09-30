@@ -12,6 +12,9 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = 'scripts/build-program-backend-coverage-v1.mjs'
 INPUTS = {
+    'd50ProductionAudit': 'backend/course-capsule-v1/adapters/d50-surface-v1/production/native-production-audit.json',
+    'd50NativeRebuild': 'backend/course-capsule-v1/adapters/d50-surface-v1/production/native-rebuild-receipt.json',
+    'd50ReaderCurrent': 'backend/course-capsule-v1/adapters/d50-surface-v1/production/current-reader-readback.json',
     'c120Delivery0': 'backend/course-capsule-v1/adapters/c120-delivery-v1/input-manifest.json',
     'c120Delivery1': 'backend/course-capsule-v1/adapters/c120-delivery-v1/published-tree.json',
     'c120Delivery2': 'backend/course-capsule-v1/adapters/c120-delivery-v1/deployed-readback.json',
@@ -704,9 +707,16 @@ assert roles['D50']['dimensions']['source_translation_ledger'] == {
 }
 assert roles['D50']['dimensions']['terminology']['register'] == 'verified'
 assert roles['D50']['dimensions']['reproducible_production'] == {
-    'build': 'unknown',
-    'replay': 'unknown',
+    'build': 'verified',
+    'replay': 'verified',
 }
+assert roles['D50']['native_production_audit']['fresh_pdf_build'] is False
+assert roles['D50']['native_production_audit']['source_members'] == 1282
+assert roles['D50']['native_production_audit']['native_pdf_rebuild_cycles'] == 2
+assert roles['D50']['dimensions']['learner']['delivery'] == 'verified'
+assert roles['D50']['native_capability_parity_completion'] == 'verified'
+assert inputs['d50ProductionAudit']['fresh_html_backend_replay']['matches_frozen_native_outputs'] is True
+assert inputs['d50ProductionAudit']['fresh_pdf_build'] is False
 assert roles['D50']['dimensions']['educator']['unit_alignment'] == 'verified'
 assert roles['D110']['common_adapter']['status'] == 'verified'
 assert roles['D110']['common_adapter']['contract'] == '2.3.1'
@@ -934,7 +944,7 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
     sandbox = Path(temporary)
     deployment = ['backend/course-capsule-v1/adapters/c120-delivery-v1/deployment/' + p for p in
                   ['.github/workflows/pages.yml', 'program-navigation.json', 'scripts/program_navigation.py', 'scripts/reseal_reader_manifests.py']]
-    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs', 'scripts/c120-delivery-evidence-v1.mjs'] + list(INPUTS.values()) + deployment:
+    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs', 'scripts/c120-delivery-evidence-v1.mjs', 'scripts/d50-production-evidence-v1.mjs', 'docs/backend/d50/reader/index.html'] + list(INPUTS.values()) + deployment:
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
@@ -1040,6 +1050,12 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('d50_publication_access_downgrade', 'd50Publication', lambda value: value['zenodo'].update(access='restricted')),
         ('d50_publication_asset_hash_change', 'd50Publication', lambda value: value['adapter'].update(sha256='0' * 64)),
         ('d50_publication_authenticated_readback', 'd50Publication', lambda value: value['github'].update(anonymous_asset_readback='authenticated_only')),
+        ('d50_incomplete_source_inventory', 'd50ProductionAudit', lambda value: value.update(source_members=1281)),
+        ('d50_false_fresh_pdf_claim', 'd50ProductionAudit', lambda value: value.update(fresh_pdf_build=True)),
+        ('d50_missing_fresh_replay_output', 'd50ProductionAudit', lambda value: value['fresh_html_backend_replay']['outputs'].pop('backend_csv')),
+        ('d50_failed_fresh_command', 'd50ProductionAudit', lambda value: value['fresh_html_backend_replay']['commands'][0].update(exit_code=1)),
+        ('d50_native_receipt_drift', 'd50NativeRebuild', lambda value: value['clean_rebuilds'][0]['outputs']['pdf'].update(bytes=1)),
+        ('d50_current_reader_nonanonymous', 'd50ReaderCurrent', lambda value: value.update(anonymous=False)),
         ('gap_admission_status', 'gapAdmission', lambda value: value.update(status='fail')),
         ('gap_admission_twin', 'gapAdmission', lambda value: value['roles']['A30']['twin'].update(status='fail')),
         ('central_release_not_verified', 'centralV06324', lambda value: value.update(state='draft')),

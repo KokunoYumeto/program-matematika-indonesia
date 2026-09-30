@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { courses as authorityCourses } from '../docs/courses.js';
 import { materializeLiveCourses } from '../docs/live-course-publications.js';
 import {loadD100IndonesianEvidence,validateD100TranslationClaims,d100TranslationVerification} from './d100-indonesian-evidence-v1.mjs';
+import {loadD50ProductionEvidence,validateD50ProductionClaims} from './d50-production-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const outputOption = process.argv.find((value) => value.startsWith('--output-root='));
@@ -78,6 +79,7 @@ const learnerDelivery = JSON.parse(inputBytes.learnerDelivery.toString('utf8'));
 const learnerTools = JSON.parse(inputBytes.learnerTools.toString('utf8'));
 const overrides = JSON.parse(inputBytes.overrides.toString('utf8'));
 validateD100TranslationClaims(overrides.native_capabilities.D100,(await loadD100IndonesianEvidence(project)).evidence);
+validateD50ProductionClaims(overrides.native_capabilities.D50,await loadD50ProductionEvidence(project));
 const nativePackages = JSON.parse(inputBytes.nativePackages.toString('utf8'));
 assert.equal(nativePackages.schema_id, 'interlanguage/course-native-package-references/v1');
 const designPolicy = JSON.parse(inputBytes.designPolicy.toString('utf8'));

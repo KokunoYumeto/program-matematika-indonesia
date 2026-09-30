@@ -643,7 +643,7 @@ export const liveCoursePublications = Object.freeze({
   }),
   D50: publication({
     state: 'published',
-    reader: null,
+    reader: 'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d50/reader/index.html',
     edition: 'https://zenodo.org/records/22161090/files/geometri-diferensial-manifold-mulus-edisi-lengkap-id.pdf?download=1',
     zenodo: 'https://doi.org/10.5281/zenodo.22161090',
     repository: 'https://github.com/KokunoYumeto/brenner-differentialgeometrie-id',

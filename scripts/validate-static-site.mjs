@@ -1219,7 +1219,17 @@ assert.equal(
 );
 assert.equal(learnerDelivery.summary.verified_portable_html, learnerDelivery.courses.filter(({ portable_html }) => portable_html.status === 'verified').length);
 assert.equal(learnerDelivery.summary.verified_epub, learnerDelivery.courses.filter(({ epub }) => epub.status === 'verified').length);
-assert.equal(learnerDelivery.summary.online_html_available, 26);
+assert.equal(learnerDelivery.summary.online_html_available, 27);
+// D50's complete native reader is published, but its MathJax runtime uses a CDN.
+const d50Delivery = deliveryById.get('D50');
+assert.equal(d50Delivery.online_html.status, 'verified');
+assert.equal(d50Delivery.online_html.url,
+  'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d50/reader/index.html');
+assert.equal(effectiveCourses.find(course => course.id === 'D50').reader, d50Delivery.online_html.url);
+assert.equal(d50Delivery.online_html.dependency_free, false);
+assert.equal(d50Delivery.portable_html.status, 'available_unverified');
+assert.equal(d50Delivery.portable_html.dependency_free, false);
+assert.equal(d50Delivery.pdf.status, 'verified');
 // A10 is an admitted, portable projection, not a PDF mislabeled as HTML.
 const a10Mirror = await readJson('docs/id-ID/courses/A10/A10_READER_MIRROR_MANIFEST_V1.json');
 assert.equal(a10Mirror.course_id, 'A10');
@@ -1343,8 +1353,11 @@ const shellGzipBytes = shellFiles.reduce((sum, bytes) => sum + gzipSync(bytes, {
 // further 2 KB for explicit navigation. The additive Chinese chooser raises
 // the observed gzip size from 53,955 to 54,030 bytes; reserve 256 bytes of
 // compressed navigation headroom without removing any existing content.
+// D50's verified reader/PDF/source identities and explicit CDN limitation bring
+// the measured compressed shell to 54,500 bytes. Keep 256 bytes of headroom;
+// retain the independent raw-size and zero-remote-runtime requirements.
 assert.ok(shellRawBytes <= 216_000, `Shell melewati 216.000 byte: ${shellRawBytes}.`);
-assert.ok(shellGzipBytes <= 54_256, `Shell gzip melewati 54.256 byte: ${shellGzipBytes}.`);
+assert.ok(shellGzipBytes <= 54_756, `Shell gzip melewati 54.756 byte: ${shellGzipBytes}.`);
 const runtimeAssetUrls = [
   ...[...html.matchAll(/<script\b[^>]*src="([^"]+)"[^>]*>/g)].map((match) => match[1]),
   ...[...html.matchAll(/<link\b(?=[^>]*rel="stylesheet")[^>]*href="([^"]+)"[^>]*>/g)].map((match) => match[1]),

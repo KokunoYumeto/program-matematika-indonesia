@@ -5,8 +5,11 @@ import { fileURLToPath } from 'node:url';
 import { json,sha256 } from './native-catalog-exchange-v1.mjs';
 import {clp1EvidencePaths,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
 import {c120DeliveryInputs,loadC120Delivery} from './c120-delivery-evidence-v1.mjs';
+import {d50ProductionPaths,loadD50ProductionEvidence} from './d50-production-evidence-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
+const d50ProductionProof=await loadD50ProductionEvidence(root);
 const sources={
+  ...d50ProductionPaths,
   ...Object.fromEntries(c120DeliveryInputs.map((path,index)=>[`c120Delivery${index}`,path])),
   ...clp1EvidencePaths,
   capsules:'backend/course-capsule-v1/generated/course-capsules.json',
@@ -583,6 +586,12 @@ const rows=data.capsules.map(capsule=>{
   }
   const nativeCapabilityParityComplete=parityStatuses.every(status=>['verified','not_applicable'].includes(status));
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
+    ...(role==='D50'?{native_production_audit:{
+      status:'fresh_html_backend_replay_and_frozen_pdf_replay_bound',
+      source_members:1282,fresh_pdf_build:false,native_pdf_rebuild_cycles:2,
+      evidence:d50ProductionProof.evidence,
+      note_id:'HTML dan backend dibangun ulang dari 1.282 berkas sumber terbitan dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu; tidak dikompilasi ulang dalam audit ini. Pembaca daring tersedia; ZIP HTML masih membutuhkan MathJax CDN untuk merender matematika.',
+      note_en:'HTML and backend were rebuilt from the released 1,282-file source package with identical outputs. PDF identity is bound to two earlier clean rebuilds, not a fresh TeX run. The online reader is available; portable HTML still needs the MathJax CDN for math rendering.'}}:{}),
     native_design_audit:{status:'historical_comparison_not_new_native_reaudit',pattern:family.core_pattern,recommended_reuse:family.recommended_reuse,limitations:family.limitations},
     common_adapter:{status:adapter.status,contract:adapter.contract_version??null,mapping_scope:adapter.mapping_scope,
       github_public_evidence:role==='A10'?'new_anonymous_source_and_pages_readback':publicRow?'frozen_public_readback':role==='D50'?'new_anonymous_release_asset_readback':role==='B95'?'native_anonymous_release_asset_readback':role==='C140'?'native_anonymous_release_and_pages_readback':role==='D30'?'native_anonymous_source_and_pages_readback':role==='A30'?'new_anonymous_source_and_pages_readback':role==='A20'||role==='B40'||role==='B80'||role==='B90'||role==='C60'||role==='C70'||role==='C110'||role==='C120'||role==='D10'||role==='D40'||role==='D70'||role==='D80'||role==='D90'||role==='D100'||role==='D120'||leblRoles.includes(role)||['C90','C100'].includes(role)?'new_anonymous_source_and_pages_readback':'not_established',
@@ -635,6 +644,7 @@ const rows=data.capsules.map(capsule=>{
     layers:Object.fromEntries(Object.entries(capsule.layers).map(([name,layer])=>[name,{status:layer.status,
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
+      ...(role==='D50'?['HTML dan backend dibangun ulang dari 1.282 berkas sumber dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu, bukan kompilasi baru. Uji aksesibilitas dan batas luring lanjutan tetap terpisah: matematika HTML masih memakai MathJax CDN. Ini bukan peninjauan semantik terjemahan baru.']:[]),
       ...(role==='D100'?['Daftar Bahasa Indonesia telah diperiksa terpisah dari edisi Inggris: 905 istilah, 371 koreksi, dan 15.829 identitas segmen. Ini pemeriksaan struktur dan identitas, bukan bukti baru pembacaan kanon atau mutu bahasa. Empat istilah tetap berstatus sementara.']:[]),
       ...(role==='C130'?['Pemetaan saat ini mencakup 203 soal, 12 cek pemahaman beserta jawaban, dan 12 kegiatan visual. Sebanyak 104 penyelesaian lain mempunyai tautan bagian teks, sedangkan 28 sumber penyelesaian masih memerlukan pemetaan halaman. Empat soal sumber lama tidak dicetak dalam PDF ini. Hasil solver belum dijalankan ulang; antarmuka Inggris tetap membuka buku Bahasa Indonesia.']:[]),
       ...(!integrated?['Periksa backend asli dan implementasikan adapter bersama beserta penggunaan nyata oleh pelajar/pengajar.']:[]),
