@@ -20,9 +20,11 @@ export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role =
   'docs/backend/judson/teacher-validation.json', ...['C30','C40'].map(r=>`docs/backend/judson/${r}.teacher.json`),
   'docs/backend/openlogic-teacher/teacher-validation.json','docs/backend/openlogic-teacher/C80.teacher.json',
   'docs/backend/c130-teacher/teacher-validation.json','docs/backend/c130-teacher/planner-model.json',
+  'docs/backend/c130-native/build-receipt.json','docs/backend/c130-native/projection.json','docs/backend/c130-native/audit.json',
   ...Object.values(clp1EvidencePaths),'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json'];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
+  'c130.native_ledger':['C130','reference','backend/c130-native/ledger.html'],
   'c130.assignment_planner':['C130','reference','backend/c130-teacher/C130.teacher.html'],
   'c80.openlogic_assignment_planner':['C80','reference','backend/openlogic-teacher/C80.teacher.html'],
   'c30.judson_assignment_planner':['C30','reference','backend/judson/C30.teacher.html'],
@@ -343,6 +345,31 @@ export function projectC130EnglishTeacherTools(inputs, courseIds) {
     page:{...page,path:base+'C130.teacher.en.html'},resource:{...bound,path:base+'planner-model.json'},
     evidence:{path:base+'teacher-validation.json',bytes:bytes.length,sha256:hash(bytes)}}];
 }
+export function projectC130EnglishLedgerTools(inputs, courseIds) {
+  const base='docs/backend/c130-native/',receiptBytes=inputs[base+'build-receipt.json'];
+  const receipt=JSON.parse(receiptBytes),data=inputs[base+'projection.json'],view=JSON.parse(data);
+  const audit=JSON.parse(inputs[base+'audit.json']);
+  assert.ok(courseIds.includes('C130'));
+  assert.equal(view.schema,'c130-native-ledger-view/1');assert.equal(view.course_id,'C130');
+  assert.equal(receipt.semantic_canon_review,false);assert.equal(receipt.overall_backend_complete,false);
+  assert.deepEqual({bytes:data.length,sha256:hash(data)},receipt.projection);
+  assert.deepEqual(audit.projection,receipt.projection);
+  assert.equal(view.terms.length,140);assert.equal(view.corrections.length,94);
+  assert.equal(view.segments.length,5525);assert.equal(view.units.length,1993);
+  assert.equal(audit.native_digest_failures,0);assert.equal(audit.semantic_canon_review,false);
+  assert.equal(audit.segment_checks.target.text_not_found,2);
+  assert.equal(audit.segment_checks.target.ambiguous_text_occurrences,19);
+  assert.equal(view.audit.semantic_canon_review,false);
+  assert.ok(view.terms.every(t=>t.audit.semantic_canon_review===false));
+  const page=receipt.files['ledger.en.html'];assert.ok(page);
+  return [{courseId:'C130',contentLanguage:'en',labelLanguage:'en',tool_id:'c130.native_ledger.en',
+    action_kind:'reference',href:'backend/c130-native/ledger.en.html',label:'C130 · Terminology and correction lookup',
+    scope:'140 native terminology choices and 94 correction records, with offline search and concept/source references',
+    limitations:['English interface; original quotations retain their Indonesian or English language. The linked book is Indonesian.','Producer records are not new semantic canon approval. Twenty-one target locations remain unresolved; concept relationships do not establish literal term occurrences.'],
+    state:'verified',primary:false,machine_data_is_learner_destination:false,
+    page:{...page,path:base+'ledger.en.html'},resource:{...receipt.projection,path:base+'projection.json'},
+    evidence:{path:base+'build-receipt.json',bytes:receiptBytes.length,sha256:hash(receiptBytes)}}];
+}
 export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
   const tools = [];
   for (const role of ['A00', 'A10']) {
@@ -394,7 +421,7 @@ export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
       });
     }
   }
-  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds), ...projectC130EnglishTeacherTools(inputs, courseIds)];
+  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds), ...projectC130EnglishTeacherTools(inputs, courseIds), ...projectC130EnglishLedgerTools(inputs, courseIds)];
 }
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));

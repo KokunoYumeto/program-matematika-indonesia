@@ -11,7 +11,7 @@ from html import unescape
 from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
-from central_course_navigation_scope_v1 import course_surface_exclusions, reader_course_targets
+from central_course_navigation_scope_v1 import course_surface_exclusions, course_surface_targets, reader_course_targets
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -916,11 +916,15 @@ def main() -> int:
                         raise ValueError(f"{path}: {interface_locale} program root needs exact top/bottom returns")
 
                 contents_paths = document.get("contents_paths", [])
-                if not isinstance(contents_paths, list) or len(contents_paths) != len(set(contents_paths)):
+                if not isinstance(contents_paths, list) or len(contents_paths) != len(set(contents_paths)) or not set(contents_paths).issubset(declared):
                     raise ValueError(f"{path}: invalid section-contents list")
-                expected_contents = {
+                all_contents = [
                     (root / Path(*value.split("/"))).resolve() for value in contents_paths
-                }
+                ]
+                all_contents.extend(course_surface_targets(group, document, contract, ROOT))
+                if len(all_contents) != len(set(all_contents)):
+                    raise ValueError(f"{path}: duplicate local/cross-surface target")
+                expected_contents = set(all_contents)
                 actual_contents: dict[Path, int] = {}
                 for link in parser.surface_contents_links:
                     target, fragment = resolve_href(path, link["href"])

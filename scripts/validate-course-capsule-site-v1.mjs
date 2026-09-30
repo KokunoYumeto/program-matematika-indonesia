@@ -125,6 +125,45 @@ assert.deepEqual(openLogicTeacherModel.counts, openLogicTeacherValidation.counts
 assert.equal(openLogicTeacherModel.questions.length, 442);
 assert.equal(openLogicTeacherModel.source_only.length, 11);
 const logicalFiles = [
+  ...await (async()=>{
+    const base='docs/backend/c130-native/';
+    const v=JSON.parse(await readFile(resolve(project,base+'build-receipt.json')));
+    const audit=JSON.parse(await readFile(resolve(project,base+'audit.json')));
+    const tested=JSON.parse(await readFile(resolve(project,base+'validation.json')));
+    assert.equal(v.schema,'c130-native-ledger-build/1');assert.equal(v.terms,140);assert.equal(v.corrections,94);
+    assert.equal(v.semantic_canon_review,false);assert.equal(v.overall_backend_complete,false);
+    assert.equal(audit.state,'verified_metadata_with_explicit_gaps');
+    assert.equal(audit.native_digest_failures,0);assert.equal(audit.native_manifest_files_verified,30);
+    assert.equal(audit.semantic_canon_review,false);assert.equal(audit.whole_native_rebuild,false);
+    assert.equal(audit.segment_checks.target.text_not_found,2);assert.equal(audit.segment_checks.target.ambiguous_text_occurrences,19);
+    assert.equal(tested.state,'pass');assert.equal(tested.consumer_negative_cases,11);
+    assert.equal(tested.unresolved_target_locations,21);assert.equal(tested.isolated_source_zip_replay,true);
+    assert.deepEqual(v.projection,audit.projection);assert.deepEqual(v.files['projection.json'],audit.projection);
+    assert.equal(Object.keys(v.source_members).length,12);
+    for(const [path,fact] of Object.entries(v.source_members)){
+      assert.ok(path.startsWith('scripts/')||path.startsWith('backend/course-capsule-v1/adapters/c130-'),'C130 source path escaped its scope');
+      assert.ok(!path.split('/').includes('..'));
+      const b=await readFile(resolve(project,path));assert.deepEqual({bytes:b.length,sha256:sha256(b)},fact,'C130 consumer source drift: '+path);
+    }
+    const files=[...Object.keys(v.files),'build-receipt.json','validation.json','source-lock.json'];
+    assert.deepEqual([...files].sort(),['audit.json','build-receipt.json','c130-native-ledger-source-v1.zip','ledger.css','ledger.en.html','ledger.html','ledger.js','projection.json','source-lock.json','validation.json']);
+    for(const [name,fact] of Object.entries(v.files)){
+      assert.match(name,/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);assert.ok(!name.includes('..'));
+      const path=base+name,b=await readFile(resolve(project,path));
+      if(b.length!==fact.bytes||sha256(b)!==fact.sha256){
+        assert.ok(name.endsWith('.html'),'Non-HTML C130 ledger identity drift');
+        const overlay=d110NavigationOverlay.files.find(f=>f.document===path);
+        assert.ok(overlay,'C130 ledger navigation overlay missing');
+        assert.deepEqual(overlay.source_body,{path,...fact});
+        assert.deepEqual(overlay.hosted_surface,identity(path,b));assert.equal(overlay.source_body_replay_exact,true);
+      }
+    }
+    for(const name of ['validation.json','source-lock.json']){
+      const source='backend/course-capsule-v1/adapters/c130-native-ledger-v1/'+(name==='source-lock.json'?'input/':'')+name;
+      assert.deepEqual(await readFile(resolve(project,base+name)),await readFile(resolve(project,source)),'C130 ledger evidence copy drift');
+    }
+    return files.map(name=>'backend/c130-native/'+name);
+  })(),
   ...d100IdFiles.map(name=>`data/course-capsule-v1/d100-indonesian-evidence-v1/${name}`),
   ...await (async()=>{
     const base='backend/course-capsule-v1/adapters/c130-teacher-v1';
@@ -624,6 +663,11 @@ for(const lang of ['id','en']){
   const path='backend/c130-teacher/C130.teacher'+(lang==='en'?'.en':'')+'.html';
   assert.equal(resource.url,'https://kokunoyumeto.github.io/program-matematika-indonesia/'+path);
   assert.equal(resource.bytes,docsBytes[path].length);assert.equal(resource.sha256,sha256(docsBytes[path]));
+  const ledgerResource=c130Teacher.resources.find(r=>r.id==='C130:native-ledger-'+lang);
+  const ledgerPath='backend/c130-native/ledger'+(lang==='en'?'.en':'')+'.html';
+  assert.ok(ledgerResource,'C130 localized native ledger resource missing');
+  assert.equal(ledgerResource.url,'https://kokunoyumeto.github.io/program-matematika-indonesia/'+ledgerPath);
+  assert.equal(ledgerResource.bytes,docsBytes[ledgerPath].length);assert.equal(ledgerResource.sha256,sha256(docsBytes[ledgerPath]));
 }
 assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.status !== 'verified').map(row => row.course_id)), []);
 assert.deepEqual(sortedIds(rows.filter(row => row.layers.educator.unit_alignment_status !== 'verified').map(row => row.course_id)), []);
@@ -758,7 +802,7 @@ for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityTool
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
 assert.deepEqual(sortedIds(Object.keys(authorityToolsByCourse)), sortedIds(rows.map(row => row.course_id)));
-assert.equal(authorityToolIds.length, 55);
+assert.equal(authorityToolIds.length, 56);
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
     [{tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
@@ -796,7 +840,7 @@ assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
 assert.equal(validation.checks.learner_tool_course_count, 40);
-assert.equal(validation.checks.learner_tool_count, 55);
+assert.equal(validation.checks.learner_tool_count, 56);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 
@@ -2027,7 +2071,7 @@ assert.deepEqual(snapshotV2Receipt.summary, v23AdapterIndexV2.summary);
 assert.deepEqual(authorityToolsByCourse.C30.map(({ tool_id }) => tool_id).sort(), ['c30.judson_assignment_planner','judson-c30-chapter-map-v1']);
 assert.deepEqual(authorityToolsByCourse.C40.map(({ tool_id }) => tool_id).sort(), ['c40.judson_assignment_planner','judson-c40-chapter-map-v1']);
 assert.deepEqual(authorityToolsByCourse.C80.map(({ tool_id }) => tool_id).sort(), ['c80-openlogic-course-map-v1', 'c80.openlogic_assignment_planner']);
-assert.deepEqual(authorityToolsByCourse.C130.map(({ tool_id }) => tool_id).sort(), ['c130-operations-research-course-map-v1','c130.assignment_planner']);
+assert.deepEqual(authorityToolsByCourse.C130.map(({ tool_id }) => tool_id).sort(), ['c130-operations-research-course-map-v1','c130.assignment_planner','c130.native_ledger']);
 assert.equal(openLogicValidation.state, 'pass');
 assert.equal(openLogicValidation.semantic_counts.native_units, 722);
 assert.equal(openLogicValidation.semantic_counts.reader_reachable_units, 642);

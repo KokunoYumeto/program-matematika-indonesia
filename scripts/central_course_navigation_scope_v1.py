@@ -40,3 +40,26 @@ def reader_course_targets(reader, contract, workspace):
             raise ValueError('reader return must target a declared tool for the same course')
         result.append((Path(workspace) / value).resolve())
     return result
+
+
+def course_surface_targets(surface, document, contract, workspace):
+    """Resolve explicit cross-surface links without weakening local contents closure."""
+    values = document.get('related_course_surface_paths', [])
+    if not isinstance(values, list) or len(values) != len(set(values)):
+        raise ValueError('course-surface related links must be a unique list')
+    declared = {
+        (safe_relative(s['root']) / safe_relative(d['path'])).as_posix(): d
+        for s in contract['course_surfaces'] for d in s['documents']
+    }
+    source = (safe_relative(surface['root']) / safe_relative(document['path'])).as_posix()
+    course_ids = set(document['course_ids'])
+    result = []
+    for value in values:
+        safe_relative(value)
+        if value == source or value not in declared or set(declared[value]['course_ids']) != course_ids:
+            raise ValueError('course-surface return must target another declared tool for the same course set')
+        target = (Path(workspace) / value).resolve()
+        if not target.is_relative_to((Path(workspace) / 'docs').resolve()) or not target.is_file():
+            raise ValueError('course-surface return must target an existing declared document below docs')
+        result.append(target)
+    return result

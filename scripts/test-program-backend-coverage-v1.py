@@ -37,6 +37,9 @@ INPUTS = {
     'openlogicTeacherTests': 'backend/course-capsule-v1/adapters/openlogic-teacher-v1/build-tests.json',
     'c130Teacher': 'docs/backend/c130-teacher/teacher-validation.json',
     'c130TeacherTests': 'backend/course-capsule-v1/adapters/c130-teacher-v1/validation.json',
+    'c130NativeAudit': 'backend/course-capsule-v1/adapters/c130-native-ledger-v1/audit.json',
+    'c130NativeTests': 'backend/course-capsule-v1/adapters/c130-native-ledger-v1/validation.json',
+    'c130NativeLock': 'backend/course-capsule-v1/adapters/c130-native-ledger-v1/input/source-lock.json',
     'a10Integration': 'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
     'a20': 'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
     'a30Manifest': 'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -536,6 +539,19 @@ assert roles['C130']['educator']['solver_results_reexecuted'] is False
 assert roles['C130']['whole_course_backend_completion'] == 'not_yet_proven'
 assert {r['id'] for r in roles['C130']['educator']['resources']} >= {'C130:teacher-id','C130:teacher-en'}
 assert '../backend/c130-teacher/C130.teacher.html' in {t['href'] for t in roles['C130']['learner']['tools']}
+assert '../backend/c130-native/ledger.html' in {t['href'] for t in roles['C130']['learner']['tools']}
+assert {r['id'] for r in roles['C130']['educator']['resources']} >= {'C130:native-ledger-id','C130:native-ledger-en'}
+c130_native = roles['C130']['native_metadata_audit']
+assert c130_native['counts'] == {'concepts':128,'corrections':94,'rights':21,'segments':5525,'terms':140,'units':1993}
+assert c130_native['target_location_checks'] == inputs['c130NativeAudit']['segment_checks']['target']
+assert c130_native['unresolved_target_locations'] == 21
+assert c130_native['semantic_canon_review'] is c130_native['whole_native_rebuild'] is False
+assert c130_native['projection'] == inputs['c130NativeAudit']['projection']
+assert roles['C130']['dimensions']['source_translation_ledger']['ledger'] == 'available_unverified'
+assert roles['C130']['dimensions']['terminology']['register'] == 'available_unverified'
+for key, evidence in zip(['c130NativeAudit','c130NativeTests','c130NativeLock'], c130_native['evidence']):
+    native_bytes = (ROOT / INPUTS[key]).read_bytes()
+    assert evidence == {'path':INPUTS[key],'bytes':len(native_bytes),'sha256':hashlib.sha256(native_bytes).hexdigest()}
 assert inputs['c130Teacher']['counts']['selectable_learning_items'] == 227
 assert inputs['c130Teacher']['unmapped_other_solution_sources'] == 16
 assert inputs['c130Teacher']['explicit_solution_heading_mappings'] == 12
@@ -997,6 +1013,16 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         ('c130_solver_replay_overclaim', 'c130Teacher', lambda value: value.update(solver_results_reexecuted=True)),
         ('c130_visual_activities_dropped', 'c130Teacher', lambda value: value['counts'].update(visual_activities=0)),
         ('c130_unbound_mapping_test', 'c130Teacher', lambda value: value['evidence']['validation.json'].update(sha256='0' * 64)),
+        ('c130_native_ledger_count_drift', 'c130NativeAudit', lambda value: value['counts'].update(terms=139)),
+        ('c130_native_target_gaps_hidden', 'c130NativeAudit', lambda value: value['segment_checks']['target'].update(text_not_found=0)),
+        ('c130_native_canon_overclaim', 'c130NativeAudit', lambda value: value.update(semantic_canon_review=True)),
+        ('c130_native_rebuild_overclaim', 'c130NativeAudit', lambda value: value.update(whole_native_rebuild=True)),
+        ('c130_native_projection_drift', 'c130NativeAudit', lambda value: value['projection'].update(sha256='0' * 64)),
+        ('c130_native_validation_failed', 'c130NativeTests', lambda value: value.update(state='fail')),
+        ('c130_native_consumer_guards_removed', 'c130NativeTests', lambda value: value.update(consumer_negative_cases=0)),
+        ('c130_native_validation_gaps_hidden', 'c130NativeTests', lambda value: value.update(unresolved_target_locations=0)),
+        ('c130_native_source_changed', 'c130NativeLock', lambda value: value['native_monolith'].update(sha256='0' * 64)),
+        ('c130_native_tables_not_compared', 'c130NativeLock', lambda value: value['native_tables_agree'].pop()),
         ('unverified_public_packet', 'published', lambda value: value['packages'][0].update(admission_state='draft')),
         ('a20_nonanonymous', 'a20', lambda value: value.update(anonymous=False)),
         ('a10_nonanonymous', 'a10Integration', lambda value: value.update(anonymous=False)),

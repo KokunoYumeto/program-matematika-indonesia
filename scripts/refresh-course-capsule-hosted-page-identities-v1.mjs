@@ -47,8 +47,10 @@ for(const [courseId,tools] of Object.entries(overrides.learner_tools??{}).sort((
 // authority, so they must not also appear in integration-overrides.
 // A10 adds one learner navigator and two educator views to the prior closure.
 // C80 contributes one new planner page and one learner-tool binding.
-assert.equal(toolCount,46,'Integration learner-tool closure changed.');
-assert.equal(pagePaths.size,43,'Integration hosted-page closure changed.');
+assert.equal(toolCount,47,'Integration learner-tool closure changed.');
+assert.equal(pagePaths.size,44,'Integration hosted-page closure changed.');
+assert.ok(overrides.learner_tools.C130.some(tool=>tool.tool_id==='c130.native_ledger'
+  && tool.page.path==='docs/backend/c130-native/ledger.html'),'C130 native ledger binding is missing.');
 assert.ok(overrides.learner_tools.C130.some(tool=>tool.tool_id==='c130.assignment_planner'
   && tool.page.path==='docs/backend/c130-teacher/C130.teacher.html'),'C130 planner binding is missing.');
 assert.ok(overrides.learner_tools.C80.some(tool=>tool.tool_id==='c80.openlogic_assignment_planner'
@@ -93,8 +95,9 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
 // central hosted page.
 // C80 contributes primary educator evidence plus two localized resources.
 // A00 exposes two localized native-ledger views without relabeling its book review.
-assert.equal(educatorFactCount,99,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,59,'Integration educator hosted-page closure changed.');
+assert.equal(educatorFactCount,101,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,61,'Integration educator hosted-page closure changed.');
+for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/c130-native/ledger${suffix}.html`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/clp/B20.terms${suffix}.html`));
 for(const page of ['ledger.html','ledger-en.html'])assert.ok(educatorPagePaths.has(`docs/backend/a00/${page}`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/c130-teacher/C130.teacher${suffix}.html`));

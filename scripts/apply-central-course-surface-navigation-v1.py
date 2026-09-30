@@ -11,7 +11,7 @@ import re
 import sys
 from pathlib import Path
 from urllib.parse import urlsplit
-from central_course_navigation_scope_v1 import course_surface_exclusions, reader_course_targets
+from central_course_navigation_scope_v1 import course_surface_exclusions, course_surface_targets, reader_course_targets
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -294,6 +294,10 @@ def main() -> int:
                 contents_paths = list(document.get("contents_paths", []))
                 if len(contents_paths) != len(set(contents_paths)) or not set(contents_paths).issubset(declared):
                     raise ValueError(f"{logical}: invalid section-contents binding {contents_paths}")
+                contents = [root / value for value in contents_paths]
+                contents.extend(course_surface_targets(surface, document, contract, ROOT))
+                if len(contents) != len({path.resolve() for path in contents}):
+                    raise ValueError(f"{logical}: duplicate local/cross-surface target")
                 register({
                     "logical": logical,
                     "role": "course_surface",
@@ -303,7 +307,7 @@ def main() -> int:
                     "course_targets": course_targets(ids),
                     "program_targets": program_targets(),
                     "original_targets": original_targets(ids, document_locale),
-                    "contents": [root / value for value in contents_paths],
+                    "contents": contents,
                 })
 
         for gateway in contract["gateways"]:

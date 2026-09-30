@@ -16,6 +16,10 @@ const sort = (value) => Array.isArray(value) ? value.map(sort)
   : value && typeof value === 'object'
     ? Object.fromEntries(Object.keys(value).sort().map((key) => [key, sort(value[key])])) : value;
 const tests = [
+  { name: 'c130_native_ledger_cannot_disappear', id: 'C130', mutate: row=>{row.layers.learner.tools=row.layers.learner.tools.filter(t=>t.tool_id!=='c130.native_ledger');}, error: /learner tools drift from authority/ },
+  { name: 'c130_native_ledger_resource_cannot_disappear', id: 'C130', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(r=>r.id!=='C130:native-ledger-id');}, error: /missing\/duplicate educator resource/ },
+  { name: 'c130_native_ledger_resource_hash_cannot_drift', id: 'C130', mutate: row=>{row.layers.educator.resources.find(r=>r.id==='C130:native-ledger-en').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
+  { name: 'c130_native_ledger_is_not_semantic_approval', id: 'C130', mutate: row=>{row.layers.translation.terminology_status='verified';}, error: /native status needs capability-specific evidence/ },
   { name: 'clp1_terminology_consumer_cannot_disappear', id: 'B20', mutate: row=>{row.layers.educator.resources=row.layers.educator.resources.filter(r=>r.id!=='B20:clp1-terms-id');}, error: /missing\/duplicate educator resource/ },
   { name: 'clp1_terminology_consumer_hash_cannot_drift', id: 'B20', mutate: row=>{row.layers.educator.resources.find(r=>r.id==='B20:clp1-terms-en').sha256='0'.repeat(64);}, error: /educator resource evidence drift/ },
   { name: 'clp1_metadata_repair_is_not_canon_review', id: 'B20', mutate: row=>{row.layers.translation.terminology_status='verified';}, error: /native status needs capability-specific evidence/ },

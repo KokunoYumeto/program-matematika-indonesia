@@ -845,11 +845,11 @@ assert.equal(byId.C80.layers.educator.unit_alignment_status,'verified');
 for(const locale of ['id','en'])assert.ok(byId.C80.layers.educator.resources.some(resource=>resource.id==='C80:openlogic-teacher-'+locale&&resource.status==='verified'));
 const c130Adapter = byId.C130.layers.interoperability.semantic_adapter;
 assert.equal(c130Adapter.mapping_scope, 'reversible_native_course_route_adapter');
-assert.deepEqual(c130Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation']);
+assert.deepEqual(c130Adapter.evidence.map(({ kind }) => kind), ['central_adapter_manifest', 'canonical_admission_receipt', 'learner_route_validation', 'c130_native_metadata_audit', 'c130_native_ledger_validation', 'c130_native_metadata_lock']);
 assert.equal(c130Adapter.evidence[0].sha256, 'cad2922d9bd1facb33cc9d54a9836bb168fe0b8d996d9d4ef2e5d8c26053f239');
 assert.equal(c130Adapter.evidence[1].sha256, 'b311ab7d2a6a86af40174d051fbd8ef273a8536b34f0af77b76e5a1ce9b3397e');
 assert.equal(c130Adapter.evidence[2].sha256, '6d9fa92226d7eee2ab29aba647d3cca0cee80b6cc2ee0bb0e14642216f9c8ae7');
-assert.equal(byId.C130.layers.learner.tools.length, 2);
+assert.equal(byId.C130.layers.learner.tools.length, 3);
 assert.equal(byId.C130.layers.learner.tools[0].href, 'backend/c130/C130.html');
 assert.equal(byId.C130.layers.learner.tools[0].primary, true);
 assert.equal(byId.C130.layers.learner.tools[0].resource.sha256, '8114562c963295577d8f845719061febed5993b5cbbe5fc4beb8ba235d7fd709');
@@ -859,6 +859,26 @@ assert.equal(c130Planner.resource.sha256,'da96470e9faadf9b72e996c5262e08c92bf3df
 assert.equal(byId.C130.layers.educator.status,'verified');
 assert.equal(byId.C130.layers.educator.unit_alignment_status,'verified');
 for(const locale of ['id','en'])assert.ok(byId.C130.layers.educator.resources.some(r=>r.id==='C130:teacher-'+locale&&r.status==='verified'));
+const c130Ledger=byId.C130.layers.learner.tools.find(t=>t.tool_id==='c130.native_ledger');
+assert.equal(c130Ledger.href,'backend/c130-native/ledger.html');
+assert.equal(c130Ledger.resource.sha256,'d7e90acbb6414657fd99c6104175013aa69883b46842849ab842d3e24febd955');
+for(const locale of ['id','en'])assert.ok(byId.C130.layers.educator.resources.some(r=>r.id==='C130:native-ledger-'+locale&&r.status==='verified'));
+for(const field of ['ledger_status','terminology_status','corrections_status'])assert.equal(byId.C130.layers.translation[field],'available_unverified','C130 native records are not a fresh semantic canon review');
+for(const [kind,path] of [['c130_native_metadata_audit','audit.json'],['c130_native_ledger_validation','validation.json'],['c130_native_metadata_lock','input/source-lock.json']]){
+  const evidence=c130Adapter.evidence.find(row=>row.kind===kind);
+  const locator=`backend/course-capsule-v1/adapters/c130-native-ledger-v1/${path}`;
+  assert.equal(evidence.locator,locator);
+  const payload=await readFile(resolve(project,locator));
+  assert.equal(evidence.bytes,payload.length);
+  assert.equal(evidence.sha256,sha256(payload));
+}
+const c130LedgerCheck=JSON.parse(await readFile(resolve(project,'docs/backend/c130-native/validation.json'),'utf8'));
+assert.equal(c130LedgerCheck.state,'pass');
+assert.equal(c130LedgerCheck.consumer_negative_cases,11);
+assert.equal(c130LedgerCheck.semantic_canon_review,false);
+assert.equal(c130LedgerCheck.unresolved_target_locations,21);
+assert.equal(c130LedgerCheck.segment_identities,5525);
+assert.equal(c130LedgerCheck.unit_identities,1993);
 for (const id of ['A10']) {
   assert.equal(byId[id].layers.translation.terminology_status, 'in_progress');
   assert.equal(byId[id].layers.translation.corrections_status, 'in_progress');

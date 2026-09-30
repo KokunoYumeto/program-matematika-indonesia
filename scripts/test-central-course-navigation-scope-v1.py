@@ -2,7 +2,7 @@
 from copy import deepcopy
 import json
 from pathlib import Path
-from central_course_navigation_scope_v1 import course_surface_exclusions, reader_course_targets
+from central_course_navigation_scope_v1 import course_surface_exclusions, course_surface_targets, reader_course_targets
 
 root = Path(__file__).resolve().parents[1]
 contract = json.loads((root / 'backend/authority/central-reader-navigation-v1.json').read_text(encoding='utf-8'))
@@ -29,4 +29,20 @@ for values in [['docs/backend/d20/D20.html'], ['docs/missing.html'], ['../docs/b
         tests += 1
     else:
         raise AssertionError(values)
-print(json.dumps({'status': 'pass', 'negative_fixtures': tests, 'reader_role': 'D50', 'unclassified_exclusions_allowed': False}))
+ledger_surface = next(s for s in contract['course_surfaces'] if s['root'] == 'docs/backend/c130-native')
+ledger = next(d for d in ledger_surface['documents'] if d['path'] == 'ledger.html')
+assert len(course_surface_targets(ledger_surface, ledger, contract, root)) == 2
+for values in [['docs/backend/d20/D20.html'], ['docs/missing.html'],
+               ['../docs/backend/c130/C130.html'], ['docs/backend/c130/C130.html'] * 2,
+               ['docs/backend/c130-native/ledger.html'], ['docs/backend/c130/../c130/C130.html'],
+               ['/docs/backend/c130/C130.html'], ['docs\\backend\\c130\\C130.html']]:
+    row = deepcopy(ledger)
+    row['related_course_surface_paths'] = values
+    try:
+        course_surface_targets(ledger_surface, row, contract, root)
+    except ValueError:
+        tests += 1
+    else:
+        raise AssertionError(values)
+print(json.dumps({'status': 'pass', 'negative_fixtures': tests, 'reader_role': 'D50',
+                  'cross_surface_role': 'C130', 'unclassified_exclusions_allowed': False}))

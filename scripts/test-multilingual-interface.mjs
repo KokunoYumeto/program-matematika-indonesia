@@ -250,13 +250,27 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,13);
+assert.equal(existingEnglishProjected.length,14);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
 // Preserve every previous tool while adding four bilingual CLP planners.
-assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')).length,51);
-assert.equal(capabilityTools.length,67);
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')&&!tool.tool_id.startsWith('c130.native_ledger')).length,51);
+assert.equal(capabilityTools.length,69);
+for(const locale of ['id','en']) {
+  const suffix=locale==='en'?'.en':'',tool=capabilityTools.find(t=>t.tool_id==='c130.native_ledger'+suffix);
+  assert.equal(tool.href,'backend/c130-native/ledger'+suffix+'.html');
+  assert.equal(tool.contentLanguage,locale);assert.equal(tool.primary,false);
+  assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='C130'),locale).some(r=>r.href===siteOrigin+tool.href&&r.accessRole==='tool'));
+}
+for(const mutate of [
+  r=>{r.semantic_canon_review=true;}, r=>{r.overall_backend_complete=true;},
+  r=>{r.projection.sha256='0'.repeat(64);}, r=>{delete r.files['ledger.en.html'];},
+]) {
+  const changed={...existingEnglishInputs},key='docs/backend/c130-native/build-receipt.json';
+  const value=JSON.parse(changed[key]);mutate(value);changed[key]=Buffer.from(JSON.stringify(value));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
 for(const locale of ['id','en']) {
   const suffix=locale==='en'?'.en':'',tool=capabilityTools.find(t=>t.tool_id==='c130.assignment_planner'+suffix);
   assert.equal(tool.href,'backend/c130-teacher/C130.teacher'+suffix+'.html');
@@ -979,13 +993,16 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // bytes / 1,214 gzip bytes to the largest previous map (499,524 / 101,516
     // now). D60 plus the four existing A00/A10 English tools bring the largest
     // map to 525,880 bytes. Keep these useful capabilities with a bounded
-    // 540 KiB raw ceiling after adding the two A00 ledger evidence routes
+    // 544 KiB raw ceiling after adding the two A00 ledger evidence routes
     // (largest map 549,071 bytes before the licence links). The prior 536 KiB
     // threshold was exceeded by 207 bytes. The 128 KiB compressed ceiling
     // remains unchanged; no learning data is dropped to satisfy this budget.
+    // C130's native-ledger tool and exact evidence add 6,643 bytes to the
+    // largest prior map (553,866 current raw bytes, 906 over the old ceiling).
+    // Preserve that useful data with four KiB additional bounded headroom.
     // engineering ceilings, not the former 101,000-byte near-baseline cutoff.
     // The exact complete payload and online/offline parity are tested below.
-    assert.ok(Buffer.byteLength(html) < 540 * 1024, 'Offline map size budget');
+    assert.ok(Buffer.byteLength(html) < 544 * 1024, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 128 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');

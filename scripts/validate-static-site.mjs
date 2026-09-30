@@ -450,7 +450,9 @@ for (const lang of ['id', 'en']) {
 const c130Capsule = courseCapsules.find(({ course_id }) => course_id === 'C130');
 assert.ok(c130Capsule, 'Kapsul C130 harus tersedia.');
 assert.equal(c130Capsule.layers.interoperability.semantic_adapter.status, 'verified');
-assert.deepEqual(c130Capsule.layers.learner.tools.map(({ tool_id }) => tool_id).sort(), ['c130-operations-research-course-map-v1','c130.assignment_planner']);
+assert.deepEqual(c130Capsule.layers.learner.tools.map(({ tool_id }) => tool_id).sort(), ['c130-operations-research-course-map-v1','c130.assignment_planner','c130.native_ledger']);
+assert.equal(c130Capsule.layers.learner.tools.find(t=>t.tool_id==='c130.native_ledger').href,'backend/c130-native/ledger.html');
+for(const field of ['ledger_status','terminology_status','corrections_status'])assert.equal(c130Capsule.layers.translation[field],'available_unverified');
 assert.equal(c130Capsule.layers.learner.tools.find(t=>t.tool_id==='c130.assignment_planner').href,'backend/c130-teacher/C130.teacher.html');
 assert.equal(c130Capsule.layers.educator.status,'verified');
 for(const lang of ['id','en'])assert.ok(c130Capsule.layers.educator.resources.some(r=>r.id==='C130:teacher-'+lang&&r.status==='verified'));
@@ -1808,10 +1810,10 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 37);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 119);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1868);
-assert.equal(centralNavigation.summary.classified_html_documents, 1873);
+assert.equal(centralNavigation.summary.course_surface_roots, 38);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 121);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1870);
+assert.equal(centralNavigation.summary.classified_html_documents, 1875);
 // The two added pages expose native metadata, not new translated book bodies.
 const a00LedgerSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/a00');
 assert.equal(a00LedgerSurface.documents.length, 6);
@@ -1827,9 +1829,15 @@ for (const [path, locale, learner, teacher, other] of [
 }
 const c130TeacherSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/c130-teacher');
 assert.deepEqual(c130TeacherSurface.documents,[
-  {path:'C130.teacher.html',locale:'id',course_ids:['C130'],contents_paths:['C130.teacher.en.html']},
-  {path:'C130.teacher.en.html',locale:'en',course_ids:['C130'],contents_paths:['C130.teacher.html']},
+  {path:'C130.teacher.html',locale:'id',course_ids:['C130'],contents_paths:['C130.teacher.en.html'],related_course_surface_paths:['docs/backend/c130-native/ledger.html']},
+  {path:'C130.teacher.en.html',locale:'en',course_ids:['C130'],contents_paths:['C130.teacher.html'],related_course_surface_paths:['docs/backend/c130-native/ledger.en.html']},
 ]);
+const c130LedgerSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/c130-native');
+assert.deepEqual(c130LedgerSurface.documents,[
+  {path:'ledger.html',locale:'id',course_ids:['C130'],contents_paths:['ledger.en.html'],related_course_surface_paths:['docs/backend/c130/C130.html','docs/backend/c130-teacher/C130.teacher.html']},
+  {path:'ledger.en.html',locale:'en',course_ids:['C130'],contents_paths:['ledger.html'],related_course_surface_paths:['docs/backend/c130/C130.html','docs/backend/c130-teacher/C130.teacher.en.html']},
+]);
+assert.ok(centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/c130').documents.find(r=>r.path==='C130.html').related_course_surface_paths.includes('docs/backend/c130-native/ledger.html'));
 const openLogicTeacherSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/openlogic-teacher');
 assert.deepEqual(openLogicTeacherSurface.documents, [
   {path: 'C80.teacher.html', locale: 'id', course_ids: ['C80'], contents_paths: ['C80.teacher.en.html']},

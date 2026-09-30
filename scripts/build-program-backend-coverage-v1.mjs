@@ -25,6 +25,9 @@ const sources={
   openlogicTeacherTests:'backend/course-capsule-v1/adapters/openlogic-teacher-v1/build-tests.json',
   c130Teacher:'docs/backend/c130-teacher/teacher-validation.json',
   c130TeacherTests:'backend/course-capsule-v1/adapters/c130-teacher-v1/validation.json',
+  c130NativeAudit:'backend/course-capsule-v1/adapters/c130-native-ledger-v1/audit.json',
+  c130NativeTests:'backend/course-capsule-v1/adapters/c130-native-ledger-v1/validation.json',
+  c130NativeLock:'backend/course-capsule-v1/adapters/c130-native-ledger-v1/input/source-lock.json',
   a10Integration:'backend/course-capsule-v1/validation/COMBINED_BACKEND_READBACK_82b6bdbf5e30.json',
   a20:'backend/course-capsule-v1/adapters/a20-capability-v1/publication/GITHUB_READBACK_a2729467c523.json',
   a30Manifest:'backend/course-capsule-v1/adapters/a30-capability-v1/manifest.json',
@@ -169,6 +172,30 @@ assert.equal(data.c130Teacher.all_native_solution_alignment,false);
 assert.equal(data.c130Teacher.unmapped_other_solution_sources,16);
 assert.equal(data.c130Teacher.explicit_solution_heading_mappings,12);
 assert.equal(data.c130Teacher.solver_results_reexecuted,false);
+assert.equal(data.c130NativeAudit.schema,'c130-native-ledger-audit/1');
+assert.equal(data.c130NativeAudit.state,'verified_metadata_with_explicit_gaps');
+assert.deepEqual(data.c130NativeAudit.counts,{concepts:128,corrections:94,rights:21,segments:5525,terms:140,units:1993});
+assert.equal(data.c130NativeAudit.native_digest_failures,0);
+assert.equal(data.c130NativeAudit.native_manifest_files_verified,30);
+for(const flag of ['semantic_canon_review','whole_native_rebuild','overall_backend_complete'])assert.equal(data.c130NativeAudit[flag],false);
+assert.deepEqual(data.c130NativeAudit.segment_checks.target,{ambiguous_text_occurrences:19,declared_lines_exact_text:4914,no_native_text:339,text_not_found:2,unique_exact_text_relocated:251});
+assert.equal(data.c130NativeTests.state,'pass');
+assert.equal(data.c130NativeTests.consumer_negative_cases,11);
+assert.equal(data.c130NativeTests.unresolved_target_locations,21);
+assert.equal(data.c130NativeTests.semantic_canon_review,false);
+assert.equal(data.c130NativeTests.isolated_source_zip_replay,true);
+assert.equal(data.c130NativeLock.schema,'c130-native-ledger-lock/1');
+assert.equal(data.c130NativeLock.native_modified,false);
+assert.equal(data.c130NativeLock.native_monolith.sha256,'7c2ec930a7472021b37101f860b2b1846503fd52f4b495f863508cd91d741804');
+assert.equal(data.c130NativeLock.native_manifest_members_checked.length,30);
+assert.deepEqual(data.c130NativeLock.native_tables_agree,['concepts','corrections','relations','rights','segments','terms','units']);
+const c130Capsule=data.capsules.find(r=>r.course_id==='C130');
+const c130LedgerTool=c130Capsule.layers.learner.tools.find(t=>t.tool_id==='c130.native_ledger');
+assert.ok(c130LedgerTool,'C130 native ledger consumer missing');
+assert.equal(c130LedgerTool.resource.path,'docs/backend/c130-native/projection.json');
+assert.deepEqual({bytes:c130LedgerTool.resource.bytes,sha256:c130LedgerTool.resource.sha256},data.c130NativeAudit.projection);
+assert.equal(data.c130NativeAudit.projection.sha256,'d7e90acbb6414657fd99c6104175013aa69883b46842849ab842d3e24febd955');
+for(const status of ['ledger_status','terminology_status','corrections_status'])assert.equal(c130Capsule.layers.translation[status],'available_unverified');
 assert.deepEqual(data.clpView.source,{path:sources.clpRoutes,bytes:bytes.clpRoutes.length,sha256:sha256(bytes.clpRoutes)});
 assert.equal(new Set(data.capsules.map(row=>row.course_id)).size,40,'Duplicate course role.');
 assert.equal(data.a10Integration.schema,'combined-backend-increment-public-readback/1');
@@ -587,6 +614,14 @@ const rows=data.capsules.map(capsule=>{
   }
   const nativeCapabilityParityComplete=parityStatuses.every(status=>['verified','not_applicable'].includes(status));
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
+    ...(role==='C130'?{native_metadata_audit:{
+      status:data.c130NativeAudit.state,counts:data.c130NativeAudit.counts,
+      target_location_checks:data.c130NativeAudit.segment_checks.target,
+      unresolved_target_locations:21,semantic_canon_review:false,whole_native_rebuild:false,
+      projection:data.c130NativeAudit.projection,
+      evidence:['c130NativeAudit','c130NativeTests','c130NativeLock'].map(key=>({path:sources[key],bytes:bytes[key].length,sha256:sha256(bytes[key])})),
+      note_id:'Catatan istilah dan koreksi asli dapat dicari dalam dua antarmuka. Hubungan konsep bukan bukti kemunculan kata. Sebanyak 21 lokasi teks target belum pasti; klaim kanon pembuat buku belum diperiksa ulang secara semantik.',
+      note_en:'Native term and correction records are searchable in two interfaces. Concept associations do not prove lexical occurrences. Twenty-one target locations remain unresolved; producer canon claims have not received a new semantic review.'}}:{}),
     ...(role==='D50'?{native_production_audit:{
       status:'fresh_html_backend_replay_and_frozen_pdf_replay_bound',
       source_members:1282,fresh_pdf_build:false,native_pdf_rebuild_cycles:2,
@@ -645,6 +680,7 @@ const rows=data.capsules.map(capsule=>{
     layers:Object.fromEntries(Object.entries(capsule.layers).map(([name,layer])=>[name,{status:layer.status,
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
+      ...(role==='C130'?['Selesaikan dua lokasi teks target yang tidak ditemukan dan 19 lokasi yang ambigu. Periksa pilihan istilah dan klaim kanon secara semantik; pencarian catatan asli bukan persetujuan baru terhadap setiap pilihan.']:[]),
       ...(role==='D50'?['HTML dan backend dibangun ulang dari 1.282 berkas sumber dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu, bukan kompilasi baru. Uji aksesibilitas dan batas luring lanjutan tetap terpisah: matematika HTML masih memakai MathJax CDN. Ini bukan peninjauan semantik terjemahan baru.']:[]),
       ...(role==='D100'?['Daftar Bahasa Indonesia telah diperiksa terpisah dari edisi Inggris: 905 istilah, 371 koreksi, dan 15.829 identitas segmen. Ini pemeriksaan struktur dan identitas, bukan bukti baru pembacaan kanon atau mutu bahasa. Empat istilah tetap berstatus sementara.']:[]),
       ...(role==='C130'?['Pemetaan saat ini mencakup 203 soal, 12 cek pemahaman beserta jawaban, dan 12 kegiatan visual. Sebanyak 104 penyelesaian lain mempunyai tautan bagian teks dan 12 mempunyai tautan awal penyelesaian; 16 sumber penyelesaian masih memerlukan pemetaan halaman. Isi penyelesaian dapat berlanjut ke halaman berikutnya. Empat soal sumber lama tidak dicetak dalam PDF ini. Hasil solver belum dijalankan ulang; antarmuka Inggris tetap membuka buku Bahasa Indonesia.']:[]),

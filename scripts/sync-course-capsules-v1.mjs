@@ -201,8 +201,11 @@ const c130 = rows.find(({ course_id }) => course_id === 'C130');
 assert.equal(c130.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(c130.layers.interoperability.semantic_adapter.contract_version, '2.3.1');
 assert.equal(c130.layers.interoperability.semantic_adapter.mapping_scope, 'reversible_native_course_route_adapter');
-assert.equal(c130.layers.learner.tools.length, 2);
+assert.equal(c130.layers.learner.tools.length, 3);
 assert.ok(c130.layers.learner.tools.some(t=>t.tool_id==='c130.assignment_planner'&&t.href==='backend/c130-teacher/C130.teacher.html'));
+assert.ok(c130.layers.learner.tools.some(t=>t.tool_id==='c130.native_ledger'&&t.href==='backend/c130-native/ledger.html'
+  && t.resource.sha256==='d7e90acbb6414657fd99c6104175013aa69883b46842849ab842d3e24febd955'));
+for(const field of ['ledger_status','terminology_status','corrections_status'])assert.equal(c130.layers.translation[field],'available_unverified');
 assert.equal(c130.layers.educator.unit_alignment_status,'verified');
 assert.equal(c130.layers.learner.tools[0].href, 'backend/c130/C130.html');
 assert.equal(c130.layers.learner.tools[0].primary, true);
