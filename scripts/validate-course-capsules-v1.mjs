@@ -8,6 +8,7 @@ import { courses as authorityCourses } from '../docs/courses.js';
 import { materializeLiveCourses } from '../docs/live-course-publications.js';
 import {loadClp1Evidence,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
 import {loadC120Delivery,validateC120DeliveryOverride} from './c120-delivery-evidence-v1.mjs';
+import {loadD100IndonesianEvidence,validateD100TranslationClaims,d100TranslationVerification} from './d100-indonesian-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const clp1Evidence=await loadClp1Evidence(project);
@@ -864,6 +865,8 @@ for (const id of ['A10']) {
   assert.ok(evidence.length >= 1, `${id}: native terminology witness is missing.`);
 }
 const d100 = byId.D100;
+validateD100TranslationClaims(overrides.native_capabilities.D100,(await loadD100IndonesianEvidence(project)).evidence);
+assert.deepEqual(d100.layers.translation.verification,d100TranslationVerification,'D100 translation verification scope must not disappear or overclaim');
 assert.equal(d100.layers.interoperability.semantic_adapter.status, 'verified');
 assert.equal(d100.layers.interoperability.semantic_adapter.contract_version, 'course-learning-capability/1');
 assert.equal(

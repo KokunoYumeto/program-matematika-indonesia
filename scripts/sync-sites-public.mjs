@@ -4,6 +4,7 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, relative, resolve, sep } from 'node:path';
 import { localeMetadata } from '../docs/interface/locales.js';
+import {d100IdFiles} from './d100-indonesian-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const source = resolve(project, 'docs');
@@ -40,6 +41,8 @@ const approvedTopLevelFiles = new Set([
   'peta-belajar-luring.html',
 ]);
 const approvedDataFiles = new Set([
+  'data/course-capsule-v1/d100-indonesian-evidence-v1',
+  ...d100IdFiles.map(name=>`data/course-capsule-v1/d100-indonesian-evidence-v1/${name}`),
   'data/course-capsule-v1',
   'data/curriculum-authority-v1.json',
   'data/educational-access.json',

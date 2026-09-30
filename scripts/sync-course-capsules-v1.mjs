@@ -4,6 +4,7 @@ import { existsSync } from 'node:fs';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import {d100IdBase,d100IdFiles} from './d100-indonesian-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -15,6 +16,7 @@ const successorSidecarTargets = [
 ];
 const successorSidecarAvailable = existsSync(resolve(project, successorSidecarSource));
 const mappings = [
+  ...d100IdFiles.map(name=>[`${d100IdBase}/${name}`,`docs/data/course-capsule-v1/d100-indonesian-evidence-v1/${name}`]),
   ['backend/course-capsule-v1/generated/course-capsules.jsonl', 'docs/data/course-capsule-v1/course-capsules.jsonl'],
   ['backend/course-capsule-v1/generated/course-capsules.json', 'docs/data/course-capsule-v1/course-capsules.json'],
   ['backend/course-capsule-v1/generated/manifest.json', 'docs/data/course-capsule-v1/manifest.json'],

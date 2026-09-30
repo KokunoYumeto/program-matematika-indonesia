@@ -4,6 +4,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {loadClp1Evidence,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
+import {d100IdFiles,loadD100IndonesianEvidence} from './d100-indonesian-evidence-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const checkPublic = process.argv.includes('--public');
@@ -115,6 +116,7 @@ assert.deepEqual(openLogicTeacherModel.counts, openLogicTeacherValidation.counts
 assert.equal(openLogicTeacherModel.questions.length, 442);
 assert.equal(openLogicTeacherModel.source_only.length, 11);
 const logicalFiles = [
+  ...d100IdFiles.map(name=>`data/course-capsule-v1/d100-indonesian-evidence-v1/${name}`),
   ...await (async()=>{
     const base='backend/course-capsule-v1/adapters/c130-teacher-v1';
     const v=JSON.parse(await readFile(resolve(project,'docs/backend/c130-teacher/teacher-validation.json')));
@@ -455,6 +457,8 @@ const logicalFiles = [
   'schema/v2/comparison-evidence-manifest-v1.schema.json',
 ];
 const docsBytes = Object.fromEntries(await Promise.all(logicalFiles.map(async (path) => [path, await readFile(resolve(project, 'docs', path))])));
+const d100IdEvidence=await loadD100IndonesianEvidence(project);
+for(const name of d100IdFiles)assert.deepEqual(docsBytes[`data/course-capsule-v1/d100-indonesian-evidence-v1/${name}`],d100IdEvidence.bytes[name],'D100 hosted Indonesian evidence drift');
 const html = docsBytes['backend/index.html'].toString('utf8');
 const css = docsBytes['backend/backend.css'].toString('utf8');
 const js = docsBytes['backend/backend.js'].toString('utf8');

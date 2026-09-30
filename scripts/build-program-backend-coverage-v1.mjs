@@ -621,8 +621,10 @@ const rows=data.capsules.map(capsule=>{
       ...(role==='C130'?{assignment_exercises:203,selectable_learning_items:227,checkpoints:12,visual_activities:12,manual_materials:192,other_solution_passages:104,unmapped_other_solution_sources:28,source_only_legacy_exercises:4,alignment_scope:'selected_exercises_checkpoints_answers_and_visual_activities_not_all_native_solutions',all_native_solution_alignment:false,solver_results_reexecuted:false}:{})},
     dimensions:{
       curriculum:{course_graph:capsule.layers.curriculum.status,unit_identity:capsule.layers.curriculum.unit_identity_status},
-      source_translation_ledger:{ledger:capsule.layers.translation.ledger_status,corrections:capsule.layers.translation.corrections_status},
-      terminology:{register:capsule.layers.translation.terminology_status},
+      source_translation_ledger:{ledger:capsule.layers.translation.ledger_status,corrections:capsule.layers.translation.corrections_status,
+        ...(capsule.layers.translation.verification?{verification:capsule.layers.translation.verification}:{})},
+      terminology:{register:capsule.layers.translation.terminology_status,
+        ...(capsule.layers.translation.verification?{verification:capsule.layers.translation.verification}:{})},
       reproducible_production:{build:capsule.layers.production.build_status,replay:capsule.layers.production.deterministic_replay_status},
       accessibility:{semantic_html:capsule.layers.learner.capabilities.semantic_html,mathml:capsule.layers.learner.capabilities.mathml},
       learner:{delivery:capsule.layers.learner.status,central_tools:centralTools.length},
@@ -633,6 +635,7 @@ const rows=data.capsules.map(capsule=>{
     layers:Object.fromEntries(Object.entries(capsule.layers).map(([name,layer])=>[name,{status:layer.status,
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
+      ...(role==='D100'?['Daftar Bahasa Indonesia telah diperiksa terpisah dari edisi Inggris: 905 istilah, 371 koreksi, dan 15.829 identitas segmen. Ini pemeriksaan struktur dan identitas, bukan bukti baru pembacaan kanon atau mutu bahasa. Empat istilah tetap berstatus sementara.']:[]),
       ...(role==='C130'?['Pemetaan saat ini mencakup 203 soal, 12 cek pemahaman beserta jawaban, dan 12 kegiatan visual. Sebanyak 104 penyelesaian lain mempunyai tautan bagian teks, sedangkan 28 sumber penyelesaian masih memerlukan pemetaan halaman. Empat soal sumber lama tidak dicetak dalam PDF ini. Hasil solver belum dijalankan ulang; antarmuka Inggris tetap membuka buku Bahasa Indonesia.']:[]),
       ...(!integrated?['Periksa backend asli dan implementasikan adapter bersama beserta penggunaan nyata oleh pelajar/pengajar.']:[]),
       ...(capsule.layers.translation.ledger_status!=='verified'?['Buktikan ledger sumber/penerjemahan asli; status ini tidak menyatakan terjemahan belum selesai.']:[]),

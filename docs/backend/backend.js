@@ -210,6 +210,10 @@ const productionPanel = (capsule) => {
     '<div class="status-line"><span>Ledger terjemahan</span><strong>' + escapeHtml(statusLabel(translation.ledger_status)) + '</strong></div>',
     '<div class="status-line"><span>Terminologi</span><strong>' + escapeHtml(statusLabel(translation.terminology_status)) + '</strong></div>',
     '<div class="status-line"><span>Koreksi</span><strong>' + escapeHtml(statusLabel(translation.corrections_status)) + '</strong></div>',
+    ...(translation.verification?.scope === 'native_ledger_structure_and_identity_only' ? [
+      '<p class="detail">Bukti terpisah untuk Bahasa Indonesia: identitas dan struktur daftar asli telah diperiksa. Ini bukan penilaian baru mutu bahasa atau pembacaan kanon per pilihan. Empat istilah masih berstatus sementara.</p>',
+      '<p><a href="../data/course-capsule-v1/d100-indonesian-evidence-v1/evidence.json">Batas pemeriksaan daftar D100</a></p>',
+    ] : []),
     '<div class="status-line"><span>Pembangunan ulang</span><strong>' + escapeHtml(statusLabel(production.deterministic_replay_status)) + '</strong></div>',
     '<div class="status-line"><span>Rilis</span><strong>' + escapeHtml(statusLabel(production.release_status)) + '</strong></div>',
     '<div class="card-actions">' + link(production.repository, 'Repositori — ' + capsule.course_id, true) + link(production.zenodo, 'Zenodo — ' + capsule.course_id) + '</div>',

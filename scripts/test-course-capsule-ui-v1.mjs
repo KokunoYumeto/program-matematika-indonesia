@@ -135,6 +135,11 @@ for (const [name, fetch] of [
     assert.equal(f.buttons.filter((item) => item.attrs.get('aria-pressed') === 'true').length, 1);
     assert.doesNotMatch(f.element('#course-grid').innerHTML, /href="(?:04_mirrors|javascript:)/);
     assert.doesNotMatch(f.element('#course-grid').innerHTML, />course-native-primary</);
+    if (button.dataset.view === 'production') {
+      assert.equal((f.element('#course-grid').innerHTML.match(/Bukti terpisah untuk Bahasa Indonesia/g)??[]).length,1);
+      assert.match(f.element('#course-grid').innerHTML,/bukan penilaian baru mutu bahasa atau pembacaan kanon/);
+      assert.match(f.element('#course-grid').innerHTML,/d100-indonesian-evidence-v1\/evidence\.json/);
+    }
   }
   const adapterCount = courses.filter((course) => ['verified', 'legacy_verified', 'available_unverified'].includes(course.layers.interoperability.semantic_adapter.status)).length;
   const expectedAdapterCount = Object.values(integrationOverrides.semantic_adapters)

@@ -3,6 +3,7 @@ import {createHash} from 'node:crypto';
 import {mkdir, readFile, writeFile} from 'node:fs/promises';
 import {dirname, resolve} from 'node:path';
 import {fileURLToPath} from 'node:url';
+import {loadD100IndonesianEvidence,d100TranslationKeys,d100TranslationVerification} from './d100-indonesian-evidence-v1.mjs';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const base = 'backend/course-capsule-v1/adapters/d100-capability-v1';
@@ -188,6 +189,7 @@ overrides.semantic_adapters.D100 = {
 };
 
 const oldNative = overrides.native_capabilities.D100 ?? {};
+const indonesianEvidence = (await loadD100IndonesianEvidence(root)).evidence;
 const admittedEvidenceLocators = new Set(evidence.map(row => row.locator));
 const legacyTerminologyLocator = 'backend/course-capsule-v1/authority/native-terminology-qa/unib-teori-bilangan-20260831/terminology_concordance.json';
 for (const key of ['terminology', 'corrections']) {
@@ -198,7 +200,8 @@ for (const key of ['terminology', 'corrections']) {
   assert.ok(
     locators.length === 0
       || locators.every(locator => locator === legacyTerminologyLocator)
-      || isCurrentD100Evidence,
+      || isCurrentD100Evidence
+      || JSON.stringify(oldNative[key]?.evidence) === JSON.stringify(indonesianEvidence),
     `Preserve unexpected current D100 ${key} evidence`,
   );
 }
@@ -215,6 +218,13 @@ for (const capability of [
 }
 for (const capability of ['build', 'deterministic_replay']) {
   overrides.native_capabilities.D100[capability] = {status: 'available_unverified', evidence};
+}
+// An English capability projection must never certify Indonesian translation metadata.
+for (const key of d100TranslationKeys) {
+  overrides.native_capabilities.D100[key] = {
+    status:'verified',locale:'id-ID',verification_scope:d100TranslationVerification.scope,
+    evidence:indonesianEvidence,
+  };
 }
 
 const scope = 'English en-v1.0.0 capability view: 60 source-course aggregates, 32 separate companion units, 1,201 exercises, exact solution provenance, and a 57-item concentrated mastery route.';
