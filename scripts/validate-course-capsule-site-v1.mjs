@@ -1636,6 +1636,8 @@ assert.equal(d70.layers.production.deterministic_replay_status, 'available_unver
 assert.deepEqual(d70.layers.educator.resources.map(({ id, status }) => ({ id, status })), [
   { id: 'D70:native-educator-observation', status: 'available_unverified' },
   { id: 'D70:educator-hub-v1', status: 'verified' },
+  { id: 'D70:native-metadata-replay-id', status: 'verified' },
+  { id: 'D70:native-metadata-replay-en', status: 'verified' },
 ]);
 const d10 = rows.find(({ course_id }) => course_id === 'D10');
 assert.equal(d10.layers.interoperability.semantic_adapter.status, 'verified');

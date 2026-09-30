@@ -334,6 +334,19 @@ for (const [name, fetch] of [
   assert.equal(d70.layers.educator.unit_alignment_status,'verified');
   assert.ok(d70.layers.educator.resources.some(r=>r.id==='D70:native-educator-observation'&&r.status==='available_unverified'&&r.url==='https://zenodo.org/records/22160944'));
   assert.ok(d70.layers.educator.resources.some(r=>r.id==='D70:educator-hub-v1'&&r.status==='verified'));
+  for(const locale of ['id','en'])assert.ok(d70.layers.educator.resources.some(r=>r.id==='D70:native-metadata-replay-'+locale&&r.status==='verified'));
+  for(const key of ['build','deterministic_replay']) {
+    const nativeClaim=integrationOverrides.native_capabilities.D70[key];
+    assert.equal(nativeClaim.status,'available_unverified');
+    const replayEvidence=nativeClaim.evidence.find(e=>e.kind==='d70_portable_native_metadata_replay');
+    assert.ok(replayEvidence);
+    const replayBytes=await readFile(resolve(project,replayEvidence.locator));
+    assert.equal(replayEvidence.bytes,replayBytes.length);
+    assert.equal(replayEvidence.sha256,createHash('sha256').update(replayBytes).digest('hex'));
+    assert.deepEqual(d70.evidence.find(e=>e.kind==='d70_portable_native_metadata_replay'),replayEvidence);
+    assert.deepEqual(d70.evidence.find(e=>e.kind==='d70_metadata_replay_bundle'),
+      nativeClaim.evidence.find(e=>e.kind==='d70_metadata_replay_bundle'));
+  }
   const d80=courses.find(c=>c.course_id==='D80');
   assert.equal(d80.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
   assert.equal(d80.layers.learner.tools.length,1);

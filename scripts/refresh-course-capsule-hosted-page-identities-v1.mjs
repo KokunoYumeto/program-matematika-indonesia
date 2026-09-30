@@ -95,8 +95,11 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
 // central hosted page.
 // C80 contributes primary educator evidence plus two localized resources.
 // A00 exposes two localized native-ledger views without relabeling its book review.
-assert.equal(educatorFactCount,101,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,61,'Integration educator hosted-page closure changed.');
+// D70 adds two localized executable metadata-replay guides, without changing
+// its full-native replay status or adding a duplicate learner destination.
+assert.equal(educatorFactCount,103,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,63,'Integration educator hosted-page closure changed.');
+for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/d70-replay/index${suffix}.html`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/c130-native/ledger${suffix}.html`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/clp/B20.terms${suffix}.html`));
 for(const page of ['ledger.html','ledger-en.html'])assert.ok(educatorPagePaths.has(`docs/backend/a00/${page}`));

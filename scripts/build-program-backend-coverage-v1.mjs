@@ -6,9 +6,11 @@ import { json,sha256 } from './native-catalog-exchange-v1.mjs';
 import {clp1EvidencePaths,validateClp1Evidence} from './clp1-navigation-evidence-v1.mjs';
 import {c120DeliveryInputs,loadC120Delivery} from './c120-delivery-evidence-v1.mjs';
 import {d50ProductionPaths,loadD50ProductionEvidence} from './d50-production-evidence-v1.mjs';
+import {d70NativeReplayPaths,validateD70NativeReplay} from './d70-native-replay-evidence-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const d50ProductionProof=await loadD50ProductionEvidence(root);
 const sources={
+  ...d70NativeReplayPaths,
   ...d50ProductionPaths,
   ...Object.fromEntries(c120DeliveryInputs.map((path,index)=>[`c120Delivery${index}`,path])),
   ...clp1EvidencePaths,
@@ -75,9 +77,10 @@ const sources={
   centralV06324:'publication-history/PUBLICATION_RECEIPT_v0.63.24.json',
 };
 const bytes=Object.fromEntries(await Promise.all(Object.entries(sources).map(async([key,path])=>[key,await readFile(resolve(root,path))])));
-const binarySourceKeys=new Set(['gapZipA30','gapZipB95','gapZipC140']);
+const binarySourceKeys=new Set(['gapZipA30','gapZipB95','gapZipC140','d70ReplayBundle']);
 const data=Object.fromEntries(Object.entries(bytes).filter(([key])=>!binarySourceKeys.has(key)).map(([key,value])=>[key,JSON.parse(value)]));
 const c120Delivery=await loadC120Delivery(root);
+const d70NativeReplay=validateD70NativeReplay(data,bytes);
 // The v2.3.1 admission receipt is an additive package witness.  It must not
 // replace native course truth, but every package/twin/spec identity must remain
 // discoverable from the central coverage matrix.
@@ -614,6 +617,7 @@ const rows=data.capsules.map(capsule=>{
   }
   const nativeCapabilityParityComplete=parityStatuses.every(status=>['verified','not_applicable'].includes(status));
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
+    ...(role==='D70'?{native_metadata_replay:d70NativeReplay}:{}),
     ...(role==='C130'?{native_metadata_audit:{
       status:data.c130NativeAudit.state,counts:data.c130NativeAudit.counts,
       target_location_checks:data.c130NativeAudit.segment_checks.target,
@@ -670,7 +674,8 @@ const rows=data.capsules.map(capsule=>{
         ...(capsule.layers.translation.verification?{verification:capsule.layers.translation.verification}:{})},
       terminology:{register:capsule.layers.translation.terminology_status,
         ...(capsule.layers.translation.verification?{verification:capsule.layers.translation.verification}:{})},
-      reproducible_production:{build:capsule.layers.production.build_status,replay:capsule.layers.production.deterministic_replay_status},
+      reproducible_production:{build:capsule.layers.production.build_status,replay:capsule.layers.production.deterministic_replay_status,
+        ...(role==='D70'?{native_metadata_replay:'verified'}:{})},
       accessibility:{semantic_html:capsule.layers.learner.capabilities.semantic_html,mathml:capsule.layers.learner.capabilities.mathml},
       learner:{delivery:capsule.layers.learner.status,central_tools:centralTools.length},
       educator:{materials:capsule.layers.educator.status,unit_alignment:capsule.layers.educator.unit_alignment_status},
@@ -680,6 +685,7 @@ const rows=data.capsules.map(capsule=>{
     layers:Object.fromEntries(Object.entries(capsule.layers).map(([name,layer])=>[name,{status:layer.status,
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
+      ...(role==='D70'?['Replay metadata Duncan dan CRing kini dapat dijalankan tanpa direktori pembuat buku; 13 berkas sama persis dalam dua eksekusi kode paket. Produksi ulang seluruh Li dan keempat PDF tetap memerlukan bukti terpisah.']:[]),
       ...(role==='C130'?['Selesaikan dua lokasi teks target yang tidak ditemukan dan 19 lokasi yang ambigu. Periksa pilihan istilah dan klaim kanon secara semantik; pencarian catatan asli bukan persetujuan baru terhadap setiap pilihan.']:[]),
       ...(role==='D50'?['HTML dan backend dibangun ulang dari 1.282 berkas sumber dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu, bukan kompilasi baru. Uji aksesibilitas dan batas luring lanjutan tetap terpisah: matematika HTML masih memakai MathJax CDN. Ini bukan peninjauan semantik terjemahan baru.']:[]),
       ...(role==='D100'?['Daftar Bahasa Indonesia telah diperiksa terpisah dari edisi Inggris: 905 istilah, 371 koreksi, dan 15.829 identitas segmen. Ini pemeriksaan struktur dan identitas, bukan bukti baru pembacaan kanon atau mutu bahasa. Empat istilah tetap berstatus sementara.']:[]),

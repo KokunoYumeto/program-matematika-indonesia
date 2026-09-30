@@ -12,6 +12,9 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = 'scripts/build-program-backend-coverage-v1.mjs'
 INPUTS = {
+    'd70NativeReplay': 'backend/course-capsule-v1/adapters/d70-native-replay-v1/validation.json',
+    'd70ReplayBuild': 'backend/course-capsule-v1/adapters/d70-native-replay-v1/build/BUILD_RECEIPT.json',
+    'd70ReplayBundle': 'backend/course-capsule-v1/adapters/d70-native-replay-v1/build/D70_NATIVE_METADATA_REPLAY_V1.zip',
     'd50ProductionAudit': 'backend/course-capsule-v1/adapters/d50-surface-v1/production/native-production-audit.json',
     'd50NativeRebuild': 'backend/course-capsule-v1/adapters/d50-surface-v1/production/native-rebuild-receipt.json',
     'd50ReaderCurrent': 'backend/course-capsule-v1/adapters/d50-surface-v1/production/current-reader-readback.json',
@@ -88,7 +91,7 @@ INPUTS = {
 }
 OUTPUTS = ['backend/course-capsule-v1/generated/program-backend-coverage-v1.json',
            'docs/backend/program-backend-coverage.json', 'docs/backend/coverage.html']
-binary_keys = {'gapZipA30', 'gapZipB95', 'gapZipC140'}
+binary_keys = {'gapZipA30', 'gapZipB95', 'gapZipC140', 'd70ReplayBundle'}
 inputs = {key: json.loads((ROOT / path).read_bytes()) for key, path in INPUTS.items()
           if key not in binary_keys}
 model = json.loads((ROOT / OUTPUTS[0]).read_bytes())
@@ -758,6 +761,14 @@ assert roles['D70']['educator']['unit_alignment'] == 'verified'
 assert roles['D70']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['D70']['common_adapter']['zenodo_preservation'] == 'not_established'
 assert roles['D70']['dimensions']['reproducible_production']['replay'] == 'available_unverified'
+assert roles['D70']['dimensions']['reproducible_production']['native_metadata_replay'] == 'verified'
+d70_replay = roles['D70']['native_metadata_replay']
+assert d70_replay['metadata_artifacts'] == 13 and d70_replay['packaged_source_runs'] == 2
+assert d70_replay['dependency_files'] == 26 and d70_replay['dependency_bytes'] == 4322608
+assert d70_replay['producer_tree_required'] is False and d70_replay['whole_native_parity_proven'] is False
+assert d70_replay['fresh_tex_build'] is False and d70_replay['fresh_semantic_canon_review'] is False
+assert roles['D70']['native_capability_parity_completion'] == 'not_yet_proven'
+assert {row['id'] for row in roles['D70']['educator']['resources']} >= {'D70:native-metadata-replay-id','D70:native-metadata-replay-en'}
 assert roles['D80']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D80']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
 assert len(roles['D80']['learner']['tools']) == 1
@@ -961,7 +972,7 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
     sandbox = Path(temporary)
     deployment = ['backend/course-capsule-v1/adapters/c120-delivery-v1/deployment/' + p for p in
                   ['.github/workflows/pages.yml', 'program-navigation.json', 'scripts/program_navigation.py', 'scripts/reseal_reader_manifests.py']]
-    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs', 'scripts/c120-delivery-evidence-v1.mjs', 'scripts/d50-production-evidence-v1.mjs', 'docs/backend/d50/reader/index.html'] + list(INPUTS.values()) + deployment:
+    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs', 'scripts/c120-delivery-evidence-v1.mjs', 'scripts/d50-production-evidence-v1.mjs', 'scripts/d70-native-replay-evidence-v1.mjs', 'docs/backend/d50/reader/index.html'] + list(INPUTS.values()) + deployment:
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
@@ -980,6 +991,18 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
             assert candidate == actual, path
 
     cases = [
+        ('d70_replay_failed', 'd70NativeReplay', lambda value: value.update(state='fail')),
+        ('d70_replay_producer_dependency', 'd70NativeReplay', lambda value: value.update(producer_tree_required=True)),
+        ('d70_replay_whole_book_overclaim', 'd70NativeReplay', lambda value: value.update(whole_native_parity_proven=True)),
+        ('d70_replay_tex_overclaim', 'd70NativeReplay', lambda value: value.update(fresh_tex_build=True)),
+        ('d70_replay_canon_overclaim', 'd70NativeReplay', lambda value: value.update(fresh_semantic_canon_review=True)),
+        ('d70_replay_packaged_source_missing', 'd70NativeReplay', lambda value: value.update(packaged_sources_executed=False)),
+        ('d70_replay_output_missing', 'd70NativeReplay', lambda value: value['artifact_comparisons'].pop()),
+        ('d70_replay_output_changed', 'd70NativeReplay', lambda value: value['artifact_comparisons'][0].update(sha256='0'*64)),
+        ('d70_replay_output_mismatch', 'd70NativeReplay', lambda value: value['artifact_comparisons'][0].update(matches_shipped_bytes=False)),
+        ('d70_replay_validator_failed', 'd70NativeReplay', lambda value: value['commands'][0].update(exit_code=1)),
+        ('d70_replay_archive_changed', 'd70NativeReplay', lambda value: value['source_archive'].update(sha256='0'*64)),
+        ('d70_replay_build_failed', 'd70ReplayBuild', lambda value: value.update(state='fail')),
         ('c120_delivery_incomplete', 'c120Delivery2', lambda value: value.update(state='incomplete')),
         ('c120_delivery_missing_public_file', 'c120Delivery2', lambda value: value['files'].pop()),
         ('c120_delivery_changed_main_content', 'c120Delivery3', lambda value: value['html_comparisons'][0].update(main_dom_equal=False)),

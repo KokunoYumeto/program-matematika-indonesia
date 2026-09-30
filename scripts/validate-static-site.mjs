@@ -1810,10 +1810,22 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 38);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 121);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1870);
-assert.equal(centralNavigation.summary.classified_html_documents, 1875);
+assert.equal(centralNavigation.summary.course_surface_roots, 39);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 124);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1873);
+assert.equal(centralNavigation.summary.classified_html_documents, 1878);
+// D70 adds two metadata-replay guides and a bounded localization review,
+// not three additional translated books or a full-native production claim.
+const d70ReplaySurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/d70-replay');
+assert.deepEqual(d70ReplaySurface.documents,[
+  {path:'index.html',locale:'id',course_ids:['D70'],contents_paths:['index.en.html'],related_course_surface_paths:['docs/backend/d70/D70-pengajar.html']},
+  {path:'index.en.html',locale:'en',course_ids:['D70'],contents_paths:['index.html'],related_course_surface_paths:['docs/backend/d70/D70-pengajar.html']},
+  {path:'limitations-review.id.html',locale:'id',course_ids:['D70'],contents_paths:['index.html'],related_course_surface_paths:['docs/backend/d70/D70-pengajar.html','docs/backend/d70/D70.html']},
+]);
+const d70CentralSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/d70');
+assert.ok(d70CentralSurface.documents.find(r=>r.path==='D70.html').related_course_surface_paths.includes('docs/backend/d70-replay/limitations-review.id.html'));
+for(const related of ['index.html','index.en.html','limitations-review.id.html'])
+  assert.ok(d70CentralSurface.documents.find(r=>r.path==='D70-pengajar.html').related_course_surface_paths.includes('docs/backend/d70-replay/'+related));
 // The two added pages expose native metadata, not new translated book bodies.
 const a00LedgerSurface = centralNavigation.course_surfaces.find(row => row.root === 'docs/backend/a00');
 assert.equal(a00LedgerSurface.documents.length, 6);
