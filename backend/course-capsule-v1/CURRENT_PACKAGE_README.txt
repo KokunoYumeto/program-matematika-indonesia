@@ -9,16 +9,22 @@ Status dan batas setiap kemampuan tetap tercatat pada masing-masing kursus.
 Tambahan D100: tiga pembaca HTML Indonesia direproduksi masing-masing dua kali
 dengan byte identik dari masukan terisolasi. Bukti dan 28 tambahan dependensi
 historis disimpan dalam adapters/d100-native-production-v1 dan authority.
-Ini membuktikan produksi HTML, bukan ekspor data native, PDF baru atau
-kesesuaian semantik setiap pilihan istilah. Status paritas penuh tidak dinaikkan.
+Ekspor data native Indonesia juga direproduksi dua kali untuk masing-masing
+jalur: klasik (23.869 rekaman), BGK (21.690), dan pendamping asli (1.064).
+Identitas historis tetap dinyatakan sebagai masukan; jalur BGK juga memakai
+byte pembaca yang sudah ada. Ini bukan pembangunan PDF baru, pemutaran ulang
+edisi Inggris, atau pemeriksaan semantik baru setiap pilihan istilah. ZIP ini
+menyimpan bukti ekspor dan pemeriksanya; korpus masukan asli tetap pada edisi
+produsen. Status paritas penuh tidak dinaikkan.
 
 Tambahan B40 berbahasa Inggris: /en/readers/hefferon-linear-algebra/ memuat
-28 bagian hingga Rumus Laplace, dengan 836 latihan, 834 jawaban sumber dan
+29 bagian hingga Aturan Cramer, dengan 844 latihan, 842 jawaban sumber dan
 dua ketiadaan jawaban yang dinyatakan. Ini bukan seluruh buku. Sumber LaTeX
 kumulatif dan per bagian tersedia dalam direktori sources. Paket sumber
-publik lengkap yang identik disimpan pada backend/b40-expanded-public-20261002/
+publik lengkap yang identik disimpan pada backend/b40-cramer-public-20261002/
 preservation/COMPLETE_SOURCE.zip. Ekstrak secara terpisah lalu baca REBUILD.txt.
-Tautan enam bagian fondasi sebelumnya tetap tersedia; jangan menjumlahkannya
+Paket 28 bagian sebelumnya tetap disimpan sebagai versi terdahulu. Tautan
+enam bagian fondasi sebelumnya tetap tersedia; jangan menjumlahkannya
 sebagai buku baru. Matematika asli: Jim Hefferon. Pembangunan publik sumber
 dan integrasi ini: OpenAI Codex gpt-6-astra, tingkat upaya Ultra. Tidak ada
 terjemahan baru, PDF baru, atau pengesahan pembuktian menyeluruh yang diklaim.
@@ -92,6 +98,9 @@ Jalankan, dari akar hasil ekstraksi:
   node scripts/validate-course-capsules-v1.mjs --output-root=replay/a --peer-output-root=replay/b
   node scripts/test-course-capsule-ui-v1.mjs
   node scripts/test-d100-html-replay-evidence-v1.mjs
+  node scripts/test-d100-original-export-evidence-v1.mjs
+  node scripts/test-d100-classical-export-evidence-v1.mjs
+  node scripts/test-d100-bgk-export-evidence-v1.mjs
   node scripts/test-local-evidence-identities-v1.mjs
   node scripts/build-cross-programme-integration-v1.mjs --check
   node scripts/test-cross-programme-current-v1.mjs
@@ -123,6 +132,16 @@ docs/guides/start-v0.63.32.tex` membangun dokumen yang sama. Versi distribusi Te
 dan font dapat memengaruhi byte PDF; identitas rilis dicatat terpisah.
 
 Panduan Inggris tambahan / additional English guide:
+D100's three Indonesian native data exports were each reproduced twice:
+23,869 classical, 21,690 BGK and 1,064 original-companion records. Historical
+registries remain explicit inputs; BGK also uses existing reader bytes. The
+package preserves the evidence and validators, not every producer corpus.
+No fresh PDF build, English export replay or new semantic review is implied.
+B40 now preserves 29 original-English sections through Cramer's Rule, 844
+exercises, 842 supplied answers and two explicit source-answer absences.
+Its exact complete-source archive is under backend/b40-cramer-public-20261002/
+preservation. The historical 28-section and six-section packages remain available.
+
 D80 adds a searchable source/term/correction/diagram consumer with 8,430
 original metadata records. Unverified terminology and imprecise source
 locations remain visible. The English interface still links to Indonesian

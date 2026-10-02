@@ -1,5 +1,22 @@
 BUKTI PRODUKSI HTML D100
 
+TAMBAHAN EKSPOR DATA BGK
+
+bgk-backend-replay.json membuktikan dua ekspor terisolasi: 21.690 rekaman dan
+19 berkas identik dari 727 masukan. Pemeriksa native memproyeksikan ulang 99
+berkas Markdown, memeriksa penutupan 90 berkas sumber utama, mempertahankan
+21.686 ID historis dan empat ID tambahan, serta membedakan 495 latihan dari
+25 solusi sumber. Seluruh 19 berkas registri historis diperiksa. Pembaca HTML,
+PDF dan bukti QA yang sudah ada merupakan dependensi eksplisit; tidak ada
+PDF baru yang dibangun. Keluaran backend terkoreksi dilarang sebagai masukan.
+
+Gunakan scripts/replay-d100-bgk-backend-v1.py dengan operasi replay,
+--binding backend/course-capsule-v1/authority/d100-bgk-export-inputs-v1.json,
+--native-root untuk sumber identik, dan --output untuk direktori baru di work/.
+scripts/bind-d100-bgk-export-v1.py memeriksa ulang seluruh masukan/keluaran
+aktual. Ketiga ekspor data terkoreksi Bahasa Indonesia kini terbukti; bukti
+ini tidak meliputi pembangunan ulang edisi Inggris, PDF baru atau telaah semantik.
+
 TAMBAHAN EKSPOR DATA KLASIK
 
 classical-backend-replay.json membuktikan dua ekspor terisolasi: 23.869 rekaman
@@ -14,8 +31,8 @@ Gunakan scripts/replay-d100-classical-backend-v1.py dengan operasi replay,
 --binding backend/course-capsule-v1/authority/d100-classical-export-inputs-v1.json,
 --native-root untuk sumber asli yang identik, dan --output untuk direktori baru
 di work/. scripts/bind-d100-classical-export-v1.py memeriksa ulang semua masukan
-dan keluaran aktual sebelum mengakui bukti. Ekspor BGK, PDF baru dan telaah
-semantik tetap merupakan pekerjaan terpisah yang belum dibuktikan di sini.
+dan keluaran aktual sebelum mengakui bukti. Ekspor BGK dibuktikan terpisah di
+atas; PDF baru dan telaah semantik tetap belum dibuktikan di sini.
 
 TAMBAHAN EKSPOR DATA PENDAMPING
 
@@ -25,7 +42,7 @@ masukan yang diikat di authority/d100-original-export-inputs-v1.json. Semua
 merekonstruksi 3.790 rentang formula, tautan, hak, 44 solusi penguasaan baru
 dan 13 rujukan solusi sumber. Masukan tidak mencakup keluaran backend yang
 sedang direproduksi; proses menolak jaringan, TeX dan perubahan berkas asli.
-Ekspor klasik dibuktikan terpisah di atas; BGK dan PDF belum dibuktikan di sini.
+Ekspor klasik dan BGK dibuktikan terpisah di atas; PDF baru belum dibuktikan.
 Tidak ada peninjauan semantik baru atau peningkatan status paritas penuh.
 
 Pemutaran ulang data memakai scripts/replay-d100-original-backend-v1.py dengan
@@ -53,7 +70,7 @@ identitas di authority/d100-*-runtime-supplement-*.json diperoleh belakangan;
 bukti ini tidak mengklaim bahwa daftar historis sudah lengkap sejak awal.
 Untuk BGK gunakan v2; v1 adalah tahap penemuan yang belum lengkap.
 
-Ekspor data backend asli dan produksi PDF memerlukan pembuktian terpisah.
+Ekspor data ketiga bagian dibuktikan terpisah di atas; PDF baru belum terbukti.
 Ini bukan peninjauan semantik baru terhadap istilah/kanon atau sertifikasi WCAG.
 Status paritas penuh D100 dan penyelesaian seluruh program tidak dinaikkan.
 
@@ -72,6 +89,14 @@ Tidak ada peninjauan manusia baru yang diklaim.
 
 ENGLISH
 
+BGK now reproduces 21,690 records and 19 outputs twice from 727 isolated inputs.
+Its independent validator reparses 99 Markdown files, checks the 90-file source
+closure and preserves 21,686 historical IDs plus four additions. All 495
+exercises and 25 supplied solutions remain distinct. The complete 19-file
+historical registry and existing HTML/PDF/QA bytes are explicit dependencies;
+this is not a new PDF build. All three corrected Indonesian data exports are
+now reproduced; English-edition replay and semantic review are not established.
+
 The classical data export now also reproduces 23,869 records in 19 files twice,
 from 129 bound inputs. All 120 current source files are independently reprojected.
 The three-file historical ID/schema/inherited-metadata registry is an explicit
@@ -80,8 +105,8 @@ historical IDs survive. This is not new semantic review or fresh PDF production.
 
 Separate companion-data evidence now reproduces all 23 export files and 1,064
 records twice from 213 isolated inputs, without using the existing export as
-an input. Formula/link/source/rights reconstruction passes. The BGK data
-exporter, PDF production and semantic review remain separate unproved work.
+an input. Formula/link/source/rights reconstruction passes. BGK is proved
+separately above; fresh PDF production and semantic review remain unproved.
 
 Six isolated HTML builds reproduce all three Indonesian native readers exactly:
 60 source units plus 32 editorial companion units. Twenty-eight omitted runtime

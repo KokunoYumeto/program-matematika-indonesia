@@ -145,7 +145,8 @@ for(const resource of additions.resources){
   const bytes=await readFile(resolve(root,source.path));assert.deepEqual(fact(source.path,bytes),source);
   if(source.path.endsWith('/READER_MANIFEST.json')){
     const native=json(bytes);assert.equal(native.schema,'b40-expanded-reading-edition/1');
-    assert.equal(native.sections.length,28);assert.equal(native.language,'en');
+    assert.equal(native.sections.length,29);assert.equal(native.language,'en');
+    assert.equal(native.sections.at(-1).section,'cramer');
     assert.equal(resource.course_id,'B40');
   }
   assert.equal(resource.href,origin+source.path.slice(5).replace(/(?:FOUNDATIONS|READER)_MANIFEST\.json$/,''));
