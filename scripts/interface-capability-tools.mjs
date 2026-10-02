@@ -24,6 +24,8 @@ export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role =
   ...Object.values(clp1EvidencePaths),'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json',
   'backend/course-capsule-v1/adapters/d60-native-ledger-v1/tests.json',
   'docs/backend/d60/native-ledger/source-lock.json','docs/backend/d60/native-ledger/projection.json',
+  'backend/course-capsule-v1/adapters/d20-native-ledger-v1/tests.json',
+  'docs/backend/d20/native-ledger/source-lock.json','docs/backend/d20/native-ledger/projection.json',
   'backend/course-capsule-v1/adapters/d80-native-ledger-v1/tests.json',
   'docs/backend/d80/native-ledger/source-lock.json','docs/backend/d80/native-ledger/projection.json'];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
@@ -59,6 +61,7 @@ const contracts = {
   'd60.open_learner_hub':['D60','course_reader','backend/d60/D60.html'],
   'd60.native_ledger':['D60','reference','backend/d60/native-ledger/ledger.html'],
   'd20.open_learner_hub':['D20','course_reader','backend/d20/D20.html'],
+  'd20.native_ledger':['D20','reference','backend/d20/native-ledger/ledger.html'],
   'd70.open_learner_hub':['D70','course_reader','backend/d70/D70.html'],
   'd80.open_learner_hub':['D80','course_reader','backend/d80/D80.html'],
   'd80.native_ledger':['D80','reference','backend/d80/native-ledger/ledger.html'],
@@ -89,13 +92,13 @@ export function projectCapabilityTools(capsules, courseIds) {
     assert.equal(tool.primary, false);
     assert.equal(tool.machine_data_is_learner_destination, false);
     assert.ok(tool.label && tool.scope && tool.limitations.length);
-    assert.match(tool.href, ['d60.native_ledger','d80.native_ledger'].includes(tool.tool_id)
-      ? /^backend\/d(?:60|80)\/native-ledger\/ledger\.html$/
+    assert.match(tool.href, ['d20.native_ledger','d60.native_ledger','d80.native_ledger'].includes(tool.tool_id)
+      ? /^backend\/d(?:20|60|80)\/native-ledger\/ledger\.html$/
       : /^backend\/[a-z0-9-]+\/[a-zA-Z0-9.-]+\.html$/);
     assert.ok(!tool.href.includes('..'));
     assert.equal(tool.page.path, 'docs/'+tool.href);
     for (const fact of [tool.page, tool.resource, tool.evidence]) {
-      if (['d60.native_ledger','d80.native_ledger'].includes(tool.tool_id)) {
+      if (['d20.native_ledger','d60.native_ledger','d80.native_ledger'].includes(tool.tool_id)) {
         const role=tool.tool_id.split('.')[0];
         assert.ok([`docs/backend/${role}/native-ledger/ledger.html`,
           `docs/backend/${role}/native-ledger/projection.json`,
@@ -438,7 +441,33 @@ export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
       });
     }
   }
-  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds), ...projectC130EnglishTeacherTools(inputs, courseIds), ...projectC130EnglishLedgerTools(inputs, courseIds), ...projectD60EnglishLedgerTools(inputs, courseIds), ...projectD80EnglishLedgerTools(inputs, courseIds)];
+  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds), ...projectC130EnglishTeacherTools(inputs, courseIds), ...projectC130EnglishLedgerTools(inputs, courseIds), ...projectD20EnglishLedgerTools(inputs, courseIds), ...projectD60EnglishLedgerTools(inputs, courseIds), ...projectD80EnglishLedgerTools(inputs, courseIds)];
+}
+export function projectD20EnglishLedgerTools(inputs, courseIds) {
+  const base='docs/backend/d20/native-ledger/',key='backend/course-capsule-v1/adapters/d20-native-ledger-v1/tests.json';
+  const bytes=inputs[key],tests=JSON.parse(bytes),data=inputs[base+'projection.json'],view=JSON.parse(data);
+  const lockBytes=inputs[base+'source-lock.json'],lock=JSON.parse(lockBytes);
+  assert.ok(courseIds.includes('D20'));
+  assert.equal(tests.schema,'d20-native-ledger-tests/1');assert.equal(tests.state,'pass');
+  assert.equal(view.schema,'d20-native-ledger-projection/1');assert.equal(view.course_id,'D20');
+  assert.equal(lock.schema,'d20-native-ledger-source-lock/1');assert.equal(lock.course_id,'D20');
+  for(const field of ['semantic_canon_review','native_book_rebuilt'])assert.equal(tests[field],false);
+  for(const field of ['semantic_canon_review','native_book_rebuilt','native_records_changed'])assert.equal(view[field],false);
+  assert.deepEqual({bytes:data.length,sha256:hash(data)},tests.outputs['projection.json']);
+  assert.deepEqual({bytes:lockBytes.length,sha256:hash(lockBytes)},tests.outputs['source-lock.json']);
+  assert.deepEqual(view.summary,tests.summary);
+  assert.deepEqual(view.summary,{corrections:286,segments:2196,source_fragment_states:{exact_fragment:2196},target_fragment_states:{exact_fragment:2196},terms:425,unit_file_states:{exact_file:36}});
+  assert.equal(view.rows.length,2918);assert.equal(lock.source_tables.length,7);
+  assert.ok(view.rows.every(r=>r.chapter_discovery_is_semantic_applicability===false));
+  const page=tests.outputs['ledger-en.html'];assert.ok(page);
+  return [{courseId:'D20',contentLanguage:'en',labelLanguage:'en',tool_id:'d20.native_ledger.en',action_kind:'reference',
+    href:'backend/d20/native-ledger/ledger-en.html',label:'D20 · Sources, terminology and corrections',
+    scope:'425 terms, 2,196 source/translation fragment pairs, 286 corrections and the original terminology QA and rights records',
+    limitations:['English interface; quoted records keep their original language. Chapter reading links are Indonesian; the original English PDF is linked separately.',
+      'Recorded fragment and file identities match. This is not semantic-canon approval, a native-book rebuild or a new English edition.'],
+    state:'verified',primary:false,machine_data_is_learner_destination:false,
+    page:{...page,path:base+'ledger-en.html'},resource:{...tests.outputs['projection.json'],path:base+'projection.json'},
+    evidence:{path:key,bytes:bytes.length,sha256:hash(bytes)}}];
 }
 export function projectD80EnglishLedgerTools(inputs, courseIds) {
   const base='docs/backend/d80/native-ledger/',key='backend/course-capsule-v1/adapters/d80-native-ledger-v1/tests.json';

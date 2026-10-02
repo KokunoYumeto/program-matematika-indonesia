@@ -1,0 +1,42 @@
+D20 — Reproduksi integrasi metadata / Metadata integration replay
+
+Bahasa Indonesia
+Integrasi ini mempertahankan tujuh tabel asli dan membangun tampilan pencarian
+dalam bahasa Indonesia dan Inggris. Ini bukan terjemahan baru, pengesahan kanon,
+atau pembangunan ulang buku. Hak dan atribusi tetap mengikuti rights.jsonl.
+Model untuk integrasi dan pemeriksaan ini: OpenAI Codex — gpt-6-astra, Ultra.
+Tidak diklaim ada peninjauan manusia.
+
+Dari akar checkout, tanpa jaringan:
+  python -B scripts/d20-native-ledger-v1.py build
+  python -B scripts/test-d20-fragment-locator-v1.py
+Perintah build menghasilkan site/ dari input/ dan identitas sumber yang dikunci;
+salinan docs/backend/d20/native-ledger kemudian mendapat navigasi program yang
+dapat dilepas kembali tanpa mengubah isi. Sumber teks buku tidak disalin ke sini.
+
+Untuk mengulang semua perbandingan fragmen, pulihkan dua arsip publik terikat
+hash (jaringan diperlukan hanya bila arsip belum tersedia), lalu periksa:
+  python -B scripts/d20-native-ledger-v1.py recover-inputs
+  python -B scripts/test-d20-native-ledger-v1.py
+Arsip disimpan di outputs/d20-native-audit-109945924/. Kode di dalam arsip tidak
+dijalankan. intake mengulang saksi dari arsip, tetapi tidak diperlukan untuk
+replay metadata yang tidak berubah. Python 3.12+; requests untuk pengunduhan.
+
+Pemeriksaan antarmuka: Node.js 22 dan Playwright, satu Chromium/Edge headless.
+PLAYWRIGHT_MODULE_PATH menunjuk modul Playwright; PLAYWRIGHT_BROWSER_PATH
+menunjuk executable browser. Jalankan scripts/test-d20-native-browser-v1.cjs.
+D20_HOSTED_TEST=1 memeriksa navigasi program setelah overlay diterapkan dan
+menyimpan hosted-browser-tests.json; browser pribadi tidak digunakan.
+
+English
+This adapter preserves seven native metadata streams and builds Indonesian and
+English search interfaces. It is not a new translation, semantic-canon approval
+or native-book rebuild. Component rights remain in rights.jsonl. Integration
+and QA: OpenAI Codex — gpt-6-astra, Ultra; no human review is claimed.
+Use the commands above from the checkout root. The normal build is offline and
+uses the sealed metadata inputs. recover-inputs makes bounded anonymous public
+downloads only when the exact pinned source archives are absent. No downloaded
+code executes. The full test independently replays fragment hashes and line
+locations, verifies unchanged records, and performs isolated metadata builds.
+Publication adds a reversible navigation overlay. Raw source/target identity
+matches establish recorded text identity, not accuracy of the translation.

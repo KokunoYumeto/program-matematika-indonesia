@@ -1019,6 +1019,11 @@ def main() -> int:
                 verified = native_navigation_cache["expanded"]
                 if row["document"] not in {item["document"] for item in verified["files"]}:
                     raise ValueError("Expanded B40 navigation cannot exempt another page")
+            elif row.get("navigation_provider") == "finite-hermitian-native-v1":
+                native = runpy.run_path(str(ROOT / "scripts/finite-hermitian-navigation-v1.py"))
+                verified = native["validate"](ROOT)
+                if row["document"] not in {item["document"] for item in verified["files"]}:
+                    raise ValueError("Hermitian navigation cannot exempt another page")
             elif parser.surface_navigation_markers:
                 raise ValueError(f"{path}: program root must not carry a redundant return overlay")
             generic_results.append({

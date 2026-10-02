@@ -250,13 +250,19 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,16);
+assert.equal(existingEnglishProjected.length,17);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
 // Preserve every previous tool while adding four bilingual CLP planners.
-assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')&&!tool.tool_id.startsWith('c130.native_ledger')&&!tool.tool_id.startsWith('d60.native_ledger')&&!tool.tool_id.startsWith('d80.native_ledger')).length,51);
-assert.equal(capabilityTools.length,73);
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')&&!tool.tool_id.startsWith('c130.native_ledger')&&!tool.tool_id.startsWith('d20.native_ledger')&&!tool.tool_id.startsWith('d60.native_ledger')&&!tool.tool_id.startsWith('d80.native_ledger')).length,51);
+assert.equal(capabilityTools.length,75);
+for(const locale of ['id','en']) {
+  const tool=capabilityTools.find(t=>t.tool_id==='d20.native_ledger'+(locale==='en'?'.en':''));
+  assert.equal(tool.href,'backend/d20/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html'));
+  assert.equal(tool.contentLanguage,locale);assert.equal(tool.primary,false);
+  assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='D20'),locale).some(r=>r.href===siteOrigin+tool.href&&r.accessRole==='tool'));
+}
 for(const locale of ['id','en']) {
   const tool=capabilityTools.find(t=>t.tool_id==='d80.native_ledger'+(locale==='en'?'.en':''));
   assert.equal(tool.href,'backend/d80/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html'));
