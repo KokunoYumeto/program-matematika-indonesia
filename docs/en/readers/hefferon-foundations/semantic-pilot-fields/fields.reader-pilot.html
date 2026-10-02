@@ -1,0 +1,728 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fields — Jim Hefferon — selected foundations</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+.source-table{max-width:100%;overflow-x:auto}.source-table table{display:table;margin:.5rem auto;overflow:visible}.source-table thead{border-bottom:1px solid currentColor}.source-star-list>ul{list-style:none;padding-left:1.3rem}.source-axiom-list>ol{list-style:none;counter-reset:fieldaxiom;padding-left:2.5rem}.source-axiom-list>ol>li{counter-increment:fieldaxiom;position:relative}.source-axiom-list>ol>li::before{content:"(" counter(fieldaxiom) ")";position:absolute;left:-2.2rem}
+.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style><meta name="b40-source-context-contract-sha256" content="44efafea76c50e843894657e8d2c56f74c0987fa31d08cf2f93e3ad853278121"></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Foundation reader navigation"><a href="../index.html">Foundation contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-foundations-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-foundations-2026.10.02/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/fields.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — selected foundation sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><details><summary>Source, reuse and conversion details</summary><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. The complete active source topic is included. Source axioms and given operation tables travel separately with modular extracts; this does not claim complete prerequisite closure.</p></details><details class="notice"><summary>Two notes about the original source</summary><p>These notes are separate from the unchanged original text. The second concerns a supplied answer. This is a bounded source check, not exhaustive certification or human review.</p><ol><li id="fields-source-note-1"><a href="#fields-original-axioms">Source note 1</a>: The displayed axiom list does not explicitly require the additive and multiplicative identities to be distinct. Its literal conditions also hold in the singleton algebra with 0=1; the usual field definition excludes this case. Record the missing explicit condition separately, without changing the pinned source.</li><li id="fields-source-note-2"><a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.label.a6e0f1db7f459d3a2d85.answer.source-order.001">Source note 2</a>: The supplied binary-field answer calls addition closure and commutativity the first half of condition (2), but those appear in condition (1). The operations and the finite-field conclusion are correct.</li></ol></details><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="fields">Fields</h1>
+<p><span id="source-index-1" class="source-index" data-source-index="field|("></span> Computations involving only integers or only rational numbers are much easier than those with real numbers. Could other algebraic structures, such as the integers or the rationals, work in the place of <span><span class="math-region inline" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="53b1b02cba737531943ca13c13041d5269421f7527e4db58621b34391b866243"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+  </mrow>
+</math></span></span> in the definition of a vector space?</p>
+<p>If we take “work” to mean that the results of this chapter remain true then there is a natural list of conditions that a structure (that is, number system) must have in order to work in the place of <span><span class="math-region inline" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="ff81ba5e23d549c75773d68d10ab0b9c457201882133676eacebf7d20eac98c8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+  </mrow>
+</math></span>.</span> A <em>field</em><span id="source-index-2" class="source-index" data-source-index="field!definition"></span> is a set <span><span class="math-region inline" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> with operations ‘<span><span class="math-region inline" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="46209f696e32b54882cbbb06054295c2e76bed8fdce51d1e567894325c8fac99"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>+</mo>
+</math></span></span>’ and ‘<span><span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="9b38b782810a65ca2bd2d59eb7f17001a6ef0ba8fd65865678932f31719fe5b0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>⋅</mo>
+</math></span></span>’ such that <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="fields-original-axioms" class="source-axiom-list">
+<ol type="1">
+<li><p>for any <span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="ec59dae53977937182a9d7c006c2ee66aa5273ee2794bc5770285263b8f9f08f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>,</mo>
+  <mi>b</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> the result of <span><span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="899705719f34d61655f35a2810eb71239315d4dd15cce44938fdec29abd1e2c7"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+</math></span></span> is in <span><span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span>,</span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="79754c83b528ba4105d1841695f97ab4b77b87fd4947687f5f7ea9e178ebb020"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mo>=</mo>
+  <mi>b</mi>
+  <mo>+</mo>
+  <mi>a</mi>
+</math></span>,</span> and if <span><span class="math-region inline" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="e29075667880019d20bb8893d8255bfb5c75c2783a83be2ca382a45c488d576c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="6d6bbdc557b151cabdcef2c61903cefdc4feaa4d1fe740b6f98cf5498d818169"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>+</mo>
+  <mi>c</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mi>c</mi>
+</math></span></span></p></li>
+<li><p>for any <span><span class="math-region inline" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="ec59dae53977937182a9d7c006c2ee66aa5273ee2794bc5770285263b8f9f08f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>,</mo>
+  <mi>b</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> the result of <span><span class="math-region inline" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="ddb029e47f2b3abd4c11548845390ecd94e2bc34a01326fc2758ee1f5ba6d2ad"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mi>b</mi>
+</math></span></span> is in <span><span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span>,</span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="70a15931eb72024b9257763687a55c025800d90479b73f579445af8daece21c6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mi>b</mi>
+  <mo>=</mo>
+  <mi>b</mi>
+  <mo>⋅</mo>
+  <mi>a</mi>
+</math></span>,</span> and if <span><span class="math-region inline" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="e29075667880019d20bb8893d8255bfb5c75c2783a83be2ca382a45c488d576c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="5b6886fb3a62b83ebbf86ee49f206b7953c336d3e2aff89f9dbb54ecd80e5056"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>⋅</mo>
+  <mi>c</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mi>b</mi>
+  <mo stretchy="false">)</mo>
+  <mo>⋅</mo>
+  <mi>c</mi>
+</math></span></span></p></li>
+<li><p>if <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="8ddc72e373e62617d9d44cc1be1b040705de0c6609d0f30b8c9789437b23d2ee"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>,</mo>
+  <mi>b</mi>
+  <mo>,</mo>
+  <mi>c</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="1903b645e89e61aef22e64005bb3d9eae1c986b50e4cd6affb818342fecb911e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>+</mo>
+  <mi>c</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mi>b</mi>
+  <mo>+</mo>
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mi>c</mi>
+</math></span></span></p></li>
+<li><p>there is an element <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="556e963c1f762a310c356c4e87c021df06273a814237e3aebd049c76854e01c7"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> such that if <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="ffc9832102639bb1aebafd54714a5b705626efe1fb69af5fd7cf30ba8335f0ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="bcc42c40848450d5ae23661fb02b45816af0c87de08e769188e46a72a17e4bc8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>+</mo>
+  <mn>0</mn>
+  <mo>=</mo>
+  <mi>a</mi>
+</math></span>,</span> and for each <span><span class="math-region inline" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="ffc9832102639bb1aebafd54714a5b705626efe1fb69af5fd7cf30ba8335f0ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> there is an element <span><span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="be7703b92797218f38d90725a43844c94e899bbf64d56dc8fd9dd9e991cfa075"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mi>a</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> such that <span><span class="math-region inline" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="a79cbf1e7c99b999a0fee9f4a5097f46f9eabdff6d5720bf27c1fc1163954e8d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mi>a</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mi>a</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span></span></p></li>
+<li><p>there is an element <span><span class="math-region inline" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="57c72e5ba182c1420cfc43cbbd7c29e211705de368715f293c03dd7c25da76ae"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> such that if <span><span class="math-region inline" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="ffc9832102639bb1aebafd54714a5b705626efe1fb69af5fd7cf30ba8335f0ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="b0d391ee9902b5ff6ecf71f805c6c78ba9856866196118fcf97c80b315a86ef1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mn>1</mn>
+  <mo>=</mo>
+  <mi>a</mi>
+</math></span>,</span> and for each element <span><span class="math-region inline" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="dae79c264bcdc7ec7bb920ee8465824f1093cc43c043b401a751313f25fb6567"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span></span> of <span><span class="math-region inline" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> there is an element <span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="1165c795d43427b2a1deed599de58557a609e48b3f7ddf00e06219bf4a9bab0a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </msup>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> such that <span><span class="math-region inline" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="131d8cfdb9ce5dd321585a3d8e3d282d383b5862dcabdcfa7d07174245c748d6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </msup>
+  <mo>⋅</mo>
+  <mi>a</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>.</span></p></li>
+</ol>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p>For example, the algebraic structure consisting of the set of real numbers along with its usual addition and multiplication operation is a field. Another field is the set of rational numbers with its usual addition and multiplication operations. An example of an algebraic structure that is not a field is the integers, because it fails the final condition.</p>
+<p>Some examples are more surprising. The set <span><span class="math-region inline" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="81b35979e630ec5365a85de71c5c62c5ac0dc29b1f4cd818b089752daac598e3"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="B">𝔹</mi>
+  </mrow>
+  <mo>=</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mn>0</mn>
+  <mo>,</mo>
+  <mn>1</mn>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span> under these operations:</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0001" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0001" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="46209f696e32b54882cbbb06054295c2e76bed8fdce51d1e567894325c8fac99"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>+</mo>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000040END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000041END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="source-layout" data-source-layout="\qquad">
+
+</div>
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0002" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0002" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000042END" data-source-tex-sha256="9b38b782810a65ca2bd2d59eb7f17001a6ef0ba8fd65865678932f31719fe5b0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>⋅</mo>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000043END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000044END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000045END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000046END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000047END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000048END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000049END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000050END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>is a field; see Exercise <a href="#exer:BinField" data-source-reference="exer:BinField">4</a>.</p>
+<p>We could in this book develop Linear Algebra as the theory of vector spaces with scalars from an arbitrary field. In that case, almost all of the statements here would carry over by replacing ‘<span><span class="math-region inline" data-source-math-id="BFOURMATH000051END" data-source-tex-sha256="53b1b02cba737531943ca13c13041d5269421f7527e4db58621b34391b866243"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+  </mrow>
+</math></span></span>’ with ‘<span><span class="math-region inline" data-source-math-id="BFOURMATH000052END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span>’, that is, by taking coefficients, vector entries, and matrix entries to be elements of <span><span class="math-region inline" data-source-math-id="BFOURMATH000053END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> (the exceptions are statements involving distances or angles, which would need additional development). Here are some examples; each applies to a vector space <span><span class="math-region inline" data-source-math-id="BFOURMATH000054END" data-source-tex-sha256="2af061053de6f7799400cf973900d94049a28a7585b401589f7e06a3d6d0c7ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>V</mi>
+</math></span></span> over a field <span><span class="math-region inline" data-source-math-id="BFOURMATH000055END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span>.</span></p>
+<div class="source-star-list">
+<ul>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000056END" data-source-tex-sha256="684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+</math></span> </span> For any <span><span class="math-region inline" data-source-math-id="BFOURMATH000057END" data-source-tex-sha256="7072d765aeb6fbd95ae2df9156217ff3b991b1855fb73d7a065b5919ca7ea1ce"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>v</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+  <mo>∈</mo>
+  <mi>V</mi>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000058END" data-source-tex-sha256="ffc9832102639bb1aebafd54714a5b705626efe1fb69af5fd7cf30ba8335f0ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span>,</span> <span>(i) <span class="math-region inline" data-source-math-id="BFOURMATH000059END" data-source-tex-sha256="2f2bc52b8d483bfe2c424c1a85197ef02ac690c12ad0741f1b23a64db4e701dc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>v</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mn>0</mn>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+</math></span>,</span> <span>(ii) <span class="math-region inline" data-source-math-id="BFOURMATH000060END" data-source-tex-sha256="67a6bc4c7b3bd84895adaf4632ca4b4f693452b2e63d7f5885e09fac861d7ad6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>v</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+  <mo>+</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>v</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mn>0</mn>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+</math></span>,</span> and <span>(iii) <span class="math-region inline" data-source-math-id="BFOURMATH000061END" data-source-tex-sha256="9b21d8b40e40acbe69373181f1afce95d35b6d27845c2609a1ea38bec6f7cbd3"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mn>0</mn>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mn>0</mn>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+</math></span>.</span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000062END" data-source-tex-sha256="684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+</math></span> </span> The span, the set of linear combinations, of a subset of <span><span class="math-region inline" data-source-math-id="BFOURMATH000063END" data-source-tex-sha256="2af061053de6f7799400cf973900d94049a28a7585b401589f7e06a3d6d0c7ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>V</mi>
+</math></span></span> is a subspace of <span><span class="math-region inline" data-source-math-id="BFOURMATH000064END" data-source-tex-sha256="2af061053de6f7799400cf973900d94049a28a7585b401589f7e06a3d6d0c7ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>V</mi>
+</math></span>.</span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000065END" data-source-tex-sha256="684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+</math></span> </span> Any subset of a linearly independent set is also linearly independent.</p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000066END" data-source-tex-sha256="684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+</math></span> </span> In a finite-dimensional vector space, any two bases have the same number of elements.</p></li>
+</ul>
+</div>
+<p>(Even statements that don’t explicitly mention <span><span class="math-region inline" data-source-math-id="BFOURMATH000067END" data-source-tex-sha256="990f0f905b56ebffe64014f09dd0ae4ff20860acdd533442dd0d663e5dfcdd97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="F">ℱ</mi>
+  </mrow>
+</math></span></span> use field properties in their proof.)</p>
+<p>We will not develop vector spaces in this more general setting because the additional abstraction can be a distraction. The ideas we want to bring out already appear when we stick to the reals.</p>
+<p>The exception is Chapter Five. There we must factor polynomials, so we will switch to considering vector spaces over the field of complex numbers.</p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<section id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise-group.source-order.0001" class="source-exercise-group" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise-group.source-order.0001">
+<h4>Exercises</h4>
+<ol type="1">
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10001" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10001" data-source-number="1">
+<p><strong>Exercise 1</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10001.answer.source-order.001">Worked answer</a></p>
+<p>Check that the real numbers form a field. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10001.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10001.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10001">Back to Exercise 1</a></p>
+<p><strong>Answer.</strong> Going through the five conditions shows that they are all familiar from elementary mathematics.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10002" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10002" data-source-number="2">
+<p><strong>Exercise 2</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10002.answer.source-order.001">Worked answer</a></p>
+<p>Prove that these are fields.</p>
+<ol type="a">
+<li><p>The rational numbers <span><span class="math-region inline" data-source-math-id="BFOURMATH000068END" data-source-tex-sha256="3f115f6cb4125cf9b842102ffa7bc07aaae49873311aad457a1d04b391e5b6a0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="Q">ℚ</mi>
+  </mrow>
+</math></span></span></p></li>
+<li><p>The complex numbers <span><span class="math-region inline" data-source-math-id="BFOURMATH000069END" data-source-tex-sha256="2f40d444413ea1625f8df16ef92473fbda0187353a5ef8f8bf1ecfe516cf1e1e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="C">ℂ</mi>
+  </mrow>
+</math></span></span></p></li>
+</ol>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10002.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10002.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10002">Back to Exercise 2</a></p>
+<p><strong>Answer.</strong> As with the prior question, going through the five conditions shows that for both of these structures, the properties are familiar.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10003" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10003" data-source-number="3">
+<p><strong>Exercise 3</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10003.answer.source-order.001">Worked answer</a></p>
+<p>Give an example that shows that the integer number system is not a field. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10003.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10003.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10003">Back to Exercise 3</a></p>
+<p><strong>Answer.</strong> The integers fail condition (5). For instance, there is no multiplicative inverse for <span><span class="math-region inline" data-source-math-id="BFOURMATH000070END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span>—while</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000071END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span> is an integer, <span><span class="math-region inline" data-source-math-id="BFOURMATH000072END" data-source-tex-sha256="d939926f05444b0f4495fb9629ecbfa80d99a8ec1a20d06800ca5a3d5f4fd276"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>2</mn>
+</math></span></span> is not.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.label.a6e0f1db7f459d3a2d85" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.label.a6e0f1db7f459d3a2d85" data-source-number="4">
+<p><strong>Exercise 4</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.label.a6e0f1db7f459d3a2d85.answer.source-order.001">Worked answer</a></p>
+<p><span id="exer:BinField" class="source-label"></span> Check that the set <span><span class="math-region inline" data-source-math-id="BFOURMATH000073END" data-source-tex-sha256="6d65dec1b30ca51c6e63cab730aa7698817f0a000afabbd80d65a3070bf4c58d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="B">𝔹</mi>
+  </mrow>
+  <mo>=</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mn>0</mn>
+  <mo>,</mo>
+  <mn>1</mn>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span> is a field under the operations listed above, <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.label.a6e0f1db7f459d3a2d85.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.label.a6e0f1db7f459d3a2d85.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.label.a6e0f1db7f459d3a2d85">Back to Exercise 4</a></p>
+<p><strong>Answer.</strong> We can do these checks by listing all of the possibilities. For instance, to verify the first half of condition (2) we must check that the structure is closed under addition and that addition is commutative <span><span class="math-region inline" data-source-math-id="BFOURMATH000074END" data-source-tex-sha256="8d567c5f6e9ee41c65ba3a8ccc2eb2ce640bb80bd20dd81648bc486c14b52a8b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mo>=</mo>
+  <mi>b</mi>
+  <mo>+</mo>
+  <mi>a</mi>
+</math></span>,</span> we can check both of these for all possible pairs <span><span class="math-region inline" data-source-math-id="BFOURMATH000075END" data-source-tex-sha256="ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+</math></span></span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000076END" data-source-tex-sha256="3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>b</mi>
+</math></span></span> because there are only four such pairs. Similarly, for associativity, there are only eight triples <span><span class="math-region inline" data-source-math-id="BFOURMATH000077END" data-source-tex-sha256="ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+</math></span>,</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000078END" data-source-tex-sha256="3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>b</mi>
+</math></span>,</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000079END" data-source-tex-sha256="2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+</math></span>,</span> and so the check is not too long. (There are other ways to do the checks; in particular, you may recognize these operations as arithmetic <span>modulo <span class="math-region inline" data-source-math-id="BFOURMATH000080END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span>.</span> But an exhaustive check is not onerous)</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10005" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10005" data-source-number="5">
+<p><strong>Exercise 5</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10005.answer.source-order.001">Worked answer</a></p>
+<p>Give suitable operations to make the set <span><span class="math-region inline" data-source-math-id="BFOURMATH000081END" data-source-tex-sha256="3d7900b8054d64fd5b79f0b374f23ddbc8a8b55198941798e262fa98c9deb2a9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mn>0</mn>
+  <mo>,</mo>
+  <mn>1</mn>
+  <mo>,</mo>
+  <mn>2</mn>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span> a field. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10005.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10005.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.exercise.source-order.10005">Back to Exercise 5</a></p>
+<p><strong>Answer.</strong> These will do.</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0003" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0003" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000082END" data-source-tex-sha256="46209f696e32b54882cbbb06054295c2e76bed8fdce51d1e567894325c8fac99"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>+</mo>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000083END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000084END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000085END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000086END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000087END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000088END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000089END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000090END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000091END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000092END" data-source-tex-sha256="b46a6e9ff0945c21083d76ea1acb6a80bd7eb56392023eee887974d5807e74b9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000093END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000094END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000095END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000096END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000097END" data-source-tex-sha256="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="source-layout" data-source-layout="\qquad">
+
+</div>
+<div id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0004" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.vs.fields.tex.tabular.source-order.0004" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<thead>
+<tr>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000098END" data-source-tex-sha256="9b38b782810a65ca2bd2d59eb7f17001a6ef0ba8fd65865678932f31719fe5b0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>⋅</mo>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000099END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000100END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></th>
+<th style="text-align: center;" scope="col"><span><span class="math-region inline" data-source-math-id="BFOURMATH000101END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000102END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000103END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000104END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000105END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000106END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000107END" data-source-tex-sha256="f4ceb835f4e4d2e72886c987db84373b4dec63525e7e12507920d4d762371584"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000108END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000109END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td role="rowheader" style="text-align: center; border-right: 1px solid currentColor;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000110END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000111END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000112END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000113END" data-source-tex-sha256="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>As in the prior item, we could verify that they satisfy the conditions by listing all of the cases.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+</ol>
+</section>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span id="source-index-3" class="source-index" data-source-index="field|)"></span></p>
+</main><footer><nav aria-label="Foundation reader navigation"><a href="../index.html">Foundation contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-foundations-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-foundations-2026.10.02/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/fields.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>

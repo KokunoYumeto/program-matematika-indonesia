@@ -1,0 +1,72 @@
+{
+  "schema": "open-courses-dependency-integration-handoff/1",
+  "date_utc": "2026-10-02",
+  "title": "Core foundations and advanced courses: source-bound dependency integration",
+  "description": "An additive, zero-copy backend adapter connects the core course catalogue to the phone reader's selected course editions. It preserves the distinction between a recommended preparation course, an exact source-bound reading dependency and a fully checked proof use. It does not replace the student-facing programme or import a local draft as a published reader.",
+  "description_id": "Adaptor backend tambahan ini menghubungkan katalog mata kuliah fondasi dengan edisi yang dipilih dalam pembaca mata kuliah lanjutan tanpa menyalin atau mengubah teks pelajaran. Rekomendasi mata kuliah prasyarat, hubungan bacaan yang terikat pada sumber tertentu, dan penggunaan pembuktian yang telah diperiksa tetap dibedakan. Adaptor ini tidak menggantikan antarmuka belajar dan tidak menyatakan draf lokal sebagai bacaan yang telah diterbitkan.",
+  "owner_boundary": {
+    "core_backend_owner": "01a01ec1-e685-70d0-b022-211396334723",
+    "phone_catalog_reader_and_admission_owner": "01a01156-d46a-71f0-bad1-fdd0abe3237a",
+    "owner_files_modified": false,
+    "ownership_transferred": false,
+    "new_tasks_created": false
+  },
+  "implementation": {
+    "path": "scripts/build-phone-dependency-overlay-v1.py",
+    "bytes": 18083,
+    "sha256": "9345a01f6428b0e5a8e74d4ef8be213d1a820bd8642aff1667578bebd164c9a4",
+    "offline_check": "python -B scripts/build-phone-dependency-overlay-v1.py --check",
+    "core_query_example": "python -B scripts/build-phone-dependency-overlay-v1.py --impact core:B40",
+    "source_delta_query": "python -B scripts/build-phone-dependency-overlay-v1.py --impact COURSE/NATIVE_UNIT_ID --new-sha256 EXACT_NEW_SHA256",
+    "unknown_ids_rejected": true,
+    "changed_hashes_require_reconciliation_not_automatic_invalidation": true
+  },
+  "artifacts": [
+    {"path": "DEPENDENCY_OVERLAY.json", "bytes": 3482626, "sha256": "64974e6116e8a95fa8d5dda5f292d5783b3e72d202bf5b5e4c298ee1cc678aee"},
+    {"path": "VALIDATION.json", "bytes": 357, "sha256": "6c1cfb23537bdf71802a77da5971e852ececdd2c824ef70816f4b6e25248086d"}
+  ],
+  "verified_scope": {
+    "core_courses": 40,
+    "public_advanced_courses": 72,
+    "public_advanced_lessons": 1002,
+    "phone_selected_courses": 75,
+    "phone_selected_lessons": 1179,
+    "preparation_edges": 184,
+    "source_bound_lesson_reading_edges": 48,
+    "reported_providers_not_independently_admitted": 3,
+    "core_producer_checked_comparisons_waiting_for_owner_integration": 1,
+    "owner_admitted_core_proof_matches": 0,
+    "R36_lesson_records_retained_unchanged": 900,
+    "additive_lesson_records": 279,
+    "explicit_live_source_identity_readbacks": 1405,
+    "readback_breakdown": {"lesson_files": 1179, "licence_descriptor_files": 74, "reference_editions": 76, "reference_licences": 76},
+    "positive_contract_checks": 190,
+    "negative_rejection_cases": 7,
+    "offline_byte_replay": "PASS"
+  },
+  "concrete_integration_findings": [
+    "The newest phone selection and the pinned public advanced catalogue are different editions; their counts must not be added or used interchangeably.",
+    "AN-02, AN-04, NCG-ARITHMETIC-QSM and categorical-tools-for-analytic-sheaves have no exact-ID match in the pinned public preparation catalogue. Do not guess aliases from titles.",
+    "AG-RG appears in the public advanced catalogue but is not selected in the current phone catalogue. This is not an instruction to add or remove that course.",
+    "The current RT-FIN basis-extension consumer remains byte-identical to the previously delivered checked B40 packet. No repeated proof packet or new correction was created.",
+    "The existing B40 proof packet still lacks a public English reader route and phone-side catalogue/comparison admission. No count or backend link silently closes those tasks.",
+    "Native unit states, provenance, reference editions and licence-binding descriptors remain lossless. This adapter does not flatten source-specific copying terms into a programme-wide licence."
+  ],
+  "next_integration_steps": [
+    "Core owner: complete the public English B40 foundation reader/source closure already recorded in the current production cursor.",
+    "Phone owner: consume the overlay at a natural checkpoint, retaining its catalogue and proof-exchange ownership; use exact owner-declared aliases if the four unmatched identities already have a current map.",
+    "Both sides: retain native IDs, exact source/statement/proof hashes, actual conditions and consumer-local comparison evidence for proof uses. Reverse preparation links only identify likely affected courses, not verified proof consumers.",
+    "Continue exact mathematical requirement mapping without creating new tasks, broadcasts, acknowledgement loops or human-review holds."
+  ],
+  "publication": {"this_overlay": "validated_local_not_published", "existing_public_bridge": "unchanged", "no_reader_publication_claim": true},
+  "production_provenance": {
+    "work": "Dependency adapter implementation, source-identity checks and deterministic integration tests",
+    "agent": "OpenAI Codex",
+    "model": "gpt-6-astra",
+    "effort": "ultra",
+    "primary_runtime_evidence": {"turn_id": "01a0fa79-419f-7151-8f2c-3bc996de7d4d", "timestamp": "2026-10-02T02:45:31.497Z", "kind": "own task turn_context"},
+    "source_authorship_reassigned": false,
+    "human_review_claimed": false,
+    "new_mathematical_proof_audit_claimed": false
+  }
+}
