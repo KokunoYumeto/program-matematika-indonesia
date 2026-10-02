@@ -1,4 +1,3 @@
-import { crossProgrammeRoutes } from './cross-programme-routes.js';
 import { courses as authorityCourses, topics } from '../courses.js';
 import { materializeLiveCourses } from '../live-course-publications.js';
 import { learnerDeliveryByCourseId } from '../learner-delivery.js';
@@ -255,10 +254,6 @@ export function learnerAccessProjection(course, locale) {
 }
 export function renderCourseCard(course, locale, evaluation = null) {
   const t = interfaceCopy[locale], c = coursePresentation(course, locale);
-  const furtherRoute = crossProgrammeRoutes[course.id];
-  if (!furtherRoute?.[locale]) throw new Error('Missing cross-programme native course route: ' + course.id + ' ' + locale);
-  const furtherLabel = locale === 'id' ? 'Open Courses: persiapan dan studi lanjutan' : 'Open Courses: preparation and further study';
-  const furtherLink = '<p class="cross-programme-route"><a data-cross-programme-course="' + course.id + '" href="' + escapeMarkup(furtherRoute[locale]) + '">' + furtherLabel + '</a></p>';
   const following = interfaceCourses.filter((row) => row.prerequisites.includes(course.id));
   const courseLink = (id) => {
     const row = interfaceCourses.find((item) => item.id === id);
@@ -274,5 +269,5 @@ export function renderCourseCard(course, locale, evaluation = null) {
     + '<div class="course-edges"><h4>' + t.prereqs + '</h4>' + (course.prerequisites.length ? course.prerequisites.map(courseLink).join('') : '<p>' + t.noPrereqs + '</p>')
     + '<h4>' + t.next + '</h4>' + (following.length ? following.map((row) => courseLink(row.id)).join('') : '<p>' + t.noNext + '</p>') + '</div>'
     + '<details><summary>' + t.details + '</summary><h4>' + t.outcome + '</h4><p>' + escapeMarkup(c.outcome) + '</p></details>'
-    + '<div class="resource-list">' + renderResourceLinks(course, locale) + '</div>' + furtherLink + '</article>';
+    + '<div class="resource-list">' + renderResourceLinks(course, locale) + '</div></article>';
 }

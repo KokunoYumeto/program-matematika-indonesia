@@ -1,0 +1,364 @@
+// Presentation and resource bindings only. Course IDs and edges live in courses.js.
+// Adding a locale starts here: its stable route segment, language tag, visible
+// label, and complete interface copy are data, not branches in the renderer.
+export const localeMetadata = Object.freeze({
+  id: Object.freeze({
+    routeSegment: 'id', languageTag: 'id', label: 'Bahasa Indonesia', fallbackLocale: null,
+    coursePresentationLocale: 'id', bindingExceptions: null,
+    navigation: Object.freeze({
+      aria: 'Navigasi Program Matematika', lead: 'Program:',
+      programRoot: 'Beranda Program Matematika', originalSource: 'Sumber asli',
+      relatedPage: 'Buka halaman terkait',
+    }),
+  }),
+  en: Object.freeze({
+    routeSegment: 'en', languageTag: 'en', label: 'English', fallbackLocale: 'id',
+    coursePresentationLocale: 'en', bindingExceptions: 'en',
+    navigation: Object.freeze({
+      aria: 'Mathematics Program navigation', lead: 'Program:',
+      programRoot: 'Mathematics Program home', originalSource: 'Original source',
+      relatedPage: 'Open related page',
+    }),
+  }),
+});
+export const siteOrigin = 'https://kokunoyumeto.github.io/program-matematika-indonesia/';
+export const interfaceCopy = {
+  id: {
+    title: 'Program Matematika — Jalur Belajar Terbuka', shortTitle: 'Program Matematika',
+    description: '40 mata kuliah, dari fondasi hingga matematika tingkat lanjut. Pilih mata kuliah, periksa prasyarat, lalu buka bahan belajar.',
+    language: 'Bahasa', catalog: 'Mata kuliah', progress: 'Kemajuan saya', resources: 'Bahan belajar',
+    search: 'Cari mata kuliah', placeholder: 'Judul, topik, atau kode — misalnya aljabar, C30',
+    topic: 'Bidang', allTopics: 'Semua bidang', level: 'Tingkat', allLevels: 'Semua tingkat',
+    levels: { A: 'Fondasi', B: 'Dasar universitas', C: 'Lanjutan', D: 'Pascasarjana & riset' },
+    filter: 'Tampilkan', all: 'Semua mata kuliah', eligible: 'Prasyarat terpenuhi',
+    completed: 'Ditandai selesai', offline: 'HTML luring tersedia', clear: 'Atur ulang saringan',
+    result: '{shown} dari {total} mata kuliah', none: 'Tidak ada mata kuliah yang cocok. Coba istilah lain atau atur ulang saringan.',
+    prereqs: 'Prasyarat', noPrereqs: 'Tidak ada — Anda dapat mulai di sini.', next: 'Lanjut ke',
+    noNext: 'Tidak ada lanjutan langsung dalam peta ini.', outcome: 'Hasil belajar', details: 'Tentang mata kuliah',
+    done: 'Tandai selesai', ready: 'Prasyarat langsung terpenuhi', missing: 'Prasyarat belum lengkap',
+    completedByYou: 'Selesai menurut catatan Anda', waiverReady: 'Prasyarat terpenuhi dengan pengecualian',
+    open: 'Buka bahan belajar', download: 'Unduh', source: 'Sumber & repositori', archive: 'Arsip DOI',
+    companion: 'Bahan tambahan', sharedBackend: 'Indeks modular bersama',
+    hostedReader: 'Pembaca yang dihosting program', authoritativeOriginal: 'Sumber asli otoritatif',
+    courseGateway: 'Gerbang HTML mata kuliah — rute pusat',
+    noHostedReader: 'Belum ada pembaca yang dihosting program untuk bahasa antarmuka ini. Sumber asli dan bahan dalam bahasa lain tetap tersedia.',
+    noAuthoritativeOriginal: 'Belum ada sumber asli otoritatif yang dipetakan. Status ini tidak berarti bahwa sumber asli tidak ada.',
+    originalLanguage: 'Bahasa bahan', bindingNote: 'Untuk setiap bahasa, kebijakan program adalah menyediakan salinan baca yang dihosting program dan tautan sumber asli yang menonjol. Sumber tetap ditampilkan dalam bahasa sebenarnya; cakupan mirror lokal belum lengkap. Tautan sumber buku tidak mencakup pendamping orisinal program, dan status katalog adalah snapshot publikasi, bukan kemajuan terjemahan saat ini.',
+    noPrimary: 'Tautan edisi untuk bahasa ini belum dipetakan. Bahan bahasa lain tetap tersedia di bawah.',
+    otherLanguage: 'Bahan dalam bahasa lain', offlineMap: 'Unduh peta ini — satu berkas HTML',
+    offlineHelp: 'Peta, pencarian, prasyarat, dan catatan lokal dapat digunakan tanpa internet. Buku yang ditautkan perlu diunduh terpisah; tautan eksternal memerlukan internet.',
+    offlineBundle: 'Semua bahasa tersedia — halaman unduhan ZIP',
+    standaloneHelp: 'Tombol bahasa pada berkas tunggal membuka situs daring. Untuk berpindah bahasa tanpa internet, unduh ZIP multibahasa, ekstrak seluruh isinya, lalu buka START-HERE.html.',
+    pairedHelp: 'Tombol bahasa memakai berkas lokal. Pertahankan susunan folder setelah mengekstrak ZIP. Browser dapat menyimpan catatan terpisah untuk tiap berkas; gunakan unduh/pulihkan catatan untuk memindahkannya.',
+    noJs: 'Semua 40 mata kuliah dan tautannya dapat digunakan tanpa JavaScript. Pencarian dan catatan kemajuan memerlukan JavaScript.',
+    progressHelp: 'Catatan disimpan hanya di browser ini, tidak dikirim ke server. Bahasa yang berbeda memakai catatan yang sama pada situs ini. Ini catatan pribadi, bukan sertifikasi.',
+    progressSummary: '{done} selesai · {ready} prasyarat terpenuhi · {blocked} belum memenuhi prasyarat',
+    placement: 'Penempatan', equivalence: 'Kesetaraan', waiver: 'Pengecualian prasyarat',
+    target: 'Mata kuliah tujuan', prerequisite: 'Prasyarat yang dikecualikan', add: 'Tambahkan',
+    remove: 'Hapus', resetProgress: 'Hapus catatan kemajuan', resetConfirm: 'Hapus seluruh catatan kemajuan di browser ini?',
+    saved: 'Catatan disimpan di browser ini.', noStorage: 'Penyimpanan tidak tersedia; catatan hanya bertahan selama halaman terbuka.',
+    recovered: 'Data lama tidak valid; catatan kosong digunakan tanpa menimpa data sampai Anda membuat perubahan.',
+    noClaims: 'Belum ada catatan penempatan, kesetaraan, atau pengecualian.',
+    exportProgress: 'Unduh catatan kemajuan', importProgress: 'Pulihkan catatan dari berkas',
+    importError: 'Berkas catatan tidak valid; catatan saat ini tidak diubah.',
+    about: 'Tentang peta ini', aboutText: 'Satu kurikulum, beberapa bahasa. Identitas mata kuliah, prasyarat, dan provenance memakai backend yang sama; antarmuka hanya memilih teks dan bahan belajar sesuai bahasa.',
+    legacy: 'Antarmuka sebelumnya', skip: 'Langsung ke mata kuliah', nav: 'Navigasi utama',
+    statusLanguage: 'Bahasa Indonesia', english: 'English', pageUnit: 'halaman',
+    readerRoles: { textbook: 'Buku teks', problembook: 'Buku soal dan penyelesaian', combined_textbook_problembook: 'Buku gabungan teks dan soal' },
+    offlineAfterDownload: 'Luring setelah diunduh', sharedMetadata: 'metadata bersama',
+    otherLanguageCapability: 'Kapabilitas dalam bahasa lain. Buka alat tertaut untuk cakupan, bukti, dan batas khusus sumbernya.',
+    otherResourcesSummary: 'Bahan tambahan / sumber / backend',
+    openLogicHub: 'Terjemahan Open Logic — pilih bahasa',
+    footer: 'Disusun dengan OpenAI Codex atas instruksi pengguna. Kredit penulis dan lisensi tetap melekat pada setiap edisi.',
+  },
+  en: {
+    title: 'Mathematics Program — Open Learning Path', shortTitle: 'Mathematics Program',
+    description: '40 courses, from foundations to advanced mathematics. Choose a course, check its prerequisites, and open the learning materials.',
+    language: 'Language', catalog: 'Courses', progress: 'My progress', resources: 'Learning materials',
+    search: 'Find a course', placeholder: 'Title, topic, or code — for example algebra, C30',
+    topic: 'Subject', allTopics: 'All subjects', level: 'Level', allLevels: 'All levels',
+    levels: { A: 'Foundations', B: 'Undergraduate core', C: 'Advanced undergraduate', D: 'Graduate & research' },
+    filter: 'Show', all: 'All courses', eligible: 'Prerequisites met',
+    completed: 'Marked complete', offline: 'Offline HTML available', clear: 'Reset filters',
+    result: '{shown} of {total} courses', none: 'No courses match. Try another search or reset the filters.',
+    prereqs: 'Prerequisites', noPrereqs: 'None — you can start here.', next: 'Continue to',
+    noNext: 'No direct successor in this map.', outcome: 'Learning outcome', details: 'About this course',
+    done: 'Mark complete', ready: 'Direct prerequisites met', missing: 'Prerequisites not yet met',
+    completedByYou: 'Complete in your own record', waiverReady: 'Prerequisites met with a waiver',
+    open: 'Open learning material', download: 'Download', source: 'Source & repository', archive: 'DOI archive',
+    companion: 'Additional material', sharedBackend: 'Shared modular index',
+    hostedReader: 'Program-hosted reader', authoritativeOriginal: 'Authoritative original source',
+    courseGateway: 'Course HTML gateway — central route',
+    noHostedReader: 'No program-hosted reader is available yet for this interface language. The authoritative original and materials in other languages remain available.',
+    noAuthoritativeOriginal: 'No authoritative original source has been mapped yet. This does not mean that no original source exists.',
+    originalLanguage: 'Material language', bindingNote: 'For every language, the program policy is to provide a program-hosted readable copy and a prominent original-source link. Sources remain labeled in their actual languages; local mirror coverage is not yet complete. Book-source links do not include program-original companions, and catalog snapshots do not measure current translation progress.',
+    noPrimary: 'An edition link for this language has not yet been mapped. Other-language materials remain available below.',
+    otherLanguage: 'Material in another language', offlineMap: 'Download this map — one HTML file',
+    offlineHelp: 'The map, search, prerequisites, and local progress work without internet. Linked books must be downloaded separately; external links need a connection.',
+    offlineBundle: 'All available languages — ZIP download page',
+    standaloneHelp: 'Language buttons in a single-file download open the online site. To switch languages without internet, download the multilingual ZIP, extract everything, then open START-HERE.html.',
+    pairedHelp: 'Language buttons use local files. Keep the folder layout after extracting the ZIP. Browsers may store progress separately for each file; use download/restore progress to move your record.',
+    noJs: 'All 40 courses and their links work without JavaScript. Search and progress records require JavaScript.',
+    progressHelp: 'Records stay in this browser and are not sent to a server. Languages share the same record on this site. This is a personal record, not certification.',
+    progressSummary: '{done} complete · {ready} prerequisites met · {blocked} prerequisites missing',
+    placement: 'Placement', equivalence: 'Equivalence', waiver: 'Prerequisite waiver',
+    target: 'Target course', prerequisite: 'Prerequisite to waive', add: 'Add',
+    remove: 'Remove', resetProgress: 'Clear progress record', resetConfirm: 'Clear all progress recorded in this browser?',
+    saved: 'Record saved in this browser.', noStorage: 'Storage is unavailable; the record lasts only while this page stays open.',
+    recovered: 'Old data was invalid; an empty record is used without overwriting it until you make a change.',
+    noClaims: 'No placement, equivalence, or waiver records yet.',
+    exportProgress: 'Download progress record', importProgress: 'Restore record from file',
+    importError: 'Invalid progress file; your current record was not changed.',
+    about: 'About this map', aboutText: 'One curriculum, several languages. Course identities, prerequisites, and provenance share one backend; the interface selects the appropriate text and learning materials.',
+    legacy: 'Previous interface', skip: 'Skip to courses', nav: 'Main navigation',
+    statusLanguage: 'Bahasa Indonesia', english: 'English', pageUnit: 'pages',
+    readerRoles: { textbook: 'Textbook', problembook: 'Problems and solutions', combined_textbook_problembook: 'Combined textbook and problems' },
+    offlineAfterDownload: 'Offline after download', sharedMetadata: 'shared metadata',
+    otherLanguageCapability: 'Capability in another language. Open the linked tool for its source-specific scope, evidence, and limitations.',
+    otherResourcesSummary: 'Other-language material / source / backend',
+    openLogicHub: 'Open Logic translations — choose a language',
+    bindingExceptionsTitle: 'English resource-binding exceptions',
+    bindingExceptionsText: 'These are missing link bindings, not a claim that Indonesian translation is unfinished. English upstream spines do not include the program’s original Indonesian supplements.',
+    footer: 'Prepared with OpenAI Codex on instructions of the user. Author credits and licenses remain attached to each edition.',
+  },
+};
+function validateLocaleRegistry() {
+  const locales = Object.keys(localeMetadata);
+  const routeSegments = new Set();
+  const languageTags = new Set();
+  const reservedRoots = new Set(['interface', 'backend', 'readers', 'assets', 'data', 'schemas', 'sources', 'releases']);
+  for (const locale of locales) {
+    const metadata = localeMetadata[locale];
+    const copy = interfaceCopy[locale];
+    if (!copy || !metadata.navigation) throw new Error('Incomplete localized interface bundle: ' + locale);
+    if (!/^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/i.test(metadata.routeSegment) || reservedRoots.has(metadata.routeSegment.toLowerCase())) {
+      throw new Error('Unsafe or reserved locale route segment: ' + locale);
+    }
+    const routeKey = metadata.routeSegment.toLowerCase();
+    if (routeSegments.has(routeKey)) throw new Error('Duplicate locale route segment: ' + metadata.routeSegment);
+    routeSegments.add(routeKey);
+    let canonicalTag;
+    try { [canonicalTag] = Intl.getCanonicalLocales(metadata.languageTag); }
+    catch { throw new Error('Invalid locale language tag: ' + locale); }
+    const tagKey = canonicalTag.toLowerCase();
+    if (languageTags.has(tagKey)) throw new Error('Duplicate locale language tag: ' + metadata.languageTag);
+    languageTags.add(tagKey);
+    for (const key of ['aria', 'lead', 'programRoot', 'originalSource', 'relatedPage']) {
+      if (!metadata.navigation[key]) throw new Error('Incomplete navigation copy: ' + locale + '.' + key);
+    }
+    for (const key of ['title', 'description', 'catalog', 'hostedReader', 'authoritativeOriginal', 'otherLanguageCapability']) {
+      if (!copy[key]) throw new Error('Incomplete interface copy: ' + locale + '.' + key);
+    }
+  }
+  for (const locale of locales) localeFallbackChain(locale);
+  return locales;
+}
+export const supportedLocales = Object.freeze(validateLocaleRegistry());
+export const topicCopy = {
+  'Fondasi & Kalkulus': 'Foundations & calculus', 'Diskrit & Logika': 'Discrete mathematics & logic',
+  'Aljabar': 'Algebra', 'Komputasi & Optimisasi': 'Computing & optimization',
+  'Peluang & Statistika': 'Probability & statistics', 'Analisis': 'Analysis',
+  'Geometri & Topologi': 'Geometry & topology', 'Praktik Riset': 'Research practice',
+};
+// English copy is keyed by canonical ID, never by array position or translated title.
+export const englishCourseCopy = {
+  A00: ['Prealgebra and Quantitative Foundations', 'Integers, fractions, decimals, percentages, ratios, measurement, and basic equations.', 'Work reliably with numerical representations and distinguish arithmetic mistakes from conceptual ones.'],
+  A10: ['Elementary Algebra', 'Linear equations and inequalities, graphs, systems, exponents, polynomials, factoring, rational expressions, and radicals.', 'Translate quantitative relationships into algebra and explain each solution step.'],
+  A20: ['Intermediate Algebra', 'Functions, quadratic and rational models, radicals, complex numbers, exponentials, logarithms, conics, and sequences.', 'Enter precalculus with reliable symbolic fluency and a clear understanding of functions.'],
+  A30: ['Precalculus and Trigonometry', 'Function transformations, polynomial and rational models, exponentials, logarithms, trigonometry, analytic geometry, systems, and introductory limits.', 'Model with elementary functions and identify any algebra that needs reinforcement before calculus.'],
+  B10: ['Proof, Logic, and Discrete Structures', 'Propositional and predicate logic, sets, functions, relations, proof techniques, graphs, counting, and sequences.', 'Read, construct, and critique elementary proofs before studying advanced theory.'],
+  B20: ['Differential Calculus', 'Limits, continuity, derivatives, approximation, optimization, and mathematical modeling.', 'Use derivatives computationally and conceptually, stating the hypotheses behind each argument.'],
+  B30: ['Integral Calculus', 'Integration, the fundamental theorem, applications, sequences, series, and introductory differential equations.', 'Choose and justify integration and series methods, connecting accumulation with local rates.'],
+  B40: ['Linear Algebra', 'Linear systems, vector spaces, linear maps, matrices, determinants, eigenvalues, and applications.', 'Connect computation, structure, and proof in finite-dimensional mathematics.'],
+  B50: ['Multivariable Calculus', 'Multivariable geometry, partial derivatives, multiple integrals, constrained optimization, and coordinate systems.', 'Analyze scalar functions of several variables and relate local linearization to geometry.'],
+  B60: ['Vector Calculus', 'Vector fields, line and surface integrals, and the theorems of Green, Stokes, and divergence.', 'Explain the integral theorems connecting local differential structure with global quantities.'],
+  B70: ['Ordinary Differential Equations and Dynamical Systems', 'First-order and higher-order equations, systems, transforms, series, phase planes, and introductory Fourier methods.', 'Formulate, analyze, approximate, and communicate solutions of standard differential-equation models.'],
+  B80: ['Mathematical Computing and Reproducible Experiments', 'Python, SageMath, symbolic and numerical computation, visualization, testing, literate notebooks, and reproducibility.', 'Implement mathematical experiments while distinguishing computation, evidence, and proof.'],
+  B90: ['Calculus-Based Probability', 'Discrete and continuous probability, conditioning, random variables, expectation, limits, simulation, and Markov chains.', 'Construct probabilistic models and connect analytical results with simulation.'],
+  B95: ['Applied Statistics and Data Analysis', 'Data collection, summaries, inference, regression, and the interpretation of uncertainty.', 'Analyze data reproducibly and communicate conclusions with their assumptions and limitations.'],
+  C10: ['Real Analysis I', 'Real numbers, sequences, limits, continuity, differentiation, and integration with rigorous proofs.', 'Move from calculus techniques to precise definitions and mathematical arguments.'],
+  C20: ['Real Analysis II', 'Multivariable analysis, metric spaces, function sequences, and deeper convergence and integration results.', 'Use analytical structure and carefully check the hypotheses of advanced results.'],
+  C30: ['Abstract Algebra I', 'Groups, subgroups, homomorphisms, quotient structures, group actions, and examples.', 'Reason structurally about algebraic objects using definitions and proofs.'],
+  C40: ['Abstract Algebra II', 'Rings, ideals, fields, polynomial algebra, field extensions, and Galois theory.', 'Analyze algebraic extensions and connect ring and field structure with solvability.'],
+  C50: ['Complex Analysis', 'Holomorphic functions, complex integration, series, singularities, residues, and conformal ideas.', 'Use the interaction of complex differentiability, geometry, and integration.'],
+  C60: ['Number Theory and Cryptology', 'Divisibility, congruences, primes, arithmetic functions, and cryptological applications.', 'Prove arithmetic results and explain the mathematical assumptions of cryptographic constructions.'],
+  C70: ['Applied Combinatorics', 'Counting, graphs, generating functions, recurrence relations, and combinatorial structures.', 'Model discrete problems and justify combinatorial algorithms and arguments.'],
+  C80: ['Mathematical Logic, Set Theory, and Computability', 'Formal logic, model and proof concepts, sets, computability, and metamathematical limits.', 'Distinguish syntax, semantics, and computation in rigorous mathematical reasoning.'],
+  C90: ['Point-Set Topology', 'Topological spaces, continuity, bases, compactness, connectedness, and separation.', 'Construct examples and proofs using intrinsic topological definitions.'],
+  C100: ['Euclidean and Non-Euclidean Geometry', 'Euclidean, affine, projective, and non-Euclidean perspectives with proof and problem solving.', 'Compare geometric axioms and connect constructions with deductive arguments.'],
+  C110: ['Numerical Analysis', 'Approximation, linear systems, interpolation, numerical calculus, and differential equations.', 'Choose numerical methods and analyze their error, stability, and convergence.'],
+  C120: ['Mathematical Modeling and Nonlinear Dynamics', 'Model formulation, scaling, discrete and continuous dynamics, computation, and interpretation.', 'Develop, analyze, test, and critique mathematical models.'],
+  C130: ['Linear and Integer Optimization', 'Linear and integer programming, modeling, algorithms, duality, and computational examples.', 'Formulate optimization problems and interpret solutions and certificates.'],
+  C140: ['Mathematical Statistics', 'Estimation, sufficiency, completeness, hypothesis tests, and statistical decision principles.', 'Derive statistical procedures and justify their assumptions and properties.'],
+  D10: ['Measure and Integration', 'Measures, measurable functions, integration, convergence, and product constructions.', 'Use measure-theoretic definitions and theorems with careful control of hypotheses.'],
+  D20: ['Functional Analysis', 'Normed and Hilbert spaces, operators, functional-analytic methods, and operator algebras.', 'Connect infinite-dimensional structure with analytical and spectral arguments.'],
+  D30: ['Measure-Theoretic Probability and Stochastic Processes', 'Advanced probability, conditional expectation, Markov processes, and continuous-time models.', 'Analyze stochastic models using measure-theoretic tools and explicit assumptions.'],
+  D40: ['Partial Differential Equations', 'First- and second-order equations, classical methods, boundary problems, and numerical laboratories.', 'Connect differential equations, boundary data, analytical methods, and computation.'],
+  D50: ['Smooth Manifolds and Differential Geometry', 'Smooth manifolds, tangent constructions, differential geometry, and bridging material.', 'Reason geometrically with local coordinates and coordinate-independent structures.'],
+  D60: ['Algebraic Topology', 'Homotopy, fundamental groups, covering spaces, homology, and algebraic invariants.', 'Use algebraic constructions to study topological spaces and maps.'],
+  D70: ['Graduate Algebra', 'Advanced algebraic structures, representation theory, and commutative algebra.', 'Work with structural algebraic methods and connect multiple algebraic perspectives.'],
+  D80: ['Category Theory and Homological Methods', 'Categories, functors, natural transformations, and homological constructions.', 'Organize mathematical structures and arguments with categorical and homological tools.'],
+  D90: ['Advanced Optimization and Convex Analysis', 'Convexity, duality, optimality conditions, and advanced optimization methods.', 'Prove and apply optimization results while tracking their assumptions.'],
+  D100: ['Algebraic Geometry Bridge', 'Algebraic curves, bundles, sheaves, cohomology, and an introductory scheme-theoretic bridge.', 'Connect algebraic and geometric viewpoints in preparation for further study.'],
+  D110: ['Formalized Mathematics in Lean', 'Interactive theorem proving, mathematical libraries, tactics, and checked mathematical development.', 'Build and explain machine-checked mathematical proofs.'],
+  D120: ['Research Reading and Reproducible Mathematical Work', 'Research reading, mathematical exposition, evidence, reproducibility, and traceable workflows.', 'Produce clear mathematical work with inspectable reasoning and reproducible supporting artifacts.'],
+};
+const english = (label, href, kind = 'HTML') => ({
+  label, href, kind, contentLanguage: 'en', origin: 'upstream-original',
+  accessRole: 'authoritative-original', authorityRole: 'upstream-authority', relationToSource: 'source',
+});
+const englishMirror = (label, href, kind = 'HTML', facts = {}) => ({
+  label, href, kind, contentLanguage: 'en', origin: 'program-mirror',
+  accessRole: kind === 'HTML ZIP' ? 'offline-copy' : 'hosted-reader',
+  authorityRole: 'program-mirror', relationToSource: kind === 'HTML ZIP' ? 'offline-copy-of' : 'mirror-of', ...facts,
+});
+const englishEdition = (label, href, kind, facts = {}) => ({
+  ...english(label, href, kind), origin: 'published-translation',
+  accessRole: kind === 'archive' ? 'preservation-record' : kind === 'repository' ? 'repository' : kind === 'HTML ZIP' ? 'offline-copy' : 'hosted-reader',
+  authorityRole: 'program-edition', relationToSource: kind === 'HTML ZIP' ? 'offline-copy-of' : kind === 'archive' ? 'preserves' : kind === 'repository' ? 'supports' : 'translation-of',
+  ...facts,
+});
+export const englishResources = {
+  A00: [
+    englishMirror('Program-hosted complete English HTML reader', 'https://kokunoyumeto.github.io/openstax-prealgebra-2e-original-en/', 'HTML', { modules:75, assets:2958, sourceRevision:'38cae454e644abf9f0a623e876994553881597c9' }),
+    english('Original publisher page — OpenStax Prealgebra 2e', 'https://openstax.org/details/books/prealgebra-2e'),
+    englishMirror('Complete English HTML reader — offline ZIP', 'https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/openstax-prealgebra-2e-original-en-html-v1.0.0.zip', 'HTML ZIP', { bytes:79027794, sha256:'8fc15a085987cea3963bac27c831bb339fa05553001267564c8a66db3cefc04a', offlineAfterDownload:true }),
+  ],
+  A10: [
+    englishMirror('Program-hosted complete English HTML reader', 'https://kokunoyumeto.github.io/openstax-elementary-algebra-2e-original-en/', 'HTML', { modules:82, assets:4018, sourceRevision:'38cae454e644abf9f0a623e876994553881597c9' }),
+    english('Original publisher page — OpenStax Elementary Algebra 2e', 'https://openstax.org/details/books/elementary-algebra-2e'),
+    englishMirror('Complete English HTML reader — offline ZIP', 'https://github.com/KokunoYumeto/openstax-elementary-algebra-2e-original-en/releases/download/v1.0.0/openstax-elementary-algebra-2e-original-en-html-v1.0.0.zip', 'HTML ZIP', { bytes:86119672, sha256:'83697cc22a9902792df6db89613044941a6669d4c4bff0c270aa1729dc2b1ef0', offlineAfterDownload:true }),
+  ],
+  A20: [
+    englishMirror('Program-hosted complete English HTML reader', 'https://kokunoyumeto.github.io/openstax-intermediate-algebra-2e-original-en/', 'HTML', { modules:83, assets:4003, sourceRevision:'38cae454e644abf9f0a623e876994553881597c9' }),
+    english('Original publisher reader — OpenStax Intermediate Algebra 2e', 'https://openstax.org/books/intermediate-algebra-2e/pages/1-introduction'),
+    englishMirror('Complete English HTML reader — offline ZIP', 'https://github.com/KokunoYumeto/openstax-intermediate-algebra-2e-original-en/releases/download/v1.0.0/openstax-intermediate-algebra-2e-original-en-html-v1.0.0.zip', 'HTML ZIP', { bytes:90279762, sha256:'6348f5085bf7e6b7dc01dd62704019b56f2cbf6202849951875aa5398fc20e11', offlineAfterDownload:true }),
+  ],
+  A30: [
+    englishMirror('Program-hosted complete English HTML reader — 87 modules', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/A30/reader/', 'HTML', { modules:87, assets:1873, nativeIds:46359, sourceRevision:'789b54099106b071d1d32bfcee454fed72eb4768' }),
+    english('Original publisher reader — OpenStax Precalculus 2e', 'https://openstax.org/books/precalculus-2e/pages/1-introduction-to-functions'),
+    englishMirror('Complete English reader and original source — offline ZIP', 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.28/A30-Precalculus-2e-original-English-reader-source-v1.zip', 'HTML ZIP', { bytes:107409313, sha256:'ad4c91eb6af25d38ef835df9ffd0654346558ea75dff71e6299015f96de0d11f', offlineAfterDownload:true }),
+  ],
+  B10: [englishMirror('Program-hosted original English reader — 7 chapters, 768 exercises', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/B10/reader/', 'HTML', {chapters:7, sections:36, exercises:768, suppliedSolutions:520, sourceRevision:'82336dc87d77c3f18d2cdbc8ec1e74eb3ba38799'}), english('Original author’s reader — Discrete Mathematics: An Open Introduction, 4th edition', 'https://discrete.openmathbooks.org/dmoi4/'), englishMirror('Complete English reader and original source — offline ZIP', 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.29/B10-Discrete-Mathematics-original-English-reader-source-v2.zip', 'HTML ZIP', {bytes:78033276, sha256:'cd3b29543cf9bec2d621105398b227e9146a301948b979b7003d504d2594b3e2', offlineAfterDownload:true})],
+  B20: [englishMirror('Program-hosted original English reader — CLP-1 textbook and 695 exercises with solutions', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/B20/reader/', 'HTML', {chapters:5, sections:62, exercises:695, suppliedHints:620, suppliedAnswers:695, suppliedSolutions:695, sourceRevision:'9f0295936d395bec68dab7915057135a2c7f0414'}), english('Original authors’ website — CLP-1 textbook, problems and PDFs', 'https://personal.math.ubc.ca/~CLP/CLP1/'), englishMirror('Complete English reader and original source — offline ZIP', 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.30/B20-CLP1-Differential-Calculus-original-English-reader-source-v1.zip', 'HTML ZIP', {bytes:55481369, sha256:'4143b04601cdef9aed0f752081ca8193ebe05e457014536b27edbcd6a06c805c', offlineAfterDownload:true})],
+  B30: [englishMirror('Program-hosted original English reader — CLP-2 textbook and 737 exercises with solutions', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/B30/reader/', 'HTML', {chapters:3, appendices:4, sections:48, exercises:737, suppliedHints:721, suppliedAnswers:737, suppliedSolutions:737, sourceRevision:'d84ac1a86f71a7cac4946c53df9ed19e32a8c28e'}), english('Original authors’ website — CLP-2 textbook, problems and PDFs', 'https://personal.math.ubc.ca/~CLP/CLP2/'), englishMirror('Complete English reader and original source — offline ZIP', 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/v0.63.31/B30-CLP2-Integral-Calculus-original-English-reader-source-v1.zip', 'HTML ZIP', {bytes:49073711, sha256:'f5a1b8d6f1d14b66594585d4f04d1938eeb9258be9acd4687cbd176eece4b6ca', offlineAfterDownload:true})],
+  B40: [english('Hefferon: Linear Algebra, answers, and Sage lab', 'https://hefferon.net/linearalgebra/')],
+  B50: [english('CLP-3: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP3/clp_3_mc/index.html')],
+  B60: [english('CLP-4: textbook and problems', 'https://personal.math.ubc.ca/~CLP/CLP4/clp_4_vc/index.html')],
+  B70: [english('Notes on Diffy Qs', 'https://www.jirka.org/diffyqs/html/diffyqs.html')],
+  B80: [
+    englishEdition('Mathematical Computing — complete English HTML reader', 'https://kokunoyumeto.github.io/mathematical-computing-reproducible-experiments-en/', 'HTML', { bytes:40293, sha256:'2949e3e489008999193f6c396e78a79771e98a1cee3b3c7232abbd076f21dff8' }),
+    englishEdition('Mathematical Computing — English PDF — 161 pages', 'https://kokunoyumeto.github.io/mathematical-computing-reproducible-experiments-en/Mathematical-Computing-and-Reproducible-Experiments.pdf', 'PDF', { pages:161, bytes:774069, sha256:'12aedcef4d00df81f4d269ac14eb7fc545fbfc057572b6942f15303506e604b2', offlineAfterDownload:true }),
+    englishEdition('Complete English computing edition archive', 'https://doi.org/10.5281/zenodo.22210474', 'archive'),
+  ],
+  B90: [english('Grinstead–Snell: Introduction to Probability', 'https://math.dartmouth.edu/~prob/prob/prob.pdf', 'PDF')],
+  B95: [english('OpenIntro Statistics, 4th edition', 'https://www.openintro.org/book/os/')],
+  C10: [english('Basic Analysis I', 'https://www.jirka.org/ra/html/rn_chapter.html')],
+  C20: [english('Basic Analysis II', 'https://www.jirka.org/ra/html/pd_chapter.html')],
+  C30: [english('Abstract Algebra: Theory and Applications', 'https://judsonbooks.org/aata-files/aata-html/aata.html')],
+  C40: [english('Abstract Algebra: Theory and Applications', 'https://judsonbooks.org/aata-files/aata-html/aata.html')],
+  C50: [english('Guide to Cultivating Complex Analysis', 'https://www.jirka.org/ca/ca.pdf', 'PDF')],
+  C60: [english('Yet Another Introductory Number Theory Textbook', 'https://www.poritz.net/jonathan/share/yaintt.pdf', 'PDF')],
+  C70: [english('Applied Combinatorics', 'https://appliedcombinatorics.org/book/')],
+  C80: [english('Open Logic complete build', 'https://builds.openlogicproject.org/open-logic-complete.pdf', 'PDF')],
+  C90: [english('Topology: An Inquiry-Based Approach', 'https://gvsuoer.github.io/topology/')],
+  C100: [english('Euclidean plane and its relatives', 'https://arxiv.org/html/1302.1630'), english('A Workbook of Two-Dimensional Geometries', 'https://github.com/mooculus/advancedGeometry/releases/download/v1.0/workbookOfTwoDimensionalGeometries.pdf', 'PDF')],
+  C110: [english('Tea Time Numerical Analysis', 'https://raw.githubusercontent.com/lqbrin/tea-time-numerical/master/TeaTimeNumericalAnalysis.pdf', 'PDF')],
+  C120: [english('Introduction to Mathematical Modeling', 'https://opentextbooks.library.arizona.edu/mathematicalmodeling/')],
+  C130: [english('Open Optimization: Linear and Integer Programming', 'https://open-optimization.github.io/open-optimization-or-book/html/')],
+  C140: [english('STAT 415: Mathematical Statistics', 'https://online.stat.psu.edu/stat415/'), english('Sufficient, Complete, and Ancillary Statistics', 'https://www.randomservices.org/random/point/Sufficient.html')],
+  D10: [english('Fremlin: Measure Theory', 'https://www1.essex.ac.uk/maths/people/fremlin/mtcont.htm', 'PDF index')],
+  D20: [english('Functional Analysis and Operator Algebras', 'https://web.pdx.edu/~erdman/FAOA/functional_analysis_operator_algebras_pdf.pdf', 'PDF')],
+  D30: [english('Random: Probability and Stochastic Processes', 'https://www.randomservices.org/random/'), english('Continuous Time Markov Chains', 'https://continuous-time-mcs.quantecon.org/intro.html'), english('Intro to Stochastic Processes', 'https://gordanz.github.io/stochastic-book/')],
+  D40: [english('Dionne: Partial Differential Equations', 'https://openlibrary-repo.ecampusontario.ca/xmlui/bitstream/handle/123456789/2405/PDE_Benoit_Dionne_2024.pdf?isAllowed=y&sequence=1', 'PDF'), english('The FEniCSx Tutorial', 'https://jsdokken.com/dolfinx-tutorial/index.html')],
+  D50: [
+    englishEdition('Smooth Manifolds and Differential Geometry — complete English PDF — 658 pages', 'https://github.com/KokunoYumeto/brenner-differentialgeometrie-en/releases/download/v2026.09.01-complete/smooth-manifolds-differential-geometry-complete-en.pdf', 'PDF', { pages:658, bytes:8160069, sha256:'dbbe985214a5642e08be0d6cb0302e3156e8d5dbc2c225a7e1fb2ecc554ffb28', offlineAfterDownload:true }),
+    englishEdition('Complete English HTML ZIP — unzip; MathJax requires internet', 'https://github.com/KokunoYumeto/brenner-differentialgeometrie-en/releases/download/v2026.09.01-complete/smooth-manifolds-differential-geometry-complete-html-20260901.zip', 'HTML ZIP', { bytes:5609567, sha256:'dcddd62d88553b8db768dbae7ea0e64c7eb43e4b438c3eca37dfea1db41620cd' }),
+    englishEdition('Complete English geometry edition archive', 'https://doi.org/10.5281/zenodo.22233733', 'archive'),
+  ],
+  D100: [
+    englishMirror('Program-hosted Algebraic Geometry Bridge — complete English HTML reader', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/', 'HTML', { units:60, exercises:1188, bytes:1415, sha256:'7e8dce9036872f91b191c3a87baa5ba0d4a86b22ed4beff2460d136742de2906' }),
+    englishMirror('Program-hosted Algebraic Curves — complete English HTML reader', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/ak.html', 'HTML', { units:30, exercises:693, bytes:4915940, sha256:'fec5974b05b6791fe1ad183fa2109ec0efc2e74dd99625a154998f2bf080d3f3' }),
+    englishMirror('Program-hosted Bundles, Sheaves and Cohomology — complete English HTML reader', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/bgk.html', 'HTML', { units:30, exercises:495, bytes:4343626, sha256:'6bea7b292a660dada79f3bc2ce2913f27d26e3b9a571f90e3afb07056fcdf242' }),
+    englishMirror('Program-hosted From Varieties to Schemes — English HTML companion', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D100/reader/companion.html', 'HTML', { units:32, exercises:13, bytes:1487498, sha256:'064bbcb8065d55a3be3bfe0a9127af166b77d47499db08f9d1ae531d366a50f2' }),
+    englishEdition('Original English-edition website — alternate complete HTML host', 'https://kokunoyumeto.github.io/algebraic-geometry-bridge-id/en/', 'HTML', { units:60, exercises:1188 }),
+    englishEdition('Algebraic Curves — complete English course — 504 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/01_Algebraic-Curves_en_Units-01-30.pdf', 'PDF', { pages:504, bytes:16029193, sha256:'547a0e8f5185cd133edac64cac42ecb7590947ff74d45efe0eb66db7c0a62b46', offlineAfterDownload:true }),
+    englishEdition('Bundles, Sheaves and Cohomology — complete English course — 381 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/03_Bundles-Sheaves-and-Cohomology_en_Units-01-30.pdf', 'PDF', { pages:381, bytes:2953314, sha256:'dffad20f1945c6f0183414cd88fa29e34e230dac14b7fae429ad09c96be4c0f1', offlineAfterDownload:true }),
+    englishEdition('From Varieties to Schemes — editorial companion — 89 pages', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id/releases/download/en-v1.0.0/05_From-Varieties-to-Schemes_Original-Editorial-Companion_en.pdf', 'PDF', { pages:89, bytes:808762, sha256:'9272957782c4c8cf7c1b2a12c7edbf445db64270e0a62a37688b9301d925b6a2', offlineAfterDownload:true }),
+    englishEdition('Complete bilingual edition archive — 974 pages with universal reader navigation', 'https://doi.org/10.5281/zenodo.22543825', 'archive'),
+    englishEdition('English source and modular backend', 'https://github.com/KokunoYumeto/algebraic-geometry-bridge-id', 'repository'),
+  ],
+  D70: [
+    englishEdition('Methods of Algebra, Volume 1 — complete English book — 457 pages', 'https://zenodo.org/records/22216113/files/methods-of-algebra-volume-1-en.pdf?download=1', 'PDF', { pages:457, bytes:2691212, sha256:'112eef57e92f685e90bdff963f5a01c046a5f7d1eedc88faf316c930be7d4017', offlineAfterDownload:true }),
+    englishEdition('Duncan: Representation Theory — selected complete English component — 102 pages', 'https://zenodo.org/records/22216113/files/duncan-representation-theory-en.pdf?download=1', 'PDF', { pages:102, bytes:507750, sha256:'77c0f34dc28457dd750bf67c88857910c2a57ee8f70dd3dccbcca840854cf565', offlineAfterDownload:true, origin:'published-english-component' }),
+    englishEdition('CRing: Six selected commutative-algebra topics — English — 68 pages', 'https://zenodo.org/records/22216113/files/cring-selected-commutative-algebra-en.pdf?download=1', 'PDF', { pages:68, bytes:372132, sha256:'73e335b53f1ab156917962e2714d08b81030c8b16a72eb0dda944f4241df1521', offlineAfterDownload:true, origin:'published-english-component' }),
+    englishEdition('English learning route and mastery companion — 7 pages', 'https://zenodo.org/records/22216113/files/o013-learning-route-and-mastery-en.pdf?download=1', 'PDF', { pages:7, bytes:81315, sha256:'fa68a194127a2863484bc3e05b26010d81631e9c38ebcdd174b63856471aa07f', offlineAfterDownload:true }),
+    englishEdition('Full English advanced-algebra course archive', 'https://doi.org/10.5281/zenodo.22216113', 'archive'),
+    englishEdition('English source and modular backend', 'https://github.com/KokunoYumeto/methods-of-algebra-volume-1-en', 'repository'),
+  ],
+  D80: [
+    englishEdition('Methods of Algebra, Volume 2 — complete corrected English HTML reader', 'https://kokunoyumeto.github.io/methods-of-algebra-volume-2-en/', 'HTML', { bytes:4493910, sha256:'411fe6246743388ba9c5352732cc7958c02aa5dc578a54daecd4e6a5b317347e' }),
+    englishEdition('Methods of Algebra, Volume 2 — English PDF and mastery bridges — 820 pages', 'https://raw.githubusercontent.com/KokunoYumeto/methods-of-algebra-volume-2-en/674ef26c04dba544e80a95a3f320a9961649407c/output/pdf/methods-of-algebra-volume-2-independent-english-edition.pdf', 'PDF', { pages:820, bytes:3894743, sha256:'8193d44ef52c9c39807e769ad04507130f163481f82aa9cfaa0a1a3022ef7aa5', offlineAfterDownload:true }),
+    englishEdition('Corrected English edition archive', 'https://doi.org/10.5281/zenodo.22233942', 'archive'),
+    englishEdition('English source and modular backend', 'https://github.com/KokunoYumeto/methods-of-algebra-volume-2-en', 'repository'),
+  ],
+  D60: [english('Roberts: Algebraic Topology', 'https://github.com/DavidMichaelRoberts/AlgebraicTopology2019/raw/master/Notes.pdf', 'PDF'), english('Fomberg: Algebraic Topology', 'https://yp.srht.site/notes/math/algebraic_topology.pdf', 'PDF')],
+  D90: [english('Habring: Convex Optimization', 'https://arxiv.org/pdf/2607.11664', 'PDF')],
+  D110: [
+    englishMirror('Program-hosted original English HTML reader', 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/courses/D110/', 'HTML', { sourceRevision:'dd6d752fedb14082f557913c2dccb2d4851e5173', htmlFiles:16, externalCoreDependencies:0 }),
+    english('Authoritative original — Mathematics in Lean', 'https://leanprover-community.github.io/mathematics_in_lean/'),
+  ],
+  D120: [englishEdition('Traceable Mathematical Work — complete English edition', 'https://kokunoyumeto.github.io/kerja-matematika-yang-dapat-ditelusuri-id/en/', 'HTML')],
+};
+export const englishBindingExceptions = {
+  C60: 'English spine is linked. The program-original mastery/solution companion is available in Indonesian; an English companion link was not located.',
+  C90: 'English spine is linked. The program-original companion is available in Indonesian; an English companion link was not located.',
+  C100: 'English spines are linked. Program-original solutions, connective units, checks, and capstones have no located English binding.',
+  C120: 'English spine is linked. Program-original computational/mastery bridges have no located English binding. The official English host returned 403 to the headless check on 2026-09-03.',
+  C130: 'English spine is linked. The program-original Pyomo/HiGHS laboratory has no located English binding.',
+  C140: 'English donors are linked. The complete Indonesian C5 companion has no located English binding.',
+  D20: 'English spine is linked. Program-original solutions and the spectral/SVD bridge have no located English binding.',
+  D30: 'English donors are linked. Program-original bridges, assessments, and labs have no located English binding.',
+  D40: 'English donors are linked. Program-original problem, assessment, and laboratory closure has no located English binding.',
+  D60: 'English donors are linked. Program-original mastery, assessment, solution, lab, and capstone layers have no located English binding.',
+  D90: 'English spine is linked. Program-original completion and assessment layers have no located English binding.',
+};
+export const courseCopyByLocale = Object.freeze({ en: englishCourseCopy });
+export const topicCopyByLocale = Object.freeze({ en: topicCopy });
+export function localeFallbackChain(locale) {
+  if (!Object.hasOwn(localeMetadata, locale) || !Object.hasOwn(interfaceCopy, locale)) {
+    throw new Error('Unsupported interface locale without a complete localized bundle: ' + locale);
+  }
+  const chain = [];
+  const seen = new Set();
+  let current = locale;
+  while (current !== null) {
+    if (seen.has(current)) throw new Error('Locale fallback cycle: ' + [...chain, current].join(' -> '));
+    if (!Object.hasOwn(localeMetadata, current) || !Object.hasOwn(interfaceCopy, current)) {
+      throw new Error('Incomplete locale fallback metadata: ' + current);
+    }
+    seen.add(current);
+    chain.push(current);
+    current = localeMetadata[current].fallbackLocale;
+  }
+  return chain;
+}
+export function localizedValue(values, locale) {
+  for (const candidate of localeFallbackChain(locale)) {
+    if (values && Object.hasOwn(values, candidate) && values[candidate] !== undefined && values[candidate] !== null) {
+      return values[candidate];
+    }
+  }
+  throw new Error('Missing localized value for ' + locale);
+}
+export function localizedTopic(topic, locale) {
+  for (const candidate of localeFallbackChain(locale)) {
+    if (candidate === 'id') return topic;
+    const value = topicCopyByLocale[candidate]?.[topic];
+    if (value) return value;
+  }
+  throw new Error('Missing localized topic for ' + locale + ': ' + topic);
+}
+export function fillCopy(template, values) {
+  return template.replace(/\{(\w+)\}/g, (_, key) => String(values[key] ?? ''));
+}
