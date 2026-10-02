@@ -156,6 +156,12 @@ def article_original_urls(article: str) -> set[str]:
     for anchor in re.findall(r"<a\b[^>]*>", article, flags=re.IGNORECASE):
         if not re.search(r"\bdata-original-source(?:\s*=|\s|>)", anchor, flags=re.IGNORECASE):
             continue
+        # A programme-hosted copy can contain original English without being
+        # the author's authoritative original. Keep that access role distinct.
+        if not re.search(r'''\bdata-access-role\s*=\s*["']authoritative-original["']''', anchor, flags=re.IGNORECASE):
+            continue
+        if re.search(r'''\bdata-original-source\s*=\s*["']program-mirror["']''', anchor, flags=re.IGNORECASE):
+            raise ValueError("A program mirror cannot claim the authoritative-original role")
         match = re.search(
             r"\bhref\s*=\s*(?:\"([^\"]*)\"|'([^']*)')",
             anchor,
@@ -962,6 +968,7 @@ def main() -> int:
                 )
 
         generic_results = []
+        native_navigation_cache = {}
         configured_generic_files: set[Path] = set()
         for row in generic_surfaces:
             path = ROOT / Path(*row["document"].split("/"))
@@ -994,10 +1001,19 @@ def main() -> int:
                 library = runpy.run_path(str(ROOT / "scripts/library-handoff-v1.py"))
                 library["validate"](ROOT)
             elif row.get("navigation_provider") == "b40-foundations-native-v1":
-                native = runpy.run_path(str(ROOT / "scripts/b40-foundations-navigation-v1.py"))
-                verified = native["validate"](ROOT)
+                if "foundations" not in native_navigation_cache:
+                    native = runpy.run_path(str(ROOT / "scripts/b40-foundations-navigation-v1.py"))
+                    native_navigation_cache["foundations"] = native["validate"](ROOT)
+                verified = native_navigation_cache["foundations"]
                 if row["document"] not in {item["document"] for item in verified["files"]}:
                     raise ValueError("B40 native navigation cannot exempt another page")
+            elif row.get("navigation_provider") == "b40-expanded-native-v1":
+                if "expanded" not in native_navigation_cache:
+                    native = runpy.run_path(str(ROOT / "scripts/b40-expanded-navigation-v1.py"))
+                    native_navigation_cache["expanded"] = native["validate"](ROOT)
+                verified = native_navigation_cache["expanded"]
+                if row["document"] not in {item["document"] for item in verified["files"]}:
+                    raise ValueError("Expanded B40 navigation cannot exempt another page")
             elif parser.surface_navigation_markers:
                 raise ValueError(f"{path}: program root must not carry a redundant return overlay")
             generic_results.append({

@@ -141,9 +141,14 @@ for(const resource of additions.resources){
   assert.ok(!additionKeys.has(resource.course_id+' '+resource.marker));additionKeys.add(resource.course_id+' '+resource.marker);
   const target=new URL(resource.href);assert.equal(target.origin,new URL(origin).origin);
   assert.equal(resource.content_language,'en');assert.ok(resource.labels.id&&resource.labels.en);
-  const source=resource.source_manifest;assert.match(source.path,/^docs\/en\/readers\/[a-z0-9-]+\/FOUNDATIONS_MANIFEST\.json$/);
+  const source=resource.source_manifest;assert.match(source.path,/^docs\/en\/readers\/[a-z0-9-]+\/(?:FOUNDATIONS|READER)_MANIFEST\.json$/);
   const bytes=await readFile(resolve(root,source.path));assert.deepEqual(fact(source.path,bytes),source);
-  assert.equal(resource.href,origin+source.path.slice(5).replace('FOUNDATIONS_MANIFEST.json',''));
+  if(source.path.endsWith('/READER_MANIFEST.json')){
+    const native=json(bytes);assert.equal(native.schema,'b40-expanded-reading-edition/1');
+    assert.equal(native.sections.length,28);assert.equal(native.language,'en');
+    assert.equal(resource.course_id,'B40');
+  }
+  assert.equal(resource.href,origin+source.path.slice(5).replace(/(?:FOUNDATIONS|READER)_MANIFEST\.json$/,''));
 }
 function currentHtml(locale){
   let body=html(locale);

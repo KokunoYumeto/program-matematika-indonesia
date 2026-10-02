@@ -28,6 +28,8 @@ for (const locale of ['id','en']) {
   const b40=text.match(/<section id="core-B40">[\s\S]*?<\/section>/)?.[0];
   assert.ok(b40?.includes('data-b40-foundations="v1"'));
   assert.ok(b40.includes('href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-foundations/" hreflang="en"'));
+  assert.ok(b40.includes('data-b40-expanded="v1"'));
+  assert.ok(b40.includes('href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/" hreflang="en"'));
   assert.ok(b40.includes(locale==='en'?'(partial book)':'(sebagian buku)'));
   const anchors=new Set([...text.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]));
   for (const id of expected) {
@@ -61,6 +63,7 @@ const result={schema:'current-core-advanced-integration/1',state:'pass',core_rol
   all_six_current_shells_have_both_route_and_d60_tools:true,
   all_six_current_shells_have_d80_tools:true,
   b40_existing_english_foundations_preserved_in_both_programmes:true,
+  b40_expanded_english_reader_preserved_in_both_programmes:true,
   native_proof_closure_claimed:false,files:facts,
   provenance:{model:'gpt-6-astra',effort:'ultra',scope:'Combined current-checkout integration verification; upstream route authorship retained'}};
 await writeFile(resolve(root,'backend/cross-programme-v1/CURRENT_INTEGRATION_VALIDATION.json'),JSON.stringify(result,null,2)+'\n');

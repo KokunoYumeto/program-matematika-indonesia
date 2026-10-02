@@ -6,6 +6,23 @@ bahan pengajar, kode adaptor, serta bukti dan pemeriksaan yang menyertainya.
 Paket ini bukan pernyataan bahwa semua kemampuan backend telah selesai.
 Status dan batas setiap kemampuan tetap tercatat pada masing-masing kursus.
 
+Tambahan D100: tiga pembaca HTML Indonesia direproduksi masing-masing dua kali
+dengan byte identik dari masukan terisolasi. Bukti dan 28 tambahan dependensi
+historis disimpan dalam adapters/d100-native-production-v1 dan authority.
+Ini membuktikan produksi HTML, bukan ekspor data native, PDF baru atau
+kesesuaian semantik setiap pilihan istilah. Status paritas penuh tidak dinaikkan.
+
+Tambahan B40 berbahasa Inggris: /en/readers/hefferon-linear-algebra/ memuat
+28 bagian hingga Rumus Laplace, dengan 836 latihan, 834 jawaban sumber dan
+dua ketiadaan jawaban yang dinyatakan. Ini bukan seluruh buku. Sumber LaTeX
+kumulatif dan per bagian tersedia dalam direktori sources. Paket sumber
+publik lengkap yang identik disimpan pada backend/b40-expanded-public-20261002/
+preservation/COMPLETE_SOURCE.zip. Ekstrak secara terpisah lalu baca REBUILD.txt.
+Tautan enam bagian fondasi sebelumnya tetap tersedia; jangan menjumlahkannya
+sebagai buku baru. Matematika asli: Jim Hefferon. Pembangunan publik sumber
+dan integrasi ini: OpenAI Codex gpt-6-astra, tingkat upaya Ultra. Tidak ada
+terjemahan baru, PDF baru, atau pengesahan pembuktian menyeluruh yang diklaim.
+
 Tambahan D80: /backend/d80/native-ledger/ledger.html menyediakan pencarian
 6.347 segmen, 511 istilah, 73 koreksi dan 829 deskripsi diagram. Arsip metadata
 mempertahankan 8.430 rekaman asli. Antarmuka Inggris berada pada ledger-en.html.
@@ -74,6 +91,7 @@ Jalankan, dari akar hasil ekstraksi:
   node scripts/build-course-capsules-v1.mjs --output-root=replay/b
   node scripts/validate-course-capsules-v1.mjs --output-root=replay/a --peer-output-root=replay/b
   node scripts/test-course-capsule-ui-v1.mjs
+  node scripts/test-d100-html-replay-evidence-v1.mjs
   node scripts/test-local-evidence-identities-v1.mjs
   node scripts/build-cross-programme-integration-v1.mjs --check
   node scripts/test-cross-programme-current-v1.mjs
