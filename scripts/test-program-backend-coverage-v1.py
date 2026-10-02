@@ -911,6 +911,10 @@ for row in inputs['capsules']:
     if parity:
         parity_roles.append(row['course_id'])
     assert len(projected['next_required_work']) > 0
+    ledger_action = 'Buktikan ledger sumber/penerjemahan asli; status ini tidak menyatakan terjemahan belum selesai.'
+    ledger_requires_work = row['layers']['translation']['ledger_status'] not in {'verified', 'not_applicable'}
+    assert (ledger_action in projected['next_required_work']) == ledger_requires_work, (
+        row['course_id'] + ': required work must not contradict the ledger applicability/status')
     assert projected['dimensions']['terminology']['register'] == row['layers']['translation']['terminology_status']
     assert projected['dimensions']['reproducible_production']['replay'] == row['layers']['production']['deterministic_replay_status']
     assert projected['native_design_audit']['status'] == 'historical_comparison_not_new_native_reaudit'
