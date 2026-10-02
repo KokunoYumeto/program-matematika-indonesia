@@ -22,6 +22,17 @@ oleh OpenAI Codex — gpt-6-astra, Ultra effort. Atribusi ini hanya mencakup
 pekerjaan integrasi tersebut; bukan pengakuan kepengarangan, penerjemahan,
 penyuntingan manusia, atau peninjauan ahli atas buku yang dirujuk.
 
+Peta lintas program menghubungkan 40 mata kuliah fondasi dengan 71 mata kuliah
+lanjutan dan 951 pelajaran dalam edisi publik yang dibekukan. Buka /id/programme/
+atau /en/programme/. Sebanyak 183 hubungan belajar menghubungkan mata kuliah
+lanjutan ke fondasi; peta ini tidak menyatakan semua pembuktian prasyarat telah
+diperiksa. Proyeksi lokal phone berisi 58 mata kuliah/900 unit merupakan
+snapshot berbeda dan tidak boleh dijumlahkan sebagai materi tambahan.
+Peta, data masukan beku dan pembuatnya disertakan; isi pelajaran lanjutan tetap
+di repositori asal. Integrasi lintas program asli: OpenAI Codex — gpt-6.1-sol,
+tingkat upaya Ultra. Penggabungan dengan alat D60 dan pengujian paket terkini:
+OpenAI Codex — gpt-6-astra, tingkat upaya Ultra.
+
 Isi buku tetap berada dalam repositori dan arsip publik asalnya. Paket ini tidak
 menyalin seluruh korpus buku, tidak menjamin semua buku tersedia luring, dan tidak
 mengaku telah membangun ulang sumber asli semua penerbit. Untuk membaca buku
@@ -46,6 +57,8 @@ Jalankan, dari akar hasil ekstraksi:
   node scripts/validate-course-capsules-v1.mjs --output-root=replay/a --peer-output-root=replay/b
   node scripts/test-course-capsule-ui-v1.mjs
   node scripts/test-local-evidence-identities-v1.mjs
+  node scripts/build-cross-programme-integration-v1.mjs --check
+  node scripts/test-cross-programme-current-v1.mjs
 
 Pemeriksaan peramban D60 memakai Playwright dan satu peramban Chromium tanpa
 jendela. Jalankan `node scripts/test-d60-native-browser-v1.cjs` setelah memasang
@@ -88,3 +101,12 @@ it runs headlessly against a temporary local server with outside requests
 blocked. Original D60 adapter: OpenAI Codex — gpt-6.1-sol, Ultra effort.
 Subsequent integration repairs, QA and packaging: OpenAI Codex — gpt-6-astra,
 Ultra effort. No human canon review or whole-book rebuild is claimed.
+
+The included /en/programme/ and /id/programme/ outlines preserve the upstream
+links between forty core courses and the frozen public edition of 71 advanced
+courses/951 lessons. All six current online/offline curriculum pages retain
+these routes alongside the D60 native-record tools. The 183 preparation-course
+links are not proof-dependency certification. The separate local phone snapshot
+has 58 courses/900 units and is not an additional, additive corpus count.
+Original cross-programme integration: OpenAI Codex — gpt-6.1-sol, Ultra effort.
+Combined-current integration and package QA: OpenAI Codex — gpt-6-astra, Ultra effort.

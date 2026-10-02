@@ -41,6 +41,8 @@ const approvedTopLevelFiles = new Set([
   'peta-belajar-luring.html',
 ]);
 const approvedDataFiles = new Set([
+  'data/cross-programme-v1',
+  'data/cross-programme-v1/bridge.json',
   'data/course-capsule-v1/d100-indonesian-evidence-v1',
   ...d100IdFiles.map(name=>`data/course-capsule-v1/d100-indonesian-evidence-v1/${name}`),
   'data/course-capsule-v1',
@@ -481,5 +483,10 @@ for(const row of libraryAuthority.deploy_only){
   assert.equal(left.length,row.bytes,logical+': sealed Library byte count changed');
   assert.equal(sha256(left),row.sha256.toLowerCase(),logical+': sealed Library hash changed');
   assert.deepEqual(right,left,logical+': Library mirror differs');
+}
+for(const logical of ['data/cross-programme-v1/bridge.json','interface/cross-programme-routes.js',
+  'en/programme/index.html','id/programme/index.html']) {
+  assert.deepEqual(await readFile(resolve(target,logical)),await readFile(resolve(source,logical)),
+    'Core/advanced public mirror differs: '+logical);
 }
 console.log('Static hub synchronized to public/hub with exact bytes.');

@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Representations and complete reducibility · Representations of finite groups</title>
+<meta name="description" content="A lesson of the course Representations of finite groups. Draft, written by AI; English only for now.">
+<meta name="color-scheme" content="light dark">
+<link rel="canonical" href="https://kokunoyumeto.github.io/open-mathematics-courses/courses/RT-FIN/representations-and-complete-reducibility.html">
+<link rel="stylesheet" href="../../assets/site.css">
+<script>window.MathJax={tex:{inlineMath:[['$','$'],['\\(','\\)']],displayMath:[['$$','$$'],['\\[','\\]']],processEscapes:true,macros:{Eta:'\\mathrm{H}'}},options:{ignoreHtmlClass:'no-math',processHtmlClass:'math'}};</script>
+<script id="MathJax-script" defer src="../../assets/mathjax/tex-chtml-full.js"></script>
+</head>
+<body class="no-math">
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header"><div class="header-inner">
+<a class="brand" href="../../">Open Mathematics Courses</a>
+<nav class="primary-nav" aria-label="Main">
+<a href="../../#catalogue">Courses</a>
+<a href="../../licensing/">Licensing</a>
+<a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Core courses <span class="nav-note">Program Matematika Indonesia</span></a>
+</nav>
+<p class="lang-note">English only for now</p>
+</div></header>
+<main id="main">
+<nav class="crumbs" aria-label="Breadcrumb"><a href="../../">All courses</a> <span aria-hidden="true">›</span> <a href="./">Representations of finite groups</a> <span aria-hidden="true">›</span> <span>Lesson 1 of 17</span></nav>
+<aside class="notice" aria-label="About this lesson">
+<p><strong>Draft lesson, written by AI.</strong> Written by GPT-6.1 Sol (OpenAI), in Codex, at the Ultra setting (maximum reasoning effort). Self-checked by GPT-6.1 Sol, the AI that wrote it. Independent review of the current revision is in progress.</p>
+<p class="small">English only for now · CC0 1.0</p>
+</aside>
+
+<article class="lesson">
+<h1 id="representations-and-complete-reducibility">Representations and complete reducibility</h1>
+<p><em>Written by GPT-6.1 Sol (OpenAI) in Codex, Ultra setting, October 2026. Self-checked by the AI that wrote it. Public domain (CC0).</em></p>
+<p>A symmetry can permute coordinates, rotate a plane, or act on a space of functions. A representation puts these actions into one language: each group element becomes an invertible linear map. The first problem is to find smaller spaces that all these maps preserve. The next problem is to decide whether those spaces can be separated into independent pieces.</p>
+<p>For a finite group over the complex numbers, both questions have a clean answer. Every representation splits into irreducible pieces. Their isomorphism classes and multiplicities are determined by the representation, although the individual summands need not be. We will prove this using averaging and Schur's lemma, and see exactly what changes over the real numbers or in positive characteristic.</p>
+<p>The prerequisites are <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-B40">Linear Algebra</a>, <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-C30">Abstract Algebra I</a>, and <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/#course-C40">Abstract Algebra II</a>. We assume vector spaces, bases, eigenvalues, inner products, groups and quotient groups, and the definitions of fields and algebras. The specific facts used without proof are listed near the end.</p>
+<p>Basic references are [Stacks], [Gruson–Serganova], [Artin], and [Schur]. <a href="https://kokunoyumeto.github.io/stacks-zh-hans-cn/en/brauer.html">Clanker Stacks</a> is an edition of the <a href="https://stacks.math.columbia.edu/">official Stacks project</a> with AI-proposed corrections and AI-written additions, not reviewed by the Stacks project's maintainers. All the representation-theoretic arguments needed here are given below.</p>
+<p>Throughout, <span class="math" data-tex="\(G\)">\(G\)</span> is finite and representations are finite-dimensional over a field <span class="math" data-tex="\(k\)">\(k\)</span>. An irreducible representation is always nonzero. Complex inner products are linear in their first variable.</p>
+<h2 id="1-turning-symmetry-into-linear-algebra">1. Turning symmetry into linear algebra</h2>
+<p>A <strong>representation</strong> on <span class="math" data-tex="\(V\)">\(V\)</span> is a homomorphism</p>
+<span class="math math-display" data-tex="\[
+\rho:G\longrightarrow\operatorname{GL}_k(V).
+\]">\[
+\rho:G\longrightarrow\operatorname{GL}_k(V).
+\]</span>
+<p>Thus <span class="math" data-tex="\(\rho(gh)=\rho(g)\rho(h)\)">\(\rho(gh)=\rho(g)\rho(h)\)</span>, <span class="math" data-tex="\(\rho(1)=1_V\)">\(\rho(1)=1_V\)</span>, and <span class="math" data-tex="\(\rho(g^{-1})=\rho(g)^{-1}\)">\(\rho(g^{-1})=\rho(g)^{-1}\)</span>. We often write <span class="math" data-tex="\(gv\)">\(gv\)</span> for <span class="math" data-tex="\(\rho(g)v\)">\(\rho(g)v\)</span>. Its dimension is <span class="math" data-tex="\(\dim_k V\)">\(\dim_k V\)</span>. It is <strong>faithful</strong> when <span class="math" data-tex="\(\rho\)">\(\rho\)</span> is injective.</p>
+<p>Choosing a basis gives matrices for every <span class="math" data-tex="\(\rho(g)\)">\(\rho(g)\)</span>. Changing that basis conjugates all the matrices by the same invertible matrix. The representation is the action itself; a matrix list records it in chosen coordinates.</p>
+<h3 id="maps-and-invariant-spaces">Maps and invariant spaces</h3>
+<p>An <strong>intertwiner</strong> <span class="math" data-tex="\(f:V\to W\)">\(f:V\to W\)</span> is a linear map satisfying</p>
+<span class="math math-display" data-tex="\[
+f(\rho_V(g)v)=\rho_W(g)f(v)\qquad(g\in G).
+\]">\[
+f(\rho_V(g)v)=\rho_W(g)f(v)\qquad(g\in G).
+\]</span>
+<p>The vector space of these maps is <span class="math" data-tex="\(\operatorname{Hom}_G(V,W)\)">\(\operatorname{Hom}_G(V,W)\)</span>. An invertible intertwiner is an isomorphism of representations. The algebra <span class="math" data-tex="\(\operatorname{End}_G(V)\)">\(\operatorname{End}_G(V)\)</span> consists of the operators commuting with every <span class="math" data-tex="\(\rho(g)\)">\(\rho(g)\)</span>, with multiplication given by composition.</p>
+<p>A subspace <span class="math" data-tex="\(U\subseteq V\)">\(U\subseteq V\)</span> is <strong>invariant</strong> if <span class="math" data-tex="\(gU\subseteq U\)">\(gU\subseteq U\)</span> for every <span class="math" data-tex="\(g\)">\(g\)</span>. Applying the same condition to <span class="math" data-tex="\(g^{-1}\)">\(g^{-1}\)</span> gives <span class="math" data-tex="\(gU=U\)">\(gU=U\)</span>. Restriction therefore gives a representation on <span class="math" data-tex="\(U\)">\(U\)</span>. There is also a quotient representation</p>
+<span class="math math-display" data-tex="\[
+g(v+U)=gv+U.
+\]">\[
+g(v+U)=gv+U.
+\]</span>
+<p>This is well-defined because <span class="math" data-tex="\(v-v&#x27;\in U\)">\(v-v&#x27;\in U\)</span> implies <span class="math" data-tex="\(gv-gv&#x27;\in U\)">\(gv-gv&#x27;\in U\)</span>. The quotient map is an intertwiner. Kernels and images of intertwiners are invariant: if <span class="math" data-tex="\(f(v)=0\)">\(f(v)=0\)</span>, then <span class="math" data-tex="\(f(gv)=gf(v)=0\)">\(f(gv)=gf(v)=0\)</span>; and <span class="math" data-tex="\(gf(v)=f(gv)\)">\(gf(v)=f(gv)\)</span> belongs to the image.</p>
+<p>The direct sum has action <span class="math" data-tex="\(g(v,w)=(gv,gw)\)">\(g(v,w)=(gv,gw)\)</span>. An internal decomposition <span class="math" data-tex="\(V=U\oplus W\)">\(V=U\oplus W\)</span> into invariant spaces gives block diagonal matrices in a basis assembled from bases of <span class="math" data-tex="\(U\)">\(U\)</span> and <span class="math" data-tex="\(W\)">\(W\)</span>. An invariant subspace alone gives only a block triangular form. The off-diagonal block is the obstruction to finding an invariant complement.</p>
+<p>A nonzero representation is <strong>irreducible</strong> if its only invariant subspaces are <span class="math" data-tex="\(0\)">\(0\)</span> and itself. It is <strong>completely reducible</strong> if it is a direct sum of irreducibles. The zero representation is the empty direct sum.</p>
+<h3 id="a-supply-of-examples">A supply of examples</h3>
+<p>The trivial representation on <span class="math" data-tex="\(k\)">\(k\)</span> has <span class="math" data-tex="\(gv=v\)">\(gv=v\)</span>. Any homomorphism <span class="math" data-tex="\(\lambda:G\to k^\times\)">\(\lambda:G\to k^\times\)</span> gives a one-dimensional representation by <span class="math" data-tex="\(gv=\lambda(g)v\)">\(gv=\lambda(g)v\)</span>, and every one-dimensional representation arises this way after choosing a nonzero basis vector. A commutator <span class="math" data-tex="\(ghg^{-1}h^{-1}\)">\(ghg^{-1}h^{-1}\)</span> has image <span class="math" data-tex="\(1\)">\(1\)</span>, since <span class="math" data-tex="\(k^\times\)">\(k^\times\)</span> is abelian. Hence these homomorphisms are exactly the homomorphisms from <span class="math" data-tex="\(G^{\mathrm{ab}}=G/[G,G]\)">\(G^{\mathrm{ab}}=G/[G,G]\)</span> to <span class="math" data-tex="\(k^\times\)">\(k^\times\)</span>. We call them one-dimensional characters.</p>
+<p>For <span class="math" data-tex="\(S_n\)">\(S_n\)</span>, the determinant of a permutation matrix gives the sign representation: even permutations act by <span class="math" data-tex="\(1\)">\(1\)</span>, odd permutations by <span class="math" data-tex="\(-1\)">\(-1\)</span>. In characteristic <span class="math" data-tex="\(2\)">\(2\)</span> these scalars coincide, so sign becomes trivial.</p>
+<p>If <span class="math" data-tex="\(X\)">\(X\)</span> is a finite <span class="math" data-tex="\(G\)">\(G\)</span>-set, let <span class="math" data-tex="\(k[X]\)">\(k[X]\)</span> have basis <span class="math" data-tex="\((e_x)_{x\in X}\)">\((e_x)_{x\in X}\)</span>, with <span class="math" data-tex="\(ge_x=e_{gx}\)">\(ge_x=e_{gx}\)</span>. The action law on <span class="math" data-tex="\(X\)">\(X\)</span> proves the representation law. In coordinates indexed by <span class="math" data-tex="\(X\)">\(X\)</span>,</p>
+<span class="math math-display" data-tex="\[
+(gv)_x=v_{g^{-1}x}.
+\]">\[
+(gv)_x=v_{g^{-1}x}.
+\]</span>
+<p>The inverse is necessary: the coordinate at <span class="math" data-tex="\(x\)">\(x\)</span> comes from the basis vector moved to <span class="math" data-tex="\(x\)">\(x\)</span>. Taking <span class="math" data-tex="\(X=G\)">\(X=G\)</span> with left multiplication gives the <strong>left regular representation</strong>.</p>
+<p>For the natural action of <span class="math" data-tex="\(S_n\)">\(S_n\)</span> on <span class="math" data-tex="\(\mathbb C^n\)">\(\mathbb C^n\)</span>, set</p>
+<span class="math math-display" data-tex="\[
+L=\mathbb C(1,\ldots,1),\qquad
+A=\{(z_1,\ldots,z_n):\textstyle\sum_i z_i=0\}.
+\]">\[
+L=\mathbb C(1,\ldots,1),\qquad
+A=\{(z_1,\ldots,z_n):\textstyle\sum_i z_i=0\}.
+\]</span>
+<p>Both spaces are invariant, <span class="math" data-tex="\(L\)">\(L\)</span> is trivial, and</p>
+<span class="math math-display" data-tex="\[
+z=\frac{\sum_i z_i}{n}(1,\ldots,1)
++\left(z-\frac{\sum_i z_i}{n}(1,\ldots,1)\right)
+\]">\[
+z=\frac{\sum_i z_i}{n}(1,\ldots,1)
++\left(z-\frac{\sum_i z_i}{n}(1,\ldots,1)\right)
+\]</span>
+<p>proves <span class="math" data-tex="\(\mathbb C^n=L\oplus A\)">\(\mathbb C^n=L\oplus A\)</span>. The representation on <span class="math" data-tex="\(A\)">\(A\)</span> is called the <strong>standard representation</strong>. Its irreducibility for <span class="math" data-tex="\(n\geq2\)">\(n\geq2\)</span> will be established in Exercise 1.</p>
+<p>For a geometric example, let</p>
+<span class="math math-display" data-tex="\[
+D_n=\langle r,s:r^n=s^2=1,\ srs=r^{-1}\rangle,
+\qquad n\geq3,
+\]">\[
+D_n=\langle r,s:r^n=s^2=1,\ srs=r^{-1}\rangle,
+\qquad n\geq3,
+\]</span>
+<p>where <span class="math" data-tex="\(D_n\)">\(D_n\)</span> has order <span class="math" data-tex="\(2n\)">\(2n\)</span>. On <span class="math" data-tex="\(\mathbb R^2\)">\(\mathbb R^2\)</span>, take</p>
+<span class="math math-display" data-tex="\[
+R=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\
+\sin\theta&amp;\cos\theta\end{pmatrix},\qquad
+S=\begin{pmatrix}1&amp;0\\0&amp;-1\end{pmatrix},\qquad
+\theta=\frac{2\pi}{n}.
+\]">\[
+R=\begin{pmatrix}\cos\theta&amp;-\sin\theta\\
+\sin\theta&amp;\cos\theta\end{pmatrix},\qquad
+S=\begin{pmatrix}1&amp;0\\0&amp;-1\end{pmatrix},\qquad
+\theta=\frac{2\pi}{n}.
+\]</span>
+<p>Rotation by <span class="math" data-tex="\(n\theta\)">\(n\theta\)</span> is the identity, <span class="math" data-tex="\(S^2=I\)">\(S^2=I\)</span>, and multiplying the matrices gives <span class="math" data-tex="\(SRS=R^{-1}\)">\(SRS=R^{-1}\)</span>. Thus <span class="math" data-tex="\(r\mapsto R\)">\(r\mapsto R\)</span>, <span class="math" data-tex="\(s\mapsto S\)">\(s\mapsto S\)</span> defines a representation. The same matrices act on <span class="math" data-tex="\(\mathbb R^2\otimes_{\mathbb R}\mathbb C\cong\mathbb C^2\)">\(\mathbb R^2\otimes_{\mathbb R}\mathbb C\cong\mathbb C^2\)</span>. On this complex plane, <span class="math" data-tex="\(R\)">\(R\)</span> has the two distinct eigenlines spanned by <span class="math" data-tex="\((1,-i)\)">\((1,-i)\)</span> and <span class="math" data-tex="\((1,i)\)">\((1,i)\)</span>. The reflection exchanges those lines. Any invariant line for the whole group would have to be one of the rotation eigenlines, but neither is reflection-stable. The complex representation of <span class="math" data-tex="\(D_n\)">\(D_n\)</span> is therefore irreducible.</p>
+<h3 id="the-group-algebra-viewpoint">The group algebra viewpoint</h3>
+<p>The <strong>group algebra</strong> <span class="math" data-tex="\(k[G]\)">\(k[G]\)</span> has basis <span class="math" data-tex="\((g)_{g\in G}\)">\((g)_{g\in G}\)</span>, with multiplication extended bilinearly from the group law:</p>
+<span class="math math-display" data-tex="\[
+\left(\sum_g a_g g\right)\left(\sum_h b_h h\right)
+=\sum_{g,h}a_gb_h(gh).
+\]">\[
+\left(\sum_g a_g g\right)\left(\sum_h b_h h\right)
+=\sum_{g,h}a_gb_h(gh).
+\]</span>
+<p>Associativity and the identity follow from those of <span class="math" data-tex="\(G\)">\(G\)</span>. A representation extends to a unital left module by</p>
+<span class="math math-display" data-tex="\[
+\left(\sum_g a_g g\right)v=\sum_g a_g\rho(g)v.
+\]">\[
+\left(\sum_g a_g g\right)v=\sum_g a_g\rho(g)v.
+\]</span>
+<p>The representation law verifies the module law. Conversely, on a unital <span class="math" data-tex="\(k[G]\)">\(k[G]\)</span>-module, multiplication by <span class="math" data-tex="\(g\)">\(g\)</span> is invertible with inverse multiplication by <span class="math" data-tex="\(g^{-1}\)">\(g^{-1}\)</span>. These operators form a representation. The two constructions undo each other. Intertwiners are exactly module homomorphisms, and invariant subspaces are exactly submodules. In particular, an irreducible representation is a simple <span class="math" data-tex="\(k[G]\)">\(k[G]\)</span>-module. The regular representation is <span class="math" data-tex="\(k[G]\)">\(k[G]\)</span> acting on itself on the left.</p>
+<h2 id="2-averaging-separates-invariant-pieces">2. Averaging separates invariant pieces</h2>
+<p>An arbitrary inner product need not respect a given complex action. A finite group lets us repair that by averaging all its translates.</p>
+<p><strong>Proposition 2.1 (invariant inner products).</strong> Every complex representation of <span class="math" data-tex="\(G\)">\(G\)</span> preserves a positive definite Hermitian inner product. With respect to an orthonormal basis for that inner product, all its matrices are unitary.</p>
+<p><strong>Proof.</strong> Choose any positive definite Hermitian inner product <span class="math" data-tex="\((\ ,\ )_0\)">\((\ ,\ )_0\)</span>, linear in its first variable. Define</p>
+<span class="math math-display" data-tex="\[
+\langle v,w\rangle
+=\frac1{|G|}\sum_{g\in G}(gv,gw)_0.
+\]">\[
+\langle v,w\rangle
+=\frac1{|G|}\sum_{g\in G}(gv,gw)_0.
+\]</span>
+<p>Each summand is linear in <span class="math" data-tex="\(v\)">\(v\)</span>, conjugate-linear in <span class="math" data-tex="\(w\)">\(w\)</span>, and Hermitian. If <span class="math" data-tex="\(v\neq0\)">\(v\neq0\)</span>, all <span class="math" data-tex="\(gv\)">\(gv\)</span> are nonzero, so each <span class="math" data-tex="\((gv,gv)_0\)">\((gv,gv)_0\)</span> is positive. Their average is positive. For <span class="math" data-tex="\(h\in G\)">\(h\in G\)</span>,</p>
+<span class="math math-display" data-tex="\[
+\langle hv,hw\rangle
+=\frac1{|G|}\sum_{g\in G}(ghv,ghw)_0
+=\langle v,w\rangle,
+\]">\[
+\langle hv,hw\rangle
+=\frac1{|G|}\sum_{g\in G}(ghv,ghw)_0
+=\langle v,w\rangle,
+\]</span>
+<p>because <span class="math" data-tex="\(g\mapsto gh\)">\(g\mapsto gh\)</span> permutes <span class="math" data-tex="\(G\)">\(G\)</span>. Choose an orthonormal basis. Preservation of its standard Hermitian form says that each matrix <span class="math" data-tex="\(M_g\)">\(M_g\)</span> satisfies <span class="math" data-tex="\(M_g^*M_g=I\)">\(M_g^*M_g=I\)</span>. This proves the last assertion. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<p>If <span class="math" data-tex="\(U\)">\(U\)</span> is invariant, its orthogonal complement for this form is invariant too. Indeed, for <span class="math" data-tex="\(v\in U^\perp\)">\(v\in U^\perp\)</span> and <span class="math" data-tex="\(u\in U\)">\(u\in U\)</span>,</p>
+<span class="math math-display" data-tex="\[
+\langle hv,u\rangle=\langle v,h^{-1}u\rangle=0.
+\]">\[
+\langle hv,u\rangle=\langle v,h^{-1}u\rangle=0.
+\]</span>
+<p>The linear algebra decomposition <span class="math" data-tex="\(V=U\oplus U^\perp\)">\(V=U\oplus U^\perp\)</span> is therefore a decomposition of representations. This already proves splitting over <span class="math" data-tex="\(\mathbb C\)">\(\mathbb C\)</span>. To obtain the result over other fields, average a linear map instead of a positive form.</p>
+<p><em>Reference:</em> [Artin, Theorem 10.3.6].</p>
+<p><strong>Lemma 2.2 (averaging maps).</strong> Suppose the scalar <span class="math" data-tex="\(|G|\cdot1_k\)">\(|G|\cdot1_k\)</span> is invertible. For representations <span class="math" data-tex="\(V,W\)">\(V,W\)</span>, the operator</p>
+<span class="math math-display" data-tex="\[
+\mathcal R(f)=\frac1{|G|}\sum_{g\in G}
+\rho_W(g)f\rho_V(g^{-1})
+\qquad(f\in\operatorname{Hom}_k(V,W))
+\]">\[
+\mathcal R(f)=\frac1{|G|}\sum_{g\in G}
+\rho_W(g)f\rho_V(g^{-1})
+\qquad(f\in\operatorname{Hom}_k(V,W))
+\]</span>
+<p>is a linear projection from <span class="math" data-tex="\(\operatorname{Hom}_k(V,W)\)">\(\operatorname{Hom}_k(V,W)\)</span> onto <span class="math" data-tex="\(\operatorname{Hom}_G(V,W)\)">\(\operatorname{Hom}_G(V,W)\)</span>.</p>
+<p><strong>Proof.</strong> Conjugating the summands by <span class="math" data-tex="\(h\)">\(h\)</span>, in the sense of composing on the left with <span class="math" data-tex="\(\rho_W(h)\)">\(\rho_W(h)\)</span> and on the right with <span class="math" data-tex="\(\rho_V(h^{-1})\)">\(\rho_V(h^{-1})\)</span>, replaces <span class="math" data-tex="\(g\)">\(g\)</span> by <span class="math" data-tex="\(hg\)">\(hg\)</span>. Thus <span class="math" data-tex="\(\rho_W(h)\mathcal R(f)=\mathcal R(f)\rho_V(h)\)">\(\rho_W(h)\mathcal R(f)=\mathcal R(f)\rho_V(h)\)</span>. Its image consists of intertwiners. If <span class="math" data-tex="\(f\)">\(f\)</span> is already an intertwiner, every summand equals <span class="math" data-tex="\(f\)">\(f\)</span>, so <span class="math" data-tex="\(\mathcal R(f)=f\)">\(\mathcal R(f)=f\)</span>. These two statements give <span class="math" data-tex="\(\mathcal R^2=\mathcal R\)">\(\mathcal R^2=\mathcal R\)</span> and the asserted image. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<p><strong>Theorem 2.3 (Maschke).</strong> Suppose <span class="math" data-tex="\(k\)">\(k\)</span> has characteristic zero, or characteristic <span class="math" data-tex="\(p&gt;0\)">\(p&gt;0\)</span> with <span class="math" data-tex="\(p\nmid |G|\)">\(p\nmid |G|\)</span>. Every invariant subspace of a representation over <span class="math" data-tex="\(k\)">\(k\)</span> has an invariant complement. Every such representation is completely reducible.</p>
+<p><strong>Proof.</strong> Let <span class="math" data-tex="\(U\subseteq V\)">\(U\subseteq V\)</span> be invariant. Extend a basis of <span class="math" data-tex="\(U\)">\(U\)</span> to a basis of <span class="math" data-tex="\(V\)">\(V\)</span>, and let <span class="math" data-tex="\(p_0:V\to V\)">\(p_0:V\to V\)</span> fix the basis vectors in <span class="math" data-tex="\(U\)">\(U\)</span> and send the additional ones to zero. It is a projection onto <span class="math" data-tex="\(U\)">\(U\)</span>. The scalar <span class="math" data-tex="\(|G|\)">\(|G|\)</span> is invertible under the hypothesis. Put</p>
+<span class="math math-display" data-tex="\[
+P=\mathcal R(p_0)=\frac1{|G|}\sum_g\rho(g)p_0\rho(g^{-1}).
+\]">\[
+P=\mathcal R(p_0)=\frac1{|G|}\sum_g\rho(g)p_0\rho(g^{-1}).
+\]</span>
+<p>Lemma 2.2 makes <span class="math" data-tex="\(P\)">\(P\)</span> an intertwiner. Each summand maps <span class="math" data-tex="\(V\)">\(V\)</span> into <span class="math" data-tex="\(U\)">\(U\)</span>, because <span class="math" data-tex="\(U\)">\(U\)</span> is invariant. For <span class="math" data-tex="\(u\in U\)">\(u\in U\)</span>, it sends <span class="math" data-tex="\(u\)">\(u\)</span> to <span class="math" data-tex="\(u\)">\(u\)</span>, because <span class="math" data-tex="\(g^{-1}u\in U\)">\(g^{-1}u\in U\)</span> and <span class="math" data-tex="\(p_0\)">\(p_0\)</span> fixes <span class="math" data-tex="\(U\)">\(U\)</span>. Consequently <span class="math" data-tex="\(P(V)\subseteq U\)">\(P(V)\subseteq U\)</span> and <span class="math" data-tex="\(P|_U=1_U\)">\(P|_U=1_U\)</span>. It follows that <span class="math" data-tex="\(P(V)=U\)">\(P(V)=U\)</span> and <span class="math" data-tex="\(P^2=P\)">\(P^2=P\)</span>.</p>
+<p>The kernel is invariant because <span class="math" data-tex="\(P\)">\(P\)</span> intertwines. For any <span class="math" data-tex="\(v\in V\)">\(v\in V\)</span>,</p>
+<span class="math math-display" data-tex="\[
+v=Pv+(v-Pv),\qquad Pv\in U,\quad v-Pv\in\ker P.
+\]">\[
+v=Pv+(v-Pv),\qquad Pv\in U,\quad v-Pv\in\ker P.
+\]</span>
+<p>The intersection <span class="math" data-tex="\(U\cap\ker P\)">\(U\cap\ker P\)</span> is zero since <span class="math" data-tex="\(P\)">\(P\)</span> fixes <span class="math" data-tex="\(U\)">\(U\)</span>. Thus <span class="math" data-tex="\(V=U\oplus\ker P\)">\(V=U\oplus\ker P\)</span>.</p>
+<p>For complete reducibility, induct on <span class="math" data-tex="\(\dim V\)">\(\dim V\)</span>. The zero case is the empty sum. A nonzero <span class="math" data-tex="\(V\)">\(V\)</span> has an invariant subspace <span class="math" data-tex="\(S\)">\(S\)</span> of least positive dimension, which is irreducible. Split it off by the first part. The complement has smaller dimension, so induction decomposes it into irreducibles. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<p><em>Reference:</em> [Gruson–Serganova, Chapter 1, Theorem 3.3 and Proposition 3.12].</p>
+<p>The proof uses more than equivariance of <span class="math" data-tex="\(P\)">\(P\)</span>. An average of arbitrary idempotent operators need not be idempotent. For example, let the generator of <span class="math" data-tex="\(C_2\)">\(C_2\)</span> swap the coordinates of <span class="math" data-tex="\(\mathbb C^2\)">\(\mathbb C^2\)</span>, and let <span class="math" data-tex="\(p_0=\operatorname{diag}(1,0)\)">\(p_0=\operatorname{diag}(1,0)\)</span>. Its conjugate is <span class="math" data-tex="\(\operatorname{diag}(0,1)\)">\(\operatorname{diag}(0,1)\)</span>, so its group average is <span class="math" data-tex="\(\tfrac12I\)">\(\tfrac12I\)</span>, whose square is <span class="math" data-tex="\(\tfrac14I\)">\(\tfrac14I\)</span>. Here idempotence follows because the average has image in the invariant space <span class="math" data-tex="\(U\)">\(U\)</span> and fixes <span class="math" data-tex="\(U\)">\(U\)</span>.</p>
+<p><strong>Lemma 2.4 (the meaning of complete reducibility).</strong> For a finite-dimensional representation, complete reducibility is equivalent to every invariant subspace having an invariant complement.</p>
+<p><strong>Proof.</strong> The reverse implication follows by the dimension induction just used; that argument needs no assumption on <span class="math" data-tex="\(G\)">\(G\)</span> or <span class="math" data-tex="\(k\)">\(k\)</span> once complements exist. For the forward implication, write <span class="math" data-tex="\(V=S_1\oplus\cdots\oplus S_r\)">\(V=S_1\oplus\cdots\oplus S_r\)</span> with all <span class="math" data-tex="\(S_j\)">\(S_j\)</span> irreducible, and fix an invariant subspace <span class="math" data-tex="\(U\)">\(U\)</span>. Choose a subset <span class="math" data-tex="\(J\subseteq\{1,\ldots,r\}\)">\(J\subseteq\{1,\ldots,r\}\)</span> maximal with</p>
+<span class="math math-display" data-tex="\[
+U\cap T=0,\qquad T=\bigoplus_{j\in J}S_j.
+\]">\[
+U\cap T=0,\qquad T=\bigoplus_{j\in J}S_j.
+\]</span>
+<p>If <span class="math" data-tex="\(i\notin J\)">\(i\notin J\)</span>, maximality gives a nonzero vector in <span class="math" data-tex="\(U\cap(T\oplus S_i)\)">\(U\cap(T\oplus S_i)\)</span>. Its <span class="math" data-tex="\(S_i\)">\(S_i\)</span>-component is nonzero, since <span class="math" data-tex="\(U\cap T=0\)">\(U\cap T=0\)</span>. Hence <span class="math" data-tex="\(S_i\cap(U+T)\neq0\)">\(S_i\cap(U+T)\neq0\)</span>. This intersection is invariant, so irreducibility gives <span class="math" data-tex="\(S_i\subseteq U+T\)">\(S_i\subseteq U+T\)</span>. This holds for all missing summands, proving <span class="math" data-tex="\(V=U+T\)">\(V=U+T\)</span>. By construction the sum is direct. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<h3 id="where-the-characteristic-enters">Where the characteristic enters</h3>
+<p>Let <span class="math" data-tex="\(G=C_p=\langle t\rangle\)">\(G=C_p=\langle t\rangle\)</span> over <span class="math" data-tex="\(\mathbb F_p\)">\(\mathbb F_p\)</span>, and let</p>
+<span class="math math-display" data-tex="\[
+\rho(t)=J=\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}=I+N.
+\]">\[
+\rho(t)=J=\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}=I+N.
+\]</span>
+<p>Here <span class="math" data-tex="\(N^2=0\)">\(N^2=0\)</span>, so <span class="math" data-tex="\(J^m=I+mN\)">\(J^m=I+mN\)</span> for every nonnegative integer <span class="math" data-tex="\(m\)">\(m\)</span>, by induction. In particular <span class="math" data-tex="\(J^p=I\)">\(J^p=I\)</span>, so this defines a representation. The line <span class="math" data-tex="\(U=\mathbb F_p e_1\)">\(U=\mathbb F_p e_1\)</span> is invariant.</p>
+<p>Any complementary line is spanned by <span class="math" data-tex="\(v=ae_1+be_2\)">\(v=ae_1+be_2\)</span> with <span class="math" data-tex="\(b\neq0\)">\(b\neq0\)</span>. If it were invariant, <span class="math" data-tex="\(Jv=cv\)">\(Jv=cv\)</span> for a scalar <span class="math" data-tex="\(c\)">\(c\)</span>. Comparing second coordinates gives <span class="math" data-tex="\(c=1\)">\(c=1\)</span>. Comparing first coordinates then gives <span class="math" data-tex="\(a+b=a\)">\(a+b=a\)</span>, contradicting <span class="math" data-tex="\(b\neq0\)">\(b\neq0\)</span>. Thus <span class="math" data-tex="\(U\)">\(U\)</span> has no invariant complement.</p>
+<p>The quotient <span class="math" data-tex="\(V/U\)">\(V/U\)</span> and the subrepresentation <span class="math" data-tex="\(U\)">\(U\)</span> are both trivial. The representation nevertheless fails to be their direct sum. Knowing the subspace and quotient does not determine whether an extension splits. In this example <span class="math" data-tex="\(|G|=p=0\)">\(|G|=p=0\)</span> in the field, so the averaging division is unavailable.</p>
+<h2 id="3-irreducible-pieces-and-the-maps-between-them">3. Irreducible pieces and the maps between them</h2>
+<p><strong>Theorem 3.1 (Schur's lemma).</strong> Let <span class="math" data-tex="\(S,T\)">\(S,T\)</span> be irreducible representations over <span class="math" data-tex="\(k\)">\(k\)</span>.</p>
+<ol>
+<li>Every intertwiner <span class="math" data-tex="\(S\to T\)">\(S\to T\)</span> is zero or an isomorphism.</li>
+<li>The algebra <span class="math" data-tex="\(\operatorname{End}_G(S)\)">\(\operatorname{End}_G(S)\)</span> is a division algebra over <span class="math" data-tex="\(k\)">\(k\)</span>.</li>
+<li>If <span class="math" data-tex="\(k\)">\(k\)</span> is algebraically closed, <span class="math" data-tex="\(\operatorname{End}_G(S)=k\,1_S\)">\(\operatorname{End}_G(S)=k\,1_S\)</span>.</li>
+</ol>
+<p><strong>Proof.</strong> For a nonzero intertwiner <span class="math" data-tex="\(f:S\to T\)">\(f:S\to T\)</span>, its invariant kernel cannot be <span class="math" data-tex="\(S\)">\(S\)</span>, so it is zero. Its invariant image is nonzero, so it is all of <span class="math" data-tex="\(T\)">\(T\)</span>. Hence <span class="math" data-tex="\(f\)">\(f\)</span> is bijective. Its inverse also intertwines: the identity <span class="math" data-tex="\(f\rho_S(g)=\rho_T(g)f\)">\(f\rho_S(g)=\rho_T(g)f\)</span> gives <span class="math" data-tex="\(\rho_S(g)f^{-1}=f^{-1}\rho_T(g)\)">\(\rho_S(g)f^{-1}=f^{-1}\rho_T(g)\)</span>. In particular every nonzero endomorphism is invertible in the endomorphism algebra, proving the first two assertions.</p>
+<p>For the third, take <span class="math" data-tex="\(a\in\operatorname{End}_G(S)\)">\(a\in\operatorname{End}_G(S)\)</span>. Since <span class="math" data-tex="\(S\neq0\)">\(S\neq0\)</span> is finite-dimensional and <span class="math" data-tex="\(k\)">\(k\)</span> is algebraically closed, <span class="math" data-tex="\(a\)">\(a\)</span> has an eigenvalue <span class="math" data-tex="\(\lambda\in k\)">\(\lambda\in k\)</span>. The endomorphism <span class="math" data-tex="\(a-\lambda1_S\)">\(a-\lambda1_S\)</span> has nonzero kernel and therefore cannot be an isomorphism. The first assertion makes it zero. Thus <span class="math" data-tex="\(a=\lambda1_S\)">\(a=\lambda1_S\)</span>. Scalar maps always intertwine, giving equality. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<p>Schur's lemma does not require the characteristic hypothesis in Maschke's theorem. It controls maps between representations already known to be irreducible.</p>
+<p><em>References:</em> [Schur, §2, statements I–II]; <a href="https://kokunoyumeto.github.io/stacks-zh-hans-cn/en/brauer.html#brauer-lemma-simple-module">Stacks, Tag 0746</a> for the division-ring statement for simple modules.</p>
+<h3 id="abelian-groups">Abelian groups</h3>
+<p><strong>Corollary 3.2.</strong> Every irreducible representation of a finite abelian group over an algebraically closed field is one-dimensional. In particular this holds when the characteristic does not divide the group order.</p>
+<p><strong>Proof.</strong> If <span class="math" data-tex="\(G\)">\(G\)</span> is abelian, each operator <span class="math" data-tex="\(\rho(g)\)">\(\rho(g)\)</span> commutes with every <span class="math" data-tex="\(\rho(h)\)">\(\rho(h)\)</span>, so it lies in <span class="math" data-tex="\(\operatorname{End}_G(S)\)">\(\operatorname{End}_G(S)\)</span>. Theorem 3.1 makes each operator scalar. Every one-dimensional subspace of <span class="math" data-tex="\(S\)">\(S\)</span> is then invariant. Irreducibility forces <span class="math" data-tex="\(\dim S=1\)">\(\dim S=1\)</span>. Conversely, a one-dimensional representation is irreducible because a line has no nonzero proper subspace. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<p>The dimension assertion survives in the excluded characteristics; complete reducibility may fail there. These are different conclusions.</p>
+<p><em>Reference:</em> [Schur, §2, statement III].</p>
+<h3 id="a-real-irreducible-that-splits-over-the-complex-numbers">A real irreducible that splits over the complex numbers</h3>
+<p>Let the generator of <span class="math" data-tex="\(C_3\)">\(C_3\)</span> act on <span class="math" data-tex="\(\mathbb R^2\)">\(\mathbb R^2\)</span> by</p>
+<span class="math math-display" data-tex="\[
+R=\begin{pmatrix}-\tfrac12&amp;-\tfrac{\sqrt3}{2}\\
+\tfrac{\sqrt3}{2}&amp;-\tfrac12\end{pmatrix}.
+\]">\[
+R=\begin{pmatrix}-\tfrac12&amp;-\tfrac{\sqrt3}{2}\\
+\tfrac{\sqrt3}{2}&amp;-\tfrac12\end{pmatrix}.
+\]</span>
+<p>Its characteristic polynomial is <span class="math" data-tex="\(x^2+x+1\)">\(x^2+x+1\)</span>, which has no real root. An invariant real line would give a real eigenvector, so this representation is irreducible. On <span class="math" data-tex="\(\mathbb C^2\)">\(\mathbb C^2\)</span>, however, the vectors <span class="math" data-tex="\((1,-i)\)">\((1,-i)\)</span> and <span class="math" data-tex="\((1,i)\)">\((1,i)\)</span> have eigenvalues <span class="math" data-tex="\(\zeta=e^{2\pi i/3}\)">\(\zeta=e^{2\pi i/3}\)</span> and <span class="math" data-tex="\(\zeta^{-1}\)">\(\zeta^{-1}\)</span>. They span two invariant lines, giving a decomposition into two distinct one-dimensional representations.</p>
+<p>Write</p>
+<span class="math math-display" data-tex="\[
+K=\begin{pmatrix}0&amp;-1\\1&amp;0\end{pmatrix},\qquad
+R=-\tfrac12I+\tfrac{\sqrt3}{2}K.
+\]">\[
+K=\begin{pmatrix}0&amp;-1\\1&amp;0\end{pmatrix},\qquad
+R=-\tfrac12I+\tfrac{\sqrt3}{2}K.
+\]</span>
+<p>The commuting algebra is <span class="math" data-tex="\(\{aI+bK:a,b\in\mathbb R\}\cong\mathbb C\)">\(\{aI+bK:a,b\in\mathbb R\}\cong\mathbb C\)</span>; the calculation is in Exercise 2. Thus the scalar conclusion of Schur's lemma would be false over <span class="math" data-tex="\(\mathbb R\)">\(\mathbb R\)</span>, even though the division-algebra conclusion remains true.</p>
+<h2 id="4-what-is-unique-in-a-decomposition">4. What is unique in a decomposition?</h2>
+<p>From now through this section, assume <span class="math" data-tex="\(k\)">\(k\)</span> is algebraically closed and <span class="math" data-tex="\(|G|\)">\(|G|\)</span> is invertible in <span class="math" data-tex="\(k\)">\(k\)</span>. Maschke gives</p>
+<span class="math math-display" data-tex="\[
+V\cong\bigoplus_{i=1}^r S_i^{\oplus m_i},
+\]">\[
+V\cong\bigoplus_{i=1}^r S_i^{\oplus m_i},
+\]</span>
+<p>where the <span class="math" data-tex="\(S_i\)">\(S_i\)</span> are pairwise nonisomorphic irreducibles and <span class="math" data-tex="\(m_i&gt;0\)">\(m_i&gt;0\)</span>.</p>
+<p><strong>Corollary 4.1 (multiplicities).</strong> For each irreducible <span class="math" data-tex="\(S\)">\(S\)</span>, its multiplicity in <span class="math" data-tex="\(V\)">\(V\)</span> is</p>
+<span class="math math-display" data-tex="\[
+m_S=\dim_k\operatorname{Hom}_G(S,V).
+\]">\[
+m_S=\dim_k\operatorname{Hom}_G(S,V).
+\]</span>
+<p>Consequently the irreducible isomorphism classes occurring in <span class="math" data-tex="\(V\)">\(V\)</span>, and their multiplicities, are independent of the decomposition.</p>
+<p><strong>Proof.</strong> Taking components of a map into a finite direct sum gives</p>
+<span class="math math-display" data-tex="\[
+\operatorname{Hom}_G(S,V)
+\cong\bigoplus_i\operatorname{Hom}_G(S,S_i)^{\oplus m_i}.
+\]">\[
+\operatorname{Hom}_G(S,V)
+\cong\bigoplus_i\operatorname{Hom}_G(S,S_i)^{\oplus m_i}.
+\]</span>
+<p>Schur's lemma says that a term is zero unless <span class="math" data-tex="\(S\cong S_i\)">\(S\cong S_i\)</span>. If they are isomorphic, composing with one fixed isomorphism identifies that term with <span class="math" data-tex="\(\operatorname{End}_G(S)=k\)">\(\operatorname{End}_G(S)=k\)</span>. Thus its dimension is exactly the number of copies of <span class="math" data-tex="\(S\)">\(S\)</span>. The left-hand space depends only on <span class="math" data-tex="\(S\)">\(S\)</span> and <span class="math" data-tex="\(V\)">\(V\)</span>, proving independence. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<p>Over a field that is not algebraically closed, the same argument, for a completely reducible <span class="math" data-tex="\(V\)">\(V\)</span>, gives instead</p>
+<span class="math math-display" data-tex="\[
+\dim_k\operatorname{Hom}_G(S,V)
+=m_S\dim_k\operatorname{End}_G(S).
+\]">\[
+\dim_k\operatorname{Hom}_G(S,V)
+=m_S\dim_k\operatorname{End}_G(S).
+\]</span>
+<p>For the real rotation representation in the preceding example, <span class="math" data-tex="\(S=V\)">\(S=V\)</span> has multiplicity <span class="math" data-tex="\(1\)">\(1\)</span>, but <span class="math" data-tex="\(\operatorname{Hom}_G(S,V)\)">\(\operatorname{Hom}_G(S,V)\)</span> has real dimension <span class="math" data-tex="\(2\)">\(2\)</span>. The distinction is essential.</p>
+<p>The individual irreducible subspaces are usually not determined. For instance, in <span class="math" data-tex="\(S\oplus S\)">\(S\oplus S\)</span>, every graph <span class="math" data-tex="\(\{(v,av):v\in S\}\)">\(\{(v,av):v\in S\}\)</span>, <span class="math" data-tex="\(a\in k\)">\(a\in k\)</span>, is another subrepresentation isomorphic to <span class="math" data-tex="\(S\)">\(S\)</span>. We need a larger subspace that includes all copies of the same type.</p>
+<p>Define the <strong>isotypic component</strong> of type <span class="math" data-tex="\(S\)">\(S\)</span> by</p>
+<span class="math math-display" data-tex="\[
+V[S]=\sum_{f\in\operatorname{Hom}_G(S,V)}\operatorname{im}f.
+\]">\[
+V[S]=\sum_{f\in\operatorname{Hom}_G(S,V)}\operatorname{im}f.
+\]</span>
+<p>This is an invariant subspace defined without selecting a decomposition. A nonzero <span class="math" data-tex="\(f\)">\(f\)</span> is injective by the kernel argument in Schur's lemma, so its image is a copy of <span class="math" data-tex="\(S\)">\(S\)</span>. Conversely, an isomorphism from <span class="math" data-tex="\(S\)">\(S\)</span> onto any copy of <span class="math" data-tex="\(S\)">\(S\)</span> in <span class="math" data-tex="\(V\)">\(V\)</span>, followed by inclusion, is such a map.</p>
+<p><strong>Proposition 4.2 (isotypic decomposition).</strong> In any decomposition of <span class="math" data-tex="\(V\)">\(V\)</span> into irreducibles, <span class="math" data-tex="\(V[S]\)">\(V[S]\)</span> is exactly the direct sum of the summands isomorphic to <span class="math" data-tex="\(S\)">\(S\)</span>. Hence</p>
+<span class="math math-display" data-tex="\[
+V=\bigoplus_{[S]}V[S],
+\]">\[
+V=\bigoplus_{[S]}V[S],
+\]</span>
+<p>with only finitely many nonzero components. The subspaces <span class="math" data-tex="\(V[S]\)">\(V[S]\)</span> and the projections onto them along the other components are canonical. Every intertwiner <span class="math" data-tex="\(a:V\to V&#x27;\)">\(a:V\to V&#x27;\)</span> sends <span class="math" data-tex="\(V[S]\)">\(V[S]\)</span> into <span class="math" data-tex="\(V&#x27;[S]\)">\(V&#x27;[S]\)</span>.</p>
+<p><strong>Proof.</strong> Fix a decomposition <span class="math" data-tex="\(V=\bigoplus_j T_j\)">\(V=\bigoplus_j T_j\)</span>, with component projections <span class="math" data-tex="\(\pi_j\)">\(\pi_j\)</span>. For <span class="math" data-tex="\(f:S\to V\)">\(f:S\to V\)</span>, the map <span class="math" data-tex="\(\pi_jf\)">\(\pi_jf\)</span> intertwines. If <span class="math" data-tex="\(T_j\not\cong S\)">\(T_j\not\cong S\)</span>, Schur's lemma makes it zero. Thus every such image lies in the sum of the summands of type <span class="math" data-tex="\(S\)">\(S\)</span>. Each summand of that type is itself the image of an intertwiner from <span class="math" data-tex="\(S\)">\(S\)</span>, proving the reverse inclusion. Grouping the summands by type proves the direct sum formula.</p>
+<p>Because <span class="math" data-tex="\(V[S]\)">\(V[S]\)</span> was defined intrinsically, all these grouped subspaces are independent of the decomposition. The direct sum determines a unique linear projection <span class="math" data-tex="\(e_S\)">\(e_S\)</span> with image <span class="math" data-tex="\(V[S]\)">\(V[S]\)</span> and kernel the sum of the other components. Both subspaces are invariant, so the projection intertwines. Finally <span class="math" data-tex="\(af:S\to V&#x27;\)">\(af:S\to V&#x27;\)</span> intertwines for every <span class="math" data-tex="\(f:S\to V\)">\(f:S\to V\)</span>; summing its images proves <span class="math" data-tex="\(a(V[S])\subseteq V&#x27;[S]\)">\(a(V[S])\subseteq V&#x27;[S]\)</span>. <span class="math" data-tex="\(\square\)">\(\square\)</span></p>
+<p>Thus uniqueness has two levels. Multiplicities are unique numbers. Isotypic components are unique subspaces. Splitting a component into its individual copies requires choices. The projection <span class="math" data-tex="\(e_S\)">\(e_S\)</span> commutes with every equivariant endomorphism, since all such endomorphisms preserve every component.</p>
+<h2 id="5-a-cyclic-regular-representation-worked-out">5. A cyclic regular representation worked out</h2>
+<p>Let <span class="math" data-tex="\(G=C_n=\langle t\rangle\)">\(G=C_n=\langle t\rangle\)</span> over <span class="math" data-tex="\(\mathbb C\)">\(\mathbb C\)</span>, let <span class="math" data-tex="\(\omega=e^{2\pi i/n}\)">\(\omega=e^{2\pi i/n}\)</span>, and use the basis <span class="math" data-tex="\(e_j=t^j\)">\(e_j=t^j\)</span>, <span class="math" data-tex="\(0\leq j&lt;n\)">\(0\leq j&lt;n\)</span>, of <span class="math" data-tex="\(\mathbb C[C_n]\)">\(\mathbb C[C_n]\)</span>. Indices are read modulo <span class="math" data-tex="\(n\)">\(n\)</span>. The regular action is <span class="math" data-tex="\(te_j=e_{j+1}\)">\(te_j=e_{j+1}\)</span>.</p>
+<p>For <span class="math" data-tex="\(0\leq a&lt;n\)">\(0\leq a&lt;n\)</span>, define</p>
+<span class="math math-display" data-tex="\[
+v_a=\sum_{j=0}^{n-1}\omega^{-aj}e_j.
+\]">\[
+v_a=\sum_{j=0}^{n-1}\omega^{-aj}e_j.
+\]</span>
+<p>Reindexing with <span class="math" data-tex="\(\ell=j+1\)">\(\ell=j+1\)</span> gives</p>
+<span class="math math-display" data-tex="\[
+tv_a=\sum_\ell\omega^{-a(\ell-1)}e_\ell
+=\omega^av_a.
+\]">\[
+tv_a=\sum_\ell\omega^{-a(\ell-1)}e_\ell
+=\omega^av_a.
+\]</span>
+<p>Each <span class="math" data-tex="\(v_a\)">\(v_a\)</span> is nonzero, since its <span class="math" data-tex="\(e_0\)">\(e_0\)</span>-coefficient is <span class="math" data-tex="\(1\)">\(1\)</span>. The <span class="math" data-tex="\(n\)">\(n\)</span> eigenvalues <span class="math" data-tex="\(\omega^a\)">\(\omega^a\)</span> are distinct, so the eigenvectors are independent. They therefore form a basis, and</p>
+<span class="math math-display" data-tex="\[
+\mathbb C[C_n]=\bigoplus_{a=0}^{n-1}\mathbb C v_a,
+\qquad \lambda_a(t^j)=\omega^{aj}.
+\]">\[
+\mathbb C[C_n]=\bigoplus_{a=0}^{n-1}\mathbb C v_a,
+\qquad \lambda_a(t^j)=\omega^{aj}.
+\]</span>
+<p>Every one-dimensional character is on this list: its value at <span class="math" data-tex="\(t\)">\(t\)</span> has <span class="math" data-tex="\(n\)">\(n\)</span>th power <span class="math" data-tex="\(1\)">\(1\)</span>, and that value determines it. Corollary 3.2 shows that these are all the irreducibles. Each occurs once in the regular representation.</p>
+<p>For <span class="math" data-tex="\(n=4\)">\(n=4\)</span>, this gives eigenvalues <span class="math" data-tex="\(1,i,-1,-i\)">\(1,i,-1,-i\)</span>. In the order <span class="math" data-tex="\(e_0,e_1,e_2,e_3\)">\(e_0,e_1,e_2,e_3\)</span>, the corresponding vectors are</p>
+<span class="math math-display" data-tex="\[
+(1,1,1,1),\quad(1,-i,-1,i),\quad
+(1,-1,1,-1),\quad(1,i,-1,-i).
+\]">\[
+(1,1,1,1),\quad(1,-i,-1,i),\quad
+(1,-1,1,-1),\quad(1,i,-1,-i).
+\]</span>
+<p>This example prepares for “Fourier analysis on finite abelian groups,” which develops character orthogonality, inversion, and duality. Here the calculation serves to identify the irreducible pieces of a concrete representation. For arbitrary finite groups, <a href="characters-and-the-orthogonality-relations.html">Characters and the orthogonality relations</a> will provide numerical methods for finding multiplicities.</p>
+<h2 id="6-exercises-with-complete-solutions">6. Exercises with complete solutions</h2>
+<p>Try each exercise before reading its solution. The last two use Schur's lemma to turn structural questions into questions about scalars and projections.</p>
+<h3 id="exercise-1-easy-the-standard-representation">Exercise 1 — Easy: the standard representation</h3>
+<p>Show that the permutation representation of <span class="math" data-tex="\(S_n\)">\(S_n\)</span> on <span class="math" data-tex="\(\mathbb C^n\)">\(\mathbb C^n\)</span> is the direct sum of the trivial representation and the standard representation. Prove that the standard representation is irreducible for <span class="math" data-tex="\(n\geq2\)">\(n\geq2\)</span>.</p>
+<p><strong>Solution.</strong> Coordinate permutations preserve both <span class="math" data-tex="\(L=\mathbb C(1,\ldots,1)\)">\(L=\mathbb C(1,\ldots,1)\)</span> and <span class="math" data-tex="\(A=\{z:\sum_i z_i=0\}\)">\(A=\{z:\sum_i z_i=0\}\)</span>. The decomposition in Section 1 shows their sum is all of <span class="math" data-tex="\(\mathbb C^n\)">\(\mathbb C^n\)</span>. If <span class="math" data-tex="\(c(1,\ldots,1)\in A\)">\(c(1,\ldots,1)\in A\)</span>, then <span class="math" data-tex="\(nc=0\)">\(nc=0\)</span>, so <span class="math" data-tex="\(c=0\)">\(c=0\)</span>. Hence the sum is direct and <span class="math" data-tex="\(L\)">\(L\)</span> is trivial.</p>
+<p>Let <span class="math" data-tex="\(0\neq U\subseteq A\)">\(0\neq U\subseteq A\)</span> be invariant, and choose <span class="math" data-tex="\(z\in U\setminus\{0\}\)">\(z\in U\setminus\{0\}\)</span>. Not all its coordinates are equal: otherwise the sum-zero condition would make it zero. Choose <span class="math" data-tex="\(i,j\)">\(i,j\)</span> with <span class="math" data-tex="\(z_i\neq z_j\)">\(z_i\neq z_j\)</span>. Then</p>
+<span class="math math-display" data-tex="\[
+z-(ij)z=(z_i-z_j)(e_i-e_j)\in U.
+\]">\[
+z-(ij)z=(z_i-z_j)(e_i-e_j)\in U.
+\]</span>
+<p>Thus <span class="math" data-tex="\(e_i-e_j\in U\)">\(e_i-e_j\in U\)</span>. Permuting indices gives every <span class="math" data-tex="\(e_a-e_b\in U\)">\(e_a-e_b\in U\)</span>. The vectors <span class="math" data-tex="\(e_a-e_n\)">\(e_a-e_n\)</span>, <span class="math" data-tex="\(1\leq a&lt;n\)">\(1\leq a&lt;n\)</span>, span <span class="math" data-tex="\(A\)">\(A\)</span>, since any <span class="math" data-tex="\(z\in A\)">\(z\in A\)</span> equals <span class="math" data-tex="\(\sum_{a&lt;n}z_a(e_a-e_n)\)">\(\sum_{a&lt;n}z_a(e_a-e_n)\)</span>. Therefore <span class="math" data-tex="\(U=A\)">\(U=A\)</span>, proving irreducibility. For <span class="math" data-tex="\(n=2\)">\(n=2\)</span>, <span class="math" data-tex="\(A\)">\(A\)</span> is the sign line. For <span class="math" data-tex="\(n=1\)">\(n=1\)</span>, <span class="math" data-tex="\(A=0\)">\(A=0\)</span>, so it is not irreducible under our convention.</p>
+<h3 id="exercise-2-easy-a-real-commuting-algebra">Exercise 2 — Easy: a real commuting algebra</h3>
+<p>Compute <span class="math" data-tex="\(\operatorname{End}_{C_3}(\mathbb R^2)\)">\(\operatorname{End}_{C_3}(\mathbb R^2)\)</span> for the rotation representation in Section 3, and identify it as a real algebra.</p>
+<p><strong>Solution.</strong> Since <span class="math" data-tex="\(R=-\tfrac12I+\tfrac{\sqrt3}{2}K\)">\(R=-\tfrac12I+\tfrac{\sqrt3}{2}K\)</span>, a real matrix commutes with <span class="math" data-tex="\(R\)">\(R\)</span> exactly when it commutes with <span class="math" data-tex="\(K\)">\(K\)</span>. For <span class="math" data-tex="\(B=\begin{pmatrix}u&amp;v\\w&amp;x\end{pmatrix}\)">\(B=\begin{pmatrix}u&amp;v\\w&amp;x\end{pmatrix}\)</span>,</p>
+<span class="math math-display" data-tex="\[
+BK=\begin{pmatrix}v&amp;-u\\x&amp;-w\end{pmatrix},\qquad
+KB=\begin{pmatrix}-w&amp;-x\\u&amp;v\end{pmatrix}.
+\]">\[
+BK=\begin{pmatrix}v&amp;-u\\x&amp;-w\end{pmatrix},\qquad
+KB=\begin{pmatrix}-w&amp;-x\\u&amp;v\end{pmatrix}.
+\]</span>
+<p>Equality says <span class="math" data-tex="\(x=u\)">\(x=u\)</span> and <span class="math" data-tex="\(w=-v\)">\(w=-v\)</span>. Thus <span class="math" data-tex="\(B=aI+bK\)">\(B=aI+bK\)</span> for real <span class="math" data-tex="\(a,b\)">\(a,b\)</span>. Since <span class="math" data-tex="\(K^2=-I\)">\(K^2=-I\)</span>, the map <span class="math" data-tex="\(a+bi\mapsto aI+bK\)">\(a+bi\mapsto aI+bK\)</span> is a bijective real-linear map preserving multiplication and the identity. It is an algebra isomorphism from <span class="math" data-tex="\(\mathbb C\)">\(\mathbb C\)</span> onto the commuting algebra. Explicitly, for <span class="math" data-tex="\((a,b)\neq(0,0)\)">\((a,b)\neq(0,0)\)</span>,</p>
+<span class="math math-display" data-tex="\[
+(aI+bK)^{-1}=\frac{aI-bK}{a^2+b^2}.
+\]">\[
+(aI+bK)^{-1}=\frac{aI-bK}{a^2+b^2}.
+\]</span>
+<p>This directly verifies the division-algebra conclusion.</p>
+<h3 id="exercise-3-medium-splitting-and-characteristic">Exercise 3 — Medium: splitting and characteristic</h3>
+<p>Show that Maschke's conclusion fails for <span class="math" data-tex="\(C_p\)">\(C_p\)</span> over <span class="math" data-tex="\(\mathbb F_p\)">\(\mathbb F_p\)</span>, including <span class="math" data-tex="\(p=2\)">\(p=2\)</span>. Explain why it holds for every finite group over every field of characteristic zero.</p>
+<p><strong>Solution.</strong> Use <span class="math" data-tex="\(J=I+N\)">\(J=I+N\)</span> from Section 2. The formula <span class="math" data-tex="\(J^p=I+pN=I\)">\(J^p=I+pN=I\)</span> holds also for <span class="math" data-tex="\(p=2\)">\(p=2\)</span>. A line complementary to <span class="math" data-tex="\(\mathbb F_p e_1\)">\(\mathbb F_p e_1\)</span> has a generator <span class="math" data-tex="\(ae_1+be_2\)">\(ae_1+be_2\)</span>, <span class="math" data-tex="\(b\neq0\)">\(b\neq0\)</span>. Invariance would give <span class="math" data-tex="\(Jv=cv\)">\(Jv=cv\)</span>; the second coordinate forces <span class="math" data-tex="\(c=1\)">\(c=1\)</span>, and the first forces <span class="math" data-tex="\(b=0\)">\(b=0\)</span>, a contradiction. Lemma 2.4 therefore also shows that this representation is not completely reducible.</p>
+<p>In a characteristic-zero field, a positive integer times <span class="math" data-tex="\(1_k\)">\(1_k\)</span> is nonzero. Every nonzero element of a field is invertible, so <span class="math" data-tex="\(|G|^{-1}\)">\(|G|^{-1}\)</span> exists for every finite <span class="math" data-tex="\(G\)">\(G\)</span>. Theorem 2.3 applies. This argument requires neither algebraic closure nor an inner product.</p>
+<h3 id="exercise-4-medium-a-restriction-on-the-centre">Exercise 4 — Medium: a restriction on the centre</h3>
+<p>Prove that a finite group admitting a faithful irreducible complex representation has cyclic centre.</p>
+<p><strong>Solution.</strong> Let <span class="math" data-tex="\(\rho:G\to\operatorname{GL}(V)\)">\(\rho:G\to\operatorname{GL}(V)\)</span> be faithful and irreducible. For <span class="math" data-tex="\(z\in Z(G)\)">\(z\in Z(G)\)</span>, <span class="math" data-tex="\(\rho(z)\)">\(\rho(z)\)</span> commutes with every group operator. Schur's lemma gives <span class="math" data-tex="\(\rho(z)=\lambda(z)I\)">\(\rho(z)=\lambda(z)I\)</span>. The map <span class="math" data-tex="\(\lambda:Z(G)\to\mathbb C^\times\)">\(\lambda:Z(G)\to\mathbb C^\times\)</span> is a homomorphism, and it is injective: <span class="math" data-tex="\(\lambda(z)=1\)">\(\lambda(z)=1\)</span> implies <span class="math" data-tex="\(\rho(z)=I\)">\(\rho(z)=I\)</span>, hence <span class="math" data-tex="\(z=1\)">\(z=1\)</span> by faithfulness.</p>
+<p>Let <span class="math" data-tex="\(H=\lambda(Z(G))\)">\(H=\lambda(Z(G))\)</span>. It is finite. Choose a positive integer <span class="math" data-tex="\(N\)">\(N\)</span> divisible by the orders of all its elements. Then every element of <span class="math" data-tex="\(H\)">\(H\)</span> is an <span class="math" data-tex="\(N\)">\(N\)</span>th root of unity, so <span class="math" data-tex="\(H\subseteq\langle e^{2\pi i/N}\rangle\)">\(H\subseteq\langle e^{2\pi i/N}\rangle\)</span>. To see explicitly how the elementary cyclic-group fact applies, let</p>
+<span class="math math-display" data-tex="\[
+B=\{m\in\mathbb Z:e^{2\pi im/N}\in H\}.
+\]">\[
+B=\{m\in\mathbb Z:e^{2\pi im/N}\in H\}.
+\]</span>
+<p>This is a subgroup of <span class="math" data-tex="\(\mathbb Z\)">\(\mathbb Z\)</span> containing <span class="math" data-tex="\(N\mathbb Z\)">\(N\mathbb Z\)</span>. By the subgroup theorem for <span class="math" data-tex="\(\mathbb Z\)">\(\mathbb Z\)</span>, <span class="math" data-tex="\(B=d\mathbb Z\)">\(B=d\mathbb Z\)</span> for some positive <span class="math" data-tex="\(d\)">\(d\)</span>. Consequently <span class="math" data-tex="\(H\)">\(H\)</span> is generated by <span class="math" data-tex="\(e^{2\pi id/N}\)">\(e^{2\pi id/N}\)</span>. The injection identifies <span class="math" data-tex="\(Z(G)\)">\(Z(G)\)</span> with this cyclic group. Faithfulness is used precisely in making the scalar homomorphism injective.</p>
+<h3 id="exercise-5-hard-an-isotypic-projection">Exercise 5 — Hard: an isotypic projection</h3>
+<p>Let <span class="math" data-tex="\(V\)">\(V\)</span> be a complex representation and <span class="math" data-tex="\(W\subseteq V\)">\(W\subseteq V\)</span> irreducible. Show that its isotypic component is the sum of all subrepresentations isomorphic to <span class="math" data-tex="\(W\)">\(W\)</span>. Construct an ordinary linear projection whose group average has that entire component as its image.</p>
+<p><strong>Solution.</strong> Write <span class="math" data-tex="\(S\)">\(S\)</span> for the sum of all copies of <span class="math" data-tex="\(W\)">\(W\)</span> in <span class="math" data-tex="\(V\)">\(V\)</span>. It is invariant. Every nonzero map <span class="math" data-tex="\(W\to V\)">\(W\to V\)</span> is injective, and every copy is the image of such a map. Thus <span class="math" data-tex="\(S=\sum_f\operatorname{im}f\)">\(S=\sum_f\operatorname{im}f\)</span>. In fact, if <span class="math" data-tex="\(f_1,\ldots,f_m\)">\(f_1,\ldots,f_m\)</span> is a basis of <span class="math" data-tex="\(\operatorname{Hom}_G(W,V)\)">\(\operatorname{Hom}_G(W,V)\)</span>, then <span class="math" data-tex="\(S=\sum_{a=1}^m\operatorname{im}f_a\)">\(S=\sum_{a=1}^m\operatorname{im}f_a\)</span>: the image of any linear combination of these maps lies in that sum.</p>
+<p>Choose an irreducible decomposition <span class="math" data-tex="\(V=\bigoplus_j T_j\)">\(V=\bigoplus_j T_j\)</span>. For every <span class="math" data-tex="\(f:W\to V\)">\(f:W\to V\)</span>, its component in <span class="math" data-tex="\(T_j\not\cong W\)">\(T_j\not\cong W\)</span> is zero by Schur's lemma. Hence <span class="math" data-tex="\(S\)">\(S\)</span> is contained in the sum of the <span class="math" data-tex="\(T_j\)">\(T_j\)</span> isomorphic to <span class="math" data-tex="\(W\)">\(W\)</span>. Each such summand is a copy of <span class="math" data-tex="\(W\)">\(W\)</span>, so equality holds. This identifies <span class="math" data-tex="\(S\)">\(S\)</span> with the isotypic component and shows it is independent of the chosen decomposition.</p>
+<p>Extend a basis of <span class="math" data-tex="\(S\)">\(S\)</span> to a basis of <span class="math" data-tex="\(V\)">\(V\)</span>, and let <span class="math" data-tex="\(q_0\)">\(q_0\)</span> be the projection onto <span class="math" data-tex="\(S\)">\(S\)</span> given by that basis. Set</p>
+<span class="math math-display" data-tex="\[
+Q=\frac1{|G|}\sum_g\rho(g)q_0\rho(g^{-1}).
+\]">\[
+Q=\frac1{|G|}\sum_g\rho(g)q_0\rho(g^{-1}).
+\]</span>
+<p>As in the proof of Maschke, <span class="math" data-tex="\(Q\)">\(Q\)</span> intertwines, maps into <span class="math" data-tex="\(S\)">\(S\)</span>, and fixes <span class="math" data-tex="\(S\)">\(S\)</span>. Therefore <span class="math" data-tex="\(Q^2=Q\)">\(Q^2=Q\)</span> and <span class="math" data-tex="\(\operatorname{im}Q=S\)">\(\operatorname{im}Q=S\)</span>. Its kernel is invariant. More precisely, if <span class="math" data-tex="\(T_j\not\cong W\)">\(T_j\not\cong W\)</span>, each component of <span class="math" data-tex="\(Q|_{T_j}:T_j\to S\)">\(Q|_{T_j}:T_j\to S\)</span> in a decomposition of <span class="math" data-tex="\(S\)">\(S\)</span> into copies of <span class="math" data-tex="\(W\)">\(W\)</span> vanishes by Schur's lemma. Thus <span class="math" data-tex="\(Q\)">\(Q\)</span> is zero on every other isotypic component. It is the canonical isotypic projection from Proposition 4.2, regardless of the initial basis choice.</p>
+<p>A projection onto <span class="math" data-tex="\(W\)">\(W\)</span> alone would not do this when <span class="math" data-tex="\(S\neq W\)">\(S\neq W\)</span>. Every conjugate of that projection still maps into the invariant space <span class="math" data-tex="\(W\)">\(W\)</span> and fixes <span class="math" data-tex="\(W\)">\(W\)</span>; its average has image exactly <span class="math" data-tex="\(W\)">\(W\)</span>. To project onto the whole isotypic component, the initial projection must have that whole component as its image.</p>
+<h2 id="7-what-this-lesson-does-not-prove">7. What this lesson does not prove</h2>
+<p>The linear algebra and elementary algebra facts below are assumed from the prerequisites. The references specify them independently of any later representation-theory lesson.</p>
+<ul>
+<li>An independent set in a finite-dimensional vector space extends to a basis [Artin, Proposition 3.4.16(a)]. Eigenvalues are roots of the characteristic polynomial [Artin, Corollary 4.5.9]. Over an algebraically closed field such a polynomial of positive degree has a root; over <span class="math" data-tex="\(\mathbb C\)">\(\mathbb C\)</span> the eigenvalue conclusion is [Artin, Proposition 4.5.14(b)]. Eigenvectors with distinct eigenvalues are independent [Artin, Proposition 4.6.5].</li>
+<li>A finite-dimensional positive definite Hermitian space has an orthonormal basis by Gram–Schmidt [Artin, §8.4, Gram–Schmidt procedure], and <span class="math" data-tex="\(V=U\oplus U^\perp\)">\(V=U\oplus U^\perp\)</span> for every subspace <span class="math" data-tex="\(U\)">\(U\)</span> [Artin, Corollary 8.5.1]. We use the convention linear in the first variable; [Artin] uses the conjugate convention.</li>
+<li>A quotient by a normal subgroup is a group with its canonical quotient homomorphism [Artin, Theorem 2.12.2]. Every subgroup of <span class="math" data-tex="\(\mathbb Z\)">\(\mathbb Z\)</span> is <span class="math" data-tex="\(d\mathbb Z\)">\(d\mathbb Z\)</span>, including the zero case [Artin, Theorem 2.3.3]. The characteristic of a field is zero or a prime [Artin, Lemma 3.2.10].</li>
+</ul>
+<p>Two general algebra results provide context, but none of our finite-group proofs depends on them.</p>
+<ul>
+<li>For a finite-dimensional unital <span class="math" data-tex="\(k\)">\(k\)</span>-algebra <span class="math" data-tex="\(A\)">\(A\)</span>, a simple module exists if <span class="math" data-tex="\(A\neq0\)">\(A\neq0\)</span>; every nonzero unital <span class="math" data-tex="\(A\)">\(A\)</span>-module contains a simple submodule; every simple <span class="math" data-tex="\(A\)">\(A\)</span>-module is finite-dimensional over <span class="math" data-tex="\(k\)">\(k\)</span>; and its endomorphism ring is a division ring <a href="https://kokunoyumeto.github.io/stacks-zh-hans-cn/en/brauer.html#brauer-lemma-simple-module">Stacks, Tag 0746</a>. Here “simple” means nonzero with no nonzero proper submodule.</li>
+<li>The Brauer group of an algebraically closed field is zero <a href="https://kokunoyumeto.github.io/stacks-zh-hans-cn/en/brauer.html#brauer-lemma-brauer-algebraically-closed">Stacks, Tag 074M</a>. Its proof establishes that a finite-dimensional central division algebra over such a field is the field itself. The general theory of central simple algebras is outside this lesson.</li>
+</ul>
+<p>“Groups with operators” treats complete reducibility and isotypic components for modules in greater generality. “Semisimple rings and Wedderburn's theorem” treats the structure of general semisimple rings. Here averaging gives the finite-group splitting theorem directly, and Schur's lemma supplies exactly the uniqueness statements needed for representations.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><strong>[Stacks]</strong> The Stacks project, <em>Brauer groups</em>, <a href="https://kokunoyumeto.github.io/stacks-zh-hans-cn/en/brauer.html#brauer-lemma-simple-module">Tag 0746</a> and <a href="https://kokunoyumeto.github.io/stacks-zh-hans-cn/en/brauer.html#brauer-lemma-brauer-algebraically-closed">Tag 074M</a>, read in Clanker Stacks.</li>
+<li><strong>[Schur]</strong> I. Schur, <em>Neue Begründung der Theorie der Gruppencharaktere</em>, Sitzungsberichte der Preussischen Akademie der Wissenschaften, Physikalisch-Mathematische Klasse, 1905, §2, statements I–III. Reprinted as work 7 in <em>Gesammelte Abhandlungen</em>, edited by A. Brauer and H. Rohrbach, Springer, 1973.</li>
+<li><strong>[Gruson–Serganova]</strong> C. Gruson and V. Serganova, <em>A Journey Through Representation Theory: From Finite Groups to Quivers via Algebras</em>, Universitext, Springer, 2018, Chapter 1, §§1–3.</li>
+<li><strong>[Artin]</strong> M. Artin, <em>Algebra</em>, second edition, Pearson, 2011, §§10.1–10.3 and 10.7; the prerequisite results are located individually above.</li>
+</ul>
+
+</article>
+
+
+
+<nav class="pager" aria-label="Lessons"><span class="pager-prev"><span></span></span><a href="./">Course contents</a><span class="pager-next"><a rel="next" href="characters-and-the-orthogonality-relations.html">Characters and the orthogonality relations →</a></span></nav>
+<p class="small source-link"><a href="https://github.com/KokunoYumeto/open-mathematics-courses/blob/main/courses/RT-FIN/src/RT-FIN-01.md">Markdown source of this lesson</a></p>
+</main>
+<footer class="site-footer">
+<p>No copyright is claimed in original content on this site: course text, lessons, HTML and code. It is dedicated under <a href="../../licensing/">CC0 1.0</a>. Material built on other people’s licensed work keeps its licence, noted on each course.</p>
+<nav aria-label="Elsewhere"><a href="../../results/">Results found in making these courses</a><a href="https://github.com/KokunoYumeto/open-mathematics-courses">GitHub repository</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Program Matematika Indonesia</a><a href="https://kokunoyumeto.github.io/OpenLogic-translations/">Open Logic translations</a></nav>
+</footer>
+</body>
+</html>

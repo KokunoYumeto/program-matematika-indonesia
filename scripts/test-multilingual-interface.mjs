@@ -1019,7 +1019,10 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // bytes to the largest predecessor (558,753 current hosted bytes). Keep
     // every capability/identity and online-offline parity assertion; allow
     // four KiB additional raw headroom, with the same compressed ceiling.
-    assert.ok(Buffer.byteLength(html) < 548 * 1024, 'Offline map size budget');
+    // The merged course-to-advanced routes add forty learner links and their
+    // exact route table (largest hosted page is 576,269 raw bytes).
+    // Preserve all route data and the 128-KiB compressed ceiling.
+    assert.ok(Buffer.byteLength(html) < 576 * 1024, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 128 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');

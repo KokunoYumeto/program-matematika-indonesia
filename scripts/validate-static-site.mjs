@@ -1812,8 +1812,11 @@ const centralNavigation = await readJson('backend/authority/central-reader-navig
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
 assert.equal(centralNavigation.summary.course_surface_roots, 40);
 assert.equal(centralNavigation.summary.course_surface_html_documents, 126);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1875);
-assert.equal(centralNavigation.summary.classified_html_documents, 1880);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1877);
+assert.equal(centralNavigation.summary.classified_html_documents, 1882);
+assert.equal(centralNavigation.summary.generic_html_documents, 16);
+for(const locale of ['id','en'])assert.ok(centralNavigation.generic_surfaces.some(row=>
+  row.document===`docs/${locale}/programme/index.html` && row.navigation_required===true && row.locale===locale));
 const d60NativeSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/d60/native-ledger');
 assert.deepEqual(d60NativeSurface.documents,[
   {path:'ledger.html',locale:'id',course_ids:['D60'],contents_paths:['ledger-en.html'],related_course_surface_paths:['docs/backend/d60/D60.html','docs/backend/d60/D60-pengajar.html']},

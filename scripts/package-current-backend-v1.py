@@ -323,6 +323,8 @@ def replay(path, node):
             ['build-course-capsules-v1.mjs', '--output-root=replay/b'],
             ['validate-course-capsules-v1.mjs', '--output-root=replay/a', '--peer-output-root=replay/b'],
             ['test-course-capsule-ui-v1.mjs'],
+            ['build-cross-programme-integration-v1.mjs', '--check'],
+            ['test-cross-programme-current-v1.mjs'],
         ]
         for parts in commands:
             result = subprocess.run([node, str(root / 'scripts' / parts[0]), *parts[1:]],
@@ -341,6 +343,7 @@ def replay(path, node):
     return {'state': 'pass', 'roles': len(manifest['roles']), 'isolated_replay': checks,
             'shipped_outputs_reproduced': True, 'source_zip_repacked_byte_identically': True,
             'producer_sources_used': False,
+            'core_advanced_route_replay': True,
             'limits': 'Capsule and shared UI replay; not a full book rebuild, browser accessibility audit or fresh canon review.'}
 
 

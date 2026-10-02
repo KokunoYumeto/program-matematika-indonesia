@@ -1,0 +1,179 @@
+% Chapter 2, Topic _Linear Algebra_ Jim Hefferon
+%  http://joshua.smcvt.edu/linearalgebra
+%  2001-Jun-11
+\topic{Fields}
+\index{field|(}
+Computations involving only integers or only rational numbers are much
+easier than those with real numbers.
+Could other algebraic structures, such as the integers or the rationals,
+work in the
+place of \( \Re \) in the definition of a vector space?
+
+If we take ``work'' to mean that the results of this chapter
+remain true
+then there is a natural list of conditions that a structure 
+(that is, number system)
+must have in order to work in the place of $\Re$.
+A \definend{field}\index{field!definition} is a set 
+\( \F \) with operations
+`\( + \)'
+and `\( \cdot \)' such that
+\begin{tfae}
+   \item for any \( a,b\in\F \) the result of \( a+b \) is in \( \F \), and
+         \( a+b=b+a \), and
+         if \( c\in\F \) then \( a+(b+c)=(a+b)+c \)
+   \item for any \( a,b\in\F \) the result of \( a\cdot b \) is in \( \F \), and
+         \( a\cdot b=b\cdot a \), and
+         if \( c\in\F \) then \( a\cdot (b\cdot c)=(a\cdot b)\cdot c \)
+   \item if \( a,b,c\in\F \) then \( a\cdot (b+c)=a\cdot b+a\cdot c \)
+   \item there is an element \( 0\in\F \) such that
+         if \( a\in\F \) then \( a+0=a \), and
+         for each \( a\in\F \) there is an element \( -a\in\F \)
+                such that \( (-a)+a=0 \)
+   \item there is an element \( 1\in\F \) such that
+         if \( a\in\F \) then \( a\cdot 1=a \), and
+         for each element \( a\neq 0 \) of \( \F \)
+                there is an element \( a^{-1}\in\F \)
+                such that \( a^{-1}\cdot a=1 \).
+\end{tfae}
+
+For example, the algebraic structure 
+consisting of the set of real numbers along with its usual
+addition and multiplication operation is a field.
+Another field is the set of rational numbers with its usual addition
+and multiplication operations.
+An example of an algebraic structure that is not a field is
+the integers, because it fails the final condition.
+
+Some examples are more surprising.
+The set \( \mathbb{B}=\set{0,1} \) under these operations:
+\begin{center}
+  \begin{tabular}{c|cc}
+    \( + \) &\( 0 \) &\( 1 \) \\
+    \hline
+    \( 0 \) &\( 0 \) &\( 1 \) \\
+    \( 1 \) &\( 1 \) &\( 0 \)
+  \end{tabular}
+  \qquad
+  \begin{tabular}{c|cc}
+    \( \cdot \) &\( 0 \) &\( 1 \) \\
+     \hline
+       \( 0 \)  &\( 0 \) &\( 0 \)  \\
+       \( 1 \)  &\( 0 \) &\( 1 \)
+  \end{tabular}
+\end{center}
+is a field; see \nearbyexercise{exer:BinField}.
+
+We could in this book develop Linear Algebra as the theory of
+vector spaces with scalars from an arbitrary field.
+In that case, 
+almost all of the statements here would carry over by replacing
+`\( \Re \)' with `\( \F \)', that is, by
+taking coefficients, vector entries,
+and matrix entries to be elements of \( \F \)
+(the exceptions are statements involving distances or angles,
+which would need additional development).
+Here are some examples; each applies to a vector space \( V \)
+over a field \( \F \).
+\begin{itemize}
+  %\makebox[\parindent]{\ \hfil\ }
+  \item[$*$] For any \( \vec{v}\in V \) and \( a\in\F \),
+  (i)~\( 0\cdot\vec{v}=\zero \),
+  (ii)~\( -1\cdot\vec{v}+\vec{v}=\zero \),
+  and (iii)~\( a\cdot\vec{0}=\vec{0} \).
+
+  \item[$*$] The span, the set of linear combinations, of a subset of \( V \)
+  is a subspace of \( V \).
+
+  \item[$*$] Any subset of a linearly independent set is also 
+     linearly independent.
+
+  \item[$*$] In a finite-dimensional vector space, 
+    any two bases have the same number of elements.
+\end{itemize}
+(Even statements that don't explicitly mention \( \F \) use
+field properties in their proof.)
+
+We will not develop vector spaces in this more general setting because
+the additional abstraction can be a distraction.
+The ideas we want to bring out already appear when we stick to the reals.
+
+The exception is Chapter Five.
+There we must factor polynomials,
+so we will switch to considering vector spaces over the
+field of complex numbers.
+
+\begin{exercises}
+  \item 
+    Check that the real numbers form a field.
+    \begin{answer}
+      Going through the five conditions shows that they are all familiar from 
+      elementary mathematics.
+    \end{answer}
+  \item 
+    Prove that these are fields.
+    \begin{exparts*}
+       \partsitem The rational numbers $\Q$
+       \partsitem The complex numbers  $\C$
+    \end{exparts*}
+    \begin{answer}
+      As with the prior question, going through the five conditions 
+      shows that
+      for both of these structures, 
+      the properties are familiar.
+    \end{answer}
+  \item 
+     Give an example that shows that the integer number system
+     is not a field.
+     \begin{answer}
+       The integers fail condition~(5).
+       For instance, there is no multiplicative inverse for $2$\Dash while
+       $2$ is an integer, $1/2$ is not.
+     \end{answer}
+  \item \label{exer:BinField} 
+     Check that the set $\mathbb{B}=\set{0,1}$ is a field under the operations 
+     listed above, 
+     \begin{answer}
+       We can do these checks by listing all of the possibilities.
+       For instance, to verify the first half of condition~(2) we must check
+       that the structure is closed under addition and that addition
+       is commutative  $a+b=b+a$,
+       we can check both of these 
+       for all possible pairs $a$ and~$b$ because there
+       are only four such pairs.  
+       Similarly, for associativity, there are only eight triples $a$, $b$,
+       $c$, and so the check is not too long.
+       (There are other ways to do the checks; in particular, you may 
+       recognize these operations as arithmetic modulo~$2$.
+       But an exhaustive check is not onerous)
+     \end{answer}
+  \item 
+     Give suitable operations to make the set $\set{0,1,2}$
+     a field.     
+     \begin{answer}
+       These will do.
+       \begin{center}
+          \begin{tabular}{c|ccc}
+             \( + \) &\( 0 \) &\( 1 \) &$2$ \\
+             \hline
+             \( 0 \) &\( 0 \) &\( 1 \) &$2$ \\
+             \( 1 \) &\( 1 \) &\( 2 \) &$0$ \\
+             $2$     &$2$     &$0$     &$1$
+          \end{tabular}
+          \qquad
+          \begin{tabular}{c|ccc}
+            \( \cdot \) &\( 0 \) &\( 1 \) &$2$ \\
+            \hline
+            \( 0 \)  &\( 0 \) &\( 0 \) &$0$ \\
+            \( 1 \)  &\( 0 \) &\( 1 \) &$2$ \\
+            $2$      &$0$     &$2$     &$1$
+          \end{tabular}
+       \end{center}
+       As in the prior item, we could 
+       verify that they satisfy the conditions  
+       by listing all of the cases.
+     \end{answer}
+\end{exercises}
+\index{field|)}
+%\include{la}
+%\end{document}
