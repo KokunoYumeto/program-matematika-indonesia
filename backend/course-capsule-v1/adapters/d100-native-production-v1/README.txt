@@ -1,5 +1,24 @@
 BUKTI PRODUKSI HTML D100
 
+TAMBAHAN EKSPOR DATA PENDAMPING
+
+original-backend-replay.json kini membuktikan dua ekspor terisolasi dari 213
+masukan yang diikat di authority/d100-original-export-inputs-v1.json. Semua
+23 berkas dan 1.064 rekaman identik dengan backend asli. Pemeriksa native
+merekonstruksi 3.790 rentang formula, tautan, hak, 44 solusi penguasaan baru
+dan 13 rujukan solusi sumber. Masukan tidak mencakup keluaran backend yang
+sedang direproduksi; proses menolak jaringan, TeX dan perubahan berkas asli.
+Ekspor klasik/BGK dan produksi PDF tetap belum dibuktikan oleh bukti ini.
+Tidak ada peninjauan semantik baru atau peningkatan status paritas penuh.
+
+Pemutaran ulang data memakai scripts/replay-d100-original-backend-v1.py dengan
+operasi replay, --binding menunjuk kontrak masukan di atas, --native-root
+menunjuk sumber asli dengan identitas yang sama, dan --output menunjuk direktori
+baru di work/. Python memerlukan PyYAML dan jsonschema. Skrip bind pada alat
+yang sama hanya untuk membekukan dependensi dari sumber asli; jangan menimpa
+kontrak yang sudah dibekukan. scripts/bind-d100-original-export-v1.py memeriksa
+ulang berkas hasil nyata sebelum mengakui bukti di repositori bersama.
+
 Ketiga pembaca Bahasa Indonesia berhasil dibangun ulang, masing-masing dalam
 dua direktori terisolasi. Hasilnya identik byte demi byte dengan pembaca asli:
 30 unit aljabar geometri klasik, 30 unit bundel/berkas/kohomologi, dan 32 unit
@@ -35,6 +54,11 @@ Pengerjaan teks asli yang tercatat: OpenAI Codex gpt-5.6-sol, Ultra.
 Tidak ada peninjauan manusia baru yang diklaim.
 
 ENGLISH
+
+Separate companion-data evidence now reproduces all 23 export files and 1,064
+records twice from 213 isolated inputs, without using the existing export as
+an input. Formula/link/source/rights reconstruction passes. Classical/BGK
+data exporters, PDF production and semantic review are separate remaining work.
 
 Six isolated HTML builds reproduce all three Indonesian native readers exactly:
 60 source units plus 32 editorial companion units. Twenty-eight omitted runtime

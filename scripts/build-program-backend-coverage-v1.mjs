@@ -8,10 +8,13 @@ import {c120DeliveryInputs,loadC120Delivery} from './c120-delivery-evidence-v1.m
 import {d50ProductionPaths,loadD50ProductionEvidence} from './d50-production-evidence-v1.mjs';
 import {d70NativeReplayPaths,validateD70NativeReplay} from './d70-native-replay-evidence-v1.mjs';
 import {d100HtmlReplayPaths,loadD100HtmlReplay} from './d100-html-replay-evidence-v1.mjs';
+import {d100OriginalExportPaths,loadD100OriginalExport} from './d100-original-export-evidence-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const d50ProductionProof=await loadD50ProductionEvidence(root);
 const d100HtmlProof=await loadD100HtmlReplay(root);
+const d100OriginalExport=await loadD100OriginalExport(root);
 const sources={
+  ...d100OriginalExportPaths,
   ...d100HtmlReplayPaths,
   ...d70NativeReplayPaths,
   ...d50ProductionPaths,
@@ -626,6 +629,7 @@ const rows=data.capsules.map(capsule=>{
   const nativeCapabilityParityComplete=parityStatuses.every(status=>['verified','not_applicable'].includes(status));
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
     ...(role==='D100'?{native_html_replay:{...d100HtmlProof.report,evidence:d100HtmlProof.evidence}}:{}),
+    ...(role==='D100'?{native_original_data_replay:{...d100OriginalExport.report,evidence:d100OriginalExport.evidence}}:{}),
     ...(role==='D70'?{native_metadata_replay:d70NativeReplay}:{}),
     ...(role==='C130'?{native_metadata_audit:{
       status:data.c130NativeAudit.state,counts:data.c130NativeAudit.counts,
@@ -686,7 +690,7 @@ const rows=data.capsules.map(capsule=>{
       terminology:{register:capsule.layers.translation.terminology_status,
         ...(capsule.layers.translation.verification?{verification:capsule.layers.translation.verification}:{})},
       reproducible_production:{build:capsule.layers.production.build_status,replay:capsule.layers.production.deterministic_replay_status,
-        ...(role==='D100'?{native_html_replay:'verified',native_data_export_replay:'not_established',fresh_pdf_replay:'not_established'}:{}),
+        ...(role==='D100'?{native_html_replay:'verified',native_original_data_export_replay:'verified',native_data_export_replay:'not_established',fresh_pdf_replay:'not_established'}:{}),
         ...(role==='D70'?{native_metadata_replay:'verified'}:{})},
       accessibility:{semantic_html:capsule.layers.learner.capabilities.semantic_html,mathml:capsule.layers.learner.capabilities.mathml},
       learner:{delivery:capsule.layers.learner.status,central_tools:centralTools.length},
@@ -698,6 +702,7 @@ const rows=data.capsules.map(capsule=>{
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
       ...(role==='D100'?[d100HtmlProof.report.note_id]:[]),
+      ...(role==='D100'?['Bukti ekspor terpisah kini mereproduksi backend pendamping asli: 1.064 rekaman dan 23 berkas dari 213 masukan, dalam dua direktori terisolasi. Semua byte identik; 3.790 rentang formula, 44 solusi baru dan 13 rujukan solusi sumber tetap dibedakan. Ini bukan tambahan unit sumber. Replay ekspor klasik/BGK, PDF baru dan telaah semantik tetap belum dibuktikan.']:[]),
       ...(role==='D70'?['Replay metadata Duncan dan CRing kini dapat dijalankan tanpa direktori pembuat buku; 13 berkas sama persis dalam dua eksekusi kode paket. Produksi ulang seluruh Li dan keempat PDF tetap memerlukan bukti terpisah.']:[]),
       ...(role==='C130'?[`Sebanyak ${data.c130NativeAudit.resolved_previously_unresolved_target_locations} rujukan teks target lama telah diselesaikan; lokasi target yang belum terselesaikan: ${data.c130NativeAudit.unresolved_target_locations}. Periksa perbedaan identitas pada ${data.c130NativeAudit.native_alignment_whole_file_guard_mismatches} berkas penggabungan serta pilihan istilah dan klaim kanon secara semantik. Kecocokan lokasi teks bukan persetujuan baru terhadap setiap pilihan istilah.`]:[]),
       ...(role==='D50'?['HTML dan backend dibangun ulang dari 1.282 berkas sumber dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu, bukan kompilasi baru. Uji aksesibilitas dan batas luring lanjutan tetap terpisah: matematika HTML masih memakai MathJax CDN. Ini bukan peninjauan semantik terjemahan baru.']:[]),

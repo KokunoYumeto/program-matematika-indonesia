@@ -372,6 +372,7 @@ def replay(path, node):
             ['validate-course-capsules-v1.mjs', '--output-root=replay/a', '--peer-output-root=replay/b'],
             ['test-course-capsule-ui-v1.mjs'],
             ['test-d100-html-replay-evidence-v1.mjs'],
+            ['test-d100-original-export-evidence-v1.mjs'],
             ['build-cross-programme-integration-v1.mjs', '--check'],
             ['test-cross-programme-current-v1.mjs'],
         ]
@@ -394,6 +395,7 @@ def replay(path, node):
             'producer_sources_used': False,
             'core_advanced_route_replay': True,
             'd100_native_html_evidence_validation': True,
+            'd100_original_data_evidence_validation': True,
             'limits': 'Capsule and shared UI replay; not a full book rebuild, browser accessibility audit or fresh canon review.'}
 
 
