@@ -32,6 +32,82 @@ def literal_witnesses(text,start,end,pages):
     return witnesses
 
 
+def composite_witnesses(text,start,end,pages):
+    """Locate short prose separated by mathematics using an ordered conjunction.
+
+    Every eligible fragment must occur, in source order without overlap, on
+    one and only one PDF page. Repeated source phrases require repeated PDF
+    occurrences. This does not compare or certify the intervening formulas.
+    """
+    body=mask_comments(text[start:end])
+    body=re.sub(r'\$\$.*?\$\$|\$[^$]*\$|\\\(.*?\\\)|\\\[.*?\\\]',lambda m:'|'*len(m[0]),body,flags=re.S)
+    body=re.sub(r'\\[A-Za-z@]+\*?(?:\s*\{[^{}]*\})?',lambda m:'|'*len(m[0]),body)
+    body=re.sub(r'[.!?]', '|', body)
+    fragments=[]
+    for match in re.finditer(r"[A-Za-zÀ-ž][A-Za-zÀ-ž\s,;:()'`–—-]+",body):
+        fragment=text[start+match.start():start+match.end()]
+        key=letters(fragment)
+        if len(key)<12:continue
+        fragments.append({'source_character_range':[start+match.start(),start+match.end()],
+            'source_text':fragment,'source_sha256':sha(fragment.encode()),'normalized_witness':key})
+    keys=[f['normalized_witness'] for f in fragments]
+    if len(set(keys))<2 or sum(map(len,keys))<50:return None
+    hits=[]
+    for page,content in pages.items():
+        cursor=0;ranges=[]
+        for key in keys:
+            position=content.find(key,cursor)
+            if position<0:break
+            ranges.append([position,position+len(key)])
+            cursor=position+len(key)
+        else:hits.append((page,ranges))
+    if len(hits)!=1:return None
+    page,ranges=hits[0]
+    return {'page':page,'witnesses':[{**f,'page':page,'normalized_page_range':r}
+        for f,r in zip(fragments,ranges)],
+        'mapping_method':'unique-page-with-all-short-prose-fragments-in-source-order',
+        'scope':'Matched prose location only; not full solution extent or mathematical verification.'}
+
+
+def example_solution_heading(text,start,end,pages):
+    """Exact adjacent source example + unique printed title + solution opening."""
+    scan=mask_comments(text)
+    beginnings=list(re.compile(r'\\begin\{example\}\{').finditer(scan,0,start))
+    if not beginnings:return None
+    match=beginnings[-1];title_start=match.end();title_end=brace_end(text,title_start-1)-1
+    title=text[title_start:title_end]
+    if re.search(r'[\\{}]',title) or len(letters(title))<20:return None
+    closing=scan.find(r'\end{example}',title_end,start)
+    if closing<0:return None
+    example_end=closing+len(r'\end{example}')
+    if scan[example_end:start].strip():return None
+    opening=re.match(r'\s*\\begin\{solution\}\s*([A-Za-zÀ-ž][A-Za-zÀ-ž\s,;:]+)',scan[start:end])
+    if not opening or len(letters(opening[1]))<20:return None
+    heading_pattern=re.compile(r'Contoh\s+([A-Z0-9]+(?:\.[0-9]+)+)\.\s+'+
+                               r'\s+'.join(re.escape(s) for s in title.split())+r'\b')
+    headings=[(page,m) for page,content in pages.items() for m in heading_pattern.finditer(content)]
+    if len(headings)!=1:return None
+    page,heading=headings[0];content=pages[page]
+    solution=re.search(r'Penyelesaian\.\s*',content[heading.end():])
+    if not solution:return None
+    solution_start=heading.end()+solution.start()
+    prose_start=heading.end()+solution.end()
+    if re.search(r'Contoh\s+[A-Z0-9]+\.[0-9]+',content[heading.end():solution_start]):return None
+    opening_key=letters(opening[1])
+    if not letters(content[prose_start:]).startswith(opening_key):return None
+    source_opening=[start+opening.start(1),start+opening.end(1)]
+    return {'page':page,'printed_number':heading[1],
+        'source_example':{'normalized_character_range':[match.start(),example_end],
+            'sha256':sha(text[match.start():example_end].encode()),'title':title,
+            'title_character_range':[title_start,title_end]},
+        'source_opening':{'source_character_range':source_opening,'source_text':text[slice(*source_opening)],
+            'source_sha256':sha(text[slice(*source_opening)].encode()),'normalized_witness':opening_key},
+        'printed_heading':{'text':heading[0],'character_range':[heading.start(),heading.end()]},
+        'printed_solution_start':solution_start,'page_text_sha256':sha(content.encode()),
+        'mapping_method':'adjacent-source-example-unique-printed-title-and-immediate-solution-opening',
+        'scope':'Solution start page only; the body can continue on following pages. No mathematical verification.'}
+
+
 def visualization_titles(text,start,end,pages):
     titles=[]
     for match in re.compile(r'\\vizlink\{([^{}]+)\}\{').finditer(mask_comments(text),start,end):
@@ -120,6 +196,16 @@ def map_support(files,native_spans,units,relations,pdf,questions):
             if heading:
                 row.update(page=heading['page'],printed_state='native-reference-and-unique-solution-heading',
                            solution_reference=heading)
+            else:
+                composite=composite_witnesses(text,start,end,pages)
+                if composite:
+                    row.update(page=composite['page'],printed_state='ordered-composite-literal-passages',
+                               witnesses=composite['witnesses'],composite_reference=composite)
+                else:
+                    example=example_solution_heading(text,start,end,page_text)
+                    if example:
+                        row.update(page=example['page'],printed_state='adjacent-example-and-solution-opening',
+                                   example_reference=example)
         if row['page']:row['page_text_sha256']=sha(page_text[row['page']].encode())
         rows.append(row)
     by_id={r['id']:r for r in rows}
@@ -145,6 +231,8 @@ def map_support(files,native_spans,units,relations,pdf,questions):
         'counts':{'checkpoints':12,'checkpoint_answers':12,'visual_activities':12,'other_native_solutions':132,
                   'unique_passage_or_anchor_mappings':sum(r['page'] is not None for r in rows),
                   'explicit_solution_heading_mappings':sum('solution_reference' in r for r in rows),
+                  'ordered_composite_mappings':sum('composite_reference' in r for r in rows),
+                  'adjacent_example_mappings':sum('example_reference' in r for r in rows),
                   'source_bound_without_printed_mapping':sum(r['page'] is None for r in rows)},
         'limits':['A literal passage link locates the matched part, not necessarily the start or full extent of a solution.',
                   'Explicit solution-reference links locate a unique solution heading; the body may continue on following pages.',
@@ -176,7 +264,35 @@ def fixtures():
         try:solution_heading(body,current,edges,questions,content)
         except ValueError:pass
         else:raise AssertionError('Invalid solution-heading mapping accepted')
+    first='The first sufficiently distinctive phrase'
+    second='Another independently identifiable phrase'
+    composite_source=first+' $x$ '+second
+    good=letters(first)+'x'+letters(second)
+    assert composite_witnesses(composite_source,0,len(composite_source),{2:good})['page']==2
+    for bad in [{1:good,2:good},{1:letters(second)+letters(first)},
+                {1:letters(first),2:letters(second)},{1:letters(first)}]:
+        assert composite_witnesses(composite_source,0,len(composite_source),bad) is None
+    repeated=composite_source+' $y$ '+second
+    assert composite_witnesses(repeated,0,len(repeated),{2:good}) is None
+    assert composite_witnesses('% '+composite_source,0,len(composite_source)+2,{2:good}) is None
+    prefix=r'\begin{example}{A sufficiently distinctive example title}Question.\end{example}'
+    solution=r'\begin{solution}A distinctive opening phrase $x$.\end{solution}'
+    example_source=prefix+'\n'+solution
+    page='Contoh D.8. A sufficiently distinctive example title Question.\nPenyelesaian. A distinctive opening phrase x.'
+    assert example_solution_heading(example_source,len(prefix)+1,len(example_source),{2:page})['page']==2
+    for bad in [{1:page,2:page},{1:page.replace('example title','wrong title')},
+                {1:page.replace('A distinctive opening','A wrong opening')},
+                {1:page.replace('Penyelesaian.','Other text.')}]:
+        assert example_solution_heading(example_source,len(prefix)+1,len(example_source),bad) is None
+    separated=prefix+'Unrelated source.\n'+solution
+    assert example_solution_heading(separated,len(prefix)+18,len(separated),{2:page}) is None
     return ['literal-unique','ambiguous-rejected','comments-excluded','math-excluded','changed-witness-rejected',
             'solution-heading-excludes-manual-and-question','wrong-solution-label-rejected',
             'duplicate-solution-edge-rejected','missing-solution-edge-rejected',
-            'ambiguous-solution-heading-rejected','missing-solution-heading-rejected']
+            'ambiguous-solution-heading-rejected','missing-solution-heading-rejected',
+            'ordered-composite-unique','composite-duplicate-page-rejected','composite-reordering-rejected',
+            'composite-cross-page-rejected','composite-missing-fragment-rejected',
+            'composite-repeated-occurrence-required','composite-comments-excluded',
+            'adjacent-example-unique','duplicate-example-heading-rejected','wrong-example-title-rejected',
+            'wrong-solution-opening-rejected','missing-example-solution-heading-rejected',
+            'nonadjacent-source-example-rejected']

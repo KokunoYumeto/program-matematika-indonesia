@@ -181,11 +181,12 @@ assert.deepEqual(data.openlogicTeacher.input_identities,data.openlogicTeacherTes
 assert.equal(data.c130Teacher.schema,'c130-teacher-hosted/1');
 assert.equal(data.c130Teacher.state,'pass');assert.equal(data.c130TeacherTests.state,'pass');
 assert.deepEqual(data.c130Teacher.evidence['validation.json'],{bytes:bytes.c130TeacherTests.length,sha256:sha256(bytes.c130TeacherTests)});
-for(const [key,value] of Object.entries({selectable_learning_items:227,selectable_reader_exercises:203,checkpoints:12,checkpoint_answers:12,visual_activities:12,manual_materials:192,other_native_solutions:132,explicit_solution_heading_mappings:12,source_bound_without_printed_mapping:16,source_only_legacy_exercises:4}))assert.equal(data.c130Teacher.counts[key],value,`C130 count drift: ${key}`);
+for(const [key,value] of Object.entries({selectable_learning_items:227,selectable_reader_exercises:203,checkpoints:12,checkpoint_answers:12,visual_activities:12,manual_materials:192,other_native_solutions:132,explicit_solution_heading_mappings:12,ordered_composite_mappings:14,adjacent_example_mappings:2,source_bound_without_printed_mapping:0,source_only_legacy_exercises:4}))assert.equal(data.c130Teacher.counts[key],value,`C130 count drift: ${key}`);
 assert.equal(data.c130Teacher.precise_selected_exercise_and_activity_alignment,true);
 assert.equal(data.c130Teacher.all_native_solution_alignment,false);
-assert.equal(data.c130Teacher.unmapped_other_solution_sources,16);
+assert.equal(data.c130Teacher.unmapped_other_solution_sources,0);
 assert.equal(data.c130Teacher.explicit_solution_heading_mappings,12);
+assert.equal(data.c130Teacher.ordered_composite_mappings,14);assert.equal(data.c130Teacher.adjacent_example_mappings,2);
 assert.equal(data.c130Teacher.solver_results_reexecuted,false);
 assert.equal(data.c130NativeAudit.schema,'c130-native-ledger-audit/1');
 assert.equal(data.c130NativeAudit.state,'verified_metadata_with_explicit_gaps');
@@ -677,7 +678,7 @@ const rows=data.capsules.map(capsule=>{
         :role==='C80'
           ?'central_planner_consumes_source_target_and_printed_occurrence_mapping_with_explicit_source_only_records'
         :role==='C130'
-          ?'central_planner_consumes_source_bound_exercise_and_activity_pdf_mapping_with_explicit_unmapped_solutions'
+          ?'central_planner_consumes_source_bound_exercises_activities_and_all_indexed_solution_locations'
         :role==='A10' && capsule.layers.learner.tools.some(tool=>tool.tool_id==='a10.open_learner_hub')
           ?'central_navigator_consumes_native_metadata_projection_pdf_runtime_adapter_consumption_not_claimed'
         :['D50','D110'].includes(role) && capsule.layers.learner.tools.some(tool=>tool.tool_id===role.toLowerCase()+'.open_learner_hub')
@@ -690,7 +691,7 @@ const rows=data.capsules.map(capsule=>{
       ...(role==='B20'?{printed_reader_links:2705,navigation_mapping:data.clpTeacher.b20_navigation.mapping,recorded_supports:2010,questions_without_recorded_hint:75,semantic_translation_review_claimed:false}:{}),
       ...(['C30','C40'].includes(role)?{assignment_exercises:data.judsonTeacher.course_counts[role],alignment_scope:'source_and_target_structural_exercise_identity',supplied_solutions:0,response_slots_are_answers:false}: {}),
       ...(role==='C80'?{assignment_exercises:442,distinct_rendered_source_exercises:427,tag_disabled_source_exercises:10,unflushed_source_exercises:1,alignment_scope:'source_target_and_printed_occurrence_identity_with_explicit_unrendered_sources',solutions_audited:false}:{}),
-      ...(role==='C130'?{assignment_exercises:203,selectable_learning_items:227,checkpoints:12,visual_activities:12,manual_materials:192,other_solution_passages:104,other_solution_starts:12,unmapped_other_solution_sources:16,source_only_legacy_exercises:4,alignment_scope:'selected_exercises_checkpoints_answers_and_visual_activities_not_all_native_solutions',all_native_solution_alignment:false,solver_results_reexecuted:false}:{})},
+      ...(role==='C130'?{assignment_exercises:203,selectable_learning_items:227,checkpoints:12,visual_activities:12,manual_materials:192,other_solution_passages:104,other_solution_starts:12,ordered_composite_solution_passages:14,adjacent_example_solution_starts:2,unmapped_other_solution_sources:0,source_only_legacy_exercises:4,alignment_scope:'selected_exercises_activities_and_all_indexed_solution_locations_not_full_extent_or_mathematical_verification',all_native_solution_alignment:false,solver_results_reexecuted:false}:{})},
     dimensions:{
       curriculum:{course_graph:capsule.layers.curriculum.status,unit_identity:capsule.layers.curriculum.unit_identity_status},
       source_translation_ledger:{ledger:capsule.layers.translation.ledger_status,corrections:capsule.layers.translation.corrections_status,
@@ -715,7 +716,7 @@ const rows=data.capsules.map(capsule=>{
       ...(role==='C130'?[`Sebanyak ${data.c130NativeAudit.resolved_previously_unresolved_target_locations} rujukan teks target lama telah diselesaikan; lokasi target yang belum terselesaikan: ${data.c130NativeAudit.unresolved_target_locations}. Periksa perbedaan identitas pada ${data.c130NativeAudit.native_alignment_whole_file_guard_mismatches} berkas penggabungan serta pilihan istilah dan klaim kanon secara semantik. Kecocokan lokasi teks bukan persetujuan baru terhadap setiap pilihan istilah.`]:[]),
       ...(role==='D50'?['HTML dan backend dibangun ulang dari 1.282 berkas sumber dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu, bukan kompilasi baru. Uji aksesibilitas dan batas luring lanjutan tetap terpisah: matematika HTML masih memakai MathJax CDN. Ini bukan peninjauan semantik terjemahan baru.']:[]),
       ...(role==='D100'?['Daftar Bahasa Indonesia telah diperiksa terpisah dari edisi Inggris: 905 istilah, 371 koreksi, dan 15.829 identitas segmen. Ini pemeriksaan struktur dan identitas, bukan bukti baru pembacaan kanon atau mutu bahasa. Empat istilah tetap berstatus sementara.']:[]),
-      ...(role==='C130'?['Pemetaan saat ini mencakup 203 soal, 12 cek pemahaman beserta jawaban, dan 12 kegiatan visual. Sebanyak 104 penyelesaian lain mempunyai tautan bagian teks dan 12 mempunyai tautan awal penyelesaian; 16 sumber penyelesaian masih memerlukan pemetaan halaman. Isi penyelesaian dapat berlanjut ke halaman berikutnya. Empat soal sumber lama tidak dicetak dalam PDF ini. Hasil solver belum dijalankan ulang; antarmuka Inggris tetap membuka buku Bahasa Indonesia.']:[]),
+      ...(role==='C130'?['Pemetaan saat ini mencakup 203 soal, 12 cek pemahaman beserta jawaban, dan 12 kegiatan visual. Semua 132 penyelesaian lain mempunyai rujukan halaman: 104 kutipan tunggal, 14 kelompok potongan teks berurutan, 12 awal penyelesaian berbasis rujukan latihan, dan 2 awal penyelesaian berbasis contoh. Tautan tidak memetakan seluruh isi atau memverifikasi rumus; penyelesaian dapat berlanjut ke halaman berikutnya. Empat soal sumber lama tidak dicetak dalam PDF ini. Hasil solver belum dijalankan ulang; antarmuka Inggris tetap membuka buku Bahasa Indonesia.']:[]),
       ...(!integrated?['Periksa backend asli dan implementasikan adapter bersama beserta penggunaan nyata oleh pelajar/pengajar.']:[]),
       ...(!['verified','not_applicable'].includes(capsule.layers.translation.ledger_status)?['Buktikan ledger sumber/penerjemahan asli; status ini tidak menyatakan terjemahan belum selesai.']:[]),
       ...(capsule.layers.translation.terminology_status!=='verified'?['Periksa register istilah dan kaitannya dengan teks serta alternatif istilah.']:[]),

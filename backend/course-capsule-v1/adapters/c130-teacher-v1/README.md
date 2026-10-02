@@ -39,7 +39,11 @@ terpisah dari header asli; header bukan keseluruhan isi jawaban.
 Sebanyak 104 dari 132 penyelesaian lain memiliki rujukan bagian teks yang cocok
 secara unik. Dua belas lainnya kini mempunyai tautan awal penyelesaian yang
 menggabungkan rujukan sumber tepat, relasi asli, dan judul tercetak yang unik;
-16 masih belum memiliki pemetaan halaman. Empat latihan cabang sumber lama
+Empat belas penyelesaian lagi dipetakan melalui beberapa potongan teks yang
+semuanya cocok pada satu halaman dalam urutan sumber; dua penyelesaian pendek
+dipetakan melalui judul contoh yang tepat dan awal penyelesaian yang bersebelahan.
+Semua 132 kini mempunyai rujukan halaman. Rumus di antara potongan teks tidak
+diverifikasi oleh metode pencocokan ini. Empat latihan cabang sumber lama
 tidak tercetak di PDF ini. Keadaan ini dicatat, bukan dihapus. Tautan bagian
 teks atau halaman awal tidak menyatakan bahwa keseluruhan penyelesaian berada
 di satu halaman.

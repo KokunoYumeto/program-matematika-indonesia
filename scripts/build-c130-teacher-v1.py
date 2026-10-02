@@ -10,7 +10,7 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 BASE=ROOT/'backend/course-capsule-v1/adapters/c130-teacher-v1'
-MAPPING_IDENTITY={'bytes':2407293,'sha256':'c9fa1a2630510fb0719086b69c741d6e75b076d321e65cc6009a40180c0f8ca8'}
+MAPPING_IDENTITY={'bytes':2478884,'sha256':'962fc0960604d8f5fc23321bf6858b0128d027aaf1ad3ca4d9693710dd6096ae'}
 
 
 def encoded(value):return (json.dumps(value,ensure_ascii=False,sort_keys=True,separators=(',',':'))+'\n').encode()
@@ -117,9 +117,9 @@ WORDS['id'].update({
  'static':'Semua rujukan tanpa JavaScript','chooseVisible':'Pilih semua bahan yang ditampilkan',
  'extra':'Penyelesaian lain dari buku dan lampiran','passage':'Buka bagian teks yang cocok',
  'unmapped':'Identitas sumber terverifikasi; halaman PDF belum dipetakan',
- 'extraNote':'132 penyelesaian lainnya tetap dicatat: 104 mempunyai tautan bagian teks yang cocok, dan 12 kini mempunyai tautan awal penyelesaian berdasarkan rujukan sumber, relasi asli, serta judul tercetak yang unik. Sebanyak 16 belum mempunyai pemetaan halaman. Isi penyelesaian dapat berlanjut ke halaman berikutnya. Ini bukan 132 soal tambahan.',
+ 'extraNote':'Semua 132 penyelesaian lain memiliki rujukan halaman: 104 melalui kutipan tunggal yang unik, 14 melalui beberapa potongan teks dalam urutan sumber, 12 melalui rujukan latihan dan judul penyelesaian, serta 2 melalui judul contoh dan awal penyelesaiannya. Tautan membuka bagian teks yang cocok atau halaman awal, bukan seluruh penyelesaian. Isi dapat berlanjut ke halaman berikutnya. Ini bukan 132 soal tambahan.',
  'solutionStart':'Buka awal penyelesaian',
- 'limits':'Pemetaan ini memeriksa identitas sumber dan tujuan pembaca; bukan audit ulang kebenaran matematika, mutu terjemahan, atau hasil solver. Kegiatan visual diarahkan ke penjelasan dalam buku; ketersediaan situs interaktif luar belum diperiksa. Sebanyak 16 penyelesaian lain masih memerlukan pemetaan halaman.'})
+ 'limits':'Pemetaan ini memeriksa identitas sumber dan tujuan pembaca; bukan audit ulang kebenaran matematika, mutu terjemahan, atau hasil solver. Tautan bagian teks tidak memverifikasi rumus di antara potongan teks atau keseluruhan isi penyelesaian. Kegiatan visual diarahkan ke penjelasan dalam buku; ketersediaan situs interaktif luar belum diperiksa.'})
 WORDS['en'].update({
  'count':'203 exercises · 12 checkpoints with answers · 12 visual activities',
  'exchange':'Assignment JSON text (copy or paste)','loadText':'Import JSON text','exchangeNote':'Use this text if your browser does not save the download. Import checks page references and source identities.',
@@ -128,9 +128,9 @@ WORDS['en'].update({
  'checkpoint-answer':'Open answer passage','noManual':'No manual or answer mapping for this item',
  'chooseVisible':'Select displayed items','extra':'Other solutions in the book and appendix','passage':'Open matching passage',
  'unmapped':'Source identity verified; PDF page not yet mapped',
- 'extraNote':'All 132 other solution sources are retained: 104 have matching-passage links, and 12 now link to the solution start using an exact source reference, native relation and unique printed heading. Another 16 lack a page mapping. A solution may continue on the following page. These are not 132 additional questions.',
+ 'extraNote':'All 132 other solutions have page references: 104 through a unique single passage, 14 through several text fragments in source order, 12 through an exercise reference and solution heading, and 2 through an example title and its solution opening. Links locate a matching passage or the start page, not the complete solution. A solution may continue on following pages. These are not 132 additional questions.',
  'solutionStart':'Open solution start',
- 'limits':'This checks source identity and reader destinations, not mathematical correctness, translation quality or solver results. Visual activities link to their explanations in the book; external interactive sites have not been checked. Another 16 solution sources still need page mapping.'})
+ 'limits':'This checks source identity and reader destinations, not mathematical correctness, translation quality or solver results. Passage links do not verify intervening formulas or the complete solution body. Visual activities link to their explanations in the book; external interactive sites have not been checked.'})
 
 
 def render(model,lang):
@@ -139,7 +139,8 @@ def render(model,lang):
     chapter_options=''.join(f'<option value="{k}">{k} · {e(v)}</option>' for k,v in sorted(model['chapters'].items(),key=lambda x:int(x[0])))
     static=''.join(f'<tr><td>{e(q["display_number"])}</td><td><a class="reader-reference" data-page="{q["page"]}" href="{e(model["reader"]["url"])}#page={q["page"]}">{e(q["title"])}</a></td><td>{q["page"]}</td></tr>' for q in model['questions'])
     kinds=''.join(f'<option value="{kind}">{w[kind]}</option>' for kind in ['numbered-exercise','graph-practice','learningcheckpoint','tryit'])
-    supplementary=''.join('<li>'+('<a class="reader-reference" data-page="'+str(s['page'])+'" href="'+e(model['reader']['url'])+'#page='+str(s['page'])+'">'+w['solutionStart' if s['printed_state']=='native-reference-and-unique-solution-heading' else 'passage']+' · '+str(s['page'])+'</a>' if s['page'] else w['unmapped'])+'<details><summary>'+w['identity']+'</summary><code>'+e(s['id'])+'</code><p>'+e(s['source']['path'])+' · '+w['lines']+' '+e(s['source']['lines'])+'</p><code>'+s['source']['sha256']+'</code></details></li>' for s in model['supplementary_solutions'])
+    starts={'native-reference-and-unique-solution-heading','adjacent-example-and-solution-opening'}
+    supplementary=''.join('<li>'+('<a class="reader-reference" data-page="'+str(s['page'])+'" href="'+e(model['reader']['url'])+'#page='+str(s['page'])+'">'+w['solutionStart' if s['printed_state'] in starts else 'passage']+' · '+str(s['page'])+'</a>' if s['page'] else w['unmapped'])+'<details><summary>'+w['identity']+'</summary><code>'+e(s['id'])+'</code><p>'+e(s['source']['path'])+' · '+w['lines']+' '+e(s['source']['lines'])+'</p><code>'+s['source']['sha256']+'</code></details></li>' for s in model['supplementary_solutions'])
     return f'''<!doctype html>
 <html lang="{lang}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{w['title']}</title><link rel="stylesheet" href="teacher.css"></head>
 <body><a class="skip" href="#main">{w['title']}</a><header><a href="../../{lang}/index.html#course-C130">{w['program']}</a><nav aria-label="{'Bahasa' if lang=='id' else 'Language'}"><a href="C130.teacher.html" lang="id" {'aria-current="page"' if lang=='id' else ''}>Bahasa Indonesia</a><a href="C130.teacher.en.html" lang="en" {'aria-current="page"' if lang=='en' else ''}>English</a></nav></header>
@@ -163,7 +164,7 @@ def main():
     source_files={str(p.relative_to(ROOT)).replace('\\','/'):p.read_bytes() for p in [
         ROOT/'scripts/build-c130-teacher-v1.py',ROOT/'scripts/map-c130-teacher-v1.py',
         ROOT/'scripts/c130_source_spans.py',ROOT/'scripts/c130_support_navigation.py',
-        ROOT/'scripts/test-c130-teacher-v1.py',ROOT/'scripts/test-c130-teacher-ui-v1.cjs',
+        ROOT/'scripts/test-c130-teacher-v1.py',ROOT/'scripts/test-c130-teacher-ui-v1.cjs',ROOT/'scripts/test-c130-teacher-browser-v1.cjs',
         args.base/'README.md',args.base/'mapping.json',args.base/'ui/teacher.js',args.base/'ui/teacher.css']}
     buffer=io.BytesIO()
     with zipfile.ZipFile(buffer,'w',compression=zipfile.ZIP_DEFLATED,compresslevel=9) as archive:

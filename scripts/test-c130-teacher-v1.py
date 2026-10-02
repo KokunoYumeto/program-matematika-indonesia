@@ -12,7 +12,7 @@ import sys
 import tempfile
 import zipfile
 import fitz
-from c130_source_spans import normalize, fixtures
+from c130_source_spans import normalize, mask_comments, brace_end, fixtures
 from c130_support_navigation import letters, fixtures as support_fixtures
 
 ROOT=Path(__file__).resolve().parents[1]
@@ -46,8 +46,10 @@ def audit_primary(data,files,pages):
             assert sha(text[b:end].encode())==complete['body_sha256']
     support={s['id']:s for s in data['support_navigation']['materials']};assert len(support)==168
     questions={q['id']:q for q in data['questions']}
-    heading_count=0
+    heading_count=composite_count=example_count=0
+    normalized_pages={page:letters(content) for page,content in pages.items()}
     for s in support.values():
+        assert s['source_span']==spans[s['id']]
         text=normalize(files[s['source_span']['path']]);a,b=s['source_span']['normalized_character_range']
         for witness in s['witnesses']+s.get('visualization_titles',[]):
             x,y=witness['source_character_range'];assert a<=x<y<=b
@@ -74,6 +76,57 @@ def audit_primary(data,files,pages):
             assert [match.start(),match.end()]==w['character_range'] and match[0]==w['text']
             assert sha(pages[page].encode())==w['page_text_sha256']
             assert s['printed_state']=='native-reference-and-unique-solution-heading'
+        if 'composite_reference' in s:
+            composite_count+=1;reference=s['composite_reference']
+            assert s['kind']=='solution' and s['printed_state']=='ordered-composite-literal-passages'
+            assert reference['page']==s['page'] and reference['witnesses']==s['witnesses']
+            keys=[w['normalized_witness'] for w in s['witnesses']]
+            assert len(set(keys))>=2 and sum(map(len,keys))>=50 and min(map(len,keys))>=12
+            # Independently reconstruct all eligible source fragments: omission
+            # must not make an ambiguous source look like a unique PDF match.
+            body=mask_comments(text[a:b])
+            body=re.sub(r'\$\$.*?\$\$|\$[^$]*\$|\\\(.*?\\\)|\\\[.*?\\\]',lambda m:'|'*len(m[0]),body,flags=re.S)
+            body=re.sub(r'\\[A-Za-z@]+\*?(?:\s*\{[^{}]*\})?',lambda m:'|'*len(m[0]),body)
+            body=re.sub(r'[.!?]','|',body)
+            ranges=[[a+m.start(),a+m.end()] for m in re.finditer(r"[A-Za-zÀ-ž][A-Za-zÀ-ž\s,;:()'`–—-]+",body)
+                    if len(letters(text[a+m.start():a+m.end()]))>=12]
+            assert ranges==[w['source_character_range'] for w in s['witnesses']]
+            hits=[]
+            for page,content in normalized_pages.items():
+                cursor=0;locations=[]
+                for key in keys:
+                    position=content.find(key,cursor)
+                    if position<0:break
+                    locations.append([position,position+len(key)]);cursor=position+len(key)
+                else:hits.append((page,locations))
+            assert len(hits)==1 and hits[0][0]==s['page']
+            assert hits[0][1]==[w['normalized_page_range'] for w in s['witnesses']]
+        if 'example_reference' in s:
+            example_count+=1;reference=s['example_reference'];example=reference['source_example']
+            assert s['kind']=='solution' and s['printed_state']=='adjacent-example-and-solution-opening'
+            x,y=example['normalized_character_range'];u,v=example['title_character_range']
+            assert 0<=x<u<v<y<=a and sha(text[x:y].encode())==example['sha256']
+            assert text[u:v]==example['title'] and len(letters(text[u:v]))>=20
+            assert text[x:u]==r'\begin{example}{' and brace_end(text,u-1)-1==v
+            assert text[x:y].endswith(r'\end{example}') and not mask_comments(text[y:a]).strip()
+            assert mask_comments(text[:a]).rfind(r'\begin{example}{')==x
+            opening=reference['source_opening'];u,v=opening['source_character_range']
+            assert a<=u<v<=b and text[u:v]==opening['source_text']
+            assert sha(text[u:v].encode())==opening['source_sha256']
+            assert re.fullmatch(r'\s*\\begin\{solution\}\s*',mask_comments(text[a:u]))
+            assert len(letters(text[u:v]))>=20 and letters(text[u:v])==opening['normalized_witness']
+            pattern=re.compile(r'Contoh\s+([A-Z0-9]+(?:\.[0-9]+)+)\.\s+'+
+                               r'\s+'.join(re.escape(word) for word in example['title'].split())+r'\b')
+            hits=[(page,m) for page,content in pages.items() for m in pattern.finditer(content)]
+            assert len(hits)==1
+            page,heading=hits[0];printed=reference['printed_heading'];content=pages[page]
+            assert page==s['page']==reference['page'] and heading[1]==reference['printed_number']
+            assert heading[0]==printed['text'] and [heading.start(),heading.end()]==printed['character_range']
+            assert sha(content.encode())==reference['page_text_sha256']
+            immediate=re.search(r'Penyelesaian\.\s*',content[heading.end():]);assert immediate
+            assert heading.end()+immediate.start()==reference['printed_solution_start']
+            assert not re.search(r'Contoh\s+[A-Z0-9]+\.[0-9]+',content[heading.end():reference['printed_solution_start']])
+            assert letters(content[heading.end()+immediate.end():]).startswith(opening['normalized_witness'])
         if s['kind']=='learningcheckpoint':
             answer=support[s['answer']['id']]
             assert s['source_span']['label']==answer['source_span']['label']
@@ -81,8 +134,13 @@ def audit_primary(data,files,pages):
             assert answer['printed_number']==s['reader']['printed_number']
             pattern=r'Cek\s+Pemahaman\s+'+re.escape(answer['printed_number'])+r'\b'
             assert re.search(pattern,pages[s['page']]) and re.search(pattern,pages[answer['page']])
-    assert heading_count==12
-    assert sum(s['page'] is None for s in support.values())==16
+    assert (heading_count,composite_count,example_count)==(12,14,2)
+    assert sum(s['kind']=='solution' for s in support.values())==132
+    assert sum(s['page'] is None for s in support.values())==0
+    counts=data['support_navigation']['counts']
+    assert counts['explicit_solution_heading_mappings']==12
+    assert counts['ordered_composite_mappings']==14 and counts['adjacent_example_mappings']==2
+    assert counts['unique_passage_or_anchor_mappings']==168 and counts['source_bound_without_printed_mapping']==0
 
 
 def main():
@@ -127,6 +185,18 @@ def main():
     rejected(lambda d:solution(d)['solution_reference'].__setitem__('native_relation_id','wrong'))
     rejected(lambda d:solution(d)['solution_reference']['printed_witness'].__setitem__('text','wrong'))
     rejected(lambda d:solution(d).__setitem__('page',1))
+    def composite(d):return next(s for s in d['support_navigation']['materials'] if 'composite_reference' in s)
+    rejected(lambda d:composite(d)['witnesses'].reverse())
+    rejected(lambda d:composite(d)['witnesses'].pop())
+    rejected(lambda d:composite(d)['witnesses'][0]['normalized_page_range'].__setitem__(0,0))
+    rejected(lambda d:composite(d)['composite_reference'].__setitem__('page',1))
+    rejected(lambda d:composite(d).__setitem__('printed_state','unique-literal-passage'))
+    def example(d):return next(s for s in d['support_navigation']['materials'] if 'example_reference' in s)['example_reference']
+    rejected(lambda d:example(d)['source_example'].__setitem__('sha256','0'*64))
+    rejected(lambda d:example(d)['source_example'].__setitem__('title','Wrong title'))
+    rejected(lambda d:example(d)['source_opening'].__setitem__('source_text','Wrong opening'))
+    rejected(lambda d:example(d).__setitem__('printed_number','D.999'))
+    rejected(lambda d:example(d).__setitem__('printed_solution_start',0))
     for rows in [[],[{},{}]]:
         try:mapping.require_one(rows,'negative')
         except ValueError:negative+=1

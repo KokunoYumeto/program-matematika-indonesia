@@ -307,7 +307,9 @@ for(const locale of ['id','en']) {
 for(const mutate of [
   v=>{v.precise_selected_exercise_and_activity_alignment=false;},
   v=>{v.all_native_solution_alignment=true;},
-  v=>{v.unmapped_other_solution_sources=0;},
+  v=>{v.unmapped_other_solution_sources=1;},
+  v=>{v.ordered_composite_mappings=0;},
+  v=>{v.adjacent_example_mappings=0;},
   v=>{v.reader_language='en';},
   v=>{delete v.files['C130.teacher.en.html'];},
   v=>{v.files['planner-model.json'].sha256='0'.repeat(64);},

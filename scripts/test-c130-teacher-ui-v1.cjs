@@ -25,8 +25,10 @@ good(api.select(model,{kind:'graph-practice'}).length===19);
 good(api.select(model,{kind:'numbered-exercise'}).length===184);
 good(api.select(model,{search:'14 / G19'}).length===1);
 good(model.supplementary_solutions.length===132);
-good(model.supplementary_solutions.filter(s=>s.page===null).length===16);
+good(model.supplementary_solutions.filter(s=>s.page===null).length===0);
 good(model.supplementary_solutions.filter(s=>s.printed_state==='native-reference-and-unique-solution-heading'&&Number.isInteger(s.page)).length===12);
+good(model.supplementary_solutions.filter(s=>s.printed_state==='ordered-composite-literal-passages'&&Number.isInteger(s.page)).length===14);
+good(model.supplementary_solutions.filter(s=>s.printed_state==='adjacent-example-and-solution-opening'&&Number.isInteger(s.page)).length===2);
 for(const chosen of [new Set(),ids,new Set(model.questions.map(q=>q.id))]) {
  const exchange=api.exportSelection(model,chosen);
  good(JSON.stringify([...api.importSelection(model,exchange)])===JSON.stringify([...chosen]));

@@ -175,8 +175,9 @@ const logicalFiles = [
     const v=JSON.parse(await readFile(resolve(project,'docs/backend/c130-teacher/teacher-validation.json')));
     assert.equal(v.schema,'c130-teacher-hosted/1');assert.equal(v.state,'pass');
     assert.equal(v.precise_selected_exercise_and_activity_alignment,true);
-    assert.equal(v.all_native_solution_alignment,false);assert.equal(v.unmapped_other_solution_sources,16);
+    assert.equal(v.all_native_solution_alignment,false);assert.equal(v.unmapped_other_solution_sources,0);
     assert.equal(v.explicit_solution_heading_mappings,12);
+    assert.equal(v.ordered_composite_mappings,14);assert.equal(v.adjacent_example_mappings,2);
     assert.equal(v.solver_results_reexecuted,false);assert.equal(v.reader_language,'id');
     assert.deepEqual(v.interface_locales,['id','en']);
     assert.equal(v.counts.selectable_learning_items,227);assert.equal(v.counts.selectable_reader_exercises,203);
@@ -200,7 +201,7 @@ const logicalFiles = [
     const model=JSON.parse(await readFile(resolve(project,'docs/backend/c130-teacher/planner-model.json')));
     assert.equal(model.questions.length,227);
     assert.equal(model.supplementary_solutions.length,132);
-    assert.equal(model.supplementary_solutions.filter(r=>r.page===null).length,16);
+    assert.equal(model.supplementary_solutions.filter(r=>r.page===null).length,0);
     return files.map(name=>'backend/c130-teacher/'+name);
   })(),
   ...openLogicTeacherFiles.map(path => 'backend/openlogic-teacher/' + path),
