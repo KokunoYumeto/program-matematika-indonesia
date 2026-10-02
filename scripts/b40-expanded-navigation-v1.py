@@ -8,7 +8,7 @@ from urllib.parse import urljoin, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 PREFIX = 'docs/en/readers/hefferon-linear-algebra/'
 ORIGIN = 'https://kokunoyumeto.github.io/program-matematika-indonesia/'
-MANIFEST_SHA = '8f2ecfdae0b1d38185e5f058c19fe3282d066e4d2bcfacf2350c761288067564'
+MANIFEST_SHA = '28762edbbbf315ea91f9381357da19c24a6273d840046407c2ce39e83b80c7a4'
 
 
 class Links(HTMLParser):
@@ -29,10 +29,10 @@ def validate(root=ROOT):
     assert hashlib.sha256(raw_manifest).hexdigest() == MANIFEST_SHA, 'Native manifest changed'
     manifest = json.loads(raw_manifest)
     assert manifest['schema'] == 'b40-expanded-reading-edition/1'
-    assert manifest['language'] == 'en' and len(manifest['sections']) == 30
-    assert manifest['sections'][-1]['section'] == 'detspeed'
+    assert manifest['language'] == 'en' and len(manifest['sections']) == 31
+    assert manifest['sections'][-1]['section'] == 'chio'
     rows = [r for r in manifest['public_files'] if r['path'].endswith('.html')]
-    assert len(rows) == len({r['path'] for r in rows}) == 31
+    assert len(rows) == len({r['path'] for r in rows}) == 32
     result = []
     for row in rows:
         name = row['path']
@@ -58,7 +58,7 @@ def validate(root=ROOT):
         result.append({'document': PREFIX + name, 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest(),
                        'english_programme_return': True, 'original_author_link': True, 'native_body_unchanged': True})
     return {'schema': 'b40-expanded-native-navigation-validation/1', 'state': 'pass', 'files': result,
-            'html_documents': 31, 'sections': 30, 'scope': 'Existing partial original-English book through Speed of Calculating Determinants; no new translation or proof admission.'}
+            'html_documents': 32, 'sections': 31, 'scope': 'Existing partial original-English book through Chiò’s Method; no new translation or proof admission.'}
 
 
 if __name__ == '__main__':
@@ -77,4 +77,4 @@ if __name__ == '__main__':
     target.write_text(json.dumps(nav, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
     (ROOT / 'backend/authority/b40-expanded-navigation-validation-v1.json').write_text(
         json.dumps(result, indent=2) + '\n', encoding='utf-8')
-    print(json.dumps({'state': 'pass', 'registered_native_html_pages': 31, 'native_bodies_changed': False}))
+    print(json.dumps({'state': 'pass', 'registered_native_html_pages': 32, 'native_bodies_changed': False}))

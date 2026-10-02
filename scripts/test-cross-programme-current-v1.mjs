@@ -35,8 +35,8 @@ for (const locale of ['id','en']) {
   assert.ok(b40.includes('data-b40-expanded="v1"'));
   assert.ok(b40.includes('href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/" hreflang="en"'));
   assert.ok(b40.includes(locale==='en'?'(partial book)':'(sebagian buku)'));
-  assert.ok(b40.includes(locale==='en'?'30 sections through Speed of Calculating Determinants':'30 bagian'));
-  assert.ok(!b40.includes('29 sections')&&!b40.includes('29 bagian'));
+  assert.ok(b40.includes(locale==='en'?'31 sections through Chiò’s Method':'31 bagian'));
+  assert.ok(!b40.includes('30 sections')&&!b40.includes('30 bagian'));
   for(const [section,side] of [['core-D80','provider'],['advanced-'+d80route.consumer_course,'consumer']]){
     const local=text.split('<section id="'+section+'">')[1]?.split('</section>')[0];
     assert.ok(local?.includes(renderD80PrerequisiteRoute(d80route,locale,side)),'Missing exact D80 '+side+' route in '+locale);

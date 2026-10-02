@@ -36,9 +36,9 @@ try{
     const proofSpace=await page.locator('.proof>p:first-child>em:first-child').first().evaluate(e=>parseFloat(getComputedStyle(e).marginInlineEnd));assert.ok(proofSpace>0,'Proof label must not run into its opening word');
     await page.locator('[id="'+anchor+'"]').scrollIntoViewIfNeeded();
     assert.ok((await page.locator('[id="'+anchor+'"]').innerText()).includes('basis'));
-    if(width!==320){const path='visual/basis-extension-'+width+'.png';const b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
+    if(width!==320&&!process.argv.includes('--new-section-only')){const path='visual/basis-extension-'+width+'.png';const b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
    }
-   if(['det3','markov','cramer','detspeed'].includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
+   if((process.argv.includes('--new-section-only')?['chio']:['det3','markov','cramer','detspeed','chio']).includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
    assert.equal(await page.locator('img').evaluateAll(xs=>xs.filter(x=>!x.complete||x.naturalWidth===0).length),0,'Broken embedded image');
    checks.push({section,width,mathml:true,horizontal_overflow:false,return_navigation:true,remote_runtime_blocked:true});
   }
