@@ -8,6 +8,7 @@ import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const dir=resolve(root,'backend/cross-programme-v1');
 const current=process.argv.includes('--current');
+const advancedCount=current?72:71;
 const docs=current?resolve(root,'docs'):resolve(dir,'public-staging/docs');
 const captureDir=current?'current-browser-captures':'browser-captures';
 const require=createRequire(import.meta.url);
@@ -24,10 +25,12 @@ try{
   for(const locale of ['en','id'])for(const width of [1280,390,320]){
     const context=await browser.newContext({viewport:{width,height:900},javaScriptEnabled:false});
     await context.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());const page=await context.newPage();
-    await page.goto(origin+'/'+locale+'/programme/',{waitUntil:'load'});assert.equal(await page.locator('section[id^="core-"]').count(),40);assert.equal(await page.locator('section[id^="advanced-"]').count(),71);
+    await page.goto(origin+'/'+locale+'/programme/',{waitUntil:'load'});assert.equal(await page.locator('section[id^="core-"]').count(),40);assert.equal(await page.locator('section[id^="advanced-"]').count(),advancedCount);
     const overflow=await page.evaluate(()=>({inner:innerWidth,document:document.documentElement.scrollWidth}));assert.ok(overflow.document<=overflow.inner+1,'Horizontal overflow '+locale+' '+width);
     const proofNotice=await page.locator('.notice').innerText();assert.ok(proofNotice.length>100);
     if(current){
+      assert.equal(await page.locator('[data-advanced-snapshot="801f1868"]').count(),1);
+      assert.equal(await page.locator('#advanced-AG-RG details ol li').count(),6);
       const route=JSON.parse(await readFile(resolve(dir,'d80-prerequisite-route-v1.json')));
       const provider=page.locator('#core-D80 aside[data-d80-prerequisite="provider"]');
       assert.equal(await provider.locator('a[hreflang="en"]').count(),6);
@@ -47,7 +50,7 @@ try{
     }
     if(width!==320){await page.locator('#core-B40').scrollIntoViewIfNeeded();const path=captureDir+'/'+locale+'-'+width+'-core-B40.png';const b=await page.screenshot({path:resolve(dir,path),fullPage:false});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
     await page.locator('#core-B40 a[href="#advanced-RT-FIN"]').click();assert.ok(page.url().endsWith('#advanced-RT-FIN'));await page.locator('#advanced-RT-FIN a[href="#core-B40"]').click();assert.ok(page.url().endsWith('#core-B40'));
-    checks.push({locale,width,mode:'javascript_disabled',course_sections:111,forward_reverse_clicks:'pass',horizontal_overflow:false,remote_runtime_blocked:true});await context.close();
+    checks.push({locale,width,mode:'javascript_disabled',course_sections:40+advancedCount,forward_reverse_clicks:'pass',horizontal_overflow:false,remote_runtime_blocked:true});await context.close();
   }
   for(const locale of ['en','id'])for(const name of ['index.html','learning-map.html','learning-map-paired.html']){
     const context=await browser.newContext({viewport:{width:390,height:900}});await context.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(String(e)));

@@ -17,9 +17,13 @@ assert.equal(expected.length,40);
 assert.deepEqual(Object.keys(crossProgrammeRoutes).sort(),expected);
 assert.deepEqual(coverage.roles.map(c=>c.role_id).sort(),expected);
 assert.deepEqual(capsules.map(c=>c.course_id).sort(),expected);
-assert.equal(bridge.counts.published_advanced_courses,71);
-assert.equal(bridge.counts.published_advanced_lessons,951);
-assert.equal(bridge.counts.cross_programme_course_edges,183);
+assert.equal(bridge.source_snapshots.advanced.commit,'801f186833b9811fa826575ef0717e78a5047ab0');
+assert.equal(bridge.counts.published_advanced_courses,72);
+assert.equal(bridge.counts.published_advanced_lessons,1061);
+assert.equal(bridge.counts.cross_programme_course_edges,184);
+assert.equal(bridge.advanced_snapshot_intake.consumer_source.matching_inspected_proof_snapshot,true);
+assert.ok(bridge.courses.advanced.some(c=>c.id==='AG-RG'&&c.lessons.length===6));
+assert.ok(!bridge.courses.advanced.some(c=>c.id==='CORE-B40'),'Local proof draft must not acquire an invented public route');
 assert.equal(bridge.counts.independently_verified_cross_programme_proof_matches,0);
 const d80route=validateD80PrerequisiteRoute(await load('backend/cross-programme-v1/d80-prerequisite-route-v1.json'));
 assert.deepEqual(bridge.source_bound_lesson_routes,[d80route]);
@@ -29,6 +33,7 @@ for (const locale of ['id','en']) {
   const programme='docs/'+locale+'/programme/index.html';
   const programmeBytes=await readFile(resolve(root,programme));
   const text=programmeBytes.toString('utf8');
+  assert.ok(text.includes('data-advanced-snapshot="801f1868"'));
   const b40=text.match(/<section id="core-B40">[\s\S]*?<\/section>/)?.[0];
   assert.ok(b40?.includes('data-b40-foundations="v1"'));
   assert.ok(b40.includes('href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-foundations/" hreflang="en"'));
@@ -70,7 +75,7 @@ assert.ok(d60.layers.learner.tools.some(t=>t.tool_id==='d60.native_ledger'));
 for(const key of ['ledger_status','terminology_status','corrections_status'])
   assert.equal(d60.layers.translation[key],'available_unverified');
 const result={schema:'current-core-advanced-integration/1',state:'pass',core_roles:40,
-  advanced_courses:71,advanced_lessons:951,course_reading_edges:183,
+  advanced_courses:72,advanced_lessons:1061,course_reading_edges:184,
   all_six_current_shells_have_both_route_and_d60_tools:true,
   all_six_current_shells_have_d80_tools:true,
   b40_existing_english_foundations_preserved_in_both_programmes:true,
@@ -81,4 +86,4 @@ const result={schema:'current-core-advanced-integration/1',state:'pass',core_rol
   native_proof_closure_claimed:false,files:facts,
   provenance:{model:'gpt-6-astra',effort:'ultra',scope:'Combined current-checkout integration verification; upstream route authorship retained'}};
 await writeFile(resolve(root,'backend/cross-programme-v1/CURRENT_INTEGRATION_VALIDATION.json'),JSON.stringify(result,null,2)+'\n');
-console.log(JSON.stringify({state:'pass',core_roles:40,advanced_courses:71,advanced_lessons:951,current_shells:6}));
+console.log(JSON.stringify({state:'pass',core_roles:40,advanced_courses:72,advanced_lessons:1061,current_shells:6}));

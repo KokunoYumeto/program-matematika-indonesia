@@ -7,7 +7,8 @@ import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-pre
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'backend/cross-programme-v1');
-const freeze=resolve(out,'inputs/20261002');
+const freezeName='inputs/20261002-801f1868';
+const freeze=resolve(out,freezeName);
 const hash=b=>createHash('sha256').update(b).digest('hex');
 const json=b=>JSON.parse(b.toString('utf8'));
 const fact=(path,b)=>({path,bytes:b.length,sha256:hash(b)});
@@ -43,8 +44,8 @@ if(args.has('--capture')){
     ['core-learner-access.json','program-matematika-indonesia',commits.core.commit,'docs/interface/learner-access-manifest.json'],
     ['core-capsules.jsonl','program-matematika-indonesia',commits.core.commit,'docs/data/course-capsule-v1/course-capsules.jsonl'],
   ];
-  for(const [name,repo,commit,path] of requests){const r=await download('https://raw.githubusercontent.com/KokunoYumeto/'+repo+'/'+commit+'/'+path);await exactWrite(resolve(freeze,name),r.bytes);rows.push({...fact('inputs/20261002/'+name,r.bytes),origin:r.http});}
-  for(const [name,path] of Object.entries(phoneInputs)){const b=await readFile(resolve(phoneRoot,path));await exactWrite(resolve(freeze,'phone-'+name+'.json'),b);rows.push({...fact('inputs/20261002/phone-'+name+'.json',b),origin:{kind:'local_frozen_phone_component',logical_path:path,published:false}});}
+  for(const [name,repo,commit,path] of requests){const r=await download('https://raw.githubusercontent.com/KokunoYumeto/'+repo+'/'+commit+'/'+path);await exactWrite(resolve(freeze,name),r.bytes);rows.push({...fact(freezeName+'/'+name,r.bytes),origin:r.http});}
+  for(const [name,path] of Object.entries(phoneInputs)){const b=await readFile(resolve(phoneRoot,path));await exactWrite(resolve(freeze,'phone-'+name+'.json'),b);rows.push({...fact(freezeName+'/phone-'+name+'.json',b),origin:{kind:'local_frozen_phone_component',logical_path:path,published:false}});}
   const metadata={schema:'cross-programme-input-freeze/1',captured_utc:new Date().toISOString(),commits,inputs:rows,no_global_scan:true,no_owner_mutation:true};
   await exactWrite(resolve(freeze,'MANIFEST.json'),serialize(metadata));
   console.log(JSON.stringify({state:'frozen',commits,inputs:rows.map(r=>({path:r.path,bytes:r.bytes,sha256:r.sha256}))}));
@@ -112,7 +113,7 @@ const providerRecords=phone.foundation_proof_records.map(r=>{
 const reverse=Object.fromEntries([...core.map(c=>'core:'+c.id),...advancedCourses.map(c=>'advanced:'+c.id)].map(id=>[id,edges.filter(e=>e.to===id).map(e=>e.from).sort()]));
 const bridge={schema:'open-courses-cross-programme/1',interface_languages:['en','id'],
   programme_identity:'Open Courses',production_provenance:provenance,policy:{native_ids_preserved:true,zero_copy_content:true,core_and_advanced_one_programme:true,course_route_is_not_proof_provider:true,english_interface_does_not_imply_indonesian_advanced_translation:true,external_citation_does_not_close_internal_proof_dependency:true,stacks_baseline:'KokunoYumeto/unofficial-stacks-project-ai-drafts',no_source_or_proof_rewrites:true},
-  input_freeze:fact('inputs/20261002/MANIFEST.json',manifestBytes),source_snapshots:manifest.commits,
+  input_freeze:fact(freezeName+'/MANIFEST.json',manifestBytes),source_snapshots:manifest.commits,advanced_snapshot_intake:manifest.intake,
   counts:{core_courses:core.length,published_advanced_courses:advancedCourses.length,published_advanced_lessons:advancedCourses.reduce((n,c)=>n+c.lessons.length,0),phone_frozen_courses:phone.courses.length,phone_frozen_lessons:phone.courses.reduce((n,c)=>n+c.units.length,0),preparation_edges:edges.length,cross_programme_course_edges:edges.filter(e=>e.from.startsWith('advanced:')&&e.to.startsWith('core:')).length,native_lesson_reading_edges:nativeReadingEdges.length,reported_proof_providers:providerRecords.length,independently_verified_cross_programme_proof_matches:0,unresolved_routes:unresolved.length},
   courses:{core:coreCourses,advanced:advancedCourses},edges,reverse_dependencies:reverse,
   native_phone_exchange:{schema:'stacks-foundation-proof-exchange/v1',course_snapshot:phone.snapshot,reading_edges:nativeReadingEdges,reported_providers:providerRecords},result_requirement_findings:scopeFindings,unresolved_routes:unresolved,source_field_disagreements:inconsistencies,
@@ -160,6 +161,10 @@ for(const resource of additions.resources){
 }
 function currentHtml(locale){
   let body=html(locale);
+  const update=locale==='en'
+    ?'Advanced catalogue update: OpenAI Codex — GPT-6 Astra, Ultra effort. This snapshot includes 72 public courses and 1,061 lessons; course routes are not proof certification. Local foundation drafts remain separate.'
+    :'Pembaruan katalog lanjutan: OpenAI Codex — GPT-6 Astra, tingkat upaya Ultra. Snapshot ini mencakup 72 mata kuliah publik dan 1.061 pelajaran; jalur mata kuliah bukan pengesahan pembuktian. Draf fondasi lokal tetap dicatat terpisah.';
+  body=body.replace('</header>','<p data-advanced-snapshot="801f1868">'+esc(update)+'</p></header>');
   const providerAnchor='<section id="core-D80"><h3>'+esc(coreCourses.find(c=>c.id==='D80').title[locale])+'</h3>';
   assert.equal(body.split(providerAnchor).length,2);
   body=body.replace(providerAnchor,providerAnchor+renderD80PrerequisiteRoute(lessonRoute,locale,'provider'));

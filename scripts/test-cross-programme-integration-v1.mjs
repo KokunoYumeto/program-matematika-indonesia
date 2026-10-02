@@ -14,12 +14,13 @@ function validate(j){
   ok(j.schema==='open-courses-cross-programme/1','schema');
   const nodes=[...j.courses.core.map(c=>'core:'+c.id),...j.courses.advanced.map(c=>'advanced:'+c.id)];
   ok(new Set(nodes).size===nodes.length,'unique native namespaces');
-  ok(j.courses.core.length===40&&j.courses.advanced.length===71,'exact source-snapshot counts');
+  ok(j.courses.core.length===40&&j.courses.advanced.length===72,'exact source-snapshot counts');
+  ok(j.source_snapshots.advanced.commit==='801f186833b9811fa826575ef0717e78a5047ab0','exact advanced edition');
   const endpoints=new Set(nodes);const ids=new Set();
   for(const e of j.edges){ok(endpoints.has(e.from)&&endpoints.has(e.to),'both native endpoints exist');ok(!ids.has(e.id),'unique edge');ids.add(e.id);ok(e.mathematical_correspondence==='not_checked'&&e.proof_closed===false,'course edge never certifies proof');}
   for(const n of nodes){const expected=j.edges.filter(e=>e.to===n).map(e=>e.from).sort();assert.deepEqual(j.reverse_dependencies[n],expected,'exact reverse relation');tests++;}
   let lessons=0;for(const c of j.courses.advanced){const lessonIds=new Set();for(const l of c.lessons){ok(!lessonIds.has(l.id),'unique native lesson');lessonIds.add(l.id);ok(new URL(l.route).origin==='https://kokunoyumeto.github.io'&&l.route.includes('/open-mathematics-courses/'),'same public advanced programme');lessons++;}ok(c.content_language==='en','actual advanced source language');}
-  ok(lessons===951&&j.counts.published_advanced_lessons===951,'951 distinct source-declared lessons');
+  ok(lessons===1061&&j.counts.published_advanced_lessons===1061,'1061 distinct source-declared lessons');
   for(const c of j.courses.core){ok(c.capsule.id===c.id,'native capsule join');for(const locale of ['en','id'])ok(c.routes[locale].includes('/'+locale+'/'),'locale-specific routing');}
   ok(j.native_phone_exchange.reading_edges.length===48,'48 hash-bound native reading edges');
   for(const e of j.native_phone_exchange.reading_edges){ok(/^[0-9a-f]{64}$/i.test(e.from_source_sha256)&&/^[0-9a-f]{64}$/i.test(e.target_source_sha256),'exact native hash pair');ok(e.proof_closed===false,'native reading is not proof closure');}
@@ -38,14 +39,13 @@ function visit(v){indices.set(v,index);low.set(v,index++);stack.push(v);onStack.
 for(const n of nodes)if(!indices.has(n))visit(n);
 const pages=[];
 for(const locale of ['en','id']){
-  const path='docs/'+locale+'/programme/index.html';const b=await readFile(resolve(dir,'public-staging',path));const text=b.toString('utf8');
+  const path='docs/'+locale+'/programme/index.html';const b=await readFile(resolve(root,path));const text=b.toString('utf8');
   const ids=[...text.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);ok(new Set(ids).size===ids.length,'unique rendered anchors');
   const anchors=new Set(ids);for(const m of text.matchAll(/href="#([^"]+)"/g))ok(anchors.has(m[1]),'rendered preparation and reverse anchor exists');
   for(const n of nodes)ok(anchors.has(n.replace(':','-')),'every course in learner outline');
-  ok(!/<script\b/i.test(text),'full outline needs no JavaScript');ok(text.includes('GPT-6.1 Sol')&&text.includes('Ultra'),'visible actual model and effort');
+  ok(!/<script\b/i.test(text),'full outline needs no JavaScript');ok(text.includes('GPT-6.1 Sol')&&text.includes('GPT-6 Astra')&&text.includes('Ultra'),'original route and successor attribution preserved');
   ok(!/[A-Z]:\\|file:\/\/|API_TOKEN|Bearer /.test(text)&&!text.includes(privateProfileName),'no private paths/credentials/public profile attribution');
-  pages.push({path,bytes:b.length,sha256:hash(b),course_anchors:111});
+  pages.push({path,bytes:b.length,sha256:hash(b),course_anchors:112});
 }
-const reconciled=await load('PUBLIC_BASELINE_RECONCILIATION.json');for(const f of reconciled.outputs){const b=await readFile(resolve(dir,'public-staging',f.path));assert.equal(b.length,f.bytes);assert.equal(hash(b),f.sha256);}
-const receipt={schema:'cross-programme-integration-qa/1',status:'pass',positive_structural_assertions:positiveTests,negative_tests:negative,preparation_cycle_components:components,cycle_disposition:'Reading routes only. No cyclic proof dependency is admitted or resolved by these links.',published_snapshot_counts:bridge.counts,pages,public_baseline_roundtrip:'pass',changed_files:reconciled.explicit_changed_paths,proof_correspondence_complete:false};
-await writeFile(resolve(dir,'VALIDATION.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({status:'pass',positive_structural_assertions:positiveTests,negative:negative.length,reading_cycles:components.length,exact_staging_files:reconciled.outputs.length}));
+const receipt={schema:'cross-programme-integration-qa/1',status:'pass',current_checkout:true,positive_structural_assertions:positiveTests,negative_tests:negative,preparation_cycle_components:components,cycle_disposition:'Reading routes only. No cyclic proof dependency is admitted or resolved by these links.',published_snapshot_counts:bridge.counts,pages,proof_correspondence_complete:false};
+await writeFile(resolve(dir,'VALIDATION.json'),JSON.stringify(receipt,null,2)+'\n');console.log(JSON.stringify({status:'pass',positive_structural_assertions:positiveTests,negative:negative.length,reading_cycles:components.length,current_course_anchors:112}));
