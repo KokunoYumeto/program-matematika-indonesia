@@ -12,6 +12,10 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = 'scripts/build-program-backend-coverage-v1.mjs'
 INPUTS = {
+    'd100HtmlReplay': 'backend/course-capsule-v1/adapters/d100-native-production-v1/HTML_REPLAY.json',
+    'd100ClassicalHtmlReplay': 'backend/course-capsule-v1/adapters/d100-native-production-v1/classical-html-replay.json',
+    'd100BgkHtmlReplay': 'backend/course-capsule-v1/adapters/d100-native-production-v1/bgk-html-replay.json',
+    'd100OriginalHtmlReplay': 'backend/course-capsule-v1/adapters/d100-native-production-v1/original-html-replay.json',
     'd70NativeReplay': 'backend/course-capsule-v1/adapters/d70-native-replay-v1/validation.json',
     'd70ReplayBuild': 'backend/course-capsule-v1/adapters/d70-native-replay-v1/build/BUILD_RECEIPT.json',
     'd70ReplayBundle': 'backend/course-capsule-v1/adapters/d70-native-replay-v1/build/D70_NATIVE_METADATA_REPLAY_V1.zip',
@@ -98,6 +102,14 @@ model = json.loads((ROOT / OUTPUTS[0]).read_bytes())
 assert (ROOT / OUTPUTS[0]).read_bytes() == (ROOT / OUTPUTS[1]).read_bytes()
 roles = {row['role_id']: row for row in model['roles']}
 assert len(model['roles']) == len(roles) == 40
+assert roles['D100']['native_html_replay']['state'] == 'verified_html_only'
+assert roles['D100']['native_html_replay']['isolated_builds'] == 6
+assert roles['D100']['native_html_replay']['source_units'] == 60
+assert roles['D100']['native_html_replay']['companion_units'] == 32
+assert roles['D100']['native_html_replay']['native_data_export_replayed'] is False
+assert roles['D100']['native_capability_parity_completion'] == 'not_yet_proven'
+assert roles['D100']['dimensions']['reproducible_production']['native_html_replay'] == 'verified'
+assert roles['D100']['dimensions']['reproducible_production']['replay'] == 'available_unverified'
 assert set(roles) == {row['course_id'] for row in inputs['capsules']}
 assert model['summary']['overall_program_backend_complete'] is False
 assert model['summary']['locally_validated_adapter_roles'] == sum(
@@ -991,7 +1003,7 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
     sandbox = Path(temporary)
     deployment = ['backend/course-capsule-v1/adapters/c120-delivery-v1/deployment/' + p for p in
                   ['.github/workflows/pages.yml', 'program-navigation.json', 'scripts/program_navigation.py', 'scripts/reseal_reader_manifests.py']]
-    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs', 'scripts/c120-delivery-evidence-v1.mjs', 'scripts/d50-production-evidence-v1.mjs', 'scripts/d70-native-replay-evidence-v1.mjs', 'docs/backend/d50/reader/index.html'] + list(INPUTS.values()) + deployment:
+    for path in [GENERATOR, 'scripts/native-catalog-exchange-v1.mjs', 'scripts/clp1-navigation-evidence-v1.mjs', 'scripts/c120-delivery-evidence-v1.mjs', 'scripts/d50-production-evidence-v1.mjs', 'scripts/d70-native-replay-evidence-v1.mjs', 'scripts/d100-html-replay-evidence-v1.mjs', 'docs/backend/d50/reader/index.html'] + list(INPUTS.values()) + deployment:
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())

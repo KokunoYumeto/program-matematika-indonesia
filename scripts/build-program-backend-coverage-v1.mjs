@@ -7,9 +7,12 @@ import {clp1EvidencePaths,validateClp1Evidence} from './clp1-navigation-evidence
 import {c120DeliveryInputs,loadC120Delivery} from './c120-delivery-evidence-v1.mjs';
 import {d50ProductionPaths,loadD50ProductionEvidence} from './d50-production-evidence-v1.mjs';
 import {d70NativeReplayPaths,validateD70NativeReplay} from './d70-native-replay-evidence-v1.mjs';
+import {d100HtmlReplayPaths,loadD100HtmlReplay} from './d100-html-replay-evidence-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const d50ProductionProof=await loadD50ProductionEvidence(root);
+const d100HtmlProof=await loadD100HtmlReplay(root);
 const sources={
+  ...d100HtmlReplayPaths,
   ...d70NativeReplayPaths,
   ...d50ProductionPaths,
   ...Object.fromEntries(c120DeliveryInputs.map((path,index)=>[`c120Delivery${index}`,path])),
@@ -622,6 +625,7 @@ const rows=data.capsules.map(capsule=>{
   }
   const nativeCapabilityParityComplete=parityStatuses.every(status=>['verified','not_applicable'].includes(status));
   return {role_id:role,title:capsule.course.title,native_family_id:family.native_family_id,native_family_name:family.family_name,
+    ...(role==='D100'?{native_html_replay:{...d100HtmlProof.report,evidence:d100HtmlProof.evidence}}:{}),
     ...(role==='D70'?{native_metadata_replay:d70NativeReplay}:{}),
     ...(role==='C130'?{native_metadata_audit:{
       status:data.c130NativeAudit.state,counts:data.c130NativeAudit.counts,
@@ -682,6 +686,7 @@ const rows=data.capsules.map(capsule=>{
       terminology:{register:capsule.layers.translation.terminology_status,
         ...(capsule.layers.translation.verification?{verification:capsule.layers.translation.verification}:{})},
       reproducible_production:{build:capsule.layers.production.build_status,replay:capsule.layers.production.deterministic_replay_status,
+        ...(role==='D100'?{native_html_replay:'verified',native_data_export_replay:'not_established',fresh_pdf_replay:'not_established'}:{}),
         ...(role==='D70'?{native_metadata_replay:'verified'}:{})},
       accessibility:{semantic_html:capsule.layers.learner.capabilities.semantic_html,mathml:capsule.layers.learner.capabilities.mathml},
       learner:{delivery:capsule.layers.learner.status,central_tools:centralTools.length},
@@ -692,6 +697,7 @@ const rows=data.capsules.map(capsule=>{
     layers:Object.fromEntries(Object.entries(capsule.layers).map(([name,layer])=>[name,{status:layer.status,
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
+      ...(role==='D100'?[d100HtmlProof.report.note_id]:[]),
       ...(role==='D70'?['Replay metadata Duncan dan CRing kini dapat dijalankan tanpa direktori pembuat buku; 13 berkas sama persis dalam dua eksekusi kode paket. Produksi ulang seluruh Li dan keempat PDF tetap memerlukan bukti terpisah.']:[]),
       ...(role==='C130'?[`Sebanyak ${data.c130NativeAudit.resolved_previously_unresolved_target_locations} rujukan teks target lama telah diselesaikan; lokasi target yang belum terselesaikan: ${data.c130NativeAudit.unresolved_target_locations}. Periksa perbedaan identitas pada ${data.c130NativeAudit.native_alignment_whole_file_guard_mismatches} berkas penggabungan serta pilihan istilah dan klaim kanon secara semantik. Kecocokan lokasi teks bukan persetujuan baru terhadap setiap pilihan istilah.`]:[]),
       ...(role==='D50'?['HTML dan backend dibangun ulang dari 1.282 berkas sumber dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu, bukan kompilasi baru. Uji aksesibilitas dan batas luring lanjutan tetap terpisah: matematika HTML masih memakai MathJax CDN. Ini bukan peninjauan semantik terjemahan baru.']:[]),
