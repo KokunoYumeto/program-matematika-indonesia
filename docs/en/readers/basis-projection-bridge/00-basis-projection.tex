@@ -1,0 +1,396 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  english,
+]{article}
+\usepackage{xcolor}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\ifLuaTeX
+\usepackage[bidi=basic,shorthands=off]{babel}
+\else
+\usepackage[bidi=default,shorthands=off]{babel}
+\fi
+\ifLuaTeX
+  \usepackage{selnolig} % disable illegal ligatures
+\fi
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={From bases to projections},
+  pdflang={en},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{From bases to projections}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section{From bases to projections}\label{from-bases-to-projections}
+
+This foundation bridge supplies the finite-dimensional linear algebra
+used to begin the averaging proof of complete reducibility. It belongs
+to the programme's existing linear-algebra foundation; it is not a
+replacement for that course.
+
+The basis arguments below are adapted from Jim Hefferon's \emph{Linear
+Algebra}, at source revision
+\texttt{df2262e089a02651c127f1dd12649c4622ee1383}. The complete selected
+source statements and proofs, their source locators, and the author's
+grant are supplied with this lesson. This adaptation retains
+\textbf{Creative Commons Attribution--ShareAlike 2.5} terms; it is not
+CC0 and is not relicensed as GFDL. See the
+\href{HEFFERON-LICENSE.txt}{author's grant},
+\href{HEFFERON-ACKNOWLEDGEMENTS.txt}{acknowledgements},
+\href{HEFFERON-PROOFS.tex}{exact selected source proofs}, and
+\href{https://creativecommons.org/licenses/by-sa/2.5/}{reuse terms}.
+
+\emph{Adaptation, scope comparison, examples and solutions by OpenAI
+GPT-6 Astra in Codex, Ultra reasoning effort, October 2026. Self-checked
+by the AI writing this bridge; no human or independent AI review is
+claimed. The original source remains unchanged. This lesson corrects an
+already-recorded coefficient sign, makes the field condition explicit,
+and expands the finite termination and projection arguments. These are
+standard results, not claimed discoveries.}
+
+\subsection{What to know first}\label{what-to-know-first}
+
+We use field and vector-space axioms, finite sums, finite induction and
+elementary finite-set counting. A \textbf{field} has distinct elements
+\(0\) and \(1\); every nonzero scalar has an inverse. A vector space
+\(V\) over a field \(k\) is an abelian additive group with scalar
+multiplication satisfying the vector-space axioms.
+
+For \(S\subseteq V\), its \textbf{span} consists of finite linear
+combinations of elements of \(S\); the empty combination is zero. The
+set is \textbf{linearly independent} when every relation involving
+finitely many distinct elements has all coefficients zero. A
+\textbf{basis} is a linearly independent spanning set. Throughout, \(V\)
+has a finite basis. No topology, inner product, algebraic closure or
+characteristic-zero assumption is used.
+
+Linear combinations of linear combinations remain linear combinations,
+by distributivity. Thus a span is a subspace. A subset of an independent
+set is independent, since a relation in the subset is also one in the
+larger set. Finally, coordinates in a basis are unique: subtracting two
+expressions gives a relation in the basis and therefore zero differences
+between all coefficients. We will use these elementary consequences
+explicitly.
+
+\subsection{Adding one independent
+vector}\label{adding-one-independent-vector}
+
+\textbf{Lemma.} If \(S\) is independent and \(v\notin S\), then
+\(S\cup\{v\}\) is independent exactly when
+\(v\notin\operatorname{span}(S)\).
+
+\textbf{Proof.} If \(v=\sum_{i=1}^r a_i s_i\), combine repeated terms so
+the \(s_i\) are distinct. The equation
+
+\[
+\sum_{i=1}^r a_i s_i-v=0
+\]
+
+is a nontrivial relation on distinct elements of \(S\cup\{v\}\): the
+coefficient of \(v\) is \(-1\ne0\). Conversely, any nontrivial relation
+on that union must involve \(v\), because \(S\) is independent. Write it
+as
+
+\[
+\sum_{i=1}^r a_i s_i+bv=0.
+\]
+
+If \(b=0\), independence of \(S\) forces all other coefficients to
+vanish, a contradiction. Consequently \(b\ne0\), and
+
+\[
+v=-\sum_{i=1}^r b^{-1}a_i s_i\in\operatorname{span}(S).
+\]
+
+This proves both implications. It also covers \(S=\varnothing\): the
+only dependent singleton is \(\{0\}\). \(\square\)
+
+The minus sign in the last display repairs the existing source finding
+\texttt{B40-VS2-SOURCE-003}. Omitting it did not change the source's
+span-membership conclusion, but it made the displayed equality wrong
+outside characteristic two.
+
+\subsection{Exchanging a basis vector}\label{exchanging-a-basis-vector}
+
+\textbf{Lemma.} Let \(B=(b_1,\ldots,b_n)\) be a basis, and write
+\(v=\sum_{j=1}^n c_jb_j\). If \(c_i\ne0\), replacing \(b_i\) by \(v\)
+gives another basis.
+
+\textbf{Proof.} Suppose
+
+\[
+d_i v+\sum_{j\ne i}d_jb_j=0.
+\]
+
+Substitution expresses zero in the original basis. Its
+\(b_i\)-coefficient is \(d_ic_i\), so \(d_i=0\). The other coefficients
+are then \(d_j=0\). Thus the replacement family is independent.
+Moreover,
+
+\[
+b_i=c_i^{-1}v-\sum_{j\ne i}c_i^{-1}c_jb_j.
+\]
+
+Every old basis vector therefore belongs to the span of the replacement
+family. That family spans \(V\), and hence is a basis. \(\square\)
+
+\subsection{Why finite dimension bounds
+independence}\label{why-finite-dimension-bounds-independence}
+
+\textbf{Theorem.} If \(V\) has a basis with \(n\) elements, every
+independent subset of \(V\) has at most \(n\) elements. Consequently all
+bases of \(V\) have the same size.
+
+\textbf{Proof.} If \(n=0\), then \(V=\{0\}\), whose only independent
+subset is empty. Suppose \(n>0\) and, towards a contradiction, that an
+independent set contains distinct vectors \(s_1,\ldots,s_{n+1}\).
+
+Start with the given basis \(B_0\). Inductively suppose that \(B_r\) is
+a basis containing \(s_1,\ldots,s_r\) and \(n-r\) of the original basis
+vectors, where \(0\le r<n\). Express \(s_{r+1}\) in \(B_r\). Some
+coefficient of one of the remaining original vectors must be nonzero:
+otherwise \(s_{r+1}\) would be in the span of \(s_1,\ldots,s_r\),
+contradicting independence. The exchange lemma replaces such an original
+vector by \(s_{r+1}\). This constructs \(B_{r+1}\).
+
+After \(n\) exchanges, \((s_1,\ldots,s_n)\) is a basis. It spans
+\(s_{n+1}\), again contradicting independence. Thus there cannot be
+\(n+1\) distinct elements in an independent set. This proves the bound
+without presupposing that the set spans or is already finite.
+
+If another basis has \(m\) elements, the bound gives \(m\le n\).
+Applying the same argument with that basis gives \(n\le m\). Hence
+\(m=n\); their common value is \(\dim_k V\). \(\square\)
+
+This is the source's exchange argument with its induction written
+directly for an arbitrary independent set. It avoids using the existence
+of a minimal-sized basis when proving the independent-set bound.
+
+\subsection{Extending a basis and choosing a
+complement}\label{extending-a-basis-and-choosing-a-complement}
+
+\textbf{Theorem.} Every independent subset of \(V\) extends to a basis
+of \(V\). Every subspace \(U\subseteq V\) has a finite basis, which
+extends to one of \(V\).
+
+\textbf{Proof.} An independent set \(S\) has at most \(n=\dim_k V\)
+elements. If it does not span \(V\), choose a vector outside its span.
+The first lemma says that adjoining it preserves independence. Repeat
+whenever the span is still not \(V\). Each step increases the finite
+cardinality by one. The preceding theorem makes more than \(n-|S|\)
+additions impossible, so the process must reach a basis.
+
+For a subspace \(U\), start with the empty set and choose each new
+vector in \(U\) outside the current span. These sets are independent in
+\(V\), so the same bound forces termination in a spanning independent
+set of \(U\). Extend this basis to one of \(V\) by the first part. Only
+finitely many choices are needed. If \(U=0\), its basis is empty; if
+\(U=V\), there are no extra basis vectors. \(\square\)
+
+\textbf{Corollary.} Every subspace of \(V\) is the image of a linear
+projection. More precisely, there are linear maps \(i:U\to V\) and
+\(p:V\to U\) with \(i\) the inclusion and \(pi=1_U\). The endomorphism
+\(p_0=ip\) satisfies
+
+\[
+p_0^2=p_0,\qquad\operatorname{im}p_0=U,
+\qquad V=U\oplus\ker p_0.
+\]
+
+\textbf{Proof.} Choose a basis \((u_1,\ldots,u_r)\) of \(U\) and extend
+it to \((u_1,\ldots,u_r,w_1,\ldots,w_{n-r})\) of \(V\). Unique
+coordinates define
+
+\[
+\begin{aligned}
+v&=\sum_{i=1}^r a_i u_i+\sum_{j=1}^{n-r}b_jw_j,\\
+p(v)&=\sum_{i=1}^r a_i u_i.
+\end{aligned}
+\]
+
+Coordinates of a sum are the sums of the coordinates, and coordinates of
+a scalar multiple are the scalar multiples of the coordinates, again by
+uniqueness. Therefore \(p\) is linear. It fixes \(U\), which gives
+\(pi=1_U\), \(p_0^2=p_0\), and \(\operatorname{im}p_0=U\). Its kernel is
+the span of the \(w_j\). For every \(v\),
+
+\[
+v=p_0v+(v-p_0v),\qquad p_0(v-p_0v)=0.
+\]
+
+If \(u\in U\cap\ker p_0\), then \(u=p_0u=0\). This proves the direct
+sum. \(\square\)
+
+There is generally no distinguished choice of \(p_0\). In the displayed
+adapted basis its matrix is \(\operatorname{diag}(I_r,0)\). A different
+complement can give a different projection onto the same subspace.
+
+\subsection{The exact step used in representation
+theory}\label{the-exact-step-used-in-representation-theory}
+
+In
+\href{https://kokunoyumeto.github.io/open-mathematics-courses/courses/RT-FIN/representations-and-complete-reducibility.html}{Representations
+and complete reducibility}, Theorem 2.3 begins by extending a basis of
+an invariant subspace \(U\), then defining a projection \(p_0\). The
+preceding corollary supplies exactly this construction, over every field
+in that theorem, including finite fields. Exercise 5 applies the same
+construction to its isotypic subspace \(S\). No inner product or
+orthogonal projection is needed for either initial construction.
+
+The representation-theoretic averaging has an additional condition:
+\(|G|\) must be invertible in \(k\). If \(U\) is invariant, put
+
+\[
+P=\frac{1}{|G|}\sum_{g\in G}\rho(g)p_0\rho(g^{-1}).
+\]
+
+Here each summand maps into \(U\) and acts as the identity on \(U\).
+Hence \(P(V)\subseteq U\) and \(P|_U=1_U\). Conjugation by \(\rho(h)\)
+permutes the summands by \(g\mapsto hg\), so \(P\) commutes with the
+group action. Also \(P^2=P\), because \(P\) fixes its image. The
+decomposition \(v=Pv+(v-Pv)\) gives the invariant complement \(\ker P\).
+The requirement that \(|G|\) be invertible belongs here, not to basis
+extension.
+
+This comparison applies to the exact lesson source SHA-256
+\texttt{659942BDF47420E6665D59C4E80CF973867730D3B231D7E9C80AB8177BD83712},
+at Theorem 2.3 and Exercise 5. It checks only the
+finite-basis/projection prerequisite and its use. It does not certify
+the rest of the lesson, its other prerequisites, the isotypic
+identification, or the complete course. The original consumer lesson and
+its review state are unchanged.
+
+\subsection{Worked example and
+exercises}\label{worked-example-and-exercises}
+
+\textbf{Example.} In \(k^2\), take \(U=k(1,0)\). For every \(a\in k\),
+the vector \((a,1)\) is a complement basis vector, and the resulting
+projection is
+
+\[
+p_a(x,y)=(x-ay,0),\qquad
+[p_a]=\begin{pmatrix}1&-a\\0&0\end{pmatrix}.
+\]
+
+Its kernel is \(k(a,1)\). Direct substitution gives \(p_a^2=p_a\). These
+distinct projections show why choosing a subspace does not canonically
+choose a complement.
+
+\textbf{Exercise 1.} Over a field, extend \(u=(1,1,0)\), \(v=(0,1,1)\)
+to a basis of \(k^3\), and write a projection onto their span.
+
+\textbf{Solution.} A relation \(au+bv=0\) gives \(a=0\) in the first
+coordinate and \(b=0\) in the third. The vector \(e_2=(0,1,0)\) is
+outside their span: the same two coordinates would force both
+coefficients to vanish. Thus \((u,v,e_2)\) is a basis. In fact
+
+\[
+\begin{aligned}
+(x,y,z)&=xu+zv+(y-x-z)e_2,\\
+p_0(x,y,z)&=(x,x+z,z).
+\end{aligned}
+\]
+
+This formula is valid in every characteristic. It fixes \(u,v\), kills
+\(e_2\), and satisfies \(p_0^2=p_0\).
+
+\textbf{Exercise 2.} Why does basis extension not by itself prove that
+every invariant subspace has an invariant complement in characteristic
+\(p\)?
+
+\textbf{Solution.} Over a field of characteristic \(p>0\), let a
+generator of \(C_p\) act on \(k^2\) by
+
+\[
+A=\begin{pmatrix}1&1\\0&1\end{pmatrix}=I+N.
+\]
+
+Since \(N^2=0\), induction gives \((I+N)^m=I+mN\), and thus \(A^p=I\).
+The line \(U=ke_1\) is invariant. Any complementary line has a generator
+\(w=(a,1)\). If it were invariant, \(Aw=(a+1,1)\) would equal \(cw\).
+The second coordinate forces \(c=1\), while the first then forces
+\(1=0\), impossible. Ordinary linear complements exist; invariant ones
+do not in this example. Averaging cannot repair them because the scalar
+\(|C_p|=p\) is zero in \(k\).
+
+\textbf{Exercise 3.} Which part of the proof prevents it from asserting
+basis extension for arbitrary infinite-dimensional spaces?
+
+\textbf{Solution.} The finite bound on the size of an independent set
+makes the process of adding vectors terminate. With no finite spanning
+basis, this argument supplies no such bound and therefore no termination
+claim. An infinite-dimensional theorem needs a different argument and
+any additional set-theoretic assumptions must be stated. Nothing in this
+bridge claims that theorem.
+
+\subsection{Sources and changes}\label{sources-and-changes}
+
+Hefferon, \emph{Linear Algebra}, vector-spaces chapter: the add-vector
+lemma in \texttt{src/vs/vs2.tex}, lines 492--525; exchange, equal basis
+size, independent-set bound and basis extension in
+\texttt{src/vs/vs3.tex}, lines 1657--1779, 1818--1831 and 1857--1874.
+The
+\href{https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-foundations/}{programme's
+existing foundation reader} preserves the source edition and its
+editorial notes. The \href{https://hefferon.net/linearalgebra/}{author's
+site} supplies the broader course.
+
+The adaptation above keeps the same algebraic argument, spells out the
+zero-dimensional case and finite termination, proves the subspace and
+projection consequences, and gives examples with solutions. The
+requirement \(0\ne1\) also respects the already-recorded source-context
+finding \texttt{B40-FIELDS-SOURCE-001}. It is not a newly discovered
+defect. The field-general formulation is justified by the displayed
+algebraic proof, not merely by changing the word ``real'' in a source
+statement.
+
+All adapted teaching and added exposition on this page use
+\href{https://creativecommons.org/licenses/by-sa/2.5/}{CC BY-SA 2.5}.
+The separately linked representation-theory lesson retains its own
+source, credit and licence. No change to it or to the canonical Stacks
+text is made here.
+
+\end{document}

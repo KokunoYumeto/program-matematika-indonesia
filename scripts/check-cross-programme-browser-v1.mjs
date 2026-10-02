@@ -49,8 +49,22 @@ try{
       checks.push({locale,width,d80_forward_reverse_clicks:'pass',three_exact_english_source_links:true,localized_use_notes:true,visible_five_lemma_diagram_notice:true,correct_pdf_page_link:true,horizontal_overflow:false});
     }
     if(width!==320){await page.locator('#core-B40').scrollIntoViewIfNeeded();const path=captureDir+'/'+locale+'-'+width+'-core-B40.png';const b=await page.screenshot({path:resolve(dir,path),fullPage:false});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
-    await page.locator('#core-B40 a[href="#advanced-RT-FIN"]').click();assert.ok(page.url().endsWith('#advanced-RT-FIN'));await page.locator('#advanced-RT-FIN a[href="#core-B40"]').click();assert.ok(page.url().endsWith('#core-B40'));
+    await page.locator(current?'a[data-b40-programme-step="provider"]':'#core-B40 a[href="#advanced-RT-FIN"]').click();assert.ok(page.url().endsWith('#advanced-RT-FIN'));await page.locator(current?'a[data-b40-programme-step="consumer"]':'#advanced-RT-FIN a[href="#core-B40"]').click();assert.ok(page.url().endsWith('#core-B40'));
     checks.push({locale,width,mode:'javascript_disabled',course_sections:40+advancedCount,forward_reverse_clicks:'pass',horizontal_overflow:false,remote_runtime_blocked:true});await context.close();
+  }
+  if(current)for(const width of [1280,390,320]){
+    const context=await browser.newContext({viewport:{width,height:900},javaScriptEnabled:false});
+    await context.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());
+    const page=await context.newPage();await page.goto(origin+'/en/readers/basis-projection-bridge/',{waitUntil:'load'});
+    assert.equal(await page.locator('math').count(),167);
+    assert.equal(await page.locator('nav').count(),2);
+    assert.equal(await page.locator('a[href="00-basis-projection.tex"]').count(),1);
+    assert.equal(await page.locator('a[href="01-editable-source.zip"]').count(),1);
+    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Proof reader horizontal overflow');
+    await page.locator('#extending-a-basis-and-choosing-a-complement').scrollIntoViewIfNeeded();
+    if(width!==320){const path=captureDir+'/en-'+width+'-B40-proof-bridge.png';const bytes=await page.screenshot({path:resolve(dir,path),fullPage:false});captures.push({path,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});}
+    checks.push({locale:'en',width,reader:'basis-projection-bridge',native_mathml_formulas:167,no_remote_math_runtime:true,horizontal_overflow:false,direct_latex_and_zip_links:true});
+    await context.close();
   }
   for(const locale of ['en','id'])for(const name of ['index.html','learning-map.html','learning-map-paired.html']){
     const context=await browser.newContext({viewport:{width:390,height:900}});await context.route('**/*',route=>route.request().url().startsWith(origin)?route.continue():route.abort());const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(String(e)));

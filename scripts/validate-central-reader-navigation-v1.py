@@ -1000,6 +1000,11 @@ def main() -> int:
                     raise ValueError("Library navigation provider cannot exempt another page")
                 library = runpy.run_path(str(ROOT / "scripts/library-handoff-v1.py"))
                 library["validate"](ROOT)
+            elif row.get("navigation_provider") == "b40-proof-bridge-v1":
+                native = runpy.run_path(str(ROOT / "scripts/test-b40-proof-bridge-v1.py"))
+                verified = native["validate"](ROOT)
+                if row["document"] not in {item["document"] for item in verified["files"]}:
+                    raise ValueError("B40 proof bridge navigation cannot exempt another page")
             elif row.get("navigation_provider") == "b40-foundations-native-v1":
                 if "foundations" not in native_navigation_cache:
                     native = runpy.run_path(str(ROOT / "scripts/b40-foundations-navigation-v1.py"))

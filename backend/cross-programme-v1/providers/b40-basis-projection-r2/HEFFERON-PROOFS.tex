@@ -1,0 +1,203 @@
+% Exact source fragments, not a standalone TeX document.
+% B40.add-vector statement; src/vs/vs2.tex; source lines 492-499
+\begin{lemma}  \label{lm:AddVecLiSetIsLiIffVecNotInSpan}
+%<*lm:AddVecLiSetIsLiIffVecNotInSpan>
+Suppose that $S$ is linearly independent and that $\vec{v}\notin S$.
+Then
+the set $S\union\set{\vec{v}}$ is linearly independent if and only if 
+$\vec{v}\notin\spanof{S}$.   
+%</lm:AddVecLiSetIsLiIffVecNotInSpan>
+\end{lemma}
+
+% B40.add-vector proof; src/vs/vs2.tex; source lines 501-525
+\begin{proof}
+%<*pf:AddVecLiSetIsLiIffVecNotInSpan0>
+% Assume that $S$ is linearly independent and that $\vec{v}\notin S$.
+We will show that $S\union\set{\vec{v}}$ is not linearly independent 
+if and only if $\vec{v}\in\spanof{S}$.
+
+Suppose first that $\vec{v}\in\spanof{S}$.
+Express $\vec{v}$ as a combination $\vec{v}=c_1\vec{s}_1+\cdots+c_n\vec{s}_n$.
+Rewrite that $\zero=c_1\vec{s}_1+\cdots+c_n\vec{s}_n-1\cdot\vec{v}$.
+Since $\vec{v}\notin S$, it does not equal any of the $\vec{s}_i$ so this is 
+a nontrivial linear dependence among the elements of $S\union\set{\vec{v}}$.
+Thus that set is not linearly independent.
+%</pf:AddVecLiSetIsLiIffVecNotInSpan0>
+
+%<*pf:AddVecLiSetIsLiIffVecNotInSpan1>
+Now suppose that $S\union\set{\vec{v}}$ is not linearly independent and
+consider a nontrivial dependence among its members
+$\zero=c_1\vec{s}_1+\cdots+c_n\vec{s}_n+c_{n+1}\cdot\vec{v}$.
+If $c_{n+1}=0$ then that is a dependence among the elements of~$S$, but 
+we are assuming that~$S$ is independent, so $c_{n+1}\neq 0$.
+Rewrite the equation  
+as $\vec{v}=(c_1/c_{n+1})\vec{s}_1+\cdots+(c_n/c_{n+1})\vec{s}_n$
+to get $\vec{v}\in\spanof{S}$
+%</pf:AddVecLiSetIsLiIffVecNotInSpan1>
+\end{proof}
+
+% B40.exchange statement; src/vs/vs3.tex; source lines 1657-1667
+\begin{lemma}[Exchange Lemma] \label{lm:ExchangeLemma}
+%<*lm:ExchangeLemma>
+Assume that 
+\( B=\sequence{\vec{\beta}_1,\dots,\vec{\beta}_n} \) is a basis for a
+vector space, and that for the vector \( \vec{v} \)
+the relationship \( \vec{v}=\lincombo{c}{\vec{\beta}} \)
+has \( c_i\neq 0 \).
+Then exchanging \( \vec{\beta}_i \) for \( \vec{v} \) yields another
+basis for the space.
+%</lm:ExchangeLemma>
+\end{lemma}
+
+% B40.exchange proof; src/vs/vs3.tex; source lines 1669-1721
+\begin{proof}
+%<*pf:ExchangeLemma0>
+Call the outcome of the exchange 
+\( \hat{B}=\sequence{\vec{\beta}_1,\dots,\vec{\beta}_{i-1},\vec{v},
+                       \vec{\beta}_{i+1},\dots,\vec{\beta}_n}  \).
+
+We first show that $\hat{B}$ is linearly independent.
+Any relationship 
+\( d_1\vec{\beta}_1+\dots+d_i\vec{v}+\dots+d_n\vec{\beta}_n=\zero \)
+among the members of $\hat{B}$, after substitution for $\vec{v}$,
+\begin{equation*}
+  d_1\vec{\beta}_1+\dots
+    +d_i\cdot(c_1\vec{\beta}_1+\dots+c_i\vec{\beta}_i+\dots+c_n\vec{\beta}_n)
+    +\dots+d_n\vec{\beta}_n
+  =\zero
+\tag*{($*$)}\end{equation*}
+gives a linear relationship among the members of $B$.
+The basis $B$ is linearly independent so the coefficient $d_ic_i$ of 
+$\vec{\beta}_i$ is zero.
+Because we assumed that $c_i$ is nonzero, $d_i=0$.
+Using this in equation~$(*)$ gives that all of the other $d$'s are also
+zero.
+Therefore $\hat{B}$ is linearly independent.
+%</pf:ExchangeLemma0>
+
+%<*pf:ExchangeLemma1>
+We finish by showing that $\hat{B}$ has the same span as $B$.
+Half of this argument, that $\spanof{\smash{\hat{B}}}\subseteq\spanof{B}$, 
+is easy; we can write any member 
+$d_1\vec{\beta}_1+\dots+d_i\vec{v}+\dots+d_n\vec{\beta}_n$
+of $\spanof{\smash{\hat{B}}}$ as
+$
+  d_1\vec{\beta}_1+\dots
+    +d_i\cdot(c_1\vec{\beta}_1+\dots+c_n\vec{\beta}_n)
+    +\dots+d_n\vec{\beta}_n
+$,
+which is a linear combination of linear combinations of members of $B$, and
+hence is in $\spanof{B}$.
+For the $\spanof{B}\subseteq\spanof{\smash{\hat{B}}}$ half of the argument,
+recall that if
+$\vec{v}=c_1\vec{\beta}_1+\dots+c_n\vec{\beta}_n$ with $c_i\neq 0$
+then we can rearrange the equation to
+$\vec{\beta}_i=(-c_1/c_i)\vec{\beta}_1+\dots+(1/c_i)\vec{v}+\dots
+   +(-c_n/c_i)\vec{\beta}_n$.
+Now, consider any member
+$d_1\vec{\beta}_1+\dots+d_i\vec{\beta}_i+\dots+d_n\vec{\beta}_n$
+of $\spanof{B}$, substitute for $\vec{\beta}_i$ its expression as a linear
+combination of the members of $\hat{B}$, and recognize, 
+as in the first half of this argument, that the result is a linear
+combination of linear combinations of members of $\hat{B}$, and hence is in 
+$\spanof{\smash{\hat{B}}}$.
+%</pf:ExchangeLemma1>
+\end{proof}
+
+% B40.equal-basis-size statement; src/vs/vs3.tex; source lines 1723-1728
+\begin{theorem} \label{th:AllBasesSameSize}
+%<*th:AllBasesSameSize>
+In any finite-dimensional vector space, all 
+bases have the same number of elements.
+%</th:AllBasesSameSize>
+\end{theorem}
+
+% B40.equal-basis-size proof; src/vs/vs3.tex; source lines 1730-1779
+\begin{proof}
+%<*pf:AllBasesSameSize0>
+Fix a vector space with at least one finite basis.
+Choose, from among all of this space's bases,
+one \( B=\sequence{\vec{\beta}_1,\dots,\vec{\beta}_n} \) of minimal size.
+We will show that any other basis
+\( D=\smash{\sequence{\vec{\delta}_1,\vec{\delta}_2,\ldots}} \)
+also has the same number of members, $n$.
+Because \( B \) has minimal size, \( D \) has no fewer than \( n \) vectors.
+We will argue that it cannot have more than \( n \) vectors.
+%</pf:AllBasesSameSize0>
+
+%<*pf:AllBasesSameSize1>
+The basis \( B \) spans the space and \( \vec{\delta}_1 \) is in the space,
+so \( \vec{\delta}_1 \) is a nontrivial linear combination of elements of
+\( B \).
+By the Exchange Lemma, we can swap \( \vec{\delta}_1 \) for a
+vector from \( B \), resulting in a basis \( B_1 \), where one element is
+\( \vec{\delta}_1 \) and all of the \( n-1 \) other elements 
+are \( \vec{\beta} \)'s.
+%</pf:AllBasesSameSize1>
+
+%<*pf:AllBasesSameSize2>
+The prior paragraph forms the basis step for an induction argument.
+The inductive step starts with a basis \( B_k \) (for \( 1\leq k<n \))
+containing \( k \) members of \( D \) and \( n-k \) members of \( B \).
+We know that \( D \) has at least \( n \) members so there is a
+\( \vec{\delta}_{k+1} \).
+Represent it as a linear combination of elements of \( B_k \).
+The key point:~in that representation, at least one of the nonzero scalars
+must be associated with a \( \vec{\beta}_i \) or else that
+representation would be a
+nontrivial linear relationship among elements of the linearly independent
+set \( D \).
+Exchange \( \vec{\delta}_{k+1} \) for \( \vec{\beta}_i \) to get a new basis
+\( B_{k+1} \) with one \( \vec{\delta} \) more and one \( \vec{\beta} \)
+fewer than the previous basis \( B_k \).
+%</pf:AllBasesSameSize2>
+
+%<*pf:AllBasesSameSize3>
+Repeat that until no \( \vec{\beta} \)'s remain, so
+that \( B_n \) contains  
+$\vec{\delta}_1,\dots,\vec{\delta}_n$.
+Now, \( D \) cannot have more than these \( n \) vectors because
+any \( \vec{\delta}_{n+1} \) that remains would be in the span of
+\( B_n \) (since it is a basis) 
+and hence would be a linear combination of the other $\vec{\delta}$'s, 
+contradicting that $D$ is linearly independent.
+%</pf:AllBasesSameSize3>
+\end{proof}
+
+% B40.dimension-bound statement; src/vs/vs3.tex; source lines 1818-1823
+\begin{corollary} \label{cor:NoLiSetGreatDim}
+%<*co:NoLiSetGreatDim>
+No linearly independent set can have a size greater than the dimension of the
+enclosing space.
+%</co:NoLiSetGreatDim>
+\end{corollary}
+
+% B40.dimension-bound proof; src/vs/vs3.tex; source lines 1825-1831
+\begin{proof}
+%<*pf:NoLiSetGreatDim>
+The proof of \nearbytheorem{th:AllBasesSameSize} 
+never uses that \( D \) spans the space,
+only that it is linearly independent.
+%</pf:NoLiSetGreatDim>
+\end{proof}
+
+% B40.basis-extension statement; src/vs/vs3.tex; source lines 1857-1861
+\begin{corollary} \label{cor:LIExpBas}
+%<*co:LIExpBas>
+Any linearly independent set can be expanded to make a basis.
+%</co:LIExpBas>
+\end{corollary}
+
+% B40.basis-extension proof; src/vs/vs3.tex; source lines 1863-1874
+\begin{proof}
+%<*pf:LIExpBas>
+If a linearly independent set 
+is not already a basis then it must not span the space.
+Adding to the set a vector that is not in the span 
+will preserve linear independence by 
+Lemma II.\ref{lm:AddVecLiSetIsLiIffVecNotInSpan}.
+Keep adding until the resulting set does span the space, 
+which the prior corollary
+shows will happen after only a finite number of steps.
+%</pf:LIExpBas>
+\end{proof}

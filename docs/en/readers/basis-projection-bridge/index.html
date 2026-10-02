@@ -1,0 +1,490 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>From bases to projections — prerequisite bridge</title><style>body{max-width:54rem;margin:auto;padding:1rem;font:18px/1.65 system-ui;color:#172338;background:#fbfcfe}a{color:#075aaa}nav{display:flex;flex-wrap:wrap;gap:1rem}math[display="block"]{display:block;overflow-x:auto;margin:1rem 0}p,li{overflow-wrap:anywhere}code{overflow-wrap:anywhere}h2{margin-top:2rem}aside{padding:1rem;border:1px solid #cbd8e5;border-radius:.6rem}</style></head><body><nav aria-label="Programme navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#core-B40">Linear-algebra foundation</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#advanced-RT-FIN">Representation theory</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/programme/#core-B40" hreflang="id">Bahasa Indonesia — peta program</a></nav><aside><h2>Read, edit and reuse</h2><p>This English-only bridge supplies one finite-dimensional prerequisite, not the full linear-algebra or representation-theory course. The complex Hermitian prerequisite is separate and remains unverified in this integration.</p><ol><li><a href="00-basis-projection.tex">Complete editable LaTeX</a></li><li><a href="01-editable-source.zip">Complete source and reproducible build ZIP</a></li><li><a href="from-bases-to-projections-r2.md">Unchanged native Markdown</a></li></ol><p>HTML-only reading edition with native MathML; no PDF is claimed. The source licence and exact AI attribution are retained below.</p></aside><main id="proof-body"><h1 id="from-bases-to-projections">From bases to projections</h1>
+<p>This foundation bridge supplies the finite-dimensional linear algebra
+used to begin the averaging proof of complete reducibility. It belongs
+to the programme’s existing linear-algebra foundation; it is not a
+replacement for that course.</p>
+<p>The basis arguments below are adapted from Jim Hefferon’s <em>Linear
+Algebra</em>, at source revision
+<code>df2262e089a02651c127f1dd12649c4622ee1383</code>. The complete
+selected source statements and proofs, their source locators, and the
+author’s grant are supplied with this lesson. This adaptation retains
+<strong>Creative Commons Attribution–ShareAlike 2.5</strong> terms; it
+is not CC0 and is not relicensed as GFDL. See the <a
+href="HEFFERON-LICENSE.txt">author’s grant</a>, <a
+href="HEFFERON-ACKNOWLEDGEMENTS.txt">acknowledgements</a>, <a
+href="HEFFERON-PROOFS.tex">exact selected source proofs</a>, and <a
+href="https://creativecommons.org/licenses/by-sa/2.5/">reuse
+terms</a>.</p>
+<p><em>Adaptation, scope comparison, examples and solutions by OpenAI
+GPT-6 Astra in Codex, Ultra reasoning effort, October 2026. Self-checked
+by the AI writing this bridge; no human or independent AI review is
+claimed. The original source remains unchanged. This lesson corrects an
+already-recorded coefficient sign, makes the field condition explicit,
+and expands the finite termination and projection arguments. These are
+standard results, not claimed discoveries.</em></p>
+<h2 id="what-to-know-first">What to know first</h2>
+<p>We use field and vector-space axioms, finite sums, finite induction
+and elementary finite-set counting. A <strong>field</strong> has
+distinct elements
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>1</mn><annotation encoding="application/x-tex">1</annotation></semantics></math>;
+every nonzero scalar has an inverse. A vector space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+over a field
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>
+is an abelian additive group with scalar multiplication satisfying the
+vector-space axioms.</p>
+<p>For
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>⊆</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">S\subseteq V</annotation></semantics></math>,
+its <strong>span</strong> consists of finite linear combinations of
+elements of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>;
+the empty combination is zero. The set is <strong>linearly
+independent</strong> when every relation involving finitely many
+distinct elements has all coefficients zero. A <strong>basis</strong> is
+a linearly independent spanning set. Throughout,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+has a finite basis. No topology, inner product, algebraic closure or
+characteristic-zero assumption is used.</p>
+<p>Linear combinations of linear combinations remain linear
+combinations, by distributivity. Thus a span is a subspace. A subset of
+an independent set is independent, since a relation in the subset is
+also one in the larger set. Finally, coordinates in a basis are unique:
+subtracting two expressions gives a relation in the basis and therefore
+zero differences between all coefficients. We will use these elementary
+consequences explicitly.</p>
+<h2 id="adding-one-independent-vector">Adding one independent
+vector</h2>
+<p><strong>Lemma.</strong> If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+is independent and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∉</mo><mi>S</mi></mrow><annotation encoding="application/x-tex">v\notin S</annotation></semantics></math>,
+then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>∪</mo><mo stretchy="false" form="prefix">{</mo><mi>v</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">S\cup\{v\}</annotation></semantics></math>
+is independent exactly when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∉</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v\notin\operatorname{span}(S)</annotation></semantics></math>.</p>
+<p><strong>Proof.</strong> If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></msubsup><msub><mi>a</mi><mi>i</mi></msub><msub><mi>s</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">v=\sum_{i=1}^r a_i s_i</annotation></semantics></math>,
+combine repeated terms so the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mi>i</mi></msub><annotation encoding="application/x-tex">s_i</annotation></semantics></math>
+are distinct. The equation</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>s</mi><mi>i</mi></msub><mo>−</mo><mi>v</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">
+\sum_{i=1}^r a_i s_i-v=0
+</annotation></semantics></math></p>
+<p>is a nontrivial relation on distinct elements of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>∪</mo><mo stretchy="false" form="prefix">{</mo><mi>v</mi><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">S\cup\{v\}</annotation></semantics></math>:
+the coefficient of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>1</mn><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">-1\ne0</annotation></semantics></math>.
+Conversely, any nontrivial relation on that union must involve
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>,
+because
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+is independent. Write it as</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>s</mi><mi>i</mi></msub><mo>+</mo><mi>b</mi><mi>v</mi><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\sum_{i=1}^r a_i s_i+bv=0.
+</annotation></semantics></math></p>
+<p>If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b=0</annotation></semantics></math>,
+independence of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+forces all other coefficients to vanish, a contradiction. Consequently
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b\ne0</annotation></semantics></math>,
+and</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>−</mi><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></munderover><msup><mi>b</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><msub><mi>a</mi><mi>i</mi></msub><msub><mi>s</mi><mi>i</mi></msub><mo>∈</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+v=-\sum_{i=1}^r b^{-1}a_i s_i\in\operatorname{span}(S).
+</annotation></semantics></math></p>
+<p>This proves both implications. It also covers
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mi>⌀</mi></mrow><annotation encoding="application/x-tex">S=\varnothing</annotation></semantics></math>:
+the only dependent singleton is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{0\}</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<p>The minus sign in the last display repairs the existing source
+finding <code>B40-VS2-SOURCE-003</code>. Omitting it did not change the
+source’s span-membership conclusion, but it made the displayed equality
+wrong outside characteristic two.</p>
+<h2 id="exchanging-a-basis-vector">Exchanging a basis vector</h2>
+<p><strong>Lemma.</strong> Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>b</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>b</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">B=(b_1,\ldots,b_n)</annotation></semantics></math>
+be a basis, and write
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>c</mi><mi>j</mi></msub><msub><mi>b</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">v=\sum_{j=1}^n c_jb_j</annotation></semantics></math>.
+If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>i</mi></msub><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_i\ne0</annotation></semantics></math>,
+replacing
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>i</mi></msub><annotation encoding="application/x-tex">b_i</annotation></semantics></math>
+by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>
+gives another basis.</p>
+<p><strong>Proof.</strong> Suppose</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>i</mi></msub><mi>v</mi><mo>+</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>≠</mo><mi>i</mi></mrow></munder><msub><mi>d</mi><mi>j</mi></msub><msub><mi>b</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+d_i v+\sum_{j\ne i}d_jb_j=0.
+</annotation></semantics></math></p>
+<p>Substitution expresses zero in the original basis. Its
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>i</mi></msub><annotation encoding="application/x-tex">b_i</annotation></semantics></math>-coefficient
+is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>i</mi></msub><msub><mi>c</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">d_ic_i</annotation></semantics></math>,
+so
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>i</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">d_i=0</annotation></semantics></math>.
+The other coefficients are then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">d_j=0</annotation></semantics></math>.
+Thus the replacement family is independent. Moreover,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>b</mi><mi>i</mi></msub><mo>=</mo><msubsup><mi>c</mi><mi>i</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mi>v</mi><mo>−</mo><munder><mo>∑</mo><mrow><mi>j</mi><mo>≠</mo><mi>i</mi></mrow></munder><msubsup><mi>c</mi><mi>i</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><msub><mi>c</mi><mi>j</mi></msub><msub><mi>b</mi><mi>j</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+b_i=c_i^{-1}v-\sum_{j\ne i}c_i^{-1}c_jb_j.
+</annotation></semantics></math></p>
+<p>Every old basis vector therefore belongs to the span of the
+replacement family. That family spans
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>,
+and hence is a basis.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<h2 id="why-finite-dimension-bounds-independence">Why finite dimension
+bounds independence</h2>
+<p><strong>Theorem.</strong> If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+has a basis with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+elements, every independent subset of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+has at most
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+elements. Consequently all bases of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+have the same size.</p>
+<p><strong>Proof.</strong> If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n=0</annotation></semantics></math>,
+then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mn>0</mn><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">V=\{0\}</annotation></semantics></math>,
+whose only independent subset is empty. Suppose
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">n&gt;0</annotation></semantics></math>
+and, towards a contradiction, that an independent set contains distinct
+vectors
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>s</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">s_1,\ldots,s_{n+1}</annotation></semantics></math>.</p>
+<p>Start with the given basis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>B</mi><mn>0</mn></msub><annotation encoding="application/x-tex">B_0</annotation></semantics></math>.
+Inductively suppose that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>B</mi><mi>r</mi></msub><annotation encoding="application/x-tex">B_r</annotation></semantics></math>
+is a basis containing
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>s</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">s_1,\ldots,s_r</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow><annotation encoding="application/x-tex">n-r</annotation></semantics></math>
+of the original basis vectors, where
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>r</mi><mo>&lt;</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">0\le r&lt;n</annotation></semantics></math>.
+Express
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>r</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">s_{r+1}</annotation></semantics></math>
+in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>B</mi><mi>r</mi></msub><annotation encoding="application/x-tex">B_r</annotation></semantics></math>.
+Some coefficient of one of the remaining original vectors must be
+nonzero: otherwise
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>r</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">s_{r+1}</annotation></semantics></math>
+would be in the span of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>s</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>s</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">s_1,\ldots,s_r</annotation></semantics></math>,
+contradicting independence. The exchange lemma replaces such an original
+vector by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>r</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">s_{r+1}</annotation></semantics></math>.
+This constructs
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>B</mi><mrow><mi>r</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">B_{r+1}</annotation></semantics></math>.</p>
+<p>After
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+exchanges,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>s</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>s</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(s_1,\ldots,s_n)</annotation></semantics></math>
+is a basis. It spans
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">s_{n+1}</annotation></semantics></math>,
+again contradicting independence. Thus there cannot be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">n+1</annotation></semantics></math>
+distinct elements in an independent set. This proves the bound without
+presupposing that the set spans or is already finite.</p>
+<p>If another basis has
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>
+elements, the bound gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>≤</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m\le n</annotation></semantics></math>.
+Applying the same argument with that basis gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>≤</mo><mi>m</mi></mrow><annotation encoding="application/x-tex">n\le m</annotation></semantics></math>.
+Hence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>=</mo><mi>n</mi></mrow><annotation encoding="application/x-tex">m=n</annotation></semantics></math>;
+their common value is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mi>k</mi></msub><mi>V</mi></mrow><annotation encoding="application/x-tex">\dim_k V</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<p>This is the source’s exchange argument with its induction written
+directly for an arbitrary independent set. It avoids using the existence
+of a minimal-sized basis when proving the independent-set bound.</p>
+<h2 id="extending-a-basis-and-choosing-a-complement">Extending a basis
+and choosing a complement</h2>
+<p><strong>Theorem.</strong> Every independent subset of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+extends to a basis of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>.
+Every subspace
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>⊆</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">U\subseteq V</annotation></semantics></math>
+has a finite basis, which extends to one of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>.</p>
+<p><strong>Proof.</strong> An independent set
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>
+has at most
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><msub><mrow><mi mathvariant="normal">dim</mi><mo>&#8289;</mo></mrow><mi>k</mi></msub><mi>V</mi></mrow><annotation encoding="application/x-tex">n=\dim_k V</annotation></semantics></math>
+elements. If it does not span
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>,
+choose a vector outside its span. The first lemma says that adjoining it
+preserves independence. Repeat whenever the span is still not
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>.
+Each step increases the finite cardinality by one. The preceding theorem
+makes more than
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>−</mo><mo stretchy="false" form="prefix">|</mo><mi>S</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">n-|S|</annotation></semantics></math>
+additions impossible, so the process must reach a basis.</p>
+<p>For a subspace
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>,
+start with the empty set and choose each new vector in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+outside the current span. These sets are independent in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>,
+so the same bound forces termination in a spanning independent set of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>.
+Extend this basis to one of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+by the first part. Only finitely many choices are needed. If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">U=0</annotation></semantics></math>,
+its basis is empty; if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">U=V</annotation></semantics></math>,
+there are no extra basis vectors.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<p><strong>Corollary.</strong> Every subspace of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+is the image of a linear projection. More precisely, there are linear
+maps
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>:</mo><mi>U</mi><mo>→</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">i:U\to V</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>:</mo><mi>V</mi><mo>→</mo><mi>U</mi></mrow><annotation encoding="application/x-tex">p:V\to U</annotation></semantics></math>
+with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
+the inclusion and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>i</mi><mo>=</mo><msub><mn>1</mn><mi>U</mi></msub></mrow><annotation encoding="application/x-tex">pi=1_U</annotation></semantics></math>.
+The endomorphism
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mn>0</mn></msub><mo>=</mo><mi>i</mi><mi>p</mi></mrow><annotation encoding="application/x-tex">p_0=ip</annotation></semantics></math>
+satisfies</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>p</mi><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><msub><mi>p</mi><mn>0</mn></msub><mo>,</mo><mspace width="2.0em"></mspace><mrow><mi mathvariant="normal">im</mi><mo>&#8289;</mo></mrow><msub><mi>p</mi><mn>0</mn></msub><mo>=</mo><mi>U</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>V</mi><mo>=</mo><mi>U</mi><mo>⊕</mo><mrow><mi mathvariant="normal">ker</mi><mo>&#8289;</mo></mrow><msub><mi>p</mi><mn>0</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+p_0^2=p_0,\qquad\operatorname{im}p_0=U,
+\qquad V=U\oplus\ker p_0.
+</annotation></semantics></math></p>
+<p><strong>Proof.</strong> Choose a basis
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>u</mi><mi>r</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u_1,\ldots,u_r)</annotation></semantics></math>
+of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+and extend it to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>u</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>u</mi><mi>r</mi></msub><mo>,</mo><msub><mi>w</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>w</mi><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u_1,\ldots,u_r,w_1,\ldots,w_{n-r})</annotation></semantics></math>
+of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>.
+Unique coordinates define</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>v</mi></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>u</mi><mi>i</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>n</mi><mo>−</mo><mi>r</mi></mrow></munderover><msub><mi>b</mi><mi>j</mi></msub><msub><mi>w</mi><mi>j</mi></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mi>p</mi><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>r</mi></munderover><msub><mi>a</mi><mi>i</mi></msub><msub><mi>u</mi><mi>i</mi></msub><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+v&amp;=\sum_{i=1}^r a_i u_i+\sum_{j=1}^{n-r}b_jw_j,\\
+p(v)&amp;=\sum_{i=1}^r a_i u_i.
+\end{aligned}
+</annotation></semantics></math></p>
+<p>Coordinates of a sum are the sums of the coordinates, and coordinates
+of a scalar multiple are the scalar multiples of the coordinates, again
+by uniqueness. Therefore
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>
+is linear. It fixes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>,
+which gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mi>i</mi><mo>=</mo><msub><mn>1</mn><mi>U</mi></msub></mrow><annotation encoding="application/x-tex">pi=1_U</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>p</mi><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><msub><mi>p</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">p_0^2=p_0</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">im</mi><mo>&#8289;</mo></mrow><msub><mi>p</mi><mn>0</mn></msub><mo>=</mo><mi>U</mi></mrow><annotation encoding="application/x-tex">\operatorname{im}p_0=U</annotation></semantics></math>.
+Its kernel is the span of the
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>w</mi><mi>j</mi></msub><annotation encoding="application/x-tex">w_j</annotation></semantics></math>.
+For every
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>p</mi><mn>0</mn></msub><mi>v</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><msub><mi>p</mi><mn>0</mn></msub><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><msub><mi>p</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><msub><mi>p</mi><mn>0</mn></msub><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+v=p_0v+(v-p_0v),\qquad p_0(v-p_0v)=0.
+</annotation></semantics></math></p>
+<p>If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>U</mi><mo>∩</mo><mrow><mi mathvariant="normal">ker</mi><mo>&#8289;</mo></mrow><msub><mi>p</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">u\in U\cap\ker p_0</annotation></semantics></math>,
+then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><msub><mi>p</mi><mn>0</mn></msub><mi>u</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u=p_0u=0</annotation></semantics></math>.
+This proves the direct sum.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<p>There is generally no distinguished choice of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>0</mn></msub><annotation encoding="application/x-tex">p_0</annotation></semantics></math>.
+In the displayed adapted basis its matrix is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">diag</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>I</mi><mi>r</mi></msub><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\operatorname{diag}(I_r,0)</annotation></semantics></math>.
+A different complement can give a different projection onto the same
+subspace.</p>
+<h2 id="the-exact-step-used-in-representation-theory">The exact step
+used in representation theory</h2>
+<p>In <a
+href="https://kokunoyumeto.github.io/open-mathematics-courses/courses/RT-FIN/representations-and-complete-reducibility.html">Representations
+and complete reducibility</a>, Theorem 2.3 begins by extending a basis
+of an invariant subspace
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>,
+then defining a projection
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>0</mn></msub><annotation encoding="application/x-tex">p_0</annotation></semantics></math>.
+The preceding corollary supplies exactly this construction, over every
+field in that theorem, including finite fields. Exercise 5 applies the
+same construction to its isotypic subspace
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>S</mi><annotation encoding="application/x-tex">S</annotation></semantics></math>.
+No inner product or orthogonal projection is needed for either initial
+construction.</p>
+<p>The representation-theoretic averaging has an additional condition:
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>G</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|G|</annotation></semantics></math>
+must be invertible in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>.
+If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+is invariant, put</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">|</mo><mi>G</mi><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><munder><mo>∑</mo><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow></munder><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>p</mi><mn>0</mn></msub><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+P=\frac{1}{|G|}\sum_{g\in G}\rho(g)p_0\rho(g^{-1}).
+</annotation></semantics></math></p>
+<p>Here each summand maps into
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+and acts as the identity on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>.
+Hence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>V</mi><mo stretchy="false" form="postfix">)</mo><mo>⊆</mo><mi>U</mi></mrow><annotation encoding="application/x-tex">P(V)\subseteq U</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><msub><mo stretchy="false" form="prefix">|</mo><mi>U</mi></msub><mo>=</mo><msub><mn>1</mn><mi>U</mi></msub></mrow><annotation encoding="application/x-tex">P|_U=1_U</annotation></semantics></math>.
+Conjugation by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ρ</mi><mo stretchy="false" form="prefix">(</mo><mi>h</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\rho(h)</annotation></semantics></math>
+permutes the summands by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>↦</mo><mi>h</mi><mi>g</mi></mrow><annotation encoding="application/x-tex">g\mapsto hg</annotation></semantics></math>,
+so
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+commutes with the group action. Also
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mn>2</mn></msup><mo>=</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">P^2=P</annotation></semantics></math>,
+because
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+fixes its image. The decomposition
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>P</mi><mi>v</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><mi>P</mi><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v=Pv+(v-Pv)</annotation></semantics></math>
+gives the invariant complement
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">ker</mi><mo>&#8289;</mo></mrow><mi>P</mi></mrow><annotation encoding="application/x-tex">\ker P</annotation></semantics></math>.
+The requirement that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>G</mi><mo stretchy="false" form="prefix">|</mo></mrow><annotation encoding="application/x-tex">|G|</annotation></semantics></math>
+be invertible belongs here, not to basis extension.</p>
+<p>This comparison applies to the exact lesson source SHA-256
+<code>659942BDF47420E6665D59C4E80CF973867730D3B231D7E9C80AB8177BD83712</code>,
+at Theorem 2.3 and Exercise 5. It checks only the
+finite-basis/projection prerequisite and its use. It does not certify
+the rest of the lesson, its other prerequisites, the isotypic
+identification, or the complete course. The original consumer lesson and
+its review state are unchanged.</p>
+<h2 id="worked-example-and-exercises">Worked example and exercises</h2>
+<p><strong>Example.</strong> In
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>k</mi><mn>2</mn></msup><annotation encoding="application/x-tex">k^2</annotation></semantics></math>,
+take
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mi>k</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">U=k(1,0)</annotation></semantics></math>.
+For every
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>∈</mo><mi>k</mi></mrow><annotation encoding="application/x-tex">a\in k</annotation></semantics></math>,
+the vector
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(a,1)</annotation></semantics></math>
+is a complement basis vector, and the resulting projection is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>−</mo><mi>a</mi><mi>y</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">[</mo><msub><mi>p</mi><mi>a</mi></msub><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>a</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+p_a(x,y)=(x-ay,0),\qquad
+[p_a]=\begin{pmatrix}1&amp;-a\\0&amp;0\end{pmatrix}.
+</annotation></semantics></math></p>
+<p>Its kernel is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">k(a,1)</annotation></semantics></math>.
+Direct substitution gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>p</mi><mi>a</mi><mn>2</mn></msubsup><mo>=</mo><msub><mi>p</mi><mi>a</mi></msub></mrow><annotation encoding="application/x-tex">p_a^2=p_a</annotation></semantics></math>.
+These distinct projections show why choosing a subspace does not
+canonically choose a complement.</p>
+<p><strong>Exercise 1.</strong> Over a field, extend
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u=(1,1,0)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v=(0,1,1)</annotation></semantics></math>
+to a basis of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>k</mi><mn>3</mn></msup><annotation encoding="application/x-tex">k^3</annotation></semantics></math>,
+and write a projection onto their span.</p>
+<p><strong>Solution.</strong> A relation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mi>u</mi><mo>+</mo><mi>b</mi><mi>v</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">au+bv=0</annotation></semantics></math>
+gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">a=0</annotation></semantics></math>
+in the first coordinate and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b=0</annotation></semantics></math>
+in the third. The vector
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e_2=(0,1,0)</annotation></semantics></math>
+is outside their span: the same two coordinates would force both
+coefficients to vanish. Thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo>,</mo><mi>v</mi><mo>,</mo><msub><mi>e</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(u,v,e_2)</annotation></semantics></math>
+is a basis. In fact</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mi>x</mi><mi>u</mi><mo>+</mo><mi>z</mi><mi>v</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>y</mi><mo>−</mo><mi>x</mi><mo>−</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>e</mi><mn>2</mn></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right; padding-right: 0"><msub><mi>p</mi><mn>0</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="left" style="text-align: left; padding-left: 0"><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo>+</mo><mi>z</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">
+\begin{aligned}
+(x,y,z)&amp;=xu+zv+(y-x-z)e_2,\\
+p_0(x,y,z)&amp;=(x,x+z,z).
+\end{aligned}
+</annotation></semantics></math></p>
+<p>This formula is valid in every characteristic. It fixes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>,</mo><mi>v</mi></mrow><annotation encoding="application/x-tex">u,v</annotation></semantics></math>,
+kills
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mn>2</mn></msub><annotation encoding="application/x-tex">e_2</annotation></semantics></math>,
+and satisfies
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>p</mi><mn>0</mn><mn>2</mn></msubsup><mo>=</mo><msub><mi>p</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">p_0^2=p_0</annotation></semantics></math>.</p>
+<p><strong>Exercise 2.</strong> Why does basis extension not by itself
+prove that every invariant subspace has an invariant complement in
+characteristic
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>?</p>
+<p><strong>Solution.</strong> Over a field of characteristic
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p&gt;0</annotation></semantics></math>,
+let a generator of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>p</mi></msub><annotation encoding="application/x-tex">C_p</annotation></semantics></math>
+act on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>k</mi><mn>2</mn></msup><annotation encoding="application/x-tex">k^2</annotation></semantics></math>
+by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>I</mi><mo>+</mo><mi>N</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
+A=\begin{pmatrix}1&amp;1\\0&amp;1\end{pmatrix}=I+N.
+</annotation></semantics></math></p>
+<p>Since
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>N</mi><mn>2</mn></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">N^2=0</annotation></semantics></math>,
+induction gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>+</mo><mi>N</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>m</mi></msup><mo>=</mo><mi>I</mi><mo>+</mo><mi>m</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">(I+N)^m=I+mN</annotation></semantics></math>,
+and thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mi>p</mi></msup><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">A^p=I</annotation></semantics></math>.
+The line
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mi>k</mi><msub><mi>e</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">U=ke_1</annotation></semantics></math>
+is invariant. Any complementary line has a generator
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w=(a,1)</annotation></semantics></math>.
+If it were invariant,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mi>w</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mo>+</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Aw=(a+1,1)</annotation></semantics></math>
+would equal
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>w</mi></mrow><annotation encoding="application/x-tex">cw</annotation></semantics></math>.
+The second coordinate forces
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">c=1</annotation></semantics></math>,
+while the first then forces
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">1=0</annotation></semantics></math>,
+impossible. Ordinary linear complements exist; invariant ones do not in
+this example. Averaging cannot repair them because the scalar
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><msub><mi>C</mi><mi>p</mi></msub><mo stretchy="false" form="prefix">|</mo><mo>=</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">|C_p|=p</annotation></semantics></math>
+is zero in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>.</p>
+<p><strong>Exercise 3.</strong> Which part of the proof prevents it from
+asserting basis extension for arbitrary infinite-dimensional spaces?</p>
+<p><strong>Solution.</strong> The finite bound on the size of an
+independent set makes the process of adding vectors terminate. With no
+finite spanning basis, this argument supplies no such bound and
+therefore no termination claim. An infinite-dimensional theorem needs a
+different argument and any additional set-theoretic assumptions must be
+stated. Nothing in this bridge claims that theorem.</p>
+<h2 id="sources-and-changes">Sources and changes</h2>
+<p>Hefferon, <em>Linear Algebra</em>, vector-spaces chapter: the
+add-vector lemma in <code>src/vs/vs2.tex</code>, lines 492–525;
+exchange, equal basis size, independent-set bound and basis extension in
+<code>src/vs/vs3.tex</code>, lines 1657–1779, 1818–1831 and 1857–1874.
+The <a
+href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-foundations/">programme’s
+existing foundation reader</a> preserves the source edition and its
+editorial notes. The <a
+href="https://hefferon.net/linearalgebra/">author’s site</a> supplies
+the broader course.</p>
+<p>The adaptation above keeps the same algebraic argument, spells out
+the zero-dimensional case and finite termination, proves the subspace
+and projection consequences, and gives examples with solutions. The
+requirement
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≠</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">0\ne1</annotation></semantics></math>
+also respects the already-recorded source-context finding
+<code>B40-FIELDS-SOURCE-001</code>. It is not a newly discovered defect.
+The field-general formulation is justified by the displayed algebraic
+proof, not merely by changing the word “real” in a source statement.</p>
+<p>All adapted teaching and added exposition on this page use <a
+href="https://creativecommons.org/licenses/by-sa/2.5/">CC BY-SA 2.5</a>.
+The separately linked representation-theory lesson retains its own
+source, credit and licence. No change to it or to the canonical Stacks
+text is made here.</p>
+</main><nav aria-label="Programme navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#core-B40">Linear-algebra foundation</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#advanced-RT-FIN">Representation theory</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/programme/#core-B40" hreflang="id">Bahasa Indonesia — peta program</a></nav></body></html>

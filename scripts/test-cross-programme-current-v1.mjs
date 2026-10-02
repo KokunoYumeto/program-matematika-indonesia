@@ -6,6 +6,7 @@ import {resolve, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {crossProgrammeRoutes} from '../docs/interface/cross-programme-routes.js';
 import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
+import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute} from './b40-prerequisite-route-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const load=async p=>JSON.parse(await readFile(resolve(root,p)));
@@ -26,7 +27,10 @@ assert.ok(bridge.courses.advanced.some(c=>c.id==='AG-RG'&&c.lessons.length===6))
 assert.ok(!bridge.courses.advanced.some(c=>c.id==='CORE-B40'),'Local proof draft must not acquire an invented public route');
 assert.equal(bridge.counts.independently_verified_cross_programme_proof_matches,0);
 const d80route=validateD80PrerequisiteRoute(await load('backend/cross-programme-v1/d80-prerequisite-route-v1.json'));
-assert.deepEqual(bridge.source_bound_lesson_routes,[d80route]);
+const b40route=validateB40PrerequisiteRoute(await load('backend/cross-programme-v1/b40-prerequisite-route-v1.json'));
+assert.deepEqual(bridge.source_bound_lesson_routes,[d80route,b40route]);
+const invalidB40=[r=>r.hermitian_dependency_closed=true,r=>r.independent_mathematical_admission=true,r=>r.source_sha256='bad',r=>r.reader_url='https://example.org/',r=>r.uses.pop(),r=>r.scope.id=''];
+for(const mutate of invalidB40){const invalid=structuredClone(b40route);mutate(invalid);assert.throws(()=>validateB40PrerequisiteRoute(invalid));}
 assert.deepEqual(bridge,await load('backend/cross-programme-v1/bridge.json'));
 const facts=[];
 for (const locale of ['id','en']) {
@@ -47,6 +51,11 @@ for (const locale of ['id','en']) {
     assert.ok(local?.includes(renderD80PrerequisiteRoute(d80route,locale,side)),'Missing exact D80 '+side+' route in '+locale);
   }
   assert.equal((text.match(/data-d80-prerequisite=/g)||[]).length,2);
+  for(const [section,side] of [['core-B40','provider'],['advanced-RT-FIN','consumer']]){
+    const local=text.split('<section id="'+section+'">')[1]?.split('</section>')[0];
+    assert.ok(local?.includes(renderB40PrerequisiteRoute(b40route,locale,side)),'Missing exact B40 '+side+' route in '+locale);
+  }
+  assert.equal((text.match(/data-b40-prerequisite=/g)||[]).length,2);
   const anchors=new Set([...text.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]));
   for (const id of expected) {
     const route=new URL(crossProgrammeRoutes[id][locale]);
@@ -83,6 +92,10 @@ const result={schema:'current-core-advanced-integration/1',state:'pass',core_rol
   d80_source_bound_prerequisite_readings:3,
   d80_distinct_relationships:1,
   d80_forward_reverse_localized_renderings:4,
+  b40_exact_projection_uses:2,
+  b40_forward_reverse_localized_renderings:4,
+  b40_invalid_route_fixtures_rejected:invalidB40.length,
+  b40_hermitian_dependency_closed:false,
   native_proof_closure_claimed:false,files:facts,
   provenance:{model:'gpt-6-astra',effort:'ultra',scope:'Combined current-checkout integration verification; upstream route authorship retained'}};
 await writeFile(resolve(root,'backend/cross-programme-v1/CURRENT_INTEGRATION_VALIDATION.json'),JSON.stringify(result,null,2)+'\n');

@@ -4,6 +4,7 @@ import {createHash} from 'node:crypto';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
+import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute} from './b40-prerequisite-route-v1.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'backend/cross-programme-v1');
@@ -141,6 +142,20 @@ const lessonRoute=validateD80PrerequisiteRoute(json(lessonRouteBytes));
 assert.ok(coreById.has(lessonRoute.provider_course));
 assert.ok(advById.get(lessonRoute.consumer_course)?.lessons.some(l=>l.id===lessonRoute.consumer_lesson));
 bridge.source_bound_lesson_routes=[lessonRoute];
+const b40RoutePath='backend/cross-programme-v1/b40-prerequisite-route-v1.json';
+const b40RouteBytes=await readFile(resolve(root,b40RoutePath));
+const b40Route=validateB40PrerequisiteRoute(json(b40RouteBytes));
+const b40ManifestBytes=await readFile(resolve(root,b40Route.reader_manifest));
+const b40Manifest=json(b40ManifestBytes);validateB40PrerequisiteRoute(b40Route,b40Manifest);
+for(const row of b40Manifest.files){
+  assert.match(row.path,/^[A-Za-z0-9_.-]+$/);
+  const bytes=await readFile(resolve(root,dirname(b40Route.reader_manifest),row.path));
+  assert.equal(bytes.length,row.bytes);assert.equal(hash(bytes),row.sha256);
+}
+assert.ok(coreById.has(b40Route.provider_course));
+assert.ok(advById.get(b40Route.consumer_course)?.lessons.some(l=>l.id===b40Route.consumer_lesson));
+bridge.source_bound_lesson_routes.push(b40Route);
+bridge.b40_prerequisite_reader= fact(b40Route.reader_manifest,b40ManifestBytes);
 assert.equal(additions.schema,'cross-programme-current-navigation-additions/1');
 const additionKeys=new Set();
 for(const resource of additions.resources){
@@ -172,6 +187,12 @@ function currentHtml(locale){
   const consumerAnchor='<section id="advanced-'+esc(advanced.id)+'"><h3><a href="'+esc(advanced.route)+'" lang="en">'+esc(advanced.title.en)+'</a></h3>';
   assert.equal(body.split(consumerAnchor).length,2);
   body=body.replace(consumerAnchor,consumerAnchor+renderD80PrerequisiteRoute(lessonRoute,locale,'consumer'));
+  for(const [kind,courseId,side] of [['core',b40Route.provider_course,'provider'],['advanced',b40Route.consumer_course,'consumer']]){
+    const course=(kind==='core'?coreCourses:advancedCourses).find(c=>c.id===courseId);
+    const anchor='<section id="'+kind+'-'+courseId+'"><h3>'+(kind==='core'?esc(course.title[locale]):'<a href="'+esc(course.route)+'" lang="en">'+esc(course.title.en)+'</a>')+'</h3>';
+    assert.equal(body.split(anchor).length,2);
+    body=body.replace(anchor,anchor+renderB40PrerequisiteRoute(b40Route,locale,side));
+  }
   for(const resource of additions.resources){
     const course=coreCourses.find(c=>c.id===resource.course_id);
     const anchor='<section id="core-'+resource.course_id+'"><h3>'+esc(course.title[locale])+'</h3>';
