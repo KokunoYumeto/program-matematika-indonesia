@@ -11,13 +11,16 @@ import {d100HtmlReplayPaths,loadD100HtmlReplay} from './d100-html-replay-evidenc
 import {d100OriginalExportPaths,loadD100OriginalExport} from './d100-original-export-evidence-v1.mjs';
 import {d100ClassicalExportPaths,loadD100ClassicalExport} from './d100-classical-export-evidence-v1.mjs';
 import {d100BgkExportPaths,loadD100BgkExport} from './d100-bgk-export-evidence-v1.mjs';
+import {d100EnglishReplayPaths,loadD100EnglishReplay} from './d100-english-backend-replay-evidence-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const d50ProductionProof=await loadD50ProductionEvidence(root);
 const d100HtmlProof=await loadD100HtmlReplay(root);
 const d100OriginalExport=await loadD100OriginalExport(root);
 const d100ClassicalExport=await loadD100ClassicalExport(root);
 const d100BgkExport=await loadD100BgkExport(root);
+const d100EnglishReplay=await loadD100EnglishReplay(root);
 const sources={
+  ...d100EnglishReplayPaths,
   b40Manifest:'backend/course-capsule-v1/adapters/b40-capability-v1/manifest.json',
   b40Validation:'backend/course-capsule-v1/adapters/b40-capability-v1/validation.json',
   b40SourceLock:'backend/course-capsule-v1/adapters/b40-capability-v1/input/source-lock.json',
@@ -682,6 +685,7 @@ const rows=data.capsules.map(capsule=>{
     ...(role==='D100'?{native_original_data_replay:{...d100OriginalExport.report,evidence:d100OriginalExport.evidence}}:{}),
     ...(role==='D100'?{native_classical_data_replay:{...d100ClassicalExport.report,evidence:d100ClassicalExport.evidence}}:{}),
     ...(role==='D100'?{native_bgk_data_replay:{...d100BgkExport.report,evidence:d100BgkExport.evidence}}:{}),
+    ...(role==='D100'?{native_english_data_replay:{...d100EnglishReplay.report,evidence:d100EnglishReplay.evidence}}:{}),
     ...(role==='D70'?{native_metadata_replay:d70NativeReplay}:{}),
     ...(role==='C130'?{native_metadata_audit:{
       status:data.c130NativeAudit.state,counts:data.c130NativeAudit.counts,
@@ -743,7 +747,7 @@ const rows=data.capsules.map(capsule=>{
       terminology:{register:capsule.layers.translation.terminology_status,
         ...(capsule.layers.translation.verification?{verification:capsule.layers.translation.verification}:{})},
       reproducible_production:{build:capsule.layers.production.build_status,replay:capsule.layers.production.deterministic_replay_status,
-        ...(role==='D100'?{native_html_replay:'verified',native_original_data_export_replay:'verified',native_classical_data_export_replay:'verified',native_bgk_data_export_replay:'verified',native_data_export_replay:'verified',native_data_export_scope:{locale:'id-ID',lanes:['classical','bgk','original'],existing_reader_bytes_used_for_bgk:true,english_replay_established:false},fresh_pdf_replay:'not_established'}:{}),
+        ...(role==='D100'?{native_html_replay:'verified',native_original_data_export_replay:'verified',native_classical_data_export_replay:'verified',native_bgk_data_export_replay:'verified',native_data_export_replay:'verified',native_data_export_scope:{locale:'id-ID',lanes:['classical','bgk','original'],existing_reader_bytes_used_for_bgk:true,english_replay_established:true},english_native_data_export_replay:'verified',english_native_data_export_scope:{locale:'en',lanes:['classical','bgk','original'],source_files:274,output_files:60,isolated_runs:6,existing_english_output_used_as_input:false},fresh_pdf_replay:'not_established'}:{}),
         ...(role==='D70'?{native_metadata_replay:'verified'}:{})},
       accessibility:{semantic_html:capsule.layers.learner.capabilities.semantic_html,mathml:capsule.layers.learner.capabilities.mathml},
       learner:{delivery:capsule.layers.learner.status,central_tools:centralTools.length},
@@ -755,7 +759,8 @@ const rows=data.capsules.map(capsule=>{
       evidence_count:layer.evidence?.length??0}])),
     next_required_work:[
       ...(role==='D100'?[d100HtmlProof.report.note_id.replace('Ekspor data backend asli, produksi PDF, dan peninjauan semantik kanon tetap memerlukan bukti terpisah.','Bukti HTML ini terpisah dari bukti ekspor data yang kini tersedia di bawah. Produksi PDF baru dan peninjauan semantik kanon tetap belum dibuktikan.')]:[]),
-      ...(role==='D100'?['Ketiga ekspor data Bahasa Indonesia kini direproduksi dua kali secara terisolasi: klasik 23.869 rekaman/19 berkas, BGK 21.690 rekaman/19 berkas, dan pendamping 1.064 rekaman/23 berkas. Registri historis untuk ID, skema dan metadata warisan tetap menjadi dependensi yang dinyatakan; keluaran terkoreksi bukan masukan. BGK memakai 727 masukan termasuk pembaca dan bukti QA yang sudah ada, memproyeksikan ulang 99 berkas sumber, serta membedakan 495 latihan dari 25 solusi sumber. Ini bukan produksi PDF baru. Pemutaran ulang edisi Inggris, PDF baru dan telaah semantik tetap belum dibuktikan.']:[]),
+      ...(role==='D100'?['Ketiga ekspor data Bahasa Indonesia kini direproduksi dua kali secara terisolasi: klasik 23.869 rekaman/19 berkas, BGK 21.690 rekaman/19 berkas, dan pendamping 1.064 rekaman/23 berkas. Registri historis untuk ID, skema dan metadata warisan tetap menjadi dependensi yang dinyatakan; keluaran terkoreksi bukan masukan. BGK memakai 727 masukan termasuk pembaca dan bukti QA yang sudah ada, memproyeksikan ulang 99 berkas sumber, serta membedakan 495 latihan dari 25 solusi sumber. Ini bukan produksi PDF baru.']:[]),
+      ...(role==='D100'?['Ekspor backend Inggris juga direproduksi dua kali untuk tiap komponen dari 274 berkas sumber terikat: klasik 23.869 rekaman, BGK 21.691 rekaman, dan pendamping 1.064 rekaman. Sebanyak 60 berkas keluaran cocok persis dengan manifest publik, termasuk proyeksi data bersama yang dapat dibalik. Keluaran Inggris lama tidak dipakai sebagai masukan; seluruh eksekusi dibatasi 2 GiB. Bukti telaah matematika lama dipertahankan, bukan disahkan ulang. Pembangunan ulang HTML/PDF Inggris dan telaah semantik kanon tetap memerlukan bukti terpisah.']:[]),
       ...(role==='D70'?['Replay metadata Duncan dan CRing kini dapat dijalankan tanpa direktori pembuat buku; 13 berkas sama persis dalam dua eksekusi kode paket. Produksi ulang seluruh Li dan keempat PDF tetap memerlukan bukti terpisah.']:[]),
       ...(role==='C130'?[`Sebanyak ${data.c130NativeAudit.resolved_previously_unresolved_target_locations} rujukan teks target lama telah diselesaikan; lokasi target yang belum terselesaikan: ${data.c130NativeAudit.unresolved_target_locations}. Periksa perbedaan identitas pada ${data.c130NativeAudit.native_alignment_whole_file_guard_mismatches} berkas penggabungan serta pilihan istilah dan klaim kanon secara semantik. Kecocokan lokasi teks bukan persetujuan baru terhadap setiap pilihan istilah.`]:[]),
       ...(role==='D50'?['HTML dan backend dibangun ulang dari 1.282 berkas sumber dan hasilnya identik. PDF diikat ke dua pembangunan bersih terdahulu, bukan kompilasi baru. Uji aksesibilitas dan batas luring lanjutan tetap terpisah: matematika HTML masih memakai MathJax CDN. Ini bukan peninjauan semantik terjemahan baru.']:[]),

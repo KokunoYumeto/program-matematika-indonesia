@@ -124,7 +124,30 @@ assert.equal(openLogicTeacherModel.edition_binding, openLogicTeacherValidation.e
 assert.deepEqual(openLogicTeacherModel.counts, openLogicTeacherValidation.counts);
 assert.equal(openLogicTeacherModel.questions.length, 442);
 assert.equal(openLogicTeacherModel.source_only.length, 11);
+const d20Tests = JSON.parse(await readFile(resolve(project,
+  'backend/course-capsule-v1/adapters/d20-native-ledger-v1/tests.json')));
+assert.equal(d20Tests.state, 'pass');
+assert.equal(d20Tests.semantic_canon_review, false);
+assert.equal(d20Tests.native_book_rebuilt, false);
+assert.equal(d20Tests.summary.segments, 2196);
+const d20FileNames = Object.keys(d20Tests.outputs).sort();
+assert.deepEqual(d20FileNames, ['data.js','intake-audit.json','ledger-en.html','ledger-ui.js',
+  'ledger.css','ledger.html','native-metadata.zip','projection.json','source-lock.json']);
+for (const name of d20FileNames) {
+  const path = 'docs/backend/d20/native-ledger/' + name;
+  const bytes = await readFile(resolve(project, path));
+  const expected = d20Tests.outputs[name];
+  if (bytes.length !== expected.bytes || sha256(bytes) !== expected.sha256) {
+    assert.ok(name.endsWith('.html'), 'Non-HTML D20 ledger identity drift');
+    const overlay = d110NavigationOverlay.files.find(f => f.document === path);
+    assert.ok(overlay, 'D20 ledger navigation overlay missing');
+    assert.deepEqual(overlay.source_body, {path, ...expected});
+    assert.deepEqual(overlay.hosted_surface, identity(path, bytes));
+    assert.equal(overlay.source_body_replay_exact, true);
+  }
+}
 const logicalFiles = [
+  ...d20FileNames.map(name => 'backend/d20/native-ledger/' + name),
   ...await (async()=>{
     const base='docs/backend/c130-native/';
     const v=JSON.parse(await readFile(resolve(project,base+'build-receipt.json')));
@@ -854,20 +877,20 @@ for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityTool
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
 assert.deepEqual(sortedIds(Object.keys(authorityToolsByCourse)), sortedIds(rows.map(row => row.course_id)));
-assert.equal(authorityToolIds.length, 58);
+assert.equal(authorityToolIds.length, 59);
 assert.ok(authorityToolsByCourse.D80.some(t=>t.tool_id==='d80.native_ledger'&&t.href==='backend/d80/native-ledger/ledger.html'));
 for(const key of ['ledger_status','terminology_status','corrections_status'])
   assert.equal(rows.find(r=>r.course_id==='D80').layers.translation[key],'available_unverified');
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
-    [...(course==='D60'?[{tool_id:'d60.native_ledger',href:'backend/d60/native-ledger/ledger.html'}]:[]),
+    [...(['D20','D60'].includes(course)?[{tool_id:course.toLowerCase()+'.native_ledger',href:'backend/'+course.toLowerCase()+'/native-ledger/ledger.html'}]:[]),
       {tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
   const capsule=rows.find(row=>row.course_id===course);
   assert.equal(capsule.layers.educator.unit_alignment_status,'verified');
-  if(course==='D60') {
+  if(['D20','D60'].includes(course)) {
     for(const locale of ['id','en']){
-      const resource=capsule.layers.educator.resources.find(r=>r.id==='D60:native-ledger-'+locale);
-      const path='backend/d60/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html');
+      const resource=capsule.layers.educator.resources.find(r=>r.id===course+':native-ledger-'+locale);
+      const path='backend/'+course.toLowerCase()+'/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html');
       assert.ok(resource); assert.equal(resource.url,'https://kokunoyumeto.github.io/program-matematika-indonesia/'+path);
       assert.deepEqual([resource.bytes,resource.sha256],[docsBytes[path].length,sha256(docsBytes[path])]);
     }
@@ -906,7 +929,7 @@ assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
 assert.equal(validation.checks.learner_tool_course_count, 40);
-assert.equal(validation.checks.learner_tool_count, 58);
+assert.equal(validation.checks.learner_tool_count, 59);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 
@@ -2189,14 +2212,18 @@ assert.equal(c130Route.adapter.canonical_records, 51704);
 assert.equal(c130Route.adapter.machine_data_is_primary_learner_destination, false);
 assert.doesNotMatch(c130Html, /<script\b/i);
 
-const publicText = Buffer.concat(Object.values(docsBytes)).toString('utf8');
-for (const pattern of [
-  /C:\\\\Users\\\\/i,
-  /Authorization:\s*Bearer/i,
-  /access[_-]?token/i,
-  /api[_-]?token/i,
-  /"access"\s*:\s*"(?:private|restricted|embargoed|blocked)"/i,
-]) assert.doesNotMatch(publicText, pattern);
+// Each file is an independent public surface. Combining every book/tool into
+// one string exceeds V8's string limit and needlessly doubles the whole payload.
+for (const [path, bytes] of Object.entries(docsBytes)) {
+  const publicText = bytes.toString('utf8');
+  for (const pattern of [
+    /C:\\\\Users\\\\/i,
+    /Authorization:\s*Bearer/i,
+    /access[_-]?token/i,
+    /api[_-]?token/i,
+    /"access"\s*:\s*"(?:private|restricted|embargoed|blocked)"/i,
+  ]) assert.doesNotMatch(publicText, pattern, path + ': public privacy scan');
+}
 // Historical comparative evidence can retain historical terminology. This
 // wording check applies to the current learner interface, not archive quotes.
 assert.doesNotMatch(html + css + js, /owner[_-]?native/i);

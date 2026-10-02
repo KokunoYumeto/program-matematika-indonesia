@@ -5,6 +5,7 @@ import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {d100IdBase,d100IdFiles} from './d100-indonesian-evidence-v1.mjs';
+import {renderCoverageOverview} from './backend-overview-summary-v1.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const sha256 = (bytes) => createHash('sha256').update(bytes).digest('hex');
@@ -560,6 +561,8 @@ for (const [name, count] of Object.entries(summaryValues)) {
   rendered = rendered.replace(pattern, (_, before, after) => `${before}${count}${after}`);
 }
 assert.equal((rendered.match(/data-static-course-id=/g) ?? []).length, 40);
+rendered = renderCoverageOverview(rendered, JSON.parse(await readFile(resolve(project,
+  'backend/course-capsule-v1/generated/program-backend-coverage-v1.json'))));
 await writeFile(outputPath, rendered);
 const publicText = Buffer.concat([jsonlBytes, jsonBytes, manifestBytes, receiptBytes, ...(successorSidecarBytes ? [successorSidecarBytes] : [])]).toString('utf8');
 for (const pattern of [

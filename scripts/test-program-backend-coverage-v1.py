@@ -12,6 +12,8 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = 'scripts/build-program-backend-coverage-v1.mjs'
 INPUTS = {
+    **{f'd100English{lane}{kind}': f'backend/course-capsule-v1/adapters/d100-native-production-v1/english/{lane}-{suffix}.json'
+       for lane in ('classical', 'bgk', 'original') for kind, suffix in (('Binding', 'inputs'), ('Replay', 'replay'))},
     'b40Manifest': 'backend/course-capsule-v1/adapters/b40-capability-v1/manifest.json',
     'b40Validation': 'backend/course-capsule-v1/adapters/b40-capability-v1/validation.json',
     'b40SourceLock': 'backend/course-capsule-v1/adapters/b40-capability-v1/input/source-lock.json',
@@ -138,7 +140,15 @@ assert roles['D100']['dimensions']['reproducible_production']['native_bgk_data_e
 assert roles['D100']['dimensions']['reproducible_production']['native_data_export_replay'] == 'verified'
 assert roles['D100']['dimensions']['reproducible_production']['native_data_export_scope'] == {
     'locale': 'id-ID', 'lanes': ['classical', 'bgk', 'original'],
-    'existing_reader_bytes_used_for_bgk': True, 'english_replay_established': False}
+    'existing_reader_bytes_used_for_bgk': True, 'english_replay_established': True}
+assert roles['D100']['native_english_data_replay']['state'] == 'pass'
+assert roles['D100']['native_english_data_replay']['isolated_runs'] == 6
+assert roles['D100']['native_english_data_replay']['source_files'] == 274
+assert roles['D100']['native_english_data_replay']['output_files'] == 60
+assert roles['D100']['native_english_data_replay']['semantic_canon_review'] is False
+assert roles['D100']['native_english_data_replay']['fresh_html_or_pdf_build'] is False
+assert roles['D100']['native_english_data_replay']['whole_backend_complete'] is False
+assert roles['D100']['dimensions']['reproducible_production']['english_native_data_export_replay'] == 'verified'
 assert roles['D100']['native_capability_parity_completion'] == 'not_yet_proven'
 assert any('bukti ekspor data yang kini tersedia' in note for note in roles['D100']['next_required_work'])
 assert not any('Ekspor data backend asli, produksi PDF, dan peninjauan semantik kanon tetap memerlukan bukti terpisah.' in note for note in roles['D100']['next_required_work'])
@@ -1072,6 +1082,9 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
         target = sandbox / path
         target.parent.mkdir(parents=True, exist_ok=True)
         target.write_bytes((ROOT / path).read_bytes())
+
+    english_helper = 'scripts/d100-english-backend-replay-evidence-v1.mjs'
+    (sandbox / english_helper).write_bytes((ROOT / english_helper).read_bytes())
 
     def run():
         return subprocess.run(['node', GENERATOR], cwd=sandbox, capture_output=True, text=True)
