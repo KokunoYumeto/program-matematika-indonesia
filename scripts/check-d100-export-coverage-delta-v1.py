@@ -1,4 +1,4 @@
-"""Integrate companion-export evidence without changing other roles or completion."""
+"""Integrate native export evidence without changing other roles or completion."""
 import argparse
 import hashlib
 import json
@@ -12,6 +12,7 @@ MODEL = ROOT / 'backend/course-capsule-v1/generated/program-backend-coverage-v1.
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--receipt', type=Path, required=True)
+    parser.add_argument('--lane', choices=['original', 'classical'], default='original')
     args = parser.parse_args()
     output = args.receipt.resolve()
     assert output.is_relative_to((ROOT / 'outputs').resolve()) and not output.exists()
@@ -33,12 +34,15 @@ if __name__ == '__main__':
     assert old['D100']['native_html_replay'] == new['D100']['native_html_replay']
     for key in ('build', 'replay', 'native_data_export_replay', 'fresh_pdf_replay'):
         assert old['D100']['dimensions']['reproducible_production'][key] == new['D100']['dimensions']['reproducible_production'][key]
-    proof = new['D100']['native_original_data_replay']
+    if args.lane == 'classical':
+        assert old['D100']['native_original_data_replay'] == new['D100']['native_original_data_replay']
+    proof = new['D100']['native_' + args.lane + '_data_replay']
     assert proof['state'] == 'pass' and proof['isolated_runs'] == 2
-    assert sum(proof['record_counts'].values()) == 1064
-    report = {'schema': 'd100-companion-export-coverage-delta/1', 'state': 'pass',
+    expected_records = 1064 if args.lane == 'original' else 23869
+    assert sum(proof['record_counts'].values()) == expected_records
+    report = {'schema': 'd100-native-export-coverage-delta/2', 'state': 'pass',
               'roles': 40, 'other_roles_preserved': 39, 'summary_unchanged': True,
-              'native_parity_promoted': False, 'companion_records_reproduced': 1064,
+              'native_parity_promoted': False, 'lane': args.lane, 'records_reproduced': expected_records,
               'before_sha256': hashlib.sha256(before_bytes).hexdigest(),
               'after_sha256': hashlib.sha256(after_bytes).hexdigest()}
     output.parent.mkdir(parents=True, exist_ok=True)

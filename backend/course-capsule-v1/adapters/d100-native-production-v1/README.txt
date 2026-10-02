@@ -1,5 +1,22 @@
 BUKTI PRODUKSI HTML D100
 
+TAMBAHAN EKSPOR DATA KLASIK
+
+classical-backend-replay.json membuktikan dua ekspor terisolasi: 23.869 rekaman
+dan 19 berkas identik, dari 129 masukan terikat. Pemeriksa native memproyeksikan
+ulang 120 berkas sumber untuk 30 unit, termasuk 8.056 segmen, 276 catatan istilah
+dan 159 koreksi. Semua 22.752 ID historis dipertahankan. Tiga berkas registri
+historis menyediakan ID, skema dan metadata warisan; dependensi ini dinyatakan,
+bukan disembunyikan sebagai pembangunan hanya dari Markdown. Keluaran backend
+terkoreksi dilarang sebagai masukan. Tidak ada berkas produsen yang diubah.
+
+Gunakan scripts/replay-d100-classical-backend-v1.py dengan operasi replay,
+--binding backend/course-capsule-v1/authority/d100-classical-export-inputs-v1.json,
+--native-root untuk sumber asli yang identik, dan --output untuk direktori baru
+di work/. scripts/bind-d100-classical-export-v1.py memeriksa ulang semua masukan
+dan keluaran aktual sebelum mengakui bukti. Ekspor BGK, PDF baru dan telaah
+semantik tetap merupakan pekerjaan terpisah yang belum dibuktikan di sini.
+
 TAMBAHAN EKSPOR DATA PENDAMPING
 
 original-backend-replay.json kini membuktikan dua ekspor terisolasi dari 213
@@ -8,7 +25,7 @@ masukan yang diikat di authority/d100-original-export-inputs-v1.json. Semua
 merekonstruksi 3.790 rentang formula, tautan, hak, 44 solusi penguasaan baru
 dan 13 rujukan solusi sumber. Masukan tidak mencakup keluaran backend yang
 sedang direproduksi; proses menolak jaringan, TeX dan perubahan berkas asli.
-Ekspor klasik/BGK dan produksi PDF tetap belum dibuktikan oleh bukti ini.
+Ekspor klasik dibuktikan terpisah di atas; BGK dan PDF belum dibuktikan di sini.
 Tidak ada peninjauan semantik baru atau peningkatan status paritas penuh.
 
 Pemutaran ulang data memakai scripts/replay-d100-original-backend-v1.py dengan
@@ -55,10 +72,16 @@ Tidak ada peninjauan manusia baru yang diklaim.
 
 ENGLISH
 
+The classical data export now also reproduces 23,869 records in 19 files twice,
+from 129 bound inputs. All 120 current source files are independently reprojected.
+The three-file historical ID/schema/inherited-metadata registry is an explicit
+dependency; the current corrected export is forbidden as input. All 22,752
+historical IDs survive. This is not new semantic review or fresh PDF production.
+
 Separate companion-data evidence now reproduces all 23 export files and 1,064
 records twice from 213 isolated inputs, without using the existing export as
-an input. Formula/link/source/rights reconstruction passes. Classical/BGK
-data exporters, PDF production and semantic review are separate remaining work.
+an input. Formula/link/source/rights reconstruction passes. The BGK data
+exporter, PDF production and semantic review remain separate unproved work.
 
 Six isolated HTML builds reproduce all three Indonesian native readers exactly:
 60 source units plus 32 editorial companion units. Twenty-eight omitted runtime

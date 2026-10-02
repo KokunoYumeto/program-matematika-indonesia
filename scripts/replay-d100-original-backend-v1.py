@@ -53,8 +53,10 @@ def exact(root, relative):
 
 
 class ReadOnlyNative:
-    def __init__(self, root):
+    def __init__(self, root, *, forbidden_prefixes=None):
         self.root = root.resolve()
+        self.forbidden_prefixes = (('backend/original-bridge/', NAMESPACE + '/')
+                                   if forbidden_prefixes is None else tuple(forbidden_prefixes))
         self.enabled = False
         self.hashing = False
         self.reads = {}
@@ -80,8 +82,8 @@ class ReadOnlyNative:
         path = Path(os.fsdecode(args[0])).resolve()
         if path.is_relative_to(self.root):
             relative = path.relative_to(self.root).as_posix()
-            require(not relative.startswith(('backend/original-bridge/', NAMESPACE + '/')),
-                    'Existing original backend output cannot be a replay input')
+            require(not relative.startswith(self.forbidden_prefixes),
+                    'Existing current backend output cannot be a replay input')
             if path.suffix == '.pyc':
                 raise FileNotFoundError('Exact native source required, not cached bytecode')
             if path.is_file() and relative not in self.reads:
@@ -96,14 +98,14 @@ class ReadOnlyNative:
 
 
 @contextmanager
-def native_modules(root):
+def native_modules(root, exporter_name=EXPORTER, validator_name=VALIDATOR):
     old_path, old_modules = list(sys.path), dict(sys.modules)
     names = {p.stem for p in (root / 'scripts').glob('*.py')}
     for name in names:
         sys.modules.pop(name, None)
     sys.path.insert(0, str(root / 'scripts'))
     try:
-        exporter, validator = importlib.import_module(EXPORTER), importlib.import_module(VALIDATOR)
+        exporter, validator = importlib.import_module(exporter_name), importlib.import_module(validator_name)
         require(exporter.ROOT.resolve() == validator.ROOT.resolve() == root.resolve(),
                 'Native exporter/validator not isolated')
         yield exporter, validator
