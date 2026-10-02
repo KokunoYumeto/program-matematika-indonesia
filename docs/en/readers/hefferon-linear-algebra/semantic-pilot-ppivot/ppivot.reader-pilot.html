@@ -1,0 +1,2193 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Accuracy of Computations — Jim Hefferon — original English reading edition</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+pre{max-width:100%;overflow-x:auto;white-space:pre}pre code{overflow-wrap:normal}figure{margin:1rem 0}img{min-width:0;width:320px;max-width:100%;height:auto}\n.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/ppivot.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — 28 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. Source-only material after the author’s explicit end-of-file command is not included.</p><aside class="notice" aria-label="Editorial source notes"><strong>Source notes from the AI-assisted conversion.</strong> The original text, code and worked answers remain unchanged. The following findings are separate from that text.<ol><li id="ppivot-source-note-1"><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.lstlisting.source-order.0002">Source note 1</a>: A semicolon immediately terminates the pivot-comparison if statement. The following max assignment is unconditional and chooses the last visited row, not necessarily the largest absolute entry.</li><li id="ppivot-source-note-2"><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10001.answer.source-order.001">Source note 2</a>: For the stated 253 + 2/3, the answer writes .25 times 10^2 = 25. Under its intended two-significant-digit restriction the rounded sum is 250, written .25 times 10^3. The prompt says decimal places while the answer uses significant digits; those are not identical conventions.</li><li id="ppivot-source-note-3"><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10003.answer.source-order.001">Source note 3</a>: Exercise 3 starts with right-hand side 1.559, but the supplied rounded reduction changes the unchanged first row to 1.569. This is not rounding to four significant digits. The source is preserved; the complete four-digit worked answer has not been repaired here.</li><li id="ppivot-source-note-4"><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005.answer.source-order.001">Source note 4</a>: The answer derives the unique solution (1,1,1) by division. Uniqueness requires epsilon not equal to 0 or 5/9. At either exceptional value (1,1,1) is still a solution, but the displayed system has infinitely many solutions.</li><li id="ppivot-source-note-5"><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005.answer.source-order.001">Source note 5</a>: Exercise 5(b) starts from a matrix that is not the preceding system with epsilon = .001: its row-2 and row-3 x coefficients change, and four epsilon-dependent coefficients are ten times too small. Later rounded steps must not be treated as a verified calculation for the stated system.</li></ol>No original code was compiled or executed here.</aside><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="accuracy-of-computations">Accuracy of Computations</h1>
+<p><span id="source-index-1" class="source-index" data-source-index="accuracy! of Gauss&#39;s Method|("></span> <span id="source-index-2" class="source-index" data-source-index="Gauss&#39;s Method! accuracy|("></span> Gauss’s Method lends itself to computerization. The code below illustrates. It operates on an <span><span class="math-region inline" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="251b526500bdd5644772ad8271022ced5e565816244838d80973bf3abc7c2d9d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mi>n</mi>
+</math></span></span> matrix named <code>a</code>, doing row combinations using the first row, then the second row, etc.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.lstlisting.source-order.0001" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.lstlisting.source-order.0001">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>for(row=1; row&lt;=n-1; row++){
+  for(row_below=row+1; row_below&lt;=n; row_below++){
+    multiplier=a[row_below,row]/a[row,row];
+    for(col=row; col&lt;=n; col++){
+      a[row_below,col]-=multiplier*a[row,col];
+    }
+  }
+}</code></pre>
+</div>
+<p>This is in the C language.<span id="source-index-3" class="source-index" data-source-index="C language"></span> The <code>for(row=1; row&lt;=n-1; row++){ .. }</code> loop initializes <code>row</code> <span>at <span class="math-region inline" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span> and then iterates while <code>row</code> is less than or equal to <span><span class="math-region inline" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="51aeea8ffa05d2620d35c87463465885e77df13171d5708746df1a9f36d47f35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+</math></span>,</span> each time through incrementing <code>row</code> by one with the <code>++</code> operation. The other non-obvious language construct is that the <code>-=</code> in the innermost loop has the effect of <code>a[row_below,col]=-1*multiplier*a[row,col]+a[row_below,col]</code>.</p>
+<p>While that code is a first take on mechanizing Gauss’s Method, it is naive. For one thing, it assumes that the entry in the <code>row,row</code> position is nonzero. So one way that it needs to be extended is to cover the case where finding a zero in that location leads to a row swap or to the conclusion that the matrix is singular.</p>
+<p>We could add some <code>if</code> statements to cover those cases but we will instead consider another way in which this code is naive. It is prone to pitfalls arising from the computer’s reliance on floating point arithmetic.</p>
+<p>For example, above we have seen that we must handle a singular system as a separate case. But systems that are nearly singular also require care. Consider this one (the extra digits are in the ninth significant place).</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="17fd5f92f820a9c410a4c47f37a050a269c2fe19db1a8a5b58c0fe61975543ef"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" style="border-collapse:collapse">
+    <mtr><mtd style="text-align:center">
+        <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:right">
+              <mi>x</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>+</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mn>2</mn>
+              <mi>y</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>=</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mn>3</mn>
+              <mstyle displaystyle="false" scriptlevel="0"/>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:right">
+              <mn>1.000</mn>
+              <mstyle scriptlevel="0">
+                <mspace width="0.167em"/>
+              </mstyle>
+              <mn>000</mn>
+              <mstyle scriptlevel="0">
+                <mspace width="0.167em"/>
+              </mstyle>
+              <mn>01</mn>
+              <mi>x</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>+</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mn>2</mn>
+              <mi>y</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>=</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mn>3.000</mn>
+              <mstyle scriptlevel="0">
+                <mspace width="0.167em"/>
+              </mstyle>
+              <mn>000</mn>
+              <mstyle scriptlevel="0">
+                <mspace width="0.167em"/>
+              </mstyle>
+              <mn>01</mn>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mtd><mtd id="b40-math-000003--mjx-eqn:$*$" data-source-equation-tag="true" style="text-align:center;padding-left:1.4em;text-align:right">
+        <mrow>
+          <mtext>(</mtext>
+          <mrow data-mjx-texclass="ORD">
+            <mo>∗</mo>
+          </mrow>
+          <mtext>)</mtext>
+        </mrow>
+      </mtd></mtr>
+  </mtable>
+</math></span></span></p>
+<p>By eye we easily spot the solution <span><span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="1f206b11c23e28cc250ded7fc0098d3823a8467a54340f1ac4e535cb8544493f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>,</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="99ba788ea91378dd9d3b318ed20fdc8f26d18e094d45ca64a14afa5a9d83dac8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>.</span> A computer has more trouble. If it represents real numbers to eight significant places, called <em>single precision</em><span id="source-index-4" class="source-index" data-source-index="single precision"></span>, then it will represent the second equation internally as <span><span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="9ef35e903902c2119c30957a25a1c02bd6bdc24f15c38a4af86f70b594125288"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1.000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>0</mn>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>2</mn>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>3.000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>0</mn>
+</math></span>,</span> losing the digits in the ninth place. Instead of reporting the correct solution, this computer will think that the two equations are equal and it will report that the system is singular.</p>
+<p>For some intuition about how the computer could come up with something that far off, consider this graph of the system.</p>
+<div class="center">
+<p><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjwhLS0gVGhpcyBmaWxlIHdhcyBnZW5lcmF0ZWQgYnkgZHZpc3ZnbSAzLjYgLS0+DQo8c3ZnIHZlcnNpb249JzEuMScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgd2lkdGg9JzgxcHQnIGhlaWdodD0nODFwdCcgdmlld0JveD0nMCAtODEgODEgODEnPg0KPGcgaWQ9J3BhZ2UxJz4NCjxnIHRyYW5zZm9ybT0nbWF0cml4KDEgMCAwIC0xIDE5IC0xOSknPg0KPHBhdGggZD0nTS0xOC4xOTkyIC4xOTkyMTlILTE4LjU5NzdMLTE4LjE5OTItLjE5OTIxOUgtMTcuODAwOEg2MS4zOTg0SDYxLjc5NjlMNjEuMzk4NCAuMTk5MjE5SDYxWicvPg0KPHBhdGggZD0nTS0xNC41OTc2NSAwVjEuOTkyMTknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNLS4xOTkyMTkgMFYxLjk5MjE5JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE0LjE5OTI1IDBWMS45OTIxOScgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00yOC42MDE1NSAwVjEuOTkyMTknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNNDIuOTk5OTUgMFYxLjk5MjE5JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTU3LjM5ODQ1IDBWMS45OTIxOScgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00tLjE5OTIxOS0xOC4xOTkyVi0xOC41OTc3TC4xOTkyMTktMTguMTk5MlYtMTcuODAwOFY2MS4zOTg0VjYxLjc5NjlMLS4xOTkyMTkgNjEuMzk4NFY2MVonLz4NCjxwYXRoIGQ9J00tLjE5OTIxOS0xNC4zOTg0SDEuNzkyOTcnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNLS4xOTkyMTkgMEgxLjc5Mjk3JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTS0uMTk5MjE5IDE0LjM5ODRIMS43OTI5Nycgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00tLjE5OTIxOSAyOC44MDA4SDEuNzkyOTcnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNLS4xOTkyMTkgNDMuMTk5MkgxLjc5Mjk3JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTS0uMTk5MjE5IDU3LjU5NzdIMS43OTI5Nycgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00tMTggMzAuNTk3N0w2MS4xOTkyLTknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNLTE4IDMwLjU5NzdMNjEuMTk5Mi05JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE1LjA5NzcgMTQuMzk4NEMxNS4wOTc3IDE0LjU4NTkgMTUuMDIzNCAxNC43NjE3IDE0Ljg5NDUgMTQuODk0NUMxNC43NjE3IDE1LjAyMzQgMTQuNTg1OSAxNS4wOTc3IDE0LjM5ODQgMTUuMDk3N0MxNC4yMTQ4IDE1LjA5NzcgMTQuMDM5MSAxNS4wMjM0IDEzLjkwNjMgMTQuODk0NUMxMy43NzczIDE0Ljc2MTcgMTMuNzAzMSAxNC41ODU5IDEzLjcwMzEgMTQuMzk4NEMxMy43MDMxIDE0LjIxNDggMTMuNzc3MyAxNC4wMzkxIDEzLjkwNjMgMTMuOTA2M0MxNC4wMzkxIDEzLjc3NzMgMTQuMjE0OCAxMy43MDMxIDE0LjM5ODQgMTMuNzAzMUMxNC41ODU5IDEzLjcwMzEgMTQuNzYxNyAxMy43NzczIDE0Ljg5NDUgMTMuOTA2M0MxNS4wMjM0IDE0LjAzOTEgMTUuMDk3NyAxNC4yMTQ4IDE1LjA5NzcgMTQuMzk4NFonIGZpbGw9JyNmZmYnLz4NCjxwYXRoIGQ9J00xNS4wOTc3IDE0LjM5ODRDMTUuMDk3NyAxNC41ODU5IDE1LjAyMzQgMTQuNzYxNyAxNC44OTQ1IDE0Ljg5NDVDMTQuNzYxNyAxNS4wMjM0IDE0LjU4NTkgMTUuMDk3NyAxNC4zOTg0IDE1LjA5NzdDMTQuMjE0OCAxNS4wOTc3IDE0LjAzOTEgMTUuMDIzNCAxMy45MDYzIDE0Ljg5NDVDMTMuNzc3MyAxNC43NjE3IDEzLjcwMzEgMTQuNTg1OSAxMy43MDMxIDE0LjM5ODRDMTMuNzAzMSAxNC4yMTQ4IDEzLjc3NzMgMTQuMDM5MSAxMy45MDYzIDEzLjkwNjNDMTQuMDM5MSAxMy43NzczIDE0LjIxNDggMTMuNzAzMSAxNC4zOTg0IDEzLjcwMzFDMTQuNTg1OSAxMy43MDMxIDE0Ljc2MTcgMTMuNzc3MyAxNC44OTQ1IDEzLjkwNjNDMTUuMDIzNCAxNC4wMzkxIDE1LjA5NzcgMTQuMjE0OCAxNS4wOTc3IDE0LjM5ODRaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTIwLjA5ODIgMTAuNjk5MkMxOC45NDE2IDEwLjkyMzMgMTguODc4OCAxMy4xMDE3IDE4Ljg3ODggMTQuNjE2N0MxOC44Nzg4IDE1Ljk3MDUgMTguOTU5OCAxOC4yNDc3IDIwLjA5ODIgMTguNTM0NVYxOC43NzY0QzE5LjE2NTcgMTguNjE1MiAxOC43NjIzIDE3LjU5MzMgMTguNTkyIDE2LjczMjdDMTguNDU3NiAxNi4wNjAyIDE4LjQxMjkgMTUuMzYwOCAxOC40MTI5IDE0LjY3MDVDMTguNDEyOSAxMy45NDQ1IDE4LjQ0ODUgMTMuMjE4MyAxOC41NzQxIDEyLjUwMTFDMTguNzI2NiAxMS42NDk1IDE5LjE1NyAxMC41NjQ4IDIwLjA5ODIgMTAuNDgzOVYxMC42OTkyWicvPg0KPHBhdGggZD0nTTIzLjY0ODkgMTguNTQzM0wyMS43MTIzIDE3Ljg4ODlWMTcuNjQ3SDIyLjQ1NjRDMjMuMDEyMyAxNy42NDcgMjIuODc4IDE2LjkxMTcgMjIuODc4IDE1LjkxNjdDMjIuODc4IDE0LjY2MTcgMjIuODUxMSAxMy40MDY3IDIyLjgwNjEgMTIuMTYwNUwyMi45MTM2IDEyLjExNThMMjMuNjY2NyAxMi4zNTc3QzIzLjYzOTggMTMuMDM4OSAyMy42Mzk4IDE0LjgxMzkgMjMuNjM5OCAxNi4wMzMzQzIzLjYzOTggMTYuODMxMSAyMy42NTc3IDE3LjYzOCAyMy43MDI3IDE4LjQzNThMMjMuNjQ4OSAxOC41NDMzWicvPg0KPHBhdGggZD0nTTI2LjM1NzEgMTAuMjc4QzI2Ljk5MzQgMTEuMDEzIDI3LjI4OTMgMTEuNDcwMiAyNy4yODkzIDExLjkxODNDMjcuMjg5MyAxMi4yMzIgMjYuOTc1NSAxMy4zOTc3IDI2LjUwMDUgMTMuMzk3N0MyNi4yNzYyIDEzLjM5NzcgMjUuOTcxNSAxMy4yMDA1IDI1Ljk3MTUgMTIuOTY3M0MyNS45NzE1IDEyLjg3NzcgMjUuOTk4NCAxMi43Nzg5IDI2LjAzNDMgMTIuNzM0MkwyNi42NjE4IDExLjk5MDJDMjYuNzQyNCAxMS44OTE0IDI2Ljc3ODQgMTEuNzM5MiAyNi43Nzg0IDExLjYxMzZDMjYuNzc4NCAxMS4yNTUyIDI2LjUwMDUgMTAuODE1OCAyNi4xODY4IDEwLjQwMzNMMjYuMzU3MSAxMC4yNzhaJy8+DQo8cGF0aCBkPSdNMzIuMTE5MSAxOC41NDMzTDMwLjE4MjYgMTcuODg4OVYxNy42NDdIMzAuOTI2NkMzMS40ODI2IDE3LjY0NyAzMS4zNDgyIDE2LjkxMTcgMzEuMzQ4MiAxNS45MTY3QzMxLjM0ODIgMTQuNjYxNyAzMS4zMjEzIDEzLjQwNjcgMzEuMjc2MyAxMi4xNjA1TDMxLjM4MzggMTIuMTE1OEwzMi4xMzcgMTIuMzU3N0MzMi4xMTAxIDEzLjAzODkgMzIuMTEwMSAxNC44MTM5IDMyLjExMDEgMTYuMDMzM0MzMi4xMTAxIDE2LjgzMTEgMzIuMTI3OSAxNy42MzggMzIuMTcyOSAxOC40MzU4TDMyLjExOTEgMTguNTQzM1onLz4NCjxwYXRoIGQ9J00zNC42MTIgMTguNTE2NEMzNS4zMzgzIDE4LjI1NjQgMzUuNTQ0NSAxNy40MTM5IDM1LjY3ODkgMTYuNzQxNEMzNS44MTMzIDE2LjA1MTEgMzUuODQ5MiAxNS4zMzM5IDM1Ljg0OTIgMTQuNjM0OEMzNS44NDkyIDEzLjYxMjcgMzUuODY3IDEyLjUxODkgMzUuNTQ0NSAxMS41NTk4QzM1LjM2NTIgMTEuMDIyIDM1LjAyNDUgMTAuNzg4OSAzNC42MTIgMTAuNjgxNFYxMC40NjYxQzM2LjIxNjcgMTAuNjcyMyAzNi4zMTU1IDEzLjA2NTggMzYuMzE1NSAxNC41OTg5QzM2LjMxNTUgMTYuMDk2MSAzNi4xMjcgMTguNDQ0OCAzNC42MTIgMTguNzU4NlYxOC41MTY0WicvPg0KPC9nPg0KPC9nPg0KPC9zdmc+" data-source-asset-id="gr/mp/ch1.33" alt="Two almost indistinguishable descending lines are drawn on coordinate axes, with the point (1,1) marked. The diagram illustrates how nearly coincident equations can make the intersection sensitive to small coefficient changes." /></p>
+</div>
+<p>We cannot tell the two lines apart; this system is nearly singular in the sense that the two lines are nearly the same line. This gives the <span>system (<span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+</math></span>)</span> the property that a small change in an equation can cause a large change in the solution. For instance, changing the <span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="554620477db49a4a933da283e05aa060cc75314502ddd48404586b6f024700ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3.000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>01</mn>
+</math></span></span> to <span><span class="math-region inline" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="daf560735f83bf7dc40c8484c0b90166a4ec32edd037288dbf21dc1f5c9c128d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3.000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>03</mn>
+</math></span></span> changes the intersection point from <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="182263cc640500849cd74145a198285fe49aa9b958162bccf7a775cb64c084cd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mo>,</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+</math></span></span> to <span><span class="math-region inline" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="7f5d65e2ae5fe24aba1ce4a5c5d1af1988faad0cb38f323474774f37b893b99b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>3</mn>
+  <mo>,</mo>
+  <mn>0</mn>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> The solution changes radically depending on the ninth digit, which explains why an eight-place computer has trouble. A problem that is very sensitive to inaccuracy or uncertainties in the input values is <em>ill-conditioned</em>.<span id="source-index-5" class="source-index" data-source-index="ill-conditioned problem"></span></p>
+<p>The above example gives one way in which a system can be difficult to solve on a computer. It has the advantage that the picture of nearly-equal lines gives a memorable insight into one way for numerical difficulties to happen. Unfortunately this insight isn’t useful when we wish to solve some large system. We typically will not understand the geometry of an arbitrary large system.</p>
+<p>There are other ways that a computer’s results may be unreliable, besides that the angle between some of the linear surfaces is small. For example, consider this system (from <span class="source-citation">[<a href="#bib-Hamming" data-citation-key="Hamming">Hamming</a>]</span>).</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="7a2c3d63cfbf570c1b8d4025ae50bbec57db7b9dd08f201684c3f36c56cb7c82"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" style="border-collapse:collapse">
+    <mtr><mtd style="text-align:center">
+        <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:right">
+              <mn>0.001</mn>
+              <mi>x</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>+</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mi>y</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>=</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mn>1</mn>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:right">
+              <mi>x</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>−</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mi>y</mi>
+            </mtd>
+            <mtd style="text-align:center">
+              <mo>=</mo>
+            </mtd>
+            <mtd style="text-align:right">
+              <mn>0</mn>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mtd><mtd id="b40-math-000012--mjx-eqn:($**$)" data-source-equation-tag="true" style="text-align:center;padding-left:1.4em;text-align:right">
+        <mrow>
+          <mtext>(</mtext>
+          <mrow data-mjx-texclass="ORD">
+            <mo>∗</mo>
+            <mo>∗</mo>
+          </mrow>
+          <mtext>)</mtext>
+        </mrow>
+      </mtd></mtr>
+  </mtable>
+</math></span></span></p>
+<p>The second equation gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="14bf50d80768f3bcd08b39d302f7e14465ae44bf65e7ef88bb28e83e8a1ae172"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mi>y</mi>
+</math></span>,</span> so <span><span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="eabdc154d16fe4b18aeba26af249f7cbccd48df0e7c7e5bbba8ef1741b3df00f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>1.001</mn>
+</math></span></span> and thus both variables have values that are just less than <span><span class="math-region inline" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span>.</span> A computer using two digits represents the system internally in this way (we will do this example in two-digit floating point arithmetic for clarity but inventing a similar one with eight or more digits is easy).</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="71ce1ba7d7c6a66f36c75369dfd4a1083d4d47c3845b7f062efc4e3a177c9c8e"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>1.0</mn>
+        <mo>×</mo>
+        <msup>
+          <mn>10</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mo>−</mo>
+            <mn>3</mn>
+          </mrow>
+        </msup>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>1.0</mn>
+        <mo>×</mo>
+        <msup>
+          <mn>10</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mn>0</mn>
+          </mrow>
+        </msup>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1.0</mn>
+        <mo>×</mo>
+        <msup>
+          <mn>10</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mn>0</mn>
+          </mrow>
+        </msup>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>1.0</mn>
+        <mo>×</mo>
+        <msup>
+          <mn>10</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mn>0</mn>
+          </mrow>
+        </msup>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>1.0</mn>
+        <mo>×</mo>
+        <msup>
+          <mn>10</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mn>0</mn>
+          </mrow>
+        </msup>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0.0</mn>
+        <mo>×</mo>
+        <msup>
+          <mn>10</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mn>0</mn>
+          </mrow>
+        </msup>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>The row reduction step <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="4547b5c5bdb9916ccab9930303a44f8a202e92ca5d72c163261930a44b2b59ae"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>1000</mn>
+  <msub>
+    <mi>ρ</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>ρ</mi>
+    <mn>2</mn>
+  </msub>
+</math></span></span> produces a second equation <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="166e85a97f24628059a7ca6cb6bc09928b582c09193b8586d62070ade2feab29"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>1001</mn>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mo>−</mo>
+  <mn>1000</mn>
+</math></span>,</span> which this computer rounds to two places as <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="983ac89cd36c9b972abb28f68b92fbfaa9a96accfc19d5a96723c83693ba136e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mn>1.0</mn>
+  <mo>×</mo>
+  <msup>
+    <mn>10</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mn>3</mn>
+    </mrow>
+  </msup>
+  <mo stretchy="false">)</mo>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mo>−</mo>
+  <mn>1.0</mn>
+  <mo>×</mo>
+  <msup>
+    <mn>10</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mn>3</mn>
+    </mrow>
+  </msup>
+</math></span>.</span> The computer decides from the second equation that <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="99ba788ea91378dd9d3b318ed20fdc8f26d18e094d45ca64a14afa5a9d83dac8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span></span> and with that it concludes from the first equation that <span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="794d66ff4ebd363e528d3546b2c9bcb26398f88aaba177b10b97dda04e64ceac"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span>.</span> <span>The <span class="math-region inline" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="a1fce4363854ff888cff4b8e7875d600c2682390412a8cf79b37d0b11148b0fa"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+</math></span></span> value is close but <span>the <span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+</math></span></span> is bad— the ratio of the actual answer to the computer’s answer is infinite.<span id="source-index-6" class="source-index" data-source-index="accuracy!rounding error"></span> In short, another cause of unreliable output is the computer’s reliance on floating point arithmetic when the system-solving code leads to using leading entries that are small.</p>
+<p>An experienced programmer may respond by using <em>double precision</em>,<span id="source-index-7" class="source-index" data-source-index="double precision"></span> which retains sixteen significant digits, or perhaps using some even larger size. This will indeed solve many problems. However, double precision has greater memory requirements and besides we can obviously tweak the above to give the same trouble in the seventeenth digit, so double precision isn’t a panacea. We need a strategy to minimize numerical trouble as well as some guidance about how far we can trust the reported solutions.</p>
+<p>A basic improvement on the naive code above is to not determine the factor to use for row combinations by simply taking the entry in the <code>row,row</code> position, but rather to look at all of the entries in the <code>row</code> column below the <code>row,row</code> entry and take one that is likely to give reliable results because it is not too small. This is <em>partial pivoting</em>. <span id="source-index-8" class="source-index" data-source-index="partial pivoting"></span><span id="source-index-9" class="source-index" data-source-index="pivoting!full"></span></p>
+<p>For example, to solve the troublesome <span>system (<span class="math-region inline" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="983987033f0e117011e531dc33ad9bb15290bba41a414d830fb5cbdbcda2ff17"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+  <mo>∗</mo>
+</math></span>)</span> above we start by looking at both equations for a best entry to use, and take <span>the <span class="math-region inline" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span> in the second equation as more likely to give good results. The combination step of <span><span class="math-region inline" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="e7eb626209ebf80867a1623fc0768a1be4178d2fe9f39cb9de83e9b3cd78767a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>.001</mn>
+  <msub>
+    <mi>ρ</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>ρ</mi>
+    <mn>1</mn>
+  </msub>
+</math></span></span> gives a first equation of <span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="50c05db8d67722b02c826059dba7b559a1854a08353603b2a052def5abb1708b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1.001</mn>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>,</span> which the computer will represent as <span><span class="math-region inline" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="985fc539212c73a42581f58eb6529136ddfb4652866e01b9125dcd9f6a50c26f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>1.0</mn>
+  <mo>×</mo>
+  <msup>
+    <mn>10</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mn>0</mn>
+    </mrow>
+  </msup>
+  <mo stretchy="false">)</mo>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1.0</mn>
+  <mo>×</mo>
+  <msup>
+    <mn>10</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mn>0</mn>
+    </mrow>
+  </msup>
+</math></span>,</span> leading to the conclusion that <span><span class="math-region inline" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="99ba788ea91378dd9d3b318ed20fdc8f26d18e094d45ca64a14afa5a9d83dac8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span></span> and, after back-substitution, that <span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="1f206b11c23e28cc250ded7fc0098d3823a8467a54340f1ac4e535cb8544493f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>,</span> both of which are close to right. We can adapt the code from above to do this.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.lstlisting.source-order.0002" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.lstlisting.source-order.0002">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>for(row=1; row&lt;=n-1; row++){
+/* find the largest entry in this column (in row max) */
+  max=row;
+  for(row_below=row+1; row_below&lt;=n; row_below++){
+    if (abs(a[row_below,row]) &gt; abs(a[max,row]));
+      max = row_below;
+  }
+/* swap rows to move that best entry up */
+  for(col=row; col&lt;=n; col++){
+    temp=a[row,col];
+    a[row,col]=a[max,col];
+    a[max,col]=temp;
+  }
+/* proceed as before */
+  for(row_below=row+1; row_below&lt;=n; row_below++){
+    multiplier=a[row_below,row]/a[row,row];
+     for(col=row; col&lt;=n; col++){
+       a[row_below,col]-=multiplier*a[row,col];
+    }
+  }
+}</code></pre>
+</div>
+<p>A full analysis of the best way to implement Gauss’s Method is beyond the scope of this book (see <span class="source-citation">[<a href="#bib-Wilkinson65" data-citation-key="Wilkinson65">Wilkinson 1965</a>]</span>), but the method recommended by most experts first finds the best entry among the candidates and then scales it to a number that is less likely to give trouble. This is <em>scaled partial pivoting</em>.<span id="source-index-10" class="source-index" data-source-index="scaled partial pivoting"></span><span id="source-index-11" class="source-index" data-source-index="pivoting!partial!scaled"></span></p>
+<p>In addition to returning a result that is likely to be reliable, most well-done code will return a <em>conditioning number</em> <span id="source-index-12" class="source-index" data-source-index="conditioning number"></span><span id="source-index-13" class="source-index" data-source-index="matrix!conditioning number"></span> that describes the factor by which uncertainties in the input numbers could be magnified to become inaccuracies in the results returned (see <span class="source-citation">[<a href="#bib-Rice" data-citation-key="Rice">Rice</a>]</span>).</p>
+<p>The lesson is that just because Gauss’s Method always works in theory, and just because computer code correctly implements that method, doesn’t mean that the answer is reliable. In practice, always use a package where experts have worked hard to counter what can go wrong.</p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<section id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise-group.source-order.0001" class="source-exercise-group" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise-group.source-order.0001">
+<h4>Exercises</h4>
+<ol type="1">
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10001" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10001" data-source-number="1">
+<p><strong>Exercise 1</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10001.answer.source-order.001">Worked answer</a></p>
+<p>Using two decimal places, add <span><span class="math-region inline" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="e7866fdc6672f827c76f6124ca3eeaff44aff8b7caf4ee1469b2ab887e7e7875"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>253</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="484aa6ccd17c9fe96eb955b9b56ed0c883b275301479deec1b817afe2abdaf72"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+</math></span>.</span> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10001.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10001.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10001">Back to Exercise 1</a></p>
+<p><strong>Answer.</strong> Scientific notation is convenient for expressing the two-place restriction: <span><span class="math-region inline" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="b47633e83bdfaf8faf078ff949aba65c9ee24ddf6eceb2c99b24ec725081fe03"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>.25</mn>
+  <mo>×</mo>
+  <msup>
+    <mn>10</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mn>2</mn>
+    </mrow>
+  </msup>
+  <mo>+</mo>
+  <mn>.67</mn>
+  <mo>×</mo>
+  <msup>
+    <mn>10</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mn>0</mn>
+    </mrow>
+  </msup>
+  <mo>=</mo>
+  <mn>.25</mn>
+  <mo>×</mo>
+  <msup>
+    <mn>10</mn>
+    <mrow data-mjx-texclass="ORD">
+      <mn>2</mn>
+    </mrow>
+  </msup>
+</math></span>.</span> Note that adding the <span><span class="math-region inline" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="484aa6ccd17c9fe96eb955b9b56ed0c883b275301479deec1b817afe2abdaf72"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+</math></span></span> has no effect on the total.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10002" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10002" data-source-number="2">
+<p><strong>Exercise 2</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10002.answer.source-order.001">Worked answer</a></p>
+<p>This intersect-the-lines problem contrasts with the example discussed above.</p>
+<div class="center">
+<p><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjwhLS0gVGhpcyBmaWxlIHdhcyBnZW5lcmF0ZWQgYnkgZHZpc3ZnbSAzLjYgLS0+DQo8c3ZnIHZlcnNpb249JzEuMScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgd2lkdGg9JzgxcHQnIGhlaWdodD0nODlwdCcgdmlld0JveD0nMCAtODkgODEgODknPg0KPGcgaWQ9J3BhZ2UxJz4NCjxnIHRyYW5zZm9ybT0nbWF0cml4KDEgMCAwIC0xIDE5IC0yMyknPg0KPHBhdGggZD0nTS0xOC4xOTkyIC4xOTkyMTlILTE4LjU5NzdMLTE4LjE5OTItLjE5OTIxOUgtMTcuODAwOEg2MS4zOTg0SDYxLjc5NjlMNjEuMzk4NCAuMTk5MjE5SDYxWicvPg0KPHBhdGggZD0nTS0xNC41OTc2NSAwVjEuOTkyMTknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNLS4xOTkyMTkgMFYxLjk5MjE5JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE0LjE5OTI1IDBWMS45OTIxOScgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00yOC42MDE1NSAwVjEuOTkyMTknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNNDIuOTk5OTUgMFYxLjk5MjE5JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTU3LjM5ODQ1IDBWMS45OTIxOScgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00tLjE5OTIxOS0xOC4xOTkyVi0xOC41OTc3TC4xOTkyMTktMTguMTk5MlYtMTcuODAwOFY2MS4zOTg0VjYxLjc5NjlMLS4xOTkyMTkgNjEuMzk4NFY2MVonLz4NCjxwYXRoIGQ9J00tLjE5OTIxOS0xNC4zOTg0SDEuNzkyOTcnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNLS4xOTkyMTkgMEgxLjc5Mjk3JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTS0uMTk5MjE5IDE0LjM5ODRIMS43OTI5Nycgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00tLjE5OTIxOSAyOC44MDA4SDEuNzkyOTcnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNLS4xOTkyMTkgNDMuMTk5MkgxLjc5Mjk3JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTS0uMTk5MjE5IDU3LjU5NzdIMS43OTI5Nycgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdzcXVhcmUnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00tMTggMzAuNTk3N0w2MS4xOTkyLTknIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWNhcD0nc3F1YXJlJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNNDUuNTkzOCA2MS4xOTkyTC03LjIwNzAzLTE4JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE1LjA5NzcgMTQuMzk4NEMxNS4wOTc3IDE0LjU4NTkgMTUuMDIzNCAxNC43NjE3IDE0Ljg5NDUgMTQuODk0NUMxNC43NjE3IDE1LjAyMzQgMTQuNTg1OSAxNS4wOTc3IDE0LjM5ODQgMTUuMDk3N0MxNC4yMTQ4IDE1LjA5NzcgMTQuMDM5MSAxNS4wMjM0IDEzLjkwNjMgMTQuODk0NUMxMy43NzczIDE0Ljc2MTcgMTMuNzAzMSAxNC41ODU5IDEzLjcwMzEgMTQuMzk4NEMxMy43MDMxIDE0LjIxNDggMTMuNzc3MyAxNC4wMzkxIDEzLjkwNjMgMTMuOTA2M0MxNC4wMzkxIDEzLjc3NzMgMTQuMjE0OCAxMy43MDMxIDE0LjM5ODQgMTMuNzAzMUMxNC41ODU5IDEzLjcwMzEgMTQuNzYxNyAxMy43NzczIDE0Ljg5NDUgMTMuOTA2M0MxNS4wMjM0IDE0LjAzOTEgMTUuMDk3NyAxNC4yMTQ4IDE1LjA5NzcgMTQuMzk4NFonIGZpbGw9JyNmZmYnLz4NCjxwYXRoIGQ9J00xNS4wOTc3IDE0LjM5ODRDMTUuMDk3NyAxNC41ODU5IDE1LjAyMzQgMTQuNzYxNyAxNC44OTQ1IDE0Ljg5NDVDMTQuNzYxNyAxNS4wMjM0IDE0LjU4NTkgMTUuMDk3NyAxNC4zOTg0IDE1LjA5NzdDMTQuMjE0OCAxNS4wOTc3IDE0LjAzOTEgMTUuMDIzNCAxMy45MDYzIDE0Ljg5NDVDMTMuNzc3MyAxNC43NjE3IDEzLjcwMzEgMTQuNTg1OSAxMy43MDMxIDE0LjM5ODRDMTMuNzAzMSAxNC4yMTQ4IDEzLjc3NzMgMTQuMDM5MSAxMy45MDYzIDEzLjkwNjNDMTQuMDM5MSAxMy43NzczIDE0LjIxNDggMTMuNzAzMSAxNC4zOTg0IDEzLjcwMzFDMTQuNTg1OSAxMy43MDMxIDE0Ljc2MTcgMTMuNzc3MyAxNC44OTQ1IDEzLjkwNjNDMTUuMDIzNCAxNC4wMzkxIDE1LjA5NzcgMTQuMjE0OCAxNS4wOTc3IDE0LjM5ODRaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVjYXA9J3NxdWFyZScgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTIwLjA5ODIgMTAuNjk5MkMxOC45NDE2IDEwLjkyMzMgMTguODc4OCAxMy4xMDE3IDE4Ljg3ODggMTQuNjE2N0MxOC44Nzg4IDE1Ljk3MDUgMTguOTU5OCAxOC4yNDc3IDIwLjA5ODIgMTguNTM0NVYxOC43NzY0QzE5LjE2NTcgMTguNjE1MiAxOC43NjIzIDE3LjU5MzMgMTguNTkyIDE2LjczMjdDMTguNDU3NiAxNi4wNjAyIDE4LjQxMjkgMTUuMzYwOCAxOC40MTI5IDE0LjY3MDVDMTguNDEyOSAxMy45NDQ1IDE4LjQ0ODUgMTMuMjE4MyAxOC41NzQxIDEyLjUwMTFDMTguNzI2NiAxMS42NDk1IDE5LjE1NyAxMC41NjQ4IDIwLjA5ODIgMTAuNDgzOVYxMC42OTkyWicvPg0KPHBhdGggZD0nTTIzLjY0ODkgMTguNTQzM0wyMS43MTIzIDE3Ljg4ODlWMTcuNjQ3SDIyLjQ1NjRDMjMuMDEyMyAxNy42NDcgMjIuODc4IDE2LjkxMTcgMjIuODc4IDE1LjkxNjdDMjIuODc4IDE0LjY2MTcgMjIuODUxMSAxMy40MDY3IDIyLjgwNjEgMTIuMTYwNUwyMi45MTM2IDEyLjExNThMMjMuNjY2NyAxMi4zNTc3QzIzLjYzOTggMTMuMDM4OSAyMy42Mzk4IDE0LjgxMzkgMjMuNjM5OCAxNi4wMzMzQzIzLjYzOTggMTYuODMxMSAyMy42NTc3IDE3LjYzOCAyMy43MDI3IDE4LjQzNThMMjMuNjQ4OSAxOC41NDMzWicvPg0KPHBhdGggZD0nTTI2LjM1NzEgMTAuMjc4QzI2Ljk5MzQgMTEuMDEzIDI3LjI4OTMgMTEuNDcwMiAyNy4yODkzIDExLjkxODNDMjcuMjg5MyAxMi4yMzIgMjYuOTc1NSAxMy4zOTc3IDI2LjUwMDUgMTMuMzk3N0MyNi4yNzYyIDEzLjM5NzcgMjUuOTcxNSAxMy4yMDA1IDI1Ljk3MTUgMTIuOTY3M0MyNS45NzE1IDEyLjg3NzcgMjUuOTk4NCAxMi43Nzg5IDI2LjAzNDMgMTIuNzM0MkwyNi42NjE4IDExLjk5MDJDMjYuNzQyNCAxMS44OTE0IDI2Ljc3ODQgMTEuNzM5MiAyNi43Nzg0IDExLjYxMzZDMjYuNzc4NCAxMS4yNTUyIDI2LjUwMDUgMTAuODE1OCAyNi4xODY4IDEwLjQwMzNMMjYuMzU3MSAxMC4yNzhaJy8+DQo8cGF0aCBkPSdNMzIuMTE5MSAxOC41NDMzTDMwLjE4MjYgMTcuODg4OVYxNy42NDdIMzAuOTI2NkMzMS40ODI2IDE3LjY0NyAzMS4zNDgyIDE2LjkxMTcgMzEuMzQ4MiAxNS45MTY3QzMxLjM0ODIgMTQuNjYxNyAzMS4zMjEzIDEzLjQwNjcgMzEuMjc2MyAxMi4xNjA1TDMxLjM4MzggMTIuMTE1OEwzMi4xMzcgMTIuMzU3N0MzMi4xMTAxIDEzLjAzODkgMzIuMTEwMSAxNC44MTM5IDMyLjExMDEgMTYuMDMzM0MzMi4xMTAxIDE2LjgzMTEgMzIuMTI3OSAxNy42MzggMzIuMTcyOSAxOC40MzU4TDMyLjExOTEgMTguNTQzM1onLz4NCjxwYXRoIGQ9J00zNC42MTIgMTguNTE2NEMzNS4zMzgzIDE4LjI1NjQgMzUuNTQ0NSAxNy40MTM5IDM1LjY3ODkgMTYuNzQxNEMzNS44MTMzIDE2LjA1MTEgMzUuODQ5MiAxNS4zMzM5IDM1Ljg0OTIgMTQuNjM0OEMzNS44NDkyIDEzLjYxMjcgMzUuODY3IDEyLjUxODkgMzUuNTQ0NSAxMS41NTk4QzM1LjM2NTIgMTEuMDIyIDM1LjAyNDUgMTAuNzg4OSAzNC42MTIgMTAuNjgxNFYxMC40NjYxQzM2LjIxNjcgMTAuNjcyMyAzNi4zMTU1IDEzLjA2NTggMzYuMzE1NSAxNC41OTg5QzM2LjMxNTUgMTYuMDk2MSAzNi4xMjcgMTguNDQ0OCAzNC42MTIgMTguNzU4NlYxOC41MTY0WicvPg0KPC9nPg0KPC9nPg0KPC9zdmc+" data-source-asset-id="gr/mp/ch1.34" alt="A descending line and a steep ascending line meet at the marked point (1,1). Their clearly separated directions contrast with the nearly coincident lines in the earlier ill-conditioned example." /> <span class="source-layout" data-source-layout="\qquad"></span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="a92dec019367c63dc6bf1e7ee3fe28faca4b086fc7c2164fdac35f88e3954d5a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mstyle displaystyle="true" scriptlevel="0">
+    <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:right">
+          <mi>x</mi>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>+</mo>
+        </mtd>
+        <mtd style="text-align:right">
+          <mn>2</mn>
+          <mi>y</mi>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>=</mo>
+        </mtd>
+        <mtd style="text-align:right">
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:right">
+          <mn>3</mn>
+          <mi>x</mi>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+        </mtd>
+        <mtd style="text-align:right">
+          <mn>2</mn>
+          <mi>y</mi>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>=</mo>
+        </mtd>
+        <mtd style="text-align:right">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+  </mstyle>
+</math></span></span></p>
+</div>
+<p>Illustrate that in this system some small change in the numbers will produce only a small change in the solution by changing the constant in the bottom equation to <span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="fdf6925c85c5ef94f1310bab42f08ddbe34c04631c4c6466eafacd83b2f4ce87"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1.008</mn>
+</math></span></span> and solving. Compare it to the solution of the unchanged system. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10002.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10002.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10002">Back to Exercise 2</a></p>
+<p><strong>Answer.</strong> The reduction</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="06c6df5ba6ea9262a7fcee9a79ee0c96709be86c339d4fdc36533e5f3e71806b"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="REL">
+    <mspace width="1.5ex"/>
+    <munderover>
+      <mrow data-mjx-texclass="OP">
+        <mo stretchy="false">⟶</mo>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse"/>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mo>−</mo>
+        <mn>3</mn>
+        <msub>
+          <mi>ρ</mi>
+          <mn>1</mn>
+        </msub>
+        <mo>+</mo>
+        <msub>
+          <mi>ρ</mi>
+          <mn>2</mn>
+        </msub>
+        <mrow data-mjx-texclass="ORD">
+          <mpadded width="0">
+            <mphantom>
+              <mo stretchy="false">(</mo>
+            </mphantom>
+          </mpadded>
+        </mrow>
+      </mrow>
+    </munderover>
+    <mspace width="1.5ex"/>
+  </mrow>
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>8</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>7.992</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="544aaac4fab9a1f47a2bed5c744d4590d84694caa86a3b837768570cfcf328ce"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>,</mo>
+  <mi>y</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mn>1.002</mn>
+  <mo>,</mo>
+  <mn>0.999</mn>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> So for this system a small change in the constant produces only a small change in the solution.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10003" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10003" data-source-number="3">
+<p><strong>Exercise 3</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10003.answer.source-order.001">Worked answer</a></p>
+<p>Consider this system (<span class="source-citation">[<a href="#bib-Rice" data-citation-key="Rice">Rice</a>]</span>).</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="218be1ab970fa1a3e4ad3b9d382dfafb0861fdaf45c43a697b619496722d5e90"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>0.000</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>3</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1.556</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1.559</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>0.345</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>4</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2.346</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1.108</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<ol type="a">
+<li><p>Solve it.</p></li>
+<li><p>Solve it by rounding at each step to four digits.</p></li>
+</ol>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10003.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10003.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10003">Back to Exercise 3</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>The fully accurate solution is that <span><span class="math-region inline" data-source-math-id="BFOURMATH000040END" data-source-tex-sha256="6e1e30bac076ad5c5a7aef3d1c05108a3e29480d4ff44fc46530c47a154dae62"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>10</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000041END" data-source-tex-sha256="99ba788ea91378dd9d3b318ed20fdc8f26d18e094d45ca64a14afa5a9d83dac8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>.</span></p></li>
+<li><p>The four-digit reduction</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000042END" data-source-tex-sha256="669cd3de3f8e2fc3690110e463922dd45574bf81f2a03d3f19e57d0bb24c4537"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="REL">
+    <mspace width="1.5ex"/>
+    <munderover>
+      <mrow data-mjx-texclass="OP">
+        <mo stretchy="false">⟶</mo>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse"/>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mo>−</mo>
+        <mo stretchy="false">(</mo>
+        <mn>.3454</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>.0003</mn>
+        <mo stretchy="false">)</mo>
+        <msub>
+          <mi>ρ</mi>
+          <mn>1</mn>
+        </msub>
+        <mo>+</mo>
+        <msub>
+          <mi>ρ</mi>
+          <mn>2</mn>
+        </msub>
+        <mrow data-mjx-texclass="ORD">
+          <mpadded width="0">
+            <mphantom>
+              <mo stretchy="false">(</mo>
+            </mphantom>
+          </mpadded>
+        </mrow>
+      </mrow>
+    </munderover>
+    <mspace width="1.5ex"/>
+  </mrow>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnalign="center center center" columnspacing="1em" rowspacing="4pt" columnlines="none solid" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>.0003</mn>
+        </mtd>
+        <mtd data-source-column-divider="2" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+          <mn>1.556</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1.569</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd data-source-column-divider="2" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+          <mo>−</mo>
+          <mn>1794</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1805</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>gives the conclusion <span>that <span class="math-region inline" data-source-math-id="BFOURMATH000043END" data-source-tex-sha256="bc70061731f028a674899c19b2b2da284d1c2dd0ecec8b8249010772ac5953de"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1.006</mn>
+</math></span>,</span> which is not bad, and that <span><span class="math-region inline" data-source-math-id="BFOURMATH000044END" data-source-tex-sha256="7e8221cbc91683c91dd1d411d31abb198afdfeb599ddf19a8d7fad066d8b0d86"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>12.21</mn>
+</math></span>.</span> Of course, this is twenty percent different than the correct answer.</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10004" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10004" data-source-number="4">
+<p><strong>Exercise 4</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10004.answer.source-order.001">Worked answer</a></p>
+<p>Rounding inside the computer often has an effect on the result. Assume that your machine has eight significant digits. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>Show that the machine will compute <span><span class="math-region inline" data-source-math-id="BFOURMATH000045END" data-source-tex-sha256="831e5713767ba658fdf83b09877c312bc9d8f1a6f41318b27324de0f348d399b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">)</mo>
+</math></span></span> as unequal to <span><span class="math-region inline" data-source-math-id="BFOURMATH000046END" data-source-tex-sha256="67562dbb1bd96f7cab793dced4a0bd7833e7391421f825c09c88f5c49bf878f8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">)</mo>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> Thus, computer arithmetic is not associative.</p></li>
+<li><p>Compare the computer’s version of <span><span class="math-region inline" data-source-math-id="BFOURMATH000047END" data-source-tex-sha256="1f89971f377b9b666d95023aaf749f0d30601cebf7ffd0771d5fe5a92be19d60"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000048END" data-source-tex-sha256="503dab94bc6c36d69335b6083ba623580be7fdd207ef0a8f8b2306a8a57d47d6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>2</mn>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span>.</span> Is twice the first equation the same as the second?</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10004.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10004.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10004">Back to Exercise 4</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>For the first one, first, <span><span class="math-region inline" data-source-math-id="BFOURMATH000049END" data-source-tex-sha256="23ae8f8506dea4628ed3129636b97e37a4487845cddd15cb17717fd1e0db6cf7"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+</math></span></span> is <span><span class="math-region inline" data-source-math-id="BFOURMATH000050END" data-source-tex-sha256="04c7a40b0d303e2bfbddd855983222659b675800866e27984ee27ee6ddfe5ae8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>.666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>67</mn>
+  <mo>−</mo>
+  <mn>.333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>33</mn>
+  <mo>=</mo>
+  <mn>.333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>34</mn>
+</math></span></span> and so <span><span class="math-region inline" data-source-math-id="BFOURMATH000051END" data-source-tex-sha256="29147061a74b7abf2c3f634c0ad5523ac2a6a902e8a325a8ba0a3886dda050ee"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>.666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>67</mn>
+  <mo>+</mo>
+  <mn>.333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>34</mn>
+  <mo>=</mo>
+  <mn>1.000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>0</mn>
+</math></span>.</span></p>
+<p>For the other one, first <span><span class="math-region inline" data-source-math-id="BFOURMATH000052END" data-source-tex-sha256="4866a599a74b3e1248a669035d4f85c46e1bb51b51964b57a6b360f35fea40ac"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>.666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>67</mn>
+  <mo>+</mo>
+  <mn>.666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>67</mn>
+  <mo>=</mo>
+  <mn>1.333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+</math></span></span> and so <span><span class="math-region inline" data-source-math-id="BFOURMATH000053END" data-source-tex-sha256="e33b915d2d1065b711ba816cff0468703b7a096e4f6f3d295cc349a4011e9829"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">)</mo>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>1.333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+  <mo>−</mo>
+  <mn>.333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>33</mn>
+  <mo>=</mo>
+  <mn>.999</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>999</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>97</mn>
+</math></span>.</span></p></li>
+<li><p>The first equation is <span><span class="math-region inline" data-source-math-id="BFOURMATH000054END" data-source-tex-sha256="5ebe81af68a83c9248e04442d542d80bcb65a3d27647e48ca8e4840437a0852e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>.333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>333</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>33</mn>
+  <mo>⋅</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>1.000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>0</mn>
+  <mo>⋅</mo>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span></span> while the second is <span><span class="math-region inline" data-source-math-id="BFOURMATH000055END" data-source-tex-sha256="a8cb795a8795f61f3c15a200dfc2879a30d56a7d81adf43c7ddf6e84c5275248"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>.666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>666</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>67</mn>
+  <mo>⋅</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>2.000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>000</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>0</mn>
+  <mo>⋅</mo>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span>.</span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005" data-source-number="5">
+<p><strong>Exercise 5</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005.answer.source-order.001">Worked answer</a></p>
+<p>Ill-conditioning is not only dependent on the matrix of coefficients. This example <span class="source-citation">[<a href="#bib-Hamming" data-citation-key="Hamming">Hamming</a>]</span> shows that it can arise from an interaction between the left and right sides of the system. Let <span><span class="math-region inline" data-source-math-id="BFOURMATH000056END" data-source-tex-sha256="daec86669d42946c1832d74d74b9f0af0206ffd283c054be6ff8d841d1cb7d6f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>ε</mi>
+</math></span></span> be a small real.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000057END" data-source-tex-sha256="95b5acdccdfef05bd70a30cea89d836309df7c80270ba4c2964bfe51b02c2348"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left" style="text-align:right">
+        <mn>6</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>ε</mi>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>ε</mi>
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left" style="text-align:right">
+        <mn>2</mn>
+        <mo>+</mo>
+        <mn>4</mn>
+        <mi>ε</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>ε</mi>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>ε</mi>
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd columnalign="left" style="text-align:right">
+        <mn>1</mn>
+        <mo>+</mo>
+        <mi>ε</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>Solve the system by hand. Notice that the <span><span class="math-region inline" data-source-math-id="BFOURMATH000058END" data-source-tex-sha256="daec86669d42946c1832d74d74b9f0af0206ffd283c054be6ff8d841d1cb7d6f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>ε</mi>
+</math></span>’s</span> divide out only because there is an exact cancellation of the integer parts on the right side as well as on the left.</p></li>
+<li><p>Solve the system by hand, rounding to two decimal places, and with <span><span class="math-region inline" data-source-math-id="BFOURMATH000059END" data-source-tex-sha256="b71ddb274e22a702c92ff05fafc11491d44bf70cfcc45d3a94a60b9f1d7bc458"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>ε</mi>
+  <mo>=</mo>
+  <mn>0.001</mn>
+</math></span>.</span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.ppivot.tex.exercise.source-order.10005">Back to Exercise 5</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>This calculation</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000060END" data-source-tex-sha256="7938ac964f891e6c3e188bf0930bb01fbd710975532695dc217bcd3c5bb6df9d"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:left">
+        <mi/>
+        <mrow data-mjx-texclass="REL">
+          <mspace width="1.5ex"/>
+          <munderover>
+            <mrow data-mjx-texclass="OP">
+              <mo stretchy="false">⟶</mo>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mtable data-mjx-smallmatrix="true" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+                <mtr>
+                  <mtd style="text-align:center">
+                    <mo>−</mo>
+                    <mo stretchy="false">(</mo>
+                    <mn>1</mn>
+                    <mrow data-mjx-texclass="ORD">
+                      <mo>/</mo>
+                    </mrow>
+                    <mn>3</mn>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>+</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mo>−</mo>
+              <mo stretchy="false">(</mo>
+              <mn>2</mn>
+              <mrow data-mjx-texclass="ORD">
+                <mo>/</mo>
+              </mrow>
+              <mn>3</mn>
+              <mo stretchy="false">)</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mn>1</mn>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mn>2</mn>
+              </msub>
+              <mrow data-mjx-texclass="ORD">
+                <mpadded width="0">
+                  <mphantom>
+                    <mo stretchy="false">(</mo>
+                  </mphantom>
+                </mpadded>
+              </mrow>
+            </mrow>
+          </munderover>
+          <mspace width="1.5ex"/>
+        </mrow>
+        <mrow data-mjx-texclass="INNER">
+          <mo data-mjx-texclass="OPEN">(</mo>
+          <mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt" columnlines="none none solid" style="border-collapse:collapse">
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>3</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>2</mn>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mn>1</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>6</mn>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>0</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mo stretchy="false">(</mo>
+                <mn>4</mn>
+                <mrow data-mjx-texclass="ORD">
+                  <mo>/</mo>
+                </mrow>
+                <mn>3</mn>
+                <mo stretchy="false">)</mo>
+                <mo>+</mo>
+                <mn>2</mn>
+                <mi>ε</mi>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mo>−</mo>
+                <mo stretchy="false">(</mo>
+                <mn>2</mn>
+                <mrow data-mjx-texclass="ORD">
+                  <mo>/</mo>
+                </mrow>
+                <mn>3</mn>
+                <mo stretchy="false">)</mo>
+                <mo>+</mo>
+                <mn>2</mn>
+                <mi>ε</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mn>2</mn>
+                <mo>+</mo>
+                <mn>4</mn>
+                <mi>ε</mi>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>0</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mo stretchy="false">(</mo>
+                <mn>2</mn>
+                <mrow data-mjx-texclass="ORD">
+                  <mo>/</mo>
+                </mrow>
+                <mn>3</mn>
+                <mo stretchy="false">)</mo>
+                <mo>+</mo>
+                <mn>2</mn>
+                <mi>ε</mi>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mo>−</mo>
+                <mo stretchy="false">(</mo>
+                <mn>1</mn>
+                <mrow data-mjx-texclass="ORD">
+                  <mo>/</mo>
+                </mrow>
+                <mn>3</mn>
+                <mo stretchy="false">)</mo>
+                <mo>−</mo>
+                <mi>ε</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mn>1</mn>
+                <mo>+</mo>
+                <mi>ε</mi>
+              </mtd>
+            </mtr>
+          </mtable>
+          <mo data-mjx-texclass="CLOSE">)</mo>
+        </mrow>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:left">
+        <mi/>
+        <mrow data-mjx-texclass="REL">
+          <mspace width="1.5ex"/>
+          <munderover>
+            <mrow data-mjx-texclass="OP">
+              <mo stretchy="false">⟶</mo>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mtable data-mjx-smallmatrix="true" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse"/>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mo>−</mo>
+              <mo stretchy="false">(</mo>
+              <mn>1</mn>
+              <mrow data-mjx-texclass="ORD">
+                <mo>/</mo>
+              </mrow>
+              <mn>2</mn>
+              <mo stretchy="false">)</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mn>2</mn>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mn>3</mn>
+              </msub>
+              <mrow data-mjx-texclass="ORD">
+                <mpadded width="0">
+                  <mphantom>
+                    <mo stretchy="false">(</mo>
+                  </mphantom>
+                </mpadded>
+              </mrow>
+            </mrow>
+          </munderover>
+          <mspace width="1.5ex"/>
+        </mrow>
+        <mrow data-mjx-texclass="INNER">
+          <mo data-mjx-texclass="OPEN">(</mo>
+          <mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt" columnlines="none none solid" style="border-collapse:collapse">
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>3</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>2</mn>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mn>1</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>6</mn>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>0</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mo stretchy="false">(</mo>
+                <mn>4</mn>
+                <mrow data-mjx-texclass="ORD">
+                  <mo>/</mo>
+                </mrow>
+                <mn>3</mn>
+                <mo stretchy="false">)</mo>
+                <mo>+</mo>
+                <mn>2</mn>
+                <mi>ε</mi>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mo>−</mo>
+                <mo stretchy="false">(</mo>
+                <mn>2</mn>
+                <mrow data-mjx-texclass="ORD">
+                  <mo>/</mo>
+                </mrow>
+                <mn>3</mn>
+                <mo stretchy="false">)</mo>
+                <mo>+</mo>
+                <mn>2</mn>
+                <mi>ε</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mn>2</mn>
+                <mo>+</mo>
+                <mn>4</mn>
+                <mi>ε</mi>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>0</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mi>ε</mi>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mo>−</mo>
+                <mn>2</mn>
+                <mi>ε</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mi>ε</mi>
+              </mtd>
+            </mtr>
+          </mtable>
+          <mo data-mjx-texclass="CLOSE">)</mo>
+        </mrow>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>gives a third equation of <span><span class="math-region inline" data-source-math-id="BFOURMATH000061END" data-source-tex-sha256="aef50711ed3eefe4d9426ea566d883a52a50ccc12755e7a88e7cdeffe66092ef"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>−</mo>
+  <mn>2</mn>
+  <mi>z</mi>
+  <mo>=</mo>
+  <mo>−</mo>
+  <mn>1</mn>
+</math></span>.</span> Substituting into the second equation gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000062END" data-source-tex-sha256="812c48d5136904c108e7271b18bea6b70211cded2a9a7734aa8b372968ab755b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mn>10</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mn>6</mn>
+  <mi>ε</mi>
+  <mo stretchy="false">)</mo>
+  <mo>⋅</mo>
+  <mi>z</mi>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mn>10</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mn>6</mn>
+  <mi>ε</mi>
+</math></span></span> so <span><span class="math-region inline" data-source-math-id="BFOURMATH000063END" data-source-tex-sha256="9a545057d452f075f6ddfd3cbdb6d8ff4711b645e07ab13898b49316e7804ca0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span></span> and thus <span><span class="math-region inline" data-source-math-id="BFOURMATH000064END" data-source-tex-sha256="99ba788ea91378dd9d3b318ed20fdc8f26d18e094d45ca64a14afa5a9d83dac8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>.</span> With those, the first equation says that <span><span class="math-region inline" data-source-math-id="BFOURMATH000065END" data-source-tex-sha256="1f206b11c23e28cc250ded7fc0098d3823a8467a54340f1ac4e535cb8544493f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span>.</span></p></li>
+<li><p>As above, scientific notation is convenient to express the restriction on the numbe of digits.</p>
+<p>The solution with two digits retained is <span><span class="math-region inline" data-source-math-id="BFOURMATH000066END" data-source-tex-sha256="a27f0424a43c493769725d230bc2b4b6b76df07388b7fb6e6d2cde65e7276f23"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+  <mo>=</mo>
+  <mn>2.1</mn>
+</math></span>,</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000067END" data-source-tex-sha256="90f71b3a675fddea05363e311e7e94447af1acc8e25d3ac4e2e19616b1862197"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>2.6</mn>
+</math></span>,</span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000068END" data-source-tex-sha256="30ad19d69304aa9548b161a8cd2367aac6b1d96fe7e2735823287a35081d5f8b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mo>−</mo>
+  <mn>.43</mn>
+</math></span>.</span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000069END" data-source-tex-sha256="a5d1c743176f581d7df04dca3c2d2f7ff3e64baf40203d9138368d094d1f23fd"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" rowspacing=".5em" columnspacing="100%" width="100%" framespacing="1em 0" frame="" data-width-includes-label="true" style="border-collapse:collapse">
+    <mtr>
+      <mtd columnalign="left" style="text-align:center">
+        <mrow data-mjx-texclass="INNER">
+          <mo data-mjx-texclass="OPEN">(</mo>
+          <mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt" columnlines="none none solid" style="border-collapse:collapse">
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>.30</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>.20</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mn>.10</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>.60</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>.10</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>.20</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>−</mo>
+                    <mn>3</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mn>.20</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>−</mo>
+                    <mn>3</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>.20</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>.30</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>.20</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>−</mo>
+                    <mn>3</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                <mo>−</mo>
+                <mn>.10</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>−</mo>
+                    <mn>3</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>.10</mn>
+                <mo>×</mo>
+                <msup>
+                  <mn>10</mn>
+                  <mrow data-mjx-texclass="ORD">
+                    <mn>1</mn>
+                  </mrow>
+                </msup>
+              </mtd>
+            </mtr>
+          </mtable>
+          <mo data-mjx-texclass="CLOSE">)</mo>
+        </mrow>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right" style="text-align:center">
+        <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:right"/>
+            <mtd style="text-align:left">
+              <mi/>
+              <mrow data-mjx-texclass="REL">
+                <mspace width="1.5ex"/>
+                <munderover>
+                  <mrow data-mjx-texclass="OP">
+                    <mo stretchy="false">⟶</mo>
+                  </mrow>
+                  <mrow data-mjx-texclass="ORD">
+                    <mtable data-mjx-smallmatrix="true" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+                      <mtr>
+                        <mtd style="text-align:center">
+                          <mo>−</mo>
+                          <mo stretchy="false">(</mo>
+                          <mn>1</mn>
+                          <mrow data-mjx-texclass="ORD">
+                            <mo>/</mo>
+                          </mrow>
+                          <mn>3</mn>
+                          <mo stretchy="false">)</mo>
+                          <msub>
+                            <mi>ρ</mi>
+                            <mn>1</mn>
+                          </msub>
+                          <mo>+</mo>
+                          <msub>
+                            <mi>ρ</mi>
+                            <mn>3</mn>
+                          </msub>
+                        </mtd>
+                      </mtr>
+                    </mtable>
+                  </mrow>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>−</mo>
+                    <mo stretchy="false">(</mo>
+                    <mn>2</mn>
+                    <mrow data-mjx-texclass="ORD">
+                      <mo>/</mo>
+                    </mrow>
+                    <mn>3</mn>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>+</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mpadded width="0">
+                        <mphantom>
+                          <mo stretchy="false">(</mo>
+                        </mphantom>
+                      </mpadded>
+                    </mrow>
+                  </mrow>
+                </munderover>
+                <mspace width="1.5ex"/>
+              </mrow>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt" columnlines="none none solid" style="border-collapse:collapse">
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mn>.30</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>.20</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                      <mn>.10</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>.60</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mn>0</mn>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo>−</mo>
+                      <mn>.13</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                      <mo>−</mo>
+                      <mn>.67</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>0</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo>−</mo>
+                      <mn>.20</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mn>0</mn>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo>−</mo>
+                      <mn>.67</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>0</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                      <mo>−</mo>
+                      <mn>.33</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>0</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo>−</mo>
+                      <mn>.10</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+              </mrow>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:right"/>
+            <mtd style="text-align:left">
+              <mi/>
+              <mrow data-mjx-texclass="REL">
+                <mspace width="1.5ex"/>
+                <munderover>
+                  <mrow data-mjx-texclass="OP">
+                    <mo stretchy="false">⟶</mo>
+                  </mrow>
+                  <mrow data-mjx-texclass="ORD">
+                    <mtable data-mjx-smallmatrix="true" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse"/>
+                  </mrow>
+                  <mrow data-mjx-texclass="ORD">
+                    <mo>−</mo>
+                    <mo stretchy="false">(</mo>
+                    <mn>.67</mn>
+                    <mrow data-mjx-texclass="ORD">
+                      <mo>/</mo>
+                    </mrow>
+                    <mn>1.3</mn>
+                    <mo stretchy="false">)</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>2</mn>
+                    </msub>
+                    <mo>+</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>3</mn>
+                    </msub>
+                    <mrow data-mjx-texclass="ORD">
+                      <mpadded width="0">
+                        <mphantom>
+                          <mo stretchy="false">(</mo>
+                        </mphantom>
+                      </mpadded>
+                    </mrow>
+                  </mrow>
+                </munderover>
+                <mspace width="1.5ex"/>
+              </mrow>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mtable columnalign="center center center center" columnspacing="1em" rowspacing="4pt" columnlines="none none solid" style="border-collapse:collapse">
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mn>.30</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>.20</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                      <mn>.10</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>.60</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mn>0</mn>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo>−</mo>
+                      <mn>.13</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                      <mo>−</mo>
+                      <mn>.67</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>0</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo>−</mo>
+                      <mn>.20</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mn>1</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mn>0</mn>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>0</mn>
+                    </mtd>
+                    <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+                      <mn>.15</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mo>−</mo>
+                          <mn>2</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>.31</mn>
+                      <mo>×</mo>
+                      <msup>
+                        <mn>10</mn>
+                        <mrow data-mjx-texclass="ORD">
+                          <mo>−</mo>
+                          <mn>2</mn>
+                        </mrow>
+                      </msup>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+              </mrow>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+</ol>
+</section>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span id="source-index-14" class="source-index" data-source-index="accuracy! of Gauss&#39;s Method|)"></span> <span id="source-index-15" class="source-index" data-source-index="Gauss&#39;s Method! accuracy|)"></span></p>
+<h2 id="source-bibliography">References cited in this section</h2>
+<div id="bib-Hamming" class="source-bibliography-entry">
+<p><strong>Hamming</strong></p>
+<p>Richard W. Hamming, <em>Introduction to Applied Numerical Analysis</em>, Hemisphere Publishing, 1971.</p>
+</div>
+<div id="bib-Wilkinson65" class="source-bibliography-entry">
+<p><strong>Wilkinson 1965</strong></p>
+<p><em>The Algebraic Eigenvalue Problem</em>, J. H. Wilkinson, Oxford University Press, 1965</p>
+</div>
+<div id="bib-Rice" class="source-bibliography-entry">
+<p><strong>Rice</strong></p>
+<p>John R. Rice, <em>Numerical Mathods, Software, and Analysis</em>, second edition, Academic Press, 1993.</p>
+</div>
+</main><footer><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/ppivot.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>

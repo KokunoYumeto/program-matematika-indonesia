@@ -1,0 +1,1413 @@
+% Chapter 4, Section 3 _Linear Algebra_ Jim Hefferon
+%  http://joshua.smcvt.edu/linearalgebra
+%  2001-Jun-12
+\section{Laplace's Formula}
+\textit{This section is optional.
+  The only later sections that depends on this material
+  is Five.III.}
+
+Determinants are a font of interesting and amusing formulas.
+Here is one that is often used
+to compute determinants by hand.
+
+
+
+\subsectionoptional{Laplace's Expansion}
+\index{Laplace determinant expansion|(}
+
+%<*dis:LaplaceIntro0>
+In the permutation expansion of $\deter{T}$,
+every term has one and only one entry from each row and column of~$T$.
+\begin{equation*}
+  \deter{T}=\!\!
+  \sum_{\text{permutations\ }\phi}\!\!\!\!
+     t_{1,\phi(1)}t_{2,\phi(2)}\cdots t_{n,\phi(n)}
+                                 \deter{P_{\phi}}
+\end{equation*}
+Here is the formula's $\nbyn{3}$ instance.
+\begin{align*}
+  \begin{vmat}
+    t_{1,1}  &t_{1,2}  &t_{1,3} \\
+    t_{2,1}  &t_{2,2}  &t_{2,3} \\
+    t_{3,1}  &t_{3,2}  &t_{3,3} 
+  \end{vmat}
+  &=
+  \begin{aligned}[t]
+    &t_{1,1}t_{2,2}t_{3,3}\deter{P_{\phi_1}}
+     +t_{1,1}t_{2,3}t_{3,2}\deter{P_{\phi_2}}
+     +t_{1,2}t_{2,1}t_{3,3}\deter{P_{\phi_3}} \\
+    &\hspace*{0em}
+     +t_{1,2}t_{2,3}t_{3,1}\deter{P_{\phi_4}}
+     +t_{1,3}t_{2,1}t_{3,2}\deter{P_{\phi_5}}
+     +t_{1,3}t_{2,2}t_{3,1}\deter{P_{\phi_6}}
+  \end{aligned}                                      \\
+  &=
+  \begin{aligned}[t]
+    &t_{1,1}t_{2,2}t_{3,3}
+     -t_{1,1}t_{2,3}t_{3,2}
+     -t_{1,2}t_{2,1}t_{3,3}  \\
+    &\hspace*{0em}
+     +t_{1,2}t_{2,3}t_{3,1} 
+     +t_{1,3}t_{2,1}t_{3,2}
+     -t_{1,3}t_{2,2}t_{3,1}
+  \end{aligned}
+\end{align*}
+%</dis:LaplaceIntro0>
+%<*dis:LaplaceIntro1>
+We can focus on any row or column; here we 
+bring out the entries from $T$'s first row.
+\begin{align*}
+  &=
+    t_{1,1}\cdot\big[t_{2,2}t_{3,3}
+                      -t_{2,3}t_{3,2}\big]  \\
+    &\quad
+     -t_{1,2}\cdot\big[t_{2,1}t_{3,3}
+                       -t_{2,3}t_{3,1}\big]  \\
+    &\quad
+     +t_{1,3}\cdot\big[t_{2,1}t_{3,2}
+                       -t_{2,2}t_{3,1}\big]
+  \tag{$*$}
+\end{align*}
+%</dis:LaplaceIntro1>
+%<*dis:LaplaceIntro2>
+Note that inside the first set of square brackets is the 
+determinant
+\begin{equation*}
+  \begin{vmat}
+    t_{2,2}  &t_{2,3} \\
+    t_{3,2}  &t_{3,3}
+  \end{vmat}
+  \tag{$**$}
+\end{equation*}
+and similarly, inside the other brackets are other determinants.
+\begin{equation*}
+  \begin{vmat}
+    t_{2,1}  &t_{2,3} \\
+    t_{3,1}  &t_{3,3}
+  \end{vmat}
+  \qquad
+  \begin{vmat}
+    t_{2,1}  &t_{2,2} \\
+    t_{3,1}  &t_{3,2}
+  \end{vmat}
+  \tag{$*\!*\!*$}
+\end{equation*}
+%</dis:LaplaceIntro2>
+%<*dis:LaplaceIntro3>
+The explanation for these determinants lies with the permutations.
+If we fix some row and column\Dash such as when we consider all terms
+containing~$t_{1,1}$, or all terms containing~$t_{1,2}$, or~$t_{1,3}$\Dash then 
+what remains is for the permutation to pick one entry from each of the other
+rows and columns.
+
+The matrices below illustrate.
+On the left, the row and column containing~$t_{1,1}$ are shaded and 
+what remains is the matrix from~($**$) above.
+Similarly, in the other two what remains are the matrices from~($*\!*\!*$). 
+\definecolor{shadematrix}{gray}{0.8}
+\begin{equation*}
+  \left(\begin{array}{>{\columncolor{shadematrix}}ccc}
+    \rowcolor{shadematrix}
+    t_{1,1}  &t_{1,2}  &t_{1,3} \\
+    t_{2,1}  &t_{2,2}  &t_{2,3} \\
+    t_{3,1}  &t_{3,2}  &t_{3,3} 
+  \end{array}\right)
+  \quad
+  \left(\begin{array}{c>{\columncolor{shadematrix}}cc}
+    \rowcolor{shadematrix}
+    t_{1,1}  &t_{1,2}  &t_{1,3} \\
+    t_{2,1}  &t_{2,2}  &t_{2,3} \\
+    t_{3,1}  &t_{3,2}  &t_{3,3} 
+  \end{array}\right)
+  \quad
+  \left(\begin{array}{cc>{\columncolor{shadematrix}}c}
+    \rowcolor{shadematrix}
+    t_{1,1}  &t_{1,2}  &t_{1,3} \\
+    t_{2,1}  &t_{2,2}  &t_{2,3} \\
+    t_{3,1}  &t_{3,2}  &t_{3,3} 
+  \end{array}\right)
+\end{equation*}
+%</dis:LaplaceIntro3>
+
+%<*dis:LaplaceIntro4>
+So that accounts for the appearance in equation~($*$) of the determinants
+of smaller-sized matrices.
+As to the minus sign on that equation's second line, 
+consider this version of 
+$\deter{T}=t_{1,1}t_{2,2}t_{3,3}\deter{P_{\phi_1}}+\cdots+t_{1,3}t_{2,2}t_{3,1}\deter{P_{\phi_6}}$.
+\begin{equation*}
+  \begin{aligned}[t]
+      &t_{1,1}\cdot \bigg[t_{2,2}t_{3,3}\begin{vmat}[r]
+                                 1  &0  &0  \\
+                                 0  &1  &0  \\
+                                 0  &0  &1
+                                \end{vmat}
+                 +t_{2,3}t_{3,2}\begin{vmat}[r]
+                                  1  &0  &0  \\
+                                  0  &0  &1  \\
+                                  0  &1  &0
+                                \end{vmat}\,\bigg]    \\
+         &\hbox{}\quad\hbox{}
+          +t_{1,2}\cdot \bigg[t_{2,1}t_{3,3}\begin{vmat}[r]
+                                        0  &1  &0  \\
+                                        1  &0  &0  \\
+                                        0  &0  &1
+                                       \end{vmat}
+                        +t_{2,3}t_{3,1}\begin{vmat}[r]
+                                         0  &1  &0  \\
+                                         0  &0  &1  \\
+                                         1  &0  &0
+                                        \end{vmat}\,\bigg]  \\
+        &\hbox{}\quad\hbox{}
+         +t_{1,3}\cdot \bigg[t_{2,1}t_{3,2}\begin{vmat}[r]
+                                        0  &0  &1  \\
+                                        1  &0  &0  \\
+                                        0  &1  &0
+                                       \end{vmat}
+                        +t_{2,2}t_{3,1}\begin{vmat}[r]
+                                         0  &0  &1  \\
+                                         0  &1  &0  \\
+                                         1  &0  &0
+                                        \end{vmat}\,\bigg]
+    \end{aligned}
+\end{equation*}
+The matrices $P_{\phi_1}$ and~$P_{\phi_2}$
+in the first line are all set up for the determinant~($**$),
+since their first row is as in the identity matrix and their other two
+rows look like the rows for that determinant.
+The matrices $P_{\phi_3}$ and~$P_{\phi_4}$
+in the second line will be set up in the same way with a single
+row swap, putting~$\rowvec{1 &0 &0}$ into the first row.
+Of course, that row swap puts a negative sign on that line.
+Finally, setting up the third line's matrices
+in the same way takes two
+swaps, which keeps the sign positive.
+%</dis:LaplaceIntro4>
+
+In short, we have this.
+\begin{equation*}
+  \deter{T}
+  =t_{1,1}\cdot \begin{vmat}
+            t_{2,2}  &t_{2,3}  \\
+            t_{3,2}  &t_{3,3}
+          \end{vmat}
+   -t_{1,2}\cdot \begin{vmat}
+             t_{2,1}  &t_{2,3}  \\
+             t_{3,1}  &t_{3,3}
+           \end{vmat}
+   +t_{1,3}\cdot \begin{vmat}
+             t_{2,1}  &t_{2,2}  \\
+             t_{3,1}  &t_{3,2}
+           \end{vmat}
+\end{equation*}
+The formula given in \nearbytheorem{th:LaPlaceExp},
+which generalizes this,
+is a \definend{recurrence}\index{recurrence} since
+the determinant is expressed as a combination of determinants.
+This formula isn't circular because it gives the $\nbyn{n}$
+determinant in terms of smaller-sized matrices.
+
+\begin{definition} \label{df:Minor}
+%<*df:Minor>
+For any \( \nbyn{n} \) matrix \( T \), the \( \nbyn{(n-1)} \) matrix formed by
+deleting row~\( i \) and column~\( j \) of \( T \) is the
+\( i,j \) \definend{minor}\index{minor, of a matrix}\index{determinant!minor}%
+\index{matrix!minor} 
+of \( T \).
+The \( i,j \) \definend{cofactor}\index{cofactor}\index{determinant!using cofactors} 
+% \index{matrix!cofactor} 
+\( T_{i,j} \) of \( T \) is
+\( (-1)^{i+j} \) times the determinant of the \( i,j \) minor of \( T \).
+%</df:Minor>
+\end{definition}
+
+\begin{example}
+The $1,2$ cofactor of the matrix from equation~($*$)
+is the negative of the first determinant in~($*\!*\!*$).
+\begin{equation*}
+  T_{1,2}=
+  -1\cdot\begin{vmat}
+    t_{2,1}  &t_{2,3}  \\
+    t_{3,1}  &t_{3,3}
+  \end{vmat}
+\end{equation*}
+\end{example}
+
+\begin{example}
+Where
+\begin{equation*}
+   T=
+   \begin{mat}[r]
+      1  &2  &3  \\
+      4  &5  &6  \\
+      7  &8  &9
+   \end{mat}
+\end{equation*}
+these are the  \( 1,2 \) and \( 2,2 \) cofactors.
+\begin{equation*}
+   T_{1,2}=
+   (-1)^{1+2}\cdot\begin{vmat}[r]
+                4  &6  \\
+                7  &9
+             \end{vmat}=6
+  \qquad
+   T_{2,2}=
+   (-1)^{2+2}\cdot\begin{vmat}[r]
+                1  &3  \\
+                7  &9
+             \end{vmat}=-12
+\end{equation*}
+\end{example}
+
+\begin{theorem}[Laplace Expansion of Determinants]
+\label{th:LaPlaceExp}
+\index{determinant!Laplace expansion}%
+% \index{Laplace expansion!computes determinant}
+%<*th:LaPlaceExp>
+Where \( T \) is an \( \nbyn{n} \) matrix, we can find
+the determinant by expanding by cofactors on any
+row~$i$ or column~$j$.
+\begin{align*}
+   \deter{T}
+   &=t_{i,1}\cdot T_{i,1}+t_{i,2}\cdot T_{i,2}+\cdots+t_{i,n}\cdot T_{i,n}  \\
+   &=t_{1,j}\cdot T_{1,j}+t_{2,j}\cdot T_{2,j}+\cdots+t_{n,j}\cdot T_{n,j}
+\end{align*}
+%</th:LaPlaceExp>
+\end{theorem}
+
+\begin{proof}
+\nearbyexercise{exer:LaplaceProof}.
+\end{proof}
+
+\begin{example} \label{ex:ExpLaPlace}
+We can compute the determinant
+\begin{equation*}
+   \deter{T}=
+   \begin{vmat}[r]
+     1  &2  &3  \\
+     4  &5  &6  \\
+     7  &8  &9
+   \end{vmat}
+\end{equation*}
+by expanding along the first row.
+\begin{equation*}
+   \deter{T}
+   =1\cdot(+1)\begin{vmat}[r]
+                5  &6  \\
+                8  &9
+              \end{vmat}
+   +2\cdot(-1)\begin{vmat}[r]
+                4  &6  \\
+                7  &9
+              \end{vmat}
+   +3\cdot(+1)\begin{vmat}[r]
+                4  &5  \\
+                7  &8
+              \end{vmat}     
+  =-3+12-9     
+  =0
+\end{equation*}
+We could also expand down the second column.
+\begin{equation*}
+   \deter{T}
+   =2\cdot(-1)\begin{vmat}[r]
+                4  &6  \\
+                7  &9
+              \end{vmat}
+   +5\cdot(+1)\begin{vmat}[r]
+                1  &3  \\
+                7  &9
+              \end{vmat}
+   +8\cdot(-1)\begin{vmat}[r]
+                1  &3  \\
+                4  &6
+              \end{vmat}     
+  =12-60+48   
+  =0
+\end{equation*}
+\end{example}
+
+\begin{example}
+A row or column with many zeroes makes a this expansion easier.
+\begin{equation*}
+  \begin{vmat}[r]
+    1 &5  &0  \\
+    2 &1  &1  \\
+    3 &-1 &0
+  \end{vmat}
+   =
+   0\cdot(+1)\begin{vmat}[r]
+               2  &1  \\
+               3  &-1
+             \end{vmat}+
+   1\cdot(-1)\begin{vmat}[r]
+               1  &5  \\
+               3  &-1
+             \end{vmat}+
+   0\cdot(+1)\begin{vmat}[r]
+               1  &5  \\
+               2  &1
+             \end{vmat}
+  =16
+\end{equation*}
+\end{example}
+
+We finish by applying Laplace's expansion to
+derive a new formula for the inverse of a matrix.
+With \nearbytheorem{th:LaPlaceExp}, we can calculate 
+the determinant of a matrix 
+by taking linear combinations of entries from a row with
+their associated cofactors.
+\begin{equation*}
+  t_{i,1}\cdot T_{i,1}+t_{i,2}\cdot T_{i,2}+\dots+t_{i,n}\cdot T_{i,n}
+   =\deter{T}  
+\end{equation*}
+Recall that a matrix with two identical rows has a zero determinant.
+Thus,
+weighting the cofactors by entries from 
+row~$k$ with $k\neq i$ gives zero
+\begin{equation*}
+  t_{i,1}\cdot T_{k,1}+t_{i,2}\cdot T_{k,2}+\dots+t_{i,n}\cdot T_{k,n}=0
+\end{equation*}
+because it represents the expansion along the row~$k$ of a matrix with 
+row~\( i \) equal to row~\( k \).
+This summarizes.
+\begin{equation*}
+ \generalmatrix{t}{n}{n}
+ \begin{mat}
+   T_{1,1}  &T_{2,1}  &\ldots  &T_{n,1}  \\
+   T_{1,2}  &T_{2,2}  &\ldots  &T_{n,2}  \\
+            &\vdots   &        &         \\
+   T_{1,n}  &T_{2,n}  &\ldots  &T_{n,n}
+ \end{mat}                                  
+ =\begin{mat}
+     |T|      &0        &\ldots  &0        \\
+     0        &|T|      &\ldots  &0        \\
+              &\vdots   &        &         \\
+     0        &0        &\ldots  &|T|
+   \end{mat} 
+\end{equation*}
+Note that the order of the subscripts in the matrix of cofactors
+is opposite to the order of subscripts in the other matrix; e.g.,
+along the first row of the matrix of cofactors 
+the subscripts are $1,1$ then $2,1$, etc.
+
+\begin{definition}  \label{df:Adjoint}
+%<*df:Adjoint>
+The matrix \definend{adjoint}\index{matrix!adjoint}\index{adjoint matrix}
+(or \definend{adjugate})\index{matrix!adjugate}\index{adjugate matrix}
+to the square matrix \( T \) 
+(or the \definend{classical adjoint})\index{classical adjoint} 
+is
+\begin{equation*}
+  \adj(T)=
+    \begin{mat}
+      T_{1,1}  &T_{2,1}  &\ldots  &T_{n,1}  \\
+      T_{1,2}  &T_{2,2}  &\ldots  &T_{n,2}  \\
+               &\vdots   &        &         \\
+      T_{1,n}  &T_{2,n}  &\ldots  &T_{n,n}
+    \end{mat}
+\end{equation*}
+where the row~\( i \), column~\( j \) entry, \( T_{j,i} \), 
+is the \( j,i \) cofactor.
+%</df:Adjoint>
+\end{definition}
+
+\begin{theorem} \label{th:MatTimesAdjEqDiagDets}
+%<*th:MatTimesAdjEqDiagDets>
+Where \( T \) is a square matrix,
+$T\cdot \adj(T)=\adj(T)\cdot T=\deter{T}\cdot I$.
+Thus if $T$ has an inverse, if $\deter{T}\neq 0$, then
+$T^{-1}=(1/\deter{T})\cdot\adj(T)$.\index{matrix!inverse}\index{inverse!matrix}
+%</th:MatTimesAdjEqDiagDets>
+\end{theorem}
+
+\begin{proof}
+The discussion before the theorem statement makes it clear.
+\end{proof}
+
+\begin{example}    \label{ex:MatTimesAdjEqDets}
+If
+\begin{equation*}
+  T=\begin{mat}[r]
+        1  &0  &4  \\
+        2  &1  &-1 \\
+        1  &0  &1
+      \end{mat}
+\end{equation*}
+then $\adj(T)$ is
+\begin{equation*}
+    \begin{mat}
+      T_{1,1}  &T_{2,1}  &T_{3,1} \\
+      T_{1,2}  &T_{2,2}  &T_{3,2} \\
+      T_{1,3}  &T_{2,3}  &T_{3,3}   
+    \end{mat}
+    \!\!=\!\!\begin{mat}
+      \begin{vmat}[r]
+           1  &-1 \\
+           0  &1
+         \end{vmat}
+      &-\begin{vmat}[r]
+             0  &4  \\
+             0  &1
+           \end{vmat}
+      &\begin{vmat}[r]
+             0  &4  \\
+             1  &-1
+         \end{vmat}             \\[2.1ex]
+      -\begin{vmat}[r]
+           2  &-1 \\
+           1  &1
+         \end{vmat}
+      &\begin{vmat}[r]
+             1  &4  \\
+             1  &1
+           \end{vmat}
+      &-\begin{vmat}[r]
+             1  &4  \\
+             2  &-1
+           \end{vmat}            \\[2.1ex]
+      \begin{vmat}[r]
+           2  &1  \\
+           1  &0
+         \end{vmat}
+      &-\begin{vmat}[r]
+             1  &0  \\
+             1  &0
+           \end{vmat}
+      &\begin{vmat}[r]
+             1  &0  \\
+             2  &1
+           \end{vmat}
+    \end{mat}
+    \!\!=\!                 
+    \begin{mat}[r]
+       1  &0  &-4  \\
+       -3 &-3 &9  \\
+       -1 &0  &1
+    \end{mat}         
+\end{equation*}
+and taking the product with $T$ gives the diagonal matrix $\deter{T}\cdot I$.
+\begin{equation*}
+  \begin{mat}[r]
+    1  &0  &4  \\
+    2  &1  &-1 \\
+    1  &0  &1
+  \end{mat}
+  \begin{mat}[r]
+    1  &0  &-4  \\
+    -3 &-3 &9  \\
+    -1 &0  &1
+   \end{mat}         
+  =\begin{mat}[r]
+     -3  &0  &0  \\
+      0  &-3 &0  \\
+      0  &0  &-3
+   \end{mat}
+\end{equation*}
+% \end{example}
+
+% \begin{corollary} \label{cor:InvFromAdj}
+% \index{matrix!inverse}\index{inverse!matrix}
+% %<*co:InvFromAdj>
+% If \( \deter{T}\neq 0 \) then
+% $T^{-1}=(1/\deter{T})\cdot\adj(T)$.
+% %</co:InvFromAdj>
+% \end{corollary}
+
+% \begin{example}
+\noindent The inverse of $T$ 
+% The inverse of the matrix from \nearbyexample{ex:MatTimesAdjEqDets}
+is $(1/-3)\cdot\adj(T)$.
+\begin{equation*}
+  T^{-1}
+  =\begin{mat}[r]  % braces make the - a negative sign?
+     1/\hbox{$-3$}  &0/\hbox{$-3$}  &-4/\hbox{$-3$}  \\
+    -3/\hbox{$-3$}  &-3/\hbox{$-3$} &9/\hbox{$-3$}   \\
+    -1/\hbox{$-3$}  &0/\hbox{$-3$}  &1/\hbox{$-3$}
+   \end{mat}
+  =\begin{mat}[r]
+     -1/3  &0  &4/3  \\
+      1    &1  &-3   \\
+      1/3  &0  &-1/3
+   \end{mat}
+\end{equation*}
+\end{example}
+
+The formulas from this subsection are often used for by-hand
+calculation and are sometimes useful with special types of matrices.
+However, for generic matrices they are
+not the best choice 
+because they require more arithmetic than, for instance, the 
+Gauss-Jordan method.
+
+
+
+
+\begin{exercises}
+  \recommended \item 
+    Find the cofactor.
+    \begin{equation*}
+      T=\begin{mat}[r]
+          1  &0  &2  \\
+         -1  &1  &3  \\
+          0  &2  &-1
+        \end{mat}
+    \end{equation*}
+    \begin{exparts*}
+       \partsitem \( T_{2,3} \)
+       \partsitem \( T_{3,2} \)
+       \partsitem \( T_{1,3} \)
+    \end{exparts*}
+    \begin{answer}
+      \begin{exparts*}
+       \partsitem \( (-1)^{2+3}\begin{vmat}[r]
+                            1  &0  \\
+                            0  &2
+                          \end{vmat}=-2  \)
+       \partsitem \( (-1)^{3+2}\begin{vmat}[r]
+                            1  &2  \\
+                           -1  &3
+                          \end{vmat}=-5  \)
+       \partsitem \( (-1)^{4}\begin{vmat}[r]
+                           -1  &1  \\
+                            0  &2
+                          \end{vmat}=-2  \)
+      \end{exparts*}  
+    \end{answer}
+  \recommended \item 
+    Find the adjoint to this matrix.
+    \begin{equation*}
+      T=\begin{mat}[r]
+          1  &0  &2  \\
+         -1  &1  &3  \\
+          0  &2  &-1
+        \end{mat}
+    \end{equation*}
+    \begin{answer}
+      % sage: M = matrix(QQ, [[1,0,2], [-1,1,3], [0,2,-1]])
+      % sage: M.adjoint()
+      % [-7  4 -2]
+      % [-1 -1 -5]
+      % [-2 -2  1] 
+      {\renewcommand{\arraystretch}{1.2}
+      \begin{equation*} 
+        \adj(T)=
+        \begin{mat}
+          \begin{vmatrix}
+            1 &3 \\
+            2 &-1
+          \end{vmatrix}
+          &-\begin{vmatrix}
+            0 &2 \\ 
+            2 &-1
+          \end{vmatrix}
+          &\begin{vmatrix}
+             0 &2 \\
+              1 &3
+           \end{vmatrix}                  \\
+          -\begin{vmatrix}
+             -1 &3 \\
+             0 &-1
+           \end{vmatrix}
+          &\begin{vmatrix}
+            1 &2 \\
+            0 &-1
+           \end{vmatrix}
+          &-\begin{vmatrix}
+            1 &2 \\
+            -1 &3
+           \end{vmatrix}                  \\
+          \begin{vmatrix}
+            -1 &1 \\ 
+            0 &2
+          \end{vmatrix}
+          &-\begin{vmatrix}
+            1  &0 \\
+            0 &2
+           \end{vmatrix}
+          &\begin{vmatrix}
+            1 &0 \\
+            -1 &1
+           \end{vmatrix}                  
+        \end{mat}
+        =
+        \begin{mat}
+          -7 &4 &-2 \\
+          -1  &-1 &-5 \\
+          -2 &-2 &1 
+        \end{mat}
+      \end{equation*}}
+    \end{answer}
+  \item This determinant is $0$.
+   Compute that by expanding on the first row.
+    \begin{equation*}
+      \begin{vmat}[r]
+         1  &2  &3  \\
+         4  &5  &6  \\
+         7  &8  &9
+      \end{vmat}
+    \end{equation*}
+    \begin{answer}
+      \begin{equation*}
+        \begin{vmat}[r]
+          1  &2  &3  \\
+          4  &5  &6  \\
+          7  &8  &9
+        \end{vmat}=
+        1\cdot(+1)\cdot
+          \begin{vmatrix}
+            5 &6 \\
+            8 &9
+          \end{vmatrix}
+        +2\cdot(-1)\cdot
+          \begin{vmatrix}
+            4 &6 \\
+            7 &9
+          \end{vmatrix}
+        +3\cdot(+1)\cdot
+          \begin{vmatrix}
+            4 &5 \\
+            7 &8
+          \end{vmatrix}
+      \end{equation*}
+      The formula for $\nbyn{2}$ matrices gives
+      $1\cdot (-3)-2\cdot (-6)+3\cdot(-3)=0$.
+    \end{answer}
+  \recommended \item 
+    Find the determinant
+    by expanding
+    \begin{equation*}
+      \begin{vmat}[r]
+         3  &0  &1  \\
+         1  &2  &2  \\
+        -1  &3  &0
+      \end{vmat}
+    \end{equation*}
+    \begin{exparts*}
+      \partsitem on the first row
+      \partsitem on the second row
+      \partsitem on the third column.
+    \end{exparts*}
+    \begin{answer}
+      \begin{exparts}
+         \partsitem \( 3\cdot(+1)\begin{vmat}[r]
+                          2  &2  \\
+                          3  &0
+                       \end{vmat}
+                 +0\cdot (-1)\begin{vmat}[r]
+                          1  &2  \\
+                         -1  &0
+                       \end{vmat}
+                 +1\cdot (+1)\begin{vmat}[r]
+                          1  &2  \\
+                         -1  &3
+                       \end{vmat} =-13 \)
+         \partsitem \( 1\cdot (-1)\begin{vmat}[r]
+                          0  &1  \\
+                          3  &0
+                       \end{vmat}
+                 +2\cdot (+1)\begin{vmat}[r]
+                          3  &1  \\
+                         -1  &0
+                       \end{vmat}
+                 +2\cdot (-1)\begin{vmat}[r]
+                          3  &0  \\
+                         -1  &3
+                       \end{vmat} =-13 \)
+         \partsitem \( 1\cdot (+1)\begin{vmat}[r]
+                          1  &2  \\
+                         -1  &3
+                       \end{vmat}
+                 +2\cdot (-1)\begin{vmat}[r]
+                          3  &0  \\
+                         -1  &3
+                       \end{vmat}
+                 +0\cdot (+1)\begin{vmat}[r]
+                          3  &0  \\
+                          1  &2
+                       \end{vmat} =-13 \)
+       \end{exparts}  
+     \end{answer}
+  \item 
+    Find the adjoint of the matrix in \nearbyexample{ex:ExpLaPlace}.
+    \begin{answer}
+      This is $\adj(T)$.
+      \begin{align*}
+         \begin{mat}
+           T_{1,1}  &T_{2,1}  &T_{3,1} \\
+           T_{1,2}  &T_{2,2}  &T_{3,2} \\
+           T_{1,3}  &T_{2,3}  &T_{3,3}   
+         \end{mat}
+         &=\begin{mat}
+            \begin{vmat}
+               5  &6  \\ 8  &9
+            \end{vmat}
+            &-\begin{vmat}
+               2  &3  \\  8  &9
+            \end{vmat}
+            &+\begin{vmat}
+               2  &3  \\  5  &6
+            \end{vmat}        \\[2.5ex]
+            -\begin{vmat}
+               4  &6  \\  7  &9
+            \end{vmat}
+            &+\begin{vmat}
+               1  &3  \\  7  &9
+            \end{vmat}
+            &-\begin{vmat}
+               1  &3  \\  4  &6
+            \end{vmat}        \\[2.5ex]
+            +\begin{vmat}
+               4  &5  \\  7  &8
+            \end{vmat}
+            &-\begin{vmat}
+               1  &2  \\  7  &8
+            \end{vmat}
+            &+\begin{vmat}
+               1  &2  \\  4  &5
+            \end{vmat}
+         \end{mat}                                   \\
+         &=\begin{mat}[r]
+          -3  &6   &-3 \\
+           6  &-12 &6  \\
+          -3  &6   &-3
+         \end{mat}
+      \end{align*}
+    \end{answer}
+  \recommended \item 
+    Find the matrix adjoint to each.
+    \begin{exparts*}
+      \partsitem \( \begin{mat}[r]
+                 2   &1  &4  \\
+                -1   &0  &2  \\
+                 1   &0  &1
+               \end{mat}  \)
+      \partsitem \( \begin{mat}[r]
+                 3  &-1  \\
+                 2  &4
+               \end{mat}  \)
+      \partsitem \( \begin{mat}[r]
+                 1   &1  \\
+                 5   &0
+               \end{mat}  \)
+      \partsitem \( \begin{mat}[r]
+                 1   &4  &3  \\
+                -1   &0  &3  \\
+                 1   &8  &9
+               \end{mat}  \)
+    \end{exparts*}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem This is the adjoint. 
+          \begin{align*}
+          \begin{mat}
+            T_{1,1}  &T_{2,1}  &T_{3,1} \\ 
+            T_{1,2}  &T_{2,2}  &T_{3,2} \\ 
+            T_{1,3}  &T_{2,3}  &T_{3,3} 
+          \end{mat}
+          &=\begin{mat}
+            \begin{vmat}[r]
+              0  &2  \\
+              0  &1 
+            \end{vmat}
+            &-\begin{vmat}[r]
+               1  &4  \\
+               0  &1
+            \end{vmat}
+            &\begin{vmat}[r]
+               1  &4  \\
+               0  &2 
+            \end{vmat}        \\[2.5ex]
+            -\begin{vmat}[r]
+              -1  &2  \\
+               1  &1
+            \end{vmat}
+            &\begin{vmat}[r]
+               2  &4  \\
+               1  &1
+            \end{vmat}
+            &-\begin{vmat}[r]
+               2  &4  \\ 
+              -1  &2
+            \end{vmat}         \\[2.5ex]
+            \begin{vmat}[r]
+              -1  &0  \\
+               1  &0
+            \end{vmat} 
+            &-\begin{vmat}[r]
+               2  &1  \\
+               1  &0
+            \end{vmat}
+            &\begin{vmat}[r]
+               2  &1  \\
+              -1  &0
+            \end{vmat}
+          \end{mat}                         \\
+          &=\begin{mat}[r]
+             0  &-1  &2  \\
+             3  &-2  &-8 \\
+             0  &1   &1            
+          \end{mat}
+          \end{align*}
+        \partsitem The minors are $\nbyn{1}$.
+          $\begin{mat}
+             T_{1,1}  &T_{2,1} \\
+             T_{1,2}  &T_{2,2}  
+          \end{mat}
+          =
+          \begin{mat}
+            \begin{vmat}
+              4              
+            \end{vmat}
+            &-\begin{vmat}
+              -1
+            \end{vmat}        \\[1.5ex]
+            -\begin{vmat}
+               2              
+            \end{vmat}
+            &\begin{vmat}
+               3
+            \end{vmat}
+          \end{mat}
+          =
+          \begin{mat}[r]
+            4  &1  \\
+           -2  &3
+          \end{mat}$
+        \partsitem 
+          $\begin{mat}[r]
+               0  &-1 \\
+              -5  &1
+          \end{mat}$
+        \partsitem The minors are $\nbyn{2}$.
+          \begin{align*}
+          \begin{mat}
+            T_{1,1}  &T_{2,1}  &T_{3,1} \\ 
+            T_{1,2}  &T_{2,2}  &T_{3,2} \\ 
+            T_{1,3}  &T_{2,3}  &T_{3,3} 
+          \end{mat}
+          &=\begin{mat}
+            \begin{vmat}[r]
+              0  &3  \\
+              8  &9
+            \end{vmat}
+            &-\begin{vmat}[r]
+              4  &3  \\
+              8  &9
+            \end{vmat}
+            &\begin{vmat}[r]
+              4  &3  \\
+              0  &3 
+            \end{vmat}       \\[2.5ex]
+            -\begin{vmat}[r]
+              -1  &3  \\
+               1  &9
+            \end{vmat}
+            &\begin{vmat}[r]
+               1  &3  \\
+               1  &9              
+            \end{vmat}
+            &-\begin{vmat}[r]
+               1  &3 \\
+              -1  &3              
+            \end{vmat}        \\[2.5ex]
+            \begin{vmat}[r]
+               -1  &0  \\
+                1  &8              
+            \end{vmat}
+            &-\begin{vmat}[r]
+                1  &4 \\
+                1  &8              
+            \end{vmat}
+            &\begin{vmat}[r]
+                1  &4  \\
+               -1  &0              
+            \end{vmat}
+          \end{mat}                       \\
+          &=
+          \begin{mat}[r]
+            -24  &-12  &12  \\
+             12  &6    &-6   \\
+             -8  &-4   &4
+          \end{mat}
+        \end{align*}
+      \end{exparts}
+    \end{answer}
+\recommended \item
+    Find the inverse of each matrix in the prior question with
+    \nearbytheorem{th:MatTimesAdjEqDiagDets}.
+    \begin{answer}
+      \begin{exparts}
+        \partsitem $(1/3)\cdot 
+           \begin{mat}[r]
+             0  &-1  &2  \\
+             3  &-2  &-8 \\
+             0  &1   &1            
+          \end{mat}          
+          =
+          \begin{mat}[r]
+            0  &-1/3  &2/3  \\
+            1  &-2/3  &-8/3 \\ 
+            0  &1/3   &1/3
+          \end{mat}$
+        \partsitem $(1/14)\cdot 
+          \begin{mat}[r]
+            4  &1  \\
+           -2  &3
+          \end{mat}
+          =
+          \begin{mat}[r]
+            2/7  &1/14  \\
+           -1/7  &3/14
+          \end{mat}$
+        \partsitem $(1/-5)\cdot 
+          \begin{mat}[r]
+               0  &-1 \\
+              -5  &1
+          \end{mat}
+          =
+          \begin{mat}[r]
+            0  &1/5 \\
+            1  &-1/5
+          \end{mat}$
+        \partsitem The matrix has a zero determinant, and so
+           has no inverse.
+      \end{exparts}
+    \end{answer}
+  \item 
+    Find the matrix adjoint to this one.
+    \begin{equation*}
+      \begin{mat}[r]
+        2  &1  &0  &0  \\
+        1  &2  &1  &0  \\
+        0  &1  &2  &1  \\
+        0  &0  &1  &2
+      \end{mat}
+    \end{equation*}
+    \begin{answer}
+      $\begin{mat}
+        T_{1,1}  &T_{2,1}  &T_{3,1}  &T_{4,1}  \\ 
+        T_{1,2}  &T_{2,2}  &T_{3,2}  &T_{4,2}  \\ 
+        T_{1,3}  &T_{2,3}  &T_{3,3}  &T_{4,3}  \\ 
+        T_{1,4}  &T_{2,4}  &T_{3,4}  &T_{4,4}  
+      \end{mat}
+      =
+      \begin{mat}[r]
+        4  &-3  &2  &-1  \\
+       -3  &6   &-4 &2   \\
+        2  &-4  &6  &-3  \\
+        -1 &2  &-3  &4
+      \end{mat}$
+    \end{answer}
+  \recommended \item
+    Expand across the first row to derive the formula for the determinant
+    of a \( \nbyn{2}  \) matrix.
+    \begin{answer}
+       The determinant
+       \begin{equation*}
+         \begin{vmat}
+           a  &b  \\
+           c  &d
+         \end{vmat}
+       \end{equation*} 
+       expanded on the first row gives    
+       \( a\cdot (+1)\deter{d}+b\cdot (-1)\deter{c}=ad-bc \)
+       (note the two $\nbyn{1}$ minors).
+     \end{answer}
+  \recommended \item
+    Expand across the first row to derive the formula for the determinant
+    of a \( \nbyn{3} \) matrix.
+    \begin{answer}
+      The determinant of
+      \begin{equation*}
+        \begin{mat}
+          a  &b  &c  \\
+          d  &e  &f  \\
+          g  &h  &i
+        \end{mat}
+      \end{equation*}
+      is this.
+      \begin{equation*}
+        a\cdot \begin{vmat}
+            e  &f  \\
+            h  &i
+         \end{vmat}
+        -b\cdot \begin{vmat}
+            d  &f  \\
+            g  &i
+         \end{vmat}
+        +c\cdot \begin{vmat}
+            d  &e  \\
+            g  &h
+         \end{vmat}
+        =a(ei-fh)-b(di-fg)+c(dh-eg)
+      \end{equation*}  
+    \end{answer}
+  \recommended \item 
+   \begin{exparts}
+     \partsitem Give a formula for the adjoint of a \( \nbyn{2} \) matrix.
+     \partsitem Use it to derive the formula for the inverse.
+   \end{exparts} 
+    \begin{answer}
+      \begin{exparts}
+        \partsitem
+          $\begin{mat}
+             T_{1,1}  &T_{2,1}  \\
+             T_{1,2}  &T_{2,2}
+            \end{mat}
+            =\begin{mat}
+            \begin{vmat}
+              t_{2,2}
+            \end{vmat}
+           &-\begin{vmat}
+               t_{1,2}
+             \end{vmat}       \\
+           -\begin{vmat}
+               t_{2,1}
+            \end{vmat}
+           &\begin{vmat}
+              t_{1,1} 
+            \end{vmat}
+          \end{mat}
+          =\begin{mat}
+             t_{2,2}  &-t_{1,2}  \\
+            -t_{2,1} &t_{1,1}
+           \end{mat}$
+        \partsitem
+          $(1/t_{1,1}t_{2,2}-t_{1,2}t_{2,1})\cdot
+          \begin{mat}
+             t_{2,2}  &-t_{1,2}  \\
+            -t_{2,1} &t_{1,1}
+           \end{mat}$
+      \end{exparts}
+    \end{answer}
+  \recommended \item
+    Can we compute a determinant by expanding down the diagonal?
+    \begin{answer}
+      No.
+      Here is a determinant whose value
+      \begin{equation*}
+        \begin{vmat}[r]
+          1  &0  &0  \\
+          0  &1  &0  \\
+          0  &0  &1
+        \end{vmat}=1
+      \end{equation*}
+      doesn't equal the result of
+      expanding down the diagonal.
+      \begin{equation*}
+        1\cdot (+1)\begin{vmat}[r]
+               1  &0  \\
+               0  &1
+             \end{vmat}
+       +1\cdot (+1)\begin{vmat}[r]
+               1  &0  \\
+               0  &1
+             \end{vmat}
+       +1\cdot (+1)\begin{vmat}[r]
+               1  &0  \\
+               0  &1
+             \end{vmat}=3
+      \end{equation*}  
+    \end{answer}
+  \item 
+    Give a formula for the adjoint of a diagonal matrix.
+    \begin{answer}
+      Consider this diagonal matrix.
+      \begin{equation*}
+        D=
+        \begin{mat}
+          d_1  &0   &0   &\ldots    \\
+          0    &d_2 &0   &          \\
+          0    &0   &d_3            \\
+               &    &    &\ddots    \\
+               &    &    &      &d_n   
+        \end{mat}
+      \end{equation*}
+      If $i\neq j$ then the $i,j$~minor is an $\nbyn{(n-1)}$ matrix
+      with only $n-2$ nonzero entries, because we have deleted
+      both $d_i$ and $d_j$.
+      Thus, at least one row or column of the minor is all zeroes, and
+      so the cofactor $D_{i,j}$ is zero.
+      If $i=j$ then the minor is the diagonal matrix with entries
+      $d_1$, \ldots, $d_{i-1}$, $d_{i+1}$, \ldots, $d_n$.
+      Its determinant is obviously $(-1)^{i+j}=(-1)^{2i}=1$ 
+      times the product of those.
+      \begin{equation*}
+        \adj(D)
+        =
+        \begin{mat}
+          d_2\cdots d_n    &0                 &      &0    \\
+          0                &d_1d_3\cdots d_n  &      &0    \\
+                           &                  &\ddots      \\
+                           &                  &       &d_1\cdots d_{n-1} 
+        \end{mat}
+      \end{equation*}
+
+      By the way, \nearbytheorem{th:MatTimesAdjEqDiagDets} provides
+      a slicker way to derive this conclusion.
+    \end{answer}
+  \recommended \item
+    Prove that the transpose of the adjoint is the adjoint of the transpose.
+    \begin{answer}
+      Just note that if $S=\trans{T}$ then the cofactor
+      $S_{j,i}$ equals the cofactor $T_{i,j}$ because $(-1)^{j+i}=(-1)^{i+j}$
+      and because the minors are the transposes of each other (and the
+      determinant of a transpose equals the determinant of the matrix).
+    \end{answer}
+  \item 
+    Prove or disprove: \( \adj(\adj(T))=T \).
+    \begin{answer}
+      It is false; here is an example.
+      \begin{equation*}
+         T=\begin{mat}[r]
+           1  &2   &3  \\
+           4  &5   &6  \\
+           7  &8   &9
+         \end{mat}
+         \qquad
+         \adj(T)=\begin{mat}[r]
+          -3  &6   &-3 \\
+           6  &-12 &6  \\
+          -3  &6   &-3
+         \end{mat}
+         \qquad
+         \adj(\adj(T))=\begin{mat}[r]
+           0  &0   &0  \\
+           0  &0   &0  \\
+           0  &0   &0
+         \end{mat}
+      \end{equation*}
+    \end{answer}
+\item
+    A square matrix is \definend{upper triangular}\index{matrix!triangular} if
+    each \( i,j \) entry is zero in the part above the diagonal,
+    that is, when \( i>j \).
+    \begin{exparts}
+      \partsitem
+        Must the adjoint of an upper triangular matrix be upper triangular?
+        Lower triangular?
+      \partsitem Prove that the inverse of a upper triangular matrix
+        is upper triangular, if an inverse exists.
+    \end{exparts}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem An example 
+          \begin{equation*}
+             M=
+            \begin{mat}[r]
+              1  &2  &3  \\
+              0  &4  &5  \\
+              0  &0  &6
+            \end{mat}
+          \end{equation*}
+          suggests the right answer.
+          \begin{align*}
+            \adj(M)=
+            \begin{mat}
+             M_{1,1}  &M_{2,1}  &M_{3,1}  \\
+             M_{1,2}  &M_{2,2}  &M_{3,2}  \\
+             M_{1,3}  &M_{2,3}  &M_{3,3}  
+            \end{mat}
+            &=\begin{mat}
+              \begin{vmat}
+                4  &5 \\ 0 &6
+              \end{vmat}
+              &-\begin{vmat}
+                2  &3  \\  0  &6
+              \end{vmat}
+              &\begin{vmat}
+                2  &3  \\  4  &5 
+              \end{vmat}          \\[1.5ex]
+              -\begin{vmat}
+                0  &5  \\  0  &6
+              \end{vmat}
+              &\begin{vmat}
+                1  &3  \\  0  &6
+              \end{vmat}
+              &-\begin{vmat}
+                1  &3  \\  0  &5  
+              \end{vmat}           \\[1.5ex]
+              \begin{vmat}
+                0  &4  \\  0  &0
+              \end{vmat}
+              &-\begin{vmat}
+                1  &2  \\  0  &0
+              \end{vmat}
+              &\begin{vmat}
+                1  &2  \\  0  &4
+              \end{vmat}
+            \end{mat}                                \\
+            &=
+            \begin{mat}[r]
+              24  &-12 &-2 \\
+               0  &6   &-5  \\
+               0  &0   &4
+            \end{mat}
+          \end{align*}
+          The result is indeed upper triangular.
+
+          This check is detailed but not hard.
+          The entries in the upper triangle of the adjoint are 
+          $M_{a,b}$ where $a>b$.
+          We need to verify that the cofactor $M_{a,b}$ is zero if  $a>b$.
+          With $a>b$, row~$a$ and column~$b$ of $M$, 
+          \begin{equation*}
+            \begin{mat}
+              m_{1,1} &\ldots   &m_{1,b}  &\ldots       &        \\
+              m_{2,1} &\ldots   &m_{2,b}  &       &        \\
+              \vdots  &         &\vdots   &       &        \\
+              m_{a,1} &\ldots   &m_{a,b}  &\ldots &m_{a,n} \\
+              \vdots        &         &\vdots   &       &        \\
+                      &         &m_{n,b}  &       &                   
+            \end{mat}
+          \end{equation*}
+          when deleted, leave an upper triangular minor,
+          because entry~$i,j$ of the minor is either entry~$i,j$ of
+          $M$ (this happens if $a>i$ and~$b>j$;
+          in this case $i<j$ implies that the entry is zero)
+          or it is entry~$i,j+1$ of $M$ (this happens if $i<a$ and
+          $j>b$; in this case, $i<j$ implies that $i<j+1$, which implies
+          that the entry is zero), or it is entry~$i+1,j+1$ of $M$
+          (this last case happens when $i>a$ and~$j>b$; obviously here
+          $i<j$ implies that $i+1<j+1$ and so the entry is zero). 
+          Thus the determinant of the minor is the product down the
+          diagonal.
+          Observe that the $a-1,a$ entry of $M$ is the
+          $a-1,a-1$~entry of the minor (it doesn't get
+          deleted because the relation $a>b$ is strict).
+          But this entry is zero because $M$ is upper triangular and 
+          $a-1<a$.
+          Therefore the cofactor is zero, and the adjoint is upper triangular.
+          (The lower triangular case is similar.)  
+        \partsitem This is immediate from the prior part, by
+          \nearbytheorem{th:MatTimesAdjEqDiagDets}.
+      \end{exparts}
+    \end{answer}
+  \item 
+    \label{exer:LaplaceProof}
+    \textit{This question requires material from the optional Determinants
+       Exist subsection.}
+    Prove \nearbytheorem{th:LaPlaceExp}
+    by using the permutation expansion.
+    \begin{answer}
+      We will show that each determinant can be expanded along 
+      row~\( i \).
+      The argument for column~$j$ is similar.
+
+      Each term in the permutation expansion contains one and
+      only one entry from each row.
+      As in \nearbyexample{ex:ExpThreeFirstRow},
+      factor out each row~$i$ entry to get
+      \( \deter{T}
+           =t_{i,1}\cdot\hat{T}_{i,1}+\dots+t_{i,n}\cdot\hat{T}_{i,n} \),
+      where each \( \hat{T}_{i,j} \) is a sum of terms not containing any
+      elements of row \( i \).
+      We will show that \( \hat{T}_{i,j} \) is the \( i,j \) cofactor.
+
+      Consider the \( i,j=n,n \) case first:
+      \begin{equation*}
+        t_{n,n}\cdot\hat{T}_{n,n}
+        =t_{n,n}\cdot
+            \sum_{\phi}t_{1,\phi(1)}t_{2,\phi(2)}\dots\,t_{n-1,\phi(n-1)}
+                      \sgn(\phi)
+      \end{equation*}
+      where the sum is over all \( n \)-permutations \( \phi \) such that
+      \( \phi(n)=n \).
+      To show that 
+      \( \hat{T}_{i,j} \) is the minor \( T_{i,j} \), we need only show
+      that if \( \phi \) is an \( n \)-permutation such that 
+      \( \phi(n)=n \) and
+      \( \sigma \) is an \( n-1 \)-permutation with
+      \( \sigma(1)=\phi(1) \), \ldots, \( \sigma(n-1)=\phi(n-1) \)
+      then \( \sgn(\sigma)=\sgn(\phi) \).
+      But that's true because $\phi$ and $\sigma$ 
+      have the same number of inversions.
+
+      Back to the general \( i,j \) case.
+      Swap adjacent rows until the \( i \)-th is last and swap adjacent
+      columns until the \( j \)-th is last.
+      Observe that the determinant of the \( i,j \)-th minor is not affected by
+      these adjacent
+      swaps because inversions are preserved (since the minor has the
+      \( i \)-th row and \( j \)-th column omitted).
+      On the other hand, the sign of \( \deter{T} \) and \( \hat{T}_{i,j} \)
+      changes \( n-i \) plus \( n-j \) times.
+      Thus \( \hat{T}_{i,j}=(-1)^{n-i+n-j}\deter{T_{i,j}}
+                =(-1)^{i+j}\deter{T_{i,j}} \).  
+    \end{answer}
+  \item 
+    Prove that the determinant of a matrix equals the determinant of its
+    transpose using Laplace's expansion and induction on the size 
+    of the matrix.
+    \begin{answer}
+      This is obvious for the \( \nbyn{1} \) base case.
+
+      For the inductive case, 
+      assume that the determinant of a matrix equals the determinant of
+      its transpose for all \( \nbyn{1} \), \ldots, \( \nbyn{(n-1)} \)
+      matrices.
+      Expanding on row~\( i \) gives
+      \( \deter{T}=t_{i,1}T_{i,1}+\dots\,+t_{i,n}T_{i,n} \)
+      and expanding on column~\( i \) gives
+      \( \deter{\trans{T}}=t_{1,i}(\trans{T})_{1,i}
+           +\dots+t_{n,i}(\trans{T})_{n,i} \)
+      Since \( (-1)^{i+j}=(-1)^{j+i} \) the signs are the same in the
+      two summations.
+      Since the \( j,i \) minor of \( \trans{T} \) is the transpose
+      of the \( i,j \) minor of \( T \), the inductive hypothesis
+      gives \( \deter{(\trans{T})_{i,j}}=\deter{T_{i,j}} \).  
+    \end{answer}
+  \puzzle \item 
+    Show that
+    \begin{equation*}
+      F_n=
+      \begin{vmat}
+        1  &-1  &1  &-1  &1  &-1  &\ldots  \\
+        1  &1   &0  &1   &0  &1   &\ldots  \\
+        0  &1   &1  &0   &1  &0   &\ldots  \\
+        0  &0   &1  &1   &0  &1   &\ldots  \\
+        .  &.   &.  &.   &.  &.   &\ldots
+      \end{vmat}
+    \end{equation*}
+    where \( F_n \) is the \( n \)-th term of
+    \( 1,1,2,3,5,\dots,x,y,x+y,\ldots\, \), the Fibonacci sequence,
+    and the determinant is of order \( n-1 \).
+    \cite{Monthly49p409}
+    \begin{answer}
+      \answerasgiven %
+      Denoting the above determinant by \( D_n \), it is seen that
+      \( D_2=1 \), \( D_3=2 \).
+      It remains to show that \( D_n=D_{n-1}+D_{n-2},\; n\geq 4 \).
+      In \( D_n \) subtract the \( (n-3) \)-th column from the \( (n-1) \)-th,
+      the \( (n-4) \)-th from the \( (n-2) \)-th, \ldots, the first from
+      the third, obtaining
+      \begin{equation*}
+        F_n=
+        \begin{vmat}
+          1  &-1  &0  &0   &0  &0   &\ldots  \\
+          1  &1   &-1 &0   &0  &0   &\ldots  \\
+          0  &1   &1  &-1  &0  &0   &\ldots  \\
+          0  &0   &1  &1   &-1 &0   &\ldots  \\
+          .  &.   &.  &.   &.  &.   &\ldots
+        \end{vmat}.
+      \end{equation*}
+      By expanding this determinant with reference to the first row, there
+      results the desired relation.  
+    \end{answer}
+%  \recommended \item 
+%    Prove that a square matrix is singular if and only if its adjoint is
+%    singular.
+%  \item 
+%    Prove that if \( T \) is an \( \nbyn{n} \) matrix then
+%    \( \det(\adj(T))=(\det(T))^{n-1} \).
+%    \begin{answer}
+%      By \nearbytheorem{th:MatTimesAdjEqDiagDets}, 
+%      $\deter{\adj(T)\cdot T}=\deter{T}^n$ because 
+%      $\deter{T}\cdot I$ is a diagonal matrix.
+%      Then $\deter{T}^n=\deter{\adj(T)\cdot T}
+%                         =\deter{\adj(T)}\cdot \deter{T}$.
+%    \end{answer}
+\end{exercises}
+\index{Laplace determinant expansion|)}
