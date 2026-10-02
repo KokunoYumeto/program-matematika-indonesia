@@ -38,7 +38,7 @@ try{
     assert.ok((await page.locator('[id="'+anchor+'"]').innerText()).includes('basis'));
     if(width!==320){const path='visual/basis-extension-'+width+'.png';const b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
    }
-   if(['det3','markov','cramer'].includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
+   if(['det3','markov','cramer','detspeed'].includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
    assert.equal(await page.locator('img').evaluateAll(xs=>xs.filter(x=>!x.complete||x.naturalWidth===0).length),0,'Broken embedded image');
    checks.push({section,width,mathml:true,horizontal_overflow:false,return_navigation:true,remote_runtime_blocked:true});
   }

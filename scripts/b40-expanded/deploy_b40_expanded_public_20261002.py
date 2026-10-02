@@ -5,7 +5,7 @@ The preserved foundation deployer supplies authentication and read-only helpers.
 """
 import argparse
 import base64
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 import hashlib
 import importlib.util
@@ -249,13 +249,34 @@ def refresh_parent(session, plan):
 
 def verify(plan, receipt, pages=False):
     rows = [r for r in plan['files'] if not pages or r['path'].startswith('docs/')]
+    progress_path = WORK/('PAGES_READBACK_PROGRESS.json' if pages else 'SOURCE_READBACK_PROGRESS.json')
+    expected_plan = sha((WORK/'PUBLICATION_PLAN.json').read_bytes())
+    progress = json_read(progress_path) if progress_path.exists() else {'schema':'resumable-anonymous-readback/1','commit':receipt['commit'],'plan_sha256':expected_plan,'verified':{},'failed_attempts':[]}
+    assert progress['commit'] == receipt['commit'] and progress['plan_sha256'] == expected_plan
+    by_path = {r['path']:r for r in rows}
+    for path, item in progress['verified'].items():
+        assert path in by_path and all(item[k] == by_path[path][k] for k in ['bytes','sha256'])
     def check(row):
         url = ORIGIN+row['path'][5:] if pages else RAW+'/'+receipt['commit']+'/'+row['path']
         raw = get(url)
         assert fact(raw) == {k:row[k] for k in ['bytes','sha256']}, 'public byte mismatch: '+row['path']
         return {'path':row['path'],'url':url,'http':200,**fact(raw)}
-    with ThreadPoolExecutor(max_workers=4) as pool:
-        checked = list(pool.map(check,rows))
+    failures = []
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        futures = {pool.submit(check,row):row for row in rows if row['path'] not in progress['verified']}
+        for future in as_completed(futures):
+            row = futures[future]
+            try:
+                item = future.result()
+                progress['verified'][row['path']] = item
+            except Exception as exc:
+                failures.append({'path':row['path'],'error':str(exc)[:500]})
+            save(progress_path,progress)
+    if failures:
+        progress['failed_attempts'].append({'at_utc':datetime.now(timezone.utc).isoformat(),'failures':failures})
+        save(progress_path,progress)
+        raise AssertionError('Readback incomplete; '+str(len(failures))+' failed files; verified progress preserved. No automatic retry.')
+    checked = [progress['verified'][row['path']] for row in rows]
     receipt['pages_readback' if pages else 'anonymous_commit_readback'] = checked
     receipt['state'] = 'public_pages_and_sources_anonymously_verified' if pages else 'public_commit_verified_pages_pending'
     save(WORK/'PUBLICATION_RECEIPT.json',receipt)

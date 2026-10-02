@@ -1,0 +1,713 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Speed of Calculating Determinants — Jim Hefferon — original English reading edition</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+pre{max-width:100%;overflow-x:auto;white-space:pre;font-size:.88rem;line-height:1.5;padding:.8rem;background:#eef2f5}pre code{overflow-wrap:normal}pre:focus-visible,.math-region:focus-visible{outline:2px solid #075a92;outline-offset:2px}figure{margin:1rem 0}img{min-width:0;max-width:100%;height:auto}.center img{width:420px;max-width:100%;height:auto}
+.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style><meta name="b40-rich-content-closure-sha256" content="6233a94648fac8e5966919c9effbb06c2d0f6d9828220ae5c0b5730f588c4639"><meta name="b40-source-context-contract-sha256" content="302a02308e75b059cf22f9dc82f47746a5d03b45009dd21f9d517f59c91f74fd"><meta name="b40-source-context-requirements-sha256" content="b04513e8743b5153f4761b07149841202750c6439461dfa870edd9793cf6658e"></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-30-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/detspeed.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — 30 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><details><summary>Source, reuse and conversion details</summary><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. The complete active topic is included; comments and the end-of-file marker remain in the editable source.</p><p>Five exercises and their five supplied answers, four literal code/output listings, 41 mathematical expressions and the original graph are retained. No code or benchmark was executed. AI-assisted source-preserving conversion and checks; Current rebuild runtime is documented in the credit below; earlier intermediate work is not reattributed. No human review or exhaustive mathematical correctness audit is claimed.</p></details><aside class="notice" id="detspeed-historical-code"><strong>Historical code and measurements.</strong> The listings use Python 2 syntax and are preserved as printed. The source warns that this illustrative routine does not handle a zero pivot. Its timing loop measures 100 calls, including random-matrix generation; Exercise 3 discusses that timing limitation and the supplied answer warns about in-place mutation. The timings are the author’s historical examples, not measurements made for this reader.</aside><details class="notice" id="detspeed-source-notes"><summary>One small difference between the original transcript and graph</summary><p id="detspeed-source-note-1" data-source-issue-id="B40-DETSPEED-SOURCE-001">For 50 rows, the printed transcript gives 1.05453586578 seconds, whose nearest three-decimal rounding is 1.055. The author’s Sage graph source uses 1.054. Both original versions are preserved; the graph has not been silently replotted.</p></details><p>Wide formulas and code listings scroll horizontally. Focus a listing and use the arrow keys.</p><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="speed-of-calculating-determinants">Speed of Calculating Determinants</h1>
+<p>For large matrices, finding the determinant by using row operations is typically much faster than using the permutation expansion. We make this statement precise by finding how many operations each method performs.</p>
+<p>To compare the speed of two algorithms, we find for each one how the time taken grows as the size of its input data set grows. For instance, if we increase the size of the input by a factor of ten does the time taken grow by a factor of ten, or by a factor of a hundred, or by a factor of a thousand? That is, is the time taken proportional to the size of the data set, or to the square of that size, or to the cube of that size, etc.? An algorithm whose time is proportional to the square is faster than one that takes time proportional to the cube.</p>
+<p>First consider the permutation expansion formula.<span id="source-index-1" class="source-index" data-source-index="determinant!permutation expansion"></span> <span id="source-index-2" class="source-index" data-source-index="permutation expansion"></span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="a89306a14e81c2dc6b592522bcc4106e56a5248ba684cf46e4735072dd842069" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>…</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>…</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center"/>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="ORD">
+            <mo>⋮</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>…</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>t</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+  <mo>=</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <munder>
+    <mo data-mjx-texclass="OP">∑</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mtext>permutations </mtext>
+      <mi>ϕ</mi>
+    </mrow>
+  </munder>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <msub>
+    <mi>t</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mi>ϕ</mi>
+      <mo stretchy="false">(</mo>
+      <mn>1</mn>
+      <mo stretchy="false">)</mo>
+    </mrow>
+  </msub>
+  <msub>
+    <mi>t</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>2</mn>
+      <mo>,</mo>
+      <mi>ϕ</mi>
+      <mo stretchy="false">(</mo>
+      <mn>2</mn>
+      <mo stretchy="false">)</mo>
+    </mrow>
+  </msub>
+  <mo>⋯</mo>
+  <msub>
+    <mi>t</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mi>n</mi>
+      <mo>,</mo>
+      <mi>ϕ</mi>
+      <mo stretchy="false">(</mo>
+      <mi>n</mi>
+      <mo stretchy="false">)</mo>
+    </mrow>
+  </msub>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <msub>
+      <mi>P</mi>
+      <mrow data-mjx-texclass="ORD">
+        <mi>ϕ</mi>
+      </mrow>
+    </msub>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p>
+<p>There are <span><span class="math-region inline" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="b82d147ff2360c208eab403f01b6dc50f6152f391301f146596577959c66d158"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>!</mo>
+  <mo>=</mo>
+  <mi>n</mi>
+  <mo>⋅</mo>
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+  <mo>⋯</mo>
+  <mn>2</mn>
+  <mo>⋅</mo>
+  <mn>1</mn>
+</math></span></span> different <span><span class="math-region inline" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="cfc859a766d034ea87ecdf2e2d62b0a2d13b57093782449719c4e2008ebd087b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span>-permutations</span> so for a matrix with <span><span class="math-region inline" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span> rows</span> this sum has <span><span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="036bfda379e878524090cf5e7ed755b5a46349b45c7f866b93daf5ded0dc798d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>!</mo>
+</math></span></span> terms (and inside each term is <span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span>-many</span> multiplications). The factorial function grows quickly: when <span><span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span></span> is only <span><span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+</math></span></span> the expansion already has <span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="e7cd1ba5d3aafee426add1e6aa659417248b7b28f27dc3fc869770cd73317d59"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+  <mo>!</mo>
+  <mo>=</mo>
+  <mn>3</mn>
+  <mo>,</mo>
+  <mn>628</mn>
+  <mo>,</mo>
+  <mn>800</mn>
+</math></span></span> terms. Observe that growth proportional to the factorial is bigger than growth proportional to the square <span><span class="math-region inline" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="da9b1dd70a24e494cb61d04044c4e7269a7e13d40c5941adde211a237727cd85"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>!</mo>
+  <mo>&gt;</mo>
+  <msup>
+    <mi>n</mi>
+    <mn>2</mn>
+  </msup>
+</math></span></span> because multiplying the first two factors in <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="036bfda379e878524090cf5e7ed755b5a46349b45c7f866b93daf5ded0dc798d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>!</mo>
+</math></span></span> gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="766d0171120841cdc450fb056e7f4b4757f112f4add84a2cb0f32169803cd2ea"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>⋅</mo>
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+</math></span>,</span> which for large <span><span class="math-region inline" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span></span> is approximately <span><span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="12dcb271d25c745a1e7dba54909f819492e795a52d2f1754c5d6d6f51bca57c6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>n</mi>
+    <mn>2</mn>
+  </msup>
+</math></span></span> and then multiplying in more factors will make the factorial even larger. Similarly, the factorial function grows faster <span>than <span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="0969e62c250901c5280db9ebffe5e347413aeedbe8be07fa6012ebe1add4a392"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>n</mi>
+    <mn>3</mn>
+  </msup>
+</math></span>,</span> etc. So an algorithm that uses the permutation expansion formula, and thus performs a number of operations at least as large as the factorial of the number of rows, would be very slow.</p>
+<p>In contrast, the time taken by the row reduction method does not grow so fast. Below is a script for row reduction in the computer language Python. (<em>Note:</em> The code here is naive; for example it does not handle the case that the <code>m(p_row, p_row)</code> entry is zero. Analysis of a finished version that includes all of the tests and subcases is messier but would gives us roughly the same speed results.)</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0001" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0001">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>import random
+
+def random_matrix(num_rows, num_cols):
+    m = []
+    for col in range(num_cols):
+        new_row = []
+        for row in range(num_rows):
+            new_row.append(random.uniform(0,100))
+        m.append(new_row)
+    return m
+
+def gauss_method(m):
+    &quot;&quot;&quot;Perform Gauss&#39;s Method on m.  This code is for illustration only
+    and should not be used in practice.
+      m  list of lists of numbers; each included list is a row
+    &quot;&quot;&quot;
+    num_rows, num_cols = len(m), len(m[0])
+    for p_row in range(num_rows):
+        for row in range(p_row+1, num_rows):
+            factor = -m[row][p_row] / float(m[p_row][p_row])
+            new_row = []
+            for col_num in range(num_cols): 
+                p_entry, entry = m[p_row][col_num], m[row][col_num]
+                new_row.append(entry+factor*p_entry)
+            m[row] = new_row
+    return m
+
+response = raw_input(&#39;number of rows? &#39;)
+num_rows = int(response)
+m = random_matrix(num_rows, num_rows)
+for row in m:
+    print row
+M = gauss_method(m)
+print &quot;-----&quot;
+for row in M:
+    print row</code></pre>
+</div>
+<p>Besides a routine to do Gauss’s Method, this program also has a routine to generate a matrix filled with random numbers (the numbers are between <span><span class="math-region inline" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>100</mn>
+</math></span>,</span> to make them readable below). This program prompts a user for the number of rows, generates a random square matrix of that size, and does row reduction on it.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0002" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0002">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>$ python gauss_method.py
+number of rows? 4
+[69.48033741746909, 32.393754742132586, 91.35245787350696, 87.04557918402462]
+[98.64189032145111, 28.58228108715638, 72.32273998878178, 26.310252241189257]
+[85.22896214660841, 39.93894635139987, 4.061683241757219, 70.5925099861901]
+[24.06322759315518, 26.699175587284373, 37.398583921673314, 87.42617087562161]
+-----
+[69.48033741746909, 32.393754742132586, 91.35245787350696, 87.04557918402462]
+[0.0, -17.40743803545155, -57.37120602662462, -97.2691774792963]
+[0.0, 0.0, -108.66513774392809, -37.31586824349682]
+[0.0, 0.0, 0.0, -13.678536859817994]</code></pre>
+</div>
+<p>Inside of the <code>gauss_method</code> routine, for each row <code>prow</code>, the routine performs <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="6ac13e84b3b06e485ac518c46978d615faa1986aa190758d70482dde02c84dfe"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="monospace" data-source-character="factor">𝚏𝚊𝚌𝚝𝚘𝚛</mi>
+  </mrow>
+  <mo>⋅</mo>
+  <msub>
+    <mi>ρ</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal" data-source-mathvariant="monospace" data-source-character="prow">𝚙𝚛𝚘𝚠</mi>
+      </mrow>
+    </mrow>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>ρ</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal" data-source-mathvariant="monospace" data-source-character="row">𝚛𝚘𝚠</mi>
+      </mrow>
+    </mrow>
+  </msub>
+</math></span></span> on the rows below. For each of these rows below, this involves operating on every entry in that row. That is a triply-nested loop. So this program has a running time that is something like the cube of the number of rows in the matrix. (<em>Comment.</em> We are glossing over many issues. For example, we may worry that the time taken by the program is dominated by the time to store and retrieve entries from memory, rather than by the row operations. However, development of a computation model is outside of our scope.)</p>
+<p>If we add this code at the bottom,</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0003" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0003">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>def do_matrix(num_rows):
+    gauss_method(random_matrix(num_rows, num_rows))
+
+import timeit
+for num_rows in [10,20,30,40,50,60,70,80,90,100]:
+    s = &quot;do_matrix(&quot;+str(num_rows)+&quot;)&quot;
+    t = timeit.timeit(stmt=s, setup=&quot;from __main__ import do_matrix&quot;,
+                      number=100)
+    print &quot;num_rows=&quot;, num_rows, &quot; seconds=&quot;, t  </code></pre>
+</div>
+<p>then Python will time the program. Here is the output from a timed test run.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0004" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.lstlisting.source-order.0004">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>num_rows= 10  seconds= 0.0162539482117
+num_rows= 20  seconds= 0.0808238983154
+num_rows= 30  seconds= 0.248152971268
+num_rows= 40  seconds= 0.555531978607
+num_rows= 50  seconds= 1.05453586578
+num_rows= 60  seconds= 1.77881097794
+num_rows= 70  seconds= 2.75969099998
+num_rows= 80  seconds= 4.10647988319
+num_rows= 90  seconds= 5.81125879288
+num_rows= 100  seconds= 7.86893582344  </code></pre>
+</div>
+<p>Graphing that data gives part of the curve of a cubic.</p>
+<div class="center">
+<p><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB3aWR0aD0iMTY4LjYwMzY3IiBoZWlnaHQ9IjEyMy42OTI2MzMiIHZpZXdCb3g9IjAgMCAxNjguNjAzNjcgMTIzLjY5MjYzMyI+CjxkZWZzPgo8Zz4KPGcgaWQ9ImdseXBoLTAtMCI+CjxwYXRoIGQ9Ik0gMy41MTU2MjUgLTAuNjA5Mzc1IEwgMC45MjE4NzUgLTAuNjA5Mzc1IEMgMC45ODQzNzUgLTEuMDE1NjI1IDEuMjAzMTI1IC0xLjI2NTYyNSAxLjgxMjUgLTEuNjI1IEwgMi41MTU2MjUgLTIgQyAzLjIwMzEyNSAtMi4zNzUgMy41NDY4NzUgLTIuODc1IDMuNTQ2ODc1IC0zLjQ4NDM3NSBDIDMuNTQ2ODc1IC0zLjg5MDYyNSAzLjM5MDYyNSAtNC4yODEyNSAzLjA5Mzc1IC00LjU0Njg3NSBDIDIuNzk2ODc1IC00LjgxMjUgMi40Mzc1IC00LjkzNzUgMS45Njg3NSAtNC45Mzc1IEMgMS4zNDM3NSAtNC45Mzc1IDAuODkwNjI1IC00LjcwMzEyNSAwLjYwOTM3NSAtNC4yOTY4NzUgQyAwLjQzNzUgLTQuMDMxMjUgMC4zNTkzNzUgLTMuNzE4NzUgMC4zNDM3NSAtMy4yMTg3NSBMIDAuOTUzMTI1IC0zLjIxODc1IEMgMC45ODQzNzUgLTMuNTQ2ODc1IDEuMDE1NjI1IC0zLjc1IDEuMTA5Mzc1IC0zLjkyMTg3NSBDIDEuMjY1NjI1IC00LjIxODc1IDEuNTc4MTI1IC00LjM5MDYyNSAxLjk1MzEyNSAtNC4zOTA2MjUgQyAyLjUxNTYyNSAtNC4zOTA2MjUgMi45MjE4NzUgLTQgMi45MjE4NzUgLTMuNDY4NzUgQyAyLjkyMTg3NSAtMy4wNzgxMjUgMi43MDMxMjUgLTIuNzUgMi4yNjU2MjUgLTIuNSBMIDEuNjI1IC0yLjE0MDYyNSBDIDAuNTkzNzUgLTEuNTQ2ODc1IDAuMjk2ODc1IC0xLjA3ODEyNSAwLjIzNDM3NSAwIEwgMy41MTU2MjUgMCBaIE0gMy41MTU2MjUgLTAuNjA5Mzc1ICIvPgo8L2c+CjxnIGlkPSJnbHlwaC0wLTEiPgo8cGF0aCBkPSJNIDEuOTA2MjUgLTQuOTM3NSBDIDEuNDUzMTI1IC00LjkzNzUgMS4wMzEyNSAtNC43MzQzNzUgMC43ODEyNSAtNC4zOTA2MjUgQyAwLjQ1MzEyNSAtMy45NTMxMjUgMC4yOTY4NzUgLTMuMjk2ODc1IDAuMjk2ODc1IC0yLjM5MDYyNSBDIDAuMjk2ODc1IC0wLjcxODc1IDAuODU5Mzc1IDAuMTU2MjUgMS45MDYyNSAwLjE1NjI1IEMgMi45NTMxMjUgMC4xNTYyNSAzLjUzMTI1IC0wLjcxODc1IDMuNTMxMjUgLTIuMzQzNzUgQyAzLjUzMTI1IC0zLjI5Njg3NSAzLjM3NSAtMy45Mzc1IDMuMDQ2ODc1IC00LjM5MDYyNSBDIDIuNzgxMjUgLTQuNzM0Mzc1IDIuMzc1IC00LjkzNzUgMS45MDYyNSAtNC45Mzc1IFogTSAxLjkwNjI1IC00LjM5MDYyNSBDIDIuNTc4MTI1IC00LjM5MDYyNSAyLjkwNjI1IC0zLjcxODc1IDIuOTA2MjUgLTIuNDA2MjUgQyAyLjkwNjI1IC0xIDIuNTc4MTI1IC0wLjM0Mzc1IDEuODkwNjI1IC0wLjM0Mzc1IEMgMS4yNSAtMC4zNDM3NSAwLjkyMTg3NSAtMS4wMzEyNSAwLjkyMTg3NSAtMi4zNzUgQyAwLjkyMTg3NSAtMy43MzQzNzUgMS4yNSAtNC4zOTA2MjUgMS45MDYyNSAtNC4zOTA2MjUgWiBNIDEuOTA2MjUgLTQuMzkwNjI1ICIvPgo8L2c+CjxnIGlkPSJnbHlwaC0wLTIiPgo8cGF0aCBkPSJNIDIuMjgxMjUgLTEuMTg3NSBMIDIuMjgxMjUgMCBMIDIuODkwNjI1IDAgTCAyLjg5MDYyNSAtMS4xODc1IEwgMy42MDkzNzUgLTEuMTg3NSBMIDMuNjA5Mzc1IC0xLjczNDM3NSBMIDIuODkwNjI1IC0xLjczNDM3NSBMIDIuODkwNjI1IC00LjkzNzUgTCAyLjQzNzUgLTQuOTM3NSBMIDAuMTg3NSAtMS44MjgxMjUgTCAwLjE4NzUgLTEuMTg3NSBaIE0gMi4yODEyNSAtMS43MzQzNzUgTCAwLjczNDM3NSAtMS43MzQzNzUgTCAyLjI4MTI1IC0zLjg5MDYyNSBaIE0gMi4yODEyNSAtMS43MzQzNzUgIi8+CjwvZz4KPGcgaWQ9ImdseXBoLTAtMyI+CjxwYXRoIGQ9Ik0gMy40Njg3NSAtMy42NDA2MjUgQyAzLjM0Mzc1IC00LjQ1MzEyNSAyLjgxMjUgLTQuOTM3NSAyLjA2MjUgLTQuOTM3NSBDIDEuNTE1NjI1IC00LjkzNzUgMS4wMzEyNSAtNC42NzE4NzUgMC43NSAtNC4yMzQzNzUgQyAwLjQzNzUgLTMuNzUgMC4yOTY4NzUgLTMuMTQwNjI1IDAuMjk2ODc1IC0yLjI1IEMgMC4yOTY4NzUgLTEuNDIxODc1IDAuNDIxODc1IC0wLjg5MDYyNSAwLjcxODc1IC0wLjQ1MzEyNSBDIDAuOTg0Mzc1IC0wLjA2MjUgMS40MDYyNSAwLjE1NjI1IDEuOTUzMTI1IDAuMTU2MjUgQyAyLjg5MDYyNSAwLjE1NjI1IDMuNTYyNSAtMC41MzEyNSAzLjU2MjUgLTEuNSBDIDMuNTYyNSAtMi40MjE4NzUgMi45Mzc1IC0zLjA2MjUgMi4wNjI1IC0zLjA2MjUgQyAxLjU3ODEyNSAtMy4wNjI1IDEuMTg3NSAtMi44NzUgMC45MjE4NzUgLTIuNTE1NjI1IEMgMC45Mzc1IC0zLjcxODc1IDEuMzI4MTI1IC00LjM5MDYyNSAyLjAxNTYyNSAtNC4zOTA2MjUgQyAyLjQ1MzEyNSAtNC4zOTA2MjUgMi43NSAtNC4xMDkzNzUgMi44NDM3NSAtMy42NDA2MjUgWiBNIDEuOTg0Mzc1IC0yLjUzMTI1IEMgMi41NzgxMjUgLTIuNTMxMjUgMi45Mzc1IC0yLjEwOTM3NSAyLjkzNzUgLTEuNDUzMTI1IEMgMi45Mzc1IC0wLjgyODEyNSAyLjUzMTI1IC0wLjM3NSAxLjk1MzEyNSAtMC4zNzUgQyAxLjM5MDYyNSAtMC4zNzUgMC45NTMxMjUgLTAuODU5Mzc1IDAuOTUzMTI1IC0xLjQ4NDM3NSBDIDAuOTUzMTI1IC0yLjA5Mzc1IDEuMzc1IC0yLjUzMTI1IDEuOTg0Mzc1IC0yLjUzMTI1IFogTSAxLjk4NDM3NSAtMi41MzEyNSAiLz4KPC9nPgo8ZyBpZD0iZ2x5cGgtMC00Ij4KPHBhdGggZD0iTSAyLjcxODc1IC0yLjU5Mzc1IEMgMy4yMTg3NSAtMi45MDYyNSAzLjM5MDYyNSAtMy4xNTYyNSAzLjM5MDYyNSAtMy42MDkzNzUgQyAzLjM5MDYyNSAtNC4zOTA2MjUgMi43ODEyNSAtNC45Mzc1IDEuOTA2MjUgLTQuOTM3NSBDIDEuMDQ2ODc1IC00LjkzNzUgMC40Mzc1IC00LjM5MDYyNSAwLjQzNzUgLTMuNjA5Mzc1IEMgMC40Mzc1IC0zLjE1NjI1IDAuNTkzNzUgLTIuOTA2MjUgMS4wOTM3NSAtMi41OTM3NSBDIDAuNTMxMjUgLTIuMzI4MTI1IDAuMjUgLTEuOTA2MjUgMC4yNSAtMS4zNzUgQyAwLjI1IC0wLjQ2ODc1IDAuOTM3NSAwLjE1NjI1IDEuOTA2MjUgMC4xNTYyNSBDIDIuODkwNjI1IDAuMTU2MjUgMy41NjI1IC0wLjQ2ODc1IDMuNTYyNSAtMS4zNTkzNzUgQyAzLjU2MjUgLTEuOTA2MjUgMy4yODEyNSAtMi4zMjgxMjUgMi43MTg3NSAtMi41OTM3NSBaIE0gMS45MDYyNSAtNC4zOTA2MjUgQyAyLjQzNzUgLTQuMzkwNjI1IDIuNzY1NjI1IC00LjA3ODEyNSAyLjc2NTYyNSAtMy42MDkzNzUgQyAyLjc2NTYyNSAtMy4xNDA2MjUgMi40MjE4NzUgLTIuODQzNzUgMS45MDYyNSAtMi44NDM3NSBDIDEuMzkwNjI1IC0yLjg0Mzc1IDEuMDYyNSAtMy4xNDA2MjUgMS4wNjI1IC0zLjYwOTM3NSBDIDEuMDYyNSAtNC4wNzgxMjUgMS4zOTA2MjUgLTQuMzkwNjI1IDEuOTA2MjUgLTQuMzkwNjI1IFogTSAxLjkwNjI1IC0yLjMyODEyNSBDIDIuNTMxMjUgLTIuMzI4MTI1IDIuOTM3NSAtMS45Mzc1IDIuOTM3NSAtMS4zNTkzNzUgQyAyLjkzNzUgLTAuNzY1NjI1IDIuNTMxMjUgLTAuMzc1IDEuODkwNjI1IC0wLjM3NSBDIDEuMjk2ODc1IC0wLjM3NSAwLjg5MDYyNSAtMC43ODEyNSAwLjg5MDYyNSAtMS4zNTkzNzUgQyAwLjg5MDYyNSAtMS45Mzc1IDEuMjk2ODc1IC0yLjMyODEyNSAxLjkwNjI1IC0yLjMyODEyNSBaIE0gMS45MDYyNSAtMi4zMjgxMjUgIi8+CjwvZz4KPGcgaWQ9ImdseXBoLTAtNSI+CjxwYXRoIGQ9Ik0gMS43OTY4NzUgLTMuNTE1NjI1IEwgMS43OTY4NzUgMCBMIDIuNDA2MjUgMCBMIDIuNDA2MjUgLTQuOTM3NSBMIDIuMDE1NjI1IC00LjkzNzUgQyAxLjc5Njg3NSAtNC4xNzE4NzUgMS42NTYyNSAtNC4wNjI1IDAuNzAzMTI1IC0zLjk1MzEyNSBMIDAuNzAzMTI1IC0zLjUxNTYyNSBaIE0gMS43OTY4NzUgLTMuNTE1NjI1ICIvPgo8L2c+CjxnIGlkPSJnbHlwaC0wLTYiPgo8cGF0aCBkPSJNIDEuNTMxMjUgLTIuMjY1NjI1IEwgMS44NzUgLTIuMjY1NjI1IEMgMi41NDY4NzUgLTIuMjY1NjI1IDIuODkwNjI1IC0xLjk1MzEyNSAyLjg5MDYyNSAtMS4zNzUgQyAyLjg5MDYyNSAtMC43NSAyLjUxNTYyNSAtMC4zNzUgMS44NzUgLTAuMzc1IEMgMS4yMDMxMjUgLTAuMzc1IDAuODc1IC0wLjcxODc1IDAuODI4MTI1IC0xLjQzNzUgTCAwLjIxODc1IC0xLjQzNzUgQyAwLjI1IC0xLjAzMTI1IDAuMzEyNSAtMC43ODEyNSAwLjQzNzUgLTAuNTYyNSBDIDAuNjg3NSAtMC4wNzgxMjUgMS4xNzE4NzUgMC4xNTYyNSAxLjg0Mzc1IDAuMTU2MjUgQyAyLjg1OTM3NSAwLjE1NjI1IDMuNTE1NjI1IC0wLjQzNzUgMy41MTU2MjUgLTEuMzc1IEMgMy41MTU2MjUgLTIgMy4yODEyNSAtMi4zNDM3NSAyLjY4NzUgLTIuNTQ2ODc1IEMgMy4xNDA2MjUgLTIuNzM0Mzc1IDMuMzc1IC0zLjA3ODEyNSAzLjM3NSAtMy41NzgxMjUgQyAzLjM3NSAtNC40MjE4NzUgMi44MTI1IC00LjkzNzUgMS44NzUgLTQuOTM3NSBDIDAuODc1IC00LjkzNzUgMC4zNDM3NSAtNC4zOTA2MjUgMC4zMjgxMjUgLTMuMzQzNzUgTCAwLjkzNzUgLTMuMzQzNzUgQyAwLjk1MzEyNSAtMy42NDA2MjUgMC45Njg3NSAtMy43OTY4NzUgMS4wNDY4NzUgLTMuOTUzMTI1IEMgMS4xODc1IC00LjIzNDM3NSAxLjUgLTQuMzkwNjI1IDEuODc1IC00LjM5MDYyNSBDIDIuNDIxODc1IC00LjM5MDYyNSAyLjc1IC00LjA3ODEyNSAyLjc1IC0zLjU0Njg3NSBDIDIuNzUgLTMuMjAzMTI1IDIuNjI1IC0zIDIuMzQzNzUgLTIuODkwNjI1IEMgMi4xODc1IC0yLjgxMjUgMS45Njg3NSAtMi43ODEyNSAxLjUzMTI1IC0yLjc4MTI1IFogTSAxLjUzMTI1IC0yLjI2NTYyNSAiLz4KPC9nPgo8ZyBpZD0iZ2x5cGgtMC03Ij4KPHBhdGggZD0iTSAzLjMxMjUgLTQuOTM3NSBMIDAuNzY1NjI1IC00LjkzNzUgTCAwLjM5MDYyNSAtMi4yNSBMIDAuOTUzMTI1IC0yLjI1IEMgMS4yNSAtMi41OTM3NSAxLjQ4NDM3NSAtMi43MDMxMjUgMS44NTkzNzUgLTIuNzAzMTI1IEMgMi41MzEyNSAtMi43MDMxMjUgMi45Mzc1IC0yLjI1IDIuOTM3NSAtMS41MTU2MjUgQyAyLjkzNzUgLTAuODEyNSAyLjUzMTI1IC0wLjM3NSAxLjg1OTM3NSAtMC4zNzUgQyAxLjMyODEyNSAtMC4zNzUgMSAtMC42NTYyNSAwLjg1OTM3NSAtMS4yMDMxMjUgTCAwLjI1IC0xLjIwMzEyNSBDIDAuMzI4MTI1IC0wLjgxMjUgMC4zOTA2MjUgLTAuNjA5Mzc1IDAuNTQ2ODc1IC0wLjQzNzUgQyAwLjgyODEyNSAtMC4wNjI1IDEuMzI4MTI1IDAuMTU2MjUgMS44NzUgMC4xNTYyNSBDIDIuODc1IDAuMTU2MjUgMy41NjI1IC0wLjU2MjUgMy41NjI1IC0xLjYwOTM3NSBDIDMuNTYyNSAtMi41NzgxMjUgMi45MjE4NzUgLTMuMjUgMS45Njg3NSAtMy4yNSBDIDEuNjI1IC0zLjI1IDEuMzQzNzUgLTMuMTU2MjUgMS4wNjI1IC0yLjk1MzEyNSBMIDEuMjY1NjI1IC00LjMyODEyNSBMIDMuMzEyNSAtNC4zMjgxMjUgWiBNIDMuMzEyNSAtNC45Mzc1ICIvPgo8L2c+CjxnIGlkPSJnbHlwaC0wLTgiPgo8cGF0aCBkPSJNIDMuNjA5Mzc1IC00LjkzNzUgTCAwLjMxMjUgLTQuOTM3NSBMIDAuMzEyNSAtNC4zMjgxMjUgTCAyLjk4NDM3NSAtNC4zMjgxMjUgQyAxLjgxMjUgLTIuNjU2MjUgMS4zMjgxMjUgLTEuNjI1IDAuOTUzMTI1IDAgTCAxLjYwOTM3NSAwIEMgMS44OTA2MjUgLTEuNTc4MTI1IDIuNSAtMi45Mzc1IDMuNjA5Mzc1IC00LjQyMTg3NSBaIE0gMy42MDkzNzUgLTQuOTM3NSAiLz4KPC9nPgo8L2c+CjxjbGlwUGF0aCBpZD0iY2xpcC0wIj4KPHBhdGggY2xpcC1ydWxlPSJub256ZXJvIiBkPSJNIDAuMDExNzE4OCAwIEwgMTY4LjE5NTMxMiAwIEwgMTY4LjE5NTMxMiAxMjMuMzg2NzE5IEwgMC4wMTE3MTg4IDEyMy4zODY3MTkgWiBNIDAuMDExNzE4OCAwICIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAtMSI+CjxwYXRoIGNsaXAtcnVsZT0ibm9uemVybyIgZD0iTSAyNS40NjQ4NDQgMTAzLjQ3MjY1NiBMIDI5LjY5MTQwNiAxMDMuNDcyNjU2IEwgMjkuNjkxNDA2IDEwNy40NTcwMzEgTCAyNS40NjQ4NDQgMTA3LjQ1NzAzMSBaIE0gMjUuNDY0ODQ0IDEwMy40NzI2NTYgIi8+CjwvY2xpcFBhdGg+CjxjbGlwUGF0aCBpZD0iY2xpcC0yIj4KPHBhdGggY2xpcC1ydWxlPSJub256ZXJvIiBkPSJNIDQwIDEwMyBMIDQzLjg3NSAxMDMgTCA0My44NzUgMTA2LjkyMTg3NSBMIDQwIDEwNi45MjE4NzUgWiBNIDQwIDEwMyAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTMiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gNTQgMTAxIEwgNTggMTAxIEwgNTggMTA0LjkzMzU5NCBMIDU0IDEwNC45MzM1OTQgWiBNIDU0IDEwMSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTQiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gNjguMDExNzE5IDk3LjAzNTE1NiBMIDcyIDk3LjAzNTE1NiBMIDcyIDEwMSBMIDY4LjAxMTcxOSAxMDEgWiBNIDY4LjAxMTcxOSA5Ny4wMzUxNTYgIi8+CjwvY2xpcFBhdGg+CjxjbGlwUGF0aCBpZD0iY2xpcC01Ij4KPHBhdGggY2xpcC1ydWxlPSJub256ZXJvIiBkPSJNIDgyLjE5MTQwNiA5MS4wOTc2NTYgTCA4NiA5MS4wOTc2NTYgTCA4NiA5NSBMIDgyLjE5MTQwNiA5NSBaIE0gODIuMTkxNDA2IDkxLjA5NzY1NiAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTYiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gOTYuMzc1IDgyLjQ1MzEyNSBMIDEwMC42MDE1NjIgODIuNDUzMTI1IEwgMTAwLjYwMTU2MiA4Ni42Nzk2ODggTCA5Ni4zNzUgODYuNjc5Njg4IFogTSA5Ni4zNzUgODIuNDUzMTI1ICIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAtNyI+CjxwYXRoIGNsaXAtcnVsZT0ibm9uemVybyIgZD0iTSAxMTEgNzEgTCAxMTQuNzgxMjUgNzEgTCAxMTQuNzgxMjUgNzQuOTg0Mzc1IEwgMTExIDc0Ljk4NDM3NSBaIE0gMTExIDcxICIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAtOCI+CjxwYXRoIGNsaXAtcnVsZT0ibm9uemVybyIgZD0iTSAxMjUgNTUgTCAxMjguOTYwOTM4IDU1IEwgMTI4Ljk2MDkzOCA1OC45Mzc1IEwgMTI1IDU4LjkzNzUgWiBNIDEyNSA1NSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTkiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMTM5IDM0LjM4NjcxOSBMIDE0MyAzNC4zODY3MTkgTCAxNDMgMzguNjA5Mzc1IEwgMTM5IDM4LjYwOTM3NSBaIE0gMTM5IDM0LjM4NjcxOSAiLz4KPC9jbGlwUGF0aD4KPGNsaXBQYXRoIGlkPSJjbGlwLTEwIj4KPHBhdGggY2xpcC1ydWxlPSJub256ZXJvIiBkPSJNIDE1NCAxMC4wODk4NDQgTCAxNTcgMTAuMDg5ODQ0IEwgMTU3IDE0IEwgMTU0IDE0IFogTSAxNTQgMTAuMDg5ODQ0ICIvPgo8L2NsaXBQYXRoPgo8Y2xpcFBhdGggaWQ9ImNsaXAtMTEiPgo8cGF0aCBjbGlwLXJ1bGU9Im5vbnplcm8iIGQ9Ik0gMTUzLjEwMTU2MiAxMC4wODk4NDQgTCAxNTcgMTAuMDg5ODQ0IEwgMTU3IDE0IEwgMTUzLjEwMTU2MiAxNCBaIE0gMTUzLjEwMTU2MiAxMC4wODk4NDQgIi8+CjwvY2xpcFBhdGg+CjwvZGVmcz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtMCkiPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9InJnYigxMDAlLCAxMDAlLCAxMDAlKSIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDAuMDExNzE4OCAxMjMuMzg2NzE5IEwgMTY4LjE5NTMxMiAxMjMuMzg2NzE5IEwgMTY4LjE5NTMxMiAwIEwgMC4wMTE3MTg4IDAgWiBNIDAuMDExNzE4OCAxMjMuMzg2NzE5ICIvPgo8L2c+CjxwYXRoIGZpbGwtcnVsZT0ibm9uemVybyIgZmlsbD0icmdiKDEwMCUsIDEwMCUsIDEwMCUpIiBmaWxsLW9wYWNpdHk9IjEiIGQ9Ik0gMjUuMDI3MzQ0IDEwNy40NTcwMzEgTCAxNTcuNzY1NjI1IDEwNy40NTcwMzEgTCAxNTcuNzY1NjI1IDEwLjA4OTg0NCBMIDI1LjAyNzM0NCAxMC4wODk4NDQgWiBNIDI1LjAyNzM0NCAxMDcuNDU3MDMxICIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuOCIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMjUuMDc4MjE2IDE3LjY1MjQ0MSBMIDE1OC4xNDYzNDIgMTcuNjUyNDQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuOCIgc3Ryb2tlLWxpbmVjYXA9InNxdWFyZSIgc3Ryb2tlLWxpbmVqb2luPSJtaXRlciIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDE1Ljk2ODU4IEwgMTUuMDc2ODYzIDExMy41Nzc3MTcgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gNDEuODU0MTc1IDE3LjY1MjQ0MSBMIDQxLjg1NDE3NSAyMS42NTQ1NDkgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxnIGZpbGw9InJnYigwJSwgMCUsIDAlKSIgZmlsbC1vcGFjaXR5PSIxIj4KPHVzZSB4bGluazpocmVmPSIjZ2x5cGgtMC0wIiB4PSIzNy44OTI5NzEiIHk9IjExNC43MjIxNzYiLz4KPHVzZSB4bGluazpocmVmPSIjZ2x5cGgtMC0xIiB4PSI0MS43NTM4NjIiIHk9IjExNC43MjIxNzYiLz4KPC9nPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDcwLjI4NzkzNyAxNy42NTI0NDEgTCA3MC4yODc5MzcgMjEuNjU0NTQ5ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8ZyBmaWxsPSJyZ2IoMCUsIDAlLCAwJSkiIGZpbGwtb3BhY2l0eT0iMSI+Cjx1c2UgeGxpbms6aHJlZj0iI2dseXBoLTAtMiIgeD0iNjYuMjU2MDcyIiB5PSIxMTQuNzIyMTc2Ii8+Cjx1c2UgeGxpbms6aHJlZj0iI2dseXBoLTAtMSIgeD0iNzAuMTE2OTY0IiB5PSIxMTQuNzIyMTc2Ii8+CjwvZz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSA5OC43MjE2OTggMTcuNjUyNDQxIEwgOTguNzIxNjk4IDIxLjY1NDU0OSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPGcgZmlsbD0icmdiKDAlLCAwJSwgMCUpIiBmaWxsLW9wYWNpdHk9IjEiPgo8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaC0wLTMiIHg9Ijk0LjYxOTE3MyIgeT0iMTE0LjcyMjE3NiIvPgo8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaC0wLTEiIHg9Ijk4LjQ4MDA2NSIgeT0iMTE0LjcyMjE3NiIvPgo8L2c+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTI3LjE1NTQ2IDE3LjY1MjQ0MSBMIDEyNy4xNTU0NiAyMS42NTQ1NDkgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxnIGZpbGw9InJnYigwJSwgMCUsIDAlKSIgZmlsbC1vcGFjaXR5PSIxIj4KPHVzZSB4bGluazpocmVmPSIjZ2x5cGgtMC00IiB4PSIxMjIuOTgyMjc1IiB5PSIxMTQuNzIyMTc2Ii8+Cjx1c2UgeGxpbms6aHJlZj0iI2dseXBoLTAtMSIgeD0iMTI2Ljg0MzE2NyIgeT0iMTE0LjcyMjE3NiIvPgo8L2c+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTU1LjU4OTIyMiAxNy42NTI0NDEgTCAxNTUuNTg5MjIyIDIxLjY1NDU0OSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPGcgZmlsbD0icmdiKDAlLCAwJSwgMCUpIiBmaWxsLW9wYWNpdHk9IjEiPgo8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaC0wLTUiIHg9IjE0OS40MTE0NzYiIHk9IjExNC43MjIxNzYiLz4KPHVzZSB4bGluazpocmVmPSIjZ2x5cGgtMC0xIiB4PSIxNTMuMjcyMzY4IiB5PSIxMTQuNzIyMTc2Ii8+Cjx1c2UgeGxpbms6aHJlZj0iI2dseXBoLTAtMSIgeD0iMTU3LjEzMzI1OSIgeT0iMTE0LjcyMjE3NiIvPgo8L2c+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMjcuNjM1MzM2IDE3LjY1MjQ0MSBMIDI3LjYzNTMzNiAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMzQuNzQ2NzEzIDE3LjY1MjQ0MSBMIDM0Ljc0NjcxMyAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gNDguOTYxNjM2IDE3LjY1MjQ0MSBMIDQ4Ljk2MTYzNiAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gNTYuMDY5MDk4IDE3LjY1MjQ0MSBMIDU2LjA2OTA5OCAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gNjMuMTc2NTU5IDE3LjY1MjQ0MSBMIDYzLjE3NjU1OSAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gNzcuMzk1Mzk4IDE3LjY1MjQ0MSBMIDc3LjM5NTM5OCAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gODQuNTAyODYgMTcuNjUyNDQxIEwgODQuNTAyODYgMTkuNjUzNDk1ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDkxLjYxMDMyMSAxNy42NTI0NDEgTCA5MS42MTAzMjEgMTkuNjUzNDk1ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDEwNS44MjkxNiAxNy42NTI0NDEgTCAxMDUuODI5MTYgMTkuNjUzNDk1ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDExMi45MzY2MjEgMTcuNjUyNDQxIEwgMTEyLjkzNjYyMSAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTIwLjA0NDA4MyAxNy42NTI0NDEgTCAxMjAuMDQ0MDgzIDE5LjY1MzQ5NSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxMzQuMjYyOTIyIDE3LjY1MjQ0MSBMIDEzNC4yNjI5MjIgMTkuNjUzNDk1ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE0MS4zNzAzODMgMTcuNjUyNDQxIEwgMTQxLjM3MDM4MyAxOS42NTM0OTUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTQ4LjQ3Nzg0NSAxNy42NTI0NDEgTCAxNDguNDc3ODQ1IDE5LjY1MzQ5NSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgMTcuNjUyNDQxIEwgMTkuMDc4OTcxIDE3LjY1MjQ0MSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPGcgZmlsbD0icmdiKDAlLCAwJSwgMCUpIiBmaWxsLW9wYWNpdHk9IjEiPgo8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaC0wLTEiIHg9IjcuMTkzNDQzIiB5PSIxMDcuNTEyOTg4Ii8+CjwvZz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgMjkuNjAzOTQxIEwgMTkuMDc4OTcxIDI5LjYwMzk0MSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPGcgZmlsbD0icmdiKDAlLCAwJSwgMCUpIiBmaWxsLW9wYWNpdHk9IjEiPgo8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaC0wLTUiIHg9IjcuMTkzNDQzIiB5PSI5NS41OTExOTciLz4KPC9nPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA0MS41NTU0NDEgTCAxOS4wNzg5NzEgNDEuNTU1NDQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8ZyBmaWxsPSJyZ2IoMCUsIDAlLCAwJSkiIGZpbGwtb3BhY2l0eT0iMSI+Cjx1c2UgeGxpbms6aHJlZj0iI2dseXBoLTAtMCIgeD0iNy4xOTM0NDMiIHk9IjgzLjY2OTQwNiIvPgo8L2c+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDUzLjUwNjk0MSBMIDE5LjA3ODk3MSA1My41MDY5NDEgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxnIGZpbGw9InJnYigwJSwgMCUsIDAlKSIgZmlsbC1vcGFjaXR5PSIxIj4KPHVzZSB4bGluazpocmVmPSIjZ2x5cGgtMC02IiB4PSI3LjE5MzQ0MyIgeT0iNzEuNzQ3NjE1Ii8+CjwvZz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgNjUuNDU4NDQxIEwgMTkuMDc4OTcxIDY1LjQ1ODQ0MSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPGcgZmlsbD0icmdiKDAlLCAwJSwgMCUpIiBmaWxsLW9wYWNpdHk9IjEiPgo8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaC0wLTIiIHg9IjcuMTkzNDQzIiB5PSI1OS44MjU4MjQiLz4KPC9nPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA3Ny40MDk5NDEgTCAxOS4wNzg5NzEgNzcuNDA5OTQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8ZyBmaWxsPSJyZ2IoMCUsIDAlLCAwJSkiIGZpbGwtb3BhY2l0eT0iMSI+Cjx1c2UgeGxpbms6aHJlZj0iI2dseXBoLTAtNyIgeD0iNy4xOTM0NDMiIHk9IjQ3LjkwNDAzMyIvPgo8L2c+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDg5LjM2MTQ0MSBMIDE5LjA3ODk3MSA4OS4zNjE0NDEgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxnIGZpbGw9InJnYigwJSwgMCUsIDAlKSIgZmlsbC1vcGFjaXR5PSIxIj4KPHVzZSB4bGluazpocmVmPSIjZ2x5cGgtMC0zIiB4PSI3LjE5MzQ0MyIgeT0iMzUuOTgyMjQyIi8+CjwvZz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgMTAxLjMxMjk0MSBMIDE5LjA3ODk3MSAxMDEuMzEyOTQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8ZyBmaWxsPSJyZ2IoMCUsIDAlLCAwJSkiIGZpbGwtb3BhY2l0eT0iMSI+Cjx1c2UgeGxpbms6aHJlZj0iI2dseXBoLTAtOCIgeD0iNy4xOTM0NDMiIHk9IjI0LjA2MDQ1MSIvPgo8L2c+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDExMy4yNjQ0NDEgTCAxOS4wNzg5NzEgMTEzLjI2NDQ0MSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPGcgZmlsbD0icmdiKDAlLCAwJSwgMCUpIiBmaWxsLW9wYWNpdHk9IjEiPgo8dXNlIHhsaW5rOmhyZWY9IiNnbHlwaC0wLTQiIHg9IjcuMTkzNDQzIiB5PSIxMi4xMzg2NjEiLz4KPC9nPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAyMC4wNDUwOTEgTCAxNy4wNzc5MTcgMjAuMDQ1MDkxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAyMi40MzM4MjQgTCAxNy4wNzc5MTcgMjIuNDMzODI0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAyNC44MjY0NzQgTCAxNy4wNzc5MTcgMjQuODI2NDc0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAyNy4yMTUyMDggTCAxNy4wNzc5MTcgMjcuMjE1MjA4ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAyOS42MDM5NDEgTCAxNy4wNzc5MTcgMjkuNjAzOTQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAzMS45OTY1OTEgTCAxNy4wNzc5MTcgMzEuOTk2NTkxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAzNC4zODUzMjQgTCAxNy4wNzc5MTcgMzQuMzg1MzI0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAzNi43Nzc5NzQgTCAxNy4wNzc5MTcgMzYuNzc3OTc0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAzOS4xNjY3MDggTCAxNy4wNzc5MTcgMzkuMTY2NzA4ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA0MS41NTU0NDEgTCAxNy4wNzc5MTcgNDEuNTU1NDQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA0My45NDgwOTEgTCAxNy4wNzc5MTcgNDMuOTQ4MDkxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA0Ni4zMzY4MjQgTCAxNy4wNzc5MTcgNDYuMzM2ODI0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA0OC43Mjk0NzQgTCAxNy4wNzc5MTcgNDguNzI5NDc0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA1MS4xMTgyMDcgTCAxNy4wNzc5MTcgNTEuMTE4MjA3ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA1My41MDY5NDEgTCAxNy4wNzc5MTcgNTMuNTA2OTQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA1NS44OTk1OTEgTCAxNy4wNzc5MTcgNTUuODk5NTkxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA1OC4yODgzMjQgTCAxNy4wNzc5MTcgNTguMjg4MzI0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA2MC42ODA5NzQgTCAxNy4wNzc5MTcgNjAuNjgwOTc0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA2My4wNjk3MDcgTCAxNy4wNzc5MTcgNjMuMDY5NzA3ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA2NS40NTg0NDEgTCAxNy4wNzc5MTcgNjUuNDU4NDQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA2Ny44NTEwOTEgTCAxNy4wNzc5MTcgNjcuODUxMDkxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA3MC4yMzk4MjQgTCAxNy4wNzc5MTcgNzAuMjM5ODI0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA3Mi42MzI0NzQgTCAxNy4wNzc5MTcgNzIuNjMyNDc0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA3NS4wMjEyMDcgTCAxNy4wNzc5MTcgNzUuMDIxMjA3ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA3Ny40MDk5NDEgTCAxNy4wNzc5MTcgNzcuNDA5OTQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyA3OS44MDI1OSBMIDE3LjA3NzkxNyA3OS44MDI1OSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgODIuMTkxMzI0IEwgMTcuMDc3OTE3IDgyLjE5MTMyNCAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgODQuNTgzOTc0IEwgMTcuMDc3OTE3IDg0LjU4Mzk3NCAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgODYuOTcyNzA3IEwgMTcuMDc3OTE3IDg2Ljk3MjcwNyAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgODkuMzYxNDQxIEwgMTcuMDc3OTE3IDg5LjM2MTQ0MSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgOTEuNzU0MDkgTCAxNy4wNzc5MTcgOTEuNzU0MDkgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDk0LjE0MjgyNCBMIDE3LjA3NzkxNyA5NC4xNDI4MjQgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDk2LjUzNTQ3NCBMIDE3LjA3NzkxNyA5Ni41MzU0NzQgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDk4LjkyNDIwNyBMIDE3LjA3NzkxNyA5OC45MjQyMDcgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDEwMS4zMTI5NDEgTCAxNy4wNzc5MTcgMTAxLjMxMjk0MSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgMTAzLjcwNTU5IEwgMTcuMDc3OTE3IDEwMy43MDU1OSAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgMTA2LjA5NDMyNCBMIDE3LjA3NzkxNyAxMDYuMDk0MzI0ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjAuNSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDE1LjA3Njg2MyAxMDguNDgzMDU4IEwgMTcuMDc3OTE3IDEwOC40ODMwNTggIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCAwLjAxMTI5MDQsIDEyMy4zODYwMjkpIi8+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMC41IiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gMTUuMDc2ODYzIDExMC44NzU3MDcgTCAxNy4wNzc5MTcgMTEwLjg3NTcwNyAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDAuMDExMjkwNCwgMTIzLjM4NjAyOSkiLz4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIwLjUiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAxNS4wNzY4NjMgMTEzLjI2NDQ0MSBMIDE3LjA3NzkxNyAxMTMuMjY0NDQxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMC4wMTEyOTA0LCAxMjMuMzg2MDI5KSIvPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9InJnYigxMDAlLCAxMDAlLCAxMDAlKSIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDI3LjU3ODEyNSAxMDYuNjk5MjE5IEMgMjcuODc1IDEwNi42OTkyMTkgMjguMTYwMTU2IDEwNi41ODIwMzEgMjguMzY3MTg4IDEwNi4zNzUgQyAyOC41NzgxMjUgMTA2LjE2NDA2MiAyOC42OTUzMTIgMTA1Ljg3ODkwNiAyOC42OTUzMTIgMTA1LjU4NTkzOCBDIDI4LjY5NTMxMiAxMDUuMjg5MDYyIDI4LjU3ODEyNSAxMDUuMDAzOTA2IDI4LjM2NzE4OCAxMDQuNzk2ODc1IEMgMjguMTYwMTU2IDEwNC41ODU5MzggMjcuODc1IDEwNC40Njg3NSAyNy41NzgxMjUgMTA0LjQ2ODc1IEMgMjcuMjg1MTU2IDEwNC40Njg3NSAyNyAxMDQuNTg1OTM4IDI2Ljc4OTA2MiAxMDQuNzk2ODc1IEMgMjYuNTgyMDMxIDEwNS4wMDM5MDYgMjYuNDY0ODQ0IDEwNS4yODkwNjIgMjYuNDY0ODQ0IDEwNS41ODU5MzggQyAyNi40NjQ4NDQgMTA1Ljg3ODkwNiAyNi41ODIwMzEgMTA2LjE2NDA2MiAyNi43ODkwNjIgMTA2LjM3NSBDIDI3IDEwNi41ODIwMzEgMjcuMjg1MTU2IDEwNi42OTkyMTkgMjcuNTc4MTI1IDEwNi42OTkyMTkgWiBNIDI3LjU3ODEyNSAxMDYuNjk5MjE5ICIvPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC0xKSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIC0wLjAwMTA5ODUzIC0xLjExNzE1MyBDIDAuMjk2NTE0IC0xLjExNzE1MyAwLjU4MjM3OSAtMC45OTk2NzQgMC43ODk5MjUgLTAuNzkyMTI4IEMgMS4wMDEzODYgLTAuNTgwNjY3IDEuMTE4ODY1IC0wLjI5NDgwMiAxLjExODg2NSAtMC4wMDExMDUwMiBDIDEuMTE4ODY1IDAuMjk2NTA4IDEuMDAxMzg2IDAuNTgyMzczIDAuNzg5OTI1IDAuNzg5OTE4IEMgMC41ODIzNzkgMS4wMDEzOCAwLjI5NjUxNCAxLjExODg1OSAtMC4wMDEwOTg1MyAxLjExODg1OSBDIC0wLjI5NDc5NSAxLjExODg1OSAtMC41ODA2NiAxLjAwMTM4IC0wLjc5MjEyMiAwLjc4OTkxOCBDIC0wLjk5OTY2NyAwLjU4MjM3MyAtMS4xMTcxNDYgMC4yOTY1MDggLTEuMTE3MTQ2IC0wLjAwMTEwNTAyIEMgLTEuMTE3MTQ2IC0wLjI5NDgwMiAtMC45OTk2NjcgLTAuNTgwNjY3IC0wLjc5MjEyMiAtMC43OTIxMjggQyAtMC41ODA2NiAtMC45OTk2NzQgLTAuMjk0Nzk1IC0xLjExNzE1MyAtMC4wMDEwOTg1MyAtMS4xMTcxNTMgWiBNIC0wLjAwMTA5ODUzIC0xLjExNzE1MyAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDI3LjU3OTIyMSwgMTA1LjU4NDgzNSkiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9InJnYigxMDAlLCAxMDAlLCAxMDAlKSIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDQxLjc2MTcxOSAxMDUuOTI1NzgxIEMgNDIuMDU0Njg4IDEwNS45MjU3ODEgNDIuMzM5ODQ0IDEwNS44MDg1OTQgNDIuNTUwNzgxIDEwNS41OTc2NTYgQyA0Mi43NTc4MTIgMTA1LjM5MDYyNSA0Mi44NzUgMTA1LjEwNTQ2OSA0Mi44NzUgMTA0LjgwODU5NCBDIDQyLjg3NSAxMDQuNTE1NjI1IDQyLjc1NzgxMiAxMDQuMjMwNDY5IDQyLjU1MDc4MSAxMDQuMDE5NTMxIEMgNDIuMzM5ODQ0IDEwMy44MTI1IDQyLjA1NDY4OCAxMDMuNjk1MzEyIDQxLjc2MTcxOSAxMDMuNjk1MzEyIEMgNDEuNDY0ODQ0IDEwMy42OTUzMTIgNDEuMTc5Njg4IDEwMy44MTI1IDQwLjk3MjY1NiAxMDQuMDE5NTMxIEMgNDAuNzYxNzE5IDEwNC4yMzA0NjkgNDAuNjQ0NTMxIDEwNC41MTU2MjUgNDAuNjQ0NTMxIDEwNC44MDg1OTQgQyA0MC42NDQ1MzEgMTA1LjEwNTQ2OSA0MC43NjE3MTkgMTA1LjM5MDYyNSA0MC45NzI2NTYgMTA1LjU5NzY1NiBDIDQxLjE3OTY4OCAxMDUuODA4NTk0IDQxLjQ2NDg0NCAxMDUuOTI1NzgxIDQxLjc2MTcxOSAxMDUuOTI1NzgxIFogTSA0MS43NjE3MTkgMTA1LjkyNTc4MSAiLz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtMikiPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAwLjAwMDk0OTU1NyAtMS4xMTg2MzUgQyAwLjI5NDY0NiAtMS4xMTg2MzUgMC41ODA1MTEgLTEuMDAxMTU3IDAuNzkxOTczIC0wLjc4OTY5NSBDIDAuOTk5NTE5IC0wLjU4MjE0OSAxLjExNjk5NyAtMC4yOTYyODQgMS4xMTY5OTcgMC4wMDEzMjgzNiBDIDEuMTE2OTk3IDAuMjk1MDI1IDAuOTk5NTE5IDAuNTgwODkgMC43OTE5NzMgMC43OTIzNTIgQyAwLjU4MDUxMSAwLjk5OTg5NyAwLjI5NDY0NiAxLjExNzM3NiAwLjAwMDk0OTU1NyAxLjExNzM3NiBDIC0wLjI5NjY2MyAxLjExNzM3NiAtMC41ODI1MjggMC45OTk4OTcgLTAuNzkwMDc0IDAuNzkyMzUyIEMgLTEuMDAxNTM1IDAuNTgwODkgLTEuMTE5MDE0IDAuMjk1MDI1IC0xLjExOTAxNCAwLjAwMTMyODM2IEMgLTEuMTE5MDE0IC0wLjI5NjI4NCAtMS4wMDE1MzUgLTAuNTgyMTQ5IC0wLjc5MDA3NCAtMC43ODk2OTUgQyAtMC41ODI1MjggLTEuMDAxMTU3IC0wLjI5NjY2MyAtMS4xMTg2MzUgMC4wMDA5NDk1NTcgLTEuMTE4NjM1IFogTSAwLjAwMDk0OTU1NyAtMS4xMTg2MzUgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCA0MS43NjA3NzIsIDEwNC44MDk5MTkpIi8+CjwvZz4KPHBhdGggZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSJyZ2IoMTAwJSwgMTAwJSwgMTAwJSkiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSA1NS45NDE0MDYgMTAzLjkzMzU5NCBDIDU2LjIzODI4MSAxMDMuOTMzNTk0IDU2LjUyMzQzOCAxMDMuODE2NDA2IDU2LjczMDQ2OSAxMDMuNjA5Mzc1IEMgNTYuOTQxNDA2IDEwMy4zOTg0MzggNTcuMDU4NTk0IDEwMy4xMTMyODEgNTcuMDU4NTk0IDEwMi44MjAzMTIgQyA1Ny4wNTg1OTQgMTAyLjUyMzQzOCA1Ni45NDE0MDYgMTAyLjIzODI4MSA1Ni43MzA0NjkgMTAyLjAzMTI1IEMgNTYuNTIzNDM4IDEwMS44MjAzMTIgNTYuMjM4MjgxIDEwMS43MDMxMjUgNTUuOTQxNDA2IDEwMS43MDMxMjUgQyA1NS42NDg0MzggMTAxLjcwMzEyNSA1NS4zNjMyODEgMTAxLjgyMDMxMiA1NS4xNTIzNDQgMTAyLjAzMTI1IEMgNTQuOTQ1MzEyIDEwMi4yMzgyODEgNTQuODI4MTI1IDEwMi41MjM0MzggNTQuODI4MTI1IDEwMi44MjAzMTIgQyA1NC44MjgxMjUgMTAzLjExMzI4MSA1NC45NDUzMTIgMTAzLjM5ODQzOCA1NS4xNTIzNDQgMTAzLjYwOTM3NSBDIDU1LjM2MzI4MSAxMDMuODE2NDA2IDU1LjY0ODQzOCAxMDMuOTMzNTk0IDU1Ljk0MTQwNiAxMDMuOTMzNTk0IFogTSA1NS45NDE0MDYgMTAzLjkzMzU5NCAiLz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtMykiPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAtMC4wMDA5MTgzMTQgLTEuMTE3Mzg0IEMgMC4yOTY2OTQgLTEuMTE3Mzg0IDAuNTgyNTU5IC0wLjk5OTkwNSAwLjc5MDEwNSAtMC43OTIzNTkgQyAxLjAwMTU2NyAtMC41ODA4OTggMS4xMTkwNDUgLTAuMjk1MDMzIDEuMTE5MDQ1IC0wLjAwMTMzNjA4IEMgMS4xMTkwNDUgMC4yOTYyNzcgMS4wMDE1NjcgMC41ODIxNDEgMC43OTAxMDUgMC43ODk2ODcgQyAwLjU4MjU1OSAxLjAwMTE0OSAwLjI5NjY5NCAxLjExODYyOCAtMC4wMDA5MTgzMTQgMS4xMTg2MjggQyAtMC4yOTQ2MTUgMS4xMTg2MjggLTAuNTgwNDggMS4wMDExNDkgLTAuNzkxOTQyIDAuNzg5Njg3IEMgLTAuOTk5NDg3IDAuNTgyMTQxIC0xLjExNjk2NiAwLjI5NjI3NyAtMS4xMTY5NjYgLTAuMDAxMzM2MDggQyAtMS4xMTY5NjYgLTAuMjk1MDMzIC0wLjk5OTQ4NyAtMC41ODA4OTggLTAuNzkxOTQyIC0wLjc5MjM1OSBDIC0wLjU4MDQ4IC0wLjk5OTkwNSAtMC4yOTQ2MTUgLTEuMTE3Mzg0IC0wLjAwMDkxODMxNCAtMS4xMTczODQgWiBNIC0wLjAwMDkxODMxNCAtMS4xMTczODQgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCA1NS45NDIzMjIsIDEwMi44MTg5OCkiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9InJnYigxMDAlLCAxMDAlLCAxMDAlKSIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDcwLjEyNSAxMDAuMjYxNzE5IEMgNzAuNDE3OTY5IDEwMC4yNjE3MTkgNzAuNzAzMTI1IDEwMC4xNDQ1MzEgNzAuOTE0MDYyIDk5LjkzNzUgQyA3MS4xMjEwOTQgOTkuNzI2NTYyIDcxLjIzODI4MSA5OS40NDE0MDYgNzEuMjM4MjgxIDk5LjE0ODQzOCBDIDcxLjIzODI4MSA5OC44NTE1NjIgNzEuMTIxMDk0IDk4LjU2NjQwNiA3MC45MTQwNjIgOTguMzU5Mzc1IEMgNzAuNzAzMTI1IDk4LjE0ODQzOCA3MC40MTc5NjkgOTguMDMxMjUgNzAuMTI1IDk4LjAzMTI1IEMgNjkuODI4MTI1IDk4LjAzMTI1IDY5LjU0Mjk2OSA5OC4xNDg0MzggNjkuMzM1OTM4IDk4LjM1OTM3NSBDIDY5LjEyNSA5OC41NjY0MDYgNjkuMDA3ODEyIDk4Ljg1MTU2MiA2OS4wMDc4MTIgOTkuMTQ4NDM4IEMgNjkuMDA3ODEyIDk5LjQ0MTQwNiA2OS4xMjUgOTkuNzI2NTYyIDY5LjMzNTkzOCA5OS45Mzc1IEMgNjkuNTQyOTY5IDEwMC4xNDQ1MzEgNjkuODI4MTI1IDEwMC4yNjE3MTkgNzAuMTI1IDEwMC4yNjE3MTkgWiBNIDcwLjEyNSAxMDAuMjYxNzE5ICIvPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC00KSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDAuMDAxMTI5NzcgLTEuMTE3NDIgQyAwLjI5NDgyNyAtMS4xMTc0MiAwLjU4MDY5MSAtMC45OTk5NDIgMC43OTIxNTMgLTAuNzkyMzk2IEMgMC45OTk2OTkgLTAuNTgwOTM0IDEuMTE3MTc3IC0wLjI5NTA3IDEuMTE3MTc3IC0wLjAwMTM3Mjc4IEMgMS4xMTcxNzcgMC4yOTYyNCAwLjk5OTY5OSAwLjU4MjEwNSAwLjc5MjE1MyAwLjc4OTY1IEMgMC41ODA2OTEgMS4wMDExMTIgMC4yOTQ4MjcgMS4xMTg1OTEgMC4wMDExMjk3NyAxLjExODU5MSBDIC0wLjI5NjQ4MyAxLjExODU5MSAtMC41ODIzNDggMS4wMDExMTIgLTAuNzg5ODkzIDAuNzg5NjUgQyAtMS4wMDEzNTUgMC41ODIxMDUgLTEuMTE4ODM0IDAuMjk2MjQgLTEuMTE4ODM0IC0wLjAwMTM3Mjc4IEMgLTEuMTE4ODM0IC0wLjI5NTA3IC0xLjAwMTM1NSAtMC41ODA5MzQgLTAuNzg5ODkzIC0wLjc5MjM5NiBDIC0wLjU4MjM0OCAtMC45OTk5NDIgLTAuMjk2NDgzIC0xLjExNzQyIDAuMDAxMTI5NzcgLTEuMTE3NDIgWiBNIDAuMDAxMTI5NzcgLTEuMTE3NDIgIiB0cmFuc2Zvcm09Im1hdHJpeCgwLjk5NzUyMSwgMCwgMCwgLTAuOTk3NTIxLCA3MC4xMjM4NzMsIDk5LjE0NzA2OCkiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9InJnYigxMDAlLCAxMDAlLCAxMDAlKSIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDg0LjMwNDY4OCA5NC4zMjQyMTkgQyA4NC42MDE1NjIgOTQuMzI0MjE5IDg0Ljg4NjcxOSA5NC4yMDcwMzEgODUuMDkzNzUgOTQgQyA4NS4zMDQ2ODggOTMuNzg5MDYyIDg1LjQyMTg3NSA5My41MDM5MDYgODUuNDIxODc1IDkzLjIxMDkzOCBDIDg1LjQyMTg3NSA5Mi45MTQwNjIgODUuMzA0Njg4IDkyLjYyODkwNiA4NS4wOTM3NSA5Mi40MjE4NzUgQyA4NC44ODY3MTkgOTIuMjEwOTM4IDg0LjYwMTU2MiA5Mi4wOTM3NSA4NC4zMDQ2ODggOTIuMDkzNzUgQyA4NC4wMDc4MTIgOTIuMDkzNzUgODMuNzI2NTYyIDkyLjIxMDkzOCA4My41MTU2MjUgOTIuNDIxODc1IEMgODMuMzA4NTk0IDkyLjYyODkwNiA4My4xOTE0MDYgOTIuOTE0MDYyIDgzLjE5MTQwNiA5My4yMTA5MzggQyA4My4xOTE0MDYgOTMuNTAzOTA2IDgzLjMwODU5NCA5My43ODkwNjIgODMuNTE1NjI1IDk0IEMgODMuNzI2NTYyIDk0LjIwNzAzMSA4NC4wMDc4MTIgOTQuMzI0MjE5IDg0LjMwNDY4OCA5NC4zMjQyMTkgWiBNIDg0LjMwNDY4OCA5NC4zMjQyMTkgIi8+CjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwLTUpIj4KPHBhdGggZmlsbD0ibm9uZSIgc3Ryb2tlLXdpZHRoPSIxIiBzdHJva2UtbGluZWNhcD0iYnV0dCIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgc3Ryb2tlPSJyZ2IoMCUsIDAlLCAwJSkiIHN0cm9rZS1vcGFjaXR5PSIxIiBzdHJva2UtbWl0ZXJsaW1pdD0iMTAiIGQ9Ik0gLTAuMDAwNzM4MTAxIC0xLjExNjk3MSBDIDAuMjk2ODc1IC0xLjExNjk3MSAwLjU4MjczOSAtMC45OTk0OTMgMC43OTAyODUgLTAuNzkxOTQ3IEMgMS4wMDE3NDcgLTAuNTgwNDg1IDEuMTE5MjI2IC0wLjI5NDYyIDEuMTE5MjI2IC0wLjAwMDkyMzU0OCBDIDEuMTE5MjI2IDAuMjk2Njg5IDEuMDAxNzQ3IDAuNTgyNTU0IDAuNzkwMjg1IDAuNzkwMSBDIDAuNTgyNzM5IDEuMDAxNTYxIDAuMjk2ODc1IDEuMTE5MDQgLTAuMDAwNzM4MTAxIDEuMTE5MDQgQyAtMC4yOTgzNTEgMS4xMTkwNCAtMC41ODAzIDEuMDAxNTYxIC0wLjc5MTc2MSAwLjc5MDEgQyAtMC45OTkzMDcgMC41ODI1NTQgLTEuMTE2Nzg2IDAuMjk2Njg5IC0xLjExNjc4NiAtMC4wMDA5MjM1NDggQyAtMS4xMTY3ODYgLTAuMjk0NjIgLTAuOTk5MzA3IC0wLjU4MDQ4NSAtMC43OTE3NjEgLTAuNzkxOTQ3IEMgLTAuNTgwMyAtMC45OTk0OTMgLTAuMjk4MzUxIC0xLjExNjk3MSAtMC4wMDA3MzgxMDEgLTEuMTE2OTcxIFogTSAtMC4wMDA3MzgxMDEgLTEuMTE2OTcxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgODQuMzA1NDI0LCA5My4yMTAwMTYpIi8+CjwvZz4KPHBhdGggZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSJyZ2IoMTAwJSwgMTAwJSwgMTAwJSkiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSA5OC40ODgyODEgODUuNjgzNTk0IEMgOTguNzgxMjUgODUuNjgzNTk0IDk5LjA2NjQwNiA4NS41NjY0MDYgOTkuMjc3MzQ0IDg1LjM1NTQ2OSBDIDk5LjQ4NDM3NSA4NS4xNDQ1MzEgOTkuNjAxNTYyIDg0Ljg2MzI4MSA5OS42MDE1NjIgODQuNTY2NDA2IEMgOTkuNjAxNTYyIDg0LjI2OTUzMSA5OS40ODQzNzUgODMuOTg4MjgxIDk5LjI3NzM0NCA4My43NzczNDQgQyA5OS4wNjY0MDYgODMuNTcwMzEyIDk4Ljc4MTI1IDgzLjQ1MzEyNSA5OC40ODgyODEgODMuNDUzMTI1IEMgOTguMTkxNDA2IDgzLjQ1MzEyNSA5Ny45MDYyNSA4My41NzAzMTIgOTcuNjk5MjE5IDgzLjc3NzM0NCBDIDk3LjQ4ODI4MSA4My45ODgyODEgOTcuMzcxMDk0IDg0LjI2OTUzMSA5Ny4zNzEwOTQgODQuNTY2NDA2IEMgOTcuMzcxMDk0IDg0Ljg2MzI4MSA5Ny40ODgyODEgODUuMTQ0NTMxIDk3LjY5OTIxOSA4NS4zNTU0NjkgQyA5Ny45MDYyNSA4NS41NjY0MDYgOTguMTkxNDA2IDg1LjY4MzU5NCA5OC40ODgyODEgODUuNjgzNTk0IFogTSA5OC40ODgyODEgODUuNjgzNTk0ICIvPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC02KSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIDAuMDAxMzA5OTggLTEuMTE5NjUxIEMgMC4yOTUwMDcgLTEuMTE5NjUxIDAuNTgwODcyIC0xLjAwMjE3MyAwLjc5MjMzMyAtMC43OTA3MTEgQyAwLjk5OTg3OSAtMC41NzkyNDkgMS4xMTczNTggLTAuMjk3MyAxLjExNzM1OCAwLjAwMDMxMjM0NCBDIDEuMTE3MzU4IDAuMjk3OTI1IDAuOTk5ODc5IDAuNTc5ODc0IDAuNzkyMzMzIDAuNzkxMzM2IEMgMC41ODA4NzIgMC45OTg4ODEgMC4yOTUwMDcgMS4xMTYzNiAwLjAwMTMwOTk4IDEuMTE2MzYgQyAtMC4yOTYzMDMgMS4xMTYzNiAtMC41ODIxNjggMC45OTg4ODEgLTAuNzg5NzEzIDAuNzkxMzM2IEMgLTEuMDAxMTc1IDAuNTc5ODc0IC0xLjExODY1NCAwLjI5NzkyNSAtMS4xMTg2NTQgMC4wMDAzMTIzNDQgQyAtMS4xMTg2NTQgLTAuMjk3MyAtMS4wMDExNzUgLTAuNTc5MjQ5IC0wLjc4OTcxMyAtMC43OTA3MTEgQyAtMC41ODIxNjggLTEuMDAyMTczIC0wLjI5NjMwMyAtMS4xMTk2NTEgMC4wMDEzMDk5OCAtMS4xMTk2NTEgWiBNIDAuMDAxMzA5OTggLTEuMTE5NjUxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgOTguNDg2OTc1LCA4NC41NjY3MTgpIi8+CjwvZz4KPHBhdGggZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSJyZ2IoMTAwJSwgMTAwJSwgMTAwJSkiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSAxMTIuNjY3OTY5IDczLjk4ODI4MSBDIDExMi45NjQ4NDQgNzMuOTg4MjgxIDExMy4yNDYwOTQgNzMuODcxMDk0IDExMy40NTcwMzEgNzMuNjYwMTU2IEMgMTEzLjY2Nzk2OSA3My40NDkyMTkgMTEzLjc4NTE1NiA3My4xNjc5NjkgMTEzLjc4NTE1NiA3Mi44NzEwOTQgQyAxMTMuNzg1MTU2IDcyLjU3NDIxOSAxMTMuNjY3OTY5IDcyLjI5Mjk2OSAxMTMuNDU3MDMxIDcyLjA4MjAzMSBDIDExMy4yNDYwOTQgNzEuODc1IDExMi45NjQ4NDQgNzEuNzU3ODEyIDExMi42Njc5NjkgNzEuNzU3ODEyIEMgMTEyLjM3MTA5NCA3MS43NTc4MTIgMTEyLjA4OTg0NCA3MS44NzUgMTExLjg3ODkwNiA3Mi4wODIwMzEgQyAxMTEuNjcxODc1IDcyLjI5Mjk2OSAxMTEuNTU0Njg4IDcyLjU3NDIxOSAxMTEuNTU0Njg4IDcyLjg3MTA5NCBDIDExMS41NTQ2ODggNzMuMTY3OTY5IDExMS42NzE4NzUgNzMuNDQ5MjE5IDExMS44Nzg5MDYgNzMuNjYwMTU2IEMgMTEyLjA4OTg0NCA3My44NzEwOTQgMTEyLjM3MTA5NCA3My45ODgyODEgMTEyLjY2Nzk2OSA3My45ODgyODEgWiBNIDExMi42Njc5NjkgNzMuOTg4MjgxICIvPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC03KSI+CjxwYXRoIGZpbGw9Im5vbmUiIHN0cm9rZS13aWR0aD0iMSIgc3Ryb2tlLWxpbmVjYXA9ImJ1dHQiIHN0cm9rZS1saW5lam9pbj0icm91bmQiIHN0cm9rZT0icmdiKDAlLCAwJSwgMCUpIiBzdHJva2Utb3BhY2l0eT0iMSIgc3Ryb2tlLW1pdGVybGltaXQ9IjEwIiBkPSJNIC0wLjAwMDU1Nzg4NyAtMS4xMTk2MTYgQyAwLjI5NzA1NSAtMS4xMTk2MTYgMC41NzkwMDQgLTEuMDAyMTM3IDAuNzkwNDY1IC0wLjc5MDY3NSBDIDEuMDAxOTI3IC0wLjU3OTIxNCAxLjExOTQwNiAtMC4yOTcyNjUgMS4xMTk0MDYgMC4wMDAzNDgwMzMgQyAxLjExOTQwNiAwLjI5Nzk2MSAxLjAwMTkyNyAwLjU3OTkxIDAuNzkwNDY1IDAuNzkxMzcxIEMgMC41NzkwMDQgMC45OTg5MTcgMC4yOTcwNTUgMS4xMTYzOTYgLTAuMDAwNTU3ODg3IDEuMTE2Mzk2IEMgLTAuMjk4MTcxIDEuMTE2Mzk2IC0wLjU4MDExOSAwLjk5ODkxNyAtMC43OTE1ODEgMC43OTEzNzEgQyAtMC45OTkxMjcgMC41Nzk5MSAtMS4xMTY2MDYgMC4yOTc5NjEgLTEuMTE2NjA2IDAuMDAwMzQ4MDMzIEMgLTEuMTE2NjA2IC0wLjI5NzI2NSAtMC45OTkxMjcgLTAuNTc5MjE0IC0wLjc5MTU4MSAtMC43OTA2NzUgQyAtMC41ODAxMTkgLTEuMDAyMTM3IC0wLjI5ODE3MSAtMS4xMTk2MTYgLTAuMDAwNTU3ODg3IC0xLjExOTYxNiBaIE0gLTAuMDAwNTU3ODg3IC0xLjExOTYxNiAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDExMi42Njg1MjUsIDcyLjg3MTQ0MSkiLz4KPC9nPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9InJnYigxMDAlLCAxMDAlLCAxMDAlKSIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDEyNi44NTE1NjIgNTcuOTQxNDA2IEMgMTI3LjE0NDUzMSA1Ny45NDE0MDYgMTI3LjQyOTY4OCA1Ny44MjQyMTkgMTI3LjY0MDYyNSA1Ny42MTMyODEgQyAxMjcuODQ3NjU2IDU3LjQwMjM0NCAxMjcuOTY0ODQ0IDU3LjEyMTA5NCAxMjcuOTY0ODQ0IDU2LjgyNDIxOSBDIDEyNy45NjQ4NDQgNTYuNTI3MzQ0IDEyNy44NDc2NTYgNTYuMjQ2MDk0IDEyNy42NDA2MjUgNTYuMDM1MTU2IEMgMTI3LjQyOTY4OCA1NS44MjgxMjUgMTI3LjE0NDUzMSA1NS43MTA5MzggMTI2Ljg1MTU2MiA1NS43MTA5MzggQyAxMjYuNTU0Njg4IDU1LjcxMDkzOCAxMjYuMjY5NTMxIDU1LjgyODEyNSAxMjYuMDYyNSA1Ni4wMzUxNTYgQyAxMjUuODUxNTYyIDU2LjI0NjA5NCAxMjUuNzM0Mzc1IDU2LjUyNzM0NCAxMjUuNzM0Mzc1IDU2LjgyNDIxOSBDIDEyNS43MzQzNzUgNTcuMTIxMDk0IDEyNS44NTE1NjIgNTcuNDAyMzQ0IDEyNi4wNjI1IDU3LjYxMzI4MSBDIDEyNi4yNjk1MzEgNTcuODI0MjE5IDEyNi41NTQ2ODggNTcuOTQxNDA2IDEyNi44NTE1NjIgNTcuOTQxNDA2IFogTSAxMjYuODUxNTYyIDU3Ljk0MTQwNiAiLz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtOCkiPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAwLjAwMTQ5MDIgLTEuMTE5NDcxIEMgMC4yOTUxODcgLTEuMTE5NDcxIDAuNTgxMDUyIC0xLjAwMTk5MiAwLjc5MjUxMyAtMC43OTA1MyBDIDEuMDAwMDU5IC0wLjU3OTA2OSAxLjExNzUzOCAtMC4yOTcxMiAxLjExNzUzOCAwLjAwMDQ5MjgwNCBDIDEuMTE3NTM4IDAuMjk4MTA2IDEuMDAwMDU5IDAuNTgwMDU0IDAuNzkyNTEzIDAuNzkxNTE2IEMgMC41ODEwNTIgMC45OTkwNjIgMC4yOTUxODcgMS4xMTY1NCAwLjAwMTQ5MDIgMS4xMTY1NCBDIC0wLjI5NjEyMyAxLjExNjU0IC0wLjU4MTk4NyAwLjk5OTA2MiAtMC43ODk1MzMgMC43OTE1MTYgQyAtMS4wMDA5OTUgMC41ODAwNTQgLTEuMTE4NDczIDAuMjk4MTA2IC0xLjExODQ3MyAwLjAwMDQ5MjgwNCBDIC0xLjExODQ3MyAtMC4yOTcxMiAtMS4wMDA5OTUgLTAuNTc5MDY5IC0wLjc4OTUzMyAtMC43OTA1MyBDIC0wLjU4MTk4NyAtMS4wMDE5OTIgLTAuMjk2MTIzIC0xLjExOTQ3MSAwLjAwMTQ5MDIgLTEuMTE5NDcxIFogTSAwLjAwMTQ5MDIgLTEuMTE5NDcxICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMTI2Ljg1MDA3NiwgNTYuODI0NzEpIi8+CjwvZz4KPHBhdGggZmlsbC1ydWxlPSJub256ZXJvIiBmaWxsPSJyZ2IoMTAwJSwgMTAwJSwgMTAwJSkiIGZpbGwtb3BhY2l0eT0iMSIgZD0iTSAxNDEuMDMxMjUgMzcuNjEzMjgxIEMgMTQxLjMyODEyNSAzNy42MTMyODEgMTQxLjYwOTM3NSAzNy40OTYwOTQgMTQxLjgyMDMxMiAzNy4yODUxNTYgQyAxNDIuMDMxMjUgMzcuMDc4MTI1IDE0Mi4xNDg0MzggMzYuNzkyOTY5IDE0Mi4xNDg0MzggMzYuNSBDIDE0Mi4xNDg0MzggMzYuMjAzMTI1IDE0Mi4wMzEyNSAzNS45MTc5NjkgMTQxLjgyMDMxMiAzNS43MTA5MzggQyAxNDEuNjA5Mzc1IDM1LjUgMTQxLjMyODEyNSAzNS4zODI4MTIgMTQxLjAzMTI1IDM1LjM4MjgxMiBDIDE0MC43MzQzNzUgMzUuMzgyODEyIDE0MC40NTMxMjUgMzUuNSAxNDAuMjQyMTg4IDM1LjcxMDkzOCBDIDE0MC4wMzUxNTYgMzUuOTE3OTY5IDEzOS45MTc5NjkgMzYuMjAzMTI1IDEzOS45MTc5NjkgMzYuNSBDIDEzOS45MTc5NjkgMzYuNzkyOTY5IDE0MC4wMzUxNTYgMzcuMDc4MTI1IDE0MC4yNDIxODggMzcuMjg1MTU2IEMgMTQwLjQ1MzEyNSAzNy40OTYwOTQgMTQwLjczNDM3NSAzNy42MTMyODEgMTQxLjAzMTI1IDM3LjYxMzI4MSBaIE0gMTQxLjAzMTI1IDM3LjYxMzI4MSAiLz4KPGcgY2xpcC1wYXRoPSJ1cmwoI2NsaXAtOSkiPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAtMC4wMDAzNzc2NzQgLTEuMTE3OTk2IEMgMC4yOTcyMzUgLTEuMTE3OTk2IDAuNTc5MTg0IC0xLjAwMDUxNyAwLjc5MDY0NiAtMC43ODkwNTUgQyAxLjAwMjEwNyAtMC41ODE1MSAxLjExOTU4NiAtMC4yOTU2NDUgMS4xMTk1ODYgLTAuMDAxOTQ4MDMgQyAxLjExOTU4NiAwLjI5NTY2NSAxLjAwMjEwNyAwLjU4MTUzIDAuNzkwNjQ2IDAuNzg5MDc1IEMgMC41NzkxODQgMS4wMDA1MzcgMC4yOTcyMzUgMS4xMTgwMTYgLTAuMDAwMzc3Njc0IDEuMTE4MDE2IEMgLTAuMjk3OTkgMS4xMTgwMTYgLTAuNTc5OTM5IDEuMDAwNTM3IC0wLjc5MTQwMSAwLjc4OTA3NSBDIC0wLjk5ODk0NyAwLjU4MTUzIC0xLjExNjQyNSAwLjI5NTY2NSAtMS4xMTY0MjUgLTAuMDAxOTQ4MDMgQyAtMS4xMTY0MjUgLTAuMjk1NjQ1IC0wLjk5ODk0NyAtMC41ODE1MSAtMC43OTE0MDEgLTAuNzg5MDU1IEMgLTAuNTc5OTM5IC0xLjAwMDUxNyAtMC4yOTc5OSAtMS4xMTc5OTYgLTAuMDAwMzc3Njc0IC0xLjExNzk5NiBaIE0gLTAuMDAwMzc3Njc0IC0xLjExNzk5NiAiIHRyYW5zZm9ybT0ibWF0cml4KDAuOTk3NTIxLCAwLCAwLCAtMC45OTc1MjEsIDE0MS4wMzE2MjcsIDM2LjQ5ODA1NykiLz4KPC9nPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC0xMCkiPgo8cGF0aCBmaWxsLXJ1bGU9Im5vbnplcm8iIGZpbGw9InJnYigxMDAlLCAxMDAlLCAxMDAlKSIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNIDE1NS4yMTQ4NDQgMTMuMDc4MTI1IEMgMTU1LjUwNzgxMiAxMy4wNzgxMjUgMTU1Ljc5Mjk2OSAxMi45NjA5MzggMTU2IDEyLjc1IEMgMTU2LjIxMDkzOCAxMi41NDI5NjkgMTU2LjMyODEyNSAxMi4yNTc4MTIgMTU2LjMyODEyNSAxMS45NjQ4NDQgQyAxNTYuMzI4MTI1IDExLjY2Nzk2OSAxNTYuMjEwOTM4IDExLjM4MjgxMiAxNTYgMTEuMTc1NzgxIEMgMTU1Ljc5Mjk2OSAxMC45NjQ4NDQgMTU1LjUwNzgxMiAxMC44NDc2NTYgMTU1LjIxNDg0NCAxMC44NDc2NTYgQyAxNTQuOTE3OTY5IDEwLjg0NzY1NiAxNTQuNjMyODEyIDEwLjk2NDg0NCAxNTQuNDI1NzgxIDExLjE3NTc4MSBDIDE1NC4yMTQ4NDQgMTEuMzgyODEyIDE1NC4wOTc2NTYgMTEuNjY3OTY5IDE1NC4wOTc2NTYgMTEuOTY0ODQ0IEMgMTU0LjA5NzY1NiAxMi4yNTc4MTIgMTU0LjIxNDg0NCAxMi41NDI5NjkgMTU0LjQyNTc4MSAxMi43NSBDIDE1NC42MzI4MTIgMTIuOTYwOTM4IDE1NC45MTc5NjkgMTMuMDc4MTI1IDE1NS4yMTQ4NDQgMTMuMDc4MTI1IFogTSAxNTUuMjE0ODQ0IDEzLjA3ODEyNSAiLz4KPC9nPgo8ZyBjbGlwLXBhdGg9InVybCgjY2xpcC0xMSkiPgo8cGF0aCBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjEiIHN0cm9rZS1saW5lY2FwPSJidXR0IiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2U9InJnYigwJSwgMCUsIDAlKSIgc3Ryb2tlLW9wYWNpdHk9IjEiIHN0cm9rZS1taXRlcmxpbWl0PSIxMCIgZD0iTSAwLjAwMTY3MDQxIC0xLjExNzg4NSBDIDAuMjk1MzY3IC0xLjExNzg4NSAwLjU4MTIzMiAtMS4wMDA0MDYgMC43ODg3NzggLTAuNzg4OTQ1IEMgMS4wMDAyMzkgLTAuNTgxMzk5IDEuMTE3NzE4IC0wLjI5NTUzNCAxLjExNzcxOCAtMC4wMDE4MzcyMyBDIDEuMTE3NzE4IDAuMjk1Nzc1IDEuMDAwMjM5IDAuNTgxNjQgMC43ODg3NzggMC43ODkxODYgQyAwLjU4MTIzMiAxLjAwMDY0OCAwLjI5NTM2NyAxLjExODEyNiAwLjAwMTY3MDQxIDEuMTE4MTI2IEMgLTAuMjk1OTQyIDEuMTE4MTI2IC0wLjU4MTgwNyAxLjAwMDY0OCAtMC43ODkzNTMgMC43ODkxODYgQyAtMS4wMDA4MTUgMC41ODE2NCAtMS4xMTgyOTMgMC4yOTU3NzUgLTEuMTE4MjkzIC0wLjAwMTgzNzIzIEMgLTEuMTE4MjkzIC0wLjI5NTUzNCAtMS4wMDA4MTUgLTAuNTgxMzk5IC0wLjc4OTM1MyAtMC43ODg5NDUgQyAtMC41ODE4MDcgLTEuMDAwNDA2IC0wLjI5NTk0MiAtMS4xMTc4ODUgMC4wMDE2NzA0MSAtMS4xMTc4ODUgWiBNIDAuMDAxNjcwNDEgLTEuMTE3ODg1ICIgdHJhbnNmb3JtPSJtYXRyaXgoMC45OTc1MjEsIDAsIDAsIC0wLjk5NzUyMSwgMTU1LjIxMzE3NywgMTEuOTYzMDExKSIvPgo8L2c+Cjwvc3ZnPgo=" data-source-asset-id="det/bin/detspeed.pdf" alt="Original timing scatter plot: ten hollow circles for square matrices with 10 to 100 rows, rising from about 0.016 to 7.869 seconds. The horizontal tick labels are 20, 40, 60, 80 and 100; the vertical scale runs from 0 to 8. These historical totals time 100 calls, including random-matrix generation; they are not new measurements or a fitted curve. The original numeric transcript is immediately above the graph." /></p>
+</div>
+<p>Finding the fastest algorithm to compute the determinant is a topic of current research. So far, researchers have found algorithms that run in time between the square and cube of the number of rows.</p>
+<p>The contrast between the times taken by the two determinant computation methods of permutation expansion and row operations makes the point that although in principle they give the same answer, in practice we want the one with the best performance.</p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<section id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise-group.source-order.0001" class="source-exercise-group" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise-group.source-order.0001">
+<h4>Exercises</h4>
+<ol type="1">
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10001" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10001" data-source-number="1">
+<p><strong>Exercise 1</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10001.answer.source-order.001">Supplied answer</a></p>
+<p>To get an idea of what happens for typical matrices we can use the ability of computer systems to generate random numbers (of course, these are only pseudo-random in that they come from an algorithm but they pass a number of reasonable statistical tests for randomness). <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>Fill a <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="c93c183f02c781ac4c42fcc743df4e82aff3c92a92675879ebb16b7bcdf02549"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>5</mn>
+</math></span></span> array with random numbers say, in the range <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="cd0fd644c2b1d4f3c2d2d7bd9b1c39247546c02e5f1481a80fe96220a7aabc93"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">[</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>0</mn>
+  <mo>…</mo>
+  <mn>1</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mo stretchy="false">)</mo>
+</math></span>).</span> See if it is singular. Repeat that experiment a few times. Are singular matrices frequent or rare in this sense?</p></li>
+<li><p>Time your computer algebra system at finding the determinant of ten <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="da47fe933db9690a5e7386e3d76dcba7edb3f81b1291c7b9f552e99be8bba2d2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>10</mn>
+</math></span></span> arrays of random numbers. Find the average time per array. Repeat the prior item for <span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="221421d419f5d7c8aaa92afb092ef9e3b9389ecb0d68dd4553fe1dabc6c8e66e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>20</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>20</mn>
+</math></span></span> arrays, <span><span class="math-region inline" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="04a37d81590bbc8855c2978d0cf4bb7f212db94666b1e3d7359020bb5723b78e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>30</mn>
+</math></span></span> arrays, <span>…<span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="d3bfc9b58a20241f6c07ca798b39136bbad261569f630c69991581471d0fba2c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>100</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>100</mn>
+</math></span></span> arrays, and compare to the numbers given above. (Notice that, when an array is singular, we can sometimes decide that quickly, for instance if the first row equals the second. In the light of your answer to the first part, do you expect that singular systems play a large role in your average?)</p></li>
+<li><p>Graph the input size versus the average time.</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10001.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10001.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10001">Back to Exercise 1</a></p>
+<p><strong>Answer.</strong> Your timing will depend in part on the computer algebra system that you use, and in part on the power of the computer on which you do the calculation. But you should get a curve that is similar to the one shown.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10002" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10002" data-source-number="2">
+<p><strong>Exercise 2</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10002.answer.source-order.001">Supplied answer</a></p>
+<p>Compute the determinant of each of these by hand using the two methods discussed above.</p>
+<ol type="a">
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="0f98b851a35225780c10c2bba96c25be33020e2b890e60cc006ae1f6d0dfea7c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>5</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="8c62a4f298ad908dd0a2d172ab29f2358bc4400df6ec85a1f4a590c8b43a31b4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>5</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="d57af03963815dfe95e297e85c9ce65c85da3ed217f6619ca25cbf12839a9f53"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p></li>
+</ol>
+<p>Count the number of multiplications and divisions used in each case, for each of the methods. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10002.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10002.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10002">Back to Exercise 2</a></p>
+<p><strong>Answer.</strong> The number of operations depends on exactly how we do the operations. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>The determinant is <span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="2e42a91d2375f9a3afce88f766b097488c5ab1f5926798f59892394b77abdd5c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>11</mn>
+</math></span>.</span> To row reduce takes a single row combination with two multiplications <span>(<span class="math-region inline" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="21cb843f84f01b628fb84eae78ea8d155a8818bffe1c31b8c2fdf7c042d8e7a0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>5</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>2</mn>
+</math></span></span> times <span><span class="math-region inline" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span> plus <span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+</math></span>,</span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="21cb843f84f01b628fb84eae78ea8d155a8818bffe1c31b8c2fdf7c042d8e7a0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>5</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>2</mn>
+</math></span></span> times <span><span class="math-region inline" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span> plus <span><span class="math-region inline" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="615bdd17c2556f82f384392ea8557f8cc88b03501c759e23093ab0b2a9b5cd48"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>3</mn>
+</math></span>)</span> and the product down the diagonal takes one more multiplication. The permutation expansion takes two multiplications <span>(<span class="math-region inline" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span> times <span><span class="math-region inline" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="615bdd17c2556f82f384392ea8557f8cc88b03501c759e23093ab0b2a9b5cd48"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>3</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+</math></span></span> times <span><span class="math-region inline" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span>).</span></p></li>
+<li><p>The determinant is <span><span class="math-region inline" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="079e2bd789e00729ea2fae6c182d162926ae72f58e8db5112fff99f5a3064d6a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mn>39</mn>
+</math></span>.</span> Counting the operations is routine.</p></li>
+<li><p>The determinant is <span><span class="math-region inline" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+</math></span>.</span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10003" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10003" data-source-number="3">
+<p><strong>Exercise 3</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10003.answer.source-order.001">Supplied answer</a></p>
+<p>The use by the timing routine of <code>do_matrix</code> has a bug. That routine does two things, generate a random matrix and then do <code>gauss_method</code> on it, and the timing number returned is for the combination. Produce code that times only the <code>gauss_method</code> routine. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10003.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10003.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10003">Back to Exercise 3</a></p>
+<p><strong>Answer.</strong> You should build the matrix once and then time it being reduced many times. Note that <code>gauss_method</code>, as written, changes the input matrix, so be careful not to loop using the output of that routine or all the loops but the first will be on an echelon form matrix.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10004" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10004" data-source-number="4">
+<p><strong>Exercise 4</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10004.answer.source-order.001">Supplied answer</a></p>
+<p>What <span><span class="math-region inline" data-source-math-id="BFOURMATH000040END" data-source-tex-sha256="da47fe933db9690a5e7386e3d76dcba7edb3f81b1291c7b9f552e99be8bba2d2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>10</mn>
+</math></span></span> array can you invent that takes your computer the longest time to reduce? The shortest? <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10004.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10004.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10004">Back to Exercise 4</a></p>
+<p><strong>Answer.</strong> The identity matrix typically does not take long to reduce. For matrices that are slow, in Python you can try ones with numbers that are quite large. (Some computer algebra system also have the ability to generate special matrices; try some of those.)</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10005" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10005" data-source-number="5">
+<p><strong>Exercise 5</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10005.answer.source-order.001">Supplied answer</a></p>
+<p>Some computer language specifications requires that arrays be stored “by column,” that is, the entire first column is stored contiguously, then the second column, etc. Does the code fragment given take advantage of this, or can it be rewritten to make it faster, by taking advantage of the fact that computer fetches are faster from contiguous locations? <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10005.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10005.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.detspeed.tex.exercise.source-order.10005">Back to Exercise 5</a></p>
+<p><strong>Answer.</strong> No, the above code handles the numbers by row.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+</ol>
+</section>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</main><footer><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-30-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/detspeed.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>

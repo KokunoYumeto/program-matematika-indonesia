@@ -330,7 +330,7 @@ def export(frozen, public, check=False):
                        'complete_original_source': fact('sources/'+s+'.tex', src)})
         notes = []
         for p in sorted(d.glob('*.json')):
-            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json') or (s == 'cramer' and p.name == 'SOURCE_CONTEXT_REQUIREMENTS.json'):
+            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json') or (s in ('cramer','detspeed') and p.name == 'SOURCE_CONTEXT_REQUIREMENTS.json'):
                 nr = json.loads(p.read_bytes()); notes.extend(nr.get('source_issues', nr.get('source_findings', [])))
         if notes:
             note_tex.append('\\section*{'+tex_escape(TITLES[s])+': source notes}\n\\begin{enumerate}\n'+''.join('\\item '+tex_escape(n.get('finding', n.get('description', 'See the exact source-note record in the archive.')))+'\n' for n in notes)+'\\end{enumerate}\n')
