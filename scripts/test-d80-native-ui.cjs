@@ -1,0 +1,14 @@
+const assert=require('node:assert/strict'), fs=require('node:fs'), path=require('node:path');
+require('./d80-native-ui.js');
+const data=JSON.parse(fs.readFileSync(path.join(__dirname,'../docs/backend/d80/native-ledger/projection.json'),'utf8'));
+const f=globalThis.D80_NATIVE_LEDGER_API.filter, rows=data.rows;
+assert.equal(f(rows,'terms').length,511);
+assert.equal(f(rows,'segments','','','unit_slice').length,1736);
+assert.equal(f(rows,'terms','','','provisional').length,88);
+assert.equal(f(rows,'terms','','','term_disagreement').length,2);
+assert.equal(f(rows,'terms',' MATH.CATEGORY.FUNCTOR ').length,1);
+assert.equal(f(rows,'terms','','unknown-native-unit').length,0);
+assert.equal(f(rows,'terms','','o014.aljabr2.prelude').length,0);
+assert.equal(f(rows,'diagrams','','','reader_override').length,13);
+assert.equal(f(rows,'corrections','','','observed_not_modified_pending_consolidated_review').length,1);
+console.log(JSON.stringify({state:'pass',checks:9}));

@@ -349,9 +349,11 @@ for (const [name, fetch] of [
   }
   const d80=courses.find(c=>c.course_id==='D80');
   assert.equal(d80.layers.interoperability.semantic_adapter.contract_version,'course-learning-capability/1');
-  assert.equal(d80.layers.learner.tools.length,1);
-  assert.equal(d80.layers.learner.tools[0].tool_id,'d80.open_learner_hub');
-  assert.equal(d80.layers.learner.tools[0].href,'backend/d80/D80.html');
+  assert.equal(d80.layers.learner.tools.length,2);
+  assert.equal(d80.layers.learner.tools.find(t=>t.tool_id==='d80.open_learner_hub').href,'backend/d80/D80.html');
+  assert.equal(d80.layers.learner.tools.find(t=>t.tool_id==='d80.native_ledger').href,'backend/d80/native-ledger/ledger.html');
+  for(const locale of ['id','en'])assert.ok(d80.layers.educator.resources.some(r=>r.id==='D80:native-ledger-'+locale&&r.status==='verified'));
+  for(const key of ['ledger_status','terminology_status','corrections_status'])assert.equal(d80.layers.translation[key],'available_unverified');
   assert.equal(d80.layers.curriculum.unit_identity_status,'verified');
   assert.equal(d80.layers.educator.status,'verified');
   assert.equal(d80.layers.educator.unit_alignment_status,'verified');

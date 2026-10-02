@@ -250,13 +250,26 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,15);
+assert.equal(existingEnglishProjected.length,16);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
 // Preserve every previous tool while adding four bilingual CLP planners.
-assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')&&!tool.tool_id.startsWith('c130.native_ledger')&&!tool.tool_id.startsWith('d60.native_ledger')).length,51);
-assert.equal(capabilityTools.length,71);
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')&&!tool.tool_id.startsWith('c130.native_ledger')&&!tool.tool_id.startsWith('d60.native_ledger')&&!tool.tool_id.startsWith('d80.native_ledger')).length,51);
+assert.equal(capabilityTools.length,73);
+for(const locale of ['id','en']) {
+  const tool=capabilityTools.find(t=>t.tool_id==='d80.native_ledger'+(locale==='en'?'.en':''));
+  assert.equal(tool.href,'backend/d80/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html'));
+  assert.equal(tool.contentLanguage,locale);assert.equal(tool.primary,false);
+  assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='D80'),locale).some(r=>r.href===siteOrigin+tool.href&&r.accessRole==='tool'));
+}
+for(const mutate of [t=>{t.semantic_canon_approval=true;},t=>{t.native_book_rebuilt=true;},
+  t=>{t.summary.flags.unmapped_unit=0;},t=>{delete t.outputs['ledger-en.html'];},
+  t=>{t.outputs['projection.json'].sha256='0'.repeat(64);},]) {
+  const changed={...existingEnglishInputs},key='backend/course-capsule-v1/adapters/d80-native-ledger-v1/tests.json';
+  const value=JSON.parse(changed[key]);mutate(value);changed[key]=Buffer.from(JSON.stringify(value));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
 for(const locale of ['id','en']) {
   const tool=capabilityTools.find(t=>t.tool_id==='d60.native_ledger'+(locale==='en'?'.en':''));
   assert.equal(tool.href,'backend/d60/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html'));
@@ -693,7 +706,9 @@ for (const locale of supportedLocales) {
     if(tool.contentLanguage===localeMetadata[locale].languageTag) assert.ok(tool.note.includes('716')&&tool.note.includes('54')&&tool.note.includes('20'));
     else assert.equal(tool.note,interfaceCopy[locale].otherLanguageCapability);
   }
-  const d80Tools=resourceBindings(interfaceCourses.find(c=>c.id==='D80'),locale).filter(r=>r.capabilityToolId);
+  const d80AllTools=resourceBindings(interfaceCourses.find(c=>c.id==='D80'),locale).filter(r=>r.capabilityToolId);
+  assert.equal(d80AllTools.length,3);
+  const d80Tools=d80AllTools.filter(r=>r.href.endsWith('/d80/D80.html'));
   assert.equal(d80Tools.length,1);
   assert.deepEqual(d80Tools.map(tool=>tool.href),[
     'https://kokunoyumeto.github.io/program-matematika-indonesia/backend/d80/D80.html',

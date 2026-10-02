@@ -205,6 +205,29 @@ const logicalFiles = [
   })(),
   ...openLogicTeacherFiles.map(path => 'backend/openlogic-teacher/' + path),
   ...await (async()=>{
+    const base='backend/course-capsule-v1/adapters/d80-native-ledger-v1';
+    const tests=JSON.parse(await readFile(resolve(project,base,'tests.json')));
+    assert.equal(tests.schema,'d80-native-ledger-tests/1');assert.equal(tests.state,'pass');
+    assert.equal(tests.semantic_canon_approval,false);assert.equal(tests.native_book_rebuilt,false);
+    assert.equal(tests.summary.native_records,8430);assert.equal(tests.summary.visible_records,7760);
+    assert.deepEqual(tests.summary.counts,{segments:6347,terms:511,corrections:73,diagrams:829});
+    assert.deepEqual(tests.summary.flags,{unit_slice:1736,exact_source_span:4611,provisional:88,term_disagreement:2,reader_override:13,unmapped_unit:11});
+    const files=Object.keys(tests.outputs);assert.equal(files.length,8);
+    for(const name of files){
+      assert.match(name,/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);
+      const path='docs/backend/d80/native-ledger/'+name,bytes=await readFile(resolve(project,path)),fact=tests.outputs[name];
+      if(bytes.length!==fact.bytes||sha256(bytes)!==fact.sha256){
+        assert.ok(name.endsWith('.html'),'Non-HTML D80 native identity drift');
+        const overlay=d110NavigationOverlay.files.find(f=>f.document===path);
+        assert.ok(overlay,'D80 native navigation overlay missing');
+        assert.deepEqual(overlay.source_body,{path,...fact});
+        assert.deepEqual(overlay.hosted_surface,identity(path,bytes));
+        assert.equal(overlay.source_body_replay_exact,true);
+      }
+    }
+    return files.map(name=>'backend/d80/native-ledger/'+name);
+  })(),
+  ...await (async()=>{
     const base='backend/course-capsule-v1/adapters/d60-native-ledger-v1';
     const tests=JSON.parse(await readFile(resolve(project,base,'tests.json')));
     assert.equal(tests.schema,'d60-native-ledger-independent-tests/1'); assert.equal(tests.state,'pass');
@@ -830,7 +853,10 @@ for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityTool
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
 assert.deepEqual(sortedIds(Object.keys(authorityToolsByCourse)), sortedIds(rows.map(row => row.course_id)));
-assert.equal(authorityToolIds.length, 57);
+assert.equal(authorityToolIds.length, 58);
+assert.ok(authorityToolsByCourse.D80.some(t=>t.tool_id==='d80.native_ledger'&&t.href==='backend/d80/native-ledger/ledger.html'));
+for(const key of ['ledger_status','terminology_status','corrections_status'])
+  assert.equal(rows.find(r=>r.course_id==='D80').layers.translation[key],'available_unverified');
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
     [...(course==='D60'?[{tool_id:'d60.native_ledger',href:'backend/d60/native-ledger/ledger.html'}]:[]),
@@ -879,7 +905,7 @@ assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
 assert.equal(validation.checks.learner_tool_course_count, 40);
-assert.equal(validation.checks.learner_tool_count, 57);
+assert.equal(validation.checks.learner_tool_count, 58);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 

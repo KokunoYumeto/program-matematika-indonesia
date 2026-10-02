@@ -277,6 +277,10 @@ def collect(root):
                     add(external['evidence']['path'], 'native-archive-command-evidence:' + name)
                     native_dependencies.append(external)
 
+    preserved_packages = scope.get('preserved_public_source_packages', [])
+    for package in preserved_packages:
+        assert package['path'] in reasons, 'Preserved source package is not included'
+        assert identity(local_path(root, package['path'])) == {k:package[k] for k in ('bytes','sha256')}, 'Preserved public source package changed'
     files = []
     for name in sorted(reasons):
         files.append({'path': name, **identity(root / name), 'reasons': sorted(reasons[name])})
@@ -284,7 +288,9 @@ def collect(root):
             'roles': per_role, 'files': files,
             'file_count': len(files), 'uncompressed_bytes': sum(f['bytes'] for f in files),
             'whole_program_complete': False,
-            'producer_corpora_included': False,
+            'producer_corpora_included': bool(preserved_packages),
+            'preserved_public_source_packages': preserved_packages,
+            'complete_forty_book_corpus_included': False,
             'full_native_source_rebuild_claimed': False,
             'archival_code_witnesses': sorted(archival_witnesses, key=lambda row: row['path']),
             'preserved_native_source_dependencies': sorted(preserved_dependencies,

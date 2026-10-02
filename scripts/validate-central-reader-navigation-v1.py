@@ -993,6 +993,11 @@ def main() -> int:
                     raise ValueError("Library navigation provider cannot exempt another page")
                 library = runpy.run_path(str(ROOT / "scripts/library-handoff-v1.py"))
                 library["validate"](ROOT)
+            elif row.get("navigation_provider") == "b40-foundations-native-v1":
+                native = runpy.run_path(str(ROOT / "scripts/b40-foundations-navigation-v1.py"))
+                verified = native["validate"](ROOT)
+                if row["document"] not in {item["document"] for item in verified["files"]}:
+                    raise ValueError("B40 native navigation cannot exempt another page")
             elif parser.surface_navigation_markers:
                 raise ValueError(f"{path}: program root must not carry a redundant return overlay")
             generic_results.append({

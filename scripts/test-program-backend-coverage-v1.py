@@ -784,7 +784,9 @@ assert roles['D70']['native_capability_parity_completion'] == 'not_yet_proven'
 assert {row['id'] for row in roles['D70']['educator']['resources']} >= {'D70:native-metadata-replay-id','D70:native-metadata-replay-en'}
 assert roles['D80']['common_adapter']['contract'] == 'course-learning-capability/1'
 assert roles['D80']['learner']['relationship'] == 'directly_consumes_adapter_outputs'
-assert len(roles['D80']['learner']['tools']) == 1
+assert len(roles['D80']['learner']['tools']) == 2
+assert {row['id'] for row in roles['D80']['educator']['resources']} >= {'D80:native-ledger-id','D80:native-ledger-en'}
+assert roles['D80']['native_capability_parity_completion'] == 'not_yet_proven'
 assert roles['D80']['educator']['unit_alignment'] == 'verified'
 assert roles['D80']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['D80']['common_adapter']['zenodo_preservation'] == 'not_established'

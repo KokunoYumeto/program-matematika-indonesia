@@ -129,7 +129,34 @@ function html(locale){const t=copy[locale];const other=locale==='en'?'id':'en';c
   const adv=advancedCourses.map(c=>{const req=edges.filter(e=>e.from==='advanced:'+c.id).map(e=>e.to);return '<section id="advanced-'+esc(c.id)+'"><h3><a href="'+esc(c.route)+'" lang="en">'+esc(c.title.en)+'</a></h3><p>English · '+esc(c.status)+' · '+esc(c.lessons.length)+' '+esc(t.lesson)+'</p><h4>'+esc(t.before)+'</h4>'+(req.length?list(req):'<p>'+esc(t.no)+'</p>')+'<details><summary>'+esc(t.lesson)+'</summary><ol>'+c.lessons.map(l=>'<li><a href="'+esc(l.route)+'" lang="en">'+esc(l.title)+'</a></li>').join('')+'</ol></details><details><summary>'+(locale==='en'?'Sources and rights':'Sumber dan hak penggunaan')+'</summary><p>'+esc(c.authorship)+'; '+esc(c.licence?.spdx??'source licence applies')+'</p></details><h4>'+esc(t.after)+'</h4>'+list(reverse['advanced:'+c.id])+'</section>';}).join('');
   return '<!doctype html><html lang="'+locale+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>'+esc(t.title)+'</title><style>body{font:17px/1.65 system-ui,sans-serif;margin:auto;max-width:72rem;padding:1rem;color:#172338;background:#fbfcfe}a{color:#075aaa}nav{display:flex;gap:1rem;flex-wrap:wrap}section{border:1px solid #cbd8e5;border-radius:.7rem;margin:1rem 0;padding:1rem;scroll-margin-top:1rem}h2{margin-top:2rem}.notice{background:#eaf2fa;padding:1rem;border-left:.3rem solid #2466a1}p,li,a{overflow-wrap:anywhere}details{margin:.7rem 0}summary{cursor:pointer}</style></head><body><header><nav><a href="'+origin+locale+'/">'+esc(t.home)+'</a><a href="'+origin+other+'/programme/" hreflang="'+other+'">'+esc(t.toggle)+'</a><a href="../../data/cross-programme-v1/bridge.json">'+esc(t.data)+'</a></nav><h1>'+esc(t.title)+'</h1><p class="notice">'+esc(t.notice)+'</p><p>'+coreCourses.length+' '+esc(t.core)+' · '+advancedCourses.length+' '+esc(t.advanced)+'</p></header><main><h2>'+esc(t.core)+'</h2>'+body+'<h2>'+esc(t.advanced)+'</h2>'+adv+'<section><h2>'+esc(t.limits)+'</h2><p>'+(locale==='en'?'Full statement/proof/generality comparisons are recorded separately. None is certified by this course-level crosswalk. The 58-course local phone projection and the public advanced edition are different evidence snapshots.':'Perbandingan lengkap pernyataan, pembuktian, dan keumuman dicatat terpisah. Peta tingkat mata kuliah ini tidak menyatakan perbandingan tersebut selesai. Proyeksi lokal phone sebanyak 58 mata kuliah dan edisi lanjutan publik merupakan snapshot bukti yang berbeda.')+'</p><p>'+(locale==='en'?'Navigation and dependency integration produced by OpenAI Codex — GPT-6.1 Sol, Ultra effort. Source author credits are preserved. No human proof review is claimed.':'Integrasi navigasi dan dependensi dikerjakan oleh OpenAI Codex — GPT-6.1 Sol, tingkat upaya Ultra. Kredit penulis sumber dipertahankan. Tidak ada klaim peninjauan pembuktian oleh manusia.')+'</p></section></main></body></html>\n';
 }
-const outputs=[['backend/cross-programme-v1/bridge.json',serialize(bridge)],['docs/data/cross-programme-v1/bridge.json',serialize(bridge)],['docs/interface/cross-programme-routes.js',Buffer.from(moduleText)],...['en','id'].map(l=>['docs/'+l+'/programme/index.html',Buffer.from(html(l))])];
+// Reproduce additive, already published reader links without changing the
+// frozen course/proof snapshot or copying producer book bodies into it.
+const additionsPath='backend/cross-programme-v1/current-navigation-additions.json';
+const additionsBytes=await readFile(resolve(root,additionsPath));const additions=json(additionsBytes);
+assert.equal(additions.schema,'cross-programme-current-navigation-additions/1');
+const additionKeys=new Set();
+for(const resource of additions.resources){
+  assert.ok(coreById.has(resource.course_id));
+  assert.match(resource.marker,/^data-[a-z0-9-]+="[a-z0-9-]+"$/);
+  assert.ok(!additionKeys.has(resource.course_id+' '+resource.marker));additionKeys.add(resource.course_id+' '+resource.marker);
+  const target=new URL(resource.href);assert.equal(target.origin,new URL(origin).origin);
+  assert.equal(resource.content_language,'en');assert.ok(resource.labels.id&&resource.labels.en);
+  const source=resource.source_manifest;assert.match(source.path,/^docs\/en\/readers\/[a-z0-9-]+\/FOUNDATIONS_MANIFEST\.json$/);
+  const bytes=await readFile(resolve(root,source.path));assert.deepEqual(fact(source.path,bytes),source);
+  assert.equal(resource.href,origin+source.path.slice(5).replace('FOUNDATIONS_MANIFEST.json',''));
+}
+function currentHtml(locale){
+  let body=html(locale);
+  for(const resource of additions.resources){
+    const course=coreCourses.find(c=>c.id===resource.course_id);
+    const anchor='<section id="core-'+resource.course_id+'"><h3>'+esc(course.title[locale])+'</h3>';
+    assert.equal(body.split(anchor).length,2);assert.ok(!body.includes(resource.marker));
+    const link='<p><a '+resource.marker+' href="'+esc(resource.href)+'" hreflang="'+esc(resource.content_language)+'">'+esc(resource.labels[locale])+'</a></p>';
+    body=body.replace(anchor,anchor+link);
+  }
+  return body;
+}
+const outputs=[['backend/cross-programme-v1/bridge.json',serialize(bridge)],['docs/data/cross-programme-v1/bridge.json',serialize(bridge)],['docs/interface/cross-programme-routes.js',Buffer.from(moduleText)],...['en','id'].map(l=>['docs/'+l+'/programme/index.html',Buffer.from(currentHtml(l))])];
 for(const [path,b] of outputs){
   const full=resolve(root,path);
   if(args.has('--check')){
@@ -148,6 +175,6 @@ for(const [path,b] of outputs){
     assert.deepEqual(Buffer.from(body),b,'Hosted navigation must reverse to exact source: '+path);
   }else{await mkdir(dirname(full),{recursive:true});await writeFile(full,b);}
 }
-const receipt={schema:'cross-programme-build/1',state:'local_reading_routes_integrated_proof_correspondence_unfinished',counts:bridge.counts,inputs:manifest.inputs,outputs:outputs.map(([p,b])=>fact(p,b)),no_native_owner_mutation:true,no_phone_mutation:true,no_mathematical_certification:true,public_deployment:false,script:fact('scripts/build-cross-programme-integration-v1.mjs',await readFile(fileURLToPath(import.meta.url)))};
+const receipt={schema:'cross-programme-build/1',state:'local_reading_routes_integrated_proof_correspondence_unfinished',counts:bridge.counts,inputs:manifest.inputs,current_navigation_additions:fact(additionsPath,additionsBytes),outputs:outputs.map(([p,b])=>fact(p,b)),no_native_owner_mutation:true,no_phone_mutation:true,no_mathematical_certification:true,public_deployment:false,script:fact('scripts/build-cross-programme-integration-v1.mjs',await readFile(fileURLToPath(import.meta.url)))};
 if(!args.has('--check'))await writeFile(resolve(out,'BUILD_RECEIPT.json'),serialize(receipt));
 console.log(JSON.stringify({state:args.has('--check')?'byte_replay_pass':receipt.state,counts:bridge.counts,outputs:receipt.outputs}));

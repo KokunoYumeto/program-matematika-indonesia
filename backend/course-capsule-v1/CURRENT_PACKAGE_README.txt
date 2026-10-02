@@ -6,6 +6,24 @@ bahan pengajar, kode adaptor, serta bukti dan pemeriksaan yang menyertainya.
 Paket ini bukan pernyataan bahwa semua kemampuan backend telah selesai.
 Status dan batas setiap kemampuan tetap tercatat pada masing-masing kursus.
 
+Tambahan D80: /backend/d80/native-ledger/ledger.html menyediakan pencarian
+6.347 segmen, 511 istilah, 73 koreksi dan 829 deskripsi diagram. Arsip metadata
+mempertahankan 8.430 rekaman asli. Antarmuka Inggris berada pada ledger-en.html.
+Sebanyak 88 istilah sementara, dua perbedaan pilihan dan sebelas lokasi istilah
+tanpa pemetaan unit eksak tetap dinyatakan; ketersediaan data bukan pengesahan
+kanon. Tampilan, unduhan dan pemutaran ulang luring telah diuji. Terjemahan
+asli: OpenAI Codex gpt-5.6-sol, tingkat upaya Ultra. Integrasi baru:
+OpenAI Codex gpt-6-astra, tingkat upaya Ultra.
+
+Pelestarian tambahan B40: backend/b40-foundations-public-20261002/preservation/
+PUBLIC_DEPENDENCY_INTEGRATION_SOURCE.zip adalah salinan identik paket publik
+yang sudah ada. Di dalamnya tersedia sumber lengkap untuk enam bagian fondasi
+Hefferon yang ditautkan, bukan klaim bahwa seluruh buku telah dimasukkan.
+Ekstrak paket itu secara terpisah dan ikuti README.txt-nya. Isi dan sumber
+aslinya tidak ditimpa oleh pembaruan integrasi ini. Proyeksi phone 75 mata
+kuliah/1.179 pelajaran di dalam paket tambahan merupakan snapshot berbeda
+dari peta publik 71/951 yang dijelaskan di bawah; jangan menjumlahkannya.
+
 Tambahan D60: buka /backend/d60/native-ledger/ledger.html untuk menelusuri
 istilah, segmen, koreksi dan hak penggunaan yang terhubung ke unit belajar.
 Sebelas aliran metadata asli mempertahankan 8.338 rekaman. Label penelusuran
@@ -87,6 +105,15 @@ docs/guides/start-v0.63.32.tex` membangun dokumen yang sama. Versi distribusi Te
 dan font dapat memengaruhi byte PDF; identitas rilis dicatat terpisah.
 
 Panduan Inggris tambahan / additional English guide:
+D80 adds a searchable source/term/correction/diagram consumer with 8,430
+original metadata records. Unverified terminology and imprecise source
+locations remain visible. The English interface still links to Indonesian
+book content. B40's separately extractable public preservation packet includes
+the exact source of its six foundation sections and frozen dependency adapter.
+It preserves a separate 75-course/1,179-lesson phone snapshot, not an additive
+corpus or a replacement of the older public map. No full native-book rebuild
+or independent semantic canon approval is claimed by either addition.
+
 This is the current shared integration snapshot, not the complete book corpus
 or a declaration that all backend work is finished. Serve the docs directory
 with a local HTTP server and open /backend/. Book links still need internet or
