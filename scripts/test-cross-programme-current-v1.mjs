@@ -37,6 +37,7 @@ for (const locale of ['id','en']) {
   const programme='docs/'+locale+'/programme/index.html';
   const programmeBytes=await readFile(resolve(root,programme));
   const text=programmeBytes.toString('utf8');
+  assert.ok(!/^(?:<{7}|={7}|>{7})/m.test(text),'No unresolved programme merge markers');
   assert.ok(text.includes('data-advanced-snapshot="801f1868"'));
   const b40=text.match(/<section id="core-B40">[\s\S]*?<\/section>/)?.[0];
   assert.ok(b40?.includes('data-b40-foundations="v1"'));
@@ -44,8 +45,8 @@ for (const locale of ['id','en']) {
   assert.ok(b40.includes('data-b40-expanded="v1"'));
   assert.ok(b40.includes('href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/" hreflang="en"'));
   assert.ok(b40.includes(locale==='en'?'(partial book)':'(sebagian buku)'));
-  assert.ok(b40.includes(locale==='en'?'31 sections through Chiò’s Method':'31 bagian'));
-  assert.ok(!b40.includes('30 sections')&&!b40.includes('30 bagian'));
+  assert.ok(b40.includes(locale==='en'?'32 sections through Projective Geometry':'32 bagian hingga Geometri Proyektif'));
+  assert.ok(!/\b(?:30|31) (?:sections|bagian)\b/.test(b40));
   for(const [section,side] of [['core-D80','provider'],['advanced-'+d80route.consumer_course,'consumer']]){
     const local=text.split('<section id="'+section+'">')[1]?.split('</section>')[0];
     assert.ok(local?.includes(renderD80PrerequisiteRoute(d80route,locale,side)),'Missing exact D80 '+side+' route in '+locale);

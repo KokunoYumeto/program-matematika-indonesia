@@ -30,6 +30,9 @@ try{
     const proofNotice=await page.locator('.notice').innerText();assert.ok(proofNotice.length>100);
     if(current){
       assert.equal(await page.locator('[data-advanced-snapshot="801f1868"]').count(),1);
+      const b40Expanded=page.locator('#core-B40 a[data-b40-expanded="v1"]');
+      assert.equal(await b40Expanded.count(),1);
+      assert.ok((await b40Expanded.innerText()).includes(locale==='en'?'32 sections through Projective Geometry':'32 bagian hingga Geometri Proyektif'));
       assert.equal(await page.locator('#advanced-AG-RG details ol li').count(),6);
       const route=JSON.parse(await readFile(resolve(dir,'d80-prerequisite-route-v1.json')));
       const provider=page.locator('#core-D80 aside[data-d80-prerequisite="provider"]');
