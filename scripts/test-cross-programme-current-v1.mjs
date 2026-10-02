@@ -26,6 +26,32 @@ assert.equal(bridge.advanced_snapshot_intake.consumer_source.matching_inspected_
 assert.ok(bridge.courses.advanced.some(c=>c.id==='AG-RG'&&c.lessons.length===6));
 assert.ok(!bridge.courses.advanced.some(c=>c.id==='CORE-B40'),'Local proof draft must not acquire an invented public route');
 assert.equal(bridge.counts.independently_verified_cross_programme_proof_matches,0);
+const b40Course=bridge.courses.core.find(c=>c.id==='B40');
+assert.equal(b40Course.language_access.en.program_hosted_reader.status,'not-yet-hosted','Preserve the frozen language-access snapshot');
+assert.equal(bridge.policy.current_reading_resources_are_additive_to_frozen_language_access,true);
+assert.equal(b40Course.current_reading_resources.length,2);
+const expanded=b40Course.current_reading_resources.find(r=>r.marker==='data-b40-expanded="v1"');
+assert.equal(expanded.href,'https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/');
+assert.equal(expanded.content_language,'en');
+assert.equal(expanded.source_commit,'d4b67f4b26c5f5231fd3ce22503bb89dffc6b55e');
+assert.deepEqual(expanded.coverage,{sections:32,native_units:2566,full_book:false,proof_dependency_closure:false});
+for(const resource of b40Course.current_reading_resources){
+  const manifestBytes=await readFile(resolve(root,resource.source_manifest.path));
+  assert.equal(manifestBytes.length,resource.source_manifest.bytes);
+  assert.equal(sha(manifestBytes),resource.source_manifest.sha256);
+  const manifest=JSON.parse(manifestBytes);
+  assert.equal(resource.native_sections.length,manifest.sections.length);
+  for(let i=0;i<manifest.sections.length;i++){
+    const bound=resource.native_sections[i],native=manifest.sections[i];
+    assert.equal(bound.section,native.section);assert.equal(bound.native_units,native.units);
+    for(const [key,nativeKey] of [['reader','reader'],['native_unit_index','public_index']]){
+      const row=bound[key],content=await readFile(resolve(root,row.path));
+      assert.equal(content.length,row.bytes);assert.equal(sha(content),row.sha256);
+      assert.equal(row.sha256,native[nativeKey].sha256);
+      assert.equal(row.url,'https://kokunoyumeto.github.io/program-matematika-indonesia/'+row.path.slice(5));
+    }
+  }
+}
 const d80route=validateD80PrerequisiteRoute(await load('backend/cross-programme-v1/d80-prerequisite-route-v1.json'));
 const b40route=validateB40PrerequisiteRoute(await load('backend/cross-programme-v1/b40-prerequisite-route-v1.json'));
 assert.deepEqual(bridge.source_bound_lesson_routes,[d80route,b40route]);
@@ -47,6 +73,10 @@ for (const locale of ['id','en']) {
   assert.ok(b40.includes(locale==='en'?'(partial book)':'(sebagian buku)'));
   assert.ok(b40.includes(locale==='en'?'32 sections through Projective Geometry':'32 bagian hingga Geometri Proyektif'));
   assert.ok(!/\b(?:30|31) (?:sections|bagian)\b/.test(b40));
+  for(const resource of b40Course.current_reading_resources){
+    assert.ok(b40.includes(resource.marker+' href="'+resource.href+'" hreflang="'+resource.content_language+'"'));
+    assert.ok(b40.includes(resource.labels[locale]));
+  }
   for(const [section,side] of [['core-D80','provider'],['advanced-'+d80route.consumer_course,'consumer']]){
     const local=text.split('<section id="'+section+'">')[1]?.split('</section>')[0];
     assert.ok(local?.includes(renderD80PrerequisiteRoute(d80route,locale,side)),'Missing exact D80 '+side+' route in '+locale);
@@ -90,6 +120,7 @@ const result={schema:'current-core-advanced-integration/1',state:'pass',core_rol
   all_six_current_shells_have_d80_tools:true,
   b40_existing_english_foundations_preserved_in_both_programmes:true,
   b40_expanded_english_reader_preserved_in_both_programmes:true,
+  b40_machine_discovery:{current_readers:2,expanded_sections:32,expanded_native_units:2566,section_indices_hash_bound:true,frozen_snapshot_preserved:true},
   d80_source_bound_prerequisite_readings:3,
   d80_distinct_relationships:1,
   d80_forward_reverse_localized_renderings:4,

@@ -158,6 +158,10 @@ bridge.source_bound_lesson_routes.push(b40Route);
 bridge.b40_prerequisite_reader= fact(b40Route.reader_manifest,b40ManifestBytes);
 assert.equal(additions.schema,'cross-programme-current-navigation-additions/1');
 const additionKeys=new Set();
+// Current resources are additive evidence. Never rewrite the pinned historical
+// language_access snapshot or infer a complete book from a partial reader.
+for(const course of coreCourses)course.current_reading_resources=[];
+bridge.policy.current_reading_resources_are_additive_to_frozen_language_access=true;
 for(const resource of additions.resources){
   assert.ok(coreById.has(resource.course_id));
   assert.match(resource.marker,/^data-[a-z0-9-]+="[a-z0-9-]+"$/);
@@ -166,13 +170,38 @@ for(const resource of additions.resources){
   assert.equal(resource.content_language,'en');assert.ok(resource.labels.id&&resource.labels.en);
   const source=resource.source_manifest;assert.match(source.path,/^docs\/en\/readers\/[a-z0-9-]+\/(?:FOUNDATIONS|READER)_MANIFEST\.json$/);
   const bytes=await readFile(resolve(root,source.path));assert.deepEqual(fact(source.path,bytes),source);
+  const native=json(bytes);
   if(source.path.endsWith('/READER_MANIFEST.json')){
-    const native=json(bytes);assert.equal(native.schema,'b40-expanded-reading-edition/1');
+    assert.equal(native.schema,'b40-expanded-reading-edition/1');
     assert.equal(native.sections.length,32);assert.equal(native.language,'en');
     assert.equal(native.sections.at(-1).section,'projplane');
     assert.equal(resource.course_id,'B40');
   }
   assert.equal(resource.href,origin+source.path.slice(5).replace(/(?:FOUNDATIONS|READER)_MANIFEST\.json$/,''));
+  assert.equal(native.language,resource.content_language);
+  const sourceCommit=resource.source_commit??additions.source_commit;
+  assert.match(sourceCommit,/^[0-9a-f]{40}$/);
+  const nativeSections=[];
+  for(const section of native.sections){
+    const bound={section:section.section,title:section.title,native_units:section.units};
+    for(const [key,name] of [['reader','reader'],['public_index','native_unit_index']]){
+      const row=section[key];assert.ok(row&&row.path);
+      assert.match(row.path,/^[A-Za-z0-9_./-]+$/);assert.ok(!row.path.split('/').includes('..'));
+      const path=dirname(source.path)+'/'+row.path;
+      const content=await readFile(resolve(root,path));
+      assert.deepEqual(fact(row.path,content),row,'Changed current reading resource: '+path);
+      bound[name]={...fact(path,content),url:origin+path.slice(5)};
+    }
+    nativeSections.push(bound);
+  }
+  assert.equal(nativeSections.length,native.counts.readers);
+  assert.equal(nativeSections.reduce((n,s)=>n+s.native_units,0),native.counts.native_units);
+  coreCourses.find(c=>c.id===resource.course_id).current_reading_resources.push({
+    ...resource,source_commit:sourceCommit,native_source_revision:native.source_revision,
+    availability:'program_hosted_partial_reader',
+    coverage:{sections:native.counts.readers,native_units:native.counts.native_units,
+      full_book:false,proof_dependency_closure:false},native_sections:nativeSections,
+  });
 }
 function currentHtml(locale){
   let body=html(locale);
@@ -193,7 +222,7 @@ function currentHtml(locale){
     assert.equal(body.split(anchor).length,2);
     body=body.replace(anchor,anchor+renderB40PrerequisiteRoute(b40Route,locale,side));
   }
-  for(const resource of additions.resources){
+  for(const resource of coreCourses.flatMap(course=>course.current_reading_resources)){
     const course=coreCourses.find(c=>c.id===resource.course_id);
     const anchor='<section id="core-'+resource.course_id+'"><h3>'+esc(course.title[locale])+'</h3>';
     assert.equal(body.split(anchor).length,2);assert.ok(!body.includes(resource.marker));
