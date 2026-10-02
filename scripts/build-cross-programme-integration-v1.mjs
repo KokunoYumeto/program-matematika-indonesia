@@ -4,7 +4,7 @@ import {createHash} from 'node:crypto';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
-import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute} from './b40-prerequisite-route-v1.mjs';
+import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute,currentRequirementDisposition,renderCurrentRequirements} from './b40-prerequisite-route-v1.mjs';
 import {validateHermitianRoute,renderHermitianRoute} from './finite-hermitian-route-v1.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
@@ -170,6 +170,41 @@ for(const row of hermitianManifest.files){
 }
 bridge.source_bound_lesson_routes.push(hermitianRoute);
 bridge.finite_hermitian_reader=fact(hermitianRoute.reader_manifest,hermitianManifestBytes);
+// Preserve the original inspection; expose later source-bound resolutions
+// separately so a historical unchecked finding cannot masquerade as live state.
+bridge.result_requirement_findings_context={
+  role:'historical_snapshot',source:fact('backend/cross-programme-v1/PROOF_SCOPE_FINDINGS.json',scopeFindingBytes),
+  current_status_field:'current_result_requirements',
+  independent_review_not_inferred:true,native_catalogue_admission_changed:false,
+};
+const consumerPath='backend/cross-programme-v1/proof-sample/advanced/RT-FIN-01.md';
+const consumerFact=fact(consumerPath,await readFile(resolve(root,consumerPath)));
+bridge.current_result_requirements=[];
+for(const [route,routePath,routeBytes,readerBytes,sourceName,reviewName] of [
+  [b40Route,b40RoutePath,b40RouteBytes,b40ManifestBytes,'from-bases-to-projections-r2.md','ADAPTATION_R2.json'],
+  [hermitianRoute,hermitianPath,hermitianBytes,hermitianManifestBytes,'finite-hermitian-spaces.md','SOURCE_REVIEW.json'],
+]){
+  const sourcePath=dirname(route.reader_manifest)+'/'+sourceName;
+  const reviewPath=dirname(route.reader_manifest)+'/'+reviewName;
+  const sourceBytes=await readFile(resolve(root,sourcePath));
+  const reviewBytes=await readFile(resolve(root,reviewPath));const review=json(reviewBytes);
+  const basis=route===b40Route;
+  if(basis)assert.equal(review.components[0].source_sha256.toLowerCase(),route.source_sha256);
+  else{
+    assert.equal(review.lesson_sha256,route.source_sha256);
+    assert.equal(review.consumer.sha256,route.consumer_source_sha256);
+    assert.equal(review.independent_review,false);
+  }
+  const id='RT-FIN-01.'+(basis?'basis-extension':'hermitian-orthogonal-decomposition');
+  const finding=scopeFindings.requirements.find(row=>row.id===id);assert.ok(finding);
+  bridge.current_result_requirements.push(currentRequirementDisposition(finding,route,{
+    source:fact(sourcePath,sourceBytes),consumer:consumerFact,
+    route:fact(routePath,routeBytes),reader_manifest:fact(route.reader_manifest,readerBytes),
+    author_review:fact(reviewPath,reviewBytes),
+  }));
+}
+bridge.counts.requirements_supplied_with_author_self_review=bridge.current_result_requirements.length;
+bridge.counts.actual_uses_bound_to_supplied_requirements=bridge.current_result_requirements.reduce((n,row)=>n+row.consumer.uses.length,0);
 assert.equal(additions.schema,'cross-programme-current-navigation-additions/1');
 const additionKeys=new Set();
 // Current resources are additive evidence. Never rewrite the pinned historical
@@ -244,6 +279,10 @@ function currentHtml(locale){
     const link='<p><a '+resource.marker+' href="'+esc(resource.href)+'" hreflang="'+esc(resource.content_language)+'">'+esc(resource.labels[locale])+'</a></p>';
     body=body.replace(anchor,anchor+link);
   }
+  const consumer=advancedCourses.find(c=>c.id==='RT-FIN');
+  const statusAnchor='<section id="advanced-RT-FIN"><h3><a href="'+esc(consumer.route)+'" lang="en">'+esc(consumer.title.en)+'</a></h3>';
+  assert.equal(body.split(statusAnchor).length,2);
+  body=body.replace(statusAnchor,statusAnchor+renderCurrentRequirements(bridge.current_result_requirements,locale));
   return body;
 }
 const outputs=[['backend/cross-programme-v1/bridge.json',serialize(bridge)],['docs/data/cross-programme-v1/bridge.json',serialize(bridge)],['docs/interface/cross-programme-routes.js',Buffer.from(moduleText)],...['en','id'].map(l=>['docs/'+l+'/programme/index.html',Buffer.from(currentHtml(l))])];

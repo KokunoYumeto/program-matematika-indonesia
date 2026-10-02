@@ -29,6 +29,12 @@ try{
     const page=await context.newPage(),errors=[];page.on('pageerror',e=>errors.push(String(e)));
     for(const locale of ['en','id']){
       await page.goto(origin+'/'+locale+'/programme/#advanced-RT-FIN');
+      const status=page.locator('#advanced-RT-FIN [data-current-proof-requirements="RT-FIN"]');
+      assert.ok(await status.isVisible());
+      assert.ok((await status.innerText()).includes(locale==='en'?'four recorded uses':'empat penggunaan'));
+      assert.equal(await status.locator('a[hreflang="en"]').count(),2);
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Programme has viewport overflow');
+      if(locale==='en' && width===390)await page.screenshot({path:resolve(output,'current-status-390.png')});
       const panel=page.locator('#advanced-RT-FIN [data-hermitian-prerequisite="consumer"]');
       assert.ok(await panel.isVisible());assert.equal(await panel.locator('a[hreflang="en"]').count(),2);
       await panel.locator('a[hreflang="en"]').first().click();
@@ -43,7 +49,7 @@ try{
       await page.locator('nav').first().getByRole('link',{name:'Linear algebra',exact:true}).click();
       const provider=page.locator('#core-B40 [data-hermitian-prerequisite="provider"]');
       assert.ok(await provider.isVisible());
-      checks.push({width,programme_locale:locale,consumer_to_proof_to_provider:true,formulas:144,language:'en'});
+      checks.push({width,programme_locale:locale,current_requirements_notice:true,consumer_to_proof_to_provider:true,formulas:144,language:'en'});
     }
     assert.deepEqual(errors,[]);await context.close();
   }
