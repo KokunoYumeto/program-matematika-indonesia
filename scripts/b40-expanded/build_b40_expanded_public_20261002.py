@@ -41,7 +41,7 @@ def configure(path):
     assert all(re.fullmatch(r'[a-z][a-z0-9]*', s) for s in c['sections'])
     assert c['source_archive_url'].startswith('https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/')
     SECTIONS = c['sections']
-    FILES = {s:'src/'+('det' if s.startswith('det') or s in ('cramer','chio','projplane','compgraphics') else 'map' if s in SECTIONS[14:25] else 'vs' if s in SECTIONS[7:14] else 'gr')+'/'+s+'.tex' for s in SECTIONS}
+    FILES = {s:'src/'+('jc' if s.startswith('jc') else 'det' if s.startswith('det') or s in ('cramer','chio','projplane','compgraphics') else 'map' if s in SECTIONS[14:25] else 'vs' if s in SECTIONS[7:14] else 'gr')+'/'+s+'.tex' for s in SECTIONS}
     SOURCE_URL, REGISTRY_SHA, EXPECTED, LAST_TITLE = c['source_archive_url'], c['registry_sha256'], c['counts'], c['last_section_title']
 
 
@@ -108,7 +108,7 @@ def freeze(destination):
     for s in SECTIONS:
         directory = B40_REL / ('semantic-pilot-' + s)
         names = [s+'.semantic.json', 'math-source-index.json', 'mathml-regions.json', 'MATH_RENDER_REPORT.json', 'MATH_RENDER_CONFIG.json', s+'.reader-pilot.html', 'rendered-unit-index.json', 'SEMANTIC_PILOT_REPORT.json', 'PRESENTATION_BINDINGS.json', 'PROSE_LEXICAL_REPLAY.json']
-        optional = ['FIGURE_CONVERSION_RECEIPT.json', 'RICH_CONTENT_CLOSURE.json', 'SOURCE_TABLE_CELL_GRID.json', 'ASSET_INDEX.json', 'RENDERED_CONTEXT_CONTRACT.json', 'RENDERED_SOURCE_CONTEXT_RELATIONS.json', 'SOURCE_CONTEXT_REQUIREMENTS.json', 'SOURCE_FIGURE_DISCREPANCY_NOTES.json', 'SOURCE_NOTE_EXTRACTION_OVERLAY.json', 'SOURCE_MODEL_REPLAY.json', 'CHIO_SOURCE_ADJUDICATION.json', 'PROJPLANE_SOURCE_INTAKE.json', 'COMPGRAPHICS_SOURCE_INTAKE.json', 'COMPONENT_RIGHTS.json']
+        optional = ['FIGURE_CONVERSION_RECEIPT.json', 'RICH_CONTENT_CLOSURE.json', 'SOURCE_TABLE_CELL_GRID.json', 'ASSET_INDEX.json', 'RENDERED_CONTEXT_CONTRACT.json', 'RENDERED_SOURCE_CONTEXT_RELATIONS.json', 'SOURCE_CONTEXT_REQUIREMENTS.json', 'SOURCE_FIGURE_DISCREPANCY_NOTES.json', 'SOURCE_NOTE_EXTRACTION_OVERLAY.json', 'SOURCE_MODEL_REPLAY.json', 'CHIO_SOURCE_ADJUDICATION.json', 'PROJPLANE_SOURCE_INTAKE.json', 'COMPGRAPHICS_SOURCE_INTAKE.json', 'JC1_SOURCE_INTAKE.json', 'COMPONENT_RIGHTS.json']
         for p in (BASE / directory).glob('*.json'):
             if p.name in optional or p.name.endswith(('_SOURCE_NOTES.json', '_MATHEMATICAL_REPLAY.json')):
                 names.append(p.name)
@@ -206,6 +206,11 @@ def export(frozen, public, check=False):
     for section in SECTIONS:
         reader = (b40 / ('semantic-pilot-'+section) / (section+'.reader-pilot.html')).read_text(encoding='utf-8')
         heading = re.search(r'<h1[^>]*>(.*?)</h1>', reader, re.S)
+        if section == 'jc1':
+            # The source begins with the chapter introduction "Similarity";
+            # its selected section is "Complex Vector Spaces". Keep both in
+            # the body and use the actual section title in the contents.
+            heading = re.search(r'<h2[^>]*>(.*?)</h2>', reader, re.S)
         assert heading, section
         TITLES[section] = html.unescape(re.sub(r'<[^>]+>', '', heading.group(1)))
     products = {}
@@ -260,6 +265,7 @@ def export(frozen, public, check=False):
             header = header.replace(stale, 'Current rebuild runtime is documented in the credit below; earlier intermediate work is not reattributed.')
         header = header.replace('Modular-context extraction and final layout QA remain unfinished.', 'Modular-context extraction and local layout checks are complete for this section; whole-book integration remains incomplete.')
         header = header.replace('Reader admission and whole-book integration remain unfinished.', 'Local reader admission is complete; whole-book integration remains unfinished.')
+        header = header.replace('The modular extraction contract is not yet admitted.', 'The modular extraction contract is admitted for this section; whole-book integration remains incomplete.')
         text = text[:h.start()] + header + text[h.end():]
         navigation = '<nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="'+ORIGIN+'en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="'+SOURCE_URL+'" download>Full source and offline reader ZIP</a> · <a href="../sources/'+s+'.tex" download>This section’s original LaTeX</a></nav>'
         disclosure = '<p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p>'
@@ -330,7 +336,7 @@ def export(frozen, public, check=False):
                        'complete_original_source': fact('sources/'+s+'.tex', src)})
         notes = []
         for p in sorted(d.glob('*.json')):
-            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json') or (s in ('cramer','detspeed','chio','projplane','compgraphics') and p.name == 'SOURCE_CONTEXT_REQUIREMENTS.json'):
+            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json') or (s in ('cramer','detspeed','chio','projplane','compgraphics','jc1') and p.name == 'SOURCE_CONTEXT_REQUIREMENTS.json'):
                 nr = json.loads(p.read_bytes()); notes.extend(nr.get('source_issues', nr.get('source_findings', [])))
         if notes:
             note_tex.append('\\section*{'+tex_escape(TITLES[s])+': source notes}\n\\begin{enumerate}\n'+''.join('\\item '+tex_escape(n.get('finding', n.get('description', 'See the exact source-note record in the archive.')))+'\n' for n in notes)+'\\end{enumerate}\n')

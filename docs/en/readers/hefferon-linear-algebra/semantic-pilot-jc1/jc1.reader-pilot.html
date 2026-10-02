@@ -1,0 +1,1652 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Complex Vector Spaces — Jim Hefferon — original English reading edition</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+pre{white-space:pre-wrap;overflow-wrap:anywhere;max-width:100%}.math-region:focus-visible{outline:2px solid #075a92;outline-offset:2px}
+.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style><meta name="b40-source-context-requirements-sha256" content="a252de3d28073860723e535ed9eb659dcdf091adc154afad7cca5dfe3e9e575c"><meta name="b40-source-context-contract-sha256" content="4a27ffda6866e98d74b2f66eb319bcfe61e8b59a536e8861a2efd6d033fadc55"></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-34-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/jc1.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — 34 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><details><summary>Source, reuse and conversion details</summary><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. The entire source file is included. Original comments and macros remain in the editable source; this file has no explicit end-of-file cutoff.</p><p>Source-to-HTML conversion, indexing and separate qualification notes: OpenAI Codex — GPT-6 Astra, Ultra effort. No human review or independent full proof audit is claimed. There are two local corollary proofs; the source cites an external book for the full polynomial development. That citation is not a supplied local proof. The modular extraction contract is admitted for this section; whole-book integration remains incomplete.</p></details><details class="notice"><summary>Four qualifications to retain when using the original text</summary><p>These notes are separate from the unchanged source. They identify coefficient-field, normalization, convention and wording boundaries; they do not silently edit the author’s statements.</p><ol><li id="jc1-source-note-1">Read this factorization statement for a nonzero polynomial with its leading scalar retained. Uniqueness requires normalized (monic) factors and ignores factor order; arbitrary nonzero rescalings of factors are otherwise possible. The zero polynomial does not have such a unique factorization. This is a separate qualification, not a silent change to the source.</li><li id="jc1-source-note-2">For the factorization formulation, retain the nonzero leading scalar and factor order convention: a nonconstant polynomial factors into a leading scalar times monic linear factors, unique up to ordering. A nonzero constant has an empty linear-factor product; the zero polynomial is excluded from the uniqueness assertion. The source review cites an external full proof; this edition does not manufacture one.</li><li id="jc1-source-note-3">The earlier native definition says degree n or less. That bound must remain in force here when changing the coefficients to complex numbers: the set of polynomials of exactly degree n is not the stated vector space. The original sentence remains untouched; the complete earlier definition is attached as evidence.<details><summary>Exact earlier source definition (LaTeX)</summary><pre>In general we write
+\( \polyspace_n \) for the
+vector space of polynomials of degree~$n$ or less 
+\( \set{a_0+a_1x+a_2x^2+\cdots+a_nx^n\suchthat a_0,\ldots,a_n\in\Re} \),
+under the operations of the usual polynomial addition and scalar 
+multiplication.</pre></details></li><li id="jc1-source-note-4">The preceding paragraph uses an informal definition based on factorization into two lower-degree polynomials. Preserve that local convention when quoting this sentence; do not export the assertion about constants as the usual ring-theoretic definition of an irreducible element. This is a convention boundary, not a silent replacement of the author’s definition.</li></ol></details><p>Wide formulas scroll horizontally. Focus a formula and use the arrow keys.</p><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="similarity">Similarity</h1>
+<p>We have shown that for any homomorphism there are bases <span><span class="math-region inline" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>B</mi>
+</math></span></span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="3f39d5c348e5b79d06e842c114e6cc571583bbf44e4b0ebfda1a01ec05745d43"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>D</mi>
+</math></span></span> such that the matrix representing the map has a block partial-identity form.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="fc21eab51a44c588d5ee3dc668c15de12dd98141915ce12566cd6f77c5bad587" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mrow data-mjx-texclass="ORD">
+        <mi data-mjx-auto-op="false">Rep</mi>
+      </mrow>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mi>B</mi>
+      <mo>,</mo>
+      <mi>D</mi>
+    </mrow>
+  </msub>
+  <mo stretchy="false">(</mo>
+  <mi>h</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnalign="center center" columnspacing="1em" rowspacing="4pt" columnlines="solid" rowlines="solid" style="border-collapse:collapse;display:inline-table" data-source-ruled-matrix="true">
+      <mtr style="display:table-row">
+        <mtd data-source-column-divider="1" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em;display:table-cell;border-bottom:0.06em solid currentColor" data-source-row-divider="1">
+          <mtext data-mjx-variant="-tex-mathit" mathvariant="italic">Identity</mtext>
+        </mtd>
+        <mtd style="text-align:center;display:table-cell;border-bottom:0.06em solid currentColor" data-source-row-divider="1">
+          <mtext data-mjx-variant="-tex-mathit" mathvariant="italic">Zero</mtext>
+        </mtd>
+      </mtr>
+      <mtr style="display:table-row">
+        <mtd data-source-column-divider="1" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em;display:table-cell">
+          <mtext data-mjx-variant="-tex-mathit" mathvariant="italic">Zero</mtext>
+        </mtd>
+        <mtd style="text-align:center;display:table-cell">
+          <mtext data-mjx-variant="-tex-mathit" mathvariant="italic">Zero</mtext>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>This representation describes the map as sending <span><span class="math-region inline" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="ba353aa5f1597dfcc881bec173abf3ba93ee9b8fe41e450ff0de2fb3a944e34b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>c</mi>
+    <mn>1</mn>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>β</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <mo>⋯</mo>
+  <mo>+</mo>
+  <msub>
+    <mi>c</mi>
+    <mi>n</mi>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>β</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>n</mi>
+  </msub>
+</math></span></span> to <span><span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="9b181df0c9acff0637908f851054eb8b522112c62ab5229a9bae7cddcbf2811b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>c</mi>
+    <mn>1</mn>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>δ</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <mo>⋯</mo>
+  <mo>+</mo>
+  <msub>
+    <mi>c</mi>
+    <mi>k</mi>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>δ</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>k</mi>
+  </msub>
+  <mo>+</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mn>0</mn>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+  <mo>+</mo>
+  <mo>⋯</mo>
+  <mo>+</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mn>0</mn>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+</math></span>,</span> where <span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span></span> is the dimension of the domain and <span><span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="8df520a69427f53eaa33d1b15c1de1740da39ab5ca2de77d55d0df3e49f3ed58"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>k</mi>
+</math></span></span> is the dimension of the range. Under this representation the action of the map is easy to understand because most of the matrix entries are zero.</p>
+<p>This chapter considers the special case where the domain and codomain are the same. Here we naturally ask for the domain basis and codomain basis to be the same. That is, we want a basis <span><span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="65abe9552edc062a8acae9d4cb03ca492cd5bae2499464fb77356095764eba98"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>B</mi>
+</math></span></span> so that <span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="8e258ae4072b097ce59d8c66ea9fd330465f455529adf708ee55f0fd76a67e7a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mrow data-mjx-texclass="ORD">
+        <mi data-mjx-auto-op="false">Rep</mi>
+      </mrow>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mi>B</mi>
+      <mo>,</mo>
+      <mi>B</mi>
+    </mrow>
+  </msub>
+  <mo stretchy="false">(</mo>
+  <mi>t</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> is as simple as possible, where we take ‘simple’ to mean that it has many zeroes. We will find that we cannot always get a matrix having the above block partial-identity form but we will develop a form that comes close, a representation that is nearly diagonal.</p>
+<h2 id="complex-vector-spaces">Complex Vector Spaces</h2>
+<p><span id="source-index-1" class="source-index" data-source-index="vector space!over complex numbers"></span> This chapter requires that we factor polynomials. But many polynomials do not factor over the real numbers; for instance, <span><span class="math-region inline" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="f91f2cba02f4df2753f05b67cf789740dfe9dad2ac5ce98c0ec758bfe8bbfa97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>1</mn>
+</math></span></span> does not factor into a product of two linear polynomials with real coefficients; instead it requires complex numbers <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="edea479d8eaa8fd929f12bac72325406a409e0408f8f7dd34e471e2b8d11a94f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>1</mn>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p>
+<p>Consequently in this chapter we shall use complex numbers for our scalars, including entries in vectors and matrices. That is, we shift from studying vector spaces over the real numbers to vector spaces over the complex numbers.<span id="source-index-2" class="source-index" data-source-index="complex numbers!vector space over"></span> Any real number is a complex number and in this chapter most of the examples use only real numbers but nonetheless, the critical theorems require that the scalars be complex. So this first section is a review of complex numbers.</p>
+<p>In this book our approach is to shift to this more general context of taking scalars to be complex for the pragmatic reason that we must do so in order to move forward. However, the idea of doing vector spaces by taking scalars from a structure other than the real numbers is an interesting and useful one. Delightful presentations that take this approach from the start are in <span class="source-citation">[<a href="#bib-Halmos" data-citation-key="Halmos">Halmos</a>]</span> and <span class="source-citation">[<a href="#bib-HoffmanKunze" data-citation-key="HoffmanKunze">Hoffman &amp; Kunze</a>]</span>.</p>
+<h3 id="polynomial-factoring-and-complex-numbers">Polynomial Factoring and Complex Numbers</h3>
+<p><em>This subsection is a review only. For a full development, including proofs, see <span class="source-citation">[<a href="#bib-Ebbinghaus" data-citation-key="Ebbinghaus">Ebbinghaus</a>]</span>.</em></p>
+<p>Consider a polynomial<span id="source-index-3" class="source-index" data-source-index="polynomial"></span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="c40698011141aac891627bd9ccd5b6c8a9d1c242775c6a493cf674720b688ffc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msub>
+    <mi>c</mi>
+    <mi>n</mi>
+  </msub>
+  <msup>
+    <mi>x</mi>
+    <mi>n</mi>
+  </msup>
+  <mo>+</mo>
+  <mo>⋯</mo>
+  <mo>+</mo>
+  <msub>
+    <mi>c</mi>
+    <mn>1</mn>
+  </msub>
+  <mi>x</mi>
+  <mo>+</mo>
+  <msub>
+    <mi>c</mi>
+    <mn>0</mn>
+  </msub>
+</math></span></span> with leading coefficient<span id="source-index-4" class="source-index" data-source-index="polynomial!leading coefficient"></span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="655bf59e7b09bd8005397329aaee2f09aca40881c83958adf54b8a6da4770a95"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>c</mi>
+    <mi>n</mi>
+  </msub>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span>.</span> We say that it is a <em>degree</em><span> <span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span></span><span id="source-index-5" class="source-index" data-source-index="polynomial!degree"></span><span id="source-index-6" class="source-index" data-source-index="degree of a polynomial"></span> polynomial. If <span><span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="03a9b09b35d993ff9a6f031da89b66b46158eae60751c9fe1c424101d2f1cc3c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="148de9c5a7a44d19e56cd9ae1a554bf67847afb0c58f6e12fa29ac7ddfca9940"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+</math></span></span> is a constant polynomial<span id="source-index-7" class="source-index" data-source-index="polynomial!constant"></span><span id="source-index-8" class="source-index" data-source-index="constant polynomial"></span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="a948dfa7d9465bbceadf766f69ac080e07bf70c0cf6f69566a8b247ffa0722f9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msub>
+    <mi>c</mi>
+    <mn>0</mn>
+  </msub>
+</math></span>.</span> Constant polynomials that are not the zero polynomial, <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="e3fb8db24a1a498a210be63e81c28967c8612b947267a6476abdeeb76eebb4e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>c</mi>
+    <mn>0</mn>
+  </msub>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span>,</span> have degree zero. We define the zero polynomial to have degree <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="8e982633ad234d60b2eff24e266dfc9161823a10381c1afd8505567a68a55b33"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mi mathvariant="normal">∞</mi>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.remark.source-order.0001" class="remark" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.remark.source-order.0001">
+<p><strong>Remark 1.1</strong>  Defining the degree of the zero polynomial to be <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="8e982633ad234d60b2eff24e266dfc9161823a10381c1afd8505567a68a55b33"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <mi mathvariant="normal">∞</mi>
+</math></span></span> allows the equation <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="0a563d6066c3340b603ace384bf9441b26503e698983426bcca6ae64675b4d51"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtext>degree</mtext>
+  <mo stretchy="false">(</mo>
+  <mi>f</mi>
+  <mi>g</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mtext>degree</mtext>
+  <mo stretchy="false">(</mo>
+  <mi>f</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mtext>degree</mtext>
+  <mo stretchy="false">(</mo>
+  <mi>g</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> to hold for all polynomials.</p>
+</div>
+<p>Just as integers have a division operation—e.g., ‘<span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="1731734d2a5bf5d92cec01901ac2c86431399a5045e0b2532f9da5e6f9ad451c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+</math></span></span> goes <span><span class="math-region inline" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="544af532dc0efebf7de44cbae695c80acf8cb8e90f8749b12fe4bbfb9c73e588"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+</math></span></span> times into <span><span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="296d1865b3e81735da156db29aac1a1a122c5aad0970d4b8bef3078836882287"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+</math></span></span> with remainder <span><span class="math-region inline" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span>’—so do polynomials.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.theorem.label.8763a2391792b9648988" class="theorem" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.theorem.label.8763a2391792b9648988">
+<p><strong>Theorem 1.2</strong> (Division Theorem for Polynomials)  <span id="th:EuclidForPolys" class="source-label"></span> <span id="source-index-9" class="source-index" data-source-index="division theorem"></span><span id="source-index-10" class="source-index" data-source-index="polynomial!division theorem"></span> Let <span><span class="math-region inline" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="a4503f06eed8d04e5b13f5cf655eb406436148053148e3964accc58a1c1ec925"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> be a polynomial. If <span><span class="math-region inline" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="fc1968665ea60f5e59e07696cc15431732eece33532da37227d5585e1f7e6bff"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> is a non-zero polynomial then there are <em>quotient</em> and <em>remainder</em> polynomials <span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="104b1caac1c9ba1cfc07b3bd442d680e4f9c01f982ee6166bf50ebf56afadede"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>q</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="19211bd5fecae30dddbbf593b966bac0c4e31c7398220283078c49a4a15d2b7d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>r</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> such that</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="4adf13792602b078444f28519e628971dba8fdbc64c44c098aa951175bfe6660" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>⋅</mo>
+  <mi>q</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mi>r</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span></p>
+<p>where the degree of <span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="19211bd5fecae30dddbbf593b966bac0c4e31c7398220283078c49a4a15d2b7d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>r</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> is strictly less than the degree of <span><span class="math-region inline" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="fc1968665ea60f5e59e07696cc15431732eece33532da37227d5585e1f7e6bff"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p>
+</div>
+<p>The point of the integer statement ‘<span><span class="math-region inline" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="1731734d2a5bf5d92cec01901ac2c86431399a5045e0b2532f9da5e6f9ad451c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+</math></span></span> goes <span><span class="math-region inline" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="544af532dc0efebf7de44cbae695c80acf8cb8e90f8749b12fe4bbfb9c73e588"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+</math></span></span> times into <span><span class="math-region inline" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="296d1865b3e81735da156db29aac1a1a122c5aad0970d4b8bef3078836882287"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+</math></span></span> with remainder <span><span class="math-region inline" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span></span>’ is that the remainder is less than <span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="1731734d2a5bf5d92cec01901ac2c86431399a5045e0b2532f9da5e6f9ad451c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+</math></span>—while</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="1731734d2a5bf5d92cec01901ac2c86431399a5045e0b2532f9da5e6f9ad451c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+</math></span></span> goes <span><span class="math-region inline" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="544af532dc0efebf7de44cbae695c80acf8cb8e90f8749b12fe4bbfb9c73e588"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+</math></span></span> times, it does not go <span><span class="math-region inline" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="43f86600b81edb4233d9fb897200ca12bce6dda6e2e1f27a2643189dbdcbfd2a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>6</mn>
+</math></span></span> times. Similarly, the final clause of the polynomial division statement is crucial.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0001" class="example" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0001">
+<p><strong>Example 1.3</strong>  If <span><span class="math-region inline" data-source-math-id="BFOURMATH000040END" data-source-tex-sha256="7b537f322b1137e869c2cc2e8d4fedc8ccfbe362d575bfc3db3e26bd6ec71ebe"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>2</mn>
+  <msup>
+    <mi>x</mi>
+    <mn>3</mn>
+  </msup>
+  <mo>−</mo>
+  <mn>3</mn>
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>4</mn>
+  <mi>x</mi>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000041END" data-source-tex-sha256="ce808649c90ff9c481a94ee1b24d836ecdc9e3a1fc60b5f2d5bb23aab7feb7c8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>1</mn>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000042END" data-source-tex-sha256="7822d39e344b3785c96199cc195b2fa6c49aa95478ca8c4d99f19a0882de768b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>q</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>2</mn>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mn>3</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000043END" data-source-tex-sha256="e39f0db73aa9fbd8bf4f82400a387d0fb4c0e3170dbb502fc7b4d76be24dc26a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>r</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>2</mn>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>3</mn>
+</math></span>.</span> Note that <span><span class="math-region inline" data-source-math-id="BFOURMATH000044END" data-source-tex-sha256="19211bd5fecae30dddbbf593b966bac0c4e31c7398220283078c49a4a15d2b7d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>r</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> has a lower degree than does <span><span class="math-region inline" data-source-math-id="BFOURMATH000045END" data-source-tex-sha256="fc1968665ea60f5e59e07696cc15431732eece33532da37227d5585e1f7e6bff"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p>
+</div>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.corollary.label.9b5cd8f742988c99f7bb" class="corollary" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.corollary.label.9b5cd8f742988c99f7bb">
+<p><strong>Corollary 1.4</strong>  <span id="co:PolyDividedByLinearPolyIsConstant" class="source-label"></span> The remainder when <span><span class="math-region inline" data-source-math-id="BFOURMATH000046END" data-source-tex-sha256="a4503f06eed8d04e5b13f5cf655eb406436148053148e3964accc58a1c1ec925"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> is divided by <span><span class="math-region inline" data-source-math-id="BFOURMATH000047END" data-source-tex-sha256="82282ec5e593f27d993078193cb30660994ec542dab74b15e3e809c4693e10ba"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+</math></span></span> is the constant polynomial <span><span class="math-region inline" data-source-math-id="BFOURMATH000048END" data-source-tex-sha256="5b91c98221252c400be7c4ab4624452a9487bcec1d8b294b26f4a8e7198a2c45"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>r</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p>
+</div>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.proof.source-order.0001" class="proof" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.proof.source-order.0001">
+<p><em>Proof</em> The remainder must be a constant polynomial because it is of degree less than the divisor <span><span class="math-region inline" data-source-math-id="BFOURMATH000049END" data-source-tex-sha256="82282ec5e593f27d993078193cb30660994ec542dab74b15e3e809c4693e10ba"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+</math></span>.</span> To determine the constant, take the theorem’s divisor <span><span class="math-region inline" data-source-math-id="BFOURMATH000050END" data-source-tex-sha256="3d0a5c111af3df717f4a56c084d2d1c1a2025f24dc6421148f7a18b3bd82c1fc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> to be <span><span class="math-region inline" data-source-math-id="BFOURMATH000051END" data-source-tex-sha256="cbd141d55deada0d43571fa78826a955e760f59c8d9f5eb4734b0b531105c1c4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+</math></span></span> and substitute <span><span class="math-region inline" data-source-math-id="BFOURMATH000052END" data-source-tex-sha256="302d824f324557a1c79924f33f980909e3e4ddcf58a59f71630019ae3db061fc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+</math></span></span> for <span><span class="math-region inline" data-source-math-id="BFOURMATH000053END" data-source-tex-sha256="2d711642b726b04401627ca9fbac32f5c8530fb1903cc4db02258717921a4881"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+</math></span>.</span></p>
+<p><span class="proof-end">QED</span></p>
+</div>
+<p>If a divisor <span><span class="math-region inline" data-source-math-id="BFOURMATH000054END" data-source-tex-sha256="fc1968665ea60f5e59e07696cc15431732eece33532da37227d5585e1f7e6bff"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> goes into a dividend <span><span class="math-region inline" data-source-math-id="BFOURMATH000055END" data-source-tex-sha256="a4503f06eed8d04e5b13f5cf655eb406436148053148e3964accc58a1c1ec925"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> evenly, meaning that <span><span class="math-region inline" data-source-math-id="BFOURMATH000056END" data-source-tex-sha256="19211bd5fecae30dddbbf593b966bac0c4e31c7398220283078c49a4a15d2b7d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>r</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> is the zero polynomial, then <span><span class="math-region inline" data-source-math-id="BFOURMATH000057END" data-source-tex-sha256="fc1968665ea60f5e59e07696cc15431732eece33532da37227d5585e1f7e6bff"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> is a called a factor<span id="source-index-11" class="source-index" data-source-index="factor"></span><span id="source-index-12" class="source-index" data-source-index="polynomial!factor"></span> of <span><span class="math-region inline" data-source-math-id="BFOURMATH000058END" data-source-tex-sha256="a4503f06eed8d04e5b13f5cf655eb406436148053148e3964accc58a1c1ec925"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> Any root<span id="source-index-13" class="source-index" data-source-index="root"></span><span id="source-index-14" class="source-index" data-source-index="polynomial!root"></span> of the factor, any <span><span class="math-region inline" data-source-math-id="BFOURMATH000059END" data-source-tex-sha256="67e261d9eb631916edee02a5a7805e4063d3f3535b7e49ea3b633847c3b13c10"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+  </mrow>
+</math></span></span> such that <span><span class="math-region inline" data-source-math-id="BFOURMATH000060END" data-source-tex-sha256="f19bde710f72560d7907e8c08628d811011c3b031f4b429a5b946f39fa78e387"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span>,</span> is a root of <span><span class="math-region inline" data-source-math-id="BFOURMATH000061END" data-source-tex-sha256="a4503f06eed8d04e5b13f5cf655eb406436148053148e3964accc58a1c1ec925"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> since <span><span class="math-region inline" data-source-math-id="BFOURMATH000062END" data-source-tex-sha256="5adbf5fec6a56449c392efef135eb3d8aee659d8454cc87b31cb16ac02b51633"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>d</mi>
+  <mo stretchy="false">(</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+  <mo>⋅</mo>
+  <mi>q</mi>
+  <mo stretchy="false">(</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.corollary.label.ca83701e817e9f48d5b5" class="corollary" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.corollary.label.ca83701e817e9f48d5b5">
+<p><strong>Corollary 1.5</strong>  <span id="co:RootOfPolyIsAssocLinearFactor" class="source-label"></span> If <span><span class="math-region inline" data-source-math-id="BFOURMATH000063END" data-source-tex-sha256="2fafd9e696ce862a3f140782b783334f47249af5b390a6762ae0ab276488482d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+</math></span></span> is a root of the polynomial <span><span class="math-region inline" data-source-math-id="BFOURMATH000064END" data-source-tex-sha256="a4503f06eed8d04e5b13f5cf655eb406436148053148e3964accc58a1c1ec925"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000065END" data-source-tex-sha256="82282ec5e593f27d993078193cb30660994ec542dab74b15e3e809c4693e10ba"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+</math></span></span> divides <span><span class="math-region inline" data-source-math-id="BFOURMATH000066END" data-source-tex-sha256="a4503f06eed8d04e5b13f5cf655eb406436148053148e3964accc58a1c1ec925"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> evenly, that is, <span><span class="math-region inline" data-source-math-id="BFOURMATH000067END" data-source-tex-sha256="cbd141d55deada0d43571fa78826a955e760f59c8d9f5eb4734b0b531105c1c4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+</math></span></span> is a factor of <span><span class="math-region inline" data-source-math-id="BFOURMATH000068END" data-source-tex-sha256="1841916b64ed02323817c6107eed3e2ad0bd2f04f0180c27a7ed746588b2fd72"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p>
+</div>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.proof.source-order.0002" class="proof" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.proof.source-order.0002">
+<p><em>Proof</em> By the above corollary <span><span class="math-region inline" data-source-math-id="BFOURMATH000069END" data-source-tex-sha256="03cc323e2977468da2602cb481891e27f7831a3b63657a675eb7ccc375f48037"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+  <mo>⋅</mo>
+  <mi>q</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> Since <span><span class="math-region inline" data-source-math-id="BFOURMATH000070END" data-source-tex-sha256="583cf6290785d72cc1b71808962dd4bd72ca369f004fb5cb587694fc1b26149f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+</math></span></span> is a root, <span><span class="math-region inline" data-source-math-id="BFOURMATH000071END" data-source-tex-sha256="35bf2fc64a2233a9bbdfed465002618af6c735e8d3023805457a8308ba2e9c0b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo stretchy="false">(</mo>
+  <mi>λ</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span></span> so <span><span class="math-region inline" data-source-math-id="BFOURMATH000072END" data-source-tex-sha256="cbd141d55deada0d43571fa78826a955e760f59c8d9f5eb4734b0b531105c1c4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+</math></span></span> is a factor.</p>
+<p><span class="proof-end">QED</span></p>
+</div>
+<p>A repeated root of a polynomial is a number <span><span class="math-region inline" data-source-math-id="BFOURMATH000073END" data-source-tex-sha256="583cf6290785d72cc1b71808962dd4bd72ca369f004fb5cb587694fc1b26149f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+</math></span></span> such that the polynomial is evenly divisible by <span><span class="math-region inline" data-source-math-id="BFOURMATH000074END" data-source-tex-sha256="c67c1e9fe0ece007929de1cecb0e190f5984de2a8ba7c7893f757b0d2ec91411"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>λ</mi>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mi>n</mi>
+  </msup>
+</math></span></span> for some power larger than one. The largest such power is called the multiplicity<span id="source-index-15" class="source-index" data-source-index="multiplicity, of a root"></span><span id="source-index-16" class="source-index" data-source-index="polynomial!multiplicity"></span> <span>of <span class="math-region inline" data-source-math-id="BFOURMATH000075END" data-source-tex-sha256="583cf6290785d72cc1b71808962dd4bd72ca369f004fb5cb587694fc1b26149f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>λ</mi>
+</math></span>.</span></p>
+<p>Finding the roots and factors of a high-degree polynomial can be hard. But for second-degree polynomials we have the quadratic formula: the roots of <span><span class="math-region inline" data-source-math-id="BFOURMATH000076END" data-source-tex-sha256="c461e2a1f36f1b4159d4404e6c2c7a831bf5cd108a2fdf84793b8920c57bc212"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mi>c</mi>
+</math></span></span> are these</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000077END" data-source-tex-sha256="eaddb3ec394f0806b61a476c5b5d16967d7e46ee548a561a9466b3c0f374e533" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>λ</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mo>+</mo>
+      <msqrt>
+        <msup>
+          <mi>b</mi>
+          <mn>2</mn>
+        </msup>
+        <mo>−</mo>
+        <mn>4</mn>
+        <mi>a</mi>
+        <mi>c</mi>
+      </msqrt>
+    </mrow>
+    <mrow>
+      <mn>2</mn>
+      <mi>a</mi>
+    </mrow>
+  </mfrac>
+  <mstyle scriptlevel="0">
+    <mspace width="2em"/>
+  </mstyle>
+  <msub>
+    <mi>λ</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mo>−</mo>
+      <msqrt>
+        <msup>
+          <mi>b</mi>
+          <mn>2</mn>
+        </msup>
+        <mo>−</mo>
+        <mn>4</mn>
+        <mi>a</mi>
+        <mi>c</mi>
+      </msqrt>
+    </mrow>
+    <mrow>
+      <mn>2</mn>
+      <mi>a</mi>
+    </mrow>
+  </mfrac>
+</math></span></span></p>
+<p>(if the discriminant <span><span class="math-region inline" data-source-math-id="BFOURMATH000078END" data-source-tex-sha256="b74e9a090005b36343d600d3f2cab13d9dbd2ace11cbc21c592f31f3b2e4354c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>b</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>−</mo>
+  <mn>4</mn>
+  <mi>a</mi>
+  <mi>c</mi>
+</math></span></span> is negative then the polynomial has no real number roots). A polynomial that cannot be factored into two lower-degree polynomials with real number coefficients is said to be irreducible over the reals.<span id="source-index-17" class="source-index" data-source-index="irreducible polynomial"></span><span id="source-index-18" class="source-index" data-source-index="polynomial!irreducible"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.theorem.label.2fd3b06c888a95e12261" class="theorem" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.theorem.label.2fd3b06c888a95e12261">
+<p><strong>Theorem 1.6</strong>  <span id="th:CubicsAndHigherFactor" class="source-label"></span> Any constant or linear polynomial is irreducible over the reals. A quadratic polynomial is irreducible over the reals if and only if its discriminant is negative. No cubic or higher-degree polynomial is irreducible over the reals.</p>
+</div>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.corollary.label.4f6150c6be5f9ccad3e5" class="corollary" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.corollary.label.4f6150c6be5f9ccad3e5">
+<p><strong>Corollary 1.7</strong>  <span id="co:RealPolysFactorIntoLinearsAndQuads" class="source-label"></span> Any polynomial with real coefficients factors into a product of linear and irreducible quadratic polynomials with real coefficients. That factorization is unique; any two factorizations have the same factors raised to the same powers.</p>
+</div>
+<p>Note the analogy with the prime factorization of integers. In both cases the uniqueness clause is very useful.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0002" class="example" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0002">
+<p><strong>Example 1.8</strong>  Because of uniqueness we know, without multiplying them out, that <span><span class="math-region inline" data-source-math-id="BFOURMATH000079END" data-source-tex-sha256="dccc87a4de906d2b508155e3b2269f9e6df0fd397c601c5b44418eadae52d05e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>3</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mn>2</mn>
+  </msup>
+  <mo stretchy="false">(</mo>
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>1</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mn>3</mn>
+  </msup>
+</math></span></span> does not equal <span><span class="math-region inline" data-source-math-id="BFOURMATH000080END" data-source-tex-sha256="62fdf01c0f89273b916b7b025b30ad36a1c14387c6fed17cdc9006149f3fd906"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>3</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mn>4</mn>
+  </msup>
+  <mo stretchy="false">(</mo>
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>1</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mn>2</mn>
+  </msup>
+</math></span>.</span></p>
+</div>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0003" class="example" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0003">
+<p><strong>Example 1.9</strong>  By uniqueness, if <span><span class="math-region inline" data-source-math-id="BFOURMATH000081END" data-source-tex-sha256="da27aee0b691fd0c9beef506a55b8d8e38a6908c04bf1d38a9c174366e024ef1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mi>m</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>⋅</mo>
+  <mi>q</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> then where <span><span class="math-region inline" data-source-math-id="BFOURMATH000082END" data-source-tex-sha256="7daf398be40a2602884f146c6610735773e91b6a7f53025b3f20b28db9ede10f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mn>3</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mn>2</mn>
+  </msup>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>2</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mn>3</mn>
+  </msup>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000083END" data-source-tex-sha256="68bcd3621d17a6b05cf5382e448943e8f1deca904d44d2f0951ca2fc9462717d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>m</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>2</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mn>2</mn>
+  </msup>
+</math></span>,</span> we know that <span><span class="math-region inline" data-source-math-id="BFOURMATH000084END" data-source-tex-sha256="d93bae597a91400d5c4464ea8b9783bb0a5afef6d76cdcb481c48ea2c39c2904"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>q</mi>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mn>3</mn>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>2</mn>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p>
+</div>
+<p>While <span><span class="math-region inline" data-source-math-id="BFOURMATH000085END" data-source-tex-sha256="f91f2cba02f4df2753f05b67cf789740dfe9dad2ac5ce98c0ec758bfe8bbfa97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>1</mn>
+</math></span></span> has no real roots and so doesn’t factor over the real numbers, if we imagine a root—traditionally denoted <span><span class="math-region inline" data-source-math-id="BFOURMATH000086END" data-source-tex-sha256="9b36506b1bbcdca46832efe86d23b07a1932fddc1e4e36e28a668fd9d518ba29"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math></span>,</span> so that <span><span class="math-region inline" data-source-math-id="BFOURMATH000087END" data-source-tex-sha256="845aa9327432210b9b5bd1b630d1e473597293c4360ea7c14b1d1f4222e8e927"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>i</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>1</mn>
+  <mo>=</mo>
+  <mn>0</mn>
+</math></span>—then</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000088END" data-source-tex-sha256="f91f2cba02f4df2753f05b67cf789740dfe9dad2ac5ce98c0ec758bfe8bbfa97"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mn>1</mn>
+</math></span></span> factors into a product of linears, <span><span class="math-region inline" data-source-math-id="BFOURMATH000089END" data-source-tex-sha256="7f23d933edfcb0d6965a8604597e211791bf9c25d60a0b43312ffcbc3b6a182f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> When we adjoin this root <span><span class="math-region inline" data-source-math-id="BFOURMATH000090END" data-source-tex-sha256="9b36506b1bbcdca46832efe86d23b07a1932fddc1e4e36e28a668fd9d518ba29"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math></span></span> to the reals and close the new system with respect to addition and multiplication then we have the complex numbers,<span id="source-index-19" class="source-index" data-source-index="complex numbers"></span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000091END" data-source-tex-sha256="5d7349dc7b807f8caba8af1145bded71afdb395fc1fda6763e2289a52adee6bf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="C">ℂ</mi>
+  </mrow>
+  <mo>=</mo>
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>i</mi>
+  <mo>∣</mo>
+  <mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mi>a</mi>
+      <mo>,</mo>
+      <mi>b</mi>
+      <mo>∈</mo>
+      <mrow data-mjx-texclass="ORD">
+        <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+      </mrow>
+    </mrow>
+    <mtext> and </mtext>
+    <mrow data-mjx-texclass="ORD">
+      <msup>
+        <mi>i</mi>
+        <mn>2</mn>
+      </msup>
+      <mo>=</mo>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </mrow>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span>.</span></p>
+<p>For a scalar <span><span class="math-region inline" data-source-math-id="BFOURMATH000092END" data-source-tex-sha256="eab7b5e10a08fd4e4587f3bb6dbd305209557bac14cd0f7efbeba1654de656ec"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="C">ℂ</mi>
+  </mrow>
+</math></span>,</span> where <span><span class="math-region inline" data-source-math-id="BFOURMATH000093END" data-source-tex-sha256="74ea6f3916fd3adebbd73f81004b617d01cf2e10ab761a758456e19bddede90c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+  <mo>=</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>i</mi>
+</math></span>,</span> we call <span><span class="math-region inline" data-source-math-id="BFOURMATH000094END" data-source-tex-sha256="ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+</math></span></span> the <em>real part</em> <span>of <span class="math-region inline" data-source-math-id="BFOURMATH000095END" data-source-tex-sha256="594e519ae499312b29433b7dd8a97ff068defcba9755b6d5d00e84c524d67b06"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+</math></span>,</span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000096END" data-source-tex-sha256="3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>b</mi>
+</math></span></span> the <em>imaginary part</em>. We often picture complex numbers on the <em>complex plane</em><span id="source-index-20" class="source-index" data-source-index="complex plane"></span>, with <span><span class="math-region inline" data-source-math-id="BFOURMATH000097END" data-source-tex-sha256="ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+</math></span></span> plotted on the <em>real axis</em><span id="source-index-21" class="source-index" data-source-index="real axis"></span>, the horizontal axis, and <span><span class="math-region inline" data-source-math-id="BFOURMATH000098END" data-source-tex-sha256="3e23e8160039594a33894f6564e1b1348bbd7a0088d42c4acb73eeaed59c009d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>b</mi>
+</math></span></span> plotted on the <em>imaginary axis</em>,<span id="source-index-22" class="source-index" data-source-index="imaginary axis"></span> the vertical axis. Note that the distance of the point from the origin is the length, <span><span class="math-region inline" data-source-math-id="BFOURMATH000099END" data-source-tex-sha256="f3a0df04b686569fbe0b1bf1bded45c639146e611731a8664a2aed6eb27196ac"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">|</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>i</mi>
+  <mrow data-mjx-texclass="ORD">
+    <mo stretchy="false">|</mo>
+  </mrow>
+  <mo>=</mo>
+  <msqrt>
+    <msup>
+      <mi>a</mi>
+      <mn>2</mn>
+    </msup>
+    <mo>+</mo>
+    <msup>
+      <mi>b</mi>
+      <mn>2</mn>
+    </msup>
+  </msqrt>
+</math></span>.</span></p>
+<p>Recall the definitions of the complex number addition and scalar multiplication</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000100END" data-source-tex-sha256="974b66baca5d2d31aced1963bf253646d864dd01548ad0c83b18fa96bbea66e9" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mo>+</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mo stretchy="false">(</mo>
+  <mi>c</mi>
+  <mo>+</mo>
+  <mi>d</mi>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>c</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>+</mo>
+  <mi>d</mi>
+  <mo stretchy="false">)</mo>
+  <mi>i</mi>
+  <mstyle scriptlevel="0">
+    <mspace width="2em"/>
+  </mstyle>
+  <mi>r</mi>
+  <mo>⋅</mo>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>r</mi>
+  <mi>a</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mi>r</mi>
+  <mi>b</mi>
+  <mo stretchy="false">)</mo>
+  <mi>i</mi>
+</math></span></span></p>
+<p>(and consequently subtraction is <span><span class="math-region inline" data-source-math-id="BFOURMATH000101END" data-source-tex-sha256="f861fd92ed96af0a62733c59c95fe76f051b280eb8809a4456bd7c7a2908742a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mi>c</mi>
+  <mo>+</mo>
+  <mi>d</mi>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mi>a</mi>
+  <mo>−</mo>
+  <mi>c</mi>
+  <mo stretchy="false">)</mo>
+  <mo>+</mo>
+  <mo stretchy="false">(</mo>
+  <mi>b</mi>
+  <mo>−</mo>
+  <mi>d</mi>
+  <mo stretchy="false">)</mo>
+  <mi>i</mi>
+</math></span>).</span> Recall also the definition of complex-complex multiplication.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000102END" data-source-tex-sha256="d765c33feb64a2ac8aa25ee4fffbb9ccc7464388f491b1961b0045d109cffdb5" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mi>a</mi>
+        <mo>+</mo>
+        <mi>b</mi>
+        <mi>i</mi>
+        <mo stretchy="false">)</mo>
+        <mo stretchy="false">(</mo>
+        <mi>c</mi>
+        <mo>+</mo>
+        <mi>d</mi>
+        <mi>i</mi>
+        <mo stretchy="false">)</mo>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mi>a</mi>
+        <mi>c</mi>
+        <mo>+</mo>
+        <mi>a</mi>
+        <mi>d</mi>
+        <mi>i</mi>
+        <mo>+</mo>
+        <mi>b</mi>
+        <mi>c</mi>
+        <mi>i</mi>
+        <mo>+</mo>
+        <mi>b</mi>
+        <mi>d</mi>
+        <mo stretchy="false">(</mo>
+        <mo>−</mo>
+        <mn>1</mn>
+        <mo stretchy="false">)</mo>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mo stretchy="false">(</mo>
+        <mi>a</mi>
+        <mi>c</mi>
+        <mo>−</mo>
+        <mi>b</mi>
+        <mi>d</mi>
+        <mo stretchy="false">)</mo>
+        <mo>+</mo>
+        <mo stretchy="false">(</mo>
+        <mi>a</mi>
+        <mi>d</mi>
+        <mo>+</mo>
+        <mi>b</mi>
+        <mi>c</mi>
+        <mo stretchy="false">)</mo>
+        <mi>i</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0004" class="example" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0004">
+<p><strong>Example 1.10</strong>  For instance, <span><span class="math-region inline" data-source-math-id="BFOURMATH000103END" data-source-tex-sha256="922bbb4eb947bbde335c54c884d09b88001854b7c213e88ca8bab837cde02a2d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mo>−</mo>
+  <mn>3</mn>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo stretchy="false">(</mo>
+  <mn>4</mn>
+  <mo>−</mo>
+  <mn>0.5</mn>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>6.5</mn>
+  <mo>−</mo>
+  <mn>13</mn>
+  <mi>i</mi>
+</math></span>.</span></p>
+</div>
+<p>Over the complex numbers, any quadratic polynomial factors into linears.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000104END" data-source-tex-sha256="c4e151f0ceb4c4e2dc8eeb37c0e9a4ed26a65d2abf82a66a69f6e8f722bbd3e2" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>a</mi>
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mi>c</mi>
+  <mo>=</mo>
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">(</mo>
+  </mrow>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mo>+</mo>
+      <msqrt>
+        <msup>
+          <mi>b</mi>
+          <mn>2</mn>
+        </msup>
+        <mo>−</mo>
+        <mn>4</mn>
+        <mi>a</mi>
+        <mi>c</mi>
+      </msqrt>
+    </mrow>
+    <mrow>
+      <mn>2</mn>
+      <mi>a</mi>
+    </mrow>
+  </mfrac>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">)</mo>
+  </mrow>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">(</mo>
+  </mrow>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mo>−</mo>
+      <msqrt>
+        <msup>
+          <mi>b</mi>
+          <mn>2</mn>
+        </msup>
+        <mo>−</mo>
+        <mn>4</mn>
+        <mi>a</mi>
+        <mi>c</mi>
+      </msqrt>
+    </mrow>
+    <mrow>
+      <mn>2</mn>
+      <mi>a</mi>
+    </mrow>
+  </mfrac>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">)</mo>
+  </mrow>
+</math></span></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0005" class="example" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0005">
+<p><strong>Example 1.11</strong>  The second degree polynomial <span><span class="math-region inline" data-source-math-id="BFOURMATH000105END" data-source-tex-sha256="9de2d5591a3391beb23c829b3bd908c891cf5929fa6c19f851fd9f7519d392de"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msup>
+  <mo>+</mo>
+  <mi>x</mi>
+  <mo>+</mo>
+  <mn>1</mn>
+</math></span></span> factors over the complex numbers into the product of two first degree polynomials.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000106END" data-source-tex-sha256="783553f2703f03367c821c4fb84bcfb115e495222e6acb8b9919e542f7250a9f" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">(</mo>
+  </mrow>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mn>1</mn>
+      <mo>+</mo>
+      <msqrt>
+        <mo>−</mo>
+        <mn>3</mn>
+      </msqrt>
+    </mrow>
+    <mn>2</mn>
+  </mfrac>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">)</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">(</mo>
+  </mrow>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mn>1</mn>
+      <mo>−</mo>
+      <msqrt>
+        <mo>−</mo>
+        <mn>3</mn>
+      </msqrt>
+    </mrow>
+    <mn>2</mn>
+  </mfrac>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">(</mo>
+  </mrow>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mn>2</mn>
+  </mfrac>
+  <mo>+</mo>
+  <mfrac>
+    <msqrt>
+      <mn>3</mn>
+    </msqrt>
+    <mn>2</mn>
+  </mfrac>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">)</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">(</mo>
+  </mrow>
+  <mi>x</mi>
+  <mo>−</mo>
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mn>2</mn>
+  </mfrac>
+  <mo>−</mo>
+  <mfrac>
+    <msqrt>
+      <mn>3</mn>
+    </msqrt>
+    <mn>2</mn>
+  </mfrac>
+  <mi>i</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo minsize="1.2em" maxsize="1.2em">)</mo>
+  </mrow>
+</math></span></span></p>
+</div>
+<p>In <span><span class="math-region inline" data-source-math-id="BFOURMATH000107END" data-source-tex-sha256="ce4d2c35c6aab21422ebc7c43a99e0abe2d94a54a5e7c97409a823e85673d0bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="C">ℂ</mi>
+  </mrow>
+</math></span>,</span> in contrast with the reals, there are no irreducible quadratics. All polynomials factor completely into linears.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.theorem.label.af28ba05e608216f93ab" class="theorem" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.theorem.label.af28ba05e608216f93ab">
+<p><strong>Theorem 1.12</strong> (Fundamental Theorem of Algebra)  <span id="th:FundThmAlg" class="source-label"></span><span id="source-index-23" class="source-index" data-source-index="Fundamental Theorem!of Algebra"></span></p>
+<p>Polynomials with complex coefficients factor into linear polynomials with complex coefficients. The factorization is unique.</p>
+</div>
+<h3 id="complex-representations">Complex Representations</h3>
+<p>With the above definitions for the complex numbers, all of the operations that we’ve used for real vector spaces carry over unchanged to vector spaces with complex scalars.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0006" class="example" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.jc.jc1.tex.example.source-order.0006">
+<p><strong>Example 2.1</strong>  Matrix multiplication is the same, although the computation can involve more arithmetic.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000108END" data-source-tex-sha256="f099cf13876aad0b2660c232cd52b99a81b37babd69bb99be81a33f8ca330a5e" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" rowspacing=".5em" columnspacing="100%" width="100%" framespacing="1em 0" frame="" data-width-includes-label="true" style="border-collapse:collapse">
+    <mtr>
+      <mtd columnalign="left" style="text-align:center">
+        <mrow data-mjx-texclass="INNER">
+          <mo data-mjx-texclass="OPEN">(</mo>
+          <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>1</mn>
+                <mo>+</mo>
+                <mn>1</mn>
+                <mi>i</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>2</mn>
+                <mo>−</mo>
+                <mn>0</mn>
+                <mi>i</mi>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mi>i</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mn>2</mn>
+                <mo>+</mo>
+                <mn>3</mn>
+                <mi>i</mi>
+              </mtd>
+            </mtr>
+          </mtable>
+          <mo data-mjx-texclass="CLOSE">)</mo>
+        </mrow>
+        <mrow data-mjx-texclass="INNER">
+          <mo data-mjx-texclass="OPEN">(</mo>
+          <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>1</mn>
+                <mo>+</mo>
+                <mn>0</mn>
+                <mi>i</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>1</mn>
+                <mo>−</mo>
+                <mn>0</mn>
+                <mi>i</mi>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>3</mn>
+                <mi>i</mi>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mi>i</mi>
+              </mtd>
+            </mtr>
+          </mtable>
+          <mo data-mjx-texclass="CLOSE">)</mo>
+        </mrow>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd columnalign="right" style="text-align:center">
+        <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:right"/>
+            <mtd style="text-align:left">
+              <mi/>
+              <mo>=</mo>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mtable columnalign="center" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mo stretchy="false">(</mo>
+                      <mn>1</mn>
+                      <mo>+</mo>
+                      <mn>1</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>1</mn>
+                      <mo>+</mo>
+                      <mn>0</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>+</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>2</mn>
+                      <mo>−</mo>
+                      <mn>0</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>3</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo stretchy="false">(</mo>
+                      <mn>1</mn>
+                      <mo>+</mo>
+                      <mn>1</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>1</mn>
+                      <mo>−</mo>
+                      <mn>0</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>+</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>2</mn>
+                      <mo>−</mo>
+                      <mn>0</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mo>−</mo>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mo stretchy="false">(</mo>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>1</mn>
+                      <mo>+</mo>
+                      <mn>0</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>+</mo>
+                      <mo stretchy="false">(</mo>
+                      <mo>−</mo>
+                      <mn>2</mn>
+                      <mo>+</mo>
+                      <mn>3</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>3</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mo stretchy="false">(</mo>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mn>1</mn>
+                      <mo>−</mo>
+                      <mn>0</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>+</mo>
+                      <mo stretchy="false">(</mo>
+                      <mo>−</mo>
+                      <mn>2</mn>
+                      <mo>+</mo>
+                      <mn>3</mn>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                      <mo>⋅</mo>
+                      <mo stretchy="false">(</mo>
+                      <mo>−</mo>
+                      <mi>i</mi>
+                      <mo stretchy="false">)</mo>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+              </mrow>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:right"/>
+            <mtd style="text-align:left">
+              <mi/>
+              <mo>=</mo>
+              <mrow data-mjx-texclass="INNER">
+                <mo data-mjx-texclass="OPEN">(</mo>
+                <mtable columnalign="center" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mn>1</mn>
+                      <mo>+</mo>
+                      <mn>7</mn>
+                      <mi>i</mi>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>1</mn>
+                      <mo>−</mo>
+                      <mn>1</mn>
+                      <mi>i</mi>
+                    </mtd>
+                  </mtr>
+                  <mtr>
+                    <mtd style="text-align:center">
+                      <mo>−</mo>
+                      <mn>9</mn>
+                      <mo>−</mo>
+                      <mn>5</mn>
+                      <mi>i</mi>
+                    </mtd>
+                    <mtd style="text-align:center">
+                      <mn>3</mn>
+                      <mo>+</mo>
+                      <mn>3</mn>
+                      <mi>i</mi>
+                    </mtd>
+                  </mtr>
+                </mtable>
+                <mo data-mjx-texclass="CLOSE">)</mo>
+              </mrow>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+</div>
+<p>We shall carry over unchanged from the previous chapters everything that we can. For instance, we shall call this</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000109END" data-source-tex-sha256="58d95051f6be8e8cf67c50d0c0a286bfa889c8d8e67135864355fe0fb67ed28e" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mo fence="false" stretchy="false">⟨</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+          <mo>+</mo>
+          <mn>0</mn>
+          <mi>i</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+          <mo>+</mo>
+          <mn>0</mn>
+          <mi>i</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="ORD">
+            <mo>⋮</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+          <mo>+</mo>
+          <mn>0</mn>
+          <mi>i</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>,</mo>
+  <mo>…</mo>
+  <mo>,</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+          <mo>+</mo>
+          <mn>0</mn>
+          <mi>i</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+          <mo>+</mo>
+          <mn>0</mn>
+          <mi>i</mi>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="ORD">
+            <mo>⋮</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+          <mo>+</mo>
+          <mn>0</mn>
+          <mi>i</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo fence="false" stretchy="false">⟩</mo>
+</math></span></span></p>
+<p>the <em>standard basis</em><span id="source-index-24" class="source-index" data-source-index="standard basis"></span><span id="source-index-25" class="source-index" data-source-index="basis!standard"></span> <span id="source-index-26" class="source-index" data-source-index="standard basis!complex number scalars"></span> for <span><span class="math-region inline" data-source-math-id="BFOURMATH000110END" data-source-tex-sha256="0e06ea88f9c745b8e678dbe198a589bec717cce19185f5ccd6f71864f8ffc2ce"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msup>
+    <mrow data-mjx-texclass="ORD">
+      <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="C">ℂ</mi>
+    </mrow>
+    <mi>n</mi>
+  </msup>
+</math></span></span> as a vector space over <span><span class="math-region inline" data-source-math-id="BFOURMATH000111END" data-source-tex-sha256="2f40d444413ea1625f8df16ef92473fbda0187353a5ef8f8bf1ecfe516cf1e1e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="C">ℂ</mi>
+  </mrow>
+</math></span></span> and again denote it <span><span class="math-region inline" data-source-math-id="BFOURMATH000112END" data-source-tex-sha256="53994d87f640ddb7f295e8849da0fce2e9a4bc58447c3893f5b6a0ea55cdefb6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mrow data-mjx-texclass="ORD">
+        <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="E">ℰ</mi>
+      </mrow>
+    </mrow>
+    <mi>n</mi>
+  </msub>
+</math></span>.</span> Another example is that <span><span class="math-region inline" data-source-math-id="BFOURMATH000113END" data-source-tex-sha256="be4fa35be3f6039a169ed4232c686c5736ff823d719d94a5669283116b515574"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mi data-mjx-variant="-tex-calligraphic" mathvariant="normal" data-source-mathvariant="script" data-source-character="P">𝒫</mi>
+    </mrow>
+    <mi>n</mi>
+  </msub>
+</math></span></span> will be the vector space of <span>degree <span class="math-region inline" data-source-math-id="BFOURMATH000114END" data-source-tex-sha256="1b16b1df538ba12dc3f97edbb85caa7050d46c148134290feba80f8236c83db9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+</math></span></span> polynomials with coefficients that are complex.</p>
+<h2 id="source-bibliography">References cited in this section</h2>
+<div id="bib-Halmos" class="source-bibliography-entry">
+<p><strong>Halmos</strong></p>
+<p>Paul R. Halmos, <em>Finite Dimensional Vector Spaces</em>, second edition, Van Nostrand, 1958.</p>
+</div>
+<div id="bib-HoffmanKunze" class="source-bibliography-entry">
+<p><strong>Hoffman &amp; Kunze</strong></p>
+<p>Kenneth Hoffman, Ray Kunze, <em>Linear Algebra</em>, second edition, Prentice-Hall, 1971.</p>
+</div>
+<div id="bib-Ebbinghaus" class="source-bibliography-entry">
+<p><strong>Ebbinghaus</strong></p>
+<p>H. D. Ebbinghaus, <em>Numbers</em>, Springer-Verlag, 1990.</p>
+</div>
+</main><footer><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-34-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/jc1.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>

@@ -32,6 +32,17 @@ try{
    assert.equal(await page.locator('a[href="../index.html"]').count(),2);
    assert.equal(await page.locator('a[href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/"]').count(),2);
    assert.ok(!(await page.locator('header').innerText()).includes('not yet published'));
+   if(section==='jc1'){
+    assert.equal(await page.locator('main math').count(),115);
+    assert.equal(await page.locator('[data-source-unit-id]').count(),15);
+    assert.equal(await page.locator('main h1').innerText(),'Similarity');
+    assert.equal(await page.locator('main h2').first().innerText(),'Complex Vector Spaces');
+    assert.equal(await page.locator('.source-exercise,.source-answer').count(),0);
+    assert.ok(!(await page.locator('header').innerText()).includes('not yet admitted'));
+    assert.equal(await page.locator('[id^="jc1-source-note-"]').count(),4);
+    const borders=await page.locator('[data-source-ruled-matrix] mtd').evaluateAll(cs=>cs.map(c=>({right:parseFloat(getComputedStyle(c).borderRightWidth),bottom:parseFloat(getComputedStyle(c).borderBottomWidth)})));
+    assert.equal(borders.length,4);assert(borders[0].right>0&&borders[0].bottom>0&&borders[1].bottom>0&&borders[2].right>0);
+   }
    if(section==='vs3'){
     const proofSpace=await page.locator('.proof>p:first-child>em:first-child').first().evaluate(e=>parseFloat(getComputedStyle(e).marginInlineEnd));assert.ok(proofSpace>0,'Proof label must not run into its opening word');
     await page.locator('[id="'+anchor+'"]').scrollIntoViewIfNeeded();
