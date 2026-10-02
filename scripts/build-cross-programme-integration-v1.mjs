@@ -3,6 +3,7 @@ import {readFile, writeFile, mkdir} from 'node:fs/promises';
 import {createHash} from 'node:crypto';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
+import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'backend/cross-programme-v1');
@@ -133,6 +134,12 @@ function html(locale){const t=copy[locale];const other=locale==='en'?'id':'en';c
 // frozen course/proof snapshot or copying producer book bodies into it.
 const additionsPath='backend/cross-programme-v1/current-navigation-additions.json';
 const additionsBytes=await readFile(resolve(root,additionsPath));const additions=json(additionsBytes);
+const lessonRoutePath='backend/cross-programme-v1/d80-prerequisite-route-v1.json';
+const lessonRouteBytes=await readFile(resolve(root,lessonRoutePath));
+const lessonRoute=validateD80PrerequisiteRoute(json(lessonRouteBytes));
+assert.ok(coreById.has(lessonRoute.provider_course));
+assert.ok(advById.get(lessonRoute.consumer_course)?.lessons.some(l=>l.id===lessonRoute.consumer_lesson));
+bridge.source_bound_lesson_routes=[lessonRoute];
 assert.equal(additions.schema,'cross-programme-current-navigation-additions/1');
 const additionKeys=new Set();
 for(const resource of additions.resources){
@@ -145,14 +152,21 @@ for(const resource of additions.resources){
   const bytes=await readFile(resolve(root,source.path));assert.deepEqual(fact(source.path,bytes),source);
   if(source.path.endsWith('/READER_MANIFEST.json')){
     const native=json(bytes);assert.equal(native.schema,'b40-expanded-reading-edition/1');
-    assert.equal(native.sections.length,29);assert.equal(native.language,'en');
-    assert.equal(native.sections.at(-1).section,'cramer');
+    assert.equal(native.sections.length,30);assert.equal(native.language,'en');
+    assert.equal(native.sections.at(-1).section,'detspeed');
     assert.equal(resource.course_id,'B40');
   }
   assert.equal(resource.href,origin+source.path.slice(5).replace(/(?:FOUNDATIONS|READER)_MANIFEST\.json$/,''));
 }
 function currentHtml(locale){
   let body=html(locale);
+  const providerAnchor='<section id="core-D80"><h3>'+esc(coreCourses.find(c=>c.id==='D80').title[locale])+'</h3>';
+  assert.equal(body.split(providerAnchor).length,2);
+  body=body.replace(providerAnchor,providerAnchor+renderD80PrerequisiteRoute(lessonRoute,locale,'provider'));
+  const advanced=advancedCourses.find(c=>c.id===lessonRoute.consumer_course);
+  const consumerAnchor='<section id="advanced-'+esc(advanced.id)+'"><h3><a href="'+esc(advanced.route)+'" lang="en">'+esc(advanced.title.en)+'</a></h3>';
+  assert.equal(body.split(consumerAnchor).length,2);
+  body=body.replace(consumerAnchor,consumerAnchor+renderD80PrerequisiteRoute(lessonRoute,locale,'consumer'));
   for(const resource of additions.resources){
     const course=coreCourses.find(c=>c.id===resource.course_id);
     const anchor='<section id="core-'+resource.course_id+'"><h3>'+esc(course.title[locale])+'</h3>';
@@ -181,6 +195,6 @@ for(const [path,b] of outputs){
     assert.deepEqual(Buffer.from(body),b,'Hosted navigation must reverse to exact source: '+path);
   }else{await mkdir(dirname(full),{recursive:true});await writeFile(full,b);}
 }
-const receipt={schema:'cross-programme-build/1',state:'local_reading_routes_integrated_proof_correspondence_unfinished',counts:bridge.counts,inputs:manifest.inputs,current_navigation_additions:fact(additionsPath,additionsBytes),outputs:outputs.map(([p,b])=>fact(p,b)),no_native_owner_mutation:true,no_phone_mutation:true,no_mathematical_certification:true,public_deployment:false,script:fact('scripts/build-cross-programme-integration-v1.mjs',await readFile(fileURLToPath(import.meta.url)))};
+const receipt={schema:'cross-programme-build/1',state:'local_reading_routes_integrated_proof_correspondence_unfinished',counts:bridge.counts,inputs:manifest.inputs,current_navigation_additions:fact(additionsPath,additionsBytes),source_bound_lesson_route:fact(lessonRoutePath,lessonRouteBytes),outputs:outputs.map(([p,b])=>fact(p,b)),no_native_owner_mutation:true,no_phone_mutation:true,no_mathematical_certification:true,public_deployment:false,script:fact('scripts/build-cross-programme-integration-v1.mjs',await readFile(fileURLToPath(import.meta.url)))};
 if(!args.has('--check'))await writeFile(resolve(out,'BUILD_RECEIPT.json'),serialize(receipt));
 console.log(JSON.stringify({state:args.has('--check')?'byte_replay_pass':receipt.state,counts:bridge.counts,outputs:receipt.outputs}));

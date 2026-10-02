@@ -376,6 +376,7 @@ def replay(path, node):
             ['test-d100-classical-export-evidence-v1.mjs'],
             ['test-d100-bgk-export-evidence-v1.mjs'],
             ['build-cross-programme-integration-v1.mjs', '--check'],
+            ['test-d80-prerequisite-route-v1.mjs'],
             ['test-cross-programme-current-v1.mjs'],
         ]
         for parts in commands:

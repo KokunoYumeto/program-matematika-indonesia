@@ -5,6 +5,7 @@ import {createHash} from 'node:crypto';
 import {resolve, dirname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {crossProgrammeRoutes} from '../docs/interface/cross-programme-routes.js';
+import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const load=async p=>JSON.parse(await readFile(resolve(root,p)));
@@ -20,6 +21,9 @@ assert.equal(bridge.counts.published_advanced_courses,71);
 assert.equal(bridge.counts.published_advanced_lessons,951);
 assert.equal(bridge.counts.cross_programme_course_edges,183);
 assert.equal(bridge.counts.independently_verified_cross_programme_proof_matches,0);
+const d80route=validateD80PrerequisiteRoute(await load('backend/cross-programme-v1/d80-prerequisite-route-v1.json'));
+assert.deepEqual(bridge.source_bound_lesson_routes,[d80route]);
+assert.deepEqual(bridge,await load('backend/cross-programme-v1/bridge.json'));
 const facts=[];
 for (const locale of ['id','en']) {
   const programme='docs/'+locale+'/programme/index.html';
@@ -31,6 +35,13 @@ for (const locale of ['id','en']) {
   assert.ok(b40.includes('data-b40-expanded="v1"'));
   assert.ok(b40.includes('href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/" hreflang="en"'));
   assert.ok(b40.includes(locale==='en'?'(partial book)':'(sebagian buku)'));
+  assert.ok(b40.includes(locale==='en'?'30 sections through Speed of Calculating Determinants':'30 bagian'));
+  assert.ok(!b40.includes('29 sections')&&!b40.includes('29 bagian'));
+  for(const [section,side] of [['core-D80','provider'],['advanced-'+d80route.consumer_course,'consumer']]){
+    const local=text.split('<section id="'+section+'">')[1]?.split('</section>')[0];
+    assert.ok(local?.includes(renderD80PrerequisiteRoute(d80route,locale,side)),'Missing exact D80 '+side+' route in '+locale);
+  }
+  assert.equal((text.match(/data-d80-prerequisite=/g)||[]).length,2);
   const anchors=new Set([...text.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]));
   for (const id of expected) {
     const route=new URL(crossProgrammeRoutes[id][locale]);
@@ -64,6 +75,9 @@ const result={schema:'current-core-advanced-integration/1',state:'pass',core_rol
   all_six_current_shells_have_d80_tools:true,
   b40_existing_english_foundations_preserved_in_both_programmes:true,
   b40_expanded_english_reader_preserved_in_both_programmes:true,
+  d80_source_bound_prerequisite_readings:3,
+  d80_distinct_relationships:1,
+  d80_forward_reverse_localized_renderings:4,
   native_proof_closure_claimed:false,files:facts,
   provenance:{model:'gpt-6-astra',effort:'ultra',scope:'Combined current-checkout integration verification; upstream route authorship retained'}};
 await writeFile(resolve(root,'backend/cross-programme-v1/CURRENT_INTEGRATION_VALIDATION.json'),JSON.stringify(result,null,2)+'\n');

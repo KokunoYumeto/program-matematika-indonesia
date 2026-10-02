@@ -137,6 +137,8 @@ assert roles['D100']['dimensions']['reproducible_production']['native_data_expor
     'locale': 'id-ID', 'lanes': ['classical', 'bgk', 'original'],
     'existing_reader_bytes_used_for_bgk': True, 'english_replay_established': False}
 assert roles['D100']['native_capability_parity_completion'] == 'not_yet_proven'
+assert any('bukti ekspor data yang kini tersedia' in note for note in roles['D100']['next_required_work'])
+assert not any('Ekspor data backend asli, produksi PDF, dan peninjauan semantik kanon tetap memerlukan bukti terpisah.' in note for note in roles['D100']['next_required_work'])
 assert roles['D100']['dimensions']['reproducible_production']['native_html_replay'] == 'verified'
 assert roles['D100']['dimensions']['reproducible_production']['replay'] == 'available_unverified'
 assert set(roles) == {row['course_id'] for row in inputs['capsules']}

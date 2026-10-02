@@ -27,6 +27,24 @@ try{
     await page.goto(origin+'/'+locale+'/programme/',{waitUntil:'load'});assert.equal(await page.locator('section[id^="core-"]').count(),40);assert.equal(await page.locator('section[id^="advanced-"]').count(),71);
     const overflow=await page.evaluate(()=>({inner:innerWidth,document:document.documentElement.scrollWidth}));assert.ok(overflow.document<=overflow.inner+1,'Horizontal overflow '+locale+' '+width);
     const proofNotice=await page.locator('.notice').innerText();assert.ok(proofNotice.length>100);
+    if(current){
+      const route=JSON.parse(await readFile(resolve(dir,'d80-prerequisite-route-v1.json')));
+      const provider=page.locator('#core-D80 aside[data-d80-prerequisite="provider"]');
+      assert.equal(await provider.locator('a[hreflang="en"]').count(),6);
+      const diagramNotice=provider.locator('[data-d80-reader-notice]');
+      assert.ok(await diagramNotice.isVisible());
+      assert.ok((await diagramNotice.innerText()).includes(route.reader_notice.text[locale]));
+      assert.equal(await diagramNotice.locator('a[href="'+route.reader_notice.pdf.url+'"]').count(),1);
+      for(const reading of route.readings)assert.equal(await provider.locator('a[href="'+reading.url+'"]').count(),1);
+      await provider.locator('a[data-d80-programme-step="provider"]').click();
+      assert.ok(page.url().endsWith('#advanced-'+route.consumer_course));
+      await page.locator('a[data-d80-programme-step="consumer"]').click();assert.ok(page.url().endsWith('#core-D80'));
+      await provider.locator('details summary').click();
+      assert.ok((await provider.innerText()).includes(route.use_loci[1].comparison[locale]));
+      const openOverflow=await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1);assert.ok(openOverflow,'D80 notes overflow');
+      if(width!==320){await provider.scrollIntoViewIfNeeded();const path=captureDir+'/'+locale+'-'+width+'-D80-prerequisite.png';const b=await page.screenshot({path:resolve(dir,path),fullPage:false});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
+      checks.push({locale,width,d80_forward_reverse_clicks:'pass',three_exact_english_source_links:true,localized_use_notes:true,visible_five_lemma_diagram_notice:true,correct_pdf_page_link:true,horizontal_overflow:false});
+    }
     if(width!==320){await page.locator('#core-B40').scrollIntoViewIfNeeded();const path=captureDir+'/'+locale+'-'+width+'-core-B40.png';const b=await page.screenshot({path:resolve(dir,path),fullPage:false});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
     await page.locator('#core-B40 a[href="#advanced-RT-FIN"]').click();assert.ok(page.url().endsWith('#advanced-RT-FIN'));await page.locator('#advanced-RT-FIN a[href="#core-B40"]').click();assert.ok(page.url().endsWith('#core-B40'));
     checks.push({locale,width,mode:'javascript_disabled',course_sections:111,forward_reverse_clicks:'pass',horizontal_overflow:false,remote_runtime_blocked:true});await context.close();

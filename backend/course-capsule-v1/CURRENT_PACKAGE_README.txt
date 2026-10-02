@@ -1,5 +1,25 @@
 PAKET BACKEND BERSAMA — 40 PERAN KURIKULUM
 
+Catatan pembaca D80: deskripsi diagram lema lima pada HTML edisi Inggris
+tertukar dengan diagram lema ular sebelumnya. Kedua peta program menampilkan
+catatan yang terlihat beserta tautan ke diagram yang benar pada PDF halaman
+119 (nomor cetak 109) dan LaTeX versi yang diperiksa. Pembaca asal belum
+diperbaiki. Ini adalah temuan konversi satu diagram, bukan kesalahan teorema
+atau klaim bahwa semua diagram lain telah diperiksa.
+
+English: both programme routes visibly flag the Five Lemma HTML diagram
+description mismatch and link to the checked PDF page119 and exact LaTeX.
+The producer reader is unchanged; this is a bounded navigation safeguard,
+not a completed repair of that reader or a whole-book diagram review.
+
+Jalur prasyarat D80: peta /id/programme/ dan /en/programme/ menghubungkan tiga
+bagian Methods of Algebra, Volume 2 dengan pelajaran Complexes, cones and
+localization, termasuk tautan balik dan catatan penggunaan sumber. Bacaan
+tersebut berbahasa Inggris. Identitas byte, tiga jangkar bagian dan sumber
+LaTeX diperiksa; perbandingan terbatas ini bukan pengesahan semua pembuktian
+prasyarat atau penyelesaian seluruh mata kuliah. Kredit Wen-Wei Li dan CC BY
+4.0 dipertahankan. Integrasi: OpenAI Codex gpt-6-astra, tingkat upaya Ultra.
+
 Paket ini menyimpan versi kerja lapisan integrasi: identitas sumber, metadata
 terjemahan, peta belajar, hubungan latihan dan solusi, alat peserta belajar,
 bahan pengajar, kode adaptor, serta bukti dan pemeriksaan yang menyertainya.
@@ -18,12 +38,12 @@ menyimpan bukti ekspor dan pemeriksanya; korpus masukan asli tetap pada edisi
 produsen. Status paritas penuh tidak dinaikkan.
 
 Tambahan B40 berbahasa Inggris: /en/readers/hefferon-linear-algebra/ memuat
-29 bagian hingga Aturan Cramer, dengan 844 latihan, 842 jawaban sumber dan
+30 bagian hingga Speed of Calculating Determinants, dengan 849 latihan, 847 jawaban sumber dan
 dua ketiadaan jawaban yang dinyatakan. Ini bukan seluruh buku. Sumber LaTeX
 kumulatif dan per bagian tersedia dalam direktori sources. Paket sumber
-publik lengkap yang identik disimpan pada backend/b40-cramer-public-20261002/
+publik lengkap yang identik disimpan pada backend/b40-detspeed-public-20261002/
 preservation/COMPLETE_SOURCE.zip. Ekstrak secara terpisah lalu baca REBUILD.txt.
-Paket 28 bagian sebelumnya tetap disimpan sebagai versi terdahulu. Tautan
+Paket 28 dan 29 bagian sebelumnya tetap disimpan sebagai versi terdahulu. Tautan
 enam bagian fondasi sebelumnya tetap tersedia; jangan menjumlahkannya
 sebagai buku baru. Matematika asli: Jim Hefferon. Pembangunan publik sumber
 dan integrasi ini: OpenAI Codex gpt-6-astra, tingkat upaya Ultra. Tidak ada
@@ -103,6 +123,7 @@ Jalankan, dari akar hasil ekstraksi:
   node scripts/test-d100-bgk-export-evidence-v1.mjs
   node scripts/test-local-evidence-identities-v1.mjs
   node scripts/build-cross-programme-integration-v1.mjs --check
+  node scripts/test-d80-prerequisite-route-v1.mjs
   node scripts/test-cross-programme-current-v1.mjs
 
 Pemeriksaan peramban D60 memakai Playwright dan satu peramban Chromium tanpa
@@ -132,15 +153,20 @@ docs/guides/start-v0.63.32.tex` membangun dokumen yang sama. Versi distribusi Te
 dan font dapat memengaruhi byte PDF; identitas rilis dicatat terpisah.
 
 Panduan Inggris tambahan / additional English guide:
+The D80 prerequisite route links three English source sections to Complexes,
+cones and localization, with reverse navigation and bilingual proof-use notes.
+Public byte identities and section anchors are checked; this is not complete
+prerequisite-proof or course certification. Wen-Wei Li's authorship and CC BY
+4.0 remain explicit. Route integration: OpenAI Codex gpt-6-astra, Ultra effort.
 D100's three Indonesian native data exports were each reproduced twice:
 23,869 classical, 21,690 BGK and 1,064 original-companion records. Historical
 registries remain explicit inputs; BGK also uses existing reader bytes. The
 package preserves the evidence and validators, not every producer corpus.
 No fresh PDF build, English export replay or new semantic review is implied.
-B40 now preserves 29 original-English sections through Cramer's Rule, 844
-exercises, 842 supplied answers and two explicit source-answer absences.
-Its exact complete-source archive is under backend/b40-cramer-public-20261002/
-preservation. The historical 28-section and six-section packages remain available.
+B40 now preserves 30 original-English sections through Speed of Calculating
+Determinants, 849 exercises, 847 supplied answers and two explicit source-answer
+absences. Its exact complete-source archive is under backend/b40-detspeed-public-20261002/
+preservation. The historical 29-section, 28-section and six-section packages remain available.
 
 D80 adds a searchable source/term/correction/diagram consumer with 8,430
 original metadata records. Unverified terminology and imprecise source
