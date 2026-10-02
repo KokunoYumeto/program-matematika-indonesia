@@ -1,0 +1,515 @@
+% Chapter 4, Topic _Linear Algebra_ Jim Hefferon
+%  http://joshua.smcvt.edu/linearalgebra
+%  2020-Apr-08
+\topic{Computer Graphics}
+\index{computer graphics|(}
+The prior topic on Projective Geometry gives this model of 
+how our eye, or a camera, sees the world.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.14}}
+\end{center}
+All of the points on a line through the origin project to the same 
+spot.
+
+In that topic we defined that
+for any nonzero vector $\vec{v}\in\Re^3$, the associated 
+\definend{point $p$ in the projective plane}\index{point!in projective plane} 
+is the set $\set{k\vec{v}\suchthat \text{$k\in\Re$ and $k\neq 0$}}$.
+This is the collection of nonzero vectors lying on the same line through the
+origin as $\vec{v}$.
+
+To describe a projective point we can give any representative member 
+of the line. 
+Thus these each represent the same projective point.
+\begin{equation*}
+  \colvec[r]{1 \\ 2 \\ 3}
+  \qquad
+  \colvec{1/3 \\ 2/3 \\ 1}
+  \qquad
+  \colvec[r]{-2 \\ -4 \\ -6}
+\end{equation*} 
+Each is a
+\definend{homogeneous coordinate vector}\index{coordinates!homogeneous}%
+\index{homogeneous coordinate vector}\index{vector!homogeneous coordinate}
+for the point~$p$. 
+Two homogeneous coordinate vectors (which are by definition nonzero)
+\begin{equation*}
+  \tilde{p}_1=\colvec{a_1 \\ b_1 \\ c_1}
+  \qquad
+  \tilde{p}_2=\colvec{a_2 \\ b_2 \\ c_2}
+\end{equation*}
+represent the same projective point if there is a scaling factor
+$s\neq 0$ so that $s\tilde{p}_1=\tilde{p}_2$.
+
+Of the infinitely many possible representatives,
+often we use the one whose third component is~$1$.
+This amounts to projecting onto the plane $z=1$.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.18}}
+\end{center}
+
+In this topic we will show how to use these ideas to perform some effects 
+from computer graphics.
+For that we will take the prior picture and redraw it without the sphere,
+with a movie projector at the origin, and with plane $z=1$ looking like
+a movie theater screen.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.60}}
+\end{center}
+This associates vectors in three-space on the grey line with 
+$p$~in the screen plane.
+\begin{equation*}
+  \tilde{p}=\colvec{a \\ b \\ c} 
+  \mapsto 
+  p=\colvec{x \\ y}=\colvec{a/c \\ b/c}
+\end{equation*}
+
+We can adapt the things we have already seen about matrices to perform 
+the transformations.
+Rotation\index{rotation} 
+is an example.
+This matrix rotates in the plane~$z=1$ about the origin by the angle~$\theta$.
+\begin{equation*}
+  \begin{mat}
+    \cos\theta  &-\sin\theta  &0  \\
+    \sin\theta  &\cos\theta   &0  \\
+    0           &0            &1  
+  \end{mat}
+  \colvec{x \\ y \\ 1}
+  =
+  \colvec{cos\theta\cdot x -\sin\theta\cdot y  \\  
+         \sin\theta\cdot x +\cos\theta\cdot y  \\ 
+         1}
+\end{equation*}
+Notice that it works on any homogeneous coordinate vector;
+if we apply the matrix
+\begin{equation*}
+  \begin{mat}
+    \cos\theta  &-\sin\theta  &0  \\
+    \sin\theta  &\cos\theta   &0  \\
+    0           &0            &1  
+  \end{mat}
+  \colvec{a \\ b \\ c}
+  =
+  \colvec{cos\theta\cdot a -\sin\theta\cdot b  \\  
+         \sin\theta\cdot a +\cos\theta\cdot b  \\ 
+         c}
+\end{equation*}
+and then move to the $z=1$~plane
+\begin{equation*}
+  \colvec{cos\theta\cdot a -\sin\theta\cdot b  \\  
+         \sin\theta\cdot a +\cos\theta\cdot b  \\ 
+         c}
+  \mapsto
+  \colvec{(cos\theta\cdot a -\sin\theta\cdot b)/c  \\  
+         (\sin\theta\cdot a +\cos\theta\cdot b)/c  \\ 
+         1}
+\end{equation*}
+then we get the same result as 
+if we had first moved to the plane and then applied
+the matrix.
+\begin{equation*}
+  \begin{mat}
+    \cos\theta  &-\sin\theta  &0  \\
+    \sin\theta  &\cos\theta   &0  \\
+    0           &0            &1  
+  \end{mat}
+  \colvec{a/c \\ b/c \\ 1}
+  =
+  \colvec{cos\theta\cdot a/c -\sin\theta\cdot b/c  \\  
+         \sin\theta\cdot a/c +\cos\theta\cdot b/c  \\ 
+         1}
+\end{equation*}
+
+So there is no harm in working with homogeneous coordinates.
+But what is the advantage?
+
+The computer graphic operation of translation,\index{translation} 
+of sliding things from
+one place to another, is not a linear transformation because it does
+not leave the origin fixed.
+But if we work with homogeneous coordinates then we can use matrices.
+This matrix will translate points in the plane of interest by 
+$t_x$ in the $x$~direction and $t_y$ in the $y$~direction.
+\begin{equation*}
+  \begin{mat}
+    1  &0  &t_x  \\
+    0  &1  &t_y  \\
+    0  &0  &1  
+  \end{mat}
+  \colvec{a \\ b \\ c}
+  =
+  \colvec{a+t_x\cdot c  \\  
+          b+t_y\cdot c  \\ 
+          c}
+  \mapsto
+  \colvec{a/c+t_x  \\  
+          b/c+t_y  \\ 
+          1}
+\end{equation*}
+That is, in the plane of interest this matrix slides
+$\binom{a/c}{b/c}$ to $\binom{a/c+t_x}{b/c+t_y}$.
+So the homogeneous coordinates allow us to use matrices.
+
+OK then, but what is the advantages of using these matrices?
+What does the extra coordinate get us?
+Suppose that we are making a movie with computer graphics.
+We are at a moment where the 
+camera is panning and rotating at the same time.
+Every single point in the scene needs to be both translated and rotated.
+Rather than have the computer perform two operations to each point,
+we can multiply the two matrices and
+then the computer only applies one operation to each point; it multiplies
+that point by the resulting matrix.
+That is a tremendous speedup and simplification.
+
+We will list some examples of the effects that we can get.
+We have already talked about rotation. 
+Here is the picture of rotation by a half radian.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.61}}
+  \quad$\mapsto$\quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.62}}
+\end{center}
+And here is a translation with $t_x=1.5$ and~$t_y=0.5$.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.61}}
+  \quad$\mapsto$\quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.67}}
+\end{center}
+
+Next is scaling.
+This matrix rescales things in the target plane 
+by a factor of~$s$  in the $x$-direction, 
+and  by a factor of~$t$ in the $y$~direction.
+\begin{equation*}
+  \begin{mat}
+    s  &0  &0  \\
+    0  &t  &0  \\
+    0  &0  &1  
+  \end{mat}
+  \colvec{a/c \\ b/c \\ 1}
+  =
+  \colvec{s\cdot a/c  \\  
+          t\cdot b/c \\ 
+          1}
+\end{equation*}
+In this picture we rescale in the $x$~direction by a factor of $s=2.5$
+and in the $y$-direction by~$t=0.75$.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.61}}
+  \quad$\mapsto$\quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.63}}
+\end{center}
+
+If we take $s=t$ then the entire shape is rescaled.
+For instance, if we string together frames with $s=t=1.10$ then in
+the movie it will seem that the object is getting closer to us.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.61}}
+  \quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.68}}
+  \quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.69}}
+  \quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.70}}
+\end{center}
+
+We can reflect the object.
+This reflects about the line $y=x$.
+\begin{equation*}
+  \begin{mat}
+    0  &1  &0  \\
+    1  &0  &0  \\
+    0  &0  &1  
+  \end{mat}
+  \colvec{a/c \\ b/c \\ 1}
+  =
+  \colvec{b/c  \\  
+          a/c \\ 
+          1}
+\end{equation*}
+The dashed line here is $y=x$.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.61}}
+  \quad$\mapsto$\quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.64}}
+\end{center}
+
+This reflects about $y=-x$.
+\begin{equation*}
+  \begin{mat}
+    0   &-1  &0  \\
+    -1  &0  &0  \\
+    0   &0  &1  
+  \end{mat}
+  \colvec{a/c \\ b/c \\ 1}
+  =
+  \colvec{-b/c  \\  
+          -a/c \\ 
+          1}
+\end{equation*}
+The dashed line below is $y=-x$.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.61}}
+  \quad$\mapsto$\quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.65}}
+\end{center}
+
+More complex transformations are possible.
+This is a \definend{shear}.\index{shear}
+\begin{equation*}
+  \begin{mat}
+    1   &1  &0  \\
+    0   &1  &0  \\
+    0   &0  &1  
+  \end{mat}
+  \colvec{a/c \\ b/c \\ 1}
+  =
+  \colvec{a/c+b/c  \\  
+          b/c \\ 
+          1}
+\end{equation*}
+In this picture the $y$~components of points are unchanged,
+but the $x$~components have added to them the value of~$y$.
+\begin{center} 
+  \vcenteredhbox{\includegraphics{det/mp/ch4.61}}
+  \quad$\mapsto$\quad
+  \vcenteredhbox{\includegraphics{det/mp/ch4.66}}
+\end{center}
+
+A major advantage of having this all be matrices is that we can do 
+complex things by combining simple things.
+To reflect about the line $y=-x+2$ we can find the three matrices
+to slide everything to the origin, then reflect about $y=-x$, and then 
+slide back.
+\begin{equation*}
+  \begin{mat}
+    1   &0  &0  \\
+    0   &1  &2  \\
+    0   &0  &1  
+  \end{mat}
+  \begin{mat}
+    0   &-1  &0  \\
+    -1  &0   &0  \\
+    0   &0   &1  
+  \end{mat}
+  \begin{mat}
+    1   &0  &0  \\
+    0   &1  &-2  \\
+    0   &0  &1  
+  \end{mat}
+  \tag{*}
+\end{equation*}
+(As always, the action done first is described by the matrix
+on the right.
+That is, the matrix on the right describes sliding all points in the plane
+of interest by $-2$, 
+the matrix in the middle reflects about $y=-x$, 
+and the matrix on the left slides all points back.)
+
+There are even more complex effects possible with matrices.
+These are the matrices for the
+\definend{general affine transformation},\index{affine transformation} 
+and the
+\definend{general projective transformation}.\index{projective transformation}
+\begin{equation*}
+  \begin{mat}
+    d   &e  &f  \\
+    g   &h  &i  \\
+    0   &0  &1  
+  \end{mat}
+  \qquad
+  \begin{mat}
+    d   &e  &f  \\
+    g   &h  &i  \\
+    j   &k  &1  
+  \end{mat}
+\end{equation*}
+However, description of their geometric effect is beyond our scope.
+
+There is a vast literature on computer graphics, in which
+linear algebra plays an important part.
+An excellent source is \cite{Hughes}.
+The subject is a wonderful blend of mathematics and art;
+see \cite{Disney}. 
+
+
+
+% ========================================
+\begin{exercises}
+  \item 
+    Calculate the product in ($*$).
+    \begin{answer}
+      Straightforward calculation gives this for the product.
+      \begin{equation*}
+        \begin{mat}
+          1   &0  &0  \\
+          0   &1  &2  \\
+          0   &0  &1  
+        \end{mat}
+        \begin{mat}
+          0   &-1  &0  \\
+          -1  &0   &0  \\
+          0   &0   &1  
+        \end{mat}
+        \begin{mat}
+          1   &0  &0  \\
+          0   &1  &-2  \\
+          0   &0  &1  
+        \end{mat}
+        =
+        \begin{mat}
+         0 &-1 &2 \\
+        -1 &0  &2 \\
+         0 &0  &1
+        \end{mat}
+      \end{equation*}
+    \end{answer}
+% sage: M0 = matrix(QQ, [[1,0,0], [0,1,2], [0,0,1]])
+% sage: M0
+% [1 0 0]
+% [0 1 2]
+% [0 0 1]
+% sage: M1 = matrix(QQ, [[0,-1,0], [-1,0,0], [0,0,1]])
+% sage: M2 = matrix(QQ, [[0,-1,0], [-1,0,0], [0,0,1]])
+% sage: M2 = matrix(QQ, [[1,0,0], [0,1,-2], [0,0,1]])
+% sage: M0*M1*M2
+% [ 0 -1  2]
+% [-1  0  2]
+% [ 0  0  1]
+  \item Find the matrix that reflects about the line $y=2x$.
+    \begin{answer}
+      Working in $\R^2$, let the matrix be $M$.
+      We get these two.
+      \begin{equation*}
+        \colvec{1 \\ 2}\mapsto \colvec{1 \\ 2}
+        \qquad
+        \colvec{-2 \\ 1}\mapsto \colvec{2 \\ -1}
+      \end{equation*}
+      (For the second one, the starting vector is on the line through the 
+      origin that is perpendicular to $y=2x$.)
+      We have this.
+      \begin{equation*}
+        M
+        \begin{mat}
+          1  &-2  \\
+          2  &1
+        \end{mat}
+        =
+        \begin{mat}
+          1  &2  \\
+          2  &-1
+        \end{mat}
+      \end{equation*}
+      Solving gives
+      \begin{equation*}
+        M =
+            \begin{mat}
+              1  &2  \\
+              2  &-1
+            \end{mat}
+            \begin{mat}
+              1  &-2  \\
+              2  &1     
+            \end{mat}^{-1}
+          =
+            \begin{mat}
+              -3/5  &4/5 \\
+              4/5   &3/5
+            \end{mat}
+      \end{equation*}
+      and so for homogeneous coordinates the matrix is this.
+      \begin{equation*}
+      \begin{mat}
+        -3/5  &4/5  &0  \\
+         4/5  &3/5  &0  \\
+           0  &0    &1
+      \end{mat}
+      \end{equation*}
+    \end{answer}
+  \item Find the matrix that reflects about the line $y=2x-4$.
+    \begin{answer}
+      Move all points over by $4$, reflect about the line $y=2x$ using the
+      prior exercise, and them move them back. 
+      \begin{equation*}
+      \begin{mat}
+        1  &0  &0  \\
+        0  &1  &-4 \\
+        0  &0  &1
+      \end{mat}
+      \begin{mat}
+        -3/5  &4/5  &0  \\
+         4/5  &3/5  &0  \\
+           0  &0    &1
+      \end{mat}
+      \begin{mat}
+        1  &0  &0  \\
+        0  &1  &4 \\
+        0  &0  &1
+      \end{mat}
+      =
+      \begin{mat}
+        -3/5  &4/5  &16/5  \\
+         4/5  &3/5  &-8/5 \\
+           0  &0    &1
+      \end{mat}
+      \end{equation*}
+    \end{answer}
+% sage: M0 = matrix(QQ, [[1,0,0], [0,1,-4], [0,0,1]])
+% sage: M1 = matrix(QQ, [[-3/5,4/5,0], [4/5,3/5,0], [0,0,1]])
+% sage: M2 = matrix(QQ, [[1,0,0], [0,1,4], [0,0,1]])
+% sage: M0*M1*M2
+% [-3/5  4/5 16/5]
+% [ 4/5  3/5 -8/5]
+% [   0    0    1]
+  \item 
+    Rotation and translation are rigid operations.
+    What is the matrix for a rotation followed by a translation?
+    \begin{answer}
+    \begin{equation*}
+      \begin{mat}
+        1  &0  &t_x  \\
+        0  &1  &t_y  \\
+        0  &0  &1
+      \end{mat}
+      \begin{mat}
+        \cos\theta &-\sin\theta  &0 \\
+        \sin\theta &\cos\theta   &0 \\
+        0          &0            &1
+      \end{mat}
+      =
+      \begin{mat}
+        \cos\theta  &-\sin\theta  &t_x  \\
+        \sin\theta  &\cos\theta   &t_y  \\
+        0           &0            &1
+      \end{mat}
+    \end{equation*}
+    \end{answer}
+  \item The homogeneous coordinates extend to manipulations of 
+    three dimensional space in the obvious way:~every coordinate
+    is a set of four-tall nonzero vectors that are related by
+    being scalar multiples of each other.
+    Give the matrix to do rotation about the $z$~axis, and the
+    matrix for rotation about the $y$~axis.
+    \begin{answer}
+    Here are the two $\nbyn{4}$ matrices.
+    \begin{equation*}
+      \begin{mat}
+        \cos\theta  &-\sin\theta  &0  &0  \\
+        \sin\theta  &\cos\theta   &0  &0  \\
+        0           &0            &0  &0  \\
+        0           &0            &0  &1  
+      \end{mat}
+      \qquad
+      \begin{mat}
+        \cos\theta  &0  &-\sin\theta  &0   \\
+        0           &0  &0            &0  \\
+        \sin\theta  &0  &\cos\theta   &0   \\
+        0           &0  &0            &1  
+      \end{mat}
+    \end{equation*}    
+    \end{answer}
+\end{exercises}
+\index{computer graphics|)}
+\endinput
