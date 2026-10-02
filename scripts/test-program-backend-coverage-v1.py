@@ -12,6 +12,9 @@ from urllib.parse import unquote, urlsplit
 ROOT = Path(__file__).resolve().parents[1]
 GENERATOR = 'scripts/build-program-backend-coverage-v1.mjs'
 INPUTS = {
+    'b40Manifest': 'backend/course-capsule-v1/adapters/b40-capability-v1/manifest.json',
+    'b40Validation': 'backend/course-capsule-v1/adapters/b40-capability-v1/validation.json',
+    'b40SourceLock': 'backend/course-capsule-v1/adapters/b40-capability-v1/input/source-lock.json',
     'd100BgkExportBinding': 'backend/course-capsule-v1/authority/d100-bgk-export-inputs-v1.json',
     'd100BgkExportReplay': 'backend/course-capsule-v1/adapters/d100-native-production-v1/bgk-backend-replay.json',
     'd100ClassicalExportBinding': 'backend/course-capsule-v1/authority/d100-classical-export-inputs-v1.json',
@@ -565,6 +568,32 @@ assert len(roles['B40']['learner']['tools']) == 1
 assert roles['B40']['educator']['unit_alignment'] == 'verified'
 assert roles['B40']['common_adapter']['github_public_evidence'] == 'new_anonymous_source_and_pages_readback'
 assert roles['B40']['common_adapter']['zenodo_preservation'] == 'not_established'
+b40_design = roles['B40']['current_native_design']
+assert b40_design['status'] == 'source_bound_admitted_native_design'
+assert b40_design['source_format'] == 'modular_latex'
+assert b40_design['native_family'] == 'hefferon_modular_latex_backend'
+assert b40_design['authorship']['effort'] == 'ultra'
+assert b40_design['authorship']['human_review_claimed'] is False
+assert b40_design['counts'] == inputs['b40Manifest']['counts']
+assert b40_design['counts']['units'] == 3541
+assert b40_design['counts']['relations'] == 13999
+assert b40_design['counts']['answers'] == 1037
+assert b40_design['counts']['native_upstream_answers'] == 1035
+assert b40_design['counts']['indonesian_edition_supplied_answers'] == 2
+assert b40_design['source_repository'] == inputs['b40SourceLock']['native_repository']
+assert b40_design['claim_boundary'] == {
+    'fresh_semantic_canon_review': False, 'fresh_full_book_build': False,
+    'advanced_proof_dependency_closure': False,
+    'historical_pattern_replaced': False, 'parity_status_upgraded': False,
+}
+assert 'CNXML' in roles['B40']['native_design_audit']['pattern']
+assert all('current_native_design' not in row for key, row in roles.items() if key != 'B40')
+for key in ('b40Manifest', 'b40Validation', 'b40SourceLock'):
+    raw = (ROOT / INPUTS[key]).read_bytes()
+    assert {'path': INPUTS[key], 'bytes': len(raw), 'sha256': hashlib.sha256(raw).hexdigest()} in b40_design['evidence']
+assert 'LaTeX' in b40_design['description']['id'] and 'LaTeX' in b40_design['description']['en']
+assert len(b40_design['recommended_reuse']['id']) == len(b40_design['recommended_reuse']['en']) == 3
+assert len(b40_design['limitations']['id']) == len(b40_design['limitations']['en']) == 3
 clp_route_path = INPUTS['clpRoutes']
 assert roles['C80']['educator']['status'] == 'verified'
 assert roles['C80']['educator']['unit_alignment'] == 'verified'
@@ -993,6 +1022,9 @@ class Page(HTMLParser):
 html_path = ROOT / 'docs/backend/coverage.html'
 html = html_path.read_text(encoding='utf-8')
 page = Page(html)
+assert 'data-current-native-design="B40"' in html
+assert b40_design['description']['id'] in html
+assert 'Desain saat ini: bukti adapter yang terikat sumber' in html
 assert page.language == 'id'
 assert len(page.ids) == len(set(page.ids))
 assert set(page.row_ids) == {'role-' + role for role in roles}
@@ -1005,7 +1037,7 @@ for href in page.links:
     assert parsed.scheme in ('', 'https'), href
     if parsed.scheme:
         continue
-    target = (html_path.parent / unquote(parsed.path)).resolve()
+    target = (html_path.parent / unquote(parsed.path)).resolve() if parsed.path else html_path
     if target.is_dir():
         target = target / 'index.html'
     assert target.is_relative_to(ROOT / 'docs') and target.is_file(), href
@@ -1055,6 +1087,10 @@ with tempfile.TemporaryDirectory(prefix='backend-coverage-test-') as temporary:
             assert candidate == actual, path
 
     cases = [
+        ('b40_wrong_native_family', 'b40Manifest', lambda value: value.update(native_family='cnxml_slots')),
+        ('b40_design_validation_failed', 'b40Validation', lambda value: value.update(state='fail')),
+        ('b40_design_answer_provenance_changed', 'b40Manifest', lambda value: value['counts'].update(native_upstream_answers=1037)),
+        ('b40_design_source_revision_changed', 'b40SourceLock', lambda value: value['native_repository'].update(source_commit='0'*40)),
         ('d70_replay_failed', 'd70NativeReplay', lambda value: value.update(state='fail')),
         ('d70_replay_producer_dependency', 'd70NativeReplay', lambda value: value.update(producer_tree_required=True)),
         ('d70_replay_whole_book_overclaim', 'd70NativeReplay', lambda value: value.update(whole_native_parity_proven=True)),
