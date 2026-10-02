@@ -95,7 +95,12 @@ def main(cache):
         surface['documents'].append({'path': 'ledger' + suffix + '.html', 'locale': locale, 'course_ids': ['C130'],
             'contents_paths': ['ledger' + opposite + '.html'],
             'related_course_surface_paths': ['docs/backend/c130/C130.html', 'docs/backend/c130-teacher/C130.teacher' + suffix + '.html']})
-    nav['course_surfaces'] = [s for s in nav['course_surfaces'] if s['root'] != SITE] + [surface]
+    matches = [i for i, row in enumerate(nav['course_surfaces']) if row['root'] == SITE]
+    assert len(matches) <= 1, 'Duplicate C130 native surface'
+    if matches:
+        nav['course_surfaces'][matches[0]] = surface
+    else:
+        nav['course_surfaces'].append(surface)
     for prior in nav['course_surfaces']:
         if prior['root'] not in ['docs/backend/c130', 'docs/backend/c130-teacher']:
             continue
