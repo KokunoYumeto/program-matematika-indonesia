@@ -49,7 +49,9 @@ def audit(root, plan):
     patterns = {
         'absolute-user-path': re.compile(rb'[A-Za-z]:[\\/]+Users[\\/]+[A-Za-z0-9._-]+[\\/]+', re.I),
         'github-credential-shaped-value': re.compile(rb'(?:gh[pousr]_[A-Za-z0-9]{30,}|github_pat_[A-Za-z0-9_]{40,})'),
-        'openai-credential-shaped-value': re.compile(rb'sk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{40,}'),
+        # Token prefixes start a value, not the middle of an ordinary word
+        # such as a long "ask-..." heading anchor.
+        'openai-credential-shaped-value': re.compile(rb'(?<![A-Za-z0-9_-])sk-(?:proj-|svcacct-)?[A-Za-z0-9_-]{40,}'),
         'private-key': re.compile(rb'-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----'),
     }
     checked_html = 0

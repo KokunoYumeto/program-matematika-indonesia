@@ -215,6 +215,23 @@ class PackageTests(unittest.TestCase):
         self.assertEqual(runtime.audit(self.root, plan)['privacy_findings'],
                          [{'path': 'scripts/check.cjs', 'kind': 'absolute-user-path'}])
 
+    def test_heading_anchor_is_not_a_token_but_delimited_token_is(self):
+        path = self.root / 'docs/token-fixture.json'
+        plan = {'files': [{'path': 'docs/token-fixture.json'}]}
+        path.write_text(json.dumps({'heading': 'ask-' + 'question-' * 8}), encoding='utf-8')
+        self.assertEqual(runtime.audit(self.root, plan)['privacy_findings'], [])
+        for prefix in ['sk-', 'sk-proj-', 'sk-svcacct-']:
+            path.write_text(json.dumps({'value': prefix + 'x' * 50}), encoding='utf-8')
+            self.assertEqual(runtime.audit(self.root, plan)['privacy_findings'],
+                             [{'path': 'docs/token-fixture.json', 'kind': 'openai-credential-shaped-value'}])
+
+    def test_token_spanning_stream_blocks_is_still_detected(self):
+        path = self.root / 'docs/token-fixture.txt'
+        plan = {'files': [{'path': 'docs/token-fixture.txt'}]}
+        path.write_bytes(b' ' * (1024 * 1024 - 10) + b'sk-' + b'x' * 50)
+        self.assertEqual(runtime.audit(self.root, plan)['privacy_findings'],
+                         [{'path': 'docs/token-fixture.txt', 'kind': 'openai-credential-shaped-value'}])
+
 
 if __name__ == '__main__':
     unittest.main()
