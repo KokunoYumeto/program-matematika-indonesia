@@ -1,8 +1,8 @@
-"""Freeze and export the 28 admitted original-English readers.
+"""Freeze and export the explicitly selected admitted original-English readers.
 
 No owner edits, TeX execution, network requests or publication. The public
 projection preserves every existing main-body byte, source note and native ID.
-Frozen Pandoc AST/MathML/SVG inputs reproduce the 28 existing readers first.
+Frozen Pandoc AST/MathML/SVG inputs reproduce the selected readers first.
 """
 import argparse
 import copy
@@ -41,7 +41,7 @@ def configure(path):
     assert all(re.fullmatch(r'[a-z][a-z0-9]*', s) for s in c['sections'])
     assert c['source_archive_url'].startswith('https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/')
     SECTIONS = c['sections']
-    FILES = {s:'src/'+('det' if s.startswith('det') or s in ('cramer','chio') else 'map' if s in SECTIONS[14:25] else 'vs' if s in SECTIONS[7:14] else 'gr')+'/'+s+'.tex' for s in SECTIONS}
+    FILES = {s:'src/'+('det' if s.startswith('det') or s in ('cramer','chio','projplane') else 'map' if s in SECTIONS[14:25] else 'vs' if s in SECTIONS[7:14] else 'gr')+'/'+s+'.tex' for s in SECTIONS}
     SOURCE_URL, REGISTRY_SHA, EXPECTED, LAST_TITLE = c['source_archive_url'], c['registry_sha256'], c['counts'], c['last_section_title']
 
 
@@ -108,7 +108,7 @@ def freeze(destination):
     for s in SECTIONS:
         directory = B40_REL / ('semantic-pilot-' + s)
         names = [s+'.semantic.json', 'math-source-index.json', 'mathml-regions.json', 'MATH_RENDER_REPORT.json', 'MATH_RENDER_CONFIG.json', s+'.reader-pilot.html', 'rendered-unit-index.json', 'SEMANTIC_PILOT_REPORT.json', 'PRESENTATION_BINDINGS.json', 'PROSE_LEXICAL_REPLAY.json']
-        optional = ['FIGURE_CONVERSION_RECEIPT.json', 'RICH_CONTENT_CLOSURE.json', 'SOURCE_TABLE_CELL_GRID.json', 'ASSET_INDEX.json', 'RENDERED_CONTEXT_CONTRACT.json', 'RENDERED_SOURCE_CONTEXT_RELATIONS.json', 'SOURCE_CONTEXT_REQUIREMENTS.json', 'SOURCE_FIGURE_DISCREPANCY_NOTES.json', 'SOURCE_NOTE_EXTRACTION_OVERLAY.json', 'SOURCE_MODEL_REPLAY.json', 'CHIO_SOURCE_ADJUDICATION.json']
+        optional = ['FIGURE_CONVERSION_RECEIPT.json', 'RICH_CONTENT_CLOSURE.json', 'SOURCE_TABLE_CELL_GRID.json', 'ASSET_INDEX.json', 'RENDERED_CONTEXT_CONTRACT.json', 'RENDERED_SOURCE_CONTEXT_RELATIONS.json', 'SOURCE_CONTEXT_REQUIREMENTS.json', 'SOURCE_FIGURE_DISCREPANCY_NOTES.json', 'SOURCE_NOTE_EXTRACTION_OVERLAY.json', 'SOURCE_MODEL_REPLAY.json', 'CHIO_SOURCE_ADJUDICATION.json', 'PROJPLANE_SOURCE_INTAKE.json', 'COMPONENT_RIGHTS.json']
         for p in (BASE / directory).glob('*.json'):
             if p.name in optional or p.name.endswith(('_SOURCE_NOTES.json', '_MATHEMATICAL_REPLAY.json')):
                 names.append(p.name)
@@ -330,7 +330,7 @@ def export(frozen, public, check=False):
                        'complete_original_source': fact('sources/'+s+'.tex', src)})
         notes = []
         for p in sorted(d.glob('*.json')):
-            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json') or (s in ('cramer','detspeed','chio') and p.name == 'SOURCE_CONTEXT_REQUIREMENTS.json'):
+            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json') or (s in ('cramer','detspeed','chio','projplane') and p.name == 'SOURCE_CONTEXT_REQUIREMENTS.json'):
                 nr = json.loads(p.read_bytes()); notes.extend(nr.get('source_issues', nr.get('source_findings', [])))
         if notes:
             note_tex.append('\\section*{'+tex_escape(TITLES[s])+': source notes}\n\\begin{enumerate}\n'+''.join('\\item '+tex_escape(n.get('finding', n.get('description', 'See the exact source-note record in the archive.')))+'\n' for n in notes)+'\\end{enumerate}\n')

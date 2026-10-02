@@ -38,7 +38,14 @@ try{
     assert.ok((await page.locator('[id="'+anchor+'"]').innerText()).includes('basis'));
     if(width!==320&&!process.argv.includes('--new-section-only')){const path='visual/basis-extension-'+width+'.png';const b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
    }
-   if((process.argv.includes('--new-section-only')?['chio']:['det3','markov','cramer','detspeed','chio']).includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
+   if((process.argv.includes('--new-section-only')?[sections.at(-1)]:['det3','markov','cramer','detspeed','chio','projplane']).includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
+   if(section==='projplane'){
+    assert.equal(await page.locator('main math').count(),297);
+    assert.equal(await page.locator('img').count(),22);
+    assert.equal(await page.locator('.original-image-layout').count(),5);
+    assert.equal(await page.locator('table').count(),0);
+    assert.ok(!(await page.locator('header').innerText()).includes('must be bound before publication'));
+   }
    assert.equal(await page.locator('img').evaluateAll(xs=>xs.filter(x=>!x.complete||x.naturalWidth===0).length),0,'Broken embedded image');
    checks.push({section,width,mathml:true,horizontal_overflow:false,return_navigation:true,remote_runtime_blocked:true});
   }
