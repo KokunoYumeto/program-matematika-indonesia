@@ -6,10 +6,15 @@ from pathlib import Path
 import subprocess
 import sys
 import zipfile
+import argparse
 
 BASE = Path(__file__).resolve().parent.parent
-WORK = BASE / 'b40-expanded-public-20261002'
-REFRESH = '--refresh-candidate' in sys.argv
+parser = argparse.ArgumentParser(description=__doc__)
+parser.add_argument('--work', type=Path, default=BASE / 'b40-expanded-public-20261002')
+parser.add_argument('--refresh-candidate', action='store_true')
+arguments = parser.parse_args()
+WORK = arguments.work.resolve()
+REFRESH = arguments.refresh_candidate
 
 
 def sha(b):
@@ -44,6 +49,10 @@ def main():
     frozen = WORK / 'frozen'
     public = WORK / 'public'
     receipt = json.loads((WORK / 'BUILD_RECEIPT.json').read_bytes())
+    count = receipt['counts']['readers']
+    selection_path = frozen / 'EXPORT_SELECTION.json'
+    selection = json.loads(selection_path.read_bytes()) if selection_path.exists() else None
+    source_url = selection['source_archive_url'] if selection else 'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip'
     inputs = json.loads((frozen / 'FROZEN_INPUTS.json').read_bytes())
     members = {}
     for row in inputs['files']:
@@ -108,6 +117,7 @@ component credits are preserved. No human review or exhaustive proof certificati
 is claimed. Mathematical-source findings are kept separate from unchanged text.
 The complete public programme and phone proof-admission workflow remain separate.
 '''.encode()
+    readme = readme.replace(b'28 linked readers', (str(count)+' linked readers').encode()).replace(b'these 28 sections', ('these '+str(count)+' sections').encode()).replace(b'regenerates 28 native', ('regenerates '+str(count)+' native').encode())
     members['REBUILD.txt'] = readme
     members['rebuild.py'] = b'''from pathlib import Path
 import subprocess
@@ -160,17 +170,17 @@ subprocess.run([sys.executable, '-B', str(root/'frozen/curriculum_logbook/build_
     adapter = subprocess.run(['node', str(replay/'check_public_units.mjs'), '--check'], capture_output=True, timeout=180, check=True)
     assert not adapter.stderr
     adapter_result = json.loads(adapter.stdout)
-    assert adapter_result['state'] == 'PASS' and adapter_result['views'] == 4175
+    assert adapter_result['state'] == 'PASS' and adapter_result['views'] == receipt['counts']['native_units'] + 2*receipt['counts']['exercises']
     assert replay_result['state'] == 'byte_replay_pass'
     public_manifest = {
         'schema': 'b40-expanded-reading-edition/1',
         'title': 'Linear algebra — original English — original English by Jim Hefferon',
         'source_revision': receipt['source_revision'],
-        'scope': '28 consecutive body/topic sections, not the complete book',
+        'scope': str(count)+' consecutive body/topic sections, not the complete book',
         'language': 'en', 'sections': receipt['sections'], 'counts': receipt['counts'],
         'download_order': ['sources/00-linear-algebra-cumulative.tex', 'COMPLETE_SOURCE.zip'],
         'no_pdf_exception': 'HTML reading edition; do not create a PDF merely to fill a preview slot',
-        'source_archive': {**fact('COMPLETE_SOURCE.zip', archive_bytes), 'url':'https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip'},
+        'source_archive': {**fact('COMPLETE_SOURCE.zip', archive_bytes), 'url':source_url},
         'public_files': receipt['outputs'],
         'rights': {'author': 'Jim Hefferon', 'work': 'Linear Algebra', 'license': 'CC BY-SA 2.5 option; native component notices retained', 'licence_file': 'LICENSE.txt', 'component_credits': 'ACKNOWLEDGEMENTS.txt'},
         'provenance': {'current_model': 'gpt-6-astra', 'effort': 'ultra', 'work': 'source-preserving HTML rebuild, navigation, projection and source packaging', 'legacy_intermediate_runtime': 'unverified, not reattributed', 'human_review': False},

@@ -1,0 +1,1983 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cramer’s Rule — Jim Hefferon — original English reading edition</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+figure{margin:1rem 0}img{min-width:0;max-width:100%;height:auto}.center{max-width:100%}.center>p{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:1rem}.center>p>img{width:240px;max-width:100%;height:auto}.center img[data-source-asset-id="det/mp/ch4.1"]{width:340px}.math-region:focus-visible{outline:2px solid #075a92;outline-offset:2px}
+.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style><meta name="b40-source-context-requirements-sha256" content="18fa04a84de2ba1d1a27b8380ab43e9633701adc113c85379463eece2f2f5097"><meta name="b40-source-context-contract-sha256" content="630b2093827bdd6c8412411317fdc989d9b09382a79007b77205b02b707bf612"></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-29-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/cramer.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — 29 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><details><summary>Source, reuse and conversion details</summary><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. The complete active topic is included. Original comments and the end-of-file marker remain in the editable source.</p><p>Includes eight exercises with their eight original supplied answers, 67 mathematical expressions and all four original diagrams rebuilt from the author’s MetaPost definitions. No diagram was redrawn. Source wording and formulas are preserved; two answer defects are explained separately. AI-assisted source-preserving conversion and checks; Current rebuild runtime is documented in the credit below; earlier intermediate work is not reattributed. No human review or exhaustive mathematical correctness audit is claimed.</p></details><details class="source-context-navigation"><summary>Context for using the rule and its proof</summary><p>Cramer’s Rule requires a nonzero coefficient determinant. The original rule defines each replacement matrix and links to <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60">Exercise 3</a> and its <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60.answer.source-order.001">complete supplied proof</a>. The last exercise refers to the first diagram. Modular extraction must keep these givens with their dependent units.</p></details><details class="notice" id="cramer-source-notes"><summary>Two notes about the original supplied answers</summary><p>The unchanged answers are preserved below. These separate source-bound notes can reveal solutions; they are not an exhaustive correctness audit.</p><ol><li id="cramer-source-note-1" data-source-issue-id="B40-CRAMER-SOURCE-001"><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10007.answer.source-order.001">Original supplied answer 7</a>: The supplied answer claims that all replacement determinants vanishing characterizes infinitely many solutions. Without an additional rank hypothesis this is false: the zero 2-by-2 coefficient matrix has all replacement determinants zero both for b=(0,0), with infinitely many solutions, and for b=(1,0), with none. Cramer determinants alone do not distinguish these two singular systems. Preserve the original answer and attach this separate counterexample.</li><li id="cramer-source-note-2" data-source-issue-id="B40-CRAMER-SOURCE-002"><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10008.answer.source-order.001">Original supplied answer 8</a>: The phrase two nonsingular cases is inconsistent with the displayed coefficient matrix [[1,2],[1,2]], whose determinant is zero. Both the infinitely-many and no-solution examples are singular. The rest of the stated c=6 versus c!=6 distinction is consistent with the equations.</li></ol></details><p>Wide formulas scroll horizontally. Focus a formula and use the arrow keys.</p><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="cramers-rule">Cramer’s Rule</h1>
+<p><span id="source-index-1" class="source-index" data-source-index="Cramer&#39;s rule|("></span></p>
+<p>A linear system is equivalent to a linear relationship among vectors.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="b36b1488fd8d990dbcb13cb9b776f5e169a839a9a71abb20f4b7fe5d5bef0df6" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>6</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>8</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+  <mstyle scriptlevel="0">
+    <mspace width="2em"/>
+  </mstyle>
+  <mo stretchy="false">⟺</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="2em"/>
+  </mstyle>
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>+</mo>
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>6</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>8</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>In the picture below the small parallelogram is formed from the vectors <span><span class="math-region inline" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="f63f385124947df1677c7c92769d8f4f4187f55ac787a1a3087e86bf5a336972"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>1</mn>
+      <mn>3</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="54f46ef8802f5fb27c5c1ca8f93741f603e8193964ab85475a375cef89810701"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>2</mn>
+      <mn>1</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span>.</span> It is nested inside a parallelogram with sides <span><span class="math-region inline" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="41a34d632161e80794a94408efa95150c134f7a75eb5e2050fb323bf921b2141"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>1</mn>
+      <mn>3</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span></span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="98d0802a40720da0ac039148810f801e9282717664e766c6457c3f9fb652b342"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>2</mn>
+      <mn>1</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span>.</span> By the vector equation, the far corner of the larger parallelogram is <span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="49516b15cb5108f6c71bda4ce3cf0873916b6ff93eaba1c45c9647fdc96994ff"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>6</mn>
+      <mn>8</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span>.</span></p>
+<div class="center">
+<p><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjwhLS0gVGhpcyBmaWxlIHdhcyBnZW5lcmF0ZWQgYnkgZHZpc3ZnbSAzLjYgLS0+DQo8c3ZnIHZlcnNpb249JzEuMScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgd2lkdGg9JzgzcHQnIGhlaWdodD0nOTIuMDA3NHB0JyB2aWV3Qm94PScwIC05MS42Nzg4IDgzIDkyLjAwNzQnPg0KPGcgaWQ9J3BhZ2UxJz4NCjxnIHRyYW5zZm9ybT0nbWF0cml4KDEgMCAwIC0xIDggLTUpJz4NCjxwYXRoIGQ9J00wIDBMMTkuOTI1OCA5Ljk2MDk0TDI5Ljg4NjcgMzkuODUxNkw5Ljk2MDk0IDI5Ljg4NjdaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEwzOS44NTE2IDE5LjkyNThMNTkuNzc3MyA3OS42OTkyTDE5LjkyNTggNTkuNzc3M1onIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMCAwTDE5LjkyNTggOS45NjA5NCcgc3Ryb2tlPScjZmZmJyBmaWxsPSdub25lJyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00xNy4xNzU4IDcuMDU4NTlMMTkuOTI1OCA5Ljk2MDk0TDE1Ljk1MzEgOS41MDM5MVonIGZpbGw9JyNmZmYnLz4NCjxwYXRoIGQ9J00xNy4xNzU4IDcuMDU4NTlMMTkuOTI1OCA5Ljk2MDk0TDE1Ljk1MzEgOS41MDM5MVonIHN0cm9rZT0nI2ZmZicgZmlsbD0nbm9uZScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMCAwTDE5LjkyNTggOS45NjA5NCcgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00xNy4xNzU4IDcuMDU4NTlMMTkuOTI1OCA5Ljk2MDk0TDE1Ljk1MzEgOS41MDM5MVonLz4NCjxwYXRoIGQ9J00xNy4xNzU4IDcuMDU4NTlMMTkuOTI1OCA5Ljk2MDk0TDE1Ljk1MzEgOS41MDM5MVonIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMCAwTDkuOTYwOTQgMjkuODg2Nycgc3Ryb2tlPScjZmZmJyBmaWxsPSdub25lJyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00xMC4wNzAzIDI1Ljg5MDZMOS45NjA5NCAyOS44ODY3TDcuNDc2NTYgMjYuNzUzOVonIGZpbGw9JyNmZmYnLz4NCjxwYXRoIGQ9J00xMC4wNzAzIDI1Ljg5MDZMOS45NjA5NCAyOS44ODY3TDcuNDc2NTYgMjYuNzUzOVonIHN0cm9rZT0nI2ZmZicgZmlsbD0nbm9uZScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMCAwTDkuOTYwOTQgMjkuODg2Nycgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00xMC4wNzAzIDI1Ljg5MDZMOS45NjA5NCAyOS44ODY3TDcuNDc2NTYgMjYuNzUzOVonLz4NCjxwYXRoIGQ9J00xMC4wNzAzIDI1Ljg5MDZMOS45NjA5NCAyOS44ODY3TDcuNDc2NTYgMjYuNzUzOVonIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMCAwTDE5LjkyNTggOS45NjA5NCcgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00xNy4xNzU4IDcuMDU4NTlMMTkuOTI1OCA5Ljk2MDk0TDE1Ljk1MzEgOS41MDM5MVonLz4NCjxwYXRoIGQ9J00xNy4xNzU4IDcuMDU4NTlMMTkuOTI1OCA5Ljk2MDk0TDE1Ljk1MzEgOS41MDM5MVonIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMCAwTDkuOTYwOTQgMjkuODg2Nycgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00xMC4wNzAzIDI1Ljg5MDZMOS45NjA5NCAyOS44ODY3TDcuNDc2NTYgMjYuNzUzOVonLz4NCjxwYXRoIGQ9J00xMC4wNzAzIDI1Ljg5MDZMOS45NjA5NCAyOS44ODY3TDcuNDc2NTYgMjYuNzUzOVonIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMjUuNTEyNy00LjI3ODgzQzI1LjUxMjctNC4yNTg4MyAyNS41MDI3LTQuMjQ4ODMgMjUuNDkyNy00LjIzMzgzQzI1LjMwODQtNC4wNDk0NSAyNC45NzQ2LTMuNzE1NyAyNC42NDA5LTMuMTc3NThDMjMuODM4Ny0xLjg5MjI3IDIzLjQ3NDktLjI3MzIwMyAyMy40NzQ5IDEuNjQ0OTJDMjMuNDc0OSAyLjk4NTIzIDIzLjY1NDMgNC43MTM5OCAyNC40NzY1IDYuMTk4NjdDMjQuODY5OSA2LjkwNjE3IDI1LjI3ODcgNy4zMTQ2MSAyNS40OTc3IDcuNTMzOThDMjUuNTEyNyA3LjU0ODk4IDI1LjUxMjcgNy41NTg2NyAyNS41MTI3IDcuNTczNjdDMjUuNTEyNyA3LjYyMzY3IDI1LjQ3NzcgNy42MjM2NyAyNS40MDggNy42MjM2N0MyNS4zMzg0IDcuNjIzNjcgMjUuMzI4NCA3LjYyMzY3IDI1LjI1MzcgNy41NDg5OEMyMy41ODQ2IDYuMDI5MyAyMy4wNjE1IDMuNzQ3NDIgMjMuMDYxNSAxLjY0OTkyQzIzLjA2MTUtLjMwNzg5MSAyMy41MDk5LTIuMjgxMDIgMjQuNzc1Mi0zLjc3MDdDMjQuODc0OS0zLjg4NTA4IDI1LjA2NDMtNC4wODk0NSAyNS4yNjg3LTQuMjY4ODNDMjUuMzI4NC00LjMyODUyIDI1LjMzODQtNC4zMjg1MiAyNS40MDgtNC4zMjg1MkMyNS40Nzc3LTQuMzI4NTIgMjUuNTEyNy00LjMyODUyIDI1LjUxMjctNC4yNzg4M1onLz4NCjxwYXRoIGQ9J00yOC45OTQ1IDMuOTA5NDVMMjguOTY0NSAzLjk0OTQ1SDI3LjEyMTRDMjcuMDkxNCAzLjk0OTQ1IDI3LjA0MTcgMy45NTQ0NSAyNy4wNDE3IDMuOTg0NDVDMjcuMDQxNyAzLjk5NDE0IDI3LjA0NjQgMy45OTkxNCAyNy4wNTE0IDQuMDA0MTRDMjcuNzYzOSA0LjY5NjY0IDI4LjcyMDUgNS41NjM1MiAyOC43MjA1IDYuMjY2MDJDMjguNzIwNSA2LjcxNDQ1IDI4LjMzMiA3LjAzODUyIDI3LjgxODkgNy4wMzg1MkMyNy4zMTU1IDcuMDM4NTIgMjYuODgyIDYuNzY5NDUgMjYuNTU4MyA2LjQ3NTM5TDI2LjY3MyA2LjM4MDdDMjYuOTAyIDYuNTM1MDggMjcuMTY2MSA2LjY5OTQ1IDI3LjQ5NDggNi42OTk0NUMyNy45ODgzIDYuNjk5NDUgMjguMTcyNyA2LjMyMTAyIDI4LjE3MjcgNi4wNDE5NUMyOC4xNzI3IDUuNDU0MTQgMjcuNzA5MiA0Ljk0NjAyIDI3LjI0MDggNC40OTI1OEMyNi45MjIgNC4xODM1MiAyNi41ODgzIDMuODg5NzcgMjYuMjQ0NSAzLjYwMDdWMy41MjEwMkgyOC44NjAyTDI4Ljk5NDUgMy45MDk0NVonLz4NCjxwYXRoIGQ9J00yOC4wMTggLjg0MTQ4NEwyNi43MjI3IC40Nzc3MzRWLjM0MzM1OUgyNy4yMjA4QzI3LjU4OTUgLjM0MzM1OSAyNy40OTk4LS4wNjAwNzggMjcuNDk5OC0uNjE4MjAzQzI3LjQ5OTgtMS4zMTU3IDI3LjQ4NDgtMi4wMTMyIDI3LjQ1NTItMi43MDU3TDI3LjUyNDgtMi43MzA3TDI4LjAyOC0yLjU5NjAyQzI4LjAwOC0yLjIxNzU4IDI4LjAwOC0xLjIzMTAyIDI4LjAwOC0uNTUzNTE2QzI4LjAwOC0uMTEwMDc4IDI4LjAyMyAuMzM4MzU5IDI4LjA1MyAuNzgxNzk3TDI4LjAxOCAuODQxNDg0WicvPg0KPHBhdGggZD0nTTMyLjI2NzMgMS42NDQ5MkMzMi4yNjczIDMuNjAzMDUgMzEuODE4OCA1LjU3NTg2IDMwLjU1MzUgNy4wNjU1NUMzMC40NTM4IDcuMTgwMjMgMzAuMjY0NSA3LjM4NDMgMzAuMDYwMSA3LjU2MzY3QzMwLjAwMDQgNy42MjM2NyAyOS45OTA0IDcuNjIzNjcgMjkuOTIwNyA3LjYyMzY3QzI5Ljg2MDcgNy42MjM2NyAyOS44MTYgNy42MjM2NyAyOS44MTYgNy41NzM2N0MyOS44MTYgNy41NTM5OCAyOS44MzYgNy41MzM5OCAyOS44NDYgNy41MjM5OEMzMC4wMjA0IDcuMzQ0NjEgMzAuMzU0MSA3LjAxMDg2IDMwLjY4NzkgNi40NzI3M0MzMS40OTAxIDUuMTg3NDIgMzEuODUzOCAzLjU2ODA1IDMxLjg1MzggMS42NDk5MkMzMS44NTM4IC4zMDk5MjIgMzEuNjc0NS0xLjQxOTE0IDMwLjg1MjMtMi45MDM4M0MzMC40NTg4LTMuNjExMDIgMzAuMDQ1MS00LjAyNDc3IDI5LjgzNi00LjIzMzgzQzI5LjgyNi00LjI0ODgzIDI5LjgxNi00LjI2MzgzIDI5LjgxNi00LjI3ODgzQzI5LjgxNi00LjMyODUyIDI5Ljg2MDctNC4zMjg1MiAyOS45MjA3LTQuMzI4NTJDMjkuOTkwNC00LjMyODUyIDMwLjAwMDQtNC4zMjg1MiAzMC4wNzUxLTQuMjUzODNDMzEuNzQ0MS0yLjczNDE0IDMyLjI2NzMtLjQ1MjU3OCAzMi4yNjczIDEuNjQ0OTJaJy8+DQo8cGF0aCBkPSdNNDQuOTU0OCAxMi42MjUzQzQ0Ljk0NDggMTIuNjM1IDQ0LjkyOTggMTIuNjM1IDQ0LjkxOTggMTIuNjM1QzQ0LjkwNDggMTIuNjM1IDQ0Ljg5NDggMTIuNjM1IDQ0Ljg4NDggMTIuNjI1M0M0NC42MjA4IDEyLjM3MTMgNDQuMjcyIDEyLjAyMjUgNDQuMDUzIDExLjc4MzFMNDQuMDE4IDExLjc4ODFDNDMuODQzNiAxMi4wNjcyIDQzLjU5OTUgMTIuNDI1OSA0My40NzUyIDEyLjU0MDZDNDMuMzk1MiAxMi42MTUzIDQzLjI1MDggMTIuNjM1IDQzLjE1MTEgMTIuNjM1QzQyLjk0NyAxMi42MzUgNDIuNjU4IDEyLjQ1MDkgNDIuNDQzNiAxMi4zMTYyTDQyLjUzMzMgMTIuMjI2NkM0Mi42MzggMTIuMjg2MyA0Mi43ODczIDEyLjM1MTIgNDIuOTEyIDEyLjM1MTJDNDMuMjAxMSAxMi4zNTEyIDQzLjQ4OTggMTEuODE4MSA0My43MTkyIDExLjQzNDRDNDMuNDMwMiAxMS4xMTU2IDQzLjEyNjQgMTAuNzcxOSA0Mi44NzIgMTAuNDI4MVYxMC4zODgxTDQzLjA0MTQgMTAuMjYzOEw0My4xMzYxIDEwLjI4MzRDNDMuMzE1NSAxMC42NjcyIDQzLjU0OTggMTAuOTc2MiA0My43ODM5IDExLjI3NUg0My44Mjg2QzQ0LjIxMjMgMTAuNjM3MiA0NC40MjY3IDEwLjI2MzggNDQuNzMwNSAxMC4yNjM4QzQ0Ljk3OTUgMTAuMjYzOCA0NS4yOTM2IDEwLjU0NzUgNDUuNDkyNyAxMC43MzE5TDQ1LjQ0OCAxMC44MjY2SDQ1LjM5OEM0NS4yODM2IDEwLjc0MTkgNDUuMTI0MiAxMC42MzcyIDQ0Ljk3NDUgMTAuNjM3MkM0NC43MTU1IDEwLjYzNzIgNDQuMzU2NyAxMS4xNjUzIDQ0LjExMjcgMTEuNjEzOEM0NC40MjY3IDExLjkxNzggNDQuODEwMiAxMi4yNDE2IDQ1LjE0MzkgMTIuNDM1OUM0NS4xNDg5IDEyLjQ0MDkgNDUuMTU4OSAxMi40NDU5IDQ1LjE1ODkgMTIuNDYwNkM0NS4xNTg5IDEyLjQ2NTYgNDUuMTQ4OSAxMi40NzU2IDQ1LjEzODkgMTIuNDgwNkw0NC45NTQ4IDEyLjYyNTNaJy8+DQo8cGF0aCBkPSdNNDkuMzU4MiA4Ljk3NzM0TDQ5LjMyODIgOS4wMTczNEg0Ny40ODUxQzQ3LjQ1NTEgOS4wMTczNCA0Ny40MDU0IDkuMDIyMzQgNDcuNDA1NCA5LjA1MjM0QzQ3LjQwNTQgOS4wNjIwMyA0Ny40MTAxIDkuMDY3MDMgNDcuNDE1MSA5LjA3MjAzQzQ4LjEyNzYgOS43NjQ1MyA0OS4wODQxIDEwLjYzMTQgNDkuMDg0MSAxMS4zMzM5QzQ5LjA4NDEgMTEuNzgyMyA0OC42OTU3IDEyLjEwNjQgNDguMTgyNiAxMi4xMDY0QzQ3LjY3OTEgMTIuMTA2NCA0Ny4yNDU3IDExLjgzNzMgNDYuOTIyIDExLjU0MzNMNDcuMDM2NiAxMS40NDg2QzQ3LjI2NTcgMTEuNjAzIDQ3LjUyOTggMTEuNzY3MyA0Ny44NTg1IDExLjc2NzNDNDguMzUyIDExLjc2NzMgNDguNTM2MyAxMS4zODg5IDQ4LjUzNjMgMTEuMTA5OEM0OC41MzYzIDEwLjUyMiA0OC4wNzI5IDEwLjAxMzkgNDcuNjA0NSA5LjU2MDQ3QzQ3LjI4NTcgOS4yNTE0MSA0Ni45NTIgOC45NTc2NiA0Ni42MDgyIDguNjY4NTlWOC41ODg5MUg0OS4yMjM4TDQ5LjM1ODIgOC45NzczNFonLz4NCjxwYXRoIGQ9J001My4wNTUxIDExLjU2OTFDNTMuMDU1MSAxMS43MzM0IDUyLjkxNTcgMTEuODcyOCA1Mi43NTEzIDExLjg3MjhDNTIuNTg3IDExLjg3MjggNTIuNDQ3MyAxMS43MzM0IDUyLjQ0NzMgMTEuNTY5MUM1Mi40NDczIDExLjQwNDcgNTIuNTg3IDExLjI2NSA1Mi43NTEzIDExLjI2NUM1Mi45MTU3IDExLjI2NSA1My4wNTUxIDExLjQwNDcgNTMuMDU1MSAxMS41NjkxWicvPg0KPHBhdGggZD0nTTU4LjQ4NjIgNS42ODM4M0M1OC40ODYyIDUuNzAzODMgNTguNDc2MiA1LjcxMzgzIDU4LjQ2NjIgNS43Mjg4M0M1OC4yODE4IDUuOTEzMiA1Ny45NDggNi4yNDY5NSA1Ny42MTQzIDYuNzg1MDhDNTYuODEyMSA4LjA3MDM5IDU2LjQ0ODQgOS42ODk0NSA1Ni40NDg0IDExLjYwNzZDNTYuNDQ4NCAxMi45NDc5IDU2LjYyNzcgMTQuNjc2NiA1Ny40NDk5IDE2LjE2MTNDNTcuODQzNCAxNi44Njg4IDU4LjI1MjEgMTcuMjc3MyA1OC40NzEyIDE3LjQ5NjZDNTguNDg2MiAxNy41MTE2IDU4LjQ4NjIgMTcuNTIxMyA1OC40ODYyIDE3LjUzNjNDNTguNDg2MiAxNy41ODYzIDU4LjQ1MTIgMTcuNTg2MyA1OC4zODE1IDE3LjU4NjNTNTguMzAxOCAxNy41ODYzIDU4LjIyNzEgMTcuNTExNkM1Ni41NTggMTUuOTkyIDU2LjAzNDkgMTMuNzEwMSA1Ni4wMzQ5IDExLjYxMjZDNTYuMDM0OSA5LjY1NDc3IDU2LjQ4MzQgNy42ODE2NCA1Ny43NDg3IDYuMTkxOTVDNTcuODQ4NCA2LjA3NzU4IDU4LjAzNzcgNS44NzMyIDU4LjI0MjEgNS42OTM4M0M1OC4zMDE4IDUuNjM0MTQgNTguMzExOCA1LjYzNDE0IDU4LjM4MTUgNS42MzQxNFM1OC40ODYyIDUuNjM0MTQgNTguNDg2MiA1LjY4MzgzWicvPg0KPHBhdGggZD0nTTYxLjk2OCAxMy44NzIxTDYxLjkzOCAxMy45MTIxSDYwLjA5NDlDNjAuMDY0OSAxMy45MTIxIDYwLjAxNTIgMTMuOTE3MSA2MC4wMTUyIDEzLjk0NzFDNjAuMDE1MiAxMy45NTY4IDYwLjAxOTkgMTMuOTYxOCA2MC4wMjQ5IDEzLjk2NjhDNjAuNzM3NCAxNC42NTkzIDYxLjY5NCAxNS41MjYyIDYxLjY5NCAxNi4yMjg3QzYxLjY5NCAxNi42NzcxIDYxLjMwNTUgMTcuMDAxMiA2MC43OTI0IDE3LjAwMTJDNjAuMjg5IDE3LjAwMTIgNTkuODU1NSAxNi43MzIxIDU5LjUzMTggMTYuNDM4TDU5LjY0NjUgMTYuMzQzNEM1OS44NzU1IDE2LjQ5NzcgNjAuMTM5NiAxNi42NjIxIDYwLjQ2ODQgMTYuNjYyMUM2MC45NjE4IDE2LjY2MjEgNjEuMTQ2MiAxNi4yODM3IDYxLjE0NjIgMTYuMDA0NkM2MS4xNDYyIDE1LjQxNjggNjAuNjgyNyAxNC45MDg3IDYwLjIxNDMgMTQuNDU1MkM1OS44OTU1IDE0LjE0NjIgNTkuNTYxOCAxMy44NTI0IDU5LjIxOCAxMy41NjM0VjEzLjQ4MzdINjEuODMzN0w2MS45NjggMTMuODcyMVonLz4NCjxwYXRoIGQ9J002MC45OTE1IDEwLjgwNDFMNTkuNjk2MiAxMC40NDA0VjEwLjMwNkg2MC4xOTQzQzYwLjU2MyAxMC4zMDYgNjAuNDczNCA5LjkwMjU4IDYwLjQ3MzQgOS4zNDQ0NUM2MC40NzM0IDguNjQ2OTUgNjAuNDU4NCA3Ljk0OTQ1IDYwLjQyODcgNy4yNTY5NUw2MC40OTg0IDcuMjMxOTVMNjEuMDAxNSA3LjM2NjY0QzYwLjk4MTUgNy43NDUwOCA2MC45ODE1IDguNzMxNjQgNjAuOTgxNSA5LjQwOTE0QzYwLjk4MTUgOS44NTI1OCA2MC45OTY1IDEwLjMwMSA2MS4wMjY1IDEwLjc0NDVMNjAuOTkxNSAxMC44MDQxWicvPg0KPHBhdGggZD0nTTY1LjI0MDcgMTEuNjA3NkM2NS4yNDA3IDEzLjU2NTcgNjQuNzkyMyAxNS41Mzg1IDYzLjUyNyAxNy4wMjgyQzYzLjQyNzMgMTcuMTQyOSA2My4yMzc5IDE3LjM0NyA2My4wMzM1IDE3LjUyNjNDNjIuOTczOCAxNy41ODYzIDYyLjk2MzggMTcuNTg2MyA2Mi44OTQxIDE3LjU4NjNDNjIuODM0MSAxNy41ODYzIDYyLjc4OTUgMTcuNTg2MyA2Mi43ODk1IDE3LjUzNjNDNjIuNzg5NSAxNy41MTY2IDYyLjgwOTUgMTcuNDk2NiA2Mi44MTk1IDE3LjQ4NjZDNjIuOTkzOCAxNy4zMDczIDYzLjMyNzYgMTYuOTczNSA2My42NjEzIDE2LjQzNTRDNjQuNDYzNSAxNS4xNTAxIDY0LjgyNzMgMTMuNTMwNyA2NC44MjczIDExLjYxMjZDNjQuODI3MyAxMC4yNzI2IDY0LjY0NzkgOC41NDM1MiA2My44MjU3IDcuMDU4ODNDNjMuNDMyMyA2LjM1MTY0IDYzLjAxODUgNS45Mzc4OSA2Mi44MDk1IDUuNzI4ODNDNjIuNzk5NSA1LjcxMzgzIDYyLjc4OTUgNS42OTg4MyA2Mi43ODk1IDUuNjgzODNDNjIuNzg5NSA1LjYzNDE0IDYyLjgzNDEgNS42MzQxNCA2Mi44OTQxIDUuNjM0MTRDNjIuOTYzOCA1LjYzNDE0IDYyLjk3MzggNS42MzQxNCA2My4wNDg1IDUuNzA4ODNDNjQuNzE3NiA3LjIyODUyIDY1LjI0MDcgOS41MTAwOCA2NS4yNDA3IDExLjYwNzZaJy8+DQo8cGF0aCBkPSdNLS44MzI1NzggMjMuOTYzQy0uODMyNTc4IDIzLjk4My0uODQyNTc4IDIzLjk5My0uODUyNTc4IDI0LjAwOEMtMS4wMzY5NSAyNC4xOTI0LTEuMzcwNyAyNC41MjYyLTEuNzA0NDUgMjUuMDY0M0MtMi41MDY2NCAyNi4zNDk2LTIuODcwMzkgMjcuOTY4Ny0yLjg3MDM5IDI5Ljg4NjhDLTIuODcwMzkgMzEuMjI3MS0yLjY5MTAyIDMyLjk1NTktMS44Njg4MyAzNC40NDA1Qy0xLjQ3NTM5IDM1LjE0OC0xLjA2NjY0IDM1LjU1NjUtLjg0NzU3OCAzNS43NzU5Qy0uODMyNTc4IDM1Ljc5MDktLjgzMjU3OCAzNS44MDA1LS44MzI1NzggMzUuODE1NUMtLjgzMjU3OCAzNS44NjU1LS44Njc1NzggMzUuODY1NS0uOTM3MjY2IDM1Ljg2NTVDLTEuMDA2OTUgMzUuODY1NS0xLjAxNjk1IDM1Ljg2NTUtMS4wOTE2NCAzNS43OTA5Qy0yLjc2MDcgMzQuMjcxMi0zLjI4MzgzIDMxLjk4OTMtMy4yODM4MyAyOS44OTE4Qy0zLjI4MzgzIDI3LjkzNC0yLjgzNTM5IDI1Ljk2MDktMS41NzAwOCAyNC40NzEyQy0xLjQ3MDM5IDI0LjM1NjgtMS4yODEwMiAyNC4xNTI0LTEuMDc2NjQgMjMuOTczQy0xLjAxNjk1IDIzLjkxMzQtMS4wMDY5NSAyMy45MTM0LS45MzcyNjYgMjMuOTEzNEMtLjg2NzU3OCAyMy45MTM0LS44MzI1NzggMjMuOTEzNC0uODMyNTc4IDIzLjk2M1onLz4NCjxwYXRoIGQ9J00xLjY3MjY2IDM1LjMwMDFMLjM3NzM0NCAzNC45MzYzVjM0LjgwMkguODc1NDY5QzEuMjQ0MjIgMzQuODAyIDEuMTU0NTMgMzQuMzk4NSAxLjE1NDUzIDMzLjg0MDRDMS4xNTQ1MyAzMy4xNDI5IDEuMTM5NTMgMzIuNDQ1NCAxLjEwOTg0IDMxLjc1MjlMMS4xNzk1MyAzMS43Mjc5TDEuNjgyNjYgMzEuODYyNkMxLjY2MjY2IDMyLjI0MSAxLjY2MjY2IDMzLjIyNzYgMS42NjI2NiAzMy45MDUxQzEuNjYyNjYgMzQuMzQ4NSAxLjY3NzY2IDM0Ljc5NyAxLjcwNzY2IDM1LjI0MDRMMS42NzI2NiAzNS4zMDAxWicvPg0KPHBhdGggZD0nTTEuMjY5MjIgMjcuNDM5M0MxLjc4NzM0IDI3LjU2NCAyLjIxNTc4IDI3Ljg4NzcgMi4yMTU3OCAyOC4zNjYyQzIuMjE1NzggMjguODA0NiAxLjgxMjM0IDI5LjAzMzcgMS4zNDM5MSAyOS4wMzM3Qy45NjUxNTYgMjkuMDMzNyAuNTY2NzE5IDI4Ljc3NDYgLjI1Nzk2OSAyOC41NjUyTC4zNDI2NTYgMjguNDU1OUMuNTY2NzE5IDI4LjU3NTIgLjgzNTc4MSAyOC43MTk2IDEuMDc0ODQgMjguNzE5NkMxLjQxMzU5IDI4LjcxOTYgMS43MjI2NiAyOC41NTAyIDEuNzIyNjYgMjguMjI2NUMxLjcyMjY2IDI3Ljc3MyAxLjI5NDIyIDI3LjUyNCAuNTgxNzE5IDI3LjM4NDZMLjU3NjcxOSAyNy4yNTQ5Qy45MzU0NjkgMjcuMjU0OSAxLjQwODU5IDI3LjIzOTkgMS42NDI5NyAyNy4wMzA5QzEuODEyMzQgMjYuODgxNSAxLjkzMTcyIDI2LjY3MjEgMS45MzE3MiAyNi40NjI3QzEuOTMxNzIgMjYuMDI5MyAxLjYwMjk3IDI1LjY1MDkgMS4wNTk4NCAyNS42NTA5Qy43MDEwOTQgMjUuNjUwOSAuNDI3MzQ0IDI1Ljg3OTkgLjI0Nzk2OSAyNi4xMzlILjE4Nzk2OUwtLjA2MTA5NCAyNS43ODAyTC0uMDIxMDk0IDI1LjcyNTVDLjI0Nzk2OSAyNS41NTEyIC41NzE3MTkgMjUuNDUxNSAuOTEwNDY5IDI1LjQ1MTVDMS43MDc2NiAyNS40NTE1IDIuNDk0ODQgMjUuOTI5NiAyLjQ5NDg0IDI2LjYwNzRDMi40OTQ4NCAyNy4xMDA1IDIuMDQ2NDEgMjcuMzM5NiAxLjI2OTIyIDI3LjM5OTZWMjcuNDM5M1onLz4NCjxwYXRoIGQ9J001LjkyMTk1IDI5Ljg4NjhDNS45MjE5NSAzMS44NDQ5IDUuNDczNTIgMzMuODE3NyA0LjIwODIgMzUuMzA3NEM0LjEwODUyIDM1LjQyMjEgMy45MTkxNCAzNS42MjYyIDMuNzE0NzcgMzUuODA1NUMzLjY1NTA4IDM1Ljg2NTUgMy42NDUwOCAzNS44NjU1IDMuNTc1MzkgMzUuODY1NUMzLjUxNTM5IDM1Ljg2NTUgMy40NzA3IDM1Ljg2NTUgMy40NzA3IDM1LjgxNTVDMy40NzA3IDM1Ljc5NTkgMy40OTA3IDM1Ljc3NTkgMy41MDA3IDM1Ljc2NTlDMy42NzUwOCAzNS41ODY1IDQuMDA4ODMgMzUuMjUyNyA0LjM0MjU4IDM0LjcxNDZDNS4xNDQ3NyAzMy40MjkzIDUuNTA4NTIgMzEuODA5OSA1LjUwODUyIDI5Ljg5MThDNS41MDg1MiAyOC41NTE4IDUuMzI5MTQgMjYuODIyNyA0LjUwNjk1IDI1LjMzOEM0LjExMzUyIDI0LjYzMDkgMy42OTk3NyAyNC4yMTcxIDMuNDkwNyAyNC4wMDhDMy40ODA3IDIzLjk5MyAzLjQ3MDcgMjMuOTc4IDMuNDcwNyAyMy45NjNDMy40NzA3IDIzLjkxMzQgMy41MTUzOSAyMy45MTM0IDMuNTc1MzkgMjMuOTEzNEMzLjY0NTA4IDIzLjkxMzQgMy42NTUwOCAyMy45MTM0IDMuNzI5NzcgMjMuOTg4QzUuMzk4ODMgMjUuNTA3NyA1LjkyMTk1IDI3Ljc4OTMgNS45MjE5NSAyOS44ODY4WicvPg0KPHBhdGggZD0nTS00LjQwMTMzIDYwLjc5MjRDLTQuNDExMzMgNjAuODAyMS00LjQyNjMzIDYwLjgwMjEtNC40MzYzMyA2MC44MDIxQy00LjQ1MTMzIDYwLjgwMjEtNC40NjEzMyA2MC44MDIxLTQuNDcxMzMgNjAuNzkyNEMtNC43MzUzOSA2MC41Mzg0LTUuMDg0MTQgNjAuMTg5Ni01LjMwMzIgNTkuOTUwMkwtNS4zMzgyIDU5Ljk1NTJDLTUuNTEyNTggNjAuMjM0My01Ljc1NjY0IDYwLjU5My01Ljg4MTAyIDYwLjcwNzdDLTUuOTYxMDIgNjAuNzgyNC02LjEwNTM5IDYwLjgwMjEtNi4yMDUwOCA2MC44MDIxQy02LjQwOTE0IDYwLjgwMjEtNi42OTgyIDYwLjYxOC02LjkxMjU4IDYwLjQ4MzRMLTYuODIyODkgNjAuMzkzN0MtNi43MTgyIDYwLjQ1MzQtNi41Njg4MyA2MC41MTg0LTYuNDQ0MTQgNjAuNTE4NEMtNi4xNTUwOCA2MC41MTg0LTUuODY2MzMgNTkuOTg1Mi01LjYzNjk1IDU5LjYwMTVDLTUuOTI2MDIgNTkuMjgyNy02LjIyOTc3IDU4LjkzOS02LjQ4NDE0IDU4LjU5NTJWNTguNTU1MkwtNi4zMTQ3NyA1OC40MzA5TC02LjIyMDA4IDU4LjQ1MDVDLTYuMDQwNyA1OC44MzQzLTUuODA2MzMgNTkuMTQzNC01LjU3MjI3IDU5LjQ0MjFILTUuNTI3NThDLTUuMTQzODMgNTguODA0My00LjkyOTQ1IDU4LjQzMDktNC42MjU3IDU4LjQzMDlDLTQuMzc2NjQgNTguNDMwOS00LjA2MjU4IDU4LjcxNDYtMy44NjM1MiA1OC44OTlMLTMuOTA4MiA1OC45OTM3SC0zLjk1ODJDLTQuMDcyNTggNTguOTA5LTQuMjMxOTUgNTguODA0My00LjM4MTY0IDU4LjgwNDNDLTQuNjQwNyA1OC44MDQzLTQuOTk5NDUgNTkuMzMyNC01LjI0MzUyIDU5Ljc4MDlDLTQuOTI5NDUgNjAuMDg0OS00LjU0NjAyIDYwLjQwODctNC4yMTIyNyA2MC42MDNDLTQuMjA3MjcgNjAuNjA4LTQuMTk3MjcgNjAuNjEzLTQuMTk3MjcgNjAuNjI3N0MtNC4xOTcyNyA2MC42MzI3LTQuMjA3MjcgNjAuNjQyNy00LjIxNzI3IDYwLjY0NzdMLTQuNDAxMzMgNjAuNzkyNFonLz4NCjxwYXRoIGQ9J00tLjk3NDUzMSA2MC4yOTMyTC0yLjI2OTg0IDU5LjkyOTVWNTkuNzk1MUgtMS43NzE3MkMtMS40MDI5NyA1OS43OTUxLTEuNDkyNjYgNTkuMzkxNi0xLjQ5MjY2IDU4LjgzMzVDLTEuNDkyNjYgNTguMTM2LTEuNTA3NjYgNTcuNDM4NS0xLjUzNzM0IDU2Ljc0NkwtMS40Njc2NiA1Ni43MjFMLS45NjQ1MzEgNTYuODU1N0MtLjk4NDUzMSA1Ny4yMzQxLS45ODQ1MzEgNTguMjIwNy0uOTg0NTMxIDU4Ljg5ODJDLS45ODQ1MzEgNTkuMzQxNi0uOTY5NTMxIDU5Ljc5MDEtLjkzOTUzMSA2MC4yMzM1TC0uOTc0NTMxIDYwLjI5MzJaJy8+DQo8cGF0aCBkPSdNMy42OTg5MSA1OS43MzYyQzMuNjk4OTEgNTkuOTAwNSAzLjU1OTUzIDYwLjAzOTkgMy4zOTUxNiA2MC4wMzk5QzMuMjMwNzggNjAuMDM5OSAzLjA5MTA5IDU5LjkwMDUgMy4wOTEwOSA1OS43MzYyQzMuMDkxMDkgNTkuNTcxOCAzLjIzMDc4IDU5LjQzMjEgMy4zOTUxNiA1OS40MzIxQzMuNTU5NTMgNTkuNDMyMSAzLjY5ODkxIDU5LjU3MTggMy42OTg5MSA1OS43MzYyWicvPg0KPHBhdGggZD0nTTkuMTMgNTMuODUwOUM5LjEzIDUzLjg3MDkgOS4xMiA1My44ODA5IDkuMTEgNTMuODk1OUM4LjkyNTYyIDU0LjA4MDMgOC41OTE4OCA1NC40MTQxIDguMjU4MTMgNTQuOTUyMkM3LjQ1NTk0IDU2LjIzNzUgNy4wOTIxOSA1Ny44NTY2IDcuMDkyMTkgNTkuNzc0N0M3LjA5MjE5IDYxLjExNSA3LjI3MTU2IDYyLjg0MzggOC4wOTM3NSA2NC4zMjg0QzguNDg3MTkgNjUuMDM1OSA4Ljg5NTk0IDY1LjQ0NDQgOS4xMTUgNjUuNjYzN0M5LjEzIDY1LjY3ODcgOS4xMyA2NS42ODg0IDkuMTMgNjUuNzAzNEM5LjEzIDY1Ljc1MzQgOS4wOTUgNjUuNzUzNCA5LjAyNTMxIDY1Ljc1MzRTOC45NDU2MyA2NS43NTM0IDguODcwOTQgNjUuNjc4N0M3LjIwMTg4IDY0LjE1OTEgNi42Nzg3NSA2MS44NzcyIDYuNjc4NzUgNTkuNzc5N0M2LjY3ODc1IDU3LjgyMTkgNy4xMjcxOSA1NS44NDg4IDguMzkyNSA1NC4zNTkxQzguNDkyMTkgNTQuMjQ0NyA4LjY4MTU2IDU0LjA0MDMgOC44ODU5NCA1My44NjA5QzguOTQ1NjMgNTMuODAxMyA4Ljk1NTYyIDUzLjgwMTMgOS4wMjUzMSA1My44MDEzUzkuMTMgNTMuODAxMyA5LjEzIDUzLjg1MDlaJy8+DQo8cGF0aCBkPSdNMTEuNjM1NCA2NS4xODhMMTAuMzQwMSA2NC44MjQyVjY0LjY4OThIMTAuODM4MkMxMS4yMDcgNjQuNjg5OCAxMS4xMTczIDY0LjI4NjQgMTEuMTE3MyA2My43MjgzQzExLjExNzMgNjMuMDMwOCAxMS4xMDIzIDYyLjMzMzMgMTEuMDcyNiA2MS42NDA4TDExLjE0MjMgNjEuNjE1OEwxMS42NDU0IDYxLjc1MDVDMTEuNjI1NCA2Mi4xMjg5IDExLjYyNTQgNjMuMTE1NSAxMS42MjU0IDYzLjc5M0MxMS42MjU0IDY0LjIzNjQgMTEuNjQwNCA2NC42ODQ4IDExLjY3MDQgNjUuMTI4M0wxMS42MzU0IDY1LjE4OFonLz4NCjxwYXRoIGQ9J00xMS4yMzIgNTcuMzI3MkMxMS43NTAxIDU3LjQ1MTkgMTIuMTc4NSA1Ny43NzU2IDEyLjE3ODUgNTguMjU0MUMxMi4xNzg1IDU4LjY5MjUgMTEuNzc1MSA1OC45MjE2IDExLjMwNjYgNTguOTIxNkMxMC45Mjc5IDU4LjkyMTYgMTAuNTI5NSA1OC42NjI1IDEwLjIyMDcgNTguNDUzMUwxMC4zMDU0IDU4LjM0MzhDMTAuNTI5NSA1OC40NjMxIDEwLjc5ODUgNTguNjA3NSAxMS4wMzc2IDU4LjYwNzVDMTEuMzc2MyA1OC42MDc1IDExLjY4NTQgNTguNDM4MSAxMS42ODU0IDU4LjExNDRDMTEuNjg1NCA1Ny42NjA5IDExLjI1NyA1Ny40MTE5IDEwLjU0NDUgNTcuMjcyNUwxMC41Mzk1IDU3LjE0MjhDMTAuODk4MiA1Ny4xNDI4IDExLjM3MTMgNTcuMTI3OCAxMS42MDU3IDU2LjkxODhDMTEuNzc1MSA1Ni43Njk0IDExLjg5NDUgNTYuNTYgMTEuODk0NSA1Ni4zNTA2QzExLjg5NDUgNTUuOTE3MiAxMS41NjU3IDU1LjUzODcgMTEuMDIyNiA1NS41Mzg3QzEwLjY2MzggNTUuNTM4NyAxMC4zOTAxIDU1Ljc2NzggMTAuMjEwNyA1Ni4wMjY5SDEwLjE1MDdMOS45MDE2NCA1NS42NjgxTDkuOTQxNjQgNTUuNjEzNEMxMC4yMTA3IDU1LjQzOTEgMTAuNTM0NSA1NS4zMzk0IDEwLjg3MzIgNTUuMzM5NEMxMS42NzA0IDU1LjMzOTQgMTIuNDU3NiA1NS44MTc1IDEyLjQ1NzYgNTYuNDk1M0MxMi40NTc2IDU2Ljk4ODQgMTIuMDA5MSA1Ny4yMjc1IDExLjIzMiA1Ny4yODc1VjU3LjMyNzJaJy8+DQo8cGF0aCBkPSdNMTUuODg0NSA1OS43NzQ3QzE1Ljg4NDUgNjEuNzMyOCAxNS40MzYxIDYzLjcwNTYgMTQuMTcwOCA2NS4xOTUzQzE0LjA3MTEgNjUuMzEgMTMuODgxNyA2NS41MTQxIDEzLjY3NzMgNjUuNjkzNEMxMy42MTc3IDY1Ljc1MzQgMTMuNjA3NyA2NS43NTM0IDEzLjUzOCA2NS43NTM0QzEzLjQ3OCA2NS43NTM0IDEzLjQzMzMgNjUuNzUzNCAxMy40MzMzIDY1LjcwMzRDMTMuNDMzMyA2NS42ODM3IDEzLjQ1MzMgNjUuNjYzNyAxMy40NjMzIDY1LjY1MzdDMTMuNjM3NyA2NS40NzQ0IDEzLjk3MTQgNjUuMTQwNiAxNC4zMDUyIDY0LjYwMjVDMTUuMTA3MyA2My4zMTcyIDE1LjQ3MTEgNjEuNjk3OCAxNS40NzExIDU5Ljc3OTdDMTUuNDcxMSA1OC40Mzk3IDE1LjI5MTcgNTYuNzEwNiAxNC40Njk1IDU1LjIyNTlDMTQuMDc2MSA1NC41MTg3IDEzLjY2MjMgNTQuMTA1IDEzLjQ1MzMgNTMuODk1OUMxMy40NDMzIDUzLjg4MDkgMTMuNDMzMyA1My44NjU5IDEzLjQzMzMgNTMuODUwOUMxMy40MzMzIDUzLjgwMTMgMTMuNDc4IDUzLjgwMTMgMTMuNTM4IDUzLjgwMTNDMTMuNjA3NyA1My44MDEzIDEzLjYxNzcgNTMuODAxMyAxMy42OTIzIDUzLjg3NTlDMTUuMzYxNCA1NS4zOTU2IDE1Ljg4NDUgNTcuNjc3MiAxNS44ODQ1IDU5Ljc3NDdaJy8+DQo8cGF0aCBkPSdNNjYuMjYzMiA3My43NzYyQzY2LjI2MzIgNzMuNzk2MiA2Ni4yNTMyIDczLjgwNjIgNjYuMjQzMiA3My44MjEyQzY2LjA1ODggNzQuMDA1NSA2NS43MjUxIDc0LjMzOTMgNjUuMzkxMyA3NC44Nzc0QzY0LjU4OTEgNzYuMTYyNyA2NC4yMjU0IDc3Ljc4MTggNjQuMjI1NCA3OS42OTk5QzY0LjIyNTQgODEuMDQwMiA2NC40MDQ4IDgyLjc2OSA2NS4yMjcgODQuMjUzN0M2NS42MjA0IDg0Ljk2MTIgNjYuMDI5MSA4NS4zNjk2IDY2LjI0ODIgODUuNTg5QzY2LjI2MzIgODUuNjA0IDY2LjI2MzIgODUuNjEzNyA2Ni4yNjMyIDg1LjYyODdDNjYuMjYzMiA4NS42Nzg3IDY2LjIyODIgODUuNjc4NyA2Ni4xNTg1IDg1LjY3ODdTNjYuMDc4OCA4NS42Nzg3IDY2LjAwNDEgODUuNjA0QzY0LjMzNTEgODQuMDg0MyA2My44MTIgODEuODAyNCA2My44MTIgNzkuNzA0OUM2My44MTIgNzcuNzQ3MSA2NC4yNjA0IDc1Ljc3NCA2NS41MjU3IDc0LjI4NDNDNjUuNjI1NCA3NC4xNjk5IDY1LjgxNDggNzMuOTY1NSA2Ni4wMTkxIDczLjc4NjJDNjYuMDc4OCA3My43MjY1IDY2LjA4ODggNzMuNzI2NSA2Ni4xNTg1IDczLjcyNjVTNjYuMjYzMiA3My43MjY1IDY2LjI2MzIgNzMuNzc2MlonLz4NCjxwYXRoIGQ9J002OS43NCA4NC45OTM4QzY5LjY1MDMgODUuMDIzNSA2OS41MDA5IDg1LjA1MzUgNjkuNDExMiA4NS4wNTM1QzY4Ljg3ODEgODUuMDUzNSA2OC4zNjUgODQuNzU5NSA2Ny45OTYyIDg0LjQzNTdDNjcuNDYzMSA4My45OTIzIDY3LjE5NDEgODMuMzc0NSA2Ny4xOTQxIDgyLjc1MTZDNjcuMTk0MSA4Mi4xODM4IDY3LjQ5MzEgODEuNTAxMyA2OC4zMzUgODEuNTAxM0M2OS4wNTc1IDgxLjUwMTMgNjkuNzQgODIuMDM0NSA2OS43NCA4Mi42MTczQzY5Ljc0IDgzLjA1MDcgNjkuMzc2MyA4My40NDQxIDY4Ljg0MzEgODMuNDQ0MUM2OC40Mjk3IDgzLjQ0NDEgNjguMDU1OSA4My4yOTk4IDY3LjczNzIgODMuMDg1N0w2Ny42OTc1IDgzLjA5MDdDNjcuNzAyNSA4My41Njg4IDY3LjgxNjkgODQuMDcyIDY4LjI5MDMgODQuNDM1N0M2OC41MzQ0IDg0LjYyNTEgNjguODU4MSA4NC43NTk1IDY5LjIyMTkgODQuNzU5NUM2OS4zNDE2IDg0Ljc1OTUgNjkuNDUwOSA4NC43NDQ4IDY5LjU2NTYgODQuNzA0OEw2OS42MjA2IDg0LjcyNDhMNjkuNzQgODQuOTkzOFpNNjcuNzEyMiA4Mi44ODYzQzY3Ljg0NjkgODIuOTkxIDY4LjIxMDYgODMuMTMwNCA2OC40NTQ3IDgzLjEzMDRDNjguOTMyOCA4My4xMzA0IDY5LjI2NjkgODIuNzg2NiA2OS4yNjY5IDgyLjQyMjlDNjkuMjY2OSA4Mi4wMzk1IDY4Ljk5NzggODEuNzI1NCA2OC40OTk0IDgxLjcyNTRDNjcuODcxOSA4MS43MjU0IDY3LjcxMjIgODIuNDE3OSA2Ny43MTIyIDgyLjg4NjNaJy8+DQo8cGF0aCBkPSdNNjguMzUgNzcuMDEzNEM2OC44MzM0IDc2Ljc1NDMgNjkuMTYyMiA3Ni41NjQ5IDY5LjE2MjIgNzYuMTg2MkM2OS4xNjIyIDc1Ljc4NzcgNjguODc4MSA3NS41MDg3IDY4LjM5IDc1LjUwODdDNjcuOTE2NiA3NS41MDg3IDY3LjY2MjUgNzUuODgyNCA2Ny42NjI1IDc2LjIzMTJDNjcuNjYyNSA3Ni42MjQ2IDY3Ljk0NjYgNzYuODM5IDY4LjM1IDc3LjAxMzRaTTY4Ljc4ODQgNzcuMjY3NFY3Ny4zMjIxQzY5LjE1MjIgNzcuNTA2NSA2OS41MjU5IDc3LjgyMDUgNjkuNTI1OSA3OC4xNzkzQzY5LjUyNTkgNzguNTg3NyA2OS4xMTIyIDc4Ljg2NjggNjguNDk5NCA3OC44NjY4QzY4LjQ3OTcgNzguODY2OCA2OC40NTk3IDc4Ljg2NjggNjguNDQ0NyA3OC44NjY4QzY3Ljk2NjYgNzguNzEyMSA2Ny40NTgxIDc4LjQ4MyA2Ny40NTgxIDc3Ljk4OTlDNjcuNDU4MSA3Ny42MzYyIDY3Ljc5MjIgNzcuMzQ3MSA2OC4xMjU5IDc3LjE1NzdWNzcuMTAzMUM2Ny40ODMxIDc2Ljc4OSA2Ny4xNjQ0IDc2LjU5OTkgNjcuMTY0NCA3Ni4xMzE1QzY3LjE2NDQgNzUuOTA3NCA2Ny4yMjQxIDc1LjY4MyA2Ny40MTM0IDc1LjUyMzdDNjcuNjIyNSA3NS4zNDkzIDY3Ljk0NjYgNzUuMjk5NiA2OC4yMzUzIDc1LjI5OTZDNjguOTM3OCA3NS4yOTk2IDY5LjY4MDMgNzUuNjgzIDY5LjY4MDMgNzYuMzMwOUM2OS42ODAzIDc2LjczNDMgNjkuNDI2MiA3Ni45MDM3IDY4Ljc4ODQgNzcuMjY3NFpNNjguNTk0MSA3Ny40MDE4QzY4LjI3NTMgNzcuNTg2MiA2Ny45MTY2IDc3Ljg2MDIgNjcuOTE2NiA3OC4xNDkzQzY3LjkxNjYgNzguMzUzNyA2Ny45OTEyIDc4LjQ4MyA2OC4yNjAzIDc4LjYzMjRDNjguNzYzNCA3OC42MzI0IDY5LjAyMjUgNzguMzAzNyA2OS4wMjI1IDc4LjA1NDZDNjkuMDIyNSA3Ny43OTA2IDY4Ljg0MzEgNzcuNTQ2NSA2OC41OTQxIDc3LjQwMThaJy8+DQo8cGF0aCBkPSdNNzMuMDE3NyA3OS42OTk5QzczLjAxNzcgODEuNjU4MSA3Mi41NjkzIDgzLjYzMDkgNzEuMzA0IDg1LjEyMDVDNzEuMjA0MyA4NS4yMzUyIDcxLjAxNDkgODUuNDM5MyA3MC44MTA1IDg1LjYxODdDNzAuNzUwOSA4NS42Nzg3IDcwLjc0MDkgODUuNjc4NyA3MC42NzEyIDg1LjY3ODdDNzAuNjExMiA4NS42Nzg3IDcwLjU2NjUgODUuNjc4NyA3MC41NjY1IDg1LjYyODdDNzAuNTY2NSA4NS42MDkgNzAuNTg2NSA4NS41ODkgNzAuNTk2NSA4NS41NzlDNzAuNzcwOSA4NS4zOTk2IDcxLjEwNDYgODUuMDY1OSA3MS40Mzg0IDg0LjUyNzdDNzIuMjQwNSA4My4yNDI0IDcyLjYwNDMgODEuNjIzIDcyLjYwNDMgNzkuNzA0OUM3Mi42MDQzIDc4LjM2NDkgNzIuNDI0OSA3Ni42MzU5IDcxLjYwMjcgNzUuMTUxMkM3MS4yMDkzIDc0LjQ0NCA3MC43OTU1IDc0LjAzMDIgNzAuNTg2NSA3My44MjEyQzcwLjU3NjUgNzMuODA2MiA3MC41NjY1IDczLjc5MTIgNzAuNTY2NSA3My43NzYyQzcwLjU2NjUgNzMuNzI2NSA3MC42MTEyIDczLjcyNjUgNzAuNjcxMiA3My43MjY1QzcwLjc0MDkgNzMuNzI2NSA3MC43NTA5IDczLjcyNjUgNzAuODI1NSA3My44MDEyQzcyLjQ5NDYgNzUuMzIwOSA3My4wMTc3IDc3LjYwMjQgNzMuMDE3NyA3OS42OTk5WicvPg0KPC9nPg0KPC9nPg0KPC9zdmc+" data-source-asset-id="det/mp/ch4.1" alt="Original nested parallelograms. The small one is spanned by (1,3) and (2,1); the larger has sides x1(1,3) and x2(2,1), with opposite corner (6,8). Labels and arrows identify both directions and their dilations." /></p>
+</div>
+<p>This drawing restates the algebraic question of finding the solution of a linear system into geometric terms: by what factors <span><span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="d9b1567a52bb6c4288bb7f6675dbb7c06c5641fdb9310727e5539899f9b994f5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+</math></span></span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="ace7c93ba6e4cbba4f8d5c993101879740d1622537387d57ea108eadca8f210a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+</math></span></span> must we dilate the sides of the starting parallelogram so that it will fill the other one?</p>
+<p>We can use this picture, and our geometric understanding of determinants, to get a new formula for solving linear systems. Compare the sizes of these shaded boxes.</p>
+<div class="center">
+<p><img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjwhLS0gVGhpcyBmaWxlIHdhcyBnZW5lcmF0ZWQgYnkgZHZpc3ZnbSAzLjYgLS0+DQo8c3ZnIHZlcnNpb249JzEuMScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgd2lkdGg9JzY1Ljc3NzNwdCcgaGVpZ2h0PSc4Ni4wMjc5cHQnIHZpZXdCb3g9JzAgLTg1LjY5OTMgNjUuNzc3MyA4Ni4wMjc5Jz4NCjxnIGlkPSdwYWdlMSc+DQo8ZyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAtMSA1IC01KSc+DQo8cGF0aCBkPSdNMCAwTDE5LjkyNTggOS45NjA5NEwyOS44ODY3IDM5Ljg1MTZMOS45NjA5NCAyOS44ODY3Wicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMMzkuODUxNiAxOS45MjU4TDU5Ljc3NzMgNzkuNjk5MkwxOS45MjU4IDU5Ljc3NzNaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEwxOS45MjU4IDkuOTYwOTQnIHN0cm9rZT0nI2ZmZicgZmlsbD0nbm9uZScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJyBmaWxsPScjZmZmJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJyBzdHJva2U9JyNmZmYnIGZpbGw9J25vbmUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEwxOS45MjU4IDkuOTYwOTQnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEw5Ljk2MDk0IDI5Ljg4NjcnIHN0cm9rZT0nI2ZmZicgZmlsbD0nbm9uZScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJyBmaWxsPScjZmZmJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJyBzdHJva2U9JyNmZmYnIGZpbGw9J25vbmUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEw5Ljk2MDk0IDI5Ljg4NjcnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEwxOS45MjU4IDkuOTYwOTRMMjkuODg2NyAzOS44NTE2TDkuOTYwOTQgMjkuODg2N1onIGZpbGw9JyNiM2IzYjMnLz4NCjxwYXRoIGQ9J00wIDBMMTkuOTI1OCA5Ljk2MDk0JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMOS45NjA5NCAyOS44ODY3JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5WicvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5Wicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00yNS41MTI3LTQuMjc4ODNDMjUuNTEyNy00LjI1ODgzIDI1LjUwMjctNC4yNDg4MyAyNS40OTI3LTQuMjMzODNDMjUuMzA4NC00LjA0OTQ1IDI0Ljk3NDYtMy43MTU3IDI0LjY0MDktMy4xNzc1OEMyMy44Mzg3LTEuODkyMjcgMjMuNDc0OS0uMjczMjAzIDIzLjQ3NDkgMS42NDQ5MkMyMy40NzQ5IDIuOTg1MjMgMjMuNjU0MyA0LjcxMzk4IDI0LjQ3NjUgNi4xOTg2N0MyNC44Njk5IDYuOTA2MTcgMjUuMjc4NyA3LjMxNDYxIDI1LjQ5NzcgNy41MzM5OEMyNS41MTI3IDcuNTQ4OTggMjUuNTEyNyA3LjU1ODY3IDI1LjUxMjcgNy41NzM2N0MyNS41MTI3IDcuNjIzNjcgMjUuNDc3NyA3LjYyMzY3IDI1LjQwOCA3LjYyMzY3QzI1LjMzODQgNy42MjM2NyAyNS4zMjg0IDcuNjIzNjcgMjUuMjUzNyA3LjU0ODk4QzIzLjU4NDYgNi4wMjkzIDIzLjA2MTUgMy43NDc0MiAyMy4wNjE1IDEuNjQ5OTJDMjMuMDYxNS0uMzA3ODkxIDIzLjUwOTktMi4yODEwMiAyNC43NzUyLTMuNzcwN0MyNC44NzQ5LTMuODg1MDggMjUuMDY0My00LjA4OTQ1IDI1LjI2ODctNC4yNjg4M0MyNS4zMjg0LTQuMzI4NTIgMjUuMzM4NC00LjMyODUyIDI1LjQwOC00LjMyODUyQzI1LjQ3NzctNC4zMjg1MiAyNS41MTI3LTQuMzI4NTIgMjUuNTEyNy00LjI3ODgzWicvPg0KPHBhdGggZD0nTTI4Ljk5NDUgMy45MDk0NUwyOC45NjQ1IDMuOTQ5NDVIMjcuMTIxNEMyNy4wOTE0IDMuOTQ5NDUgMjcuMDQxNyAzLjk1NDQ1IDI3LjA0MTcgMy45ODQ0NUMyNy4wNDE3IDMuOTk0MTQgMjcuMDQ2NCAzLjk5OTE0IDI3LjA1MTQgNC4wMDQxNEMyNy43NjM5IDQuNjk2NjQgMjguNzIwNSA1LjU2MzUyIDI4LjcyMDUgNi4yNjYwMkMyOC43MjA1IDYuNzE0NDUgMjguMzMyIDcuMDM4NTIgMjcuODE4OSA3LjAzODUyQzI3LjMxNTUgNy4wMzg1MiAyNi44ODIgNi43Njk0NSAyNi41NTgzIDYuNDc1MzlMMjYuNjczIDYuMzgwN0MyNi45MDIgNi41MzUwOCAyNy4xNjYxIDYuNjk5NDUgMjcuNDk0OCA2LjY5OTQ1QzI3Ljk4ODMgNi42OTk0NSAyOC4xNzI3IDYuMzIxMDIgMjguMTcyNyA2LjA0MTk1QzI4LjE3MjcgNS40NTQxNCAyNy43MDkyIDQuOTQ2MDIgMjcuMjQwOCA0LjQ5MjU4QzI2LjkyMiA0LjE4MzUyIDI2LjU4ODMgMy44ODk3NyAyNi4yNDQ1IDMuNjAwN1YzLjUyMTAySDI4Ljg2MDJMMjguOTk0NSAzLjkwOTQ1WicvPg0KPHBhdGggZD0nTTI4LjAxOCAuODQxNDg0TDI2LjcyMjcgLjQ3NzczNFYuMzQzMzU5SDI3LjIyMDhDMjcuNTg5NSAuMzQzMzU5IDI3LjQ5OTgtLjA2MDA3OCAyNy40OTk4LS42MTgyMDNDMjcuNDk5OC0xLjMxNTcgMjcuNDg0OC0yLjAxMzIgMjcuNDU1Mi0yLjcwNTdMMjcuNTI0OC0yLjczMDdMMjguMDI4LTIuNTk2MDJDMjguMDA4LTIuMjE3NTggMjguMDA4LTEuMjMxMDIgMjguMDA4LS41NTM1MTZDMjguMDA4LS4xMTAwNzggMjguMDIzIC4zMzgzNTkgMjguMDUzIC43ODE3OTdMMjguMDE4IC44NDE0ODRaJy8+DQo8cGF0aCBkPSdNMzIuMjY3MyAxLjY0NDkyQzMyLjI2NzMgMy42MDMwNSAzMS44MTg4IDUuNTc1ODYgMzAuNTUzNSA3LjA2NTU1QzMwLjQ1MzggNy4xODAyMyAzMC4yNjQ1IDcuMzg0MyAzMC4wNjAxIDcuNTYzNjdDMzAuMDAwNCA3LjYyMzY3IDI5Ljk5MDQgNy42MjM2NyAyOS45MjA3IDcuNjIzNjdDMjkuODYwNyA3LjYyMzY3IDI5LjgxNiA3LjYyMzY3IDI5LjgxNiA3LjU3MzY3QzI5LjgxNiA3LjU1Mzk4IDI5LjgzNiA3LjUzMzk4IDI5Ljg0NiA3LjUyMzk4QzMwLjAyMDQgNy4zNDQ2MSAzMC4zNTQxIDcuMDEwODYgMzAuNjg3OSA2LjQ3MjczQzMxLjQ5MDEgNS4xODc0MiAzMS44NTM4IDMuNTY4MDUgMzEuODUzOCAxLjY0OTkyQzMxLjg1MzggLjMwOTkyMiAzMS42NzQ1LTEuNDE5MTQgMzAuODUyMy0yLjkwMzgzQzMwLjQ1ODgtMy42MTEwMiAzMC4wNDUxLTQuMDI0NzcgMjkuODM2LTQuMjMzODNDMjkuODI2LTQuMjQ4ODMgMjkuODE2LTQuMjYzODMgMjkuODE2LTQuMjc4ODNDMjkuODE2LTQuMzI4NTIgMjkuODYwNy00LjMyODUyIDI5LjkyMDctNC4zMjg1MkMyOS45OTA0LTQuMzI4NTIgMzAuMDAwNC00LjMyODUyIDMwLjA3NTEtNC4yNTM4M0MzMS43NDQxLTIuNzM0MTQgMzIuMjY3My0uNDUyNTc4IDMyLjI2NzMgMS42NDQ5MlonLz4NCjxwYXRoIGQ9J00tLjgzMjU3OCAyMy45NjNDLS44MzI1NzggMjMuOTgzLS44NDI1NzggMjMuOTkzLS44NTI1NzggMjQuMDA4Qy0xLjAzNjk1IDI0LjE5MjQtMS4zNzA3IDI0LjUyNjItMS43MDQ0NSAyNS4wNjQzQy0yLjUwNjY0IDI2LjM0OTYtMi44NzAzOSAyNy45Njg3LTIuODcwMzkgMjkuODg2OEMtMi44NzAzOSAzMS4yMjcxLTIuNjkxMDIgMzIuOTU1OS0xLjg2ODgzIDM0LjQ0MDVDLTEuNDc1MzkgMzUuMTQ4LTEuMDY2NjQgMzUuNTU2NS0uODQ3NTc4IDM1Ljc3NTlDLS44MzI1NzggMzUuNzkwOS0uODMyNTc4IDM1LjgwMDUtLjgzMjU3OCAzNS44MTU1Qy0uODMyNTc4IDM1Ljg2NTUtLjg2NzU3OCAzNS44NjU1LS45MzcyNjYgMzUuODY1NUMtMS4wMDY5NSAzNS44NjU1LTEuMDE2OTUgMzUuODY1NS0xLjA5MTY0IDM1Ljc5MDlDLTIuNzYwNyAzNC4yNzEyLTMuMjgzODMgMzEuOTg5My0zLjI4MzgzIDI5Ljg5MThDLTMuMjgzODMgMjcuOTM0LTIuODM1MzkgMjUuOTYwOS0xLjU3MDA4IDI0LjQ3MTJDLTEuNDcwMzkgMjQuMzU2OC0xLjI4MTAyIDI0LjE1MjQtMS4wNzY2NCAyMy45NzNDLTEuMDE2OTUgMjMuOTEzNC0xLjAwNjk1IDIzLjkxMzQtLjkzNzI2NiAyMy45MTM0Qy0uODY3NTc4IDIzLjkxMzQtLjgzMjU3OCAyMy45MTM0LS44MzI1NzggMjMuOTYzWicvPg0KPHBhdGggZD0nTTEuNjcyNjYgMzUuMzAwMUwuMzc3MzQ0IDM0LjkzNjNWMzQuODAySC44NzU0NjlDMS4yNDQyMiAzNC44MDIgMS4xNTQ1MyAzNC4zOTg1IDEuMTU0NTMgMzMuODQwNEMxLjE1NDUzIDMzLjE0MjkgMS4xMzk1MyAzMi40NDU0IDEuMTA5ODQgMzEuNzUyOUwxLjE3OTUzIDMxLjcyNzlMMS42ODI2NiAzMS44NjI2QzEuNjYyNjYgMzIuMjQxIDEuNjYyNjYgMzMuMjI3NiAxLjY2MjY2IDMzLjkwNTFDMS42NjI2NiAzNC4zNDg1IDEuNjc3NjYgMzQuNzk3IDEuNzA3NjYgMzUuMjQwNEwxLjY3MjY2IDM1LjMwMDFaJy8+DQo8cGF0aCBkPSdNMS4yNjkyMiAyNy40MzkzQzEuNzg3MzQgMjcuNTY0IDIuMjE1NzggMjcuODg3NyAyLjIxNTc4IDI4LjM2NjJDMi4yMTU3OCAyOC44MDQ2IDEuODEyMzQgMjkuMDMzNyAxLjM0MzkxIDI5LjAzMzdDLjk2NTE1NiAyOS4wMzM3IC41NjY3MTkgMjguNzc0NiAuMjU3OTY5IDI4LjU2NTJMLjM0MjY1NiAyOC40NTU5Qy41NjY3MTkgMjguNTc1MiAuODM1NzgxIDI4LjcxOTYgMS4wNzQ4NCAyOC43MTk2QzEuNDEzNTkgMjguNzE5NiAxLjcyMjY2IDI4LjU1MDIgMS43MjI2NiAyOC4yMjY1QzEuNzIyNjYgMjcuNzczIDEuMjk0MjIgMjcuNTI0IC41ODE3MTkgMjcuMzg0NkwuNTc2NzE5IDI3LjI1NDlDLjkzNTQ2OSAyNy4yNTQ5IDEuNDA4NTkgMjcuMjM5OSAxLjY0Mjk3IDI3LjAzMDlDMS44MTIzNCAyNi44ODE1IDEuOTMxNzIgMjYuNjcyMSAxLjkzMTcyIDI2LjQ2MjdDMS45MzE3MiAyNi4wMjkzIDEuNjAyOTcgMjUuNjUwOSAxLjA1OTg0IDI1LjY1MDlDLjcwMTA5NCAyNS42NTA5IC40MjczNDQgMjUuODc5OSAuMjQ3OTY5IDI2LjEzOUguMTg3OTY5TC0uMDYxMDk0IDI1Ljc4MDJMLS4wMjEwOTQgMjUuNzI1NUMuMjQ3OTY5IDI1LjU1MTIgLjU3MTcxOSAyNS40NTE1IC45MTA0NjkgMjUuNDUxNUMxLjcwNzY2IDI1LjQ1MTUgMi40OTQ4NCAyNS45Mjk2IDIuNDk0ODQgMjYuNjA3NEMyLjQ5NDg0IDI3LjEwMDUgMi4wNDY0MSAyNy4zMzk2IDEuMjY5MjIgMjcuMzk5NlYyNy40MzkzWicvPg0KPHBhdGggZD0nTTUuOTIxOTUgMjkuODg2OEM1LjkyMTk1IDMxLjg0NDkgNS40NzM1MiAzMy44MTc3IDQuMjA4MiAzNS4zMDc0QzQuMTA4NTIgMzUuNDIyMSAzLjkxOTE0IDM1LjYyNjIgMy43MTQ3NyAzNS44MDU1QzMuNjU1MDggMzUuODY1NSAzLjY0NTA4IDM1Ljg2NTUgMy41NzUzOSAzNS44NjU1QzMuNTE1MzkgMzUuODY1NSAzLjQ3MDcgMzUuODY1NSAzLjQ3MDcgMzUuODE1NUMzLjQ3MDcgMzUuNzk1OSAzLjQ5MDcgMzUuNzc1OSAzLjUwMDcgMzUuNzY1OUMzLjY3NTA4IDM1LjU4NjUgNC4wMDg4MyAzNS4yNTI3IDQuMzQyNTggMzQuNzE0NkM1LjE0NDc3IDMzLjQyOTMgNS41MDg1MiAzMS44MDk5IDUuNTA4NTIgMjkuODkxOEM1LjUwODUyIDI4LjU1MTggNS4zMjkxNCAyNi44MjI3IDQuNTA2OTUgMjUuMzM4QzQuMTEzNTIgMjQuNjMwOSAzLjY5OTc3IDI0LjIxNzEgMy40OTA3IDI0LjAwOEMzLjQ4MDcgMjMuOTkzIDMuNDcwNyAyMy45NzggMy40NzA3IDIzLjk2M0MzLjQ3MDcgMjMuOTEzNCAzLjUxNTM5IDIzLjkxMzQgMy41NzUzOSAyMy45MTM0QzMuNjQ1MDggMjMuOTEzNCAzLjY1NTA4IDIzLjkxMzQgMy43Mjk3NyAyMy45ODhDNS4zOTg4MyAyNS41MDc3IDUuOTIxOTUgMjcuNzg5MyA1LjkyMTk1IDI5Ljg4NjhaJy8+DQo8L2c+DQo8L2c+DQo8L3N2Zz4=" data-source-asset-id="det/mp/ch4.2" alt="First shaded box: the small parallelogram spanned by (1,3) and (2,1), with the original larger parallelogram outlined behind it." /> <span class="source-layout" data-source-layout="\hfil"></span> <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjwhLS0gVGhpcyBmaWxlIHdhcyBnZW5lcmF0ZWQgYnkgZHZpc3ZnbSAzLjYgLS0+DQo8c3ZnIHZlcnNpb249JzEuMScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgd2lkdGg9JzY4Ljc3NzRwdCcgaGVpZ2h0PSc4Ni4wMjc5cHQnIHZpZXdCb3g9JzAgLTg1LjY5OTMgNjguNzc3NCA4Ni4wMjc5Jz4NCjxnIGlkPSdwYWdlMSc+DQo8ZyB0cmFuc2Zvcm09J21hdHJpeCgxIDAgMCAtMSA4IC01KSc+DQo8cGF0aCBkPSdNMCAwTDE5LjkyNTggNTkuNzc3M0wzOS44NTE2IDY5LjczODNMMTkuOTI1OCA5Ljk2MDk0Wicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMMzkuODUxNiAxOS45MjU4TDU5Ljc3NzMgNzkuNjk5MkwxOS45MjU4IDU5Ljc3NzNaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEwxOS45MjU4IDkuOTYwOTQnIHN0cm9rZT0nI2ZmZicgZmlsbD0nbm9uZScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJyBmaWxsPScjZmZmJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJyBzdHJva2U9JyNmZmYnIGZpbGw9J25vbmUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEwxOS45MjU4IDkuOTYwOTQnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEw5Ljk2MDk0IDI5Ljg4NjcnIHN0cm9rZT0nI2ZmZicgZmlsbD0nbm9uZScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJyBmaWxsPScjZmZmJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJyBzdHJva2U9JyNmZmYnIGZpbGw9J25vbmUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEw5Ljk2MDk0IDI5Ljg4NjcnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEwxOS45MjU4IDU5Ljc3NzNMMzkuODUxNiA2OS43MzgzTDE5LjkyNTggOS45NjA5NFonIGZpbGw9JyNiM2IzYjMnLz4NCjxwYXRoIGQ9J00wIDBMMTkuOTI1OCA5Ljk2MDk0JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMOS45NjA5NCAyOS44ODY3JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5WicvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5Wicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00yNS41MTI3LTQuMjc4ODNDMjUuNTEyNy00LjI1ODgzIDI1LjUwMjctNC4yNDg4MyAyNS40OTI3LTQuMjMzODNDMjUuMzA4NC00LjA0OTQ1IDI0Ljk3NDYtMy43MTU3IDI0LjY0MDktMy4xNzc1OEMyMy44Mzg3LTEuODkyMjcgMjMuNDc0OS0uMjczMjAzIDIzLjQ3NDkgMS42NDQ5MkMyMy40NzQ5IDIuOTg1MjMgMjMuNjU0MyA0LjcxMzk4IDI0LjQ3NjUgNi4xOTg2N0MyNC44Njk5IDYuOTA2MTcgMjUuMjc4NyA3LjMxNDYxIDI1LjQ5NzcgNy41MzM5OEMyNS41MTI3IDcuNTQ4OTggMjUuNTEyNyA3LjU1ODY3IDI1LjUxMjcgNy41NzM2N0MyNS41MTI3IDcuNjIzNjcgMjUuNDc3NyA3LjYyMzY3IDI1LjQwOCA3LjYyMzY3QzI1LjMzODQgNy42MjM2NyAyNS4zMjg0IDcuNjIzNjcgMjUuMjUzNyA3LjU0ODk4QzIzLjU4NDYgNi4wMjkzIDIzLjA2MTUgMy43NDc0MiAyMy4wNjE1IDEuNjQ5OTJDMjMuMDYxNS0uMzA3ODkxIDIzLjUwOTktMi4yODEwMiAyNC43NzUyLTMuNzcwN0MyNC44NzQ5LTMuODg1MDggMjUuMDY0My00LjA4OTQ1IDI1LjI2ODctNC4yNjg4M0MyNS4zMjg0LTQuMzI4NTIgMjUuMzM4NC00LjMyODUyIDI1LjQwOC00LjMyODUyQzI1LjQ3NzctNC4zMjg1MiAyNS41MTI3LTQuMzI4NTIgMjUuNTEyNy00LjI3ODgzWicvPg0KPHBhdGggZD0nTTI4Ljk5NDUgMy45MDk0NUwyOC45NjQ1IDMuOTQ5NDVIMjcuMTIxNEMyNy4wOTE0IDMuOTQ5NDUgMjcuMDQxNyAzLjk1NDQ1IDI3LjA0MTcgMy45ODQ0NUMyNy4wNDE3IDMuOTk0MTQgMjcuMDQ2NCAzLjk5OTE0IDI3LjA1MTQgNC4wMDQxNEMyNy43NjM5IDQuNjk2NjQgMjguNzIwNSA1LjU2MzUyIDI4LjcyMDUgNi4yNjYwMkMyOC43MjA1IDYuNzE0NDUgMjguMzMyIDcuMDM4NTIgMjcuODE4OSA3LjAzODUyQzI3LjMxNTUgNy4wMzg1MiAyNi44ODIgNi43Njk0NSAyNi41NTgzIDYuNDc1MzlMMjYuNjczIDYuMzgwN0MyNi45MDIgNi41MzUwOCAyNy4xNjYxIDYuNjk5NDUgMjcuNDk0OCA2LjY5OTQ1QzI3Ljk4ODMgNi42OTk0NSAyOC4xNzI3IDYuMzIxMDIgMjguMTcyNyA2LjA0MTk1QzI4LjE3MjcgNS40NTQxNCAyNy43MDkyIDQuOTQ2MDIgMjcuMjQwOCA0LjQ5MjU4QzI2LjkyMiA0LjE4MzUyIDI2LjU4ODMgMy44ODk3NyAyNi4yNDQ1IDMuNjAwN1YzLjUyMTAySDI4Ljg2MDJMMjguOTk0NSAzLjkwOTQ1WicvPg0KPHBhdGggZD0nTTI4LjAxOCAuODQxNDg0TDI2LjcyMjcgLjQ3NzczNFYuMzQzMzU5SDI3LjIyMDhDMjcuNTg5NSAuMzQzMzU5IDI3LjQ5OTgtLjA2MDA3OCAyNy40OTk4LS42MTgyMDNDMjcuNDk5OC0xLjMxNTcgMjcuNDg0OC0yLjAxMzIgMjcuNDU1Mi0yLjcwNTdMMjcuNTI0OC0yLjczMDdMMjguMDI4LTIuNTk2MDJDMjguMDA4LTIuMjE3NTggMjguMDA4LTEuMjMxMDIgMjguMDA4LS41NTM1MTZDMjguMDA4LS4xMTAwNzggMjguMDIzIC4zMzgzNTkgMjguMDUzIC43ODE3OTdMMjguMDE4IC44NDE0ODRaJy8+DQo8cGF0aCBkPSdNMzIuMjY3MyAxLjY0NDkyQzMyLjI2NzMgMy42MDMwNSAzMS44MTg4IDUuNTc1ODYgMzAuNTUzNSA3LjA2NTU1QzMwLjQ1MzggNy4xODAyMyAzMC4yNjQ1IDcuMzg0MyAzMC4wNjAxIDcuNTYzNjdDMzAuMDAwNCA3LjYyMzY3IDI5Ljk5MDQgNy42MjM2NyAyOS45MjA3IDcuNjIzNjdDMjkuODYwNyA3LjYyMzY3IDI5LjgxNiA3LjYyMzY3IDI5LjgxNiA3LjU3MzY3QzI5LjgxNiA3LjU1Mzk4IDI5LjgzNiA3LjUzMzk4IDI5Ljg0NiA3LjUyMzk4QzMwLjAyMDQgNy4zNDQ2MSAzMC4zNTQxIDcuMDEwODYgMzAuNjg3OSA2LjQ3MjczQzMxLjQ5MDEgNS4xODc0MiAzMS44NTM4IDMuNTY4MDUgMzEuODUzOCAxLjY0OTkyQzMxLjg1MzggLjMwOTkyMiAzMS42NzQ1LTEuNDE5MTQgMzAuODUyMy0yLjkwMzgzQzMwLjQ1ODgtMy42MTEwMiAzMC4wNDUxLTQuMDI0NzcgMjkuODM2LTQuMjMzODNDMjkuODI2LTQuMjQ4ODMgMjkuODE2LTQuMjYzODMgMjkuODE2LTQuMjc4ODNDMjkuODE2LTQuMzI4NTIgMjkuODYwNy00LjMyODUyIDI5LjkyMDctNC4zMjg1MkMyOS45OTA0LTQuMzI4NTIgMzAuMDAwNC00LjMyODUyIDMwLjA3NTEtNC4yNTM4M0MzMS43NDQxLTIuNzM0MTQgMzIuMjY3My0uNDUyNTc4IDMyLjI2NzMgMS42NDQ5MlonLz4NCjxwYXRoIGQ9J00tNC40MDEzMyA2MC43OTI0Qy00LjQxMTMzIDYwLjgwMjEtNC40MjYzMyA2MC44MDIxLTQuNDM2MzMgNjAuODAyMUMtNC40NTEzMyA2MC44MDIxLTQuNDYxMzMgNjAuODAyMS00LjQ3MTMzIDYwLjc5MjRDLTQuNzM1MzkgNjAuNTM4NC01LjA4NDE0IDYwLjE4OTYtNS4zMDMyIDU5Ljk1MDJMLTUuMzM4MiA1OS45NTUyQy01LjUxMjU4IDYwLjIzNDMtNS43NTY2NCA2MC41OTMtNS44ODEwMiA2MC43MDc3Qy01Ljk2MTAyIDYwLjc4MjQtNi4xMDUzOSA2MC44MDIxLTYuMjA1MDggNjAuODAyMUMtNi40MDkxNCA2MC44MDIxLTYuNjk4MiA2MC42MTgtNi45MTI1OCA2MC40ODM0TC02LjgyMjg5IDYwLjM5MzdDLTYuNzE4MiA2MC40NTM0LTYuNTY4ODMgNjAuNTE4NC02LjQ0NDE0IDYwLjUxODRDLTYuMTU1MDggNjAuNTE4NC01Ljg2NjMzIDU5Ljk4NTItNS42MzY5NSA1OS42MDE1Qy01LjkyNjAyIDU5LjI4MjctNi4yMjk3NyA1OC45MzktNi40ODQxNCA1OC41OTUyVjU4LjU1NTJMLTYuMzE0NzcgNTguNDMwOUwtNi4yMjAwOCA1OC40NTA1Qy02LjA0MDcgNTguODM0My01LjgwNjMzIDU5LjE0MzQtNS41NzIyNyA1OS40NDIxSC01LjUyNzU4Qy01LjE0MzgzIDU4LjgwNDMtNC45Mjk0NSA1OC40MzA5LTQuNjI1NyA1OC40MzA5Qy00LjM3NjY0IDU4LjQzMDktNC4wNjI1OCA1OC43MTQ2LTMuODYzNTIgNTguODk5TC0zLjkwODIgNTguOTkzN0gtMy45NTgyQy00LjA3MjU4IDU4LjkwOS00LjIzMTk1IDU4LjgwNDMtNC4zODE2NCA1OC44MDQzQy00LjY0MDcgNTguODA0My00Ljk5OTQ1IDU5LjMzMjQtNS4yNDM1MiA1OS43ODA5Qy00LjkyOTQ1IDYwLjA4NDktNC41NDYwMiA2MC40MDg3LTQuMjEyMjcgNjAuNjAzQy00LjIwNzI3IDYwLjYwOC00LjE5NzI3IDYwLjYxMy00LjE5NzI3IDYwLjYyNzdDLTQuMTk3MjcgNjAuNjMyNy00LjIwNzI3IDYwLjY0MjctNC4yMTcyNyA2MC42NDc3TC00LjQwMTMzIDYwLjc5MjRaJy8+DQo8cGF0aCBkPSdNLS45NzQ1MzEgNjAuMjkzMkwtMi4yNjk4NCA1OS45Mjk1VjU5Ljc5NTFILTEuNzcxNzJDLTEuNDAyOTcgNTkuNzk1MS0xLjQ5MjY2IDU5LjM5MTYtMS40OTI2NiA1OC44MzM1Qy0xLjQ5MjY2IDU4LjEzNi0xLjUwNzY2IDU3LjQzODUtMS41MzczNCA1Ni43NDZMLTEuNDY3NjYgNTYuNzIxTC0uOTY0NTMxIDU2Ljg1NTdDLS45ODQ1MzEgNTcuMjM0MS0uOTg0NTMxIDU4LjIyMDctLjk4NDUzMSA1OC44OTgyQy0uOTg0NTMxIDU5LjM0MTYtLjk2OTUzMSA1OS43OTAxLS45Mzk1MzEgNjAuMjMzNUwtLjk3NDUzMSA2MC4yOTMyWicvPg0KPHBhdGggZD0nTTMuNjk4OTEgNTkuNzM2MkMzLjY5ODkxIDU5LjkwMDUgMy41NTk1MyA2MC4wMzk5IDMuMzk1MTYgNjAuMDM5OUMzLjIzMDc4IDYwLjAzOTkgMy4wOTEwOSA1OS45MDA1IDMuMDkxMDkgNTkuNzM2MkMzLjA5MTA5IDU5LjU3MTggMy4yMzA3OCA1OS40MzIxIDMuMzk1MTYgNTkuNDMyMUMzLjU1OTUzIDU5LjQzMjEgMy42OTg5MSA1OS41NzE4IDMuNjk4OTEgNTkuNzM2MlonLz4NCjxwYXRoIGQ9J005LjEzIDUzLjg1MDlDOS4xMyA1My44NzA5IDkuMTIgNTMuODgwOSA5LjExIDUzLjg5NTlDOC45MjU2MiA1NC4wODAzIDguNTkxODggNTQuNDE0MSA4LjI1ODEzIDU0Ljk1MjJDNy40NTU5NCA1Ni4yMzc1IDcuMDkyMTkgNTcuODU2NiA3LjA5MjE5IDU5Ljc3NDdDNy4wOTIxOSA2MS4xMTUgNy4yNzE1NiA2Mi44NDM4IDguMDkzNzUgNjQuMzI4NEM4LjQ4NzE5IDY1LjAzNTkgOC44OTU5NCA2NS40NDQ0IDkuMTE1IDY1LjY2MzdDOS4xMyA2NS42Nzg3IDkuMTMgNjUuNjg4NCA5LjEzIDY1LjcwMzRDOS4xMyA2NS43NTM0IDkuMDk1IDY1Ljc1MzQgOS4wMjUzMSA2NS43NTM0UzguOTQ1NjMgNjUuNzUzNCA4Ljg3MDk0IDY1LjY3ODdDNy4yMDE4OCA2NC4xNTkxIDYuNjc4NzUgNjEuODc3MiA2LjY3ODc1IDU5Ljc3OTdDNi42Nzg3NSA1Ny44MjE5IDcuMTI3MTkgNTUuODQ4OCA4LjM5MjUgNTQuMzU5MUM4LjQ5MjE5IDU0LjI0NDcgOC42ODE1NiA1NC4wNDAzIDguODg1OTQgNTMuODYwOUM4Ljk0NTYzIDUzLjgwMTMgOC45NTU2MiA1My44MDEzIDkuMDI1MzEgNTMuODAxM1M5LjEzIDUzLjgwMTMgOS4xMyA1My44NTA5WicvPg0KPHBhdGggZD0nTTExLjYzNTQgNjUuMTg4TDEwLjM0MDEgNjQuODI0MlY2NC42ODk4SDEwLjgzODJDMTEuMjA3IDY0LjY4OTggMTEuMTE3MyA2NC4yODY0IDExLjExNzMgNjMuNzI4M0MxMS4xMTczIDYzLjAzMDggMTEuMTAyMyA2Mi4zMzMzIDExLjA3MjYgNjEuNjQwOEwxMS4xNDIzIDYxLjYxNThMMTEuNjQ1NCA2MS43NTA1QzExLjYyNTQgNjIuMTI4OSAxMS42MjU0IDYzLjExNTUgMTEuNjI1NCA2My43OTNDMTEuNjI1NCA2NC4yMzY0IDExLjY0MDQgNjQuNjg0OCAxMS42NzA0IDY1LjEyODNMMTEuNjM1NCA2NS4xODhaJy8+DQo8cGF0aCBkPSdNMTEuMjMyIDU3LjMyNzJDMTEuNzUwMSA1Ny40NTE5IDEyLjE3ODUgNTcuNzc1NiAxMi4xNzg1IDU4LjI1NDFDMTIuMTc4NSA1OC42OTI1IDExLjc3NTEgNTguOTIxNiAxMS4zMDY2IDU4LjkyMTZDMTAuOTI3OSA1OC45MjE2IDEwLjUyOTUgNTguNjYyNSAxMC4yMjA3IDU4LjQ1MzFMMTAuMzA1NCA1OC4zNDM4QzEwLjUyOTUgNTguNDYzMSAxMC43OTg1IDU4LjYwNzUgMTEuMDM3NiA1OC42MDc1QzExLjM3NjMgNTguNjA3NSAxMS42ODU0IDU4LjQzODEgMTEuNjg1NCA1OC4xMTQ0QzExLjY4NTQgNTcuNjYwOSAxMS4yNTcgNTcuNDExOSAxMC41NDQ1IDU3LjI3MjVMMTAuNTM5NSA1Ny4xNDI4QzEwLjg5ODIgNTcuMTQyOCAxMS4zNzEzIDU3LjEyNzggMTEuNjA1NyA1Ni45MTg4QzExLjc3NTEgNTYuNzY5NCAxMS44OTQ1IDU2LjU2IDExLjg5NDUgNTYuMzUwNkMxMS44OTQ1IDU1LjkxNzIgMTEuNTY1NyA1NS41Mzg3IDExLjAyMjYgNTUuNTM4N0MxMC42NjM4IDU1LjUzODcgMTAuMzkwMSA1NS43Njc4IDEwLjIxMDcgNTYuMDI2OUgxMC4xNTA3TDkuOTAxNjQgNTUuNjY4MUw5Ljk0MTY0IDU1LjYxMzRDMTAuMjEwNyA1NS40MzkxIDEwLjUzNDUgNTUuMzM5NCAxMC44NzMyIDU1LjMzOTRDMTEuNjcwNCA1NS4zMzk0IDEyLjQ1NzYgNTUuODE3NSAxMi40NTc2IDU2LjQ5NTNDMTIuNDU3NiA1Ni45ODg0IDEyLjAwOTEgNTcuMjI3NSAxMS4yMzIgNTcuMjg3NVY1Ny4zMjcyWicvPg0KPHBhdGggZD0nTTE1Ljg4NDUgNTkuNzc0N0MxNS44ODQ1IDYxLjczMjggMTUuNDM2MSA2My43MDU2IDE0LjE3MDggNjUuMTk1M0MxNC4wNzExIDY1LjMxIDEzLjg4MTcgNjUuNTE0MSAxMy42NzczIDY1LjY5MzRDMTMuNjE3NyA2NS43NTM0IDEzLjYwNzcgNjUuNzUzNCAxMy41MzggNjUuNzUzNEMxMy40NzggNjUuNzUzNCAxMy40MzMzIDY1Ljc1MzQgMTMuNDMzMyA2NS43MDM0QzEzLjQzMzMgNjUuNjgzNyAxMy40NTMzIDY1LjY2MzcgMTMuNDYzMyA2NS42NTM3QzEzLjYzNzcgNjUuNDc0NCAxMy45NzE0IDY1LjE0MDYgMTQuMzA1MiA2NC42MDI1QzE1LjEwNzMgNjMuMzE3MiAxNS40NzExIDYxLjY5NzggMTUuNDcxMSA1OS43Nzk3QzE1LjQ3MTEgNTguNDM5NyAxNS4yOTE3IDU2LjcxMDYgMTQuNDY5NSA1NS4yMjU5QzE0LjA3NjEgNTQuNTE4NyAxMy42NjIzIDU0LjEwNSAxMy40NTMzIDUzLjg5NTlDMTMuNDQzMyA1My44ODA5IDEzLjQzMzMgNTMuODY1OSAxMy40MzMzIDUzLjg1MDlDMTMuNDMzMyA1My44MDEzIDEzLjQ3OCA1My44MDEzIDEzLjUzOCA1My44MDEzQzEzLjYwNzcgNTMuODAxMyAxMy42MTc3IDUzLjgwMTMgMTMuNjkyMyA1My44NzU5QzE1LjM2MTQgNTUuMzk1NiAxNS44ODQ1IDU3LjY3NzIgMTUuODg0NSA1OS43NzQ3WicvPg0KPC9nPg0KPC9nPg0KPC9zdmc+" data-source-asset-id="det/mp/ch4.3" alt="Second shaded box: the parallelogram spanned by x1(1,3) and (2,1). Only the first of its two sides is dilated from the first shaded box." /> <span class="source-layout" data-source-layout="\hfil"></span> <img src="data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0nMS4wJyBlbmNvZGluZz0nVVRGLTgnPz4NCjwhLS0gVGhpcyBmaWxlIHdhcyBnZW5lcmF0ZWQgYnkgZHZpc3ZnbSAzLjYgLS0+DQo8c3ZnIHZlcnNpb249JzEuMScgeG1sbnM9J2h0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnJyB4bWxuczp4bGluaz0naHR0cDovL3d3dy53My5vcmcvMTk5OS94bGluaycgd2lkdGg9JzgxLjY5OTNwdCcgaGVpZ2h0PScxMDAuMzI4NnB0JyB2aWV3Qm94PScwIC0xMDAgODEuNjk5MyAxMDAuMzI4Nic+DQo8ZyBpZD0ncGFnZTEnPg0KPGcgdHJhbnNmb3JtPSdtYXRyaXgoMSAwIDAgLTEgMSAtNSknPg0KPHBhdGggZD0nTTAgMEw1OS43NzczIDc5LjY5OTJMNzkuNjk5MiA4OS42NjQxTDE5LjkyNTggOS45NjA5NFonIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMCAwTDM5Ljg1MTYgMTkuOTI1OEw1OS43NzczIDc5LjY5OTJMMTkuOTI1OCA1OS43NzczWicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMMTkuOTI1OCA5Ljk2MDk0JyBzdHJva2U9JyNmZmYnIGZpbGw9J25vbmUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicgZmlsbD0nI2ZmZicvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicgc3Ryb2tlPScjZmZmJyBmaWxsPSdub25lJyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMMTkuOTI1OCA5Ljk2MDk0JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicvPg0KPHBhdGggZD0nTTE3LjE3NTggNy4wNTg1OUwxOS45MjU4IDkuOTYwOTRMMTUuOTUzMSA5LjUwMzkxWicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMOS45NjA5NCAyOS44ODY3JyBzdHJva2U9JyNmZmYnIGZpbGw9J25vbmUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5WicgZmlsbD0nI2ZmZicvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5Wicgc3Ryb2tlPScjZmZmJyBmaWxsPSdub25lJyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMOS45NjA5NCAyOS44ODY3JyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5WicvPg0KPHBhdGggZD0nTTEwLjA3MDMgMjUuODkwNkw5Ljk2MDk0IDI5Ljg4NjdMNy40NzY1NiAyNi43NTM5Wicgc3Ryb2tlPScjMDAwJyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lam9pbj0nYmV2ZWwnLz4NCjxwYXRoIGQ9J00wIDBMNTkuNzc3MyA3OS42OTkyTDc5LjY5OTIgODkuNjY0MUwxOS45MjU4IDkuOTYwOTRaJyBmaWxsPScjYjNiM2IzJy8+DQo8cGF0aCBkPSdNNDkuODEyNSA0OS44MTI1TDU5Ljc3NzMgNzkuNjk5Micgc3Ryb2tlPScjOTk5JyBmaWxsPSdub25lJyBzdHJva2Utd2lkdGg9Jy41JyBzdHJva2UtbWl0ZXJsaW1pdD0nMTAnIHN0cm9rZS1saW5lY2FwPSdyb3VuZCcgc3Ryb2tlLWxpbmVqb2luPSdyb3VuZCcvPg0KPHBhdGggZD0nTTAgMEwxOS45MjU4IDkuOTYwOTQnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJy8+DQo8cGF0aCBkPSdNMTcuMTc1OCA3LjA1ODU5TDE5LjkyNTggOS45NjA5NEwxNS45NTMxIDkuNTAzOTFaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTAgMEw5Ljk2MDk0IDI5Ljg4NjcnIHN0cm9rZT0nIzAwMCcgZmlsbD0nbm9uZScgc3Ryb2tlLXdpZHRoPScuNScgc3Ryb2tlLW1pdGVybGltaXQ9JzEwJyBzdHJva2UtbGluZWpvaW49J2JldmVsJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJy8+DQo8cGF0aCBkPSdNMTAuMDcwMyAyNS44OTA2TDkuOTYwOTQgMjkuODg2N0w3LjQ3NjU2IDI2Ljc1MzlaJyBzdHJva2U9JyMwMDAnIGZpbGw9J25vbmUnIHN0cm9rZS13aWR0aD0nLjUnIHN0cm9rZS1taXRlcmxpbWl0PScxMCcgc3Ryb2tlLWxpbmVqb2luPSdiZXZlbCcvPg0KPHBhdGggZD0nTTI1LjUxMjctNC4yNzg4M0MyNS41MTI3LTQuMjU4ODMgMjUuNTAyNy00LjI0ODgzIDI1LjQ5MjctNC4yMzM4M0MyNS4zMDg0LTQuMDQ5NDUgMjQuOTc0Ni0zLjcxNTcgMjQuNjQwOS0zLjE3NzU4QzIzLjgzODctMS44OTIyNyAyMy40NzQ5LS4yNzMyMDMgMjMuNDc0OSAxLjY0NDkyQzIzLjQ3NDkgMi45ODUyMyAyMy42NTQzIDQuNzEzOTggMjQuNDc2NSA2LjE5ODY3QzI0Ljg2OTkgNi45MDYxNyAyNS4yNzg3IDcuMzE0NjEgMjUuNDk3NyA3LjUzMzk4QzI1LjUxMjcgNy41NDg5OCAyNS41MTI3IDcuNTU4NjcgMjUuNTEyNyA3LjU3MzY3QzI1LjUxMjcgNy42MjM2NyAyNS40Nzc3IDcuNjIzNjcgMjUuNDA4IDcuNjIzNjdDMjUuMzM4NCA3LjYyMzY3IDI1LjMyODQgNy42MjM2NyAyNS4yNTM3IDcuNTQ4OThDMjMuNTg0NiA2LjAyOTMgMjMuMDYxNSAzLjc0NzQyIDIzLjA2MTUgMS42NDk5MkMyMy4wNjE1LS4zMDc4OTEgMjMuNTA5OS0yLjI4MTAyIDI0Ljc3NTItMy43NzA3QzI0Ljg3NDktMy44ODUwOCAyNS4wNjQzLTQuMDg5NDUgMjUuMjY4Ny00LjI2ODgzQzI1LjMyODQtNC4zMjg1MiAyNS4zMzg0LTQuMzI4NTIgMjUuNDA4LTQuMzI4NTJDMjUuNDc3Ny00LjMyODUyIDI1LjUxMjctNC4zMjg1MiAyNS41MTI3LTQuMjc4ODNaJy8+DQo8cGF0aCBkPSdNMjguOTk0NSAzLjkwOTQ1TDI4Ljk2NDUgMy45NDk0NUgyNy4xMjE0QzI3LjA5MTQgMy45NDk0NSAyNy4wNDE3IDMuOTU0NDUgMjcuMDQxNyAzLjk4NDQ1QzI3LjA0MTcgMy45OTQxNCAyNy4wNDY0IDMuOTk5MTQgMjcuMDUxNCA0LjAwNDE0QzI3Ljc2MzkgNC42OTY2NCAyOC43MjA1IDUuNTYzNTIgMjguNzIwNSA2LjI2NjAyQzI4LjcyMDUgNi43MTQ0NSAyOC4zMzIgNy4wMzg1MiAyNy44MTg5IDcuMDM4NTJDMjcuMzE1NSA3LjAzODUyIDI2Ljg4MiA2Ljc2OTQ1IDI2LjU1ODMgNi40NzUzOUwyNi42NzMgNi4zODA3QzI2LjkwMiA2LjUzNTA4IDI3LjE2NjEgNi42OTk0NSAyNy40OTQ4IDYuNjk5NDVDMjcuOTg4MyA2LjY5OTQ1IDI4LjE3MjcgNi4zMjEwMiAyOC4xNzI3IDYuMDQxOTVDMjguMTcyNyA1LjQ1NDE0IDI3LjcwOTIgNC45NDYwMiAyNy4yNDA4IDQuNDkyNThDMjYuOTIyIDQuMTgzNTIgMjYuNTg4MyAzLjg4OTc3IDI2LjI0NDUgMy42MDA3VjMuNTIxMDJIMjguODYwMkwyOC45OTQ1IDMuOTA5NDVaJy8+DQo8cGF0aCBkPSdNMjguMDE4IC44NDE0ODRMMjYuNzIyNyAuNDc3NzM0Vi4zNDMzNTlIMjcuMjIwOEMyNy41ODk1IC4zNDMzNTkgMjcuNDk5OC0uMDYwMDc4IDI3LjQ5OTgtLjYxODIwM0MyNy40OTk4LTEuMzE1NyAyNy40ODQ4LTIuMDEzMiAyNy40NTUyLTIuNzA1N0wyNy41MjQ4LTIuNzMwN0wyOC4wMjgtMi41OTYwMkMyOC4wMDgtMi4yMTc1OCAyOC4wMDgtMS4yMzEwMiAyOC4wMDgtLjU1MzUxNkMyOC4wMDgtLjExMDA3OCAyOC4wMjMgLjMzODM1OSAyOC4wNTMgLjc4MTc5N0wyOC4wMTggLjg0MTQ4NFonLz4NCjxwYXRoIGQ9J00zMi4yNjczIDEuNjQ0OTJDMzIuMjY3MyAzLjYwMzA1IDMxLjgxODggNS41NzU4NiAzMC41NTM1IDcuMDY1NTVDMzAuNDUzOCA3LjE4MDIzIDMwLjI2NDUgNy4zODQzIDMwLjA2MDEgNy41NjM2N0MzMC4wMDA0IDcuNjIzNjcgMjkuOTkwNCA3LjYyMzY3IDI5LjkyMDcgNy42MjM2N0MyOS44NjA3IDcuNjIzNjcgMjkuODE2IDcuNjIzNjcgMjkuODE2IDcuNTczNjdDMjkuODE2IDcuNTUzOTggMjkuODM2IDcuNTMzOTggMjkuODQ2IDcuNTIzOThDMzAuMDIwNCA3LjM0NDYxIDMwLjM1NDEgNy4wMTA4NiAzMC42ODc5IDYuNDcyNzNDMzEuNDkwMSA1LjE4NzQyIDMxLjg1MzggMy41NjgwNSAzMS44NTM4IDEuNjQ5OTJDMzEuODUzOCAuMzA5OTIyIDMxLjY3NDUtMS40MTkxNCAzMC44NTIzLTIuOTAzODNDMzAuNDU4OC0zLjYxMTAyIDMwLjA0NTEtNC4wMjQ3NyAyOS44MzYtNC4yMzM4M0MyOS44MjYtNC4yNDg4MyAyOS44MTYtNC4yNjM4MyAyOS44MTYtNC4yNzg4M0MyOS44MTYtNC4zMjg1MiAyOS44NjA3LTQuMzI4NTIgMjkuOTIwNy00LjMyODUyQzI5Ljk5MDQtNC4zMjg1MiAzMC4wMDA0LTQuMzI4NTIgMzAuMDc1MS00LjI1MzgzQzMxLjc0NDEtMi43MzQxNCAzMi4yNjczLS40NTI1NzggMzIuMjY3MyAxLjY0NDkyWicvPg0KPHBhdGggZD0nTTQ5Ljg4MDUgODIuMDkyOEM0OS44ODA1IDgyLjExMjggNDkuODcwNSA4Mi4xMjI4IDQ5Ljg2MDUgODIuMTM3OEM0OS42NzYxIDgyLjMyMjIgNDkuMzQyMyA4Mi42NTU5IDQ5LjAwODYgODMuMTk0MUM0OC4yMDY0IDg0LjQ3OTQgNDcuODQyNyA4Ni4wOTg0IDQ3Ljg0MjcgODguMDE2NkM0Ny44NDI3IDg5LjM1NjkgNDguMDIyIDkxLjA4NTYgNDguODQ0MiA5Mi41NzAzQzQ5LjIzNzcgOTMuMjc3OCA0OS42NDY0IDkzLjY4NjIgNDkuODY1NSA5My45MDU2QzQ5Ljg4MDUgOTMuOTIwNiA0OS44ODA1IDkzLjkzMDMgNDkuODgwNSA5My45NDUzQzQ5Ljg4MDUgOTMuOTk1MyA0OS44NDU1IDkzLjk5NTMgNDkuNzc1OCA5My45OTUzUzQ5LjY5NjEgOTMuOTk1MyA0OS42MjE0IDkzLjkyMDZDNDcuOTUyMyA5Mi40MDA5IDQ3LjQyOTIgOTAuMTE5MSA0Ny40MjkyIDg4LjAyMTZDNDcuNDI5MiA4Ni4wNjM4IDQ3Ljg3NzcgODQuMDkwNiA0OS4xNDMgODIuNjAwOUM0OS4yNDI3IDgyLjQ4NjYgNDkuNDMyIDgyLjI4MjIgNDkuNjM2NCA4Mi4xMDI4QzQ5LjY5NjEgODIuMDQzMSA0OS43MDYxIDgyLjA0MzEgNDkuNzc1OCA4Mi4wNDMxUzQ5Ljg4MDUgODIuMDQzMSA0OS44ODA1IDgyLjA5MjhaJy8+DQo8cGF0aCBkPSdNNTMuMzU3MyA5My4zMTA1QzUzLjI2NzcgOTMuMzQwMiA1My4xMTgzIDkzLjM3MDIgNTMuMDI4NiA5My4zNzAyQzUyLjQ5NTUgOTMuMzcwMiA1MS45ODIzIDkzLjA3NjEgNTEuNjEzNiA5Mi43NTIzQzUxLjA4MDUgOTIuMzA4OSA1MC44MTE0IDkxLjY5MTEgNTAuODExNCA5MS4wNjgzQzUwLjgxMTQgOTAuNTAwNSA1MS4xMTA1IDg5LjgxOCA1MS45NTIzIDg5LjgxOEM1Mi42NzQ4IDg5LjgxOCA1My4zNTczIDkwLjM1MTEgNTMuMzU3MyA5MC45MzM5QzUzLjM1NzMgOTEuMzY3MyA1Mi45OTM2IDkxLjc2MDggNTIuNDYwNSA5MS43NjA4QzUyLjA0NyA5MS43NjA4IDUxLjY3MzMgOTEuNjE2NCA1MS4zNTQ1IDkxLjQwMjNMNTEuMzE0OCA5MS40MDczQzUxLjMxOTggOTEuODg1NSA1MS40MzQyIDkyLjM4ODYgNTEuOTA3NyA5Mi43NTIzQzUyLjE1MTcgOTIuOTQxNyA1Mi40NzU1IDkzLjA3NjEgNTIuODM5MiA5My4wNzYxQzUyLjk1ODkgOTMuMDc2MSA1My4wNjgzIDkzLjA2MTQgNTMuMTgzIDkzLjAyMTRMNTMuMjM4IDkzLjA0MTRMNTMuMzU3MyA5My4zMTA1Wk01MS4zMjk1IDkxLjIwM0M1MS40NjQyIDkxLjMwNzcgNTEuODI4IDkxLjQ0NyA1Mi4wNzIgOTEuNDQ3QzUyLjU1MDIgOTEuNDQ3IDUyLjg4NDIgOTEuMTAzMyA1Mi44ODQyIDkwLjczOTVDNTIuODg0MiA5MC4zNTYxIDUyLjYxNTIgOTAuMDQyIDUyLjExNjcgOTAuMDQyQzUxLjQ4OTIgOTAuMDQyIDUxLjMyOTUgOTAuNzM0NSA1MS4zMjk1IDkxLjIwM1onLz4NCjxwYXRoIGQ9J001MS45NjczIDg1LjMzQzUyLjQ1MDggODUuMDcwOSA1Mi43Nzk1IDg0Ljg4MTYgNTIuNzc5NSA4NC41MDI4QzUyLjc3OTUgODQuMTA0NCA1Mi40OTU1IDgzLjgyNTMgNTIuMDA3MyA4My44MjUzQzUxLjUzMzkgODMuODI1MyA1MS4yNzk4IDg0LjE5OTEgNTEuMjc5OCA4NC41NDc4QzUxLjI3OTggODQuOTQxMyA1MS41NjM5IDg1LjE1NTYgNTEuOTY3MyA4NS4zM1pNNTIuNDA1OCA4NS41ODQxVjg1LjYzODdDNTIuNzY5NSA4NS44MjMxIDUzLjE0MzMgODYuMTM3MiA1My4xNDMzIDg2LjQ5NTlDNTMuMTQzMyA4Ni45MDQ0IDUyLjcyOTUgODcuMTgzNCA1Mi4xMTY3IDg3LjE4MzRDNTIuMDk3IDg3LjE4MzQgNTIuMDc3IDg3LjE4MzQgNTIuMDYyIDg3LjE4MzRDNTEuNTgzOSA4Ny4wMjg3IDUxLjA3NTUgODYuNzk5NyA1MS4wNzU1IDg2LjMwNjZDNTEuMDc1NSA4NS45NTI4IDUxLjQwOTUgODUuNjYzNyA1MS43NDMzIDg1LjQ3NDRWODUuNDE5N0M1MS4xMDA1IDg1LjEwNTYgNTAuNzgxNyA4NC45MTY2IDUwLjc4MTcgODQuNDQ4MUM1MC43ODE3IDg0LjIyNDEgNTAuODQxNCA4My45OTk3IDUxLjAzMDggODMuODQwM0M1MS4yMzk4IDgzLjY2NTkgNTEuNTYzOSA4My42MTYyIDUxLjg1MjcgODMuNjE2MkM1Mi41NTUyIDgzLjYxNjIgNTMuMjk3NyA4My45OTk3IDUzLjI5NzcgODQuNjQ3NUM1My4yOTc3IDg1LjA1MDkgNTMuMDQzNiA4NS4yMjAzIDUyLjQwNTggODUuNTg0MVpNNTIuMjExNCA4NS43MTg0QzUxLjg5MjcgODUuOTAyOCA1MS41MzM5IDg2LjE3NjkgNTEuNTMzOSA4Ni40NjU5QzUxLjUzMzkgODYuNjcwMyA1MS42MDg2IDg2Ljc5OTcgNTEuODc3NyA4Ni45NDkxQzUyLjM4MDggODYuOTQ5MSA1Mi42Mzk4IDg2LjYyMDMgNTIuNjM5OCA4Ni4zNzEyQzUyLjYzOTggODYuMTA3MiA1Mi40NjA1IDg1Ljg2MzEgNTIuMjExNCA4NS43MTg0WicvPg0KPHBhdGggZD0nTTU2LjYzNSA4OC4wMTY2QzU2LjYzNSA4OS45NzQ3IDU2LjE4NjYgOTEuOTQ3NSA1NC45MjEyIDkzLjQzNzJDNTQuODIxNiA5My41NTE5IDU0LjYzMjIgOTMuNzU1OSA1NC40Mjc4IDkzLjkzNTNDNTQuMzY4MSA5My45OTUzIDU0LjM1ODEgOTMuOTk1MyA1NC4yODg0IDkzLjk5NTNDNTQuMjI4NCA5My45OTUzIDU0LjE4MzggOTMuOTk1MyA1NC4xODM4IDkzLjk0NTNDNTQuMTgzOCA5My45MjU2IDU0LjIwMzggOTMuOTA1NiA1NC4yMTM3IDkzLjg5NTZDNTQuMzg4MSA5My43MTYyIDU0LjcyMTkgOTMuMzgyNSA1NS4wNTU2IDkyLjg0NDRDNTUuODU3OCA5MS41NTkxIDU2LjIyMTYgODkuOTM5NyA1Ni4yMjE2IDg4LjAyMTZDNTYuMjIxNiA4Ni42ODE2IDU2LjA0MjIgODQuOTUyNSA1NS4yMiA4My40Njc4QzU0LjgyNjYgODIuNzYwNiA1NC40MTI4IDgyLjM0NjkgNTQuMjAzOCA4Mi4xMzc4QzU0LjE5MzcgODIuMTIyOCA1NC4xODM4IDgyLjEwNzggNTQuMTgzOCA4Mi4wOTI4QzU0LjE4MzggODIuMDQzMSA1NC4yMjg0IDgyLjA0MzEgNTQuMjg4NCA4Mi4wNDMxQzU0LjM1ODEgODIuMDQzMSA1NC4zNjgxIDgyLjA0MzEgNTQuNDQyOCA4Mi4xMTc4QzU2LjExMTkgODMuNjM3NSA1Ni42MzUgODUuOTE5MSA1Ni42MzUgODguMDE2NlonLz4NCjwvZz4NCjwvZz4NCjwvc3ZnPg==" data-source-asset-id="det/mp/ch4.4" alt="Third shaded box: the parallelogram spanned by (6,8) and (2,1). Its long side is the sum x1(1,3)+x2(2,1); the original larger outline remains visible for comparison. This is the shear of the second shaded box." /></p>
+</div>
+<p>The second is defined by the vectors <span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="41a34d632161e80794a94408efa95150c134f7a75eb5e2050fb323bf921b2141"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>1</mn>
+      <mn>3</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="54f46ef8802f5fb27c5c1ca8f93741f603e8193964ab85475a375cef89810701"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>2</mn>
+      <mn>1</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span></span> and one of the properties of the size function—the determinant—is that therefore the size of the second box is <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="e7d0c1a9c30ddd6a2b9793b6fccdf965fd974f4d87195962928b4b0251579ca0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+</math></span></span> times the size of the first. The third box is derived from the second by shearing, adding <span><span class="math-region inline" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="98d0802a40720da0ac039148810f801e9282717664e766c6457c3f9fb652b342"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>2</mn>
+      <mn>1</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span></span> to <span><span class="math-region inline" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="41a34d632161e80794a94408efa95150c134f7a75eb5e2050fb323bf921b2141"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>1</mn>
+      <mn>3</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span></span> to get <span><span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="ff74dee43d11b2348f9d8276b8ed9f6aecb09ed8e8938830f812d9836edd595f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>1</mn>
+      <mn>3</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+  <mo>+</mo>
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>2</mn>
+      <mn>1</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>6</mn>
+      <mn>8</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span>,</span> along with <span><span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="54f46ef8802f5fb27c5c1ca8f93741f603e8193964ab85475a375cef89810701"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mrow data-mjx-texclass="OPEN">
+      <mo minsize="1.2em" maxsize="1.2em">(</mo>
+    </mrow>
+    <mfrac linethickness="0">
+      <mn>2</mn>
+      <mn>1</mn>
+    </mfrac>
+    <mrow data-mjx-texclass="CLOSE">
+      <mo minsize="1.2em" maxsize="1.2em">)</mo>
+    </mrow>
+  </mrow>
+</math></span>.</span> The determinant is not affected by shearing so the size of the third box equals that of the second.</p>
+<p>Taken together we have this.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="7e8ee15f64c0d09c77bbb6c6a79dae250e2232923006dfe1ae16c31a712b987b" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>1</mn>
+          </msub>
+          <mo>⋅</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>1</mn>
+          </msub>
+          <mo>⋅</mo>
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>1</mn>
+          </msub>
+          <mo>⋅</mo>
+          <mn>1</mn>
+          <mo>+</mo>
+          <msub>
+            <mi>x</mi>
+            <mn>2</mn>
+          </msub>
+          <mo>⋅</mo>
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>1</mn>
+          </msub>
+          <mo>⋅</mo>
+          <mn>3</mn>
+          <mo>+</mo>
+          <msub>
+            <mi>x</mi>
+            <mn>2</mn>
+          </msub>
+          <mo>⋅</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>6</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>8</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p>
+<p>Solving gives the value of one of the variables.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="b69aa6008420b04b73af7d2869d210016e8b7bdeae1c1540f3095a6cc6191434" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>6</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>8</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>3</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+  </mfrac>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mn>10</mn>
+    </mrow>
+    <mrow>
+      <mo>−</mo>
+      <mn>5</mn>
+    </mrow>
+  </mfrac>
+  <mo>=</mo>
+  <mn>2</mn>
+</math></span></span></p>
+<p>The generalization of this example is <em>Cramer’s Rule</em>: <span id="source-index-2" class="source-index" data-source-index="determinant!Cramer&#39;s rule"></span> <span id="source-index-3" class="source-index" data-source-index="linear equation!solution of!Cramer&#39;s rule"></span> if <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="7fad8e8c4a068972fda27621e39e27e2f049660eb5c005591c36c0e68dba14bc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mo stretchy="false">|</mo>
+    <mi>A</mi>
+    <mo stretchy="false">|</mo>
+  </mrow>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span></span> then the system <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="ee522ebef2e10bdaef709136658af507ac11b5af92d3bfebd02e7e15c164a822"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>x</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>b</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+</math></span></span> has the unique solution <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="6ca2d28ea4454ca6d5aab0af08d07ca8d770c8fed4a352fa46cfaa61f0903d01"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <mrow>
+    <mo stretchy="false">|</mo>
+    <msub>
+      <mi>B</mi>
+      <mi>i</mi>
+    </msub>
+    <mo stretchy="false">|</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mrow>
+    <mo stretchy="false">|</mo>
+    <mi>A</mi>
+    <mo stretchy="false">|</mo>
+  </mrow>
+</math></span></span> where the matrix <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="c5d91194cc38edd29b68fda7037fe5e12cf37a916232bde5d49a8876718a4741"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>B</mi>
+    <mi>i</mi>
+  </msub>
+</math></span></span> is formed from <span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span></span> by replacing <span>column <span class="math-region inline" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math></span></span> with the vector <span><span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="4bc607ef7f523477a3c6978b70d6dcd0389c9bc128482171be284b30b83e5010"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>b</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+</math></span>.</span> The proof is Exercise <a href="#ex:CramerRule" data-source-reference="ex:CramerRule">3</a>.</p>
+<p>For instance, to solve this system for <span><span class="math-region inline" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="18a696cace7c2c75b5c97d5d67fcf0689b37ad5f7e38e4eec817810e67a8a597"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+</math></span></span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="cc0587cd1862a3b9d49c8db36f7309f43a1e7700123f7562ef5675619e46fc88" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>1</mn>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>2</mn>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>3</mn>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>we do this computation.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="8f856361888b760efee6995b37d83c462bcc93aa31f9737a8bcc046baa60d5d1" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>=</mo>
+  <mfrac>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>4</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>0</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>4</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>0</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+  </mfrac>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mn>18</mn>
+    </mrow>
+    <mrow>
+      <mo>−</mo>
+      <mn>3</mn>
+    </mrow>
+  </mfrac>
+</math></span></span></p>
+<p>Cramer’s Rule lets us by-eye solve systems that are small and simple. For example, we can solve systems with two equations and two unknowns, or three equations and three unknowns, where the numbers are small integers. Such cases appear often enough that many people find this formula handy.</p>
+<p>But using it to solving large or complex systems is not practical, either by hand or by a computer. A Gauss’s Method-based approach is faster.</p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<section id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise-group.source-order.0001" class="source-exercise-group" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise-group.source-order.0001">
+<h4>Exercises</h4>
+<ol type="1">
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10001" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10001" data-source-number="1">
+<p><strong>Exercise 1</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10001.answer.source-order.001">Supplied answer</a></p>
+<p>Use Cramer’s Rule to solve each for each of the variables.</p>
+<ol type="a">
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="96e067ef264313125e9337fca1a5cc6c6c092187ff6cec6d2d0a7c9e493cbd49"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>7</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="0e4be6192e37d18a6564ef7fec315b290b45eba1cbba8f2fc383a192963053de"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>2</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>2</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+</ol>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10001.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10001.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10001">Back to Exercise 1</a></p>
+<p><strong>Answer.</strong></p>
+<ol type="a">
+<li><p>Solve for the variables separately.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="3f3be3792f5caba796c1ef119ac9b7c059e45875cda49ea6654616f51c5bca5b" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>4</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>7</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+  </mfrac>
+  <mo>=</mo>
+  <mfrac>
+    <mn>1</mn>
+    <mn>1</mn>
+  </mfrac>
+  <mo>=</mo>
+  <mn>1</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="2em"/>
+  </mstyle>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>4</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>7</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+    <mrow data-mjx-texclass="INNER">
+      <mo data-mjx-texclass="OPEN">|</mo>
+      <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+        <mtr>
+          <mtd style="text-align:center">
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+        </mtr>
+        <mtr>
+          <mtd style="text-align:center">
+            <mo>−</mo>
+            <mn>1</mn>
+          </mtd>
+          <mtd style="text-align:center">
+            <mn>2</mn>
+          </mtd>
+        </mtr>
+      </mtable>
+      <mo data-mjx-texclass="CLOSE">|</mo>
+    </mrow>
+  </mfrac>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mn>3</mn>
+    </mrow>
+    <mn>1</mn>
+  </mfrac>
+  <mo>=</mo>
+  <mo>−</mo>
+  <mn>3</mn>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="93188956c3adf4e6fbd1517046217e27229b7889d4bd6337e9464b664bad8172"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>2</mn>
+</math></span>,</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="3ce7ec3bf3fa93ac6d0bc023823888a2cc03b73bf70c9a7c5ed105aae61b6e6c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>2</mn>
+</math></span></span></p></li>
+</ol>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10002" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10002" data-source-number="2">
+<p><strong>Exercise 2</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10002.answer.source-order.001">Supplied answer</a></p>
+<p>Use Cramer’s Rule to solve this system for <span><span class="math-region inline" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="7ed4087095f02e1165a25964ef99ddd491f04d88f70feea1fda498e567d113b4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+</math></span>.</span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="c3a55e0db32aa0490a63643de70f1d2db33d7eac4eaf01edd1c51332e1ab697b" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10002.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10002.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10002">Back to Exercise 2</a></p>
+<p><strong>Answer.</strong> <span><span class="math-region inline" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="a9e0566165010e8f0b3a79d9f8b070295f86cc0f0ae85560206aba5b38c37707"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+</math></span></span></p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60" data-source-number="3">
+<p><strong>Exercise 3</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60.answer.source-order.001">Supplied answer</a></p>
+<p><span id="ex:CramerRule" class="source-label"></span> Prove Cramer’s Rule. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.label.6024011772c819c3ef60">Back to Exercise 3</a></p>
+<p><strong>Answer.</strong> Determinants are unchanged by combinations, including column combinations, so <span><span class="math-region inline" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="98e2a96bf96db4c63ec2c30cd913a7362f3a6e68041608753d33a0468cfed6ac"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>B</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <mo>…</mo>
+  <mo>,</mo>
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <mo>⋯</mo>
+  <mo>+</mo>
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>i</mi>
+  </msub>
+  <mo>+</mo>
+  <mo>⋯</mo>
+  <mo>+</mo>
+  <msub>
+    <mi>x</mi>
+    <mi>n</mi>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>n</mi>
+  </msub>
+  <mo>,</mo>
+  <mo>…</mo>
+  <mo>,</mo>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>n</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> Use the operation of taking <span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="978f9f80e8d6bfd6782dc57b11e3758a15a639585007edb66199edbcc3f8a2c5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+</math></span></span> times the first column and adding it to the <span><span class="math-region inline" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math></span>-th</span> column, etc., to see this is equal to <span><span class="math-region inline" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="64207daee7d3dc561dfc11a8735f38fd9477e01ba02b6bd2f2cc3506f3e7f1b7"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <mo>…</mo>
+  <mo>,</mo>
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>i</mi>
+  </msub>
+  <mo>,</mo>
+  <mo>…</mo>
+  <mo>,</mo>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>n</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> In turn, that is equal to <span><span class="math-region inline" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="4e60c492b6bd35b6bea747213f527dcffb1250083da384360218a05fa001289b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>⋅</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <mo>…</mo>
+  <mo>,</mo>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>i</mi>
+  </msub>
+  <mo>,</mo>
+  <mo>…</mo>
+  <mo>,</mo>
+  <msub>
+    <mrow data-mjx-texclass="ORD">
+      <mover>
+        <mi>a</mi>
+        <mo stretchy="false">→</mo>
+      </mover>
+    </mrow>
+    <mi>n</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>⋅</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+</math></span>,</span> as required.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10004" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10004" data-source-number="4">
+<p><strong>Exercise 4</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10004.answer.source-order.001">Supplied answer</a></p>
+<p>Here is an alternative proof of Cramer’s Rule that doesn’t overtly contain any geometry. Write <span><span class="math-region inline" data-source-math-id="BFOURMATH000040END" data-source-tex-sha256="5027fc9a4ade4dc0a25022544eed75fce6ff27aa86fa0aba3ff4b8296deba52c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>X</mi>
+    <mi>i</mi>
+  </msub>
+</math></span></span> for the identity matrix with <span>column <span class="math-region inline" data-source-math-id="BFOURMATH000041END" data-source-tex-sha256="de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+</math></span></span> replaced by the <span>vector <span class="math-region inline" data-source-math-id="BFOURMATH000042END" data-source-tex-sha256="6e2c286eac5b03a21414c9618de9038cdda83c58945042b0e34e230a3dc787b9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="ORD">
+    <mover>
+      <mi>x</mi>
+      <mo stretchy="false">→</mo>
+    </mover>
+  </mrow>
+</math></span></span> of unknowns <span><span class="math-region inline" data-source-math-id="BFOURMATH000043END" data-source-tex-sha256="d9b1567a52bb6c4288bb7f6675dbb7c06c5641fdb9310727e5539899f9b994f5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+</math></span>,</span> <span>…, <span class="math-region inline" data-source-math-id="BFOURMATH000044END" data-source-tex-sha256="08a31aaffef905c333b6154b865da1fed5261679ac716a589ddf384479b786ba"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mi>n</mi>
+  </msub>
+</math></span>.</span> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>Observe that <span><span class="math-region inline" data-source-math-id="BFOURMATH000045END" data-source-tex-sha256="a8152cb06090ecf2968f8553c70b0be6c728f37ac9d6d72c42f92c66ecfd33b0"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+  <msub>
+    <mi>X</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <msub>
+    <mi>B</mi>
+    <mi>i</mi>
+  </msub>
+</math></span>.</span></p></li>
+<li><p>Take the determinant of both sides.</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10004.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10004.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10004">Back to Exercise 4</a></p>
+<p><strong>Answer.</strong></p>
+<ol type="a">
+<li><p>Here is the case of a <span><span class="math-region inline" data-source-math-id="BFOURMATH000046END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span></span> system with <span><span class="math-region inline" data-source-math-id="BFOURMATH000047END" data-source-tex-sha256="a7c2f141f3629bae02c4bb2a686fc478fe63d5fc9810a4aa488d2f2bacfb7a0f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+  <mo>=</mo>
+  <mn>2</mn>
+</math></span>.</span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000048END" data-source-tex-sha256="cd5b9991e4230415e87031cf004735340488dee5c7a4722c375af2d3e437ea76" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>1</mn>
+            <mo>,</mo>
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>1</mn>
+            <mo>,</mo>
+            <mn>2</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>b</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>2</mn>
+            <mo>,</mo>
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>2</mn>
+            <mo>,</mo>
+            <mn>2</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>b</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+    </mtr>
+  </mtable>
+  <mstyle scriptlevel="0">
+    <mspace width="1em"/>
+  </mstyle>
+  <mo stretchy="false">⟺</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="1em"/>
+  </mstyle>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>1</mn>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>x</mi>
+            <mn>2</mn>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>b</mi>
+            <mn>1</mn>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>b</mi>
+            <mn>2</mn>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p></li>
+<li><p>The determinant function is multiplicative <span><span class="math-region inline" data-source-math-id="BFOURMATH000049END" data-source-tex-sha256="1946a45b19c0f9872b09d269f46fe5a10741caf4af809d6fb35abf447dbd9d7f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>B</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <msub>
+    <mi>X</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>⋅</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>X</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> The Laplace expansion shows that <span><span class="math-region inline" data-source-math-id="BFOURMATH000050END" data-source-tex-sha256="f86a8593f1391e7c6f3562ee69f04a2e0eb56732139e70db28c3f0eb8a030d66"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>X</mi>
+    <mi>i</mi>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+</math></span>,</span> and solving for <span><span class="math-region inline" data-source-math-id="BFOURMATH000051END" data-source-tex-sha256="4f0f1e4a3167d257b86f9fc15335de88f7db74bebfb86a9758d289786cb3acd4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+</math></span></span> gives Cramer’s Rule.</p></li>
+</ol>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10005" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10005" data-source-number="5">
+<p><strong>Exercise 5</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10005.answer.source-order.001">Supplied answer</a></p>
+<p>Suppose that a linear system has as many equations as unknowns, that all of its coefficients and constants are integers, and that its matrix of coefficients has <span>determinant <span class="math-region inline" data-source-math-id="BFOURMATH000052END" data-source-tex-sha256="c0527d0a6cc99395deabfa3f67d9926fc6fa0b06e3148b74e230244e8e3ee183"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+</math></span>.</span> Prove that the entries in the solution are all integers. (<em>Remark.</em> This is often used to invent linear systems for exercises.) <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10005.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10005.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10005">Back to Exercise 5</a></p>
+<p><strong>Answer.</strong> Because the determinant of <span><span class="math-region inline" data-source-math-id="BFOURMATH000053END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span></span> is nonzero, Cramer’s Rule applies and shows that <span><span class="math-region inline" data-source-math-id="BFOURMATH000054END" data-source-tex-sha256="f389fa196d7efda43fd2d5e9182b0a544ff02d3d1786a56668bb85c929de0202"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>x</mi>
+    <mi>i</mi>
+  </msub>
+  <mo>=</mo>
+  <mrow>
+    <mo stretchy="false">|</mo>
+    <msub>
+      <mi>B</mi>
+      <mi>i</mi>
+    </msub>
+    <mo stretchy="false">|</mo>
+  </mrow>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>1</mn>
+</math></span>.</span> Since <span><span class="math-region inline" data-source-math-id="BFOURMATH000055END" data-source-tex-sha256="c5d91194cc38edd29b68fda7037fe5e12cf37a916232bde5d49a8876718a4741"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>B</mi>
+    <mi>i</mi>
+  </msub>
+</math></span></span> is a matrix of integers, its determinant is an integer.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10006" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10006" data-source-number="6">
+<p><strong>Exercise 6</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10006.answer.source-order.001">Supplied answer</a></p>
+<p>Use Cramer’s Rule to give a formula for the solution of a two equations/two unknowns linear system. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10006.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10006.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10006">Back to Exercise 6</a></p>
+<p><strong>Answer.</strong> The solution of</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000056END" data-source-tex-sha256="6db92c86507c284f846fe1ff76da985b0776f95a7dab9b9b51c7e2c687743f55" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>a</mi>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+        <mi>b</mi>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>e</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>c</mi>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+        <mi>d</mi>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>f</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>is</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000057END" data-source-tex-sha256="bafe1c413e75921b02424472551e4873b6f994f7b9cc451ebddcdf9846601f2c" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mi>e</mi>
+      <mi>d</mi>
+      <mo>−</mo>
+      <mi>f</mi>
+      <mi>b</mi>
+    </mrow>
+    <mrow>
+      <mi>a</mi>
+      <mi>d</mi>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mi>c</mi>
+    </mrow>
+  </mfrac>
+  <mstyle scriptlevel="0">
+    <mspace width="2em"/>
+  </mstyle>
+  <mi>y</mi>
+  <mo>=</mo>
+  <mfrac>
+    <mrow>
+      <mi>a</mi>
+      <mi>f</mi>
+      <mo>−</mo>
+      <mi>e</mi>
+      <mi>c</mi>
+    </mrow>
+    <mrow>
+      <mi>a</mi>
+      <mi>d</mi>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mi>c</mi>
+    </mrow>
+  </mfrac>
+</math></span></span></p>
+<p>provided of course that the denominators are not zero.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10007" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10007" data-source-number="7">
+<p><strong>Exercise 7</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10007.answer.source-order.001">Supplied answer</a></p>
+<p>Can Cramer’s Rule tell the difference between a system with no solutions and one with infinitely many? <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10007.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10007.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10007">Back to Exercise 7</a></p>
+<p><strong>Answer.</strong> Of course, singular systems have <span><span class="math-region inline" data-source-math-id="BFOURMATH000058END" data-source-tex-sha256="175b1ba983a2f417de473f51c3d5b39cefc6d3341e9d4275333b98b397178ee3"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mo stretchy="false">|</mo>
+    <mi>A</mi>
+    <mo stretchy="false">|</mo>
+  </mrow>
+</math></span></span> equal to zero, but we can characterize the infinitely many solutions case is by the fact that all of the <span><span class="math-region inline" data-source-math-id="BFOURMATH000059END" data-source-tex-sha256="ae88bee8a7d74cd97f94713402fb764bcef26a832636feb7f7660a1c2184a79e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow>
+    <mo stretchy="false">|</mo>
+    <msub>
+      <mi>B</mi>
+      <mi>i</mi>
+    </msub>
+    <mo stretchy="false">|</mo>
+  </mrow>
+</math></span></span> are zero as well.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10008" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10008" data-source-number="8">
+<p><strong>Exercise 8</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10008.answer.source-order.001">Supplied answer</a></p>
+<p>The first picture in this Topic (the one that doesn’t use determinants) shows a unique solution case. Produce a similar picture for the case of infinitely many solutions, and the case of no solutions. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10008.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10008.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.cramer.tex.exercise.source-order.10008">Back to Exercise 8</a></p>
+<p><strong>Answer.</strong> We can consider the two nonsingular cases together with this system</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000060END" data-source-tex-sha256="693d55576534c854c50a7273af2b835b7afbcffa99fcdecf08fed718103518a8" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>6</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>c</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>where <span><span class="math-region inline" data-source-math-id="BFOURMATH000061END" data-source-tex-sha256="58a1e13ec92287aa74f366891e77cc5a2f1a5f59cab10df0f69aa6e2ed63c459"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+  <mo>=</mo>
+  <mn>6</mn>
+</math></span></span> of course yields infinitely many solutions, and any other value for <span><span class="math-region inline" data-source-math-id="BFOURMATH000062END" data-source-tex-sha256="2e7d2c03a9507ae265ecf5b5356885a53393a2029d241394997265a1a25aefc6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+</math></span></span> yields no solutions. The corresponding vector equation</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000063END" data-source-tex-sha256="ae1422703760d078c818e4d4d8fcdea04701b919963fe78c865c73b83a7358ac" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>x</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>+</mo>
+  <msub>
+    <mi>x</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>⋅</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>6</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mi>c</mi>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>gives a picture of two overlapping vectors. Both lie on the line <span><span class="math-region inline" data-source-math-id="BFOURMATH000064END" data-source-tex-sha256="97b37ee44274a33763c8e6eea8be00c1cd6961fc4b933774c5f16dbd354868c8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mi>x</mi>
+</math></span>.</span> In the <span><span class="math-region inline" data-source-math-id="BFOURMATH000065END" data-source-tex-sha256="58a1e13ec92287aa74f366891e77cc5a2f1a5f59cab10df0f69aa6e2ed63c459"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>c</mi>
+  <mo>=</mo>
+  <mn>6</mn>
+</math></span></span> case the vector on the right side also lies on the line <span><span class="math-region inline" data-source-math-id="BFOURMATH000066END" data-source-tex-sha256="97b37ee44274a33763c8e6eea8be00c1cd6961fc4b933774c5f16dbd354868c8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mi>x</mi>
+</math></span></span> but in any other case it does not.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+</ol>
+</section>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span id="source-index-4" class="source-index" data-source-index="Cramer&#39;s rule|)"></span></p>
+</main><footer><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-29-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/cramer.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>

@@ -6,7 +6,7 @@ import {resolve,dirname,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import {createHash} from 'node:crypto';
 const base=resolve(dirname(fileURLToPath(import.meta.url)),'..');
-const work=resolve(base,'b40-expanded-public-20261002'),root=resolve(work,'public');
+const work=resolve(process.argv.includes('--work')?process.argv[process.argv.indexOf('--work')+1]:resolve(base,'b40-expanded-public-20261002')),root=resolve(work,'public');
 const require=createRequire(import.meta.url);
 assert.ok(process.env.OPEN_COURSES_NODE_MODULES);
 const {chromium}=require(resolve(process.env.OPEN_COURSES_NODE_MODULES,'playwright'));
@@ -15,7 +15,7 @@ const server=createServer(async(req,res)=>{try{const url=new URL(req.url,'http:/
 await new Promise(done=>server.listen(0,'127.0.0.1',done));const origin='http://127.0.0.1:'+server.address().port;
 await mkdir(resolve(work,'visual'),{recursive:true});
 const checks=[],captures=[];let browser;
-const build=JSON.parse(await readFile(resolve(work,'BUILD_RECEIPT.json'))),sections=build.sections.map(s=>s.section);assert.equal(sections.length,28);
+const build=JSON.parse(await readFile(resolve(work,'BUILD_RECEIPT.json'))),sections=build.sections.map(s=>s.section);assert.equal(sections.length,build.counts.readers);
 const anchor='r005.hefferon-linear-algebra.unit.file.src.vs.vs3.tex.corollary.label.b186ad4cc75572f666a6';
 try{
  browser=await chromium.launch({executablePath:resolve(process.env['ProgramFiles(x86)'],'Microsoft/Edge/Application/msedge.exe'),headless:true,args:['--disable-gpu','--no-first-run','--disable-background-networking']});
@@ -38,7 +38,7 @@ try{
     assert.ok((await page.locator('[id="'+anchor+'"]').innerText()).includes('basis'));
     if(width!==320){const path='visual/basis-extension-'+width+'.png';const b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
    }
-   if(['det3','markov'].includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
+   if(['det3','markov','cramer'].includes(section)&&width!==390){const path='visual/'+section+'-entry-'+width+'.png',b=await page.screenshot({path:resolve(work,path)});captures.push({path,bytes:b.length,sha256:createHash('sha256').update(b).digest('hex')});}
    assert.equal(await page.locator('img').evaluateAll(xs=>xs.filter(x=>!x.complete||x.naturalWidth===0).length),0,'Broken embedded image');
    checks.push({section,width,mathml:true,horizontal_overflow:false,return_navigation:true,remote_runtime_blocked:true});
   }

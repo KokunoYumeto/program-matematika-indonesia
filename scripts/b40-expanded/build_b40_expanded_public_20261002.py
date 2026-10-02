@@ -26,6 +26,23 @@ SOURCE_URL = 'https://github.com/KokunoYumeto/program-matematika-indonesia/relea
 REVISION = 'df2262e089a02651c127f1dd12649c4622ee1383'
 ARCHIVE_SHA = 'b409fc82a8323578e71d8095b9ab4bc9ca814d5a0d9cc6d125dd6b4d81dc23d0'
 REFRESH = False
+REGISTRY_SHA = '363b005437b4d36e364ed72408b0328188191f574221aca7c6a34176f34b2956'
+EXPECTED = {'readers':28,'native_units':2503,'exercises':836,'exercise_answer_pairs':834,'absent_original_answers':2}
+LAST_TITLE = 'Laplace’s Formula'
+
+
+def configure(path):
+    global SECTIONS, FILES, SOURCE_URL, REGISTRY_SHA, EXPECTED, LAST_TITLE
+    if not path.exists():
+        return
+    c = json.loads(path.read_bytes())
+    assert c['schema'] == 'b40-public-export-selection/1'
+    assert len(c['sections']) == len(set(c['sections'])) == c['counts']['readers']
+    assert all(re.fullmatch(r'[a-z][a-z0-9]*', s) for s in c['sections'])
+    assert c['source_archive_url'].startswith('https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/')
+    SECTIONS = c['sections']
+    FILES = {s:'src/'+('det' if s.startswith('det') or s=='cramer' else 'map' if s in SECTIONS[14:25] else 'vs' if s in SECTIONS[7:14] else 'gr')+'/'+s+'.tex' for s in SECTIONS}
+    SOURCE_URL, REGISTRY_SHA, EXPECTED, LAST_TITLE = c['source_archive_url'], c['registry_sha256'], c['counts'], c['last_section_title']
 
 
 def sha(b):
@@ -61,6 +78,8 @@ def safe(root, rel):
 
 
 def freeze(destination):
+    selection = destination.parent / 'EXPORT_SELECTION.json'
+    configure(selection)
     originals = {}
     def add(rel, source=None):
         data = (source or (BASE / rel)).read_bytes()
@@ -68,10 +87,20 @@ def freeze(destination):
         assert key not in originals or originals[key] == data
         originals[key] = data
     registry_bytes = (BASE / B40_REL / 'rendered-section-registry.json').read_bytes()
-    assert sha(registry_bytes) == '363b005437b4d36e364ed72408b0328188191f574221aca7c6a34176f34b2956'
+    assert sha(registry_bytes) == REGISTRY_SHA
     registry = json.loads(registry_bytes)
     assert [x['section'] for x in registry['sections']] == SECTIONS
     add(B40_REL / 'rendered-section-registry.json')
+    if selection.exists():
+        originals['EXPORT_SELECTION.json'] = selection.read_bytes()
+        admission = json.loads(selection.read_bytes())['admission_receipt']
+        data = safe(BASE, admission['path']).read_bytes()
+        assert fact(admission['path'], data) == admission
+        admitted = json.loads(data)
+        assert admitted['registry']['sha256'] == REGISTRY_SHA
+        assert admitted['admitted_sections'] == EXPECTED['readers']
+        assert admitted['state'] == 'local_admitted_source_reader_context_consumer_pass_partial_corpus'
+        originals['SOURCE_ADMISSION.json'] = jb({'schema':'b40-public-source-admission-summary/1', 'private_receipt_identity':admission, 'state':admitted['state'], 'source':admitted['source'], 'registry':admitted['registry'], 'admitted_sections':admitted['admitted_sections'], 'cumulative_counts':admitted['cumulative_counts'], 'new_scope':admitted['new_scope'], 'source_bytes_changed':admitted['source_bytes_changed'], 'source_correctness_certified':admitted['source_correctness_certified'], 'private_command_transcripts_omitted':True})
     for lane in registry['sections']:
         for f in (lane['reader_fact'], lane['index_fact']):
             b = safe(BASE / B40_REL, f['path']).read_bytes()
@@ -171,6 +200,7 @@ def tex_escape(value):
 
 
 def export(frozen, public, check=False):
+    configure(frozen / 'EXPORT_SELECTION.json')
     manifest, replays = load_and_replay(frozen)
     b40 = frozen / B40_REL
     for section in SECTIONS:
@@ -203,6 +233,7 @@ def export(frozen, public, check=False):
 \mainmatter
 \pagestyle{bookbody}
 '''
+    cumulative = cumulative.replace('% 28 validated sections', '% '+str(len(SECTIONS))+' validated sections')
     archive_url = SOURCE_URL
     for s in SECTIONS:
         d = b40 / ('semantic-pilot-' + s)
@@ -210,6 +241,7 @@ def export(frozen, public, check=False):
         old_start, body = main_part(original)
         text = original.decode('utf-8')
         new_notice = '<p class="notice"><strong>Original English by Jim Hefferon — 28 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p>'
+        new_notice = new_notice.replace('28 validated sections', str(len(SECTIONS))+' validated sections')
         text, n = re.subn(r'<p class="notice">.*?</p>', lambda m: new_notice, text, count=1, flags=re.S)
         assert n == 1
         text = text.replace(' — local conversion pilot', ' — original English reading edition')
@@ -239,6 +271,24 @@ def export(frozen, public, check=False):
         assert body == new_body
         index = json.loads((d / 'rendered-unit-index.json').read_bytes())
         original_indexes[s] = index
+        # A modular consumer may request a prior diagram independently of the
+        # HTML body. Export those exact bytes, not merely an embedded screenshot
+        # or a metadata path that only resolves in the private staging tree.
+        for asset in index.get('rich_assets', {}).get('assets', []):
+            if asset.get('output'):
+                f = asset['output']; data_asset = safe(d, f['path']).read_bytes()
+                assert len(data_asset) == f['bytes'] and sha(data_asset) == f['sha256']
+                asset_path = 'semantic-pilot-'+s+'/'+f['path']
+                safe(public, asset_path)
+                assert asset_path not in products or products[asset_path] == data_asset
+                products[asset_path] = data_asset
+        for rule in index.get('source_context_contract', {}).get('rules', []):
+            for asset in rule['origin'].get('assets', []):
+                f = asset['output']; data_asset = safe(b40, f['path']).read_bytes()
+                assert len(data_asset) == f['bytes'] and sha(data_asset) == f['sha256']
+                safe(public, f['path'])
+                assert f['path'] not in products or products[f['path']] == data_asset
+                products[f['path']] = data_asset
         units, exercises = copy.deepcopy(index['units']), copy.deepcopy(index['exercises'])
         delta = start - old_start
         for unit in units:
@@ -263,6 +313,7 @@ def export(frozen, public, check=False):
                       'original_index': fact('original-rendered-unit-index.json', (d / 'rendered-unit-index.json').read_bytes()),
                       'original_body_sha256': sha(body), 'body_bytes_unchanged': True,
                       'native_unit_ids_preserved': True, 'units': units, 'exercises': exercises,
+                      'modular_asset_resolution': {'inherited_context_output_paths_relative_to':'reader-edition-root', 'rich_asset_output_paths_relative_to':'section-directory', 'all_declared_asset_outputs_exported':True},
                       'historical_receipts_are_not_rebound_public_validation': True}
         products['semantic-pilot-' + s + '/public-unit-index.json'] = jb(projection)
         src = (b40 / 'authority' / FILES[s]).read_bytes()
@@ -279,7 +330,7 @@ def export(frozen, public, check=False):
                        'complete_original_source': fact('sources/'+s+'.tex', src)})
         notes = []
         for p in sorted(d.glob('*.json')):
-            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json'):
+            if p.name.endswith(('_SOURCE_NOTES.json','_MATHEMATICAL_REPLAY.json')) or p.name in ('SOURCE_MODEL_REPLAY.json','SOURCE_FIGURE_DISCREPANCY_NOTES.json') or (s == 'cramer' and p.name == 'SOURCE_CONTEXT_REQUIREMENTS.json'):
                 nr = json.loads(p.read_bytes()); notes.extend(nr.get('source_issues', nr.get('source_findings', [])))
         if notes:
             note_tex.append('\\section*{'+tex_escape(TITLES[s])+': source notes}\n\\begin{enumerate}\n'+''.join('\\item '+tex_escape(n.get('finding', n.get('description', 'See the exact source-note record in the archive.')))+'\n' for n in notes)+'\\end{enumerate}\n')
@@ -292,6 +343,7 @@ def export(frozen, public, check=False):
     rows = ''.join('<li><a href="'+p['reader']['path']+'">'+html.escape(p['title'])+'</a> — '+str(p['exercise_answer_pairs'])+' exercises with supplied answers</li>' for p in proofs)
     proof_anchor = 'semantic-pilot-vs3/vs3.reader-pilot.html#r005.hefferon-linear-algebra.unit.file.src.vs.vs3.tex.corollary.label.b186ad4cc75572f666a6'
     products['index.html'] = ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Linear algebra — original English — Jim Hefferon</title><style>body{max-width:72ch;margin:auto;padding:1.25rem;font:18px/1.65 system-ui,sans-serif;color:#18232f;background:#f8fafb}a{color:#075a92;overflow-wrap:anywhere}nav{display:flex;gap:1rem;flex-wrap:wrap}li{margin:.7rem 0}.notice{border-left:4px solid #276b8f;padding:1rem;background:#edf4f8}</style></head><body><nav><a href="'+ORIGIN+'en/programme/">Full mathematics programme</a><a href="'+ORIGIN+'id/programme/" lang="id">Program matematika — Bahasa Indonesia</a><a href="https://hefferon.net/linearalgebra/">Author’s original website</a></nav><main><h1>Linear algebra — original English</h1><p>Original English mathematics by Jim Hefferon, from <em>Linear Algebra</em>.</p><p class="notice">28 linked sections through Laplace’s Formula, not the complete book. The original explanations, proofs, exercises and supplied answers are preserved. Separate source notes explain specific findings without silently changing the original mathematics.</p><h2>Read</h2><ol>'+rows+'</ol><p><a href="'+proof_anchor+'">Extending a linearly independent set to a basis</a> — read the preceding independence, exchange and dimension arguments as needed. This link is not certification of another course’s proof dependencies.</p><h2>Editable source and offline reading</h2><ol><li><a href="sources/00-linear-algebra-cumulative.tex" download>Complete cumulative editable LaTeX</a></li><li><a href="COMPLETE_SOURCE.zip" download>Complete source and offline readers ZIP</a></li></ol><p>The archive preserves the original source tree and component credits, exact frozen editable HTML-generation inputs, the 28 readers and replay instructions. The HTML rebuild is verified; a new PDF or native TeX compilation is not claimed. No scripts, web fonts or network connection are required to read the downloaded HTML.</p><h2>Sources, rights and checks</h2><p>Source revision '+REVISION+'. <a href="LICENSE.txt">CC BY-SA 2.5 option</a>; <a href="ACKNOWLEDGEMENTS.txt">original component credits</a> are retained. This material is not relicensed as CC0. This is not an Everyday-English rewrite.</p><p>Source-preserving rebuild, navigation, indexing and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Earlier intermediate-conversion model identity is unverified; historical work is not reattributed. No human review or exhaustive mathematical certification is claimed.</p><p><a href="READER_MANIFEST.json">Source and modular-index manifest</a></p></main><footer><a href="'+ORIGIN+'en/programme/">Return to the full mathematics programme</a></footer></body></html>\n').encode()
+    products['index.html'] = products['index.html'].replace('28 linked sections through Laplace’s Formula'.encode(), (str(len(SECTIONS))+' linked sections through '+LAST_TITLE).encode()).replace(b'the 28 readers', ('the '+str(len(SECTIONS))+' readers').encode())
     products['index.html'] = products['index.html'].replace(b'href="COMPLETE_SOURCE.zip"', ('href="'+SOURCE_URL+'"').encode())
     # Long source-revision identities must wrap on narrow screens too.
     products['index.html'] = products['index.html'].replace(b'body{max-width:', b'body{overflow-wrap:anywhere;max-width:')
@@ -314,13 +366,13 @@ def export(frozen, public, check=False):
             if anchor:
                 assert anchor in parsers[target].ids, 'missing anchor: ' + url
             checked_links += 1
-    assert sum(p['units'] for p in proofs) == 2503
-    assert sum(p['exercises'] for p in proofs) == 836
-    assert sum(p['exercise_answer_pairs'] for p in proofs) == 834
+    assert sum(p['units'] for p in proofs) == EXPECTED['native_units']
+    assert sum(p['exercises'] for p in proofs) == EXPECTED['exercises']
+    assert sum(p['exercise_answer_pairs'] for p in proofs) == EXPECTED['exercise_answer_pairs']
     for path, b in products.items():
         write(public / path, b, check)
     receipt = {'schema': 'b40-public-expanded-reader-build/1', 'state': 'local_public_export_validated_not_deployed',
-               'source_revision': REVISION, 'sections': proofs, 'counts': {'readers': 28, 'native_units': 2503, 'exercises': 836, 'exercise_answer_pairs': 834, 'absent_original_answers': 2, 'local_links_checked': checked_links},
+               'source_revision': REVISION, 'sections': proofs, 'counts': {**EXPECTED, 'local_links_checked': checked_links},
                'native_replay': replays, 'frozen_inputs': fact('FROZEN_INPUTS.json', (frozen / 'FROZEN_INPUTS.json').read_bytes()),
                'outputs': [fact(p, b) for p, b in sorted(products.items())],
                'boundaries': {'no_mathematical_body_edit': True, 'source_notes_unchanged': True, 'no_TeX_or_PDF_build': True, 'not_full_book': True, 'not_phone_admission': True}}

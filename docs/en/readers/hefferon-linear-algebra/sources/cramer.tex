@@ -1,0 +1,334 @@
+% Chapter 4, Topic _Linear Algebra_ Jim Hefferon
+%  http://joshua.smcvt.edu/linearalgebra
+%  2001-Jun-12
+\topic{Cramer's Rule}
+\index{Cramer's rule|(}
+% We have introduced determinant functions algebraically by looking
+% for a formula to decide whether a matrix is nonsingular.
+% After that introduction we saw a geometric interpretation, 
+% that the determinant function
+% gives the size of the box with sides formed by the columns of the matrix.
+% Here we make a connection between the two views.
+
+%<*CramersRuleExample0>
+A linear system is equivalent to a linear relationship among vectors. 
+\begin{equation*}
+  \begin{linsys}{2}
+     x_1  &+  &2x_2  &=  &6  \\
+    3x_1  &+  &x_2   &=  &8 
+  \end{linsys}
+% \end{equation*}
+% \begin{equation*}
+  \qquad\Longleftrightarrow\qquad
+  x_1\cdot\colvec{1 \\ 3}+x_2\cdot\colvec{2 \\ 1}=\colvec{6 \\ 8}
+\end{equation*}
+%</CramersRuleExample0>
+In the picture below
+the small parallelogram is formed from the vectors 
+$\binom{1}{3}$ and $\binom{2}{1}$.
+It is nested inside a parallelogram 
+with sides $x_1\binom{1}{3}$ and~$x_2\binom{2}{1}$. 
+By the vector equation, the far corner of the larger 
+parallelogram is $\binom{6}{8}$.
+\begin{center}
+  \includegraphics{det/mp/ch4.1}
+\end{center}
+%<*CramersRuleExample1>
+This drawing restates the algebraic question of
+finding the solution of a linear system
+into geometric terms:~by 
+what factors $x_1$ and~$x_2$ must we dilate the sides of the starting 
+parallelogram so that it will fill the other one?
+%</CramersRuleExample1>
+
+We can use this picture, and our geometric understanding of determinants,
+to get a new formula for solving linear systems.
+Compare the sizes of these shaded boxes.
+\begin{center}
+   \includegraphics{det/mp/ch4.2}
+   \hfil
+   \includegraphics{det/mp/ch4.3}
+   \hfil
+   \includegraphics{det/mp/ch4.4}
+\end{center}
+%<*CramersRuleExample2>
+The second is defined by the vectors $x_1\binom{1}{3}$ and $\binom{2}{1}$ and
+one of the properties of the size function\Dash the determinant\Dash is 
+that therefore the size of the second box is \( x_1 \) times the size of the 
+first.
+The third box is derived from the second by shearing, adding
+$x_2\binom{2}{1}$ to $x_1\binom{1}{3}$ to get
+$x_1\binom{1}{3}+x_2\binom{2}{1}=\binom{6}{8}$,
+along with $\binom{2}{1}$.
+The determinant is not affected by shearing so
+the size of the third box equals that of the second.
+%</CramersRuleExample2>
+
+%<*CramersRuleExample3>
+Taken together we have this.
+\begin{equation*}
+  x_1\cdot \begin{vmat}[r]
+     1  &2  \\
+     3  &1
+  \end{vmat}
+  =
+  \begin{vmat}
+     x_1\cdot 1  &2  \\
+     x_1\cdot 3  &1
+  \end{vmat}
+  =
+  \begin{vmat}
+     x_1\cdot 1+x_2\cdot 2  &2  \\
+     x_1\cdot 3+x_2\cdot 1  &1
+  \end{vmat}
+  =
+  \begin{vmat}[r]
+     6  &2  \\
+     8  &1
+  \end{vmat}
+\end{equation*}
+%</CramersRuleExample3>
+%<*CramersRuleExample4>
+Solving gives the value of one of the variables.
+\begin{equation*}
+  x_1=
+  \frac{\begin{vmat}[r]
+     6  &2  \\
+     8  &1
+  \end{vmat} }{
+  \begin{vmat}[r]
+     1  &2  \\
+     3  &1
+  \end{vmat}  }
+  =\frac{-10}{-5}=2
+\end{equation*}
+%</CramersRuleExample4>
+
+The generalization of this example is \definend{Cramer's Rule}:%
+\index{determinant!Cramer's rule}%
+\index{linear equation!solution of!Cramer's rule}
+if \( \deter{A}\neq 0 \) then the system \( A\vec{x}=\vec{b} \) has the
+unique solution
+$
+   x_i=\deter{B_i}/\deter{A}
+$
+where the matrix $B_i$ is formed from $A$ by replacing column~$i$ 
+with the vector \( \vec{b} \).
+The proof is \nearbyexercise{ex:CramerRule}.
+
+For instance, to solve this system for \( x_2 \)
+\begin{equation*}
+  \begin{mat}[r]
+    1  &0  &4  \\
+    2  &1  &-1 \\
+    1  &0  &1
+  \end{mat}
+  \colvec{x_1 \\ x_2 \\ x_3}
+  =\colvec[r]{2 \\ 1 \\ -1}
+\end{equation*}
+we do this computation.
+\begin{equation*}
+  x_2=
+  \frac{ \begin{vmat}[r]
+           1  &2  &4  \\
+           2  &1  &-1 \\
+           1  &-1 &1
+         \end{vmat}  }{
+         \begin{vmat}[r]
+           1  &0  &4  \\
+           2  &1  &-1 \\
+           1  &0  &1
+         \end{vmat}  }
+  =\frac{-18}{-3}
+\end{equation*}
+
+Cramer's Rule lets us by-eye solve systems that are small and simple. 
+For example, we can solve systems with two equations and two unknowns,
+or three equations and three unknowns,
+where the numbers are small integers.
+Such cases appear often enough that many people find this formula handy.
+ 
+But using it to solving large or complex systems is not practical,
+either by hand or by a computer.
+A Gauss's Method-based approach is faster.
+
+\begin{exercises}
+  \item 
+    Use Cramer's Rule to solve each for each of the variables.
+    \begin{exparts*}
+      \partsitem $\begin{linsys}{2}
+                    x  &- &y  &=  &4  \\
+                   -x  &+ &2y &=  &-7
+                  \end{linsys}$
+      \partsitem $\begin{linsys}{2}
+                    -2x  &+  &y  &=  &-2 \\
+                      x  &-  &2y &=  &-2  
+                  \end{linsys}$
+    \end{exparts*}
+    \begin{answer}
+      \begin{exparts*}
+        \partsitem Solve for the variables separately.
+          \begin{equation*}
+            x=
+             \frac{ \begin{vmat}[r]
+                       4  &-1  \\
+                      -7  &2   
+                    \end{vmat}  }{
+                    \begin{vmat}[r]
+                       1  &-1  \\
+                      -1  &2 
+                    \end{vmat}  }
+            =\frac{1}{1}=1
+            \qquad
+            y=
+             \frac{ \begin{vmat}[r]
+                       1  &4  \\
+                      -1  &-7   
+                    \end{vmat}  }{
+                    \begin{vmat}[r]
+                       1  &-1  \\
+                      -1  &2 
+                    \end{vmat}  }
+            =\frac{-3}{1}=-3
+          \end{equation*}
+        \partsitem $x=2$, $y=2$
+      \end{exparts*} 
+    \end{answer}
+  \item 
+    Use Cramer's Rule to solve this system for \( z \).
+    \begin{equation*}
+      \begin{linsys}{4}
+        2x  &+  &y  &+  &z  &=  &1 \\
+        3x  &   &   &+  &z  &=  &4 \\
+         x  &-  &y  &-  &z  &=  &2
+      \end{linsys}
+    \end{equation*}
+    \begin{answer}
+      \( z=1 \)
+    \end{answer}
+  \item \label{ex:CramerRule}
+    Prove Cramer's Rule.
+    \begin{answer}
+      Determinants are unchanged by combinations, 
+      including column combinations, so
+      \( \det(B_i)=\det(\vec{a}_1,\dots,
+      x_1\vec{a}_1+\dots+x_i\vec{a}_i+\dots+x_n\vec{a}_n,\dots,\vec{a}_n) \).
+      Use the operation of taking $-x_1$ times the first column and adding 
+      it to the $i$-th column, etc., to see this  
+      is equal to 
+      $\det(\vec{a}_1,\dots,x_i\vec{a}_i,\dots,\vec{a}_n)$.
+      In turn, that is equal to 
+      $x_i\cdot\det(\vec{a}_1,\dots,\vec{a}_i,\dots,\vec{a}_n)
+         =x_i\cdot\det(A)$,
+      as required.
+    \end{answer}
+  \item
+   Here is an alternative proof of Cramer's Rule that doesn't 
+   overtly contain any geometry.
+   Write $X_i$ for the identity matrix with 
+   column~$i$ replaced by the vector~$\vec{x}$ of unknowns 
+   $x_1$, \ldots,~$x_n$.
+   \begin{exparts}
+     \partsitem Observe that $AX_i=B_i$.
+     \partsitem Take the determinant of both sides.
+   \end{exparts}
+   \begin{answer}
+     \begin{exparts*}
+       \partsitem
+         Here is the case of a $\nbyn{2}$ system with $i=2$.
+         \begin{equation*}
+           \begin{linsys}{2}
+             a_{1,1}x_1 &+ &a_{1,2}x_2 &= &b_1 \\
+             a_{2,1}x_1 &+ &a_{2,2}x_2 &= &b_2
+           \end{linsys}
+           \quad\Longleftrightarrow\quad
+           \begin{mat}
+             a_{1,1}  &a_{1,2}  \\
+             a_{2,1}  &a_{2,2}
+           \end{mat}
+           \begin{mat}
+             1  &x_1 \\
+             0  &x_2
+           \end{mat}
+           =
+           \begin{mat}
+             a_{1,1}  &b_1 \\
+             a_{2,1}  &b_2
+           \end{mat}
+         \end{equation*}
+      \partsitem The determinant function is multiplicative
+        $\det(B_i)=\det(AX_i)=\det(A)\cdot\det(X_i)$.
+        The Laplace expansion shows that $\det(X_i)=x_i$,
+        and solving for $x_i$ gives Cramer's Rule.
+     \end{exparts*}
+   \end{answer}
+
+  \item 
+    Suppose that a linear system has as many equations as unknowns,
+    that all of its coefficients and constants are integers, and that 
+    its matrix
+    of coefficients has determinant~\( 1 \).
+    Prove that the entries in the solution are all integers.
+    (\textit{Remark.}  
+     This is often used to invent linear systems for exercises.)
+    \begin{answer}
+      Because the determinant of $A$ is nonzero, Cramer's Rule applies and
+      shows that $x_i=\deter{B_i}/1$.  
+      Since $B_i$ is a matrix of integers, its determinant is an integer.     
+    \end{answer}
+  \item 
+    Use Cramer's Rule to give a formula for the solution of a
+    two equations/two unknowns linear system.
+    \begin{answer}
+      The solution of
+      \begin{equation*}
+        \begin{linsys}{2}
+           ax  &+  by  &=  &e  \\
+           cx  &+  dy  &=  &f  
+        \end{linsys}
+      \end{equation*}
+      is
+      \begin{equation*}
+        x=\frac{ed-fb}{ad-bc}
+        \qquad
+        y=\frac{af-ec}{ad-bc}
+      \end{equation*}
+      provided of course that the denominators are not zero.  
+    \end{answer}
+  \item
+    Can Cramer's Rule tell the difference between a system with no
+    solutions and one with infinitely many?
+    \begin{answer}
+      Of course, singular systems have \( \deter{A} \) equal to zero, but
+      we can characterize 
+      the infinitely many solutions case is by the fact that
+      all of the \( \deter{B_i} \) are zero as well.  
+    \end{answer}
+  \item 
+    The first picture in this Topic (the one that doesn't use determinants)
+    shows a unique solution case.
+    Produce a similar picture for the case of infinitely many solutions,
+    and the case of no solutions.
+    \begin{answer}
+      We can consider the two nonsingular cases together with this
+      system
+      \begin{equation*}
+        \begin{linsys}{2}
+           x_1  &+  &2x_2  &=  &6  \\
+           x_1  &+  &2x_2  &=  &c 
+        \end{linsys}
+      \end{equation*}
+      where $c=6$ of course yields infinitely many solutions, and any other
+      value for $c$ yields no solutions.  
+      The corresponding vector equation
+      \begin{equation*}
+        x_1\cdot\colvec[r]{1 \\ 1}+x_2\cdot\colvec[r]{2 \\ 2}=\colvec[r]{6 \\ c}
+      \end{equation*}
+      gives a picture of two overlapping vectors.
+      Both lie on the line $y=x$.
+      In the $c=6$ case the vector on the right side also lies on
+      the line $y=x$ but in any other case it does not.
+    \end{answer}  
+\end{exercises}
+\index{Cramer's rule|)}
+\endinput

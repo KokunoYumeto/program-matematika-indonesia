@@ -169,6 +169,10 @@ def stage():
 
 
 def release(session, plan):
+    selected = json_read(WORK/'BUILD_RECEIPT.json')
+    counts = selected['counts']
+    selection_path = WORK/'EXPORT_SELECTION.json'
+    last_title = json_read(selection_path)['last_section_title'] if selection_path.exists() else 'Laplace’s Formula'
     path = WORK/'SOURCE_RELEASE_RECEIPT.json'
     response = session.get(API+'/releases/tags/'+TAG,timeout=30)
     assert response.status_code in [200,404]
@@ -178,7 +182,8 @@ def release(session, plan):
     else:
         assert not path.exists(), 'do not duplicate a prior release'
         body = ('Read Jim Hefferon’s original English Linear Algebra in 28 linked sections, from linear systems through Laplace’s Formula. This is a partial-book reading edition, not the complete textbook and not an Everyday-English rewrite.\n\nRead online: '+URL+'\nOriginal author’s complete book, answers and Sage lab: https://hefferon.net/linearalgebra/\n\nThe reader preserves 836 exercises, 834 supplied answers and two explicit original-answer absences. Download the cumulative editable LaTeX first, then the complete source/offline-reader ZIP. Each section’s original LaTeX is also directly downloadable. The ZIP includes the complete original editable source tree and exact HTML replay inputs. The HTML reads offline without JavaScript or downloaded fonts. No new PDF or native TeX build is claimed.\n\nOriginal mathematics: Jim Hefferon; CC BY-SA 2.5 option with all component credits and terms retained. Source-preserving rebuild, navigation, indexing, packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Earlier intermediate runtime identity is unverified and is not reassigned. No human review or exhaustive proof certification is claimed.\n\nBahasa Indonesia: Edisi bacaan ini memuat 28 bagian teks asli berbahasa Inggris, bukan keseluruhan buku atau terjemahan baru. Tersedia sumber LaTeX kumulatif, sumber tiap bagian, dan ZIP sumber lengkap beserta pembaca luring. Matematika asli: Jim Hefferon; opsi lisensi CC BY-SA 2.5 dan ketentuan setiap komponen tetap berlaku. Pembangunan ulang, navigasi, pengindeksan, pengemasan, dan pemeriksaan deterministik: OpenAI Codex — GPT-6 Astra, tingkat upaya Ultra. Tidak ada klaim peninjauan manusia.')
-        obj = api(session,'POST','/releases',json={'tag_name':TAG,'target_commitish':plan['base_commit'],'name':'Linear algebra — original English: 28 sections and editable source','body':body,'draft':True,'prerelease':False,'make_latest':'false'})
+        body = body.replace('28 linked sections',str(counts['readers'])+' linked sections').replace('Laplace’s Formula',last_title).replace('836 exercises, 834 supplied answers',str(counts['exercises'])+' exercises, '+str(counts['exercise_answer_pairs'])+' supplied answers').replace('28 bagian',str(counts['readers'])+' bagian')
+        obj = api(session,'POST','/releases',json={'tag_name':TAG,'target_commitish':plan['base_commit'],'name':'Linear algebra — original English: '+str(counts['readers'])+' sections and editable source','body':body,'draft':True,'prerelease':False,'make_latest':'false'})
         save(path,{'schema':'b40-expanded-source-release/1','state':'draft_assets_pending','release_id':obj['id'],'tag':TAG,'assets':[]})
     receipt = json_read(path)
     required = [('00-linear-algebra-cumulative.tex',WORK/'public/sources/00-linear-algebra-cumulative.tex','application/x-tex'),('COMPLETE_SOURCE.zip',WORK/'public/COMPLETE_SOURCE.zip','application/zip')]
@@ -294,7 +299,8 @@ def publish(plan, credential_file):
     plan = refresh_parent(session,plan)
     tree = api(session,'POST','/git/trees',json={'base_tree':plan['base_tree'],'tree':nodes})
     actor = {'name':'OpenAI Codex','email':'codex@users.noreply.github.com','date':datetime.now(timezone.utc).isoformat()}
-    commit = api(session,'POST','/git/commits',json={'message':'Publish 28-section original-English linear algebra reader and exact modular source\n\nPreserve existing proof URLs and all unrelated course navigation. Original mathematics: Jim Hefferon. Rebuild and integration: OpenAI Codex — GPT-6 Astra, Ultra effort.','tree':tree['sha'],'parents':[plan['base_commit']],'author':actor,'committer':actor})
+    count = json_read(WORK/'BUILD_RECEIPT.json')['counts']['readers']
+    commit = api(session,'POST','/git/commits',json={'message':'Publish '+str(count)+'-section original-English linear algebra reader and exact modular source\n\nPreserve existing proof URLs and all unrelated course navigation. Original mathematics: Jim Hefferon. Rebuild and integration: OpenAI Codex — GPT-6 Astra, Ultra effort.','tree':tree['sha'],'parents':[plan['base_commit']],'author':actor,'committer':actor})
     receipt = {'schema':'b40-expanded-publication/1','state':'commit_created_ref_not_updated','parent':plan['base_commit'],'commit':commit['sha'],'tree':tree['sha'],'plan_sha256':sha((WORK/'PUBLICATION_PLAN.json').read_bytes()),'deleted_paths':[],'force':False}
     save(path,receipt)
     assert api(session,'GET','/git/ref/heads/main')['object']['sha'] == plan['base_commit'],'concurrent change; recorded commit retained'
