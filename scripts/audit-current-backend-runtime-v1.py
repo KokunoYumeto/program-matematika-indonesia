@@ -9,7 +9,7 @@ import re
 from urllib.parse import unquote, urlsplit
 
 ROOT = Path(__file__).resolve().parents[1]
-TEXT = {'.py', '.js', '.mjs', '.css', '.html', '.json', '.jsonl', '.txt', '.md', '.csv', '.tsv'}
+TEXT = {'.py', '.js', '.mjs', '.cjs', '.css', '.html', '.json', '.jsonl', '.txt', '.md', '.csv', '.tsv'}
 
 
 class Assets(HTMLParser):

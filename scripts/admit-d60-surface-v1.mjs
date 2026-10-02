@@ -18,10 +18,11 @@ const map = await load('docs/backend/d60/learning-map.json');
 const evidence = [];
 for (const [kind, path] of [['d60_surface_tests', `${base}/tests.json`], ['d60_reader_witness', `${base}/reader-witness.json`], ['d60_surface_validation', 'docs/backend/d60/validation.json']]) {
   const {bytes, sha256: hash} = await identity(path);
-  evidence.push({kind, locator: path, bytes, sha256: hash, verified_date: '2026-09-21'});
+  evidence.push({kind, locator: path, bytes, sha256: hash, verified_date: '2026-10-01'});
 }
 const target = 'backend/course-capsule-v1/authority/integration-overrides-v1.json';
-const overrides = await load(target), before = structuredClone(overrides);
+const overrideRaw = await readFile(resolve(project, target), 'utf8');
+const overrides = JSON.parse(overrideRaw), before = structuredClone(overrides);
 const scope = '2.204 unit native, 278 latihan/pertanyaan/pemeriksaan bukti, dan 480 relasi bahan pendukung; pencarian serta ekspor rencana tanpa menyalin badan buku.';
 const tool = {tool_id: 'd60.open_learner_hub', label: 'D60 · Topologi Aljabar', href: 'backend/d60/D60.html',
   action_kind: 'course_reader', scope, state: 'verified', primary: false, machine_data_is_learner_destination: false,
@@ -39,7 +40,7 @@ for (const lang of ['id', 'en']) {
     scope, bytes: fact.bytes, sha256: fact.sha256});
 }
 const teacher = await identity('docs/backend/d60/D60-pengajar.html');
-overrides.educator_evidence.D60 = {...old, status: 'verified', verified_date: '2026-09-21',
+overrides.educator_evidence.D60 = {...old, status: 'verified', verified_date: '2026-10-01',
   locator: resources.find(r => r.id === 'D60:educator-hub-v1').url, bytes: teacher.bytes, sha256: teacher.sha256,
   features: [...new Set([...(old.features ?? []), 'exercise_bank', 'remix_selectors', 'staged_hints_answers_solutions'])], resources};
 for (const section of Object.keys(before)) {
@@ -47,5 +48,6 @@ for (const section of Object.keys(before)) {
   if (['learner_tools', 'native_capabilities', 'educator_evidence'].includes(section)) {delete a.D60; delete b.D60;}
   assert.deepEqual(a, b, `Unrelated override changed: ${section}`);
 }
+assert.equal(await readFile(resolve(project, target), 'utf8'), overrideRaw, 'Concurrent override edit');
 await writeFile(resolve(project, target), json(overrides));
 console.log(json({state: 'admitted', course_id: 'D60', capabilities: ['unit_identity', 'educator_unit_alignment'], unrelated_overrides_preserved: true}));

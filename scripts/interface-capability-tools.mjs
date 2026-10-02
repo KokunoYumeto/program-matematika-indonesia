@@ -21,7 +21,9 @@ export const existingEnglishCapabilityInputs = [...['a00', 'a10'].flatMap(role =
   'docs/backend/openlogic-teacher/teacher-validation.json','docs/backend/openlogic-teacher/C80.teacher.json',
   'docs/backend/c130-teacher/teacher-validation.json','docs/backend/c130-teacher/planner-model.json',
   'docs/backend/c130-native/build-receipt.json','docs/backend/c130-native/projection.json','docs/backend/c130-native/audit.json',
-  ...Object.values(clp1EvidencePaths),'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json'];
+  ...Object.values(clp1EvidencePaths),'backend/course-capsule-v1/adapters/clp-teacher-v1/tests.json',
+  'backend/course-capsule-v1/adapters/d60-native-ledger-v1/tests.json',
+  'docs/backend/d60/native-ledger/source-lock.json','docs/backend/d60/native-ledger/projection.json'];
 const hash = bytes => createHash('sha256').update(bytes).digest('hex');
 const contracts = {
   'c130.native_ledger':['C130','reference','backend/c130-native/ledger.html'],
@@ -53,6 +55,7 @@ const contracts = {
   'd40.open_learner_hub':['D40','course_reader','backend/d40/D40.html'],
   'd50.open_learner_hub':['D50','course_reader','backend/d50/index.html'],
   'd60.open_learner_hub':['D60','course_reader','backend/d60/D60.html'],
+  'd60.native_ledger':['D60','reference','backend/d60/native-ledger/ledger.html'],
   'd20.open_learner_hub':['D20','course_reader','backend/d20/D20.html'],
   'd70.open_learner_hub':['D70','course_reader','backend/d70/D70.html'],
   'd80.open_learner_hub':['D80','course_reader','backend/d80/D80.html'],
@@ -77,17 +80,23 @@ export function projectCapabilityTools(capsules, courseIds) {
     if (legacy) { assert.deepEqual(tool, legacy, 'Existing tool changed: '+tool.tool_id); matchedLegacy.add(tool.tool_id); continue; }
     // Explicit presentation contracts only; completion status never auto-admits a machine record as a learner destination.
     const expected = contracts[tool.tool_id];
-    assert.ok(expected); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
+    assert.ok(expected, 'Unregistered presentation contract: '+tool.tool_id); assert.deepEqual([capsule.course_id,tool.action_kind,tool.href],expected);
     assert.equal(capsule.locale, 'id-ID');
     assert.equal(tool.state, 'verified');
     assert.equal(tool.primary, false);
     assert.equal(tool.machine_data_is_learner_destination, false);
     assert.ok(tool.label && tool.scope && tool.limitations.length);
-    assert.match(tool.href, /^backend\/[a-z0-9-]+\/[a-zA-Z0-9.-]+\.html$/);
+    assert.match(tool.href, tool.tool_id === 'd60.native_ledger'
+      ? /^backend\/d60\/native-ledger\/ledger\.html$/
+      : /^backend\/[a-z0-9-]+\/[a-zA-Z0-9.-]+\.html$/);
     assert.ok(!tool.href.includes('..'));
     assert.equal(tool.page.path, 'docs/'+tool.href);
     for (const fact of [tool.page, tool.resource, tool.evidence]) {
-      assert.match(fact.path, /^docs\/backend\/[a-z0-9-]+\/[a-zA-Z0-9.-]+$/);
+      if (tool.tool_id === 'd60.native_ledger') {
+        assert.ok(['docs/backend/d60/native-ledger/ledger.html',
+          'docs/backend/d60/native-ledger/projection.json',
+          'backend/course-capsule-v1/adapters/d60-native-ledger-v1/tests.json'].includes(fact.path));
+      } else assert.match(fact.path, /^docs\/backend\/[a-z0-9-]+\/[a-zA-Z0-9.-]+$/);
       assert.ok(!fact.path.includes('..'));
       assert.ok(Number.isSafeInteger(fact.bytes) && fact.bytes>0);
       assert.match(fact.sha256, /^[a-f0-9]{64}$/);
@@ -422,7 +431,39 @@ export function projectExistingEnglishCapabilityTools(inputs, courseIds) {
       });
     }
   }
-  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds), ...projectC130EnglishTeacherTools(inputs, courseIds), ...projectC130EnglishLedgerTools(inputs, courseIds)];
+  return [...tools, ...projectD110EnglishCapabilityTools(inputs, courseIds), ...projectClpEnglishTeacherTools(inputs, courseIds), ...projectJudsonEnglishTeacherTools(inputs, courseIds), ...projectOpenLogicEnglishTeacherTools(inputs, courseIds), ...projectC130EnglishTeacherTools(inputs, courseIds), ...projectC130EnglishLedgerTools(inputs, courseIds), ...projectD60EnglishLedgerTools(inputs, courseIds)];
+}
+export function projectD60EnglishLedgerTools(inputs, courseIds) {
+  const base='docs/backend/d60/native-ledger/', key='backend/course-capsule-v1/adapters/d60-native-ledger-v1/tests.json';
+  const bytes=inputs[key], tests=JSON.parse(bytes), data=inputs[base+'projection.json'], view=JSON.parse(data);
+  const lockBytes=inputs[base+'source-lock.json'], lock=JSON.parse(lockBytes);
+  assert.ok(courseIds.includes('D60'));
+  assert.equal(tests.schema,'d60-native-ledger-independent-tests/1'); assert.equal(tests.state,'pass');
+  assert.equal(tests.semantic_canon_approval,false); assert.equal(tests.native_book_rebuilt,false);
+  assert.equal(view.schema,'d60-native-ledger-projection/1'); assert.equal(view.course_id,'D60');
+  assert.equal(view.independent_canon_review,'not_checked'); assert.equal(view.native_book_rebuilt,false);
+  assert.equal(view.native_records_changed,false); assert.equal(view.bodies_copied,false);
+  assert.deepEqual({bytes:data.length,sha256:hash(data)},tests.outputs['projection.json']);
+  assert.deepEqual({bytes:lockBytes.length,sha256:hash(lockBytes)},tests.outputs['source-lock.json']);
+  assert.equal(lock.schema,'d60-native-ledger-source-lock/1'); assert.equal(lock.course_id,'D60');
+  assert.equal(lock.native_records_unchanged,true); assert.equal(lock.semantic_canon_approval,false);
+  assert.deepEqual(lock.source_archive,tests.source_archive);
+  assert.deepEqual(view.summary,tests.summary);
+  assert.deepEqual(tests.summary.counts,{terms:528,segments:2174,corrections:564,rights:96});
+  assert.equal(tests.summary.all_native_records,8338); assert.equal(tests.summary.current_native_heads,7996);
+  assert.equal(tests.summary.reference_gaps,0); assert.equal(tests.summary.target_file_checks.declared_file_hash_differs,73);
+  assert.equal(view.rows.length,3362);
+  assert.ok(view.rows.filter(r=>r.kind==='terms').every(r=>r.flags.includes('canon_not_independently_checked')));
+  const page=tests.outputs['ledger-en.html']; assert.ok(page);
+  return [{courseId:'D60',contentLanguage:'en',labelLanguage:'en',tool_id:'d60.native_ledger.en',
+    action_kind:'reference',href:'backend/d60/native-ledger/ledger-en.html',label:'D60 · Native terms, sources, corrections and rights',
+    scope:'528 terms, 2,174 source/target segments, 564 corrections and 96 native rights records, with unit lookup and an offline metadata archive',
+    limitations:['English interface; native quotations keep their original language and book links open the Indonesian edition.',
+      'Parent-unit discovery is not sentence-level applicability. Original records are not independent canon approval.',
+      '73 target-file identities differ; this does not prove damage to each paragraph. Metadata replay is not a full native-book rebuild.'],
+    state:'verified',primary:false,machine_data_is_learner_destination:false,
+    page:{...page,path:base+'ledger-en.html'},resource:{...tests.outputs['projection.json'],path:base+'projection.json'},
+    evidence:{path:key,bytes:bytes.length,sha256:hash(bytes)}}];
 }
 export async function syncCapabilityTools(root, courseIds) {
   const bytes = await readFile(resolve(root, capabilityInput));

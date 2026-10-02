@@ -6,6 +6,17 @@ bahan pengajar, kode adaptor, serta bukti dan pemeriksaan yang menyertainya.
 Paket ini bukan pernyataan bahwa semua kemampuan backend telah selesai.
 Status dan batas setiap kemampuan tetap tercatat pada masing-masing kursus.
 
+Tambahan D60: buka /backend/d60/native-ledger/ledger.html untuk menelusuri
+istilah, segmen, koreksi dan hak penggunaan yang terhubung ke unit belajar.
+Sebelas aliran metadata asli mempertahankan 8.338 rekaman. Label penelusuran
+pada unit induk tidak menyatakan bahwa setiap pilihan berlaku pada semua
+paragraf turunannya. Sebanyak 73 identitas berkas sasaran berbeda tetap
+ditampilkan sebagai temuan; bukan klaim bahwa 73 paragraf salah. Antarmuka
+Inggris tersedia pada ledger-en.html; tautan isi buku masih berbahasa Indonesia.
+Implementasi asli adaptor D60: OpenAI Codex — gpt-6.1-sol, tingkat upaya Ultra.
+Perbaikan integrasi, pengujian dan pengemasan lanjutan: OpenAI Codex —
+gpt-6-astra, tingkat upaya Ultra. Ini bukan peninjauan kanon oleh manusia.
+
 Kode pengemasan, perbaikan pemeriksaan identitas, dan panduan paket ini dibuat
 oleh OpenAI Codex — gpt-6-astra, Ultra effort. Atribusi ini hanya mencakup
 pekerjaan integrasi tersebut; bukan pengakuan kepengarangan, penerjemahan,
@@ -36,6 +47,14 @@ Jalankan, dari akar hasil ekstraksi:
   node scripts/test-course-capsule-ui-v1.mjs
   node scripts/test-local-evidence-identities-v1.mjs
 
+Pemeriksaan peramban D60 memakai Playwright dan satu peramban Chromium tanpa
+jendela. Jalankan `node scripts/test-d60-native-browser-v1.cjs` setelah memasang
+Playwright dan perambannya di lingkungan Anda. Bila memakai instalasi yang
+sudah ada, PLAYWRIGHT_MODULE_PATH menunjuk modul Playwright dan
+PLAYWRIGHT_BROWSER_PATH menunjuk program peramban. Keduanya bersifat opsional;
+tidak ada direktori pribadi pembuat yang diperlukan. Pemeriksaan hanya memakai
+server lokal sementara dan memblokir permintaan jaringan eksternal.
+
 CURRENT_BACKEND_PACKAGE_MANIFEST.json mencatat setiap berkas, ukuran, SHA-256,
 alasan penyertaan, dan bukti lokal untuk setiap peran. Pemutaran ulang ini
 menguji kapsul dan antarmuka bersama; bukan audit baru atas mutu terjemahan,
@@ -60,3 +79,12 @@ pinned upstream inputs. The manifest preserves those distinctions.
 The complete bilingual learner-guide LaTeX is docs/guides/start-v0.63.32.tex.
 Build it with two pdfLaTeX passes and the standard packages listed above; the
 Windows build script also respects the machine-wide TeX mutex.
+
+D60 adds a native metadata explorer with exact study-unit links, term choices,
+segments, correction history and rights records. The English interface does
+not turn its Indonesian reader links into an English edition. Browser QA uses
+Playwright with optional PLAYWRIGHT_MODULE_PATH and PLAYWRIGHT_BROWSER_PATH;
+it runs headlessly against a temporary local server with outside requests
+blocked. Original D60 adapter: OpenAI Codex — gpt-6.1-sol, Ultra effort.
+Subsequent integration repairs, QA and packaging: OpenAI Codex — gpt-6-astra,
+Ultra effort. No human canon review or whole-book rebuild is claimed.

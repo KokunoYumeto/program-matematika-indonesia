@@ -250,13 +250,26 @@ const originalValidationBytes=await readFile(resolve(root,originalIndonesianBili
 const originalProjected=projectOriginalIndonesianBilingualTools(JSON.parse(originalManifestBytes),JSON.parse(originalValidationBytes),ids);
 const existingEnglishInputs=Object.fromEntries(await Promise.all(existingEnglishCapabilityInputs.map(async path=>[path,await readFile(resolve(root,path))])));
 const existingEnglishProjected=projectExistingEnglishCapabilityTools(existingEnglishInputs,ids);
-assert.equal(existingEnglishProjected.length,14);
+assert.equal(existingEnglishProjected.length,15);
 assert.deepEqual([...projectCapabilityTools(capsules,ids),...clpProjected,...originalProjected,...existingEnglishProjected],capabilityTools);
 // B95 and C140 have been promoted into the canonical base learner-tool
 // inventory. A10 adds one independently validated learner/educator navigator.
 // Preserve every previous tool while adding four bilingual CLP planners.
-assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')&&!tool.tool_id.startsWith('c130.native_ledger')).length,51);
-assert.equal(capabilityTools.length,69);
+assert.equal(capabilityTools.filter(tool=>!tool.tool_id.includes('.clp_assignment_planner')&&!tool.tool_id.includes('.judson_assignment_planner')&&!tool.tool_id.includes('.openlogic_assignment_planner')&&!tool.tool_id.startsWith('c130.assignment_planner')&&!tool.tool_id.startsWith('c130.native_ledger')&&!tool.tool_id.startsWith('d60.native_ledger')).length,51);
+assert.equal(capabilityTools.length,71);
+for(const locale of ['id','en']) {
+  const tool=capabilityTools.find(t=>t.tool_id==='d60.native_ledger'+(locale==='en'?'.en':''));
+  assert.equal(tool.href,'backend/d60/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html'));
+  assert.equal(tool.contentLanguage,locale); assert.equal(tool.primary,false);
+  assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='D60'),locale).some(r=>r.href===siteOrigin+tool.href&&r.accessRole==='tool'));
+}
+for(const mutate of [t=>{t.semantic_canon_approval=true;},t=>{t.native_book_rebuilt=true;},
+  t=>{t.summary.target_file_checks.declared_file_hash_differs=0;},t=>{delete t.outputs['ledger-en.html'];},
+  t=>{t.outputs['projection.json'].sha256='0'.repeat(64);},]) {
+  const changed={...existingEnglishInputs},key='backend/course-capsule-v1/adapters/d60-native-ledger-v1/tests.json';
+  const value=JSON.parse(changed[key]);mutate(value);changed[key]=Buffer.from(JSON.stringify(value));
+  assert.throws(()=>projectExistingEnglishCapabilityTools(changed,ids));
+}
 for(const locale of ['id','en']) {
   const suffix=locale==='en'?'.en':'',tool=capabilityTools.find(t=>t.tool_id==='c130.native_ledger'+suffix);
   assert.equal(tool.href,'backend/c130-native/ledger'+suffix+'.html');
@@ -1002,7 +1015,11 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // Preserve that useful data with four KiB additional bounded headroom.
     // engineering ceilings, not the former 101,000-byte near-baseline cutoff.
     // The exact complete payload and online/offline parity are tested below.
-    assert.ok(Buffer.byteLength(html) < 544 * 1024, 'Offline map size budget');
+    // The two evidence-bound D60 native-ledger language tools add 4,887 raw
+    // bytes to the largest predecessor (558,753 current hosted bytes). Keep
+    // every capability/identity and online-offline parity assertion; allow
+    // four KiB additional raw headroom, with the same compressed ceiling.
+    assert.ok(Buffer.byteLength(html) < 548 * 1024, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 128 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');

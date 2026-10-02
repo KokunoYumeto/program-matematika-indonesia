@@ -165,6 +165,16 @@ class PackageTests(unittest.TestCase):
         (self.root/'docs/check.txt').write_text('C:/'+'Users/'+'Example/'+'file.txt',encoding='utf-8')
         self.assertEqual(runtime.audit(self.root,plan)['privacy_findings'],[{'path':'docs/check.txt','kind':'absolute-user-path'}])
 
+    def test_commonjs_browser_harness_privacy_is_checked(self):
+        path = self.root / 'scripts/check.cjs'
+        path.parent.mkdir()
+        plan = {'files': [{'path': 'scripts/check.cjs'}]}
+        path.write_text("require(process.env.PLAYWRIGHT_MODULE_PATH || 'playwright');", encoding='utf-8')
+        self.assertEqual(runtime.audit(self.root, plan)['privacy_findings'], [])
+        path.write_text("require('" + 'C:/' + 'Users/' + "Example/dependency');", encoding='utf-8')
+        self.assertEqual(runtime.audit(self.root, plan)['privacy_findings'],
+                         [{'path': 'scripts/check.cjs', 'kind': 'absolute-user-path'}])
+
 
 if __name__ == '__main__':
     unittest.main()

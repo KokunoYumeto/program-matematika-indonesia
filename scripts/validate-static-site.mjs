@@ -1810,10 +1810,19 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 39);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 124);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1873);
-assert.equal(centralNavigation.summary.classified_html_documents, 1878);
+assert.equal(centralNavigation.summary.course_surface_roots, 40);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 126);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1875);
+assert.equal(centralNavigation.summary.classified_html_documents, 1880);
+const d60NativeSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/d60/native-ledger');
+assert.deepEqual(d60NativeSurface.documents,[
+  {path:'ledger.html',locale:'id',course_ids:['D60'],contents_paths:['ledger-en.html'],related_course_surface_paths:['docs/backend/d60/D60.html','docs/backend/d60/D60-pengajar.html']},
+  {path:'ledger-en.html',locale:'en',course_ids:['D60'],contents_paths:['ledger.html'],related_course_surface_paths:['docs/backend/d60/D60.en.html','docs/backend/d60/D60-pengajar.en.html']},
+]);
+for(const doc of centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/d60').documents){
+  const page=doc.locale==='en'?'ledger-en.html':'ledger.html';
+  assert.ok(doc.related_course_surface_paths.includes('docs/backend/d60/native-ledger/'+page));
+}
 // D70 adds two metadata-replay guides and a bounded localization review,
 // not three additional translated books or a full-native production claim.
 const d70ReplaySurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/d70-replay');

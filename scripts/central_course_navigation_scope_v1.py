@@ -16,12 +16,20 @@ def course_surface_exclusions(surface, contract):
     if not isinstance(values, list) or len(values) != len(set(values)):
         raise ValueError('course-surface exclusions must be a unique list')
     readers = {r['root']: r for r in contract['readers']}
+    surfaces = {s['root']: s for s in contract['course_surfaces']}
+    if len(surfaces) != len(contract['course_surfaces']):
+        raise ValueError('course-surface roots must be unique')
     course_ids = {c for d in surface['documents'] for c in d['course_ids']}
     root = safe_relative(surface['root'])
     for value in values:
         target = (root / safe_relative(value)).as_posix()
-        if target not in readers or readers[target]['course_id'] not in course_ids:
-            raise ValueError('a course-surface exclusion must be an exact registered reader of that course')
+        reader_matches = target in readers and readers[target]['course_id'] in course_ids
+        child = surfaces.get(target)
+        child_matches = child is not None and bool(child['documents']) and {
+            c for d in child['documents'] for c in d['course_ids']
+        } == course_ids
+        if not reader_matches and not child_matches:
+            raise ValueError('a course-surface exclusion must be an exact registered reader or child surface of the same course')
     return values
 
 

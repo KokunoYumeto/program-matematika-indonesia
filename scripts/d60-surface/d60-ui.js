@@ -1,9 +1,9 @@
 /* Local-only selection: no fetch, telemetry, storage or generated answers. */
 (() => {
   'use strict';
-  const filterUnits = (map, query = '', kind = '', group = '') => {
+  const filterUnits = (map, query = '', kind = '', group = '', exactUnit = '') => {
     const q = query.trim().toLocaleLowerCase();
-    return map.units.filter(u => (!kind || (kind === 'practice' ? u.practice : u.kind === kind)) &&
+    return map.units.filter(u => (!exactUnit || u.id === exactUnit) && (!kind || (kind === 'practice' ? u.practice : u.kind === kind)) &&
       (!group || u.group === group) && (!q || [u.title, u.id, ...u.concept_ids].join(' ').toLocaleLowerCase().includes(q)));
   };
   const makePlan = (map, selection, locale) => {
@@ -38,23 +38,34 @@
     const o = el('option', byId.get(group)?.title ?? group); o.value = group; get('group').append(o);
   }
   get('kind').value = document.body.dataset.mode === 'teacher' ? 'practice' : 'lecture';
+  let exactUnit = new URLSearchParams(location.search).get('unit')?.trim() || '';
+  if (exactUnit) {get('search').value = exactUnit; get('kind').value = ''; get('group').value = '';}
   const updateSelection = () => {
     get('selection').textContent = selected.size + t(' unit dipilih', ' units selected');
     get('export').disabled = get('export-text').disabled = selected.size === 0;
   };
   const link = u => {const a = el('a', u.title); a.href = u.route.url; a.lang = 'id'; return a;};
   function render() {
-    current = filterUnits(map, get('search').value, get('kind').value, get('group').value);
+    current = filterUnits(map, get('search').value, get('kind').value, get('group').value, exactUnit);
     page = Math.min(page, Math.max(0, Math.ceil(current.length / pageSize) - 1));
     const shown = current.slice(page * pageSize, (page + 1) * pageSize), list = get('unit-list');
     list.replaceChildren();
     for (const u of shown) {
       const card = el('article', undefined, 'unit');
+      card.dataset.unitId = u.id;
       const checkbox = el('input'); checkbox.type = 'checkbox'; checkbox.checked = selected.has(u.id);
       checkbox.setAttribute('aria-label', t('Pilih ', 'Select ') + u.title);
       checkbox.addEventListener('change', () => {if (checkbox.checked) selected.add(u.id); else selected.delete(u.id); updateSelection();});
       const heading = el('h3'); heading.append(checkbox, link(u)); card.append(heading);
       card.append(el('p', labelKind(u.kind) + ' · ' + u.id, 'metadata'));
+      const records = el('p', undefined, 'metadata');
+      for (const [kind, idLabel, enLabel] of [['terms','Istilah asli','Native terms'],['segments','Lokasi sumber/terjemahan','Source/target locations'],['corrections','Koreksi asli','Native corrections'],['rights','Hak komponen','Component rights']]) {
+        if (records.childNodes.length) records.append(document.createTextNode(' · '));
+        const a = el('a', t(idLabel, enLabel));
+        a.href = 'native-ledger/ledger' + (en ? '-en' : '') + '.html?kind=' + kind + '&unit=' + encodeURIComponent(u.id);
+        records.append(a);
+      }
+      card.append(records);
       if (u.route.state === 'course_fallback') card.append(el('p', t('Tautan menuju pembaca lengkap: tidak ada jangkar unit unik.', 'Link opens the full reader: no unique unit anchor.'), 'notice'));
       const hasSupport = Object.values(u.support).some(rows => rows.length);
       if (hasSupport) {
@@ -78,12 +89,19 @@
     get('results-status').textContent = current.length ? `${page * pageSize + 1}–${Math.min((page + 1) * pageSize, current.length)} / ${current.length}` : t('Tidak ada hasil.', 'No results.');
     get('previous').disabled = page === 0; get('next').disabled = (page + 1) * pageSize >= current.length;
     get('select-page').disabled = !shown.length; updateSelection();
+    for (const a of document.querySelectorAll('nav[data-d60-navigation] a')) {
+      const url = new URL(a.href);
+      if (url.origin === location.origin && /\/(?:D60(?:-pengajar)?(?:\.en)?|native-ledger\/ledger(?:-en)?)\.html$/.test(url.pathname)) {
+        url.search = exactUnit ? new URLSearchParams({unit: exactUnit}).toString() : '';
+        a.href = url.href;
+      }
+    }
   }
   const download = (text, name, type) => {
     const url = URL.createObjectURL(new Blob([text], {type})), a = el('a'); a.href = url; a.download = name;
     document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1000);
   };
-  for (const id of ['search', 'kind', 'group']) get(id).addEventListener(id === 'search' ? 'input' : 'change', () => {page = 0; render();});
+  for (const id of ['search', 'kind', 'group']) get(id).addEventListener(id === 'search' ? 'input' : 'change', () => {exactUnit = ''; page = 0; render();});
   get('previous').addEventListener('click', () => {page--; render();});
   get('next').addEventListener('click', () => {page++; render();});
   get('select-page').addEventListener('click', () => {current.slice(page * pageSize, (page + 1) * pageSize).forEach(u => selected.add(u.id)); render();});

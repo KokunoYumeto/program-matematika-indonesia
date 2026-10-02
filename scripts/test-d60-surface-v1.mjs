@@ -56,6 +56,10 @@ assert.equal(projectMap(missing).unresolved_support_relations.length, 1);
 const uiSource = await readFile(resolve(project, 'scripts/d60-surface/d60-ui.js'), 'utf8');
 const context = vm.createContext({}); vm.runInContext(uiSource, context);
 const api = context.D60_PLAN_API;
+const preciseId = 'unit:o012-rbt-l01-def-001';
+assert.deepEqual(Array.from(api.filterUnits(map, '', '', '', preciseId), u => u.id), [preciseId]);
+assert.equal(api.filterUnits(map, '', '', '', 'unit:o012-rbt-l01').length, 1, 'Exact deep links never include prefixed children');
+assert.equal(api.filterUnits(map, '', '', '', 'not-a-native-unit').length, 0, 'Unknown deep links fail closed');
 assert.equal(api.filterUnits(map, '', 'practice').length, 278);
 assert.equal(api.filterUnits(map, 'klein').length > 0, true);
 assert.equal(api.filterUnits(map, 'impossible-no-such-unit').length, 0);
@@ -88,6 +92,7 @@ try {
 for (const file of ['D60.html', 'D60.en.html', 'D60-pengajar.html', 'D60-pengajar.en.html']) {
   const html = await readFile(join(canonical, file), 'utf8');
   assert.ok(html.includes('<noscript>'));
+  assert.ok(html.includes('native-ledger/ledger'), 'Native-record navigation must be present');
   assert.equal(html.includes('data-program-home'), false, 'Source view must not impersonate the shared navigation shell');
   assert.ok(html.includes('id="workbench" hidden'));
   assert.ok(html.includes('connect-src &#') === false);

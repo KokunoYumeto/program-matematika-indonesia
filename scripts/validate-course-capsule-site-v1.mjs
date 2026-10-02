@@ -205,6 +205,29 @@ const logicalFiles = [
   })(),
   ...openLogicTeacherFiles.map(path => 'backend/openlogic-teacher/' + path),
   ...await (async()=>{
+    const base='backend/course-capsule-v1/adapters/d60-native-ledger-v1';
+    const tests=JSON.parse(await readFile(resolve(project,base,'tests.json')));
+    assert.equal(tests.schema,'d60-native-ledger-independent-tests/1'); assert.equal(tests.state,'pass');
+    assert.equal(tests.semantic_canon_approval,false); assert.equal(tests.native_book_rebuilt,false);
+    assert.equal(tests.summary.all_native_records,8338); assert.equal(tests.summary.current_native_heads,7996);
+    assert.deepEqual(tests.summary.counts,{terms:528,segments:2174,corrections:564,rights:96});
+    assert.equal(tests.summary.target_file_checks.declared_file_hash_differs,73);
+    const files=Object.keys(tests.outputs); assert.equal(files.length,9);
+    for(const name of files){
+      assert.match(name,/^[a-zA-Z0-9][a-zA-Z0-9._-]*$/);
+      const path='docs/backend/d60/native-ledger/'+name,bytes=await readFile(resolve(project,path)),fact=tests.outputs[name];
+      if(bytes.length!==fact.bytes||sha256(bytes)!==fact.sha256){
+        assert.ok(name.endsWith('.html'),'Non-HTML D60 native identity drift');
+        const overlay=d110NavigationOverlay.files.find(f=>f.document===path);
+        assert.ok(overlay,'D60 native navigation overlay missing');
+        assert.deepEqual(overlay.source_body,{path,...fact});
+        assert.deepEqual(overlay.hosted_surface,identity(path,bytes));
+        assert.equal(overlay.source_body_replay_exact,true);
+      }
+    }
+    return files.map(name=>'backend/d60/native-ledger/'+name);
+  })(),
+  ...await (async()=>{
     const v=JSON.parse(await readFile(resolve(project,'docs/backend/judson/teacher-validation.json')));
     assert.equal(v.schema,'judson-teacher-hosted/1');assert.equal(v.state,'pass');
     assert.deepEqual(v.course_counts,{C30:610,C40:303});
@@ -807,12 +830,23 @@ for (const row of rows) assert.deepEqual(row.layers.learner.tools, authorityTool
 assert.equal(rows.filter((row) => row.layers.interoperability.design_policy?.profile === 'thin_format_neutral_zero_copy').length, 40);
 assert.equal(manifest.summary.course_count, 40);
 assert.deepEqual(sortedIds(Object.keys(authorityToolsByCourse)), sortedIds(rows.map(row => row.course_id)));
-assert.equal(authorityToolIds.length, 56);
+assert.equal(authorityToolIds.length, 57);
 for (const [course, href] of [['D20','backend/d20/D20.html'],['D50','backend/d50/index.html'],['D60','backend/d60/D60.html']]) {
   assert.deepEqual(authorityToolsByCourse[course].map(({tool_id,href}) => ({tool_id,href})),
-    [{tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
+    [...(course==='D60'?[{tool_id:'d60.native_ledger',href:'backend/d60/native-ledger/ledger.html'}]:[]),
+      {tool_id:course.toLowerCase()+'.open_learner_hub',href}]);
   const capsule=rows.find(row=>row.course_id===course);
   assert.equal(capsule.layers.educator.unit_alignment_status,'verified');
+  if(course==='D60') {
+    for(const locale of ['id','en']){
+      const resource=capsule.layers.educator.resources.find(r=>r.id==='D60:native-ledger-'+locale);
+      const path='backend/d60/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html');
+      assert.ok(resource); assert.equal(resource.url,'https://kokunoyumeto.github.io/program-matematika-indonesia/'+path);
+      assert.deepEqual([resource.bytes,resource.sha256],[docsBytes[path].length,sha256(docsBytes[path])]);
+    }
+    for(const key of ['ledger_status','terminology_status','corrections_status'])
+      assert.equal(capsule.layers.translation[key],'available_unverified');
+  }
 }
 const d50HostedMap=JSON.parse(docsBytes['backend/d50/learning-map.json']);
 assert.equal(d50HostedMap.units.length,1223);
@@ -845,7 +879,7 @@ assert.equal(validation.checks.seven_layer_rows, 40);
 assert.equal(validation.checks.published_count, 40);
 assert.equal(validation.checks.production_count, 0);
 assert.equal(validation.checks.learner_tool_course_count, 40);
-assert.equal(validation.checks.learner_tool_count, 56);
+assert.equal(validation.checks.learner_tool_count, 57);
 assert.equal(validation.checks.learner_tool_authority_equality, 'pass');
 assert.equal(validation.peer_replay.byte_identical, true);
 

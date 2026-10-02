@@ -47,8 +47,10 @@ for(const [courseId,tools] of Object.entries(overrides.learner_tools??{}).sort((
 // authority, so they must not also appear in integration-overrides.
 // A10 adds one learner navigator and two educator views to the prior closure.
 // C80 contributes one new planner page and one learner-tool binding.
-assert.equal(toolCount,47,'Integration learner-tool closure changed.');
-assert.equal(pagePaths.size,44,'Integration hosted-page closure changed.');
+assert.equal(toolCount,48,'Integration learner-tool closure changed.');
+assert.equal(pagePaths.size,45,'Integration hosted-page closure changed.');
+assert.ok(overrides.learner_tools.D60.some(tool=>tool.tool_id==='d60.native_ledger'
+  && tool.page.path==='docs/backend/d60/native-ledger/ledger.html'),'D60 native ledger binding is missing.');
 assert.ok(overrides.learner_tools.C130.some(tool=>tool.tool_id==='c130.native_ledger'
   && tool.page.path==='docs/backend/c130-native/ledger.html'),'C130 native ledger binding is missing.');
 assert.ok(overrides.learner_tools.C130.some(tool=>tool.tool_id==='c130.assignment_planner'
@@ -97,8 +99,9 @@ for(const [courseId,evidence] of Object.entries(overrides.educator_evidence??{})
 // A00 exposes two localized native-ledger views without relabeling its book review.
 // D70 adds two localized executable metadata-replay guides, without changing
 // its full-native replay status or adding a duplicate learner destination.
-assert.equal(educatorFactCount,103,'Integration educator hosted-fact closure changed.');
-assert.equal(educatorPagePaths.size,63,'Integration educator hosted-page closure changed.');
+assert.equal(educatorFactCount,105,'Integration educator hosted-fact closure changed.');
+assert.equal(educatorPagePaths.size,65,'Integration educator hosted-page closure changed.');
+for(const page of ['ledger.html','ledger-en.html'])assert.ok(educatorPagePaths.has(`docs/backend/d60/native-ledger/${page}`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/d70-replay/index${suffix}.html`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/c130-native/ledger${suffix}.html`));
 for(const suffix of ['', '.en'])assert.ok(educatorPagePaths.has(`docs/backend/clp/B20.terms${suffix}.html`));
