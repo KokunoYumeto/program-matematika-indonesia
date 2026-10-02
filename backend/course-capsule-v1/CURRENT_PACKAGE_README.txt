@@ -72,6 +72,10 @@ CURRENT_BACKEND_PACKAGE_MANIFEST.json mencatat setiap berkas, ukuran, SHA-256,
 alasan penyertaan, dan bukti lokal untuk setiap peran. Pemutaran ulang ini
 menguji kapsul dan antarmuka bersama; bukan audit baru atas mutu terjemahan,
 penggunaan kanon, atau aksesibilitas seluruh buku.
+Kode pembangun antarmuka lama di current-public-baseline disimpan sebagai
+bukti versi sumber yang dibekukan, bukan sebagai program yang dijalankan
+dalam pemutaran ulang saat ini. Manifest memisahkan bukti kode tersebut dari
+dependensi yang benar-benar diperlukan untuk menjalankan pembangun saat ini.
 
 Panduan peserta belajar dua bahasa bersumber pada docs/guides/start-v0.63.32.tex.
 Sumber itu lengkap dalam satu berkas dan memakai paket standar LaTeX:
@@ -110,3 +114,7 @@ links are not proof-dependency certification. The separate local phone snapshot
 has 58 courses/900 units and is not an additional, additive corpus count.
 Original cross-programme integration: OpenAI Codex — gpt-6.1-sol, Ultra effort.
 Combined-current integration and package QA: OpenAI Codex — gpt-6-astra, Ultra effort.
+The frozen baseline's historical interface builder is preserved and hash-bound
+as a source witness, not executed during current replay. Its historical native
+staging dependencies are not claimed to be included. Current executable
+dependencies continue to require local files or explicit evidenced boundaries.

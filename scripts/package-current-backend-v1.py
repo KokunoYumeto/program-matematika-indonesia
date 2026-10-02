@@ -135,13 +135,44 @@ def preserved_native_source(root, referrer, dependency, declarations):
             'scope': 'Exact preserved native source for alignment/AST comparison; not a full native execution or native build dependency.'}
 
 
+def archival_code_witness(root, name, declarations):
+    """An exact upstream code witness is preserved, not run as local code."""
+    matches = [row for row in declarations if row['path'] == name]
+    if not matches:
+        return None
+    if len(matches) != 1:
+        raise ValueError('Ambiguous archival code witness: ' + name)
+    row = matches[0]
+    manifest_path = local_path(root, row['manifest'])
+    manifest = json.loads(manifest_path.read_bytes())
+    assert manifest['schema'] == 'current-public-interface-baseline/1'
+    assert manifest['source_commit'] == row['source_commit']
+    member = safe_name(row['member'])
+    expected_path = (manifest_path.parent / member).relative_to(root).as_posix()
+    assert name == expected_path, 'Archival witness is outside its frozen snapshot'
+    records = [item for item in manifest['files'] if item['path'] == member]
+    assert len(records) == 1, 'Archival witness lacks a unique source record'
+    record = records[0]
+    expected = {key: record[key] for key in ['bytes', 'sha256']}
+    if identity(local_path(root, name)) != expected:
+        raise ValueError('Archival code witness identity differs: ' + name)
+    assert '/' + row['source_commit'] + '/' + member in record['url']
+    return {'path': name, **expected, 'manifest': row['manifest'],
+            'source_commit': row['source_commit'], 'source_url': record['url'],
+            'scope': 'Preserved historical source witness only; not imported, executed, or a dependency of current replay.'}
+
+
 def collect(root):
     scope = json.loads((root / POLICY).read_bytes())
     assert scope['schema'] == 'current-backend-package-scope/1'
     reasons = defaultdict(set)
+    witness_rules = scope.get('archival_code_witnesses', [])
+    witness_names = {row['path'] for row in witness_rules}
 
     def add(name, reason):
         local_path(root, name)
+        if name in witness_names and reason.startswith(('source-dependency:', 'explicit-runtime-or-replay-input')):
+            raise ValueError('Executable dependency cannot be an archival-only witness: ' + name)
         reasons[name].add(reason)
 
     # ls-files is explicitly path-limited: no workspace status/diff/untracked scan.
@@ -200,9 +231,15 @@ def collect(root):
     checked = set()
     native_dependencies = []
     preserved_dependencies = []
+    archival_witnesses = []
     while pending := [p for p in reasons if p not in checked and p.endswith(('.mjs', '.js', '.py'))]:
         for name in pending:
             checked.add(name)
+            witness = archival_code_witness(root, name, witness_rules)
+            if witness is not None:
+                add(witness['manifest'], 'archival-code-manifest:' + name)
+                archival_witnesses.append(witness)
+                continue
             text = (root / name).read_text(encoding='utf-8-sig')
             candidates = set(re.findall(r'''["'](scripts/[\w./-]+\.(?:py|mjs|js))["']''', text))
             for match in re.findall(r'''(?:from\s*|import\s*\(\s*|import\s*)["'](\.[^"']+)["']''', text):
@@ -232,8 +269,11 @@ def collect(root):
                         add(source['preserved_source']['path'], 'preserved-native-code:' + name)
                         preserved_dependencies.append(source)
                         continue
-                    external = native_script_dependency(root, name, dep,
-                        scope.get('native_archive_script_references', []))
+                    try:
+                        external = native_script_dependency(root, name, dep,
+                            scope.get('native_archive_script_references', []))
+                    except FileNotFoundError as error:
+                        raise FileNotFoundError(f'{dep} referenced by {name}; inclusion: {sorted(reasons[name])}') from error
                     add(external['evidence']['path'], 'native-archive-command-evidence:' + name)
                     native_dependencies.append(external)
 
@@ -246,6 +286,7 @@ def collect(root):
             'whole_program_complete': False,
             'producer_corpora_included': False,
             'full_native_source_rebuild_claimed': False,
+            'archival_code_witnesses': sorted(archival_witnesses, key=lambda row: row['path']),
             'preserved_native_source_dependencies': sorted(preserved_dependencies,
                 key=lambda r: (r['referrer'], r['archive_script_path'])),
             'external_native_script_dependencies': sorted(native_dependencies,
@@ -258,7 +299,8 @@ def collect(root):
     if report['missing_static_assets']:
         raise ValueError('Runtime assets missing from package: ' + ', '.join(r['path'] for r in report['missing_static_assets']))
     if report['privacy_findings']:
-        raise ValueError('Package privacy check failed; inspect audit before publication')
+        # Report locations/categories, never the matched private value.
+        raise ValueError('Package privacy check failed: ' + json.dumps(report['privacy_findings']))
     manifest['runtime_boundary'] = report
     return manifest
 

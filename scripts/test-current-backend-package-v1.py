@@ -140,6 +140,46 @@ class PackageTests(unittest.TestCase):
         with self.assertRaises(FileNotFoundError):
             pack.preserved_native_source(self.root, 'fixtures/auditor.py', 'fixtures/native.py', rules + rules)
 
+    def archival_fixture(self):
+        snapshot = self.root / 'docs/frozen'
+        (snapshot / 'fixtures').mkdir(parents=True)
+        code = snapshot / 'fixtures/old.mjs'
+        code.write_bytes(b'// Historical producer staging code, not current replay.\n')
+        commit = 'a' * 40
+        manifest = snapshot / 'MANIFEST.json'
+        manifest.write_text(json.dumps({'schema': 'current-public-interface-baseline/1',
+            'source_commit': commit, 'files': [{'path': 'fixtures/old.mjs',
+                **pack.identity(code), 'url': 'https://example.org/' + commit + '/fixtures/old.mjs'}]}), encoding='utf-8')
+        return [{'path': 'docs/frozen/fixtures/old.mjs', 'manifest': 'docs/frozen/MANIFEST.json',
+                 'member': 'fixtures/old.mjs', 'source_commit': commit}]
+
+    def test_archival_witness_keeps_exact_source_and_explicit_boundary(self):
+        rules = self.archival_fixture()
+        row = pack.archival_code_witness(self.root, rules[0]['path'], rules)
+        self.assertEqual(row['sha256'], pack.identity(self.root / rules[0]['path'])['sha256'])
+        self.assertIn('not imported, executed', row['scope'])
+
+    def test_undeclared_script_still_requires_normal_dependency_walk(self):
+        rules = self.archival_fixture()
+        self.assertIsNone(pack.archival_code_witness(self.root, 'fixtures/current.mjs', rules))
+
+    def test_changed_archival_witness_is_not_silently_exempted(self):
+        rules = self.archival_fixture()
+        (self.root / rules[0]['path']).write_bytes(b'changed')
+        with self.assertRaisesRegex(ValueError, 'identity differs'):
+            pack.archival_code_witness(self.root, rules[0]['path'], rules)
+
+    def test_archival_witness_cannot_relabel_current_source_path(self):
+        rules = self.archival_fixture()
+        rules[0]['path'] = 'fixtures/current.mjs'
+        with self.assertRaisesRegex(AssertionError, 'outside its frozen snapshot'):
+            pack.archival_code_witness(self.root, 'fixtures/current.mjs', rules)
+
+    def test_duplicate_archival_witness_rejected(self):
+        rules = self.archival_fixture()
+        with self.assertRaisesRegex(ValueError, 'Ambiguous'):
+            pack.archival_code_witness(self.root, rules[0]['path'], rules + rules)
+
     def test_wrong_preserved_member_authority_rejects(self):
         rules = self.preserved_source_fixture()
         lock = self.root / 'docs/source-lock.json'
