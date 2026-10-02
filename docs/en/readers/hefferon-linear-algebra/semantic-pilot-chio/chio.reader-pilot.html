@@ -1,0 +1,4101 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Chiò’s Method — Jim Hefferon — original English reading edition</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+pre{max-width:100%;overflow-x:auto;white-space:pre;font-size:.88rem;line-height:1.5;padding:.8rem;background:#eef2f5}pre code{overflow-wrap:normal}pre:focus-visible,.math-region:focus-visible{outline:2px solid #075a92;outline-offset:2px}.source-locator{font-size:.9em;color:#444}#chio-source-notes ol{padding-left:1.6rem}
+.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style><meta name="b40-source-context-contract-sha256" content="9c564fe472ed55753b4d99fd66b523a135e8a9f0ed7ce49a4d71e9c6c2882133"><meta name="b40-source-context-requirements-sha256" content="7985f9a91a469ec8887b702a100b463e2e633b0afd239c2a25997127418e1d12"><meta name="b40-rich-content-closure-sha256" content="0ad76f58e596cb67ff68997973c7c633a4c2c1240518da97db075d106ab4c940"><meta name="b40-chio-source-notes-sha256" content="63a45f7cddae4385d892675d602b923a445bb531cebba2555e4709afdfb17598"></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-31-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/chio.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — 31 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><details><summary>Source, reuse and conversion details</summary><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. The complete active topic is included; comments and the end-of-file marker remain in the editable source.</p><p>Four exercises and their four original supplied answers, two literal code/output listings, 111 mathematical expressions and eight framed matrix entries are retained. Source formulas are not silently corrected. AI-assisted source-preserving conversion and bounded checks; the Current rebuild runtime is documented in the credit below; earlier intermediate work is not reattributed. No human review or exhaustive correctness certification is claimed.</p></details><aside class="notice"><strong>Read the source notes.</strong> The original text has arithmetic, index and proof-display errors. The separate notes below identify them precisely while preserving the original source.</aside><details class="notice" id="chio-source-notes"><summary>Five source corrections and clarifications — may reveal supplied answers</summary><ol><li id="chio-source-note-1" data-source-issue-id="B40-CHIO-SOURCE-001"><p>In the initial elimination display (**), the final row should be (0,9,1): (2,10,2) minus (2,1,1). The later condensation matrix with final row (9,1) and determinant result 25 is correct. Preserve both printed displays and attach this separate correction; do not replace the later correct values.</p><p class="source-locator">Original source: src/det/chio.tex, lines 35–35.</p></li><li id="chio-source-note-2" data-source-issue-id="B40-CHIO-SOURCE-002"><p>The displayed (n-1)-by-(n-1) matrix C uses indices 1 &lt;= i,j &lt;= n-1, with entries a11*a(i+1,j+1)-a(i+1,1)*a(1,j+1). The printed range excludes the first row/column and runs past A.</p><p class="source-locator">Original source: src/det/chio.tex, lines 118–118.</p></li><li id="chio-source-note-3" data-source-issue-id="B40-CHIO-SOURCE-003"><p>The answer suggests any nonzero pivot but its displayed minor still uses row and column 1. Bring a chosen nonzero entry to (1,1) by specified row and column swaps, track the sign of each swap, then apply the ordinary formula to the permuted matrix. Return to the original determinant using that sign. If every entry is zero, the determinant is zero. Do not silently use the printed first-pivot formula for an arbitrary pivot.</p><p class="source-locator">Original source: src/det/chio.tex, lines 336–349.</p></li><li id="chio-source-note-4" data-source-issue-id="B40-CHIO-SOURCE-004"><p>The displayed remaining columns of B omit its first column (a11,0,...,0). For every i,j &gt;= 2 the correct remaining entry is a11*aij-ai1*a1j. In particular, the last two printed second-row entries use ann and a2j where a11 and a21 are required. Retain the source display and read it with these exact qualifications.</p><p class="source-locator">Original source: src/det/chio.tex, lines 409–434.</p></li><li id="chio-source-note-5" data-source-issue-id="B40-CHIO-SOURCE-005"><p>The final comparison is between two expressions for det(B), not the printed set(B). The cancellation gives det(A)=det(C)/a11^(n-2), not det(C)/ann^(n-2), consistently with the topic's earlier statement. It requires the nonzero first pivot over the real-number field used here.</p><p class="source-locator">Original source: src/det/chio.tex, lines 439–441.</p></li></ol><h2 id="chio-proof-clarification">Reading the original formula proof</h2><p>Clarification of the existing first-pivot proof over the real numbers, not a new theorem or a rewrite of the author's source.</p><ol><li>Let n&gt;=3 and a11!=0. Multiply each of the n-1 lower rows by a11, then subtract ai1 times the unchanged first row from row i.</li><li>Row scaling multiplies the determinant by a11^(n-1); subsequent row additions do not change it. The resulting B has first column (a11,0,...,0), and its lower-right block is C with entries a11*aij-ai1*a1j for i,j&gt;=2.</li><li>Laplace expansion along that first column gives det(B)=a11*det(C). Combining the two expressions and dividing by a11 gives det(C)=a11^(n-2)*det(A); division by a11^(n-2) is permitted because a11 is nonzero.</li></ol><p>Read <a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004">Exercise 4</a> and its <a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004.answer.source-order.001">complete supplied answer</a>. The short question is not a standalone proof.</p><p>For scholarly comparison, see Darij Grinberg, Karthik Karnik and Anya Zhang, <a href="https://arxiv.org/html/1606.08193v2#S2.SS1">From Chio Pivotal Condensation to the Matrix-Tree theorem, Theorem 2.1 and footnote 4</a>. That work distinguishes a division-free identity from using division to calculate a determinant. Its wider ring treatment is not silently added to this real-number exposition.</p></details><aside class="notice" id="chio-historical-code"><strong>Historical demonstration code.</strong> The two listings are preserved exactly as source text, including Python 2 syntax and the author’s public-domain code notice. No code was executed or modernized. The source explicitly excludes a zero pivot; a later condensed matrix can also have a zero pivot even when the initial pivot is nonzero.</aside><p>Wide formulas and code listings scroll horizontally. Focus a region and use the arrow keys.</p><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="chiòs-method">Chiò’s Method</h1>
+<p><span id="source-index-1" class="source-index" data-source-index="Chi\`o&#39;s method|("></span></p>
+<p>When doing Gauss’s Method on a matrix that contains only integers people often like to keep it that way. To avoid fractions in the reduction of this matrix</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="37c1f8983c1c5796f8e0a1a2180c1b52453bb4e319e90e86484446dfd7b0a491" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>A</mi>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>5</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>they may start by multiplying the lower rows <span>by <span class="math-region inline" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="d4735e3a265e16eee03f59718b9b5d03019c07d8b6c51f90da3a666eec13ab35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+</math></span></span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="89304e9ff580b85914a3ec40bfd53739ec19e2756587df871c4a8886185a7aa6" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" style="border-collapse:collapse">
+    <mtr><mtd style="text-align:center">
+        <mrow data-mjx-texclass="REL">
+          <mspace width="1.5ex"/>
+          <munderover>
+            <mrow data-mjx-texclass="OP">
+              <mo stretchy="false">⟶</mo>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+                <mtr>
+                  <mtd style="text-align:left">
+                    <mn>2</mn>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <msub>
+                <mi>ρ</mi>
+                <mn>2</mn>
+              </msub>
+              <mrow data-mjx-texclass="ORD">
+                <mpadded width="0">
+                  <mphantom>
+                    <mo stretchy="false">(</mo>
+                  </mphantom>
+                </mpadded>
+              </mrow>
+            </mrow>
+          </munderover>
+          <mspace width="1.5ex"/>
+        </mrow>
+        <mrow data-mjx-texclass="INNER">
+          <mo data-mjx-texclass="OPEN">(</mo>
+          <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>2</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>1</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>1</mn>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>6</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>8</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mn>2</mn>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>2</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>10</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>2</mn>
+              </mtd>
+            </mtr>
+          </mtable>
+          <mo data-mjx-texclass="CLOSE">)</mo>
+        </mrow>
+      </mtd><mtd id="b40-math-000002--mjx-eqn:$*$" data-source-equation-tag="true" style="text-align:center;padding-left:1.4em;text-align:right">
+        <mrow>
+          <mtext>(</mtext>
+          <mrow data-mjx-texclass="ORD">
+            <mo>∗</mo>
+          </mrow>
+          <mtext>)</mtext>
+        </mrow>
+      </mtd></mtr>
+  </mtable>
+</math></span></span></p>
+<p>so that elimination in the first column goes like this.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="46b56f586866494e7cb907e1bf7a0eb9cb1bdcf8e35f34d77709e052b08a6d9c" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" style="border-collapse:collapse">
+    <mtr><mtd style="text-align:center">
+        <mrow data-mjx-texclass="REL">
+          <mspace width="1.5ex"/>
+          <munderover>
+            <mrow data-mjx-texclass="OP">
+              <mo stretchy="false">⟶</mo>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+                <mtr>
+                  <mtd style="text-align:left">
+                    <mo>−</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>1</mn>
+                    </msub>
+                    <mo>+</mo>
+                    <msub>
+                      <mi>ρ</mi>
+                      <mn>3</mn>
+                    </msub>
+                  </mtd>
+                </mtr>
+              </mtable>
+            </mrow>
+            <mrow data-mjx-texclass="ORD">
+              <mo>−</mo>
+              <mn>3</mn>
+              <msub>
+                <mi>ρ</mi>
+                <mn>1</mn>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mn>2</mn>
+              </msub>
+              <mrow data-mjx-texclass="ORD">
+                <mpadded width="0">
+                  <mphantom>
+                    <mo stretchy="false">(</mo>
+                  </mphantom>
+                </mpadded>
+              </mrow>
+            </mrow>
+          </munderover>
+          <mspace width="1.5ex"/>
+        </mrow>
+        <mrow data-mjx-texclass="INNER">
+          <mo data-mjx-texclass="OPEN">(</mo>
+          <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>2</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>1</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>1</mn>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>0</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>5</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mo>−</mo>
+                <mn>5</mn>
+              </mtd>
+            </mtr>
+            <mtr>
+              <mtd style="text-align:center">
+                <mn>0</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>8</mn>
+              </mtd>
+              <mtd style="text-align:center">
+                <mn>0</mn>
+              </mtd>
+            </mtr>
+          </mtable>
+          <mo data-mjx-texclass="CLOSE">)</mo>
+        </mrow>
+      </mtd><mtd id="b40-math-000003--mjx-eqn:$**$" data-source-equation-tag="true" style="text-align:center;padding-left:1.4em;text-align:right">
+        <mrow>
+          <mtext>(</mtext>
+          <mrow data-mjx-texclass="ORD">
+            <mo>∗</mo>
+            <mo>∗</mo>
+          </mrow>
+          <mtext>)</mtext>
+        </mrow>
+      </mtd></mtr>
+  </mtable>
+</math></span></span></p>
+<p>This all-integer approach is easier for mental calculations. And, using integer arithmetic on a computer avoids some sticky issues involving floating point calculations <span class="source-citation">[<a href="#bib-Kahan" data-citation-key="Kahan">Kahan</a>]</span>. So there are sound reasons for this approach.</p>
+<p>Another advantage of this approach is that we can easily apply Laplace’s expansion to the first column <span>of (<span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="983987033f0e117011e531dc33ad9bb15290bba41a414d830fb5cbdbcda2ff17"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+  <mo>∗</mo>
+</math></span>)</span> and then get the determinant by remembering to divide by <span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="4b227777d4dd1fc61c6f884f48641d02b4d121d3fd328cb08b5531fcacdabf8a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+</math></span></span> because <span>of (<span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="684888c0ebb17f374298b65ee2807526c066094c701bcc7ebbe1c1095f494fc1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>∗</mo>
+</math></span>).</span></p>
+<p>Here is the general <span><span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="2a3e15a9a02d3804518452b832349ddbaf68cad1aba2f98c6a6261478eb06001"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+</math></span></span> case of this approach to finding the determinant. First, assuming <span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="5db06fc3185c2c64bfceff0f2fd016a48b2547e7a968a35e7f40a52f0257601f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span>,</span> we can rescale the lower rows.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="b9bb1b46e9c54cca1e15a8ead39c354e223d6d7c1b05dc1961293ebef8164578" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>A</mi>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mrow data-mjx-texclass="REL">
+    <mspace width="1.5ex"/>
+    <munderover>
+      <mrow data-mjx-texclass="OP">
+        <mo stretchy="false">⟶</mo>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:left">
+              <msub>
+                <mi>a</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>1</mn>
+                  <mo>,</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>ρ</mi>
+                <mn>3</mn>
+              </msub>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>1</mn>
+            <mo>,</mo>
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>ρ</mi>
+          <mn>2</mn>
+        </msub>
+        <mrow data-mjx-texclass="ORD">
+          <mpadded width="0">
+            <mphantom>
+              <mo stretchy="false">(</mo>
+            </mphantom>
+          </mpadded>
+        </mrow>
+      </mrow>
+    </munderover>
+    <mspace width="1.5ex"/>
+  </mrow>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>This rescales the determinant by <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="ad3fe133c837f27be5d8b66b8f7b47362819f0cbaafcf3b565a3e79253c390c4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+    <mn>2</mn>
+  </msubsup>
+</math></span>.</span> Now eliminate down the first column.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="827d9694370f56288ae0396e67ca97191605264011f847c7579be6a5c74475b9" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="REL">
+    <mspace width="1.5ex"/>
+    <munderover>
+      <mrow data-mjx-texclass="OP">
+        <mo stretchy="false">⟶</mo>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:left">
+              <mo>−</mo>
+              <msub>
+                <mi>a</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>3</mn>
+                  <mo>,</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>ρ</mi>
+                <mn>1</mn>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mn>3</mn>
+              </msub>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mo>−</mo>
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>2</mn>
+            <mo>,</mo>
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>ρ</mi>
+          <mn>1</mn>
+        </msub>
+        <mo>+</mo>
+        <msub>
+          <mi>ρ</mi>
+          <mn>2</mn>
+        </msub>
+        <mrow data-mjx-texclass="ORD">
+          <mpadded width="0">
+            <mphantom>
+              <mo stretchy="false">(</mo>
+            </mphantom>
+          </mpadded>
+        </mrow>
+      </mrow>
+    </munderover>
+    <mspace width="1.5ex"/>
+  </mrow>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>Let <span><span class="math-region inline" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>C</mi>
+</math></span></span> be the <span><span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="03ebfc2d40db30128bccfcea3aa3e32abd00335d2054f06631f31fe711a3be58"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+  <mo>,</mo>
+  <mn>1</mn>
+</math></span></span> minor. By Laplace the determinant of the above matrix is <span><span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="2954a7a9ec2619f1c0755c80f4f467c4783456e0f58e2d6a802c950d853f2a31"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>C</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span> We thus have <span><span class="math-region inline" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="1084b162175e263ff986e0d3241f3fcc66cd5ac6058be19473b2b74cb7d594a8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+    <mn>2</mn>
+  </msubsup>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>C</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> and since <span><span class="math-region inline" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="5db06fc3185c2c64bfceff0f2fd016a48b2547e7a968a35e7f40a52f0257601f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span></span> this gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="18581253e4e18f716bf8b2d187e3b312303ec9a416aead3aa6e5de0e70f06dfe"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>C</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+</math></span>.</span></p>
+<p>To do larger matrices we must see how to compute the minor’s entries. The pattern above is that each element of the minor is a <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span> determinant.</span> For instance, the entry in the minor’s upper left <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="164aca106a83b7bb3238087ebad0af9785f3f130985d50656d4e9202c905eb14"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>2</mn>
+      <mo>,</mo>
+      <mn>2</mn>
+    </mrow>
+  </msub>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo>−</mo>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>2</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>2</mn>
+    </mrow>
+  </msub>
+</math></span>,</span> which is the <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="a14c9026bbfaa7dff44a85cffe5cfc8d135c0673cf3bcbb5d6621c5b18b5f47d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mo>,</mo>
+  <mn>2</mn>
+</math></span> entry</span> in the above matrix, is the determinant of the matrix of these four elements of <span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span>.</span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="22ffd8ebe93071d2b2eae5a8de60e3a3af3f1768ad58e986c05c811db11370d4" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="1">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>1</mn>
+                      <mo>,</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="2">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>1</mn>
+                      <mo>,</mo>
+                      <mn>2</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="3">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>2</mn>
+                      <mo>,</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="4">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>2</mn>
+                      <mo>,</mo>
+                      <mn>2</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>And the minor’s lower left, the <span><span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="ed0b3c234edde66529913728df99c7d91c2f54b2bb9585a1dbd0c522cb6f49d2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+  <mo>,</mo>
+  <mn>2</mn>
+</math></span></span> entry from above, is the determinant of the matrix of these four.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="70c60745572695da2001b9ba8edbbdb6550211b4310ada7ac6f62d07814fae12" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="1">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>1</mn>
+                      <mo>,</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="2">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>1</mn>
+                      <mo>,</mo>
+                      <mn>2</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="3">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>3</mn>
+                      <mo>,</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow style="border:0.2pt solid currentColor;padding:1pt" data-source-highlight="framebox" data-source-highlight-index="4">
+            <mrow data-mjx-texclass="ORD">
+              <mstyle displaystyle="true" scriptlevel="0">
+                <mrow data-mjx-texclass="ORD">
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>3</mn>
+                      <mo>,</mo>
+                      <mn>2</mn>
+                    </mrow>
+                  </msub>
+                </mrow>
+              </mstyle>
+            </mrow>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>3</mn>
+              <mo>,</mo>
+              <mn>3</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>So, where <span><span class="math-region inline" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span></span> <span>is <span class="math-region inline" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="251b526500bdd5644772ad8271022ced5e565816244838d80973bf3abc7c2d9d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mi>n</mi>
+</math></span></span> for <span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="4a7467fc721145cb92d689e184a7a194fe08dea57c38041eb797802515353c05"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>≥</mo>
+  <mn>3</mn>
+</math></span>,</span> we let Chiò’s matrix <span><span class="math-region inline" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>C</mi>
+</math></span></span> be the <span><span class="math-region inline" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="9c804381b52ff73820f8531bc96ff938de13c1b5a71b0e2dd89ae6f4a4a504c5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+</math></span></span> matrix whose <span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="60326f68b297d8cbf6a40a163079f7babcea706ddc088aabafaba14a4104e8e2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+  <mo>,</mo>
+  <mi>j</mi>
+</math></span></span> entry is the determinant</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="9a612846ceb3ec9cc59d2ffc5fba04fca9eb1efb79548b41cab521aad573963b" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>j</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>i</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>i</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>j</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p>
+<p>where <span><span class="math-region inline" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="875fbc4502b0d242c1949f410fdd0288bc88efc54ee941dcd243c7fa9cda4c56"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+  <mo>&lt;</mo>
+  <mi>i</mi>
+  <mo>,</mo>
+  <mi>j</mi>
+  <mo>≤</mo>
+  <mi>n</mi>
+</math></span>.</span> <em>Chiò’s method</em><span id="source-index-2" class="source-index" data-source-index="Chi\`o&#39;s method"></span> for finding the determinant of <span><span class="math-region inline" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span></span> is that if <span><span class="math-region inline" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="5db06fc3185c2c64bfceff0f2fd016a48b2547e7a968a35e7f40a52f0257601f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span></span> then <span><span class="math-region inline" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="39ec49a36e1cce3da464a387823fe788af43a2d74a83bfce1b3942b3b47ccf17"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>C</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <msubsup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mi>n</mi>
+      <mo>−</mo>
+      <mn>2</mn>
+    </mrow>
+  </msubsup>
+</math></span>.</span> (By the way, nothing in Chiò’s formula requires that the numbers be integers; it applies to reals as well.)</p>
+<p>To illustrate we find the determinant of this <span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="2a3e15a9a02d3804518452b832349ddbaf68cad1aba2f98c6a6261478eb06001"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+</math></span></span> matrix.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="054f553d51bceb57a78e50a5ff0128549d76f3fb4c2847deb1f71f81281b9549" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>A</mi>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>5</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>This is Chiò’s matrix.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="6f094195051c2a8cce4aa89d5c5aa017bce8189c9a9c2812e9d781603e3dd29a" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>C</mi>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="1.69em 0.4em" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>4</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>5</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>5</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>5</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>9</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>The formula for <span><span class="math-region inline" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="2a3e15a9a02d3804518452b832349ddbaf68cad1aba2f98c6a6261478eb06001"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+</math></span></span> matrices <span><span class="math-region inline" data-source-math-id="BFOURMATH000040END" data-source-tex-sha256="94220a23e01e1a7b2b5ec45cf2d24248eb3a35c537388b9c842c877890e12355"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>d</mi>
+  <mi>e</mi>
+  <mi>t</mi>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>C</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+</math></span></span> gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000041END" data-source-tex-sha256="66904d236d351d8d2dc55558d18fa0f08568a4fcf4916ce6dda93117a9f4c099"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mn>50</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>2</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>25</mn>
+</math></span>.</span></p>
+<p>For a larger determinant we must do multiple steps but each involves only <span><span class="math-region inline" data-source-math-id="BFOURMATH000042END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span></span> determinants. So we can often calculate the determinant just by writing down a bit of intermediate information. For instance, with this <span><span class="math-region inline" data-source-math-id="BFOURMATH000043END" data-source-tex-sha256="fbdf3380d7ac618fdb4e42631ac80b41425132eddb25cc767634f89521652057"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>4</mn>
+</math></span></span> matrix</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000044END" data-source-tex-sha256="f722787916dfbe8b57e52a67c79efa9747dc5064c059bd6a1e88df7fa2433f1e" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>A</mi>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>we can mentally doing each of the <span><span class="math-region inline" data-source-math-id="BFOURMATH000045END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span></span> calculations and only write down the <span><span class="math-region inline" data-source-math-id="BFOURMATH000046END" data-source-tex-sha256="2a3e15a9a02d3804518452b832349ddbaf68cad1aba2f98c6a6261478eb06001"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+</math></span></span> result.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000047END" data-source-tex-sha256="d7d79e6e8c676819592053450c83896580050c7ee4a46845aebc05c81cb067f7" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>C</mi>
+    <mn>3</mn>
+  </msub>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="1.69em 1.69em 0.4em" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>6</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>7</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>Note that the determinant of this is <span><span class="math-region inline" data-source-math-id="BFOURMATH000048END" data-source-tex-sha256="3bcf1df28a7aedc6f8195f5c084058b1cb3a0b0dc6e0d8d2ecd404da28e2b399"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mn>4</mn>
+      <mo>−</mo>
+      <mn>2</mn>
+    </mrow>
+  </msubsup>
+  <mo>=</mo>
+  <msup>
+    <mn>3</mn>
+    <mn>2</mn>
+  </msup>
+</math></span></span> times the determinant <span>of <span class="math-region inline" data-source-math-id="BFOURMATH000049END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span>.</span></p>
+<p>To finish, iterate. Here is Chiò’s matrix of <span><span class="math-region inline" data-source-math-id="BFOURMATH000050END" data-source-tex-sha256="aa663e271377445dff58aff38e430135489e71cfcb674e437bd605706a8e8221"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>C</mi>
+    <mn>3</mn>
+  </msub>
+</math></span>.</span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000051END" data-source-tex-sha256="2745b6f3319aade97ab36421a1dca12b13b688613da65dd68d07f604ef861d59" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>C</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="1.69em 0.4em" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>6</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>2</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>6</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>3</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>7</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>6</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mo>−</mo>
+                  <mn>1</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="INNER">
+            <mo data-mjx-texclass="OPEN">|</mo>
+            <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>6</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+              </mtr>
+              <mtr>
+                <mtd style="text-align:center">
+                  <mn>0</mn>
+                </mtd>
+                <mtd style="text-align:center">
+                  <mn>2</mn>
+                </mtd>
+              </mtr>
+            </mtable>
+            <mo data-mjx-texclass="CLOSE">|</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>15</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>48</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>6</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>12</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>The determinant of this matrix is <span><span class="math-region inline" data-source-math-id="BFOURMATH000052END" data-source-tex-sha256="e7f6c011776e8db7cd330b54174fd76f7d0216b612387a5ffcfb81e6f0919683"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>6</mn>
+</math></span> times</span> the determinant <span>of <span class="math-region inline" data-source-math-id="BFOURMATH000053END" data-source-tex-sha256="aa663e271377445dff58aff38e430135489e71cfcb674e437bd605706a8e8221"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>C</mi>
+    <mn>3</mn>
+  </msub>
+</math></span>.</span> The determinant of <span><span class="math-region inline" data-source-math-id="BFOURMATH000054END" data-source-tex-sha256="0712b486b3e6cec7342bfe1efd30266a20f8233219fa854c652a0108193cb2ce"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>C</mi>
+    <mn>2</mn>
+  </msub>
+</math></span></span> is <span><span class="math-region inline" data-source-math-id="BFOURMATH000055END" data-source-tex-sha256="9537f32ec7599e1ae953af6c9f929fe747ff9dadf79a9beff1f304c550173011"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>108</mn>
+</math></span>.</span> So <span><span class="math-region inline" data-source-math-id="BFOURMATH000056END" data-source-tex-sha256="b4515a9f6efeda7a31bc341f91f8250d50bdded00ecc3c8916f391b43227a8d2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>108</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mo stretchy="false">(</mo>
+  <msup>
+    <mn>3</mn>
+    <mn>2</mn>
+  </msup>
+  <mo>⋅</mo>
+  <mn>6</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>2</mn>
+</math></span>.</span></p>
+<p>Laplace’s expansion formula reduces the calculation of <span>an <span class="math-region inline" data-source-math-id="BFOURMATH000057END" data-source-tex-sha256="251b526500bdd5644772ad8271022ced5e565816244838d80973bf3abc7c2d9d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mi>n</mi>
+</math></span></span> determinant to the evaluation of a number of <span><span class="math-region inline" data-source-math-id="BFOURMATH000058END" data-source-tex-sha256="9c804381b52ff73820f8531bc96ff938de13c1b5a71b0e2dd89ae6f4a4a504c5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+</math></span> ones.</span> Chiò’s formula is also recursive but it reduces <span>an <span class="math-region inline" data-source-math-id="BFOURMATH000059END" data-source-tex-sha256="251b526500bdd5644772ad8271022ced5e565816244838d80973bf3abc7c2d9d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mi>n</mi>
+</math></span></span> determinant to a <span>single <span class="math-region inline" data-source-math-id="BFOURMATH000060END" data-source-tex-sha256="9c804381b52ff73820f8531bc96ff938de13c1b5a71b0e2dd89ae6f4a4a504c5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo stretchy="false">(</mo>
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo stretchy="false">)</mo>
+</math></span></span> determinant, calculated from a number of <span><span class="math-region inline" data-source-math-id="BFOURMATH000061END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span></span> determinants. However, for large matrices Gauss’s Method is better than either of these; for instance, it takes roughly half as many operations as Chiò’s Method <span class="source-citation">[<a href="#bib-FullerLogan" data-citation-key="FullerLogan">Fuller &amp; Logan</a>]</span>.</p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<section id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise-group.source-order.0001" class="source-exercise-group" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise-group.source-order.0001">
+<h4>Exercises</h4>
+<ol type="1">
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10001" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10001" data-source-number="1">
+<p><strong>Exercise 1</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10001.answer.source-order.001">Supplied answer</a></p>
+<p>Use Chiò’s Method to find each determinant.</p>
+<ol type="a">
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000062END" data-source-tex-sha256="f606e8794eea56f0aa71f034e69aaf021e7793d64ca5564a6212c4dee5a0260a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>5</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>6</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>7</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>8</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>9</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000063END" data-source-tex-sha256="591740551b86b039608b2649b950694b1da240a2f5cc2ad58e2425656d2a0dda"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p></li>
+</ol>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10001.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10001.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10001">Back to Exercise 1</a></p>
+<p><strong>Answer.</strong></p>
+<ol type="a">
+<li><p>Chiò’s matrix is</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000064END" data-source-tex-sha256="f45b05d97e8b48f16ee5ebcf9acec804d5e53ca266fa1a5f66f27f85ab38f74e" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>C</mi>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>3</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>6</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>6</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>12</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>and its determinant is <span><span class="math-region inline" data-source-math-id="BFOURMATH000065END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></p></li>
+<li><p>Start with</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000066END" data-source-tex-sha256="5867467846e3b85615ab78cebe6993e62db2ca354164b520c0bb303862f5d7d0" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>C</mi>
+    <mn>3</mn>
+  </msub>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>8</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>and then the next step</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000067END" data-source-tex-sha256="ea3e398ce5df784f84f4c226719227f6b1a19dd60106a8bc874df3b4e81b37e7" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <msub>
+    <mi>C</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>12</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>28</mn>
+        </mtd>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>with determinant <span><span class="math-region inline" data-source-math-id="BFOURMATH000068END" data-source-tex-sha256="bbf3d8cc5510e033a752fee2d2cd582e1a3e9d0e7915861456ab83054d00568a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>C</mi>
+    <mn>2</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>64</mn>
+</math></span>.</span> The determinant of the original matrix is thus <span><span class="math-region inline" data-source-math-id="BFOURMATH000069END" data-source-tex-sha256="9f36609735b0bcb41dddb6f7be7fac04c29fc3ba58d506880bac8cfdcded07bc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>64</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mo stretchy="false">(</mo>
+  <msup>
+    <mn>2</mn>
+    <mn>2</mn>
+  </msup>
+  <mo>⋅</mo>
+  <msup>
+    <mn>2</mn>
+    <mn>1</mn>
+  </msup>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>8</mn>
+</math></span></span></p></li>
+</ol>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10002" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10002" data-source-number="2">
+<p><strong>Exercise 2</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10002.answer.source-order.001">Supplied answer</a></p>
+<p>What if <span><span class="math-region inline" data-source-math-id="BFOURMATH000070END" data-source-tex-sha256="8f573136a2832fb7468abdb6a9b7aed6261de2d8192a6619291a5d2ac396d26a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+</math></span></span> is zero? <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10002.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10002.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10002">Back to Exercise 2</a></p>
+<p><strong>Answer.</strong> The same construction as was used for the <span><span class="math-region inline" data-source-math-id="BFOURMATH000071END" data-source-tex-sha256="2a3e15a9a02d3804518452b832349ddbaf68cad1aba2f98c6a6261478eb06001"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+</math></span> case</span> above shows that in place of <span><span class="math-region inline" data-source-math-id="BFOURMATH000072END" data-source-tex-sha256="8f573136a2832fb7468abdb6a9b7aed6261de2d8192a6619291a5d2ac396d26a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+</math></span></span> we can select any nonzero <span>entry <span class="math-region inline" data-source-math-id="BFOURMATH000073END" data-source-tex-sha256="5590ebce8ca407f517f7b73a4ca18788d6f12affdfbae6079fe3c548ca9ef97f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mi>i</mi>
+      <mo>,</mo>
+      <mi>j</mi>
+    </mrow>
+  </msub>
+</math></span>.</span> Entry <span><span class="math-region inline" data-source-math-id="BFOURMATH000074END" data-source-tex-sha256="56256a68bbcc7aadcd82dc2a841c69c4711e63186059cd886dfa566fc8859455"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>c</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mi>p</mi>
+      <mo>,</mo>
+      <mi>q</mi>
+    </mrow>
+  </msub>
+</math></span></span> of Chiò’s matrix is the value of this determinant</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000075END" data-source-tex-sha256="82290ac3efca7bcf5b931a99d45971c43d7047dfb3bed0346fd6f49fd1b170f8" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">|</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>q</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>p</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>p</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>q</mi>
+              <mo>+</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">|</mo>
+  </mrow>
+</math></span></span></p>
+<p>where <span><span class="math-region inline" data-source-math-id="BFOURMATH000076END" data-source-tex-sha256="6cf3ac30fd950b71e6d2f7e1c437f47b2b7e9a993fb636735be70c9687e6df69"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>p</mi>
+  <mo>+</mo>
+  <mn>1</mn>
+  <mo>≠</mo>
+  <mi>i</mi>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000077END" data-source-tex-sha256="83bc677173ebdb803666e2d8a110f52b89ad76de9c8913058af638eae085a713"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>q</mi>
+  <mo>+</mo>
+  <mn>1</mn>
+  <mo>≠</mo>
+  <mi>j</mi>
+</math></span>.</span></p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10003" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10003" data-source-number="3">
+<p><strong>Exercise 3</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10003.answer.source-order.001">Supplied answer</a></p>
+<p>The <em>Rule of Sarrus</em><span id="source-index-3" class="source-index" data-source-index="Sarrus, Rule of"></span><span id="source-index-4" class="source-index" data-source-index="Rule of Sarrus"></span> is a mnemonic that many people learn for the <span><span class="math-region inline" data-source-math-id="BFOURMATH000078END" data-source-tex-sha256="2a3e15a9a02d3804518452b832349ddbaf68cad1aba2f98c6a6261478eb06001"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>3</mn>
+</math></span></span> determinant formula. To the right of the matrix, copy the first two columns.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000079END" data-source-tex-sha256="0c954ca2c66f8043478eba52a9ea5680a5c2aa2c6855030b4c5ed079d11ef312" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="center center center center center" columnspacing="1em" rowspacing="4pt" columnlines="none none solid none" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:center">
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>b</mi>
+      </mtd>
+      <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+        <mi>c</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>b</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:center">
+        <mi>d</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>e</mi>
+      </mtd>
+      <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+        <mi>f</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>d</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>e</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:center">
+        <mi>g</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>h</mi>
+      </mtd>
+      <mtd data-source-column-divider="3" style="text-align:center;border-right:0.06em solid currentColor;padding-right:0.4em">
+        <mi>i</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>g</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mi>h</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>Then the determinant is the sum of the three upper-left to lower-right diagonals minus the three lower-left to upper-right diagonals <span><span class="math-region inline" data-source-math-id="BFOURMATH000080END" data-source-tex-sha256="2c529fc515c11fb761e347ef2d3a38325b7cc9a0567aa22a3a1a27af33c759c4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mi>e</mi>
+  <mi>i</mi>
+  <mo>+</mo>
+  <mi>b</mi>
+  <mi>f</mi>
+  <mi>g</mi>
+  <mo>+</mo>
+  <mi>c</mi>
+  <mi>d</mi>
+  <mi>h</mi>
+  <mo>−</mo>
+  <mi>g</mi>
+  <mi>e</mi>
+  <mi>c</mi>
+  <mo>−</mo>
+  <mi>h</mi>
+  <mi>f</mi>
+  <mi>a</mi>
+  <mo>−</mo>
+  <mi>i</mi>
+  <mi>d</mi>
+  <mi>b</mi>
+</math></span>.</span> Count the operations involved in Sarrus’s formula and in Chiò’s. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10003.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10003.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10003">Back to Exercise 3</a></p>
+<p><strong>Answer.</strong> Sarrus’s formula uses <span><span class="math-region inline" data-source-math-id="BFOURMATH000081END" data-source-tex-sha256="6b51d431df5d7f141cbececcf79edf3dd861c3b4069f0b11661a3eefacbba918"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>12</mn>
+</math></span> multiplications</span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000082END" data-source-tex-sha256="ef2d127de37b942baad06145e54b0c619a1f22327b2ebbcfbec78f5564afe39d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+</math></span></span> additions (including the subtractions in with the additions). Chiò’s formula uses two multiplications and an addition (which is actually a subtraction) for each of the four <span><span class="math-region inline" data-source-math-id="BFOURMATH000083END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span> determinants,</span> and another two multiplications and an addition for the <span><span class="math-region inline" data-source-math-id="BFOURMATH000084END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span> Chió’s</span> determinant, as well as a final division by <span><span class="math-region inline" data-source-math-id="BFOURMATH000085END" data-source-tex-sha256="8f573136a2832fb7468abdb6a9b7aed6261de2d8192a6619291a5d2ac396d26a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+</math></span>.</span> That’s eleven multiplication/divisions and five addition/subtractions. So Chiò is the winner.</p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004" data-source-number="4">
+<p><strong>Exercise 4</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004.answer.source-order.001">Supplied answer</a></p>
+<p>Prove Chiò’s formula. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.exercise.source-order.10004">Back to Exercise 4</a></p>
+<p><strong>Answer.</strong> Consider an <span><span class="math-region inline" data-source-math-id="BFOURMATH000086END" data-source-tex-sha256="251b526500bdd5644772ad8271022ced5e565816244838d80973bf3abc7c2d9d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mi>n</mi>
+</math></span></span> matrix.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000087END" data-source-tex-sha256="d1da4a0eced5b011e36b44011220deaf47b747a853d670498ea7890c1947c4c0" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mi>A</mi>
+  <mo>=</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center"/>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="ORD">
+            <mo>⋮</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>Rescale every row but the first <span>by <span class="math-region inline" data-source-math-id="BFOURMATH000088END" data-source-tex-sha256="8f573136a2832fb7468abdb6a9b7aed6261de2d8192a6619291a5d2ac396d26a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+</math></span>.</span></p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000089END" data-source-tex-sha256="4421f2728b3ae05e45bd40dffaa1fe3852a6aecf2ba34fd0040baef586c12d23" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="REL">
+    <mspace width="1.5ex"/>
+    <munderover>
+      <mrow data-mjx-texclass="OP">
+        <mo stretchy="false">⟶</mo>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:left">
+              <msub>
+                <mi>a</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>1</mn>
+                  <mo>,</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>ρ</mi>
+                <mn>3</mn>
+              </msub>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:left">
+              <mrow data-mjx-texclass="ORD">
+                <mo>⋮</mo>
+              </mrow>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:left">
+              <msub>
+                <mi>a</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>1</mn>
+                  <mo>,</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>ρ</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mi>n</mi>
+                </mrow>
+              </msub>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>1</mn>
+            <mo>,</mo>
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>ρ</mi>
+          <mn>2</mn>
+        </msub>
+        <mrow data-mjx-texclass="ORD">
+          <mpadded width="0">
+            <mphantom>
+              <mo stretchy="false">(</mo>
+            </mphantom>
+          </mpadded>
+        </mrow>
+      </mrow>
+    </munderover>
+    <mspace width="1.5ex"/>
+  </mrow>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center"/>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="ORD">
+            <mo>⋮</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>That rescales the determinant by a factor <span>of <span class="math-region inline" data-source-math-id="BFOURMATH000090END" data-source-tex-sha256="f13e64f5b6433acc7b53295f0a46ef3a8bbd857b94baef30ea465d636d06683e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mi>n</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </msubsup>
+</math></span>.</span></p>
+<p>Next perform the row operation <span><span class="math-region inline" data-source-math-id="BFOURMATH000091END" data-source-tex-sha256="7d9eab8adbe3af305be0d28f10c787001ea0c6727f300ecd963c092c73243038"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo>−</mo>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mi>i</mi>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <msub>
+    <mi>ρ</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>ρ</mi>
+    <mi>i</mi>
+  </msub>
+</math></span></span> on each <span>row <span class="math-region inline" data-source-math-id="BFOURMATH000092END" data-source-tex-sha256="54401554ba2f98666dfaa874ddca3bccb097707d23d12010ba5226d9b48daafd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>i</mi>
+  <mo>&gt;</mo>
+  <mn>1</mn>
+</math></span>.</span> These row operations don’t change the determinant.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000093END" data-source-tex-sha256="802b8fb548e49d5f797fb345d74f58946882ea619a366ae09f7ba8ecd88bf792" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="REL">
+    <mspace width="1.5ex"/>
+    <munderover>
+      <mrow data-mjx-texclass="OP">
+        <mo stretchy="false">⟶</mo>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mtable data-mjx-smallmatrix="true" columnalign="left" columnspacing="0em" rowspacing="0.1em" style="border-collapse:collapse">
+          <mtr>
+            <mtd style="text-align:left">
+              <mo>−</mo>
+              <msub>
+                <mi>a</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mn>3</mn>
+                  <mo>,</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>ρ</mi>
+                <mn>1</mn>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mn>3</mn>
+              </msub>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:left">
+              <mpadded lspace=".5width">
+                <mpadded width="0" lspace="-.5width">
+                  <mo>⋮</mo>
+                </mpadded>
+                <mphantom>
+                  <mi/>
+                  <mo>−</mo>
+                  <msub>
+                    <mi>a</mi>
+                    <mrow data-mjx-texclass="ORD">
+                      <mn>3</mn>
+                      <mo>,</mo>
+                      <mn>1</mn>
+                    </mrow>
+                  </msub>
+                  <msub>
+                    <mi>ρ</mi>
+                    <mn>1</mn>
+                  </msub>
+                  <mo>+</mo>
+                  <msub>
+                    <mi>ρ</mi>
+                    <mn>3</mn>
+                  </msub>
+                  <mi/>
+                </mphantom>
+              </mpadded>
+            </mtd>
+          </mtr>
+          <mtr>
+            <mtd style="text-align:left">
+              <mo>−</mo>
+              <msub>
+                <mi>a</mi>
+                <mrow data-mjx-texclass="ORD">
+                  <mi>n</mi>
+                  <mo>,</mo>
+                  <mn>1</mn>
+                </mrow>
+              </msub>
+              <msub>
+                <mi>ρ</mi>
+                <mn>1</mn>
+              </msub>
+              <mo>+</mo>
+              <msub>
+                <mi>ρ</mi>
+                <mi>n</mi>
+              </msub>
+            </mtd>
+          </mtr>
+        </mtable>
+      </mrow>
+      <mrow data-mjx-texclass="ORD">
+        <mo>−</mo>
+        <msub>
+          <mi>a</mi>
+          <mrow data-mjx-texclass="ORD">
+            <mn>2</mn>
+            <mo>,</mo>
+            <mn>1</mn>
+          </mrow>
+        </msub>
+        <msub>
+          <mi>ρ</mi>
+          <mn>1</mn>
+        </msub>
+        <mo>+</mo>
+        <msub>
+          <mi>ρ</mi>
+          <mn>2</mn>
+        </msub>
+        <mrow data-mjx-texclass="ORD">
+          <mpadded width="0">
+            <mphantom>
+              <mo stretchy="false">(</mo>
+            </mphantom>
+          </mpadded>
+        </mrow>
+      </mrow>
+    </munderover>
+    <mspace width="1.5ex"/>
+  </mrow>
+</math></span></span></p>
+<p>The result is a <span>matrix <span class="math-region inline" data-source-math-id="BFOURMATH000094END" data-source-tex-sha256="df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>B</mi>
+</math></span></span> whose first row is unchanged, whose first column is all zeros (except for the <span><span class="math-region inline" data-source-math-id="BFOURMATH000095END" data-source-tex-sha256="03ebfc2d40db30128bccfcea3aa3e32abd00335d2054f06631f31fe711a3be58"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+  <mo>,</mo>
+  <mn>1</mn>
+</math></span></span> entry of <span><span class="math-region inline" data-source-math-id="BFOURMATH000096END" data-source-tex-sha256="8f573136a2832fb7468abdb6a9b7aed6261de2d8192a6619291a5d2ac396d26a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+</math></span>),</span> and whose remaining entries are these.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000097END" data-source-tex-sha256="e0368f56c5794320a28517827979ef99c9f67a84639b0fc83a450d4ee3e0ea8a" tabindex="0" role="region" aria-label="Original mathematical expression; scroll horizontally if needed"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>2</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mrow data-mjx-texclass="ORD">
+            <mo>⋮</mo>
+          </mrow>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>2</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <mo>⋯</mo>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+              <mo>−</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+        </mtd>
+        <mtd style="text-align:center">
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <mo>−</mo>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mi>n</mi>
+              <mo>,</mo>
+              <mn>1</mn>
+            </mrow>
+          </msub>
+          <msub>
+            <mi>a</mi>
+            <mrow data-mjx-texclass="ORD">
+              <mn>1</mn>
+              <mo>,</mo>
+              <mi>n</mi>
+            </mrow>
+          </msub>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+</math></span></span></p>
+<p>The determinant of this <span><span class="math-region inline" data-source-math-id="BFOURMATH000098END" data-source-tex-sha256="251b526500bdd5644772ad8271022ced5e565816244838d80973bf3abc7c2d9d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mi>n</mi>
+</math></span></span> matrix <span><span class="math-region inline" data-source-math-id="BFOURMATH000099END" data-source-tex-sha256="df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>B</mi>
+</math></span></span> is <span><span class="math-region inline" data-source-math-id="BFOURMATH000100END" data-source-tex-sha256="f13e64f5b6433acc7b53295f0a46ef3a8bbd857b94baef30ea465d636d06683e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msubsup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mi>n</mi>
+      <mo>−</mo>
+      <mn>1</mn>
+    </mrow>
+  </msubsup>
+</math></span> times</span> the determinant <span>of <span class="math-region inline" data-source-math-id="BFOURMATH000101END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span>.</span></p>
+<p>Denote <span>by <span class="math-region inline" data-source-math-id="BFOURMATH000102END" data-source-tex-sha256="6b23c0d5f35d1b11f9b683f0b0a617355deb11277d91ae091d399c655b87940d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>C</mi>
+</math></span></span> the <span><span class="math-region inline" data-source-math-id="BFOURMATH000103END" data-source-tex-sha256="03ebfc2d40db30128bccfcea3aa3e32abd00335d2054f06631f31fe711a3be58"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+  <mo>,</mo>
+  <mn>1</mn>
+</math></span></span> minor of the matrix <span><span class="math-region inline" data-source-math-id="BFOURMATH000104END" data-source-tex-sha256="df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>B</mi>
+</math></span>,</span> that is, the submatrix consisting of the last <span><span class="math-region inline" data-source-math-id="BFOURMATH000105END" data-source-tex-sha256="51aeea8ffa05d2620d35c87463465885e77df13171d5708746df1a9f36d47f35"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>n</mi>
+  <mo>−</mo>
+  <mn>1</mn>
+</math></span></span> rows and columns. The Laplace expansion down the first column of <span><span class="math-region inline" data-source-math-id="BFOURMATH000106END" data-source-tex-sha256="df7e70e5021544f4834bbee64a9e3789febc4be81470df629cad6ddb03320a5c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>B</mi>
+</math></span></span> gives that its determinant is <span><span class="math-region inline" data-source-math-id="BFOURMATH000107END" data-source-tex-sha256="c13666f61cf0ff105cda409e8c869247b0819eaca52a9f085d5ec7ad6f6174a1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>B</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mn>1</mn>
+  <msup>
+    <mo stretchy="false">)</mo>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>+</mo>
+      <mn>1</mn>
+    </mrow>
+  </msup>
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>C</mi>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p>
+<p>If <span><span class="math-region inline" data-source-math-id="BFOURMATH000108END" data-source-tex-sha256="5db06fc3185c2c64bfceff0f2fd016a48b2547e7a968a35e7f40a52f0257601f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mn>1</mn>
+      <mo>,</mo>
+      <mn>1</mn>
+    </mrow>
+  </msub>
+  <mo>≠</mo>
+  <mn>0</mn>
+</math></span></span> then setting equal the two expressions for <span><span class="math-region inline" data-source-math-id="BFOURMATH000109END" data-source-tex-sha256="046290660f04456107897c8f767fe046b41caf4d8c481e092abae8a8956f8d0f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mo stretchy="false">(</mo>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+  <mi>B</mi>
+  <mo stretchy="false">)</mo>
+</math></span></span> and canceling gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000110END" data-source-tex-sha256="512e89f005de0e48e43bc55d0bb927a5452ef3f6c32df2e624ac518016094467"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>A</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo data-mjx-texclass="OP" movablelimits="true">det</mo>
+  <mo stretchy="false">(</mo>
+  <mi>C</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <msubsup>
+    <mi>a</mi>
+    <mrow data-mjx-texclass="ORD">
+      <mi>n</mi>
+      <mo>,</mo>
+      <mi>n</mi>
+    </mrow>
+    <mrow data-mjx-texclass="ORD">
+      <mi>n</mi>
+      <mo>−</mo>
+      <mn>2</mn>
+    </mrow>
+  </msubsup>
+</math></span>.</span></p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+</ol>
+</section>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><strong>Computer Code</strong></p>
+<p>This implements Chiò’s Method. It is in the computer language Python.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.lstlisting.source-order.0001" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.lstlisting.source-order.0001">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>#!/usr/bin/python
+# chio.py
+#  Calculate a determinant using Chio&#39;s method.
+# Jim Hefferon; Public Domain
+# For demonstration only; for instance, does not handle the M[0][0]=0 case
+
+def det_two(a,b,c,d):
+    &quot;&quot;&quot;Return the determinant of the 2x2 matrix [[a,b], [c,d]]&quot;&quot;&quot;
+    return a*d-b*c
+
+def chio_mat(M):
+    &quot;&quot;&quot;Return the Chio matrix as a list of the rows
+        M  nxn matrix, list of rows&quot;&quot;&quot;
+    dim=len(M)
+    C=[]
+    for row in range(1,dim):
+        C.append([])
+        for col in range(1,dim):  
+            C[-1].append(det_two(M[0][0], M[0][col], M[row][0], M[row][col]))
+    return C
+
+def chio_det(M,show=None):
+    &quot;&quot;&quot;Find the determinant of M by Chio&#39;s method
+        M  mxm matrix, list of rows&quot;&quot;&quot;
+    dim=len(M)
+    key_elet=M[0][0]
+    if dim==1:
+        return key_elet
+    return chio_det(chio_mat(M))/(key_elet**(dim-2))
+
+
+if __name__==&#39;__main__&#39;:
+    M=[[2,1,1], [3,4,-1], [1,5,1]]
+    print &quot;M=&quot;,M
+    print &quot;Det is&quot;, chio_det(M)</code></pre>
+</div>
+<p>This is the result of calling the program from a command line.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.lstlisting.source-order.0002" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.det.chio.tex.lstlisting.source-order.0002">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>$ python chio.py
+M=[[2, 1, 1], [3, 4, -1], [1, 5, 1]]
+Det is 25</code></pre>
+</div>
+<p><span id="source-index-5" class="source-index" data-source-index="Chi\`o&#39;s method|)"></span></p>
+<h2 id="source-bibliography">References cited in this section</h2>
+<div id="bib-Kahan" class="source-bibliography-entry">
+<p><strong>Kahan</strong></p>
+<p>William Kahan, <em>Chiò’s Trick for Linear Equations with Integer Coefficients</em>, <a href="http://www.cs.berkeley.edu/~wkahan/MathH110/chio.pdf" class="uri">http://www.cs.berkeley.edu/~wkahan/MathH110/chio.pdf</a>, 1998, retrieved 2012-Jun-18.</p>
+</div>
+<div id="bib-FullerLogan" class="source-bibliography-entry">
+<p><strong>Fuller &amp; Logan</strong></p>
+<p>L.E. Fuller &amp; J.D. Logan, <em>On the Evaluation of Determinants by Chiò’s Method</em>, p 49-52, in Linear Algebra Gems, Carlson, et al, Mathematical Association of America, 2002.</p>
+</div>
+</main><footer><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-31-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/chio.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>
