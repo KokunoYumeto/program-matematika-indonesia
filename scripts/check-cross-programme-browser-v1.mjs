@@ -32,7 +32,7 @@ try{
       assert.equal(await page.locator('[data-advanced-snapshot="801f1868"]').count(),1);
       const b40Expanded=page.locator('#core-B40 a[data-b40-expanded="v1"]');
       assert.equal(await b40Expanded.count(),1);
-      assert.ok((await b40Expanded.innerText()).includes(locale==='en'?'33 sections through Computer Graphics':'33 bagian hingga Grafika Komputer'));
+      assert.ok((await b40Expanded.innerText()).includes(locale==='en'?'34 sections through Complex Vector Spaces':'34 bagian hingga Ruang Vektor Kompleks'));
       assert.equal(await page.locator('#advanced-AG-RG details ol li').count(),6);
       const route=JSON.parse(await readFile(resolve(dir,'d80-prerequisite-route-v1.json')));
       const provider=page.locator('#core-D80 aside[data-d80-prerequisite="provider"]');

@@ -386,6 +386,15 @@ def replay(path, node):
             if result.returncode:
                 raise RuntimeError(parts[0] + '\n' + (result.stderr + result.stdout)[-6000:])
             checks.append({'script': parts[0], 'arguments': parts[1:], 'exit_code': 0})
+        # The newly shipped D20 browser must be reproducible from the package
+        # itself, not only reachable through already generated capsule links.
+        d20_script = 'test-d20-native-current-package-v1.py'
+        result = subprocess.run([sys.executable, str(root / 'scripts' / d20_script)],
+                                cwd=root, capture_output=True, text=True, timeout=180,
+                                encoding='utf-8', errors='replace')
+        if result.returncode:
+            raise RuntimeError(d20_script + '\n' + (result.stderr + result.stdout)[-6000:])
+        checks.append({'script': d20_script, 'arguments': [], 'exit_code': 0})
         for name in ['course-capsules.json', 'course-capsules.jsonl', 'manifest.json']:
             expected = identity(root / 'backend/course-capsule-v1/generated' / name)
             assert identity(root / 'replay/a/generated' / name) == expected, 'Replay differs: ' + name
@@ -397,6 +406,7 @@ def replay(path, node):
             'shipped_outputs_reproduced': True, 'source_zip_repacked_byte_identically': True,
             'producer_sources_used': False,
             'core_advanced_route_replay': True,
+            'd20_native_metadata_consumer_replay': True,
             'd100_native_html_evidence_validation': True,
             'd100_original_data_evidence_validation': True,
             'd100_classical_data_evidence_validation': True,

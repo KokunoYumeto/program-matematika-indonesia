@@ -47,8 +47,8 @@ assert.equal(b40Course.current_reading_resources.length,2);
 const expanded=b40Course.current_reading_resources.find(r=>r.marker==='data-b40-expanded="v1"');
 assert.equal(expanded.href,'https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/');
 assert.equal(expanded.content_language,'en');
-assert.equal(expanded.source_commit,'510658a897f399bdaf8916fd3ae309648aa0c4a9');
-assert.deepEqual(expanded.coverage,{sections:33,native_units:2577,full_book:false,proof_dependency_closure:false});
+assert.equal(expanded.source_commit,'77ea80a0365e5fc3e3b593f412aa839e839a325e');
+assert.deepEqual(expanded.coverage,{sections:34,native_units:2592,full_book:false,proof_dependency_closure:false});
 for(const resource of b40Course.current_reading_resources){
   const manifestBytes=await readFile(resolve(root,resource.source_manifest.path));
   assert.equal(manifestBytes.length,resource.source_manifest.bytes);
@@ -121,8 +121,8 @@ for (const locale of ['id','en']) {
   assert.ok(b40.includes('data-b40-expanded="v1"'));
   assert.ok(b40.includes('href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/" hreflang="en"'));
   assert.ok(b40.includes(locale==='en'?'(partial book)':'(sebagian buku)'));
-  assert.ok(b40.includes(locale==='en'?'33 sections through Computer Graphics':'33 bagian hingga Grafika Komputer'));
-  assert.ok(!/\b(?:30|31|32) (?:sections|bagian)\b/.test(b40));
+  assert.ok(b40.includes(locale==='en'?'34 sections through Complex Vector Spaces':'34 bagian hingga Ruang Vektor Kompleks'));
+  assert.ok(!/\b(?:30|31|32|33) (?:sections|bagian)\b/.test(b40));
   for(const resource of b40Course.current_reading_resources){
     assert.ok(b40.includes(resource.marker+' href="'+resource.href+'" hreflang="'+resource.content_language+'"'));
     assert.ok(b40.includes(resource.labels[locale]));
@@ -161,6 +161,8 @@ for (const locale of ['id','en']) {
       'Current D60 consumer must survive the upstream-route merge');
     assert.ok(html.includes('backend/d80/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html')),
       'Current D80 consumer must survive the upstream-route merge');
+    assert.ok(html.includes('backend/d20/native-ledger/'+(locale==='en'?'ledger-en.html':'ledger.html')),
+      'Current D20 consumer must survive the upstream-route merge');
     assert.ok(!/^(?:<{7}|={7}|>{7})/m.test(html),'No unresolved Git merge markers');
     facts.push({path,bytes:b.length,sha256:sha(b)});
   }
@@ -173,9 +175,10 @@ const result={schema:'current-core-advanced-integration/1',state:'pass',core_rol
   advanced_courses:72,advanced_lessons:1061,course_reading_edges:184,
   all_six_current_shells_have_both_route_and_d60_tools:true,
   all_six_current_shells_have_d80_tools:true,
+  all_six_current_shells_have_d20_tools:true,
   b40_existing_english_foundations_preserved_in_both_programmes:true,
   b40_expanded_english_reader_preserved_in_both_programmes:true,
-  b40_machine_discovery:{current_readers:2,expanded_sections:33,expanded_native_units:2577,section_indices_hash_bound:true,frozen_snapshot_preserved:true},
+  b40_machine_discovery:{current_readers:2,expanded_sections:34,expanded_native_units:2592,section_indices_hash_bound:true,frozen_snapshot_preserved:true},
   d80_source_bound_prerequisite_readings:3,
   d80_distinct_relationships:1,
   d80_forward_reverse_localized_renderings:4,
