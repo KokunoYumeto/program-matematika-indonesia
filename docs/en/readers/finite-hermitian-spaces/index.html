@@ -1,0 +1,448 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Orthonormal bases and orthogonal projections</title><style>body{max-width:54rem;margin:auto;padding:1rem;font:18px/1.65 system-ui;color:#172338;background:#fbfcfe}a{color:#075aaa}nav{display:flex;flex-wrap:wrap;gap:1rem}math[display="block"]{display:block;overflow-x:auto;margin:1rem 0}p,li,code{overflow-wrap:anywhere}h2{margin-top:2rem}aside{padding:1rem;border:1px solid #cbd8e5;border-radius:.6rem}</style></head><body><nav aria-label="Programme navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#core-B40">Linear algebra</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#advanced-RT-FIN">Representation theory</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/programme/#core-B40" hreflang="id">Bahasa Indonesia — peta program</a></nav><main id="proof-body"><h1 id="orthonormal-bases-and-orthogonal-projections">Orthonormal bases
+and orthogonal projections</h1><aside><h2>Read, edit and reuse</h2><p>English prerequisite lesson, with complete proofs, examples and solutions. It supplies the two stated Hermitian uses in the representation-theory opening, not whole-course certification.</p><ol><li><a href="00-finite-hermitian.tex">Complete editable LaTeX</a></li><li><a href="01-editable-source.zip">Complete source and reproducible build ZIP</a></li><li><a href="finite-hermitian-spaces.md">Editable Markdown</a></li></ol><p>HTML reading edition with native MathML; no PDF is claimed. The source ZIP builds this lesson without network access. Earlier programme lessons are linked separately.</p></aside>
+<p>This lesson supplies the inner-product facts used in <a
+href="https://kokunoyumeto.github.io/open-mathematics-courses/courses/RT-FIN/representations-and-complete-reducibility.html#2-averaging-separates-invariant-pieces">Representations
+and complete reducibility, Proposition 2.1 and its following
+paragraph</a>. It belongs to the linear-algebra foundation. It does not
+require the functional-analysis course.</p>
+<p><em>Proofs, explanations, examples, solutions and programme
+integration produced by OpenAI Codex — GPT-6 Astra, Ultra effort,
+October 2026. Self-checked by the writing AI; no human or independent
+review is claimed. These are standard results, not discoveries.</em></p>
+<h2 id="prerequisites-and-sources">Prerequisites and sources</h2>
+<p>We use real and complex arithmetic, complex conjugation, positive
+square roots of positive real numbers, finite induction, vector-space
+axioms and finite sums. The programme’s earlier lesson <a
+href="../basis-projection-bridge/#extending-a-basis-and-choosing-a-complement">From
+bases to projections</a> proves that every subspace of a
+finite-dimensional vector space has a finite basis and that a basis
+extends to the whole space. No completeness, limit of vectors, choice of
+an infinite basis, or projection theorem is assumed in the proofs of
+Theorems 1–2. Exercise 3 is an optional comparison using square-summable
+sequences and convergence of geometric series.</p>
+<p>John M. Erdman’s <em>Functional Analysis and Operator Algebras: An
+Introduction</em>, version 4 October 2015, Chapter 1, states
+Gram–Schmidt orthonormalization and the orthogonal-decomposition
+corollary (source label <code>0001514</code>). The English and
+Indonesian source passages are part of <a
+href="https://kokunoyumeto.github.io/functional-analysis-erdman-id/">the
+programme’s Erdman edition</a>. Those particular passages contain
+statements without proofs. This bridge supplies the elementary proofs
+and connects them to their use in representation theory. It uses
+Erdman’s convention, linear in the first variable. The <a
+href="https://web.pdx.edu/~erdman/FAOA/functional_analysis_operator_algebras_pdf.pdf">author’s
+source edition</a> and the programme edition retain his authorship; he
+has not reviewed or endorsed this bridge.</p>
+<p>This exposition is offered under <a
+href="https://creativecommons.org/licenses/by-sa/4.0/">Creative Commons
+Attribution–ShareAlike 4.0</a>, preserving the terms of the Erdman
+material it develops. The linked basis-extension lesson retains its own
+CC BY-SA 2.5 licence; its text is not copied into this lesson. Exact
+source identities and the bounded comparison with other programme proofs
+are recorded in <a href="SOURCE_REVIEW.json">SOURCE_REVIEW.json</a>.</p>
+<h2 id="inner-products-and-orthogonality">Inner products and
+orthogonality</h2>
+<p>Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">𝔽</mi><annotation encoding="application/x-tex">\mathbb F</annotation></semantics></math>
+be
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb R</annotation></semantics></math>
+or
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>.
+An <strong>inner product</strong> on an
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">𝔽</mi><annotation encoding="application/x-tex">\mathbb F</annotation></semantics></math>-vector
+space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>
+is a map
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mspace width="0.222em"></mspace><mo>,</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="postfix">⟩</mo><mo>:</mo><mi>V</mi><mo>×</mo><mi>V</mi><mo>→</mo><mi mathvariant="double-struck">𝔽</mi></mrow><annotation encoding="application/x-tex">\langle\ ,\ \rangle:V\times V\to\mathbb F</annotation></semantics></math>
+such that</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>a</mi><mi>x</mi><mo>+</mo><mi>b</mi><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mi>a</mi><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">⟩</mo><mo>+</mo><mi>b</mi><mo stretchy="false" form="prefix">⟨</mo><mi>y</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">⟩</mo><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="prefix">⟨</mo><mi>y</mi><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mover><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo></mrow><mo accent="true">¯</mo></mover><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\langle ax+by,z\rangle=a\langle x,z\rangle+b\langle y,z\rangle,
+\qquad \langle y,x\rangle=\overline{\langle x,y\rangle},
+</annotation></semantics></math></p>
+<p>and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\langle x,x\rangle</annotation></semantics></math>
+is a positive real number for every nonzero
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>.
+Here
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mo>,</mo><mi>b</mi><mo>∈</mo><mi mathvariant="double-struck">𝔽</mi></mrow><annotation encoding="application/x-tex">a,b\in\mathbb F</annotation></semantics></math>;
+conjugation does nothing over
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℝ</mi><annotation encoding="application/x-tex">\mathbb R</annotation></semantics></math>.
+The two identities imply</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>a</mi><mi>y</mi><mo>+</mo><mi>b</mi><mi>z</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mover><mi>a</mi><mo accent="true">¯</mo></mover><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo><mo>+</mo><mover><mi>b</mi><mo accent="true">¯</mo></mover><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>z</mi><mo stretchy="false" form="postfix">⟩</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\langle x,ay+bz\rangle=\overline a\langle x,y\rangle+\overline b\langle x,z\rangle.
+</annotation></semantics></math></p>
+<p>They also give
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mn>0</mn><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\langle0,x\rangle=\langle x,0\rangle=0</annotation></semantics></math>.
+Put
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><msqrt><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>x</mi><mo stretchy="false" form="postfix">⟩</mo></mrow></msqrt></mrow><annotation encoding="application/x-tex">\|x\|=\sqrt{\langle x,x\rangle}</annotation></semantics></math>.
+In particular
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>a</mi><mi>x</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><mo stretchy="false" form="prefix">|</mo><mi>a</mi><mo stretchy="false" form="prefix">|</mo><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|ax\|=|a|\|x\|</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>x</mi><mo stretchy="false" form="postfix">∥</mo><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\|x\|=0</annotation></semantics></math>
+exactly when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x=0</annotation></semantics></math>.
+We will need only these facts and direct expansions, not the triangle
+inequality.</p>
+<p>Vectors are <strong>orthogonal</strong> when their inner product is
+zero. For a subspace
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>,
+define</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>U</mi><mo>⟂</mo></msup><mo>=</mo><mo stretchy="false" form="prefix">{</mo><mi>v</mi><mo>∈</mo><mi>V</mi><mo>:</mo><mo stretchy="false" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><mi>u</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mn>0</mn><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> for every </mtext><mspace width="0.333em"></mspace></mrow><mi>u</mi><mo>∈</mo><mi>U</mi><mo stretchy="false" form="postfix">}</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+U^\perp=\{v\in V:\langle v,u\rangle=0\text{ for every }u\in U\}.
+</annotation></semantics></math></p>
+<p>Linearity in the first variable makes
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>U</mi><mo>⟂</mo></msup><annotation encoding="application/x-tex">U^\perp</annotation></semantics></math>
+a subspace. Conjugate symmetry makes orthogonality symmetric. A family
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(e_j)</annotation></semantics></math>
+is <strong>orthonormal</strong> when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msub><mi>e</mi><mi>i</mi></msub><mo>,</mo><msub><mi>e</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">⟩</mo></mrow><annotation encoding="application/x-tex">\langle e_i,e_j\rangle</annotation></semantics></math>
+is one for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">i=j</annotation></semantics></math>
+and zero otherwise. For a finite linear combination, taking its inner
+product with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mi>i</mi></msub><annotation encoding="application/x-tex">e_i</annotation></semantics></math>
+recovers its coefficient. Thus every orthonormal family is linearly
+independent.</p>
+<h2
+id="gramschmidt-with-the-coefficients-in-the-correct-order">Gram–Schmidt
+with the coefficients in the correct order</h2>
+<p><strong>Theorem 1.</strong> Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><msub><mi>v</mi><mn>2</mn></msub><mo>,</mo><mi>…</mi></mrow><annotation encoding="application/x-tex">v_1,v_2,\ldots</annotation></semantics></math>
+be a linearly independent finite or countably infinite sequence in a
+real or complex inner-product space. There is an orthonormal sequence of
+the same length such that, for every available positive integer
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>e</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mrow><mi mathvariant="normal">span</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">)</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\operatorname{span}(e_1,\ldots,e_j)=\operatorname{span}(v_1,\ldots,v_j).
+</annotation></semantics></math></p>
+<p>No completeness or finite dimension of the ambient space is needed
+for this statement. For an empty sequence, take the empty sequence.</p>
+<p><strong>Proof.</strong> Suppose the vectors through
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mrow><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">e_{j-1}</annotation></semantics></math>
+have been constructed, with the asserted span equality. Set</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><msub><mi>v</mi><mi>j</mi></msub><mo>−</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>j</mi><mo>−</mo><mn>1</mn></mrow></munderover><mo stretchy="false" form="prefix">⟨</mo><msub><mi>v</mi><mi>j</mi></msub><mo>,</mo><msub><mi>e</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><msub><mi>e</mi><mi>i</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+w_j=v_j-\sum_{i=1}^{j-1}\langle v_j,e_i\rangle e_i.
+</annotation></semantics></math></p>
+<p>For
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>&lt;</mo><mi>j</mi></mrow><annotation encoding="application/x-tex">k&lt;j</annotation></semantics></math>,
+linearity and orthonormality give</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msub><mi>w</mi><mi>j</mi></msub><mo>,</mo><msub><mi>e</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>v</mi><mi>j</mi></msub><mo>,</mo><msub><mi>e</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>−</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>j</mi><mo>−</mo><mn>1</mn></mrow></munderover><mo stretchy="false" form="prefix">⟨</mo><msub><mi>v</mi><mi>j</mi></msub><mo>,</mo><msub><mi>e</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>e</mi><mi>i</mi></msub><mo>,</mo><msub><mi>e</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\langle w_j,e_k\rangle
+=\langle v_j,e_k\rangle-\sum_{i=1}^{j-1}\langle v_j,e_i\rangle\langle e_i,e_k\rangle=0.
+</annotation></semantics></math></p>
+<p>If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>w</mi><mi>j</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">w_j=0</annotation></semantics></math>,
+then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>j</mi></msub><annotation encoding="application/x-tex">v_j</annotation></semantics></math>
+belongs to the span of the previous
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>e</mi><mi>i</mi></msub><annotation encoding="application/x-tex">e_i</annotation></semantics></math>,
+hence of the previous
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>v</mi><mi>i</mi></msub><annotation encoding="application/x-tex">v_i</annotation></semantics></math>.
+This contradicts independence. Therefore
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><msub><mi>w</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\|w_j\|&gt;0</annotation></semantics></math>,
+and we may define</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>j</mi></msub><mo>=</mo><mfrac><msub><mi>w</mi><mi>j</mi></msub><mrow><mo stretchy="false" form="postfix">∥</mo><msub><mi>w</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+e_j=\frac{w_j}{\|w_j\|}.
+</annotation></semantics></math></p>
+<p>This vector has inner product one with itself and zero with each
+previous vector. It belongs to the span of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>v</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">v_1,\ldots,v_j</annotation></semantics></math>.
+Conversely,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mi>j</mi></msub><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><msub><mi>w</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>e</mi><mi>j</mi></msub><mo>+</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mrow><mi>j</mi><mo>−</mo><mn>1</mn></mrow></munderover><mo stretchy="false" form="prefix">⟨</mo><msub><mi>v</mi><mi>j</mi></msub><mo>,</mo><msub><mi>e</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><msub><mi>e</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">
+v_j=\|w_j\|e_j+\sum_{i=1}^{j-1}\langle v_j,e_i\rangle e_i
+</annotation></semantics></math></p>
+<p>belongs to the span of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>e</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">e_1,\ldots,e_j</annotation></semantics></math>.
+Together with the induction hypothesis this proves both inclusions of
+spans. At
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">j=1</annotation></semantics></math>
+the sums are empty, so the same argument starts the induction. In the
+countably infinite case this construction defines each term by a finite
+calculation; it makes no assertion about convergence of infinite linear
+combinations.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<p><strong>Corollary 1.</strong> Every finite-dimensional real or
+complex inner-product space has an orthonormal basis, and so does every
+subspace of it.</p>
+<p><strong>Proof.</strong> Apply Theorem 1 to a finite basis, using the
+earlier basis-extension lesson for a subspace’s finite basis. Span
+equality gives a spanning orthonormal family. In dimension zero the
+empty family is the required basis.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<h2 id="orthogonal-projection-and-decomposition">Orthogonal projection
+and decomposition</h2>
+<p><strong>Theorem 2.</strong> Let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+be a finite-dimensional subspace of any real or complex inner-product
+space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>.
+Then every
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">v\in V</annotation></semantics></math>
+has a unique expression</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>u</mi><mo>+</mo><mi>w</mi><mo>,</mo><mspace width="2.0em"></mspace><mi>u</mi><mo>∈</mo><mi>U</mi><mo>,</mo><mspace width="1.0em"></mspace><mi>w</mi><mo>∈</mo><msup><mi>U</mi><mo>⟂</mo></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">
+v=u+w,\qquad u\in U,\quad w\in U^\perp.
+</annotation></semantics></math></p>
+<p>Thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mi>U</mi><mo>⊕</mo><msup><mi>U</mi><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">V=U\oplus U^\perp</annotation></semantics></math>.
+In particular this holds for every subspace of a finite-dimensional
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>.
+If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>e</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>e</mi><mi>m</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(e_1,\ldots,e_m)</annotation></semantics></math>
+is any orthonormal basis of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>,
+the orthogonal projection is</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>v</mi><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>m</mi></munderover><mo stretchy="false" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><msub><mi>e</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><msub><mi>e</mi><mi>i</mi></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+Pv=\sum_{i=1}^m\langle v,e_i\rangle e_i.
+</annotation></semantics></math></p>
+<p>The map is independent of the chosen orthonormal basis. It is linear,
+satisfies
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mn>2</mn></msup><mo>=</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">P^2=P</annotation></semantics></math>,
+has image
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+and kernel
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>U</mi><mo>⟂</mo></msup><annotation encoding="application/x-tex">U^\perp</annotation></semantics></math>,
+and obeys</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>P</mi><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>P</mi><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo><mo>,</mo><mspace width="2.0em"></mspace><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>+</mi><mo stretchy="false" form="postfix">∥</mo><mi>v</mi><mo>−</mo><mi>P</mi><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\langle Px,y\rangle=\langle x,Py\rangle,
+\qquad \|Pv\|^2+\|v-Pv\|^2=\|v\|^2.
+</annotation></semantics></math></p>
+<p><strong>Proof.</strong> The restriction of the inner product to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+is positive definite, so Corollary 1 supplies its orthonormal basis. The
+formula plainly takes values in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>.
+For every
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>,
+expansion gives</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>v</mi><mo>−</mo><mi>P</mi><mi>v</mi><mo>,</mo><msub><mi>e</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><msub><mi>e</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>−</mo><munder><mo>∑</mo><mi>i</mi></munder><mo stretchy="false" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><msub><mi>e</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo stretchy="false" form="prefix">⟨</mo><msub><mi>e</mi><mi>i</mi></msub><mo>,</mo><msub><mi>e</mi><mi>k</mi></msub><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mn>0</mn><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\langle v-Pv,e_k\rangle
+=\langle v,e_k\rangle-\sum_i\langle v,e_i\rangle\langle e_i,e_k\rangle=0.
+</annotation></semantics></math></p>
+<p>Conjugate-linearity in the second variable then gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>−</mo><mi>P</mi><mi>v</mi><mo>∈</mo><msup><mi>U</mi><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">v-Pv\in U^\perp</annotation></semantics></math>.
+If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>∈</mo><mi>U</mi><mo>∩</mo><msup><mi>U</mi><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">z\in U\cap U^\perp</annotation></semantics></math>,
+taking its inner product with itself gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">z=0</annotation></semantics></math>.
+Subtracting two decompositions therefore proves uniqueness. This also
+proves independence from the basis, since every basis formula produces a
+decomposition with the same two specified subspaces.</p>
+<p>Linearity of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+follows from linearity of each coefficient in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>.
+For
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>U</mi></mrow><annotation encoding="application/x-tex">u\in U</annotation></semantics></math>,
+the unique decomposition is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mi>u</mi><mo>+</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">u=u+0</annotation></semantics></math>,
+so
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>u</mi><mo>=</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">Pu=u</annotation></semantics></math>.
+Consequently the image is exactly
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mn>2</mn></msup><mo>=</mo><mi>P</mi></mrow><annotation encoding="application/x-tex">P^2=P</annotation></semantics></math>.
+Its formula vanishes on
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>U</mi><mo>⟂</mo></msup><annotation encoding="application/x-tex">U^\perp</annotation></semantics></math>;
+conversely
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>v</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">Pv=0</annotation></semantics></math>
+in the decomposition implies
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><msup><mi>U</mi><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">v\in U^\perp</annotation></semantics></math>.
+This identifies its kernel.</p>
+<p>Orthogonality gives</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>P</mi><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>P</mi><mi>x</mi><mo>,</mo><mi>P</mi><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>P</mi><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\langle Px,y\rangle=\langle Px,Py\rangle=\langle x,Py\rangle.
+</annotation></semantics></math></p>
+<p>Expanding the inner product of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>P</mi><mi>v</mi><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mi>v</mi><mo>−</mo><mi>P</mi><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v=Pv+(v-Pv)</annotation></semantics></math>
+with itself makes the two cross terms zero and proves the squared-length
+identity. It gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mi>v</mi><mo stretchy="false" form="postfix">∥</mo><mo>≤</mo><mo stretchy="false" form="postfix">∥</mo><mi>v</mi><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|Pv\|\le\|v\|</annotation></semantics></math>
+as well. No norm-completeness assertion was used. If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">U=0</annotation></semantics></math>,
+the empty sum gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">P=0</annotation></semantics></math>;
+if
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">U=V</annotation></semantics></math>,
+then
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><msub><mn>1</mn><mi>V</mi></msub></mrow><annotation encoding="application/x-tex">P=1_V</annotation></semantics></math>.
+These statements include
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">V=0</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<p><strong>Corollary 2 (nearest vector).</strong> For every
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><mi>V</mi></mrow><annotation encoding="application/x-tex">v\in V</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">Pv</annotation></semantics></math>
+is the unique vector of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+minimizing distance to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>.</p>
+<p><strong>Proof.</strong> For
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>U</mi></mrow><annotation encoding="application/x-tex">u\in U</annotation></semantics></math>,
+the vectors
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>−</mo><mi>P</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">v-Pv</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mi>v</mi><mo>−</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">Pv-u</annotation></semantics></math>
+are orthogonal. Expanding their squared length gives</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><mi>v</mi><mo>−</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mo>=</mo><mo stretchy="false" form="postfix">∥</mo><mi>v</mi><mo>−</mo><mi>P</mi><mi>v</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>+</mi><mo stretchy="false" form="postfix">∥</mo><mi>P</mi><mi>v</mi><mo>−</mo><mi>u</mi><msup><mo stretchy="false" form="postfix">∥</mo><mn>2</mn></msup><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\|v-u\|^2=\|v-Pv\|^2+\|Pv-u\|^2.
+</annotation></semantics></math></p>
+<p>The last summand is nonnegative and vanishes exactly for
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>=</mo><mi>P</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">u=Pv</annotation></semantics></math>.
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>▫</mi><annotation encoding="application/x-tex">\square</annotation></semantics></math></p>
+<h2 id="the-two-uses-in-representation-theory">The two uses in
+representation theory</h2>
+<p>Let a finite group act linearly on a finite-dimensional complex
+vector space. Choose any basis and define an initial inner product by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><msub><mo stretchy="false" form="postfix">)</mo><mn>0</mn></msub><mo>=</mo><msub><mo>∑</mo><mi>j</mi></msub><msub><mi>x</mi><mi>j</mi></msub><mover><msub><mi>y</mi><mi>j</mi></msub><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">(x,y)_0=\sum_j x_j\overline{y_j}</annotation></semantics></math>
+in its unique coordinates. It is linear first, Hermitian, and positive
+definite because a nonzero vector has a nonzero coordinate. The
+representation-theory lesson constructs the invariant average</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><msub><mo stretchy="false" form="postfix">⟩</mo><mi>G</mi></msub><mo>=</mo><mfrac><mn>1</mn><mrow><mo stretchy="false" form="prefix">|</mo><mi>G</mi><mo stretchy="false" form="prefix">|</mo></mrow></mfrac><munder><mo>∑</mo><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow></munder><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mi>x</mi><mo>,</mo><mi>g</mi><mi>y</mi><msub><mo stretchy="false" form="postfix">)</mo><mn>0</mn></msub><mi>.</mi></mrow><annotation encoding="application/x-tex">
+\langle x,y\rangle_G=\frac1{|G|}\sum_{g\in G}(gx,gy)_0.
+</annotation></semantics></math></p>
+<p>Each group element acts invertibly, so every term on the diagonal is
+positive when
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x\ne0</annotation></semantics></math>.
+Right multiplication permutes the group elements, which proves
+invariance. Corollary 1 supplies the orthonormal basis used at the end
+of Proposition 2.1. If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>
+is the matrix of a group element in that basis, invariance gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>M</mi><mo>*</mo></msup><mi>M</mi><mo>=</mo><mi>I</mi></mrow><annotation encoding="application/x-tex">M^*M=I</annotation></semantics></math>:
+the inner products of its columns are those of the original basis
+vectors, with complex conjugation on the second argument (equivalently
+their conjugates give the usual matrix entries of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>M</mi><mo>*</mo></msup><mi>M</mi></mrow><annotation encoding="application/x-tex">M^*M</annotation></semantics></math>).</p>
+<p>For an invariant subspace
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>,
+a vector
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>∈</mo><msup><mi>U</mi><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">v\in U^\perp</annotation></semantics></math>,
+an element
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo>∈</mo><mi>G</mi></mrow><annotation encoding="application/x-tex">g\in G</annotation></semantics></math>,
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo>∈</mo><mi>U</mi></mrow><annotation encoding="application/x-tex">u\in U</annotation></semantics></math>,
+invariance gives</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>g</mi><mi>v</mi><mo>,</mo><mi>u</mi><msub><mo stretchy="false" form="postfix">⟩</mo><mi>G</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">⟨</mo><mi>v</mi><mo>,</mo><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>u</mi><msub><mo stretchy="false" form="postfix">⟩</mo><mi>G</mi></msub><mo>=</mo><mn>0</mn><mo>,</mo></mrow><annotation encoding="application/x-tex">
+\langle gv,u\rangle_G=\langle v,g^{-1}u\rangle_G=0,
+</annotation></semantics></math></p>
+<p>since
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>g</mi><mrow><mi>−</mi><mn>1</mn></mrow></msup><mi>u</mi><mo>∈</mo><mi>U</mi></mrow><annotation encoding="application/x-tex">g^{-1}u\in U</annotation></semantics></math>.
+Thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>U</mi><mo>⟂</mo></msup><annotation encoding="application/x-tex">U^\perp</annotation></semantics></math>
+is invariant. Theorem 2 now supplies the decomposition used immediately
+after Proposition 2.1. The orthogonal projection also commutes with the
+action: applying
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>
+to both parts of the unique decomposition preserves their subspaces, so
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mi>g</mi><mi>v</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mi>P</mi><mi>v</mi></mrow><annotation encoding="application/x-tex">P(gv)=gPv</annotation></semantics></math>.</p>
+<p>These arguments close these two particular linear-algebra uses. They
+do not prove every other prerequisite of the representation-theory
+course. Averaging over a general field has its own characteristic
+condition, and the earlier basis/projection bridge supplies its
+different, purely algebraic starting projection.</p>
+<h2 id="a-complex-example">A complex example</h2>
+<p>In
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="double-struck">ℂ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\mathbb C^2</annotation></semantics></math>
+use
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><msub><mi>x</mi><mn>1</mn></msub><mover><msub><mi>y</mi><mn>1</mn></msub><mo accent="true">¯</mo></mover><mo>+</mo><msub><mi>x</mi><mn>2</mn></msub><mover><msub><mi>y</mi><mn>2</mn></msub><mo accent="true">¯</mo></mover></mrow><annotation encoding="application/x-tex">\langle x,y\rangle=x_1\overline{y_1}+x_2\overline{y_2}</annotation></semantics></math>.
+Starting with
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>1</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v_1=(1,i)</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v_2=(0,1)</annotation></semantics></math>,
+Theorem 1 gives</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mn>1</mn></msub><mo>=</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="1.0em"></mspace><mo stretchy="false" form="prefix">⟨</mo><msub><mi>v</mi><mn>2</mn></msub><mo>,</mo><msub><mi>e</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mi>−</mi><mfrac><mi>i</mi><msqrt><mn>2</mn></msqrt></mfrac><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>w</mi><mn>2</mn></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mi>/</mi><mn>2</mn><mo>,</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>e</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><msqrt><mn>2</mn></msqrt></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">
+e_1=\frac{(1,i)}{\sqrt2},\quad
+\langle v_2,e_1\rangle=-\frac{i}{\sqrt2},\quad
+w_2=(i/2,1/2),\quad e_2=\frac{(i,1)}{\sqrt2}.
+</annotation></semantics></math></p>
+<p>The two vectors have squared length one and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">⟨</mo><msub><mi>e</mi><mn>1</mn></msub><mo>,</mo><msub><mi>e</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">⟩</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>i</mi><mo>+</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mn>2</mn><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\langle e_1,e_2\rangle=(-i+i)/2=0</annotation></semantics></math>.
+For
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>U</mi><mo>=</mo><mi mathvariant="double-struck">ℂ</mi><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">U=\mathbb C(1,i)</annotation></semantics></math>,
+Theorem 2 gives</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>i</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>i</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">
+P=\frac12\begin{pmatrix}1&amp;-i\\i&amp;1\end{pmatrix}.
+</annotation></semantics></math></p>
+<p>For example
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>−</mi><mi>i</mi><mi>/</mi><mn>2</mn><mo>,</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P(0,1)=(-i/2,1/2)</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>P</mi><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mi>/</mi><mn>2</mn><mo>,</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,1)-P(0,1)=(i/2,1/2)</annotation></semantics></math>.
+Reversing the arguments in the coefficient would not give this
+decomposition. In complex spaces, the coefficient order is
+substantive.</p>
+<h2 id="exercises-with-solutions">Exercises with solutions</h2>
+<p><strong>Exercise 1.</strong> Explain why a positive semidefinite form
+is not enough for Gram–Schmidt as stated.</p>
+<p><strong>Solution.</strong> On the one-dimensional space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="double-struck">ℂ</mi><annotation encoding="application/x-tex">\mathbb C</annotation></semantics></math>,
+the zero form is positive semidefinite. The singleton
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1)</annotation></semantics></math>
+is linearly independent but its squared length is zero, so it cannot be
+normalized to length one. The proof needs positive definiteness
+precisely when it divides by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="postfix">∥</mo><msub><mi>w</mi><mi>j</mi></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">\|w_j\|</annotation></semantics></math>.</p>
+<p><strong>Exercise 2.</strong> For the complex matrix
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>
+above, verify directly that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mn>2</mn></msup><mo>=</mo><mi>P</mi><mo>=</mo><msup><mi>P</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">P^2=P=P^*</annotation></semantics></math>,
+find its image and kernel, and decompose
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,0)</annotation></semantics></math>.</p>
+<p><strong>Solution.</strong> Write
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>A</mi><mo>=</mo><mn>2</mn><mi>P</mi></mrow><annotation encoding="application/x-tex">A=2P</annotation></semantics></math>.
+Multiplication gives</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>A</mi><mn>2</mn></msup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>2</mn><mi>i</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>2</mn><mi>i</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>2</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>2</mn><mi>A</mi><mo>,</mo><mspace width="2.0em"></mspace><msup><mi>A</mi><mo>*</mo></msup><mo>=</mo><mi>A</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">
+A^2=\begin{pmatrix}2&amp;-2i\\2i&amp;2\end{pmatrix}=2A,
+\qquad A^*=A.
+</annotation></semantics></math></p>
+<p>Thus
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>P</mi><mn>2</mn></msup><mo>=</mo><mi>P</mi><mo>=</mo><msup><mi>P</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">P^2=P=P^*</annotation></semantics></math>.
+Its image is spanned by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mi>i</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(1,i)</annotation></semantics></math>,
+since its first column is half that vector and its second is
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>i</mi></mrow><annotation encoding="application/x-tex">-i</annotation></semantics></math>
+times the first. Its kernel is the line
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>−</mo><mi>i</mi><mi>y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x-iy=0</annotation></semantics></math>,
+spanned by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>i</mi><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(i,1)</annotation></semantics></math>.
+Finally</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo>,</mo><mi>i</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mi>/</mi><mn>2</mn><mo>,</mo><mi>−</mi><mi>i</mi><mi>/</mi><mn>2</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">
+(1,0)=(1/2,i/2)+(1/2,-i/2)
+</annotation></semantics></math></p>
+<p>has its first term in the image and its second in the kernel. Their
+inner product is zero.</p>
+<p><strong>Exercise 3.</strong> Why does Theorem 2 keep the assumption
+that
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+is finite-dimensional, even when the ambient space is allowed to be
+infinite-dimensional?</p>
+<p><strong>Solution.</strong> In the usual sequence space
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℓ</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi mathvariant="double-struck">ℕ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\ell^2(\mathbb N)</annotation></semantics></math>,
+let
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+consist of sequences with only finitely many nonzero entries. If
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>∈</mo><msup><mi>U</mi><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">x\in U^\perp</annotation></semantics></math>,
+taking inner products with each coordinate vector gives
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>n</mi></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">x_n=0</annotation></semantics></math>
+for every
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>,
+so
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>U</mi><mo>⟂</mo></msup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">U^\perp=0</annotation></semantics></math>.
+But the sequence
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><msup><mn>2</mn><mrow><mi>−</mi><mi>n</mi></mrow></msup><msub><mo stretchy="false" form="postfix">)</mo><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">(2^{-n})_{n\ge1}</annotation></semantics></math>
+belongs to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>ℓ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\ell^2</annotation></semantics></math>,
+because
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mo>∑</mo><mrow><mi>n</mi><mo>≥</mo><mn>1</mn></mrow></msub><msup><mn>4</mn><mrow><mi>−</mi><mi>n</mi></mrow></msup><mo>=</mo><mn>1</mn><mi>/</mi><mn>3</mn></mrow><annotation encoding="application/x-tex">\sum_{n\ge1}4^{-n}=1/3</annotation></semantics></math>,
+and does not belong to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>.
+Therefore
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>ℓ</mi><mn>2</mn></msup><mo>≠</mo><mi>U</mi><mo>⊕</mo><msup><mi>U</mi><mo>⟂</mo></msup></mrow><annotation encoding="application/x-tex">\ell^2\ne U\oplus U^\perp</annotation></semantics></math>.
+This does not contradict the later projection theorem for
+<strong>closed</strong> subspaces of a Hilbert space; this
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>U</mi><annotation encoding="application/x-tex">U</annotation></semantics></math>
+is not closed, since its truncations converge to that same sequence.</p>
+<p>For the broader result, see <a
+href="https://kokunoyumeto.github.io/open-mathematics-courses/courses/foundations-of-von-neumann-algebras/hilbert-spaces-and-compact-operators.html#OA-FND-HS-02">Hilbert
+spaces and compact operators, Theorems 2.1–2.2</a>. That proof uses
+completeness and closedness to obtain a nearest vector. It remains the
+programme’s general Hilbert-space treatment; the elementary proof here
+does not replace or narrow it.</p>
+</main><nav aria-label="Programme navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#core-B40">Linear algebra</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/#advanced-RT-FIN">Representation theory</a><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/programme/#core-B40" hreflang="id">Bahasa Indonesia — peta program</a></nav></body></html>

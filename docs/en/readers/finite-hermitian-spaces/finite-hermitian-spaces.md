@@ -1,0 +1,196 @@
+# Orthonormal bases and orthogonal projections
+
+This lesson supplies the inner-product facts used in [Representations and complete reducibility, Proposition 2.1 and its following paragraph](https://kokunoyumeto.github.io/open-mathematics-courses/courses/RT-FIN/representations-and-complete-reducibility.html#2-averaging-separates-invariant-pieces). It belongs to the linear-algebra foundation. It does not require the functional-analysis course.
+
+*Proofs, explanations, examples, solutions and programme integration produced by OpenAI Codex — GPT-6 Astra, Ultra effort, October 2026. Self-checked by the writing AI; no human or independent review is claimed. These are standard results, not discoveries.*
+
+## Prerequisites and sources
+
+We use real and complex arithmetic, complex conjugation, positive square roots of positive real numbers, finite induction, vector-space axioms and finite sums. The programme's earlier lesson [From bases to projections](../basis-projection-bridge/#extending-a-basis-and-choosing-a-complement) proves that every subspace of a finite-dimensional vector space has a finite basis and that a basis extends to the whole space. No completeness, limit of vectors, choice of an infinite basis, or projection theorem is assumed in the proofs of Theorems 1–2. Exercise 3 is an optional comparison using square-summable sequences and convergence of geometric series.
+
+John M. Erdman's *Functional Analysis and Operator Algebras: An Introduction*, version 4 October 2015, Chapter 1, states Gram–Schmidt orthonormalization and the orthogonal-decomposition corollary (source label `0001514`). The English and Indonesian source passages are part of [the programme's Erdman edition](https://kokunoyumeto.github.io/functional-analysis-erdman-id/). Those particular passages contain statements without proofs. This bridge supplies the elementary proofs and connects them to their use in representation theory. It uses Erdman's convention, linear in the first variable. The [author's source edition](https://web.pdx.edu/~erdman/FAOA/functional_analysis_operator_algebras_pdf.pdf) and the programme edition retain his authorship; he has not reviewed or endorsed this bridge.
+
+This exposition is offered under [Creative Commons Attribution–ShareAlike 4.0](https://creativecommons.org/licenses/by-sa/4.0/), preserving the terms of the Erdman material it develops. The linked basis-extension lesson retains its own CC BY-SA 2.5 licence; its text is not copied into this lesson. Exact source identities and the bounded comparison with other programme proofs are recorded in [SOURCE_REVIEW.json](SOURCE_REVIEW.json).
+
+## Inner products and orthogonality
+
+Let \(\mathbb F\) be \(\mathbb R\) or \(\mathbb C\). An **inner product** on an \(\mathbb F\)-vector space \(V\) is a map \(\langle\ ,\ \rangle:V\times V\to\mathbb F\) such that
+
+\[
+\langle ax+by,z\rangle=a\langle x,z\rangle+b\langle y,z\rangle,
+\qquad \langle y,x\rangle=\overline{\langle x,y\rangle},
+\]
+
+and \(\langle x,x\rangle\) is a positive real number for every nonzero \(x\). Here \(a,b\in\mathbb F\); conjugation does nothing over \(\mathbb R\). The two identities imply
+
+\[
+\langle x,ay+bz\rangle=\overline a\langle x,y\rangle+\overline b\langle x,z\rangle.
+\]
+
+They also give \(\langle0,x\rangle=\langle x,0\rangle=0\). Put \(\|x\|=\sqrt{\langle x,x\rangle}\). In particular \(\|ax\|=|a|\|x\|\), and \(\|x\|=0\) exactly when \(x=0\). We will need only these facts and direct expansions, not the triangle inequality.
+
+Vectors are **orthogonal** when their inner product is zero. For a subspace \(U\), define
+
+\[
+U^\perp=\{v\in V:\langle v,u\rangle=0\text{ for every }u\in U\}.
+\]
+
+Linearity in the first variable makes \(U^\perp\) a subspace. Conjugate symmetry makes orthogonality symmetric. A family \((e_j)\) is **orthonormal** when \(\langle e_i,e_j\rangle\) is one for \(i=j\) and zero otherwise. For a finite linear combination, taking its inner product with \(e_i\) recovers its coefficient. Thus every orthonormal family is linearly independent.
+
+## Gram–Schmidt with the coefficients in the correct order
+
+**Theorem 1.** Let \(v_1,v_2,\ldots\) be a linearly independent finite or countably infinite sequence in a real or complex inner-product space. There is an orthonormal sequence of the same length such that, for every available positive integer \(j\),
+
+\[
+\operatorname{span}(e_1,\ldots,e_j)=\operatorname{span}(v_1,\ldots,v_j).
+\]
+
+No completeness or finite dimension of the ambient space is needed for this statement. For an empty sequence, take the empty sequence.
+
+**Proof.** Suppose the vectors through \(e_{j-1}\) have been constructed, with the asserted span equality. Set
+
+\[
+w_j=v_j-\sum_{i=1}^{j-1}\langle v_j,e_i\rangle e_i.
+\]
+
+For \(k<j\), linearity and orthonormality give
+
+\[
+\langle w_j,e_k\rangle
+=\langle v_j,e_k\rangle-\sum_{i=1}^{j-1}\langle v_j,e_i\rangle\langle e_i,e_k\rangle=0.
+\]
+
+If \(w_j=0\), then \(v_j\) belongs to the span of the previous \(e_i\), hence of the previous \(v_i\). This contradicts independence. Therefore \(\|w_j\|>0\), and we may define
+
+\[
+e_j=\frac{w_j}{\|w_j\|}.
+\]
+
+This vector has inner product one with itself and zero with each previous vector. It belongs to the span of \(v_1,\ldots,v_j\). Conversely,
+
+\[
+v_j=\|w_j\|e_j+\sum_{i=1}^{j-1}\langle v_j,e_i\rangle e_i
+\]
+
+belongs to the span of \(e_1,\ldots,e_j\). Together with the induction hypothesis this proves both inclusions of spans. At \(j=1\) the sums are empty, so the same argument starts the induction. In the countably infinite case this construction defines each term by a finite calculation; it makes no assertion about convergence of infinite linear combinations. \(\square\)
+
+**Corollary 1.** Every finite-dimensional real or complex inner-product space has an orthonormal basis, and so does every subspace of it.
+
+**Proof.** Apply Theorem 1 to a finite basis, using the earlier basis-extension lesson for a subspace's finite basis. Span equality gives a spanning orthonormal family. In dimension zero the empty family is the required basis. \(\square\)
+
+## Orthogonal projection and decomposition
+
+**Theorem 2.** Let \(U\) be a finite-dimensional subspace of any real or complex inner-product space \(V\). Then every \(v\in V\) has a unique expression
+
+\[
+v=u+w,\qquad u\in U,\quad w\in U^\perp.
+\]
+
+Thus \(V=U\oplus U^\perp\). In particular this holds for every subspace of a finite-dimensional \(V\). If \((e_1,\ldots,e_m)\) is any orthonormal basis of \(U\), the orthogonal projection is
+
+\[
+Pv=\sum_{i=1}^m\langle v,e_i\rangle e_i.
+\]
+
+The map is independent of the chosen orthonormal basis. It is linear, satisfies \(P^2=P\), has image \(U\) and kernel \(U^\perp\), and obeys
+
+\[
+\langle Px,y\rangle=\langle x,Py\rangle,
+\qquad \|Pv\|^2+\|v-Pv\|^2=\|v\|^2.
+\]
+
+**Proof.** The restriction of the inner product to \(U\) is positive definite, so Corollary 1 supplies its orthonormal basis. The formula plainly takes values in \(U\). For every \(k\), expansion gives
+
+\[
+\langle v-Pv,e_k\rangle
+=\langle v,e_k\rangle-\sum_i\langle v,e_i\rangle\langle e_i,e_k\rangle=0.
+\]
+
+Conjugate-linearity in the second variable then gives \(v-Pv\in U^\perp\). If \(z\in U\cap U^\perp\), taking its inner product with itself gives \(z=0\). Subtracting two decompositions therefore proves uniqueness. This also proves independence from the basis, since every basis formula produces a decomposition with the same two specified subspaces.
+
+Linearity of \(P\) follows from linearity of each coefficient in \(v\). For \(u\in U\), the unique decomposition is \(u=u+0\), so \(Pu=u\). Consequently the image is exactly \(U\) and \(P^2=P\). Its formula vanishes on \(U^\perp\); conversely \(Pv=0\) in the decomposition implies \(v\in U^\perp\). This identifies its kernel.
+
+Orthogonality gives
+
+\[
+\langle Px,y\rangle=\langle Px,Py\rangle=\langle x,Py\rangle.
+\]
+
+Expanding the inner product of \(v=Pv+(v-Pv)\) with itself makes the two cross terms zero and proves the squared-length identity. It gives \(\|Pv\|\le\|v\|\) as well. No norm-completeness assertion was used. If \(U=0\), the empty sum gives \(P=0\); if \(U=V\), then \(P=1_V\). These statements include \(V=0\). \(\square\)
+
+**Corollary 2 (nearest vector).** For every \(v\in V\), \(Pv\) is the unique vector of \(U\) minimizing distance to \(v\).
+
+**Proof.** For \(u\in U\), the vectors \(v-Pv\) and \(Pv-u\) are orthogonal. Expanding their squared length gives
+
+\[
+\|v-u\|^2=\|v-Pv\|^2+\|Pv-u\|^2.
+\]
+
+The last summand is nonnegative and vanishes exactly for \(u=Pv\). \(\square\)
+
+## The two uses in representation theory
+
+Let a finite group act linearly on a finite-dimensional complex vector space. Choose any basis and define an initial inner product by \((x,y)_0=\sum_j x_j\overline{y_j}\) in its unique coordinates. It is linear first, Hermitian, and positive definite because a nonzero vector has a nonzero coordinate. The representation-theory lesson constructs the invariant average
+
+\[
+\langle x,y\rangle_G=\frac1{|G|}\sum_{g\in G}(gx,gy)_0.
+\]
+
+Each group element acts invertibly, so every term on the diagonal is positive when \(x\ne0\). Right multiplication permutes the group elements, which proves invariance. Corollary 1 supplies the orthonormal basis used at the end of Proposition 2.1. If \(M\) is the matrix of a group element in that basis, invariance gives \(M^*M=I\): the inner products of its columns are those of the original basis vectors, with complex conjugation on the second argument (equivalently their conjugates give the usual matrix entries of \(M^*M\)).
+
+For an invariant subspace \(U\), a vector \(v\in U^\perp\), an element \(g\in G\), and \(u\in U\), invariance gives
+
+\[
+\langle gv,u\rangle_G=\langle v,g^{-1}u\rangle_G=0,
+\]
+
+since \(g^{-1}u\in U\). Thus \(U^\perp\) is invariant. Theorem 2 now supplies the decomposition used immediately after Proposition 2.1. The orthogonal projection also commutes with the action: applying \(g\) to both parts of the unique decomposition preserves their subspaces, so \(P(gv)=gPv\).
+
+These arguments close these two particular linear-algebra uses. They do not prove every other prerequisite of the representation-theory course. Averaging over a general field has its own characteristic condition, and the earlier basis/projection bridge supplies its different, purely algebraic starting projection.
+
+## A complex example
+
+In \(\mathbb C^2\) use \(\langle x,y\rangle=x_1\overline{y_1}+x_2\overline{y_2}\). Starting with \(v_1=(1,i)\), \(v_2=(0,1)\), Theorem 1 gives
+
+\[
+e_1=\frac{(1,i)}{\sqrt2},\quad
+\langle v_2,e_1\rangle=-\frac{i}{\sqrt2},\quad
+w_2=(i/2,1/2),\quad e_2=\frac{(i,1)}{\sqrt2}.
+\]
+
+The two vectors have squared length one and \(\langle e_1,e_2\rangle=(-i+i)/2=0\). For \(U=\mathbb C(1,i)\), Theorem 2 gives
+
+\[
+P=\frac12\begin{pmatrix}1&-i\\i&1\end{pmatrix}.
+\]
+
+For example \(P(0,1)=(-i/2,1/2)\) and \((0,1)-P(0,1)=(i/2,1/2)\). Reversing the arguments in the coefficient would not give this decomposition. In complex spaces, the coefficient order is substantive.
+
+## Exercises with solutions
+
+**Exercise 1.** Explain why a positive semidefinite form is not enough for Gram–Schmidt as stated.
+
+**Solution.** On the one-dimensional space \(\mathbb C\), the zero form is positive semidefinite. The singleton \((1)\) is linearly independent but its squared length is zero, so it cannot be normalized to length one. The proof needs positive definiteness precisely when it divides by \(\|w_j\|\).
+
+**Exercise 2.** For the complex matrix \(P\) above, verify directly that \(P^2=P=P^*\), find its image and kernel, and decompose \((1,0)\).
+
+**Solution.** Write \(A=2P\). Multiplication gives
+
+\[
+A^2=\begin{pmatrix}2&-2i\\2i&2\end{pmatrix}=2A,
+\qquad A^*=A.
+\]
+
+Thus \(P^2=P=P^*\). Its image is spanned by \((1,i)\), since its first column is half that vector and its second is \(-i\) times the first. Its kernel is the line \(x-iy=0\), spanned by \((i,1)\). Finally
+
+\[
+(1,0)=(1/2,i/2)+(1/2,-i/2)
+\]
+
+has its first term in the image and its second in the kernel. Their inner product is zero.
+
+**Exercise 3.** Why does Theorem 2 keep the assumption that \(U\) is finite-dimensional, even when the ambient space is allowed to be infinite-dimensional?
+
+**Solution.** In the usual sequence space \(\ell^2(\mathbb N)\), let \(U\) consist of sequences with only finitely many nonzero entries. If \(x\in U^\perp\), taking inner products with each coordinate vector gives \(x_n=0\) for every \(n\), so \(U^\perp=0\). But the sequence \((2^{-n})_{n\ge1}\) belongs to \(\ell^2\), because \(\sum_{n\ge1}4^{-n}=1/3\), and does not belong to \(U\). Therefore \(\ell^2\ne U\oplus U^\perp\). This does not contradict the later projection theorem for **closed** subspaces of a Hilbert space; this \(U\) is not closed, since its truncations converge to that same sequence.
+
+For the broader result, see [Hilbert spaces and compact operators, Theorems 2.1–2.2](https://kokunoyumeto.github.io/open-mathematics-courses/courses/foundations-of-von-neumann-algebras/hilbert-spaces-and-compact-operators.html#OA-FND-HS-02). That proof uses completeness and closedness to obtain a nearest vector. It remains the programme's general Hilbert-space treatment; the elementary proof here does not replace or narrow it.

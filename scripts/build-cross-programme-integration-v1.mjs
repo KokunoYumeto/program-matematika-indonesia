@@ -5,6 +5,7 @@ import {resolve, dirname} from 'node:path';
 import {fileURLToPath,pathToFileURL} from 'node:url';
 import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
 import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute} from './b40-prerequisite-route-v1.mjs';
+import {validateHermitianRoute,renderHermitianRoute} from './finite-hermitian-route-v1.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'backend/cross-programme-v1');
@@ -156,6 +157,19 @@ assert.ok(coreById.has(b40Route.provider_course));
 assert.ok(advById.get(b40Route.consumer_course)?.lessons.some(l=>l.id===b40Route.consumer_lesson));
 bridge.source_bound_lesson_routes.push(b40Route);
 bridge.b40_prerequisite_reader= fact(b40Route.reader_manifest,b40ManifestBytes);
+const hermitianPath='backend/cross-programme-v1/finite-hermitian-route-v1.json';
+const hermitianBytes=await readFile(resolve(root,hermitianPath));
+const hermitianRoute=validateHermitianRoute(json(hermitianBytes));
+const hermitianManifestBytes=await readFile(resolve(root,hermitianRoute.reader_manifest));
+const hermitianManifest=json(hermitianManifestBytes);validateHermitianRoute(hermitianRoute,hermitianManifest);
+assert.equal(hash(await readFile(resolve(root,'backend/cross-programme-v1/proof-sample/advanced/RT-FIN-01.md'))),hermitianRoute.consumer_source_sha256);
+for(const row of hermitianManifest.files){
+  assert.match(row.path,/^[A-Za-z0-9_.-]+$/);
+  const bytes=await readFile(resolve(root,dirname(hermitianRoute.reader_manifest),row.path));
+  assert.equal(bytes.length,row.bytes);assert.equal(hash(bytes),row.sha256);
+}
+bridge.source_bound_lesson_routes.push(hermitianRoute);
+bridge.finite_hermitian_reader=fact(hermitianRoute.reader_manifest,hermitianManifestBytes);
 assert.equal(additions.schema,'cross-programme-current-navigation-additions/1');
 const additionKeys=new Set();
 // Current resources are additive evidence. Never rewrite the pinned historical
@@ -221,6 +235,7 @@ function currentHtml(locale){
     const anchor='<section id="'+kind+'-'+courseId+'"><h3>'+(kind==='core'?esc(course.title[locale]):'<a href="'+esc(course.route)+'" lang="en">'+esc(course.title.en)+'</a>')+'</h3>';
     assert.equal(body.split(anchor).length,2);
     body=body.replace(anchor,anchor+renderB40PrerequisiteRoute(b40Route,locale,side));
+    body=body.replace(anchor,anchor+renderHermitianRoute(hermitianRoute,locale,side));
   }
   for(const resource of coreCourses.flatMap(course=>course.current_reading_resources)){
     const course=coreCourses.find(c=>c.id===resource.course_id);
@@ -251,5 +266,6 @@ for(const [path,b] of outputs){
   }else{await mkdir(dirname(full),{recursive:true});await writeFile(full,b);}
 }
 const receipt={schema:'cross-programme-build/1',state:'local_reading_routes_integrated_proof_correspondence_unfinished',counts:bridge.counts,inputs:manifest.inputs,current_navigation_additions:fact(additionsPath,additionsBytes),source_bound_lesson_route:fact(lessonRoutePath,lessonRouteBytes),outputs:outputs.map(([p,b])=>fact(p,b)),no_native_owner_mutation:true,no_phone_mutation:true,no_mathematical_certification:true,public_deployment:false,script:fact('scripts/build-cross-programme-integration-v1.mjs',await readFile(fileURLToPath(import.meta.url)))};
+receipt.source_bound_lesson_routes=[fact(lessonRoutePath,lessonRouteBytes),fact(b40RoutePath,b40RouteBytes),fact(hermitianPath,hermitianBytes)];
 if(!args.has('--check'))await writeFile(resolve(out,'BUILD_RECEIPT.json'),serialize(receipt));
 console.log(JSON.stringify({state:args.has('--check')?'byte_replay_pass':receipt.state,counts:bridge.counts,outputs:receipt.outputs}));
