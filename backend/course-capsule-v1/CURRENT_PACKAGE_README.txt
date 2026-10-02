@@ -1,5 +1,16 @@
 PAKET BACKEND BERSAMA — 40 PERAN KURIKULUM
 
+Prasyarat teori representasi: /en/readers/finite-hermitian-spaces/ memuat
+pembuktian Gram–Schmidt, proyeksi dan dekomposisi ortogonal, contoh serta
+solusi latihan. Dua penggunaan dalam RT-FIN terhubung langsung ke pembuktian
+yang sesuai. Konvensi hasil kali dalam kompleks linear pada variabel pertama
+dinyatakan. Materi ini berbahasa Inggris; tautan dan catatan peta tersedia
+dalam bahasa Indonesia dan Inggris. Tersedia HTML/MathML, LaTeX kumulatif
+langsung dan ZIP sumber lengkap; ini adalah pengecualian tanpa PDF. Pembuktian,
+penjelasan dan pemeriksaan sendiri dibuat oleh OpenAI Codex GPT-6 Astra,
+tingkat upaya Ultra. Tidak ada klaim peninjauan manusia atau independen, dan
+seluruh prasyarat RT-FIN maupun program lanjutan belum dinyatakan selesai.
+
 Catatan pembaca D80: deskripsi diagram lema lima pada HTML edisi Inggris
 tertukar dengan diagram lema ular sebelumnya. Kedua peta program menampilkan
 catatan yang terlihat beserta tautan ke diagram yang benar pada PDF halaman
@@ -38,12 +49,12 @@ menyimpan bukti ekspor dan pemeriksanya; korpus masukan asli tetap pada edisi
 produsen. Status paritas penuh tidak dinaikkan.
 
 Tambahan B40 berbahasa Inggris: /en/readers/hefferon-linear-algebra/ memuat
-30 bagian hingga Speed of Calculating Determinants, dengan 849 latihan, 847 jawaban sumber dan
+33 bagian hingga Grafika Komputer, dengan 865 latihan, 863 jawaban sumber dan
 dua ketiadaan jawaban yang dinyatakan. Ini bukan seluruh buku. Sumber LaTeX
 kumulatif dan per bagian tersedia dalam direktori sources. Paket sumber
-publik lengkap yang identik disimpan pada backend/b40-detspeed-public-20261002/
+publik lengkap yang identik disimpan pada backend/b40-compgraphics-public-20261002/
 preservation/COMPLETE_SOURCE.zip. Ekstrak secara terpisah lalu baca REBUILD.txt.
-Paket 28 dan 29 bagian sebelumnya tetap disimpan sebagai versi terdahulu. Tautan
+Paket 28–32 bagian sebelumnya tetap disimpan sebagai versi terdahulu. Tautan
 enam bagian fondasi sebelumnya tetap tersedia; jangan menjumlahkannya
 sebagai buku baru. Matematika asli: Jim Hefferon. Pembangunan publik sumber
 dan integrasi ini: OpenAI Codex gpt-6-astra, tingkat upaya Ultra. Tidak ada
@@ -83,9 +94,9 @@ oleh OpenAI Codex — gpt-6-astra, Ultra effort. Atribusi ini hanya mencakup
 pekerjaan integrasi tersebut; bukan pengakuan kepengarangan, penerjemahan,
 penyuntingan manusia, atau peninjauan ahli atas buku yang dirujuk.
 
-Peta lintas program menghubungkan 40 mata kuliah fondasi dengan 71 mata kuliah
-lanjutan dan 951 pelajaran dalam edisi publik yang dibekukan. Buka /id/programme/
-atau /en/programme/. Sebanyak 183 hubungan belajar menghubungkan mata kuliah
+Peta lintas program menghubungkan 40 mata kuliah fondasi dengan 72 mata kuliah
+lanjutan dan 1.061 pelajaran dalam edisi publik yang dibekukan. Buka /id/programme/
+atau /en/programme/. Sebanyak 184 hubungan belajar menghubungkan mata kuliah
 lanjutan ke fondasi; peta ini tidak menyatakan semua pembuktian prasyarat telah
 diperiksa. Proyeksi lokal phone berisi 58 mata kuliah/900 unit merupakan
 snapshot berbeda dan tidak boleh dijumlahkan sebagai materi tambahan.
@@ -153,6 +164,13 @@ docs/guides/start-v0.63.32.tex` membangun dokumen yang sama. Versi distribusi Te
 dan font dapat memengaruhi byte PDF; identitas rilis dicatat terpisah.
 
 Panduan Inggris tambahan / additional English guide:
+The English finite-Hermitian reader supplies complete elementary Gram–Schmidt,
+projection and orthogonal-decomposition proofs, examples and solved exercises.
+Two exact RT-FIN uses link to the relevant arguments, with the linear-first
+complex inner-product convention explicit. Its HTML/MathML, direct cumulative
+LaTeX and full source ZIP are included. This reader uses the no-PDF exception.
+Proof writing and author-instance self-review: OpenAI Codex GPT-6 Astra, Ultra.
+No human or independent review, or whole prerequisite closure, is claimed.
 The D80 prerequisite route links three English source sections to Complexes,
 cones and localization, with reverse navigation and bilingual proof-use notes.
 Public byte identities and section anchors are checked; this is not complete
@@ -163,10 +181,10 @@ D100's three Indonesian native data exports were each reproduced twice:
 registries remain explicit inputs; BGK also uses existing reader bytes. The
 package preserves the evidence and validators, not every producer corpus.
 No fresh PDF build, English export replay or new semantic review is implied.
-B40 now preserves 30 original-English sections through Speed of Calculating
-Determinants, 849 exercises, 847 supplied answers and two explicit source-answer
-absences. Its exact complete-source archive is under backend/b40-detspeed-public-20261002/
-preservation. The historical 29-section, 28-section and six-section packages remain available.
+B40 now preserves 33 original-English sections through Computer Graphics,
+865 exercises, 863 supplied answers and two explicit source-answer absences.
+Its exact complete-source archive is under backend/b40-compgraphics-public-20261002/
+preservation. The historical 28–32-section and six-section packages remain available.
 
 D80 adds a searchable source/term/correction/diagram consumer with 8,430
 original metadata records. Unverified terminology and imprecise source
@@ -197,9 +215,9 @@ Subsequent integration repairs, QA and packaging: OpenAI Codex — gpt-6-astra,
 Ultra effort. No human canon review or whole-book rebuild is claimed.
 
 The included /en/programme/ and /id/programme/ outlines preserve the upstream
-links between forty core courses and the frozen public edition of 71 advanced
-courses/951 lessons. All six current online/offline curriculum pages retain
-these routes alongside the D60 native-record tools. The 183 preparation-course
+links between forty core courses and the frozen public edition of 72 advanced
+courses/1,061 lessons. All six current online/offline curriculum pages retain
+these routes alongside the D60 native-record tools. The 184 preparation-course
 links are not proof-dependency certification. The separate local phone snapshot
 has 58 courses/900 units and is not an additional, additive corpus count.
 Original cross-programme integration: OpenAI Codex — gpt-6.1-sol, Ultra effort.
