@@ -1,0 +1,2843 @@
+% Chapter 1, Section 3 _Linear Algebra_ Jim Hefferon
+%  http://joshua.smcvt.edu/linearalgebra
+%  2001-Jun-09
+\section{Reduced Echelon Form}
+After developing the mechanics of Gauss's Method, 
+we observed that it can be done in more than one way.
+For example, from this matrix 
+\begin{equation*}
+    \begin{mat}[r]
+       2  &2  \\
+       4  &3
+    \end{mat}
+\end{equation*}
+we could derive any of these three echelon form matrices.
+\begin{equation*}
+    \begin{mat}[r]
+       2  &2  \\
+       0  &-1
+    \end{mat}
+    \qquad
+    \begin{mat}[r]
+       1  &1  \\
+       0  &-1
+    \end{mat}
+    \qquad
+    \begin{mat}[r]
+       2  &0  \\
+       0  &-1
+    \end{mat}
+\end{equation*}
+The first results from $-2\rho_1+\rho_2$.
+The second comes from doing $(1/2)\rho_1$ and then $-4\rho_1+\rho_2$.
+The third comes
+from $-2\rho_1+\rho_2$ followed by $2\rho_2+\rho_1$
+(after the first row combination the matrix is already in
+echelon form 
+but it is nonetheless a legal row operation).
+
+In this chapter's first section we noted that
+this raises questions.
+Will any two echelon form versions of a linear system have the same number of
+free variables?
+If yes, 
+will the two have exactly the same free variables?
+In this section we will 
+give a way to decide if one linear system 
+can be derived from another by row operations.
+The answers to both questions, both ``yes,''
+will follow from that.
+
+
+
+
+
+
+
+
+\subsection{Gauss-Jordan Reduction}%
+% Gaussian elimination coupled with back-substitution
+% solves linear systems but it is not the only method possible.
+Here is an extension of Gauss's Method that has some advantages.
+
+\begin{example} \label{exm:GJRedReadOffSol}
+To solve
+\begin{equation*}
+  \begin{linsys}{3}
+    x  &+  &y  &-  &2z  &=  &-2  \\
+       &   &y  &+  &3z  &=  &7   \\
+    x  &   &   &-  &z   &=  &-1  
+  \end{linsys}
+\end{equation*}
+we can start as usual by reducing it to echelon form.
+\begin{equation*}
+  \grstep{-\rho_1+\rho_3}
+    \begin{amat}[r]{3}
+       1  &1  &-2 &-2  \\
+       0  &1  &3  &7   \\
+       0  &-1 &1  &1
+    \end{amat}
+  \grstep{\rho_2+\rho_3}
+    \begin{amat}[r]{3}
+       1  &1  &-2 &-2  \\
+       0  &1  &3  &7   \\
+       0  &0  &4  &8
+    \end{amat}
+\end{equation*}
+We can keep going to a second stage
+by making the leading entries into \( 1 \)'s
+\begin{equation*}
+    \grstep{(1/4)\rho_3}
+    \begin{amat}[r]{3}
+       1  &1  &-2 &-2  \\
+       0  &1  &3  &7   \\
+       0  &0  &1  &2
+    \end{amat}
+\end{equation*}
+and then to a third stage that uses the leading entries 
+to eliminate all of the other entries in each column 
+by combining upwards.
+\begin{equation*}
+  \grstep[2\rho_3+\rho_1]{-3\rho_3+\rho_2}
+    \begin{amat}[r]{3}
+       1  &1  &0  &2   \\
+       0  &1  &0  &1   \\
+       0  &0  &1  &2
+    \end{amat}
+  \grstep{-\rho_2+\rho_1}
+    \begin{amat}[r]{3}
+       1  &0  &0  &1   \\
+       0  &1  &0  &1   \\
+       0  &0  &1  &2
+    \end{amat}
+\end{equation*}
+The answer is \( x=1 \), \( y=1 \), and \( z=2 \).
+\end{example}
+%<*Pivoting>
+Using one entry to clear out the rest of a column is
+\definend{pivoting}\index{pivoting} on that entry.
+%</Pivoting>
+
+Notice that the row combination operations in the first stage move 
+left to right 
+while the combination operations in the third stage move right to left.
+
+\begin{example}  \label{exm:GJRedReadOffSolTwo}
+The middle stage operations that 
+turn the leading entries into \( 1 \)'s
+don't interact so we can combine multiple ones into a single step.
+\begin{align*}
+    \begin{amat}[r]{2}
+       2   &1   &7   \\
+       4   &-2  &6
+    \end{amat}
+  &\grstep{-2\rho_1+\rho_2}
+  \begin{amat}[r]{2}
+       2   &1   &7   \\
+       0   &-4  &-8
+    \end{amat}                                   \\
+  &\grstep[(-1/4)\rho_2]{(1/2)\rho_1}
+  \begin{amat}[r]{2}
+       1   &1/2   &7/2   \\
+       0   &1     &2
+    \end{amat}                                    \\
+  &\grstep{-(1/2)\rho_2+\rho_1}
+  \begin{amat}[r]{2}
+       1   &0   &5/2   \\
+       0   &1   &2
+    \end{amat}
+\end{align*}
+The answer is $x=5/2$ and $y=2$.
+\end{example}
+
+%<*GaussJordanReduction>
+This extension of Gauss's Method is the 
+\definend{Gauss-Jordan Method}\index{Gauss's Method!Gauss-Jordan Method} or 
+\definend{Gauss-Jordan reduction}.\index{linear equation!solution of!Gauss-Jordan}\index{Gauss's Method!Gauss-Jordan}
+%</GaussJordanReduction>
+% It goes past echelon form to a more refined, more specialized,
+% matrix form.
+
+\begin{definition}\label{def:RedEchForm}
+%<*df:RedEchForm>
+A matrix or linear system is in
+\definend{reduced echelon form\/}\index{echelon form!reduced}\index{reduced echelon form}
+if, in addition to being in echelon form, each leading entry is a~$1$ 
+and is the only nonzero entry in its column.
+%</df:RedEchForm>
+\end{definition}
+
+\noindent
+%<*CostRedEchForm>
+The cost of using Gauss-Jordan reduction to solve a system 
+is the additional arithmetic.
+The benefit is that we can just read off the solution set
+description.
+%</CostRedEchForm>
+
+In any echelon form system, reduced or not, we can read off 
+when the system has an empty
+solution set because there is a contradictory equation.
+We can read off 
+when the system has a one-element solution set because there is no
+contradiction and every
+variable is the leading variable in some row.
+And, we can read off when the system has an infinite solution set because 
+there is no contradiction and at least one variable is free.
+
+However, in reduced echelon form we can read off not just the size of the  
+solution set but also its description.
+We have no trouble describing the solution set when it is empty, of course.
+\nearbyexample{exm:GJRedReadOffSol} and~\ref{exm:GJRedReadOffSolTwo} 
+show how in a single element solution set case the single element is
+in the column of constants.
+The next example shows how to read the parametrization
+of an infinite solution set.
+
+\begin{example}
+\begin{multline*}
+  \begin{amat}[r]{4}
+     2  &6  &1  &2  &5  \\
+     0  &3  &1  &4  &1  \\
+     0  &3  &1  &2  &5
+  \end{amat}
+  \grstep{-\rho_2+\rho_3}
+  \begin{amat}[r]{4}
+     2  &6  &1  &2  &5  \\
+     0  &3  &1  &4  &1  \\
+     0  &0  &0  &-2 &4
+  \end{amat}                                        \\
+  \grstep[(1/3)\rho_2 \\ -(1/2)\rho_3]{(1/2)\rho_1}
+  \repeatedgrstep[-\rho_3+\rho_1]{-(4/3)\rho_3+\rho_2}
+  \repeatedgrstep{-3\rho_2+\rho_1}
+  \begin{amat}[r]{4}
+     1  &0  &-1/2  &0  &-9/2  \\
+     0  &1  &1/3   &0  &3  \\
+     0  &0  &0     &1  &-2
+  \end{amat}
+\end{multline*}
+As a linear system this is 
+\begin{equation*}
+  \begin{linsys}{4}
+     x_1  &&     &-&1/2x_3  &&   &= &-9/2  \\
+          &&x_2  &+&1/3x_3  &&   &= &3  \\
+          &&     &&        &{}\hspace{.5em}{}&x_4 &= &-2    
+  \end{linsys}
+\end{equation*}
+so a solution set description is this.
+\begin{equation*}  
+  S=\set{\colvec{x_1 \\ x_2 \\ x_3 \\ x_4}
+                        =\colvec[r]{-9/2 \\ 3 \\ 0 \\ -2}
+                         +\colvec[r]{1/2 \\ -1/3 \\ 1 \\ 0}x_3
+                        \suchthat x_3\in\Re}
+\end{equation*}
+\end{example}
+
+Thus, echelon form isn't some kind of one best form for systems.
+Other forms, such as reduced echelon form, have advantages and
+disadvantages.
+Instead of picturing linear systems (and the associated matrices) 
+as things we operate on, 
+always directed toward the goal of echelon form, we can think of 
+them as interrelated, where
+we can get from one to another by row operations.
+The rest of this subsection develops this thought.
+
+\begin{lemma} \label{le:RowOpsRev}
+%<*lm:RowOpsRev>
+Elementary row operations are reversible.
+%</lm:RowOpsRev>
+\end{lemma}
+
+\begin{proof}
+%<*pf:RowOpsRev>
+For any matrix \( A \),
+the effect of swapping rows is reversed by swapping them back,
+multiplying a row by a nonzero \( k \) is undone by multiplying by
+$1/k$,
+and adding a multiple of row \( i \) to row \( j \) (with $i\neq j$)
+is undone by subtracting the same multiple of row \( i \) from row \( j \).
+\begin{equation*}
+      A
+     \grstep{\rho_i\leftrightarrow\rho_j}
+     \repeatedgrstep{\rho_j\leftrightarrow\rho_i}
+      A
+  \qquad
+        A
+     \grstep{k\rho_i}
+     \repeatedgrstep{(1/k)\rho_i}
+      A
+  \qquad
+        A
+     \grstep{k\rho_i+\rho_j}
+     \repeatedgrstep{-k\rho_i+\rho_j}
+      A                          
+\end{equation*}
+%</pf:RowOpsRev>
+(We need the $i\neq j$ condition;
+see \nearbyexercise{exer:INotJMakesRowOpsRev}.)
+\end{proof}
+
+Again, the point of view that we are developing, supported now by the lemma,
+is that the term `reduces to' is misleading:~where
+\( A\longrightarrow B \), we shouldn't think of \( B \) as
+after~\( A \) or simpler than~$A$.
+Instead we should think of the two matrices as interrelated.
+Below is a picture.
+It shows the matrices from the start of this section and their
+reduced echelon form version in a cluster, as
+interreducible. 
+\begin{center}  
+  \includegraphics{gr/mp/ch1.28}
+\end{center}
+
+%<*EquivMatrices>
+We say 
+that matrices that reduce to each other are equivalent with respect
+to the relationship of row reducibility.
+The next result justifies this, using the definition of 
+an equivalence.\appendrefs{equivalence relations}
+%</EquivMatrices>
+
+\begin{lemma} \label{lm:ReducesToIsEqRel}
+%<*lm:ReducesToIsEqRel>
+Between matrices, `reduces to' is an equivalence re\-la\-tion.
+%</lm:ReducesToIsEqRel>
+\end{lemma}
+
+\begin{proof}
+%<*pf:ReducesToIsEqRel0>
+We must check the conditions
+(i)~reflexivity, that any matrix reduces to itself,
+(ii)~symmetry, that if \( A \) reduces to \( B \) then
+   \( B \) reduces to \( A \),
+and (iii)~transitivity, that if \( A \) reduces to \( B \) and
+      \( B \) reduces to \( C \) then \( A \) reduces to
+      \( C \).
+%</pf:ReducesToIsEqRel0>
+
+%<*pf:ReducesToIsEqRel1>
+Reflexivity is easy; any  matrix reduces to itself in zero-many operations.
+
+The relationship is symmetric by the prior lemma\Dash if
+\( A \) reduces to \( B \) by some row operations
+then also \( B \) reduces to \( A \) by reversing those operations.
+%</pf:ReducesToIsEqRel1>
+
+%<*pf:ReducesToIsEqRel2>
+For transitivity, suppose that \( A \) reduces to \( B \) and
+that \( B \) reduces to \( C \).
+Following the reduction steps from $A \rightarrow\cdots\rightarrow B$
+with those from  $B \rightarrow\cdots\rightarrow C$ 
+gives a reduction from \( A \) to \( C \).
+%</pf:ReducesToIsEqRel2>
+\end{proof}
+
+\begin{definition} \label{df:RowEquivalence}
+%<*df:RowEquivalence>
+Two matrices that are interreducible by elementary row operations
+are \definend{row equivalent}.\index{matrix!row equivalence}%
+\index{row equivalence}\index{equivalence relation!row equivalence}
+%</df:RowEquivalence>
+\end{definition}
+
+%<*RowEquivalanceClasses>
+The diagram below shows the collection of all matrices as a box.
+Inside that box each matrix lies in a class.
+Matrices are in the same class if and only if they are interreducible.
+The classes are disjoint\Dash no matrix is in two distinct classes.
+We have partitioned the collection of matrices into 
+\definend{row equivalence classes}.\appendrefs{partitions and class representatives}\index{partition!row equivalence classes}
+%</RowEquivalanceClasses>
+\begin{center}
+  \includegraphics{gr/mp/ch1.27}
+\end{center}
+\noindent One of the classes is the
+cluster of interrelated 
+matrices from the start of this section sketched above
+(it includes all of the nonsingular $\nbyn{2}$ matrices). 
+
+The next subsection proves that the reduced echelon form of a matrix is 
+unique.
+Rephrased in terms of the row-equivalence relationship, 
+we shall prove that every matrix is 
+row equivalent to one and only one reduced echelon form matrix.
+In terms of the partition what we shall prove is:~every
+equivalence class contains one and only one reduced echelon form matrix.
+So each reduced echelon form matrix serves as a representative of its 
+class.
+
+\begin{exercises}
+   \recommended \item 
+     Use Gauss-Jordan reduction to solve each system.
+     \begin{exparts*}
+        \partsitem \(
+          \begin{linsys}[t]{2}
+               x  &+  &y  &=  &2  \\
+               x  &-  &y  &=  &0  
+          \end{linsys}   \)
+        \partsitem \(
+          \begin{linsys}[t]{3}
+               x  &   &   &-  &z  &=  &4  \\
+              2x  &+  &2y &   &   &=  &1  
+          \end{linsys}  \)
+        \partsitem  \(
+           \begin{linsys}[t]{2}
+               3x  &-  &2y  &=  &1  \\
+               6x  &+  &y   &=  &1/2 
+           \end{linsys}  \)
+        \partsitem \(
+           \begin{linsys}[t]{3}
+              2x  &-  &y  &  &  &= &-1  \\
+               x  &+  &3y &- &z &= &5   \\
+                  &   &y  &+ &2z&= &5   
+           \end{linsys} \)
+     \end{exparts*}
+     \begin{answer}
+       These answers show only the Gauss-Jordan reduction.
+       With it, describing the solution set is easy. 
+       \begin{exparts}
+         \partsitem The solution set contains only a single element.
+           \begin{multline*}
+             \begin{amat}[r]{2}
+               1  &1  &2  \\
+               1  &-1 &0
+             \end{amat}
+             \grstep{-\rho_1+\rho_2}
+             \begin{amat}[r]{2}
+               1  &1  &2  \\
+               0  &-2 &-2
+             \end{amat}                          \\                       
+             \grstep{-(1/2)\rho_2}
+             \begin{amat}[r]{2}
+               1  &1  &2  \\
+               0  &1  &1
+             \end{amat}                         
+             \grstep{-\rho_2+\rho_1}
+             \begin{amat}[r]{2}
+               1  &0  &1  \\
+               0  &1  &1
+             \end{amat}
+           \end{multline*}
+         \partsitem The solution set has one parameter.
+            \begin{equation*}
+             \begin{amat}[r]{3}
+               1  &0  &-1  &4  \\
+               2  &2  &0   &1
+             \end{amat}
+             \grstep{-2\rho_1+\rho_2}
+             \begin{amat}[r]{3}
+               1  &0  &-1  &4  \\
+               0  &2  &2   &-7
+             \end{amat}                    
+             \grstep{(1/2)\rho_2}
+             \begin{amat}[r]{3}
+               1  &0  &-1  &4  \\
+               0  &1  &1   &-7/2
+             \end{amat}
+           \end{equation*}
+         \partsitem There is a unique solution.
+           \begin{multline*}
+             \begin{amat}[r]{2}
+               3  &-2  &1  \\
+               6  &1   &1/2
+             \end{amat}
+             \grstep{-2\rho_1+\rho_2}
+             \begin{amat}[r]{2}
+               3  &-2  &1  \\
+               0  &5   &-3/2
+             \end{amat}                            \\                       
+             \grstep[(1/5)\rho_2]{(1/3)\rho_1}
+             \begin{amat}[r]{2}
+               1  &-2/3&1/3 \\
+               0  &1   &-3/10
+             \end{amat}                       
+             \grstep{(2/3)\rho_2+\rho_1}
+             \begin{amat}[r]{2}
+               1  &0   &2/15 \\
+               0  &1   &-3/10
+             \end{amat}
+          \end{multline*}
+        \partsitem A row swap in the second step makes the arithmetic easier.
+         \begin{multline*}
+          \begin{amat}[r]{3}
+            2  &-1  &0  &-1  \\
+            1  &3   &-1 &5   \\
+            0  &1   &2  &5
+          \end{amat}
+          \grstep{-(1/2)\rho_1+\rho_2}
+          \begin{amat}[r]{3}
+            2  &-1  &0  &-1   \\
+            0  &7/2 &-1 &11/2 \\
+            0  &1   &2  &5
+          \end{amat}                                \\
+          \begin{aligned}
+          &\grstep{\rho_2\leftrightarrow\rho_3}
+          \begin{amat}[r]{3}
+            2  &-1  &0  &-1   \\
+            0  &1   &2  &5    \\
+            0  &7/2 &-1 &11/2
+          \end{amat}                      
+            \grstep{-(7/2)\rho_2+\rho_3}
+            \begin{amat}[r]{3}
+              2  &-1  &0  &-1   \\
+              0  &1   &2  &5    \\
+              0  &0   &-8 &-12
+            \end{amat}                               \\     
+            &\grstep[-(1/8)\rho_2]{(1/2)\rho_1}
+            \begin{amat}[r]{3}
+              1  &-1/2&0  &-1/2 \\
+              0  &1   &2  &5    \\
+              0  &0   &1  &3/2
+            \end{amat}                                
+            \grstep{-2\rho_3+\rho_2}
+            \begin{amat}[r]{3}
+              1  &-1/2&0  &-1/2 \\
+              0  &1   &0  &2    \\
+              0  &0   &1  &3/2
+            \end{amat}                                    \\             
+            &\grstep{(1/2)\rho_2+\rho_1}
+            \begin{amat}[r]{3}
+              1  &0   &0  &1/2  \\
+              0  &1   &0  &2    \\
+              0  &0   &1  &3/2
+            \end{amat}
+          \end{aligned}
+        \end{multline*}
+       \end{exparts}  
+     \end{answer}
+  \item Do Gauss-Jordan reduction.
+    \begin{exparts*}
+      \partsitem
+        $\begin{linsys}[t]{3}
+          x  &+ &y &- &z &= &3 \\
+          2x &- &y  &- &z &= &1 \\
+          3x &+  &y  &+ &2z &= &0
+        \end{linsys}$
+      \partsitem
+        $\begin{linsys}[t]{3}
+          x  &+ &y  &+ &2z  &= &0 \\
+          2x  &- &y  &+  &z &= &1 \\
+          4x &+ &y  &+ &5z &= &1  
+        \end{linsys}$
+    \end{exparts*}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem
+          \begin{multline*}
+            \begin{amat}{3}
+              1 &1  &-1 &3 \\
+              2 &-1 &-1 &1 \\
+              3 &1  &2  &0
+            \end{amat}
+            \grstep[-3\rho_1+\rho_3]{-2\rho_1+\rho_2}
+            \begin{amat}{3}
+              1 &1  &-1 &3 \\
+              0 &-3 &1  &-5 \\
+              0 &-2  &5  &-9
+            \end{amat}                             \\
+          \begin{aligned}   
+            &\grstep{-(2/3)\rho_2+\rho_3}
+            \begin{amat}{3}
+              1 &1  &-1    &3 \\
+              0 &-3 &1     &-5 \\
+              0 &0  &13/3  &-17/3
+            \end{amat}                                 
+            \grstep[(3/13)\rho_3]{-(1/3)\rho_2}
+            \begin{amat}{3}
+              1 &1  &-1    &3 \\
+              0 &1  &-1/3    &5/3 \\
+              0 &0  &1      &-17/13
+            \end{amat}                                \\
+            &\grstep[(1/3)\rho_3+\rho_2]{\rho_3+\rho_1}
+            \begin{amat}{3}
+              1 &1  &0    &22/13 \\
+              0 &1  &0    &16/13 \\
+              0 &0  &1      &-17/13
+            \end{amat}
+            \grstep{-\rho_2+\rho_1}
+            \begin{amat}{3}
+              1 &0  &0    &6/13 \\
+              0 &1  &0    &16/13 \\
+              0 &0  &1      &-17/13
+            \end{amat}
+          \end{aligned}
+          \end{multline*}
+        \partsitem
+          \begin{multline*}
+            \begin{amat}{3}
+              1 &1  &2 &0 \\
+              2 &-1 &1 &1 \\
+              4 &1  &5 &1
+            \end{amat}
+            \grstep[-4\rho_1+\rho_3]{-2\rho_1+\rho_2}
+            \begin{amat}{3}
+              1 &1  &2  &0 \\
+              0 &-3 &-3 &1 \\
+              0 &-3 &-3 &1
+            \end{amat}
+            \grstep{-\rho_2+\rho_3}
+            \begin{amat}{3}
+              1 &1  &2  &0 \\
+              0 &-3 &-3 &1 \\
+              0 &0  &0  &0
+            \end{amat}                              \\
+            \grstep{-(1/3)\rho_2}
+            \begin{amat}{3}
+              1 &1  &2  &0 \\
+              0 &1  &1 &-1/3 \\
+              0 &0  &0  &0
+            \end{amat}
+            \grstep{-\rho_2+\rho_1}
+            \begin{amat}{3}
+              1 &0  &1  &1/3 \\
+              0 &1  &1 &-1/3 \\
+              0 &0  &0  &0
+            \end{amat}
+          \end{multline*}
+      \end{exparts}
+    \end{answer}
+  \recommended \item 
+    Find the reduced echelon form of each matrix.
+    \begin{exparts*}
+      \partsitem \( \begin{mat}[r]
+          2  &1  \\
+          1  &3
+        \end{mat}  \)
+      \partsitem \( \begin{mat}[r]
+          1  &3  &1  \\
+          2  &0  &4  \\
+         -1  &-3 &-3
+        \end{mat}  \)
+      \partsitem \( \begin{mat}[r]
+          1  &0  &3  &1  &2  \\
+          1  &4  &2  &1  &5  \\
+          3  &4  &8  &1  &2
+        \end{mat}  \)
+      \partsitem \( \begin{mat}[r]
+          0  &1  &3  &2  \\
+          0  &0  &5  &6  \\
+          1  &5  &1  &5
+        \end{mat}  \)
+    \end{exparts*}
+    \begin{answer}
+      Use Gauss-Jordan reduction.
+      \begin{exparts}
+        \partsitem The reduced echelon form is all zeroes except
+          for a diagonal of ones.
+          \begin{equation*}
+            \grstep{-(1/2)\rho_1+\rho_2}
+            \begin{mat}[r]
+              2  &1  \\
+              0  &5/2
+            \end{mat}
+            \grstep[(2/5)\rho_2]{(1/2)\rho_1}
+            \begin{mat}[r]
+              1  &1/2\\
+              0  &1
+            \end{mat}                      
+            \grstep{-(1/2)\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &0  \\
+              0  &1
+            \end{mat}
+          \end{equation*}
+        \partsitem As in the prior problem, the reduced echelon form is 
+          all zeroes but for a diagonal of ones.
+          \begin{multline*}
+            \grstep[\rho_1+\rho_3]{-2\rho_1+\rho_2}
+            \begin{mat}[r]
+              1  &3  &1  \\
+              0  &-6 &2  \\
+              0  &0  &-2
+            \end{mat}
+            \grstep[-(1/2)\rho_3]{-(1/6)\rho_2}
+            \begin{mat}[r]
+              1  &3  &1     \\
+              0  &1  &-1/3  \\
+              0  &0  &1
+            \end{mat}                                      \\              
+            \grstep[-\rho_3+\rho_1]{(1/3)\rho_3+\rho_2}
+            \begin{mat}[r]
+              1  &3  &0     \\
+              0  &1  &0     \\
+              0  &0  &1
+            \end{mat}                  
+            \grstep{-3\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &0  &0     \\
+              0  &1  &0     \\
+              0  &0  &1
+            \end{mat}
+           \end{multline*}
+        \partsitem There are more columns than rows so we must get more
+          than just a diagonal of ones.
+          \begin{multline*}
+            \grstep[-3\rho_1+\rho_3]{-\rho_1+\rho_2}
+            \begin{mat}[r]
+              1  &0  &3  &1  &2  \\
+              0  &4  &-1 &0  &3  \\
+              0  &4  &-1 &-2 &-4
+            \end{mat}
+            \grstep{-\rho_2+\rho_3}
+            \begin{mat}[r]
+              1  &0  &3  &1  &2  \\
+              0  &4  &-1 &0  &3  \\
+              0  &0  &0  &-2 &-7
+            \end{mat}                           \\
+            \grstep[-(1/2)\rho_3]{(1/4)\rho_2}
+            \begin{mat}[r]
+              1  &0  &3    &1  &2  \\
+              0  &1  &-1/4 &0  &3/4  \\
+              0  &0  &0    &1  &7/2
+            \end{mat}                           
+            \grstep{-\rho_3+\rho_1}
+            \begin{mat}[r]
+              1  &0  &3    &0  &-3/2  \\
+              0  &1  &-1/4 &0  &3/4     \\
+              0  &0  &0    &1  &7/2
+            \end{mat}
+          \end{multline*}
+        \partsitem As in the prior item, this is not a square matrix. 
+          \begin{multline*}
+            \grstep{\rho_1\leftrightarrow\rho_3}
+            \begin{mat}[r]
+              1  &5  &1  &5  \\
+              0  &0  &5  &6  \\
+              0  &1  &3  &2
+            \end{mat}
+            \grstep{\rho_2\leftrightarrow\rho_3}
+            \begin{mat}[r]
+              1  &5  &1  &5  \\
+              0  &1  &3  &2  \\
+              0  &0  &5  &6
+            \end{mat}                    \\
+            \begin{aligned}
+              &\grstep{(1/5)\rho_3}
+              \begin{mat}[r]
+                1  &5  &1  &5  \\
+                0  &1  &3  &2  \\
+                0  &0  &1  &6/5
+              \end{mat}                  
+              \grstep[-\rho_3+\rho_1]{-3\rho_3+\rho_2}
+              \begin{mat}[r]
+                1  &5  &0  &19/5  \\
+                0  &1  &0  &-8/5  \\
+                0  &0  &1  &6/5
+              \end{mat}                   \\
+              &\grstep{-5\rho_2+\rho_1}
+              \begin{mat}[r]
+                1  &0  &0  &59/5  \\
+                0  &1  &0  &-8/5  \\
+                0  &0  &1  &6/5
+              \end{mat}
+            \end{aligned}
+          \end{multline*}
+      \end{exparts}  
+    \end{answer}
+  \item Get the reduced echelon form of each.
+    \begin{exparts*}
+      \partsitem $
+        \begin{mat}
+          0  &2 &1 \\
+          2  &-1 &1 \\
+          -2 &-1 &0
+        \end{mat}$
+      \partsitem $
+        \begin{mat}
+          1 &3 &1 \\
+          2 &6 &2 \\
+         -1 &0 &0
+        \end{mat}$
+    \end{exparts*}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem Swap first.
+          \begin{equation*}
+            \grstep{\rho_1\leftrightarrow\rho_2}
+            \grstep{\rho_1+\rho_3}
+            \grstep{\rho_2+\rho_3}
+            \grstep[(1/2)\rho_2 \\ (1/2)\rho_3]{(1/2)\rho_1}
+            \grstep[(-1/2)\rho_3+\rho_2]{(-1/2)\rho_3+\rho_1}
+            \grstep{(1/2)\rho_2+\rho_1}
+            \begin{mat}
+              1 &0 &0 \\
+              0 &1 &0 \\
+              0 &0 &1
+            \end{mat}
+          \end{equation*}
+        \partsitem Here the swap is in the middle.
+        \begin{equation*}
+          \grstep[\rho_1+\rho_3]{-2\rho_1+\rho_2}
+          \grstep{\rho_2\leftrightarrow\rho_3}
+          \grstep{(1/3)\rho_2}
+          \grstep{-3\rho_2+\rho_1}
+          \begin{mat}
+            1 &0 &0   \\
+            0 &1 &1/3 \\
+            0 &0 &0
+          \end{mat}
+        \end{equation*}
+      \end{exparts}
+    \end{answer}
+  \recommended \item 
+    Find each solution set by using Gauss-Jordan reduction and
+    then reading off the parametrization.
+    \begin{exparts}
+      \partsitem \( \begin{linsys}[t]{3}
+                  2x  &+  &y  &-  &z  &=  &1  \\
+                  4x  &-  &y  &   &   &=  &3  
+                  \end{linsys}  \)
+      \partsitem \( \begin{linsys}[t]{4}
+                   x  &   &   &-  &z  &   &   &=  &1  \\
+                      &   &y  &+  &2z &-  &w  &=  &3  \\
+                   x  &+  &2y &+  &3z &-  &w  &=  &7  
+                    \end{linsys}  \)
+      \partsitem \( \begin{linsys}[t]{4}
+                   x  &-  &y  &+  &z  &   &   &=  &0  \\
+                      &   &y  &   &   &+  &w  &=  &0  \\
+                  3x  &-  &2y &+  &3z &+  &w  &=  &0  \\
+                      &   &-y &   &   &-  &w  &=  &0  
+                  \end{linsys}  \)
+      \partsitem \( \begin{linsys}[t]{5}
+                   a  &+  &2b &+  &3c &+  &d  &-  &e  &=  &1  \\
+                  3a  &-  &b  &+  &c  &+  &d  &+  &e  &=  &3  
+                  \end{linsys}  \)
+    \end{exparts}
+    \begin{answer}
+      For the Gauss's halves, see the answers to Chapter One's
+      section~I.2 question
+      \nearbyexercise{exer:SlvMatNot}.
+      \begin{exparts}
+      \partsitem The ``Jordan'' half goes this way.
+        \begin{equation*}
+          \grstep[-(1/3)\rho_2]{(1/2)\rho_1}
+          \begin{amat}[r]{3}
+            1  &1/2 &-1/2 &1/2  \\
+            0  &1   &-2/3 &-1/3
+          \end{amat}                           
+          \grstep{-(1/2)\rho_2+\rho_1}
+          \begin{amat}[r]{3}
+            1  &0   &-1/6 &2/3  \\
+            0  &1   &-2/3 &-1/3
+          \end{amat}
+        \end{equation*}
+        The solution set is this
+        \begin{equation*}
+          \set{\colvec[r]{2/3 \\ -1/3 \\ 0}
+               +\colvec[r]{1/6 \\ 2/3 \\ 1}z
+              \suchthat z\in\Re}
+        \end{equation*}
+      \partsitem The second half is
+        \begin{equation*}
+          \grstep{\rho_3+\rho_2}
+          \begin{amat}[r]{4}
+            1  &0  &-1  &0  &1 \\
+            0  &1  &2   &0  &3 \\
+            0  &0  &0   &1  &0
+          \end{amat}
+        \end{equation*}
+        so the solution is this.
+        \begin{equation*}
+          \set{\colvec[r]{1 \\ 3 \\ 0 \\ 0}
+               +\colvec[r]{1 \\ -2 \\ 1 \\ 0}z
+              \suchthat z\in\Re}
+        \end{equation*}
+      \partsitem This Jordan half
+        \begin{equation*}
+          \grstep{\rho_2+\rho_1}
+          \begin{amat}[r]{4}
+            1  &0  &1   &1  &0 \\
+            0  &1  &0   &1  &0 \\
+            0  &0  &0   &0  &0 \\
+            0  &0  &0   &0  &0
+          \end{amat}
+        \end{equation*}
+        gives 
+        \begin{equation*}
+          \set{\colvec[r]{0 \\ 0 \\ 0 \\ 0}
+               +\colvec[r]{-1 \\ 0 \\ 1 \\ 0}z
+               +\colvec[r]{-1 \\ -1 \\ 0 \\ 1}w
+              \suchthat z,w\in\Re}
+        \end{equation*}
+        (of course, we could omit the zero vector from the description).
+      \partsitem The ``Jordan'' half
+        \begin{align*}
+          &\grstep{-(1/7)\rho_2}
+          \begin{amat}[r]{5}
+            1  &2  &3   &1   &-1   &1  \\
+            0  &1  &8/7 &2/7 &-4/7 &0
+          \end{amat}                   \\
+          &\grstep{-2\rho_2+\rho_1}
+          \begin{amat}[r]{5}
+            1  &0  &5/7 &3/7 &1/7  &1  \\
+            0  &1  &8/7 &2/7 &-4/7 &0
+          \end{amat}
+        \end{align*}
+        ends with this solution set.
+        \begin{equation*}
+          \set{\colvec[r]{1 \\ 0 \\ 0 \\ 0 \\ 0}
+               +\colvec[r]{-5/7 \\ -8/7 \\ 1 \\ 0 \\ 0}c
+               +\colvec[r]{-3/7 \\ -2/7 \\ 0 \\ 1 \\ 0}d
+               +\colvec[r]{-1/7 \\ 4/7 \\ 0 \\ 0 \\ 1}e
+              \suchthat c,d,e\in\Re}
+        \end{equation*}
+    \end{exparts}
+   \end{answer}
+  \item 
+    Give two distinct echelon form versions of this matrix.
+    \begin{equation*}
+      \begin{mat}[r]
+        2  &1  &1  &3  \\
+        6  &4  &1  &2  \\
+        1  &5  &1  &5
+      \end{mat}
+    \end{equation*}
+    \begin{answer}
+      Routine Gauss's Method gives one:
+      \begin{equation*}
+        \grstep[-(1/2)\rho_1+\rho_3]{-3\rho_1+\rho_2}
+        \begin{mat}[r]
+          2  &1  &1  &3  \\
+          0  &1  &-2 &-7 \\
+          0  &9/2&1/2&7/2
+        \end{mat}
+        \grstep{-(9/2)\rho_2+\rho_3}
+        \begin{mat}[r]
+          2  &1  &1    &3  \\
+          0  &1  &-2   &-7 \\
+          0  &0  &19/2 &35
+        \end{mat}
+      \end{equation*}
+      and any cosmetic change, such as multiplying the bottom row by \( 2 \),
+      \begin{equation*}
+        \begin{mat}[r]
+          2  &1  &1    &3  \\
+          0  &1  &-2   &-7 \\
+          0  &0  &19   &70
+        \end{mat}
+      \end{equation*}
+      gives another.  
+    \end{answer}
+  \recommended \item \label{exer:PossRedEchFrms} 
+    List the reduced echelon forms possible for each size.
+    \begin{exparts*}
+      \partsitem \( \nbyn{2} \)
+      \partsitem \( \nbym{2}{3} \)
+      \partsitem \( \nbym{3}{2} \)
+      \partsitem \( \nbyn{3} \)
+    \end{exparts*}
+    \begin{answer}
+      In the cases listed below, we take $a,b\in\Re$.
+      Thus, some canonical forms 
+      listed below actually include infinitely many cases.
+      In particular, they includes the cases $a=0$ and $b=0$.
+      \begin{exparts}
+        \partsitem 
+          $\begin{mat}[r]
+            0  &0  \\
+            0  &0
+          \end{mat}$,
+          $\begin{mat}[r]
+            1  &a  \\
+            0  &0
+          \end{mat}$, 
+          $\begin{mat}[r]
+            0  &1  \\
+            0  &0
+          \end{mat}$, 
+          $\begin{mat}[r]
+            1  &0  \\
+            0  &1
+          \end{mat}$
+        \partsitem
+          $\begin{mat}[r]
+               0  &0  &0  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &a  &b  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               0  &1  &a  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               0  &0  &1  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &0  &a  \\
+               0  &1  &b
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &a  &0  \\
+               0  &0  &1
+             \end{mat}$,
+          $\begin{mat}[r]
+               0  &1  &0  \\
+               0  &0  &1
+             \end{mat}$
+        \partsitem
+          $\begin{mat}[r]
+               0  &0  \\
+               0  &0  \\
+               0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &a  \\
+               0  &0  \\
+               0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               0  &1  \\
+               0  &0  \\
+               0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &0  \\
+               0  &1  \\
+               0  &0
+             \end{mat}$
+        \partsitem
+          $\begin{mat}[r]
+               0  &0  &0  \\
+               0  &0  &0  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &a  &b  \\
+               0  &0  &0  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               0  &1  &a  \\
+               0  &0  &0  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               0  &1  &0  \\
+               0  &0  &1  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               0  &0  &1  \\
+               0  &0  &0  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &0  &a  \\
+               0  &1  &b  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &a  &0  \\
+               0  &0  &1  \\
+               0  &0  &0
+             \end{mat}$,
+          $\begin{mat}[r]
+               1  &0  &0  \\
+               0  &1  &0  \\
+               0  &0  &1
+             \end{mat}$
+      \end{exparts}  
+    \end{answer}
+  \recommended \item  
+    What results from applying Gauss-Jordan reduction to a
+    nonsingular matrix?
+    \begin{answer}
+      A nonsingular homogeneous linear system has a unique solution.
+      So a nonsingular matrix must reduce to a (square) 
+      matrix that is all \( 0 \)'s
+      except for \( 1 \)'s down the upper-left to lower-right diagonal, 
+      such as these.
+      \begin{equation*}
+         \begin{mat}[r]
+           1  &0  \\
+           0  &1  \\
+         \end{mat}
+         \qquad
+         \begin{mat}[r]
+           1  &0  &0  \\
+           0  &1  &0  \\
+           0  &0  &1
+         \end{mat}
+      \end{equation*}  
+    \end{answer}
+ \item Decide whether each relation is an equivalence on the set of 
+   $\nbyn{2}$ matrices.
+   \begin{exparts}
+     \partsitem two matrices are related if they have the same entry
+       in the first row and first column
+     % \partsitem two matrices are related if their four entries sum to the 
+     %   same total
+     \partsitem two matrices are related if they have the same entry
+       in the first row and first column, or the same entry in the 
+       second row and second column
+   \end{exparts}
+   \begin{answer}
+     \begin{exparts}
+       \partsitem  This is an equivalence.
+        
+          We can write $M_1\sim M_2$ if they are related.
+          The $\sim$~relation is reflexive because any matrix has the 
+          same $1,1$ entry as itself.
+          The relation is symmetric because if $M_1$ has the same $1,1$
+          entry as~$M_2$ then clearly also $M_2$ has the same $1,1$ entry
+          as~$M_1$.
+          Finally, the relation is transitive because if $M_1\sim M_2$ so they
+          have the same $1,1$ entry as each other, 
+          and $M_2\sim M_3$ so they have the 
+          same as each other, then all three have the same~$1,1$ entry, 
+          and $M_1\sim M_3$. 
+       % \partsitem  This is an equivalence.
+       %    Write $M_1\sim M_2$ if they are related.
+
+       %    This relation is reflexive because any matrix has the 
+       %    same sum of entries as itself.
+       %    The $\sim$~relation is symmetric because if $M_1$ has the same
+       %    sum of 
+       %    entries as~$M_2$, then also $M_2$ has the same sum of entries
+       %    as~$M_1$.
+       %    Finally, the relation is transitive because if $M_1\sim M_2$ so their
+       %    entry sum is the same, 
+       %    and $M_2\sim M_3$ so they have the 
+       %    same entry sum as each other, then all three have the same entry sum, 
+       %    and $M_1\sim M_3$. 
+       \partsitem
+          This is not an equivalence because it is not transitive.
+          The first and second matrix below are related by their $1,1$ entries,
+          and the second and third are related by their $2,2$~entries.
+          But the first and third are not related.
+          \begin{equation*}
+            \begin{mat}
+              1 &0 \\
+              0 &0
+            \end{mat}
+            \quad
+            \begin{mat}
+              1 &0 \\
+              0 &-1
+            \end{mat}
+            \quad
+            \begin{mat}
+              0 &0 \\
+              0 &-1
+            \end{mat}
+          \end{equation*}
+     \end{exparts}
+   \end{answer}
+ \item \cite{Cleary}
+    Consider the following relationship on the set of $\nbyn{2}$ matrices:  
+    we say that $A$ is \textit{sum-what like} $B$ if the sum of all of 
+    the entries in $A$ is the same as the sum of all the entries in $B$.  
+    For instance, the zero matrix would be sum-what like the matrix 
+    whose first row had two sevens, and whose second row had two 
+    negative sevens.
+    Prove or disprove that this is an equivalence relation on the set 
+    of $\nbyn{2}$ matrices.
+    \begin{answer}
+      It is an equivalence relation.
+      To prove that we must check that the relation 
+      is reflexive, symmetric, and transitive.
+
+      Assume that all matrices are $\nbyn{2}$.
+      For reflexive, we note that a matrix has the same sum of entries as
+      itself.
+      For symmetric, we assume $A$ has the same sum of entries as~$B$ 
+      and obviously then $B$ has the same sum of entries as~$A$.
+      Transitivity is no harder\Dash if $A$ has the same sum of entries
+      as $B$ and $B$ has the same sum of entries as $C$ then 
+      $A$ has the same as $C$.
+    \end{answer}
+ \item \label{exer:INotJMakesRowOpsRev}
+   The proof of \nearbylemma{le:RowOpsRev} contains a reference to the 
+   $i\neq j$ condition on the row combination operation.
+   \begin{exparts}
+     \partsitem Write down a $\nbyn{2}$ matrix with nonzero entries,
+        and show that the $-1\cdot\rho_1+\rho_1$ operation is not
+        reversed by $1\cdot\rho_1+\rho_1$.
+     \partsitem Expand the proof of that lemma to make explicit exactly where 
+        it uses the $i\neq j$ condition on combining.
+   \end{exparts}
+   \begin{answer}
+    \begin{exparts}
+      \partsitem For instance,
+        \begin{equation*}
+          \begin{mat}[r]
+            1  &2  \\
+            3  &4  
+          \end{mat}
+          \grstep{-\rho_1+\rho_1}
+          \begin{mat}[r]
+            0  &0  \\
+            3  &4  
+          \end{mat}
+          \grstep{\rho_1+\rho_1}
+          \begin{mat}[r]
+            0  &0  \\
+            3  &4  
+          \end{mat}
+        \end{equation*}
+        leaves the matrix changed.
+      \partsitem This operation
+        \begin{equation*}
+          \begin{mat}
+            \vdotswithin{a_{i,1}}                     \\
+            a_{i,1}  &\cdots  &a_{i,n}  \\
+            \vdotswithin{a_{i,1}}                     \\
+            a_{j,1}  &\cdots  &a_{j,n}  \\
+            \vdotswithin{a_{i,1}}                     
+          \end{mat}
+          \grstep{k\rho_i+\rho_j}
+          \begin{mat}
+            \vdotswithin{a_{i,1}}                                      \\
+            a_{i,1}           &\cdots  &a_{i,n}          \\
+            \vdotswithin{a_{i,1}}                                      \\
+            ka_{i,1}+a_{j,1}  &\cdots  &ka_{i,n}+a_{j,n}  \\
+            \vdotswithin{a_{i,1}}                     
+          \end{mat}
+        \end{equation*}      
+        leaves the $i$-th row unchanged because of the $i\neq j$ restriction.
+        Because the $i$-th row is unchanged, this operation 
+        \begin{equation*}                                        
+          \grstep{-k\rho_i+\rho_j}
+          \begin{mat}
+            \vdotswithin{a_{i,1}}                                      \\
+            a_{i,1}           &\cdots  &a_{i,n}          \\
+            \vdotswithin{a_{i,1}}                                      \\
+            -ka_{i,1}+ka_{i,1}+a_{j,1}  &\cdots &-ka_{i,n}+ka_{i,n}+a_{j,n} \\
+            \vdotswithin{a_{i,1}}                     
+          \end{mat}
+        \end{equation*}
+        returns the $j$-th row to its original state.
+        % (If $i=j$ then the third matrix would have entries of the 
+        % form $-k(ka_{i,j}+a_{i,j})+ka_{i,j}+a_{i,j}$.)
+    \end{exparts}
+   \end{answer}
+ \recommended \item \cite{Cleary}
+  Consider the set of students in a class.  
+  Which of the following relationships are equivalence relations?  
+  Explain each answer in at least a sentence.
+  \begin{exparts}
+    \item  Two students $x, y$ are related 
+      if $x$ has taken at least as many 
+      math classes as $y$.
+    \item Students $x, y$ are related if they have names 
+      that start with the same letter.
+  \end{exparts}
+  \begin{answer}
+    To be an equivalence, each relation must be reflexive, symmetric, and
+    transitive.
+    \begin{exparts}
+      \item This relation 
+        is not symmetric because if $x$ has taken $4$~classes and $y$
+        has taken $3$ then $x$ is related to $y$ but $y$ is not related
+        to $x$.
+      \item This is reflexive because $x$'s name starts with the same
+        letter as does $x$'s.
+        It is symmetric because if $x$'s name starts with the same letter 
+        as $y$'s then $y$'s starts with the same letter as does~$x$'s.
+        And it is transitive because if $x$'s name starts with the same letter
+        as does~$y$'s and $y$'s name starts with the same letter as 
+        does $z$'s then $x$'s starts with the same letter as does $z$'s.
+        So it is an equivalence.
+    \end{exparts}
+  \end{answer}
+  \item
+  Show that each of these is an equivalence on the set of $\nbyn{2}$
+  matrices.
+  Describe the equivalence classes.
+  \begin{exparts}
+    \item Two matrices are related if they have the same product down the
+      diagonal, that is, if the product of the entries in the upper left and
+      lower right are equal.
+    \item Two matrices are related if they both have at least one entry 
+      that is a~$1$,
+      or if neither does.
+  \end{exparts}
+  \begin{answer}
+    For each we must check the three conditions of reflexivity, symmetry, and
+    transitivity.
+    \begin{exparts}
+      \item Any matrix clearly has the same product down the diagonal as
+        itself, so the relation is reflexive.
+        The relation is symmetric because if $A$ has the same product down
+        its diagonal as does~$B$,
+        if $a_{1,1}\cdot a_{2,2}=b_{1,1}\cdot b_{2,2}$, 
+        then $B$ has the same product as does~$A$.
+ 
+        Transitivity is similar: suppose that $A$'s product is~$r$ and 
+        that it equals $B$'s product.
+        Suppose also that $B$'s product equals $C$'s.
+        Then all three have a product of~$r$, and $A$'s equals~$C$'s.
+
+        There is an equivalence class for each real number, namely the 
+        class contains all $\nbyn{2}$ matrices whose product down the
+        diagonal is that real.
+      \item For reflexivity, if the matrix $A$ has a~$1$ entry then it is 
+        related to itself while if it does not then it is also related to 
+        itself.
+        Symmetry also has two cases: suppose that $A$ and~$B$ are related.
+        If $A$ has a~$1$ entry then so does~$B$, and thus $B$ is related to~$A$.
+        If $A$ has no~$1$ then neither does $B$, and again $B$ is related to
+        $A$.
+ 
+        For transitivity, suppose that $A$ is related to~$B$ and $B$ to~$C$.
+        If $A$ has a~$1$ entry then so does~$B$, and because $B$ is related
+        to~$C$, therefore so does~$C$,
+        and hence $A$ is related to~$C$.
+        Likewise, if $A$ has no~$1$ then neither does~$B$, and consequently
+        neither does~$C$, giving the conclusion that $A$ is related to~$C$. 
+
+        There are exactly two equivalence classes, one containing any
+        $\nbyn{2}$ matrix that has at least one entry that is a~$1$,
+        and the other containing all the matrices that have no $1$'s.
+    \end{exparts}
+  \end{answer}
+  \item Show that each is not an equivalence on the
+    set of $\nbyn{2}$ matrices.
+    \begin{exparts}
+      \item Two matrices $A,B$ are related if $a_{1,1}=-b_{1,1}$.
+      \item Two matrices are related if the sum of their entries are
+        within $5$, that is, $A$ is related to~$B$ if
+        $\absval{(a_{1,1}+\cdots+a_{2,2})-(b_{1,1}+\cdots+b_{2,2})}<5$.
+    \end{exparts}
+    \begin{answer}
+      \begin{exparts}
+        \item This relation is not reflexive.
+          For instance, any matrix with an upper-left entry of~$1$ is not
+          related to itself.
+        \item This relation is not transitive.
+          For these three, $A$ is related to~$B$, and $B$ is related to~$C$,
+          but $A$ is not related to~$C$.
+          \begin{equation*}
+            A=\begin{mat}
+              0 &0 \\
+              0 &0
+            \end{mat},\quad
+            B=\begin{mat}
+              4 &0 \\
+              0 &0
+            \end{mat},\quad
+            C=\begin{mat}
+              8 &0 \\
+              0 &0
+            \end{mat},\quad
+          \end{equation*}
+      \end{exparts}
+    \end{answer}
+\end{exercises}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\subsection{The Linear Combination Lemma}
+We will close this chapter by proving 
+that every matrix is row equivalent to one
+and only one reduced echelon form matrix.
+The ideas here will reappear, and be further developed, in the
+next chapter.
+% Here is an informal argument that the reduced 
+% echelon form version of a matrix is unique.
+% Consider again the example that started this section of a matrix that
+% reduces to three different echelon form matrices.
+% The first matrix of the three is the natural echelon form version.
+% The second matrix is the same as 
+% the first except that a row has been halved.
+% The third matrix, too, is just a cosmetic variant of the first. 
+% The definition of reduced echelon form outlaws this kind of fooling around.
+% In reduced echelon form,
+% halving a row is not possible because that would
+% change the row's leading entry away from one, and
+% neither is combining rows possible, because then a leading entry would no
+% longer be alone in its column.
+
+% This informal justification is not a proof;
+% the argument shows that no two different reduced echelon form matrices
+% are related by a single row operation step, but the argument does not
+% rule out the possibility that two different reduced echelon form
+% matrices could be related by multiple steps.
+% Before we go to the proof, we finish this subsection by 
+% rephrasing our work in a terminology that will be enlightening.
+The crucial observation concerns 
+how row operations act to transform one matrix into another:
+the new rows are
+linear combinations of the old.
+
+\begin{example}
+Consider this Gauss-Jordan reduction.
+\begin{align*}
+  \begin{amat}{2}
+    2  &1  &0  \\
+    1  &3  &5
+  \end{amat}
+  &\grstep{-(1/2)\rho_1+\rho_2}
+  \begin{amat}{2}
+    2  &1    &0  \\
+    0  &5/2  &5
+  \end{amat}                           \\
+  &\grstep[(2/5)\rho_2]{(1/2)\rho_1}
+  \begin{amat}{2}
+    1  &1/2  &0  \\
+    0  &1    &2
+  \end{amat}                        \\
+  &\grstep{-(1/2)\rho_2+\rho_1}\;
+  \begin{amat}{2}
+    1  &0    &-1  \\
+    0  &1    &2
+  \end{amat}                       
+\end{align*}
+Denoting those matrices $A\rightarrow D\rightarrow G\rightarrow B$
+and writing the rows of $A$ as $\alpha_1$ and $\alpha_2$, etc., we have this.
+\begin{align*}  % multline looks worse
+  \left(\begin{array}{l}
+    \alpha_1 \\
+    \alpha_2
+  \end{array}\right)
+  &\grstep{-(1/2)\rho_1+\rho_2}
+  \left(\begin{array}{l}
+    \delta_1=\alpha_1 \\
+    \delta_2=-(1/2)\alpha_1+\alpha_2
+  \end{array}\right)                          \\
+  &\grstep[(2/5)\rho_2]{(1/2)\rho_1}
+  \left(\begin{array}{l}
+    \gamma_1=(1/2)\alpha_1 \\
+    \gamma_2=-(1/5)\alpha_1+(2/5)\alpha_2
+  \end{array}\right)                          \\
+  &\grstep{-(1/2)\rho_2+\rho_1}
+  \left(\begin{array}{l}
+    \beta_1=(3/5)\alpha_1-(1/5)\alpha_2  \\
+    \beta_2=-(1/5)\alpha_1+(2/5)\alpha_2
+  \end{array}\right)                         
+\end{align*} 
+\end{example}
+
+\begin{example}
+The fact that Gaussian operations combine rows linearly 
+also holds if there is a row swap.
+With this \( A \), \( D \), \( G \), and \( B \)
+\begin{equation*}
+    \begin{mat}[r]
+       0  &2  \\
+       1  &1
+     \end{mat}
+    \grstep{\rho_1\leftrightarrow\rho_2}
+    \begin{mat}[r]
+       1  &1  \\
+       0  &2
+     \end{mat}                  
+    \grstep{(1/2)\rho_2}
+    \begin{mat}[r]
+       1  &1  \\
+       0  &1
+     \end{mat}                   
+    \grstep{-\rho_2+\rho_1}
+    \begin{mat}[r]
+       1  &0  \\
+       0  &1
+     \end{mat}
+\end{equation*}
+we get these linear
+relationships. 
+\begin{multline*}
+  \left(\begin{array}{l}
+    \vec{\alpha}_1 \\
+    \vec{\alpha}_2
+  \end{array}\right)
+  \,\grstep{\rho_1\leftrightarrow\rho_2}\,
+  \left(\begin{array}{l}
+     \vec{\delta}_1 =\vec{\alpha}_2   \\
+     \vec{\delta}_2 =\vec{\alpha}_1
+  \end{array}\right)                                                 
+  \,\grstep{(1/2)\rho_2}\,
+  \left(\begin{array}{l}
+     \vec{\gamma}_1 =\vec{\alpha}_2  \\
+     \vec{\gamma}_2 =(1/2)\vec{\alpha}_1
+  \end{array}\right)                                               \\
+  \,\grstep{-\rho_2+\rho_1}\,
+  \left(\begin{array}{l}
+     \vec{\beta}_1 =(-1/2)\vec{\alpha}_1+1\cdot\vec{\alpha}_2   \\
+     \vec{\beta}_2 =(1/2)\vec{\alpha}_1
+  \end{array}\right)
+\end{multline*}
+\end{example}
+
+In summary, 
+Gauss's Method systematically finds a suitable 
+sequence of linear combinations 
+of the rows.
+
+% \begin{definition}
+% A \definend{linear combination}\index{linear combination} of 
+% \( x_1,\ldots,x_m \)
+% is an expression of the form $c_1x_1+c_2x_2+\,\cdots\,+c_mx_m$
+% where the \( c \)'s are scalars.
+%\end{definition}
+
+% \noindent (We have already used the phrase 
+% `linear combination' in this book.
+% The meaning is unchanged, but the next result's statement makes
+% a more formal definition in order.)
+
+\begin{lemma}[Linear Combination Lemma] \label{lm:LinearCombinationLemma} \index{Linear Combination Lemma}
+%<*lm:LinearCombinationLemma>
+A linear combination of linear combinations is a linear combination.
+%</lm:LinearCombinationLemma>
+\end{lemma}
+
+\begin{proof}
+%<*pf:LinearCombinationLemma>
+Given the set  
+$c_{1,1}x_1+\dots+c_{1,n}x_n$ through $c_{m,1}x_1+\dots+c_{m,n}x_n$
+of linear combinations of the $x$'s,
+consider a combination of those
+\begin{equation*}
+  d_1(c_{1,1}x_1+\dots+c_{1,n}x_n)\,+\dots+\,d_m(c_{m,1}x_1+\dots+c_{m,n}x_n)
+\end{equation*}
+where the $d$'s are scalars along with the $c$'s.
+Distributing those $d$'s and regrouping gives
+\begin{equation*}
+  %&=d_1c_{1,1}x_1+\dots+d_1c_{1,n}x_n\,
+  % +d_2c_{2,1}x_1+\dots+\,
+  % d_mc_{1,1}x_1+\dots+d_mc_{1,n}x_n         \\
+  =(d_1c_{1,1}+\dots+d_mc_{m,1})x_1\,+\dots+\,(d_1c_{1,n}+\dots+d_mc_{m,n})x_n
+\end{equation*}
+which is also a linear combination of the $x$'s.
+%</pf:LinearCombinationLemma>
+\end{proof}
+
+
+\begin{corollary} \label{cor:RowsOfEqMatsLinCombos}
+%<*co:RowsOfEqMatsLinCombos>
+Where one matrix reduces to another, each row of the second
+is a linear combination of the rows of the first.
+%</co:RowsOfEqMatsLinCombos>
+\end{corollary}
+
+% The proof 
+% uses induction. % \appendrefs{mathematical induction}\spacefactor=1000 %
+% Before we proceed, here is an outline of the argument.
+% For the base step, we
+% will verify that the proposition is true when reduction 
+% can be done in zero row operations.
+% For the inductive step, we will 
+% argue that if being able to reduce the first matrix to the second in some
+% number $t\geq 0$ of operations implies that each row of the second is a linear
+% combination of the rows of the first, then being able to reduce the first to
+% the second in $t+1$ operations implies the same thing.
+% Together these prove the result because  
+% the base step shows that it is true in the zero operations case,
+% and then the inductive step
+% implies that it is true in the one operation case, and then the inductive step
+% applied again gives that it is therefore true for two operations, etc.
+
+\begin{proof}
+%<*pf:RowsOfEqMatsLinCombos0>
+For any two interreducible matrices $A$ and~$B$ there is some
+minimum number of row operations that will take one to the other.
+We proceed by induction on that number. 
+
+In the base step, that we can go from one matrix to another using
+zero reduction operations, the two are equal.
+Then each row of $B$ is trivially a combination of
+$A$'s rows $\vec{\beta}_i
+  =0\cdot\vec{\alpha}_1+\cdots+1\cdot\vec{\alpha}_i+\cdots+0\cdot\vec{\alpha}_m$.
+%</pf:RowsOfEqMatsLinCombos0>
+
+%<*pf:RowsOfEqMatsLinCombos1>
+For the inductive step assume the inductive hypothesis:~with $k\geq 0$,
+any matrix that can be derived from \( A \) in \( k \) or fewer operations 
+has rows that are linear combinations of $A$'s rows.
+Consider a matrix~$B$ such that reducing \( A \) to~\( B \) 
+requires $k+1$ operations.
+In that reduction there is a next-to-last matrix~$G$,  
+so that $A\longrightarrow\cdots\longrightarrow G\longrightarrow B$.
+The inductive hypothesis applies to this \( G \) 
+because it is only $k$ steps away from \( A \). 
+That is, each row of \( G \)
+is a linear combination of the rows of \( A \).
+%</pf:RowsOfEqMatsLinCombos1>
+
+%<*pf:RowsOfEqMatsLinCombos2>
+We will verify that the rows of~$B$ are linear combinations of the rows
+of~$G$.
+Then the Linear Combination Lemma, \nearbylemma{lm:LinearCombinationLemma},
+applies to show that the rows of~$B$ are linear combinations of the rows
+of~$A$.
+
+If the row operation taking \( G \) to~\( B \) is a swap then
+the rows of $B$ are just the rows of $G$ reordered and each row of $B$
+is a linear combination of the rows of $G$.
+If the operation taking $G$ to~$B$ is multiplication of a row by a 
+scalar~$c\rho_i$
+then $\vec{\beta}_i=c\vec{\gamma}_i$ and the other rows are unchanged.
+Finally, if the row operation is adding a multiple of one row to 
+another $r\rho_i+\rho_j$ 
+then only row~$j$ of $B$ differs from the matching row of~$G$, and 
+$\vec{\beta}_j=r\gamma_i+\gamma_j$, 
+which is indeed a linear combinations of the rows of $G$.
+%</pf:RowsOfEqMatsLinCombos2>
+
+Because we have proved both a base step and an inductive step,  
+the proposition follows by the principle of mathematical induction.
+\end{proof}
+
+We now have the insight that Gauss's Method builds 
+linear combinations of the rows.
+But of course its goal is to end in echelon form, since that is 
+a particularly
+basic version of a linear system,
+as it has isolated the variables.
+For instance, in this matrix
+\begin{equation*}
+  R=\begin{mat}[r]
+    2  &3  &7  &8  &0  &0  \\
+    0  &0  &1  &5  &1  &1  \\
+    0  &0  &0  &3  &3  &0  \\
+    0  &0  &0  &0  &2  &1
+  \end{mat}
+\end{equation*}
+$x_1$ has been removed from $x_5$'s equation.
+That is, Gauss's Method has made $x_5$'s row in some way independent 
+of $x_1$'s row.
+
+The following result makes this intuition precise.
+We sometimes refer to Gauss's Method as Gaussian elimination.
+What it eliminates is linear relationships among the rows.
+
+\begin{lemma}      \label{le:EchFormNoLinCombo}
+%<*lm:EchFormNoLinCombo>
+In an echelon form matrix,
+no nonzero row is a linear combination of the other nonzero rows.
+%</lm:EchFormNoLinCombo>
+\end{lemma}
+
+\begin{proof}
+%<*pf:EchFormNoLinCombo0>
+Let $R$ be an echelon form matrix and consider its  non-\( \vec{0} \)  rows.
+First observe that
+if we have a row written as a combination
+of the others
+$\vec{\rho}_i=c_1\vec{\rho}_1+\cdots+c_{i-1}\vec{\rho}_{i-1}+
+               c_{i+1}\vec{\rho}_{i+1}+\cdots+c_m\vec{\rho}_m$
+then we can rewrite that equation as
+\begin{equation*}
+   \vec{0}=c_1\vec{\rho}_1+\cdots+c_{i-1}\vec{\rho}_{i-1}+c_i\vec{\rho}_i+
+               c_{i+1}\vec{\rho}_{i+1}+\cdots+c_m\vec{\rho}_m
+  \tag{$*$}
+\end{equation*}
+where not all the coefficients are zero; specifically, $c_i=-1$.
+The converse holds also:~given equation~($*$) where some $c_i\neq 0$ we 
+could express $\vec{\rho}_i$ as a combination of the other rows by 
+moving $c_i\vec{\rho}_i$ to the left and dividing by $-c_i$.
+Therefore we will have proved the theorem if we
+show that in~($*$) all of the coefficients are~$0$.
+For that we use induction on the row number~$i$.
+%</pf:EchFormNoLinCombo0>
+
+%<*pf:EchFormNoLinCombo1>
+The base case is the first row~$i=1$
+(if there is no such nonzero row, so that $R$ is the zero matrix, then the
+lemma holds vacuously).
+Let $\ell_i$ be the column number of the leading entry in row~$i$.
+Consider the entry of each row that is in column~$\ell_1$.
+Equation~($*$) gives this.
+\begin{equation*}
+  0=c_1r_{1,\ell_1}+c_2r_{2,\ell_1}+\cdots+c_mr_{m,\ell_1}
+  \tag{$**$}
+\end{equation*}
+The matrix is in echelon form so
+every row after the first has a zero entry in that column 
+$r_{2,\ell_1}=\cdots=r_{m,\ell_1}=0$.
+Thus equation~($**$) shows that $c_1=0$, because $r_{1,\ell_1}\neq 0$ as it
+leads the row.
+%</pf:EchFormNoLinCombo1>
+
+%<*pf:EchFormNoLinCombo2>
+The inductive step is much the same as the base step.
+Again consider equation~($*$).
+We will prove that if the coefficient $c_i$ is $0$
+for each row index $i\in\set{1,\ldots,k}$ 
+then $c_{k+1}$ is also $0$. 
+We focus on the entries from column~$\ell_{k+1}$. 
+\begin{equation*}
+  0=c_1r_{1,\ell_{k+1}}+\cdots+c_{k+1}r_{k+1,\ell_{k+1}}+\cdots+c_mr_{m,\ell_{k+1}}
+\end{equation*}
+By the inductive hypothesis $c_1$, \ldots $c_k$ are
+all $0$ so this reduces to the equation
+$0=c_{k+1}r_{k+1,\ell_{k+1}}+\cdots+c_mr_{m,\ell_{k+1}}$.
+The matrix is in echelon form so the entries
+$r_{k+2,\ell_{k+1}}$, \ldots, $r_{m,\ell_{k+1}}$ are all~$0$.
+Thus $c_{k+1}=0$, because $r_{k+1,\ell_{k+1}}\neq 0$ as it is the leading entry.
+%</pf:EchFormNoLinCombo2>
+\end{proof}
+
+With that, we are ready to show that the end product of Gauss-Jordan reduction
+is unique.
+
+\begin{theorem}
+\label{th:ReducedEchelonFormIsUnique}
+%<*th:ReducedEchelonFormIsUnique>
+Each matrix is row equivalent to a unique reduced echelon form matrix.
+%</th:ReducedEchelonFormIsUnique>
+\end{theorem}
+
+\begin{proof} \cite{Yuster}
+%<*pf:ReducedEchelonFormIsUnique0>
+Fix a number of rows \( m \).
+We will proceed by induction on the number of columns \( n \).
+
+The base case is that the matrix has \( n=1 \) column.
+If this is the zero matrix then its echelon form is the zero matrix. 
+If instead it has any nonzero entries then when the matrix is brought to 
+reduced echelon form it must have at least one nonzero entry, which must be a
+\( 1 \) in the first row. 
+Either way, its reduced echelon form is unique.
+%</pf:ReducedEchelonFormIsUnique0>
+
+%<*pf:ReducedEchelonFormIsUnique1>
+For the inductive step we assume that \( n>1 \) and that all \( m \)~row
+matrices having fewer than~\( n \) columns have a unique reduced echelon form.
+Consider an \( \nbym{m}{n} \) matrix \( A \) and suppose that 
+\( B \) and \( C \) are two reduced echelon form matrices derived from \( A \).
+We will show that these two must be equal.
+%</pf:ReducedEchelonFormIsUnique1>
+
+%<*pf:ReducedEchelonFormIsUnique2>
+Let \( \hat{A} \) be the matrix consisting of the first \( n-1 \) columns of
+\( A \).
+Observe that 
+% if an $n$~column matrix is in reduced echelon form then any initial
+% set of its columns is also in reduced echelon form, so \( \hat{A} \)
+% is in reduced echelon form. 
+any sequence of row operations that bring \( A \) to reduced 
+echelon form will also bring \( \hat{A} \) to reduced echelon form.
+By the inductive hypothesis this reduced echelon form of \( \hat{A} \)
+is unique, so if \( B \) and \( C \) differ then the difference must 
+occur in column~\( n \).
+%</pf:ReducedEchelonFormIsUnique2>
+
+We finish the inductive step and the argument
+by showing that the two cannot differ only in that column.
+%<*pf:ReducedEchelonFormIsUnique3>
+Consider a homogeneous system of equations for which \( A \) is the
+matrix of coefficients.  
+\begin{equation*}
+  \begin{linsys}{4}
+    a_{1,1}x_1  &+  &a_{1,2}x_2  &+  &\cdots  &+  &a_{1,n}x_n  &=  &0  \\
+    a_{2,1}x_1  &+  &a_{2,2}x_2  &+  &\cdots  &+  &a_{2,n}x_n  &=  &0  \\
+              &&&&&&&\vdotswithin{=}  \\
+    a_{m,1}x_1  &+  &a_{m,2}x_2  &+  &\cdots  &+  &a_{m,n}x_n  &=  &0  
+  \end{linsys}
+  \tag{$*$}
+\end{equation*}
+By Theorem~One.I.\ref{th:GaussMethod}
+%the first theorem of this chapter 
+the set of solutions to that system
+is the same as the set of solutions to $B$'s system
+\begin{equation*}
+  \begin{linsys}{4}
+    b_{1,1}x_1  &+  &b_{1,2}x_2  &+  &\cdots  &+  &b_{1,n}x_n  &=  &0  \\
+    b_{2,1}x_1  &+  &b_{2,2}x_2  &+  &\cdots  &+  &b_{2,n}x_n  &=  &0  \\
+               &&&&&&&\vdotswithin{=}  \\
+    b_{m,1}x_1  &+  &b_{m,2}x_2  &+  &\cdots  &+  &b_{m,n}x_n  &=  &0  
+  \end{linsys}
+  \tag{$**$}
+\end{equation*}
+and to $C$'s.
+\begin{equation*}
+  \quad
+  \begin{linsys}{4}
+    c_{1,1}x_1  &+  &c_{1,2}x_2  &+  &\cdots  &+  &c_{1,n}x_n  &=  &0  \\
+    c_{2,1}x_1  &+  &c_{2,2}x_2  &+  &\cdots  &+  &c_{2,n}x_n  &=  &0  \\
+               &&&&&&&\vdotswithin{=}  \\
+    c_{m,1}x_1  &+  &c_{m,2}x_2  &+  &\cdots  &+  &c_{m,n}x_n  &=  &0  
+  \end{linsys}
+  \tag{$\mathord{*}\mathord{*}\mathord{*}$}
+\end{equation*}
+%</pf:ReducedEchelonFormIsUnique3>
+%<*pf:ReducedEchelonFormIsUnique4>
+With \( B  \) and \( C \) different only in column~\( n \), suppose 
+that they differ in row~\( i \).
+Subtract row~\( i \) of ($\mathord{*}\mathord{*}\mathord{*}$) from 
+row~\( i \) of ($**$)
+to get the equation 
+\( (b_{i,n}-c_{i,n})\cdot x_n=0 \).
+We've assumed that \( b_{i,n}\neq c_{i,n} \) and so we get $x_n=0$.
+Thus $x_n$ is not a free variable and 
+so in ($**$) and~($\mathord{*}\mathord{*}\mathord{*}$)
+the \( n \)-th column contains the leading entry of some row, 
+since in an echelon form matrix any
+column that does not contain a leading entry is associated with 
+a free variable.
+
+But now, with \( B \) and \( C \) equal on 
+the first \( n-1 \)~columns, by the definition of 
+reduced echeleon form their leading entries in the 
+\( n \)-th column are in the same row.
+And, both leading entries would
+have to be $1$, and would have to be the only nonzero entries in that column.
+Therefore \( B=C \).
+%</pf:ReducedEchelonFormIsUnique4>
+\end{proof}
+
+We have asked whether 
+any two echelon form versions of a linear system 
+have the same number of free variables, and if so are they
+exactly the same variables?
+With the prior result we can answer both questions ``yes.''
+There is no linear system such
+that, say, we could apply Gauss's Method 
+one way and get $y$ and $z$ free but apply it another way 
+and get $y$ and $w$ free.
+
+Before the proof, 
+recall the distinction between free variables and parameters.
+This system
+\begin{equation*}
+  \begin{linsys}{3}
+    x &+ &y &  &  &= &1 \\ 
+      &  &y &+ &z &= &2  
+  \end{linsys}
+\end{equation*}
+has one free variable,~$z$, because it is the only variable not leading a row.
+We have the habit of parametrizing using the free variable $y=2-z$, $x=-1+z$,
+but we could also parametrize using another variable, such as 
+$z=2-y$, $x=1-y$. 
+So the set of parameters is not unique, it is the set of free variables 
+that is unique.
+
+\begin{corollary}
+If from a starting linear systems we derive by Gauss's Method two 
+different echelon form systems, then the two have the same free variables.
+\end{corollary}
+
+\begin{proof}
+The prior result says that the reduced echelon form is unique.
+We get from any echelon form version to the reduced echelon form by 
+eliminating up,
+so any echelon form version of a system has the same free variables as the
+reduced echelon form version. 
+\end{proof}
+
+We close with a recap.
+In Gauss's Method we start with a matrix and then
+derive a sequence of other matrices.
+We defined two matrices to be related if we can derive one from the other.
+That relation is an equivalence relation, %\appendrefs{equivalence relation} 
+called row equivalence, and
+so partitions the set of all matrices into row equivalence classes.
+\begin{center}
+  \includegraphics{gr/mp/ch1.30}
+\end{center}
+(There are infinitely many matrices in the pictured class, but we've only
+got room to show two.)
+We have proved there is one and only one reduced echelon form matrix in
+each row equivalence class.
+%<*ReducedEchelonFormIsCanonicalForm>
+So the reduced echelon form is a
+canonical form\appendrefs{canonical representatives}\spacefactor=1000
+\index{canonical form!for row equivalence}\index{representative!for row equivalence classes}
+for row equivalence:
+the reduced echelon form matrices are
+representatives of the classes.
+%</ReducedEchelonFormIsCanonicalForm>
+\begin{center}
+  \includegraphics{gr/mp/ch1.31}
+\end{center}
+
+The idea here is that one way to understand a
+mathematical situation is by being able to classify the cases that can happen.
+This is a theme in this book and
+we have seen this several times already.
+We classified solution sets of linear systems into the no-elements, 
+one-element, and infinitely-many elements cases.
+We also classified linear systems with the same number of equations 
+as unknowns into the nonsingular and singular cases.
+
+Here, where we are investigating row equivalence, we know that the set of all
+matrices breaks into the row equivalence classes
+and we now have a way to put our finger on each of those
+classes\Dash we can think of the matrices in a class 
+as derived by row operations from the
+unique reduced echelon form matrix in that class.
+
+Put in more operational terms, uniqueness of reduced echelon form
+lets us
+answer questions about the classes by translating them
+into questions about the representatives.
+For instance, as promised in this section's opening, we now can
+decide whether one matrix can be derived from another by row reduction.
+We apply the Gauss-Jordan procedure to both and see if
+they yield the same reduced echelon form.
+
+\begin{example}  \label{ex:MatsNotRowEq}
+These matrices are not row equivalent
+\begin{equation*}
+  \begin{mat}[r]
+    1  &-3  \\
+   -2  &6
+  \end{mat}
+  \qquad
+  \begin{mat}[r]
+    1  &-3  \\
+   -2  &5
+  \end{mat}
+\end{equation*}
+because their reduced echelon forms are not equal.
+\begin{equation*}
+  \begin{mat}[r]
+    1  &-3  \\
+    0  &0
+  \end{mat}
+  \qquad
+  \begin{mat}[r]
+    1  &0   \\
+    0  &1
+  \end{mat}
+\end{equation*}
+\end{example}
+
+\begin{example}
+Any nonsingular \( \nbyn{3} \) matrix Gauss-Jordan reduces to this.
+\begin{equation*}
+    \begin{mat}[r]
+      1  &0  &0 \\
+      0  &1  &0 \\
+      0  &0  &1
+    \end{mat}
+\end{equation*}
+\end{example}
+
+\begin{example} \label{ex:RowEqClassTwoTwoMats}
+We can describe all the classes by listing all possible
+reduced echelon form matrices.
+Any $\nbyn{2}$ matrix lies in one of these:~the class of matrices
+row equivalent to this,
+\begin{equation*}
+  \begin{mat}[r]
+     0  &0  \\
+     0  &0
+  \end{mat}
+\end{equation*}
+the infinitely many classes of matrices row equivalent to one of this type
+\begin{equation*}
+  \begin{mat}
+     1  &a  \\
+     0  &0
+  \end{mat}
+\end{equation*}
+where \( a\in\Re \) (including $a=0$),
+the class of matrices row equivalent to this,
+\begin{equation*}
+  \begin{mat}[r]
+     0  &1  \\
+     0  &0
+  \end{mat}
+\end{equation*}
+and the class of matrices row equivalent to this
+\begin{equation*}
+  \begin{mat}[r]
+     1  &0  \\
+     0  &1
+  \end{mat}
+\end{equation*}
+(this is the class of nonsingular $\nbyn{2}$ matrices).
+\end{example}
+
+
+
+\begin{exercises}
+  \recommended \item 
+    Decide if the matrices are row equivalent.
+    \begin{exparts*}
+       \partsitem \(
+           \begin{mat}[r]
+             1  &2  \\
+             4  &8
+           \end{mat}, 
+           \begin{mat}[r]
+             0  &1  \\
+             1  &2
+           \end{mat} \)
+       \partsitem \(
+           \begin{mat}[r]
+             1  &0  &2  \\
+             3  &-1 &1  \\
+             5  &-1 &5
+           \end{mat},  
+           \begin{mat}[r]
+             1  &0  &2  \\
+             0  &2  &10 \\
+             2  &0  &4
+           \end{mat} \)
+       \partsitem \(
+           \begin{mat}[r]
+             2  &1  &-1 \\
+             1  &1  &0  \\
+             4  &3  &-1
+           \end{mat},  
+           \begin{mat}[r]
+             1  &0  &2  \\
+             0  &2  &10 \\
+           \end{mat} \)
+       \partsitem \(
+           \begin{mat}[r]
+             1  &1  &1  \\
+            -1  &2  &2
+           \end{mat},  
+           \begin{mat}[r]
+             0  &3  &-1 \\
+             2  &2  &5
+           \end{mat} \)
+       \partsitem \(
+           \begin{mat}[r]
+             1  &1  &1  \\
+             0  &0  &3
+           \end{mat},  
+           \begin{mat}[r]
+             0  &1  &2  \\
+             1  &-1 &1
+           \end{mat} \)
+    \end{exparts*}
+    \begin{answer}
+      Bring each to reduced echelon form and compare.
+      \begin{exparts}
+        \partsitem The first gives
+          \begin{equation*}
+            \grstep{-4\rho_1+\rho_2}
+            \begin{mat}[r]
+              1  &2  \\
+              0  &0
+            \end{mat}
+          \end{equation*}
+          while the second gives
+          \begin{equation*}
+            \grstep{\rho_1\leftrightarrow\rho_2}
+            \begin{mat}[r]
+              1  &2  \\
+              0  &1
+            \end{mat}
+            \grstep{-2\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &0  \\
+              0  &1
+            \end{mat}
+          \end{equation*}
+          The two reduced echelon form matrices are not identical, and so the
+          original matrices are not row equivalent.
+        \partsitem The first is this.
+          \begin{equation*}
+            \grstep[-5\rho_1+\rho_3]{-3\rho_1+\rho_2}
+            \begin{mat}[r]
+              1  &0  &2  \\
+              0  &-1 &-5 \\
+              0  &-1 &-5
+            \end{mat}
+            \grstep{-\rho_2+\rho_3}
+            \begin{mat}[r]
+              1  &0  &2  \\
+              0  &-1 &-5 \\
+              0  &0  &0
+            \end{mat}
+            \grstep{-\rho_2}
+            \begin{mat}[r]
+              1  &0  &2  \\
+              0  &1  &5  \\
+              0  &0  &0
+            \end{mat}
+          \end{equation*}
+          The second is this.
+          \begin{equation*}
+            \grstep{-2\rho_1+\rho_3}
+            \begin{mat}[r]
+              1  &0  &2  \\
+              0  &2  &10 \\
+              0  &0  &0
+            \end{mat}
+            \grstep{(1/2)\rho_2}
+            \begin{mat}[r]
+              1  &0  &2  \\
+              0  &1  &5  \\
+              0  &0  &0
+            \end{mat}
+          \end{equation*}
+          These two are row equivalent.
+        \partsitem These two are not row equivalent because they have different
+          sizes.
+        \partsitem The first,
+          \begin{equation*}
+            \grstep{\rho_1+\rho_2}
+            \begin{mat}[r]
+              1  &1  &1  \\
+              0  &3  &3
+            \end{mat}
+            \grstep{(1/3)\rho_2}
+            \begin{mat}[r]
+              1  &1  &1  \\
+              0  &1  &1
+            \end{mat}
+            \grstep{-\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &0  &0  \\
+              0  &1  &1
+            \end{mat}
+          \end{equation*}
+          and the second.
+          \begin{equation*}
+            \grstep{\rho_1\leftrightarrow\rho_2}
+            \begin{mat}[r]
+              2  &2  &5  \\
+              0  &3  &-1
+            \end{mat}
+            \grstep[(1/3)\rho_2]{(1/2)\rho_1}
+            \begin{mat}[r]
+              1  &1  &5/2 \\
+              0  &1  &-1/3
+            \end{mat}
+            \grstep{-\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &0  &17/6 \\
+              0  &1  &-1/3
+            \end{mat}
+          \end{equation*}
+          These are not row equivalent.
+        \partsitem Here the first is
+          \begin{equation*}
+            \grstep{(1/3)\rho_2}
+            \begin{mat}[r]
+              1  &1  &1  \\
+              0  &0  &1
+            \end{mat}
+            \grstep{-\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &1  &0  \\
+              0  &0  &1
+            \end{mat}
+          \end{equation*}
+          while this is the second.
+          \begin{equation*}
+            \grstep{\rho_1\leftrightarrow\rho_2}
+            \begin{mat}[r]
+              1  &-1 &1  \\
+              0  &1  &2
+            \end{mat}
+            \grstep{\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &0  &3  \\
+              0  &1  &2
+            \end{mat}
+          \end{equation*}
+          These are not row equivalent.
+       \end{exparts}  
+     \end{answer}
+  \item 
+    Which of these matrices are row equivalent to each other?
+    \begin{exparts*}
+      \partsitem
+         \(\begin{mat}
+             1 &3 \\
+             2 &4
+           \end{mat}\)
+      \partsitem
+         \(\begin{mat}
+             1 &5 \\
+             2 &10
+           \end{mat}\)
+      \partsitem
+         \(\begin{mat}
+             1 &-1 \\
+             3 &0
+           \end{mat}\)
+      \partsitem
+         \(\begin{mat}
+             2 &6 \\
+             4 &10
+           \end{mat}\)
+      \partsitem
+         \(\begin{mat}
+             0  &1 \\
+             -1 &0
+           \end{mat}\)
+      \partsitem
+         \(\begin{mat}
+             3 &3 \\
+             2 &2
+           \end{mat}\)
+    \end{exparts*}
+    \begin{answer}
+      Perform Gauss-Jordan reduction on each.
+      Two matrices are row-equivalent if and only if they have the same
+      reduced echelon form.
+      Here is the reduced form for each. 
+      % sage: M = matrix(QQ, [[1,3], [2,4]])
+      % sage: gauss_jordan(M)
+      % [1 3]
+      % [2 4]
+      %  take -2 times row 1 plus row 2
+      % [ 1  3]
+      % [ 0 -2]
+      %  take -1/2 times row 2
+      % [1 3]
+      % [0 1]
+      %  take -3 times row 2 plus row 1
+      % [1 0]
+      % [0 1]
+      % sage: M = matrix(QQ, [[1,5], [2,10]])
+      % sage: gauss_jordan(M)
+      % [ 1  5]
+      % [ 2 10]
+      %  take -2 times row 1 plus row 2
+      % [1 5]
+      % [0 0]
+      % sage: M = matrix(QQ, [[1,-1], [3,0]])
+      % sage: gauss_jordan(M)
+      % [ 1 -1]
+      % [ 3  0]
+      %  take -3 times row 1 plus row 2
+      % [ 1 -1]
+      % [ 0  3]
+      %  take 1/3 times row 2
+      % [ 1 -1]
+      % [ 0  1]
+      %  take 1 times row 2 plus row 1
+      % [1 0]
+      % [0 1]
+      % sage: M = matrix(QQ, [[2,6], [4,10]])
+      % sage: gauss_jordan(M)
+      % [ 2  6]
+      % [ 4 10]
+      %  take -2 times row 1 plus row 2
+      % [ 2  6]
+      % [ 0 -2]
+      %  take 1/2 times row 1
+      %  take -1/2 times row 2
+      % [1 3]
+      % [0 1]
+      %  take -3 times row 2 plus row 1
+      % [1 0]
+      % [0 1]
+      % sage: M = matrix(QQ, [[0,1], [-1,0]])
+      % sage: gauss_jordan(M)
+      % [ 0  1]
+      % [-1  0]
+      %  swap row 1 with row 2
+      % [-1  0]
+      % [ 0  1]
+      %  take -1 times row 1
+      % [1 0]
+      % [0 1]
+      % sage: M = matrix(QQ, [[3,3], [2,2]])
+      % sage: gauss_jordan(M)
+      % [3 3]
+      % [2 2]
+      %  take -2/3 times row 1 plus row 2
+      % [3 3]
+      % [0 0]
+      %  take 1/3 times row 1
+      % [1 1]
+      % [0 0]
+      \begin{exparts*}
+        \partsitem
+          \(\begin{mat}
+              1  &0  \\
+              0  &1
+            \end{mat} \)
+        \partsitem
+          \(\begin{mat}
+              1  &5  \\
+              0  &0
+            \end{mat} \)
+        \partsitem
+          \(\begin{mat}
+             1   &0  \\
+             0   &1
+            \end{mat} \)
+        \partsitem
+          \(\begin{mat}
+             1   &0  \\
+             0   &1
+            \end{mat} \)
+        \partsitem
+          \(\begin{mat}
+             1   &0  \\
+             0   &1
+            \end{mat} \)
+        \partsitem
+          \(\begin{mat}
+             1   &1  \\
+             0   &0
+            \end{mat} \)
+      \end{exparts*}
+    \end{answer}
+ \item Produce three other matrices row equivalent to the given one.
+   \begin{exparts*}
+     \partsitem 
+       \(\begin{mat}
+           1 &3 \\
+           4 &-1
+         \end{mat}\)
+     \partsitem
+       \(\begin{mat}
+           0 &1 &2 \\
+           1 &1 &1  \\
+           2 &3 &4
+         \end{mat}\)
+   \end{exparts*}
+   \begin{answer}
+     For each you can just perform some row operations on the starting
+     matrix.
+     \begin{exparts}
+       \partsitem
+         Multiplying the first row by~$3$ gives this.
+         \begin{equation*}
+           \begin{mat}
+             3 &9  \\
+             4 &-1
+           \end{mat}
+         \end{equation*}
+         (There is no sense to this particular choice of row operation; it is 
+         just the first thing that came to mind.)
+         Two other row operations are a row swap $\rho_1\leftrightarrow\rho_2$ 
+         and adding $\rho_1+\rho_2$.
+         \begin{equation*}
+           \begin{mat}
+             4 &-1  \\
+             1 &3
+           \end{mat}
+           \quad
+           \begin{mat}
+             1 &3  \\
+             5 &2
+           \end{mat}
+         \end{equation*}
+       \partsitem Doing the same three arbitrary row operations gives these
+         three.
+         \begin{equation*}
+          \begin{mat} 
+           0 &3 &6 \\
+           1 &1 &1  \\
+           2 &3 &4  
+          \end{mat}
+          \quad         
+          \begin{mat} 
+           1 &1 &1  \\
+           0 &1 &2 \\
+           2 &3 &4  
+          \end{mat}
+          \quad         
+          \begin{mat} 
+           0 &1 &2 \\
+           1 &2 &3  \\
+           2 &3 &4  
+          \end{mat}
+          \quad         
+         \end{equation*}
+     \end{exparts}
+   \end{answer}
+  \recommended \item Perform Gauss's Method on this matrix.
+    Express each row of the final matrix as a linear combination of 
+    the rows of the starting matrix.
+    \begin{equation*}
+      \begin{mat}
+        1 &2   &1 \\
+        3 &-1  &0 \\
+        0 &4   &0
+      \end{mat}
+    \end{equation*}
+    \begin{answer}
+      The Gaussian reduction is routine.
+      % sage: load("gauss_method.sage")
+      % sage: M = matrix (QQ, [[1,2,1], [3,-1,0], [0,4,0]])
+      % sage: gauss_method(M)
+      % [ 1  2  1]
+      % [ 3 -1  0]
+      % [ 0  4  0]
+      %  take -3 times row 1 plus row 2
+      % [ 1  2  1]
+      % [ 0 -7 -3]
+      % [ 0  4  0]
+      %  take 4/7 times row 2 plus row 3
+      % [    1     2     1]
+      % [    0    -7    -3]
+      % [    0     0 -12/7]
+      \begin{equation*}
+        \begin{mat}
+          1 &2   &1 \\
+          3 &-1  &0 \\
+          0 &4   &0
+        \end{mat}
+        \grstep{-3\rho_1+\rho_2}    
+        \begin{mat}
+          1 &2   &1 \\
+          0 &-7  &-3 \\
+          0 &4   &0
+        \end{mat}
+        \grstep{(4/7)\rho_2+\rho_3}    
+        \begin{mat}
+          1 &2   &1 \\
+          0 &-7  &-3 \\
+          0 &0   &-12/7
+        \end{mat}
+      \end{equation*}
+      Denoting those matrices $A$, $D$, and~$B$ respectively, we have this.
+      \begin{align*}
+        \begin{mat}
+          \alpha_1 \\
+          \alpha_2 \\
+          \alpha_3
+        \end{mat}
+        &\grstep{-3\rho_1+\rho_2}    
+        \begin{mat}
+          \delta_1=\alpha_1 \\
+          \delta_2=-3\alpha_1+\alpha_2 \\
+          \delta_3=\alpha_3
+        \end{mat}                                   \\
+        & \grstep{(4/7)\rho_2+\rho_3}
+        \begin{mat}
+          \beta_1=\alpha_1  \\
+          \beta_2=-3\alpha_1+\alpha_2 \\
+          \beta_3=-(12/7)\alpha_1+(4/7)\alpha_2+\alpha_3
+        \end{mat}
+      \end{align*}
+    \end{answer}
+  \item 
+     Describe the matrices in each of the classes represented in
+     \nearbyexample{ex:RowEqClassTwoTwoMats}.
+     \begin{answer}
+       First, the only matrix row equivalent to the matrix of all
+       \( 0 \)'s is itself (since row operations have no effect).
+
+       Second, the matrices that reduce to 
+       \begin{equation*}
+         \begin{mat}
+           1  &a  \\
+           0  &0
+         \end{mat}
+       \end{equation*}
+       have the form
+       \begin{equation*}
+         \begin{mat}
+           b  &ba \\
+           c  &ca
+         \end{mat}
+       \end{equation*}
+       (where \( a,b,c\in\Re \), and \(b\) and \(c\) are not both zero).  
+
+       Next, the matrices that reduce to 
+       \begin{equation*}
+         \begin{mat}[r]
+           0  &1  \\
+           0  &0
+         \end{mat}
+       \end{equation*}
+       have the form
+       \begin{equation*}
+         \begin{mat}
+           0  &a \\
+           0  &b
+         \end{mat}
+       \end{equation*}
+       (where \( a,b\in\Re \), and not both are zero).  
+
+       Finally, the matrices that reduce to 
+       \begin{equation*}
+         \begin{mat}[r]
+           1  &0  \\
+           0  &1
+         \end{mat}
+       \end{equation*}
+       are the nonsingular matrices.
+       That's because a linear system for which this is the matrix of
+       coefficients will have a unique solution, and that is the definition
+       of nonsingular.
+       (Another way to say the same thing is to say that they fall into none
+       of the above classes.)
+     \end{answer}
+  \item 
+    Describe all matrices in the row equivalence class of
+    these.
+    \begin{exparts*}
+       \partsitem  \(
+           \begin{mat}[r]
+             1  &0  \\
+             0  &0
+           \end{mat}  \)
+       \partsitem  \(
+           \begin{mat}[r]
+             1  &2      \\
+             2  &4
+           \end{mat} \)
+       \partsitem \(
+           \begin{mat}[r]
+             1  &1      \\
+             1  &3
+           \end{mat} \)
+    \end{exparts*}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem They have the form
+          \begin{equation*}
+            \begin{mat}
+              a  &0  \\
+              b  &0
+            \end{mat}
+          \end{equation*}
+          where at least one of \( a,b\in\Re \) is nonzero.
+        \partsitem They have this form 
+          \begin{equation*}
+            \begin{mat}
+             a  &2a \\
+             b  &2b
+            \end{mat}
+          \end{equation*}
+          where at least one of \( a,b\in\Re \) is nonzero.
+        \partsitem The given matrix is nonsingular.
+          So the row equivalence class consists of all nonsinglar $\nbyn{2}$
+          matrices.
+          (To give a formula, they have the form
+          \begin{equation*}
+            \begin{mat}
+              a  &b  \\
+              c  &d
+            \end{mat}
+          \end{equation*}
+          for \( a,b,c,d\in\Re \)) where \( ad-bc\neq 0 \).
+          We will see in Chapter Four that this formula 
+          determines when a \( \nbyn{2} \) matrix
+          is nonsingular.)
+      \end{exparts}  
+    \end{answer}
+  \item 
+    How many row equivalence classes are there?
+    \begin{answer}
+       Infinitely many.
+       For instance, in 
+       \begin{equation*}
+         \begin{mat}
+           1  &k  \\
+           0  &0
+         \end{mat}
+       \end{equation*}
+       each $k\in\Re$ gives a different class.  
+    \end{answer}
+  \item 
+    Can row equivalence classes contain different-sized matrices?
+    \begin{answer}
+      No.
+      Row operations do not change the size of a matrix.  
+    \end{answer}
+  \item 
+    How big are the row equivalence classes?
+    \begin{exparts} 
+      \partsitem Show that for any matrix of all zeros, the class is finite.
+      \partsitem Do any other classes contain only finitely many members?
+    \end{exparts}
+    \begin{answer}
+     \begin{exparts}
+      \partsitem A row operation on a matrix of zeros has no effect.
+        Thus each such matrix is alone in its row equivalence class.  
+      \partsitem No.
+        Any nonzero entry can be rescaled.
+     \end{exparts}
+    \end{answer}
+  \recommended \item 
+    Give two reduced echelon form matrices that have their leading
+    entries in the same columns,
+    but that are not row equivalent.
+    \begin{answer}
+      Here are two.
+      \begin{equation*}
+        \begin{mat}[r]
+          1  &1  &0  \\
+          0  &0  &1
+        \end{mat}
+        \quad\text{and}\quad
+        \begin{mat}[r]
+          1  &0  &0  \\
+          0  &0  &1
+        \end{mat}
+      \end{equation*}  
+     \end{answer}
+  \recommended \item 
+    Show that any two \( \nbyn{n} \) nonsingular matrices are
+    row equivalent.
+    Are any two singular matrices row equivalent?
+    \begin{answer}
+      Any two \( \nbyn{n} \) nonsingular matrices have
+      the same reduced echelon
+      form, namely the matrix with all \( 0 \)'s except for \( 1 \)'s down
+      the diagonal.
+      \begin{equation*}
+        \begin{mat}
+          1  &0  &       &0  \\
+          0  &1  &       &0  \\
+             &   &\ddots &   \\
+          0  &0  &       &1
+        \end{mat}
+      \end{equation*}
+
+      Two same-sized singular matrices need not be row equivalent.
+      For example, these two \( \nbyn{2} \) singular matrices
+      are not row equivalent.
+      \begin{equation*}
+        \begin{mat}[r]
+          1  &1  \\
+          0  &0
+        \end{mat}
+        \quad\text{and}\quad
+        \begin{mat}[r]
+          1  &0  \\
+          0  &0
+        \end{mat}
+      \end{equation*}  
+    \end{answer}
+  \recommended \item 
+    Describe all of the row equivalence classes containing these.
+    \begin{exparts*}
+      \partsitem \( \nbyn{2} \)~matrices
+      \partsitem \( \nbym{2}{3} \)~matrices
+      \partsitem \( \nbym{3}{2} \)~matrices
+      \partsitem \( \nbyn{3} \)~matrices
+    \end{exparts*}
+    \begin{answer}
+      Since there is one and only one reduced echelon form matrix in each
+      class, we can just list the possible reduced echelon form matrices.
+
+      For that list, see the answer for \nearbyexercise{exer:PossRedEchFrms}. 
+    \end{answer}
+  \item  
+     \begin{exparts}
+          \partsitem Show that a vector $\vec{\beta}_0$ is a linear combination
+            of members of the set $\set{\vec{\beta}_1,\ldots,\vec{\beta}_n}$
+            if and only if there is a linear relationship 
+            $\zero=c_0\vec{\beta}_0+\cdots+c_n\vec{\beta}_n$
+            where $c_0$ is not zero.
+            (\textit{Hint.}   Watch out for the $\vec{\beta}_0=\zero$ case.)
+         \partsitem Use that to simplify the proof of 
+            \nearbylemma{le:EchFormNoLinCombo}.   
+       \end{exparts}
+       \begin{answer}
+          \begin{exparts}
+           \partsitem If there is a linear relationship where $c_0$ is not zero
+             then we can subtract $c_0\vec{\beta}_0$ from both sides and divide
+             by $-c_0$ to get $\vec{\beta}_0$ as a linear
+             combination of the others.
+             (Remark:  
+             if there are no other vectors in the set\Dash if the 
+             relationship is, say, 
+             $\zero=3\cdot\zero$\Dash then the statement is still true because
+             the zero vector is by definition the sum of the empty set 
+             of vectors.)
+
+             Conversely, if $\vec{\beta}_0$ is a combination of the others 
+             $\vec{\beta}_0=c_1\vec{\beta}_1+\dots+c_n\vec{\beta}_n$
+             then subtracting
+             $\vec{\beta}_0$ from both sides gives a relationship where 
+             at least one
+             of the coefficients is nonzero; namely,
+             the $-1$ in front of $\vec{\beta}_0$.
+           \partsitem The first row is not a linear combination of the
+             others for
+             the reason given in the proof:~in the equation of components from
+             the column containing the leading entry of the first row, the
+             only nonzero entry is the leading entry from the first row, so
+             its coefficient must be zero.
+             Thus, from the prior part of this exercise, the first row is in
+             no linear relationship with the other rows.
+
+             Thus, when considering whether the second row can be in a linear 
+             relationship
+             with the other rows, we can leave the first row out.
+             But now the argument just applied to the first row will apply
+             to the second row.
+             (That is, we are arguing here by induction.)             
+         \end{exparts}
+      \end{answer}
+  % \item 
+  %   Why, in the proof of \nearbytheorem{th:ReducedEchelonFormIsUnique},
+  %   do we bother to restrict to the nonzero rows?
+  %   Why not just stick to the relationship that we began with,
+  %   $\beta_i=c_{i,1}\delta_1+\dots+c_{i,m}\delta_m$, with $m$ instead of $r$,
+  %   and argue using it that the only nonzero coefficient
+  %   is \( c_{i,i}  \), which is \( 1 \)?
+  %   \begin{answer}
+  %      The zero rows could have nonzero coefficients, and
+  %      so the statement would not be true.
+  %   \end{answer}
+  \recommended \item 
+   \cite{Trono}
+   Three truck drivers went into a roadside cafe.
+   One truck driver purchased four sandwiches, a cup of coffee, and ten 
+   doughnuts for \$$8.45$.
+   Another driver purchased three sandwiches, a cup of coffee, and seven
+   doughnuts for \$$6.30$.
+   What did the third truck driver pay for a sandwich, a cup of coffee, and 
+   a doughnut?
+   \begin{answer}
+     We know that $4s+c+10d=8.45$ and that $3s+c+7d=6.30$, and we'd like to
+     know what $s+c+d$ is.
+     Fortunately, $s+c+d$ is a linear combination of $4s+c+10d$ and $3s+c+7d$.
+     Calling the unknown price $p$, we have this reduction.
+     \begin{align*}
+       \begin{amat}{3}
+         4  &1  &10  &8.45 \\
+         3  &1  &7   &6.30 \\
+         1  &1  &1   &p
+       \end{amat}
+       &\grstep[-(1/4)\rho_1+\rho_3]{-(3/4)\rho_1+\rho_2}
+       \begin{amat}{3}
+         4  &1    &10     &8.45      \\
+         0  &1/4  &-1/2   &-0.037\,5 \\
+         0  &3/4  &-3/2   &p-2.112\,5
+       \end{amat}                                      \\
+       &\grstep{-3\rho_2+\rho_3}
+       \begin{amat}{3}
+         4  &1    &10     &8.45      \\
+         0  &1/4  &-1/2   &-0.037\,5 \\
+         0  &0    &0      &p-2.00
+       \end{amat}
+     \end{align*}
+     The price paid is \$$2.00$.
+   \end{answer}
+  % \item
+  %  The fact that Gaussian reduction disallows multiplication of
+  %  a row by zero is needed for the proof of uniqueness of reduced echelon form,
+  %  or else every matrix would
+  %  be row equivalent to a matrix of all zeros.
+  %  Where is it used?
+  %  \begin{answer}
+  %    If multiplication of a row by zero were allowed then
+  %    \nearbylemma{le:EquivMatsSameForm}
+  %    would not hold.
+  %    That is, where
+  %    \begin{equation*}
+  %      \begin{mat}[r]
+  %        1  &3  \\
+  %        2  &1
+  %      \end{mat}
+  %      \grstep{0\rho_2}
+  %      \begin{mat}[r]
+  %        1  &3  \\
+  %        0  &0
+  %      \end{mat}
+  %    \end{equation*}
+  %    all the rows of the second matrix can be expressed as linear combinations
+  %    of the rows of the first, but the converse does not hold.
+  %    The second row of the first matrix is not a linear combination of the
+  %    rows of the second matrix.  
+  %  \end{answer}
+  \item 
+   The Linear Combination Lemma says which equations can be gotten from
+   Gaussian reduction of a given linear system.
+   \begin{enumerate}
+     \item Produce an equation not implied by this system.
+       \begin{equation*}
+         \begin{linsys}{2}
+           3x  &+  &4y  &=  &8 \\
+           2x  &+  & y  &=  &3 
+         \end{linsys}
+       \end{equation*}
+     \item Can any equation be derived from an inconsistent system?
+   \end{enumerate}
+   \begin{answer}
+     \begin{enumerate}
+        \item An easy answer is this.
+          \begin{equation*}
+            0=3
+          \end{equation*}
+          For a less wise-guy-ish answer, solve the system:
+          \begin{equation*}
+            \begin{amat}[r]{2}
+              3  &4  &8  \\
+              2  &1   &3
+            \end{amat}
+            \grstep{-(2/3)\rho_1+\rho_2}
+            \begin{amat}[r]{2}
+              3  &4    &8    \\
+              0  &-5/3 &-7/3
+            \end{amat}
+          \end{equation*}
+          gives \( y=7/5 \) and \( x=4/5 \).
+          Now any equation not satisfied by \( (7/5,4/5) \) will do,
+          e.g., \( 5x+5y=10 \).
+        \item Every equation can be derived from an inconsistent system.
+          For instance, here is how to derive \( 3x+2y=4 \) from
+          \( 0=5 \).
+          First,
+          \begin{equation*}
+            0=5
+            \grstep{(3/5)\rho_1}
+            0=3
+            \grstep{x\rho_1}
+            0=3x
+          \end{equation*}
+          (validity of the \( x=0 \) case is separate but clear).
+          Similarly, \( 0=2y \).
+          Ditto for \( 0=4 \).
+          But now, \( 0+0=0 \) gives \( 3x+2y=4 \).
+     \end{enumerate}  
+    \end{answer}
+  \item 
+    \cite{HoffmanKunze}
+    Extend the definition of row equivalence to linear systems.
+    Under your definition, do equivalent systems have the same solution set?
+    \begin{answer}
+      Define linear systems to be equivalent if their augmented
+      matrices are row equivalent.
+      The proof that equivalent systems have the same solution set is easy.  
+    \end{answer}
+  \item 
+    In this matrix
+    \begin{equation*}
+      \begin{mat}[r]
+        1  &2  &3  \\
+        3  &0  &3  \\
+        1  &4  &5
+      \end{mat}
+    \end{equation*}
+    the first and second columns add to the third.
+    \begin{exparts}
+      \partsitem Show that remains true under any row operation.
+      \partsitem Make a conjecture.
+      \partsitem Prove that it holds.
+    \end{exparts}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem The three possible row swaps are easy, 
+          as are the three possible rescalings.
+          One of the six possible row combinations is \( k\rho_1+\rho_2 \):
+          \begin{equation*}
+            \begin{mat}
+              1           &2           &3  \\
+              k\cdot 1+3  &k\cdot 2+0  &k\cdot 3+3  \\
+              1           &4           &5
+            \end{mat}
+          \end{equation*}
+          and again the first and second columns add to the third.
+          The other five combinations are similar.
+        \partsitem The obvious conjecture is that row operations do not change
+          linear relationships among columns.
+        \partsitem A case-by-case 
+          proof follows the sketch given in the first item.
+      \end{exparts}  
+   \end{answer}
+\end{exercises}

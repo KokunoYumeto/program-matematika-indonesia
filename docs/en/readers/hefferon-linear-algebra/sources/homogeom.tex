@@ -1,0 +1,744 @@
+% Chapter 3, Topic _Linear Algebra_ Jim Hefferon
+%  http://joshua.smcvt.edu/linearalgebra
+%  2001-Jun-12
+\topic{Geometry of Linear Maps} 
+\index{Geometry of Linear Maps|(}
+%The geometry of linear maps %$\map{h}{\Re^n}{\Re^m}$ 
+%is appealing both for its simplicity and for its usefulness.
+These pairs of pictures contrast the geometric action of the nonlinear maps
+\( f_1(x)=e^x \) and \( f_2(x)=x^2 \) 
+\begin{center}
+  \includegraphics{map/mp/ch3.46}
+  \hspace*{4em}
+  \includegraphics{map/mp/ch3.47}
+\end{center}
+with the linear maps
+\( h_1(x)=2x \) and \( h_2(x)=-x \).
+\begin{center}
+  \includegraphics{map/mp/ch3.48}
+  \hspace*{4em}
+  \includegraphics{map/mp/ch3.49}
+\end{center}
+Each of the four pictures shows the domain $\Re$ on the left 
+mapped to the codomain $\Re$ on the right. 
+Arrows trace where each map sends
+$x=0$, $x=1$, $x=2$, $x=-1$, and $x=-2$.
+
+The nonlinear maps distort
+the domain in transforming it into the range.
+For instance,
+\( f_1(1) \) is further from
+$f_1(2)$ than it is from $f_1(0)$ \Dash  this map spreads
+the domain out unevenly so that a domain interval near $x=2$ is 
+spread apart more 
+than is a domain interval near $x=0$.
+The linear maps are nicer, more regular, 
+in that for each map all of the domain 
+spreads by the same factor.
+The map~$h_1$ on the left spreads all intervals apart to be twice as wide 
+while on the right~$h_2$ keeps intervals the same length but reverses
+their orientation, as with the rising interval from $1$ to $2$ 
+being transformed 
+to the falling interval from $-1$ to~$-2$.
+
+The only linear maps from $\Re$ to $\Re$ are multiplications by a scalar but
+in higher dimensions more can happen. 
+For instance, this linear transformation of $\Re^2$
+rotates vectors counterclockwise.\index{rotation}\index{linear map!rotation}
+\begin{center}
+  \includegraphics{map/mp/ch3.50}
+\end{center}
+The transformation of $\Re^3$ 
+that projects vectors into the $xz$-plane
+is also not simply a rescaling.
+\begin{center}
+ \includegraphics{map/mp/ch3.51}
+\end{center}
+
+Despite this additional variety, 
+even in higher dimensions linear maps behave nicely.
+Consider a linear $\map{h}{\Re^n}{\Re^m}$ and
+use the standard bases to represent it by a matrix $H$.
+Recall from Theorem~V.\ref{th:CanonFormForMatEquiv} 
+that $H$ factors into $H=PBQ$ 
+where $P$ and $Q$ are nonsingular and $B$ is a partial-identity matrix.
+Recall also that nonsingular matrices
+factor into elementary 
+matrices\index{matrix!elementary reduction}\index{elementary reduction matrix}
+$PBQ=T_nT_{n-1}\cdots T_sBT_{s-1}\cdots T_1$,
+which are matrices that
+come from the identity $I$ after one Gaussian row operation,
+so each $T$ matrix is one of these three kinds
+\begin{equation*}
+  I\grstep{k\rho_i}M_i(k) 
+  \qquad 
+  I\grstep{\rho_i\leftrightarrow\rho_j}P_{i,j}  
+  \qquad
+  I\grstep{k\rho_i+\rho_j}C_{i,j}(k) 
+\end{equation*}
+with $i\neq j$, $k\neq 0$.
+So if we understand the geometric effect of a linear map described
+by a partial-identity matrix and the effect of the linear maps
+described by the elementary matrices then we will in some sense
+completely understand the effect of any linear map.
+(The pictures below stick to transformations of $\Re^2$ for ease of drawing
+but the principles extend for maps from any $\Re^n$ to any $\Re^m$.)
+
+The geometric effect of the linear transformation represented by a  
+partial-identity matrix is projection.
+\begin{equation*}
+  \colvec{x \\ y  \\ z}
+  \quad\xrightarrow{{\text{\tiny$\displaystyle\left(\begin{array}[r]{@{}c@{\hspace{0.8em}}c@{\hspace{0.8em}}c@{}}
+                1  &0  &0 \\
+                0  &1  &0 \\
+                0  &0  &0
+          \end{array}\right)$}}}
+% \begin{mat}[r]
+%       1  &0  &0   \\
+%       0  &1  &0   \\
+%       0  &0  &0   
+%     \end{mat}} % _{\stdbasis_3,\stdbasis_3}}
+  \qquad
+  \colvec{x \\ y  \\ 0}
+\end{equation*}
+
+The geometric effect of the $M_i(k)$ matrices
+is to  
+stretch vectors by a factor of $k$ along the $i$-th axis.
+This map stretches by a factor of $3$ along the $x$-axis.
+\begin{center}
+  \includegraphics{map/mp/ch3.52}
+\end{center}
+If $0\leq k<1$ or if $k<0$ then the $i$-th
+component goes the other way, here to the left.
+\begin{center}
+  \includegraphics{map/mp/ch3.53}
+\end{center}
+Either of these stretches is a 
+\definend{dilation}.\index{dilation}\index{linear map!dilation}
+
+A transformation represented by a $P_{i,j}$ matrix
+interchanges the $i$-th and $j$-th axes.
+This is \definend{reflection}\index{reflection}\index{linear map!reflection} 
+about the line $x_i=x_j$.
+\begin{center}
+  \includegraphics{map/mp/ch3.54}
+\end{center}
+Permutations involving more than two axes decompose into a combination 
+of swaps of pairs of axes; see \nearbyexercise{exer:PermIsCompSwaps}.
+
+The remaining  matrices have the form $C_{i,j}(k)$.
+For instance $C_{1,2}(2)$ performs $2\rho_1+\rho_2$. 
+\begin{equation*}
+  \colvec{x  \\  y}\quad
+  \xrightarrow{\text{\tiny$\displaystyle\left(\begin{array}[r]{@{}c@{\hspace{0.8em}}c@{}}
+                1  &0  \\
+                2  &1  
+          \end{array}\right)$}}  % _{\stdbasis_2,\stdbasis_2}}
+   \quad\colvec{x \\ 2x+y}
+\end{equation*}
+In the picture below, 
+the vector $\vec{u}$ with the first component of $1$ is affected less 
+than the vector $\vec{v}$ with the first component of $2$.
+The vector $\vec{u}$ is mapped to a
+$h(\vec{u})$ that is only $2$ higher than $\vec{u}$ while 
+$h(\vec{v})$ is $4$ higher than $\vec{v}$.
+\begin{center}
+  \includegraphics{map/mp/ch3.55}
+\end{center}
+Any vector with a first component of $1$ would be affected 
+in the same way as $\vec{u}$:
+it would slide up by $2$.
+And any vector with a first component of $2$ would slide up $4$, 
+as was $\vec{v}$.
+That is, the transformation represented by 
+$C_{i,j}(k)$ affects vectors depending on their $i$-th component.
+
+Another way to see this point is to consider the action of this map 
+on the unit square.
+In the next picture,
+vectors with a first component of $0$, such as the origin, are not pushed 
+vertically at all but vectors with a positive first component slide up.
+Here, all vectors with a first component of $1$, the entire 
+right side of the square, slide to the same extent.
+In general, vectors on the same vertical line slide by the same amount,
+by twice their first component.
+The resulting shape has the same base and height as the square
+(and thus the same area) but the right angle corners are gone.
+\begin{center}
+  \includegraphics{map/mp/ch3.56}
+\end{center}
+
+For contrast, the next picture shows the effect of the map represented by 
+$C_{2,1}(2)$.
+Here vectors are affected according to their  
+second component:
+$\binom{x}{y}$ slides horizontally by twice $y$.
+\begin{center}
+  \includegraphics{map/mp/ch3.57}
+\end{center}
+In general, for any $C_{i,j}(k)$, the
+sliding happens so that vectors with the same $i$-th component
+are slid by the same amount.
+This kind of map is a 
+\definend{shear}.\index{shear}\index{linear map!shear}
+
+With that we understand the geometric effect of the four types 
+of matrices on the right-hand side of
+$H=T_nT_{n-1}\cdots T_jBT_{j-1}\cdots T_1$
+and so in some sense we understand  
+the action of any matrix~$H$.
+Thus, even in higher dimensions the geometry of linear maps is easy: it 
+is built by putting
+together a number of components, each of which acts in a simple way.
+
+We will apply this understanding in two ways.
+The first way is to prove something general about 
+the geometry of linear maps. 
+Recall that under a linear map, the image of a subspace is a subspace
+and thus the linear transformation $h$ represented by $H$ maps lines 
+through the origin to lines through the origin.
+(The dimension of the image space cannot be greater than 
+the dimension of the domain space, so a line can't map onto, say, a plane.)
+We will show that $h$ maps any line\Dash not just one through the origin\Dash 
+to a line.
+The proof is simple:
+the partial-identity projection $B$ and the elementary $T_i$'s
+each turn a line input into a line output; 
+verifying the four cases is \nearbyexercise{exer:ImageLinSurIsLinSur}.
+Therefore their composition also preserves lines.
+% Thus, by understanding its components we can understand arbitrary square 
+% matrices $H$, in the sense that we can prove things about them.
+
+The second way that we will apply 
+the geometric understanding of linear maps 
+is to elucidate a point from Calculus.
+Below is a picture
+of the action of the one-variable real function \( y(x)=x^2+x \).
+As with the nonlinear functions pictured earlier, 
+the geometric effect of this map is
+irregular in that at different domain points it has different effects; for
+example as the input~$x$ goes from $2$ to $-2$, the associated output~$f(x)$ 
+at first decreases, then pauses for an instant,
+and then increases.
+\begin{center}
+  \includegraphics{map/mp/ch3.58}
+\end{center}
+But in Calculus we focus less on the map overall and more 
+on the local effect of the map.
+Below we look closely at what this map
+does near $x=1$.
+The derivative is $dy/dx=2x+1$
+so that near \( x=1 \) 
+we have \( \Delta y\approx 3\cdot\Delta x \).
+%; in other words, \( (1.001^2+1.001)-(1^2+1)\approx 3\cdot (0.001) \).
+That is, in a neighborhood of $x=1$,
+in carrying the domain over this map causes it to grow by
+a factor of $3$ \Dash  it is, locally, 
+approximately, a dilation.
+%The map $y$ is locally regular.
+The picture below shows this as a small interval 
+in the domain $(1-\Delta x\,..\,1+\Delta x)$
+carried over to an interval in the codomain $(2-\Delta y\,..\,2+\Delta y)$
+that is three times as wide. % $\Delta y \approx 3\cdot \Delta x$.
+\begin{center}
+  \includegraphics{map/mp/ch3.59}
+\end{center}
+% (When the above picture is drawn in the traditional cartesian way
+% then the prior sentence about the rate of growth of $y(x)$ is usually
+% stated:~the derivative $3$ is the slope of the 
+% line tangent to the graph at the point $(1,2)$.)
+
+In higher dimensions the core idea is the same but more can happen.
+For a function \( \map{y}{\Re^n}{\Re^m} \) and a point \( \vec{x}\in\Re^n \),
+the derivative is defined to be the 
+linear map \( \map{h}{\Re^n}{\Re^m} \) that best approximates
+how \( y \) changes near \( y(\vec{x}) \).
+So the geometry described above directly applies to the derivative.
+%Calculus considers the map 
+%that locally approximates the change \( \Delta x\mapsto 3\cdot\Delta x \)
+%(instead of the actual change map
+%\( \Delta x\mapsto y(1+\Delta x)-y(1) \)) because the local map 
+%is easier.
+%It is easier in that, if the
+%input change is doubled, or tripled, etc., then the
+%resulting output change will double, or triple, etc.
+%\begin{equation*}
+%  3(r\,\Delta x)=r\,(3\Delta x)
+%\end{equation*}
+%(for $r\in\Re$), 
+%and it is easier in that 
+%adding changes in input adds the resulting output changes.
+%\begin{equation*}
+%  3(\Delta x_1+\Delta x_2)=3\Delta x_1+3\Delta x_2
+%\end{equation*}
+%In short, what's
+%easy about \( \Delta x\mapsto 3\cdot\Delta x \) is that
+%it is linear.
+
+We close by remarking how
+this point of view makes clear an often misunderstood  
+result about derivatives, the Chain Rule.
+Recall that, under suitable conditions on the two functions,
+the derivative of the composition is this.
+\begin{equation*}
+  \frac{d\,(\composed{g}{f})}{dx}(x) = 
+  \frac{dg}{dx}(f(x))\cdot\frac{df}{dx}(x)
+\end{equation*} 
+For instance the derivative of $\sin(x^2+3x)$ is
+$\cos(x^2+3x)\cdot(2x+3)$.
+
+Where does this come from?
+Consider $\map{f,g}{\Re}{\Re}$. 
+\begin{center}
+  \includegraphics{map/mp/ch3.60}
+\end{center}
+The first map $f$ dilates the neighborhood of $x$ by a factor of 
+\begin{equation*}
+  \frac{df}{dx}(x) 
+\end{equation*}
+and the second map $g$ follows that by dilating 
+a neighborhood of $f(x)$ by a factor of 
+\begin{equation*}
+  \frac{dg}{dx}(\,f(x)\,) 
+\end{equation*}
+and when combined, 
+the composition dilates by the product of the two.
+In higher dimensions 
+the map expressing how a function changes near a point is a linear map,
+and is represented by a matrix.
+The Chain Rule multiplies the matrices.
+
+% Thus, the geometry of linear maps $\map{h}{\Re^n}{\Re^m}$ 
+% is appealing both for its simplicity and for its usefulness.
+
+\begin{exercises}
+  \item 
+    Use the $H=PBQ$ decomposition to find
+    the combination of dilations, flips, skews, and projections
+    that produces the map $\map{h}{\Re^3}{\Re^3}$ 
+    represented with respect to the standard bases by this matrix.
+    \begin{equation*}
+      H=\begin{mat}[r]
+        1  &2  &1  \\
+        3  &6  &0  \\
+        1  &2  &2
+      \end{mat}
+    \end{equation*}
+    \begin{answer}
+      This Gaussian reduction
+      \begin{multline*}
+        \grstep[-\rho_1+\rho_3]{-3\rho_1+\rho_2}
+        \begin{mat}[r]
+          1  &2  &1  \\
+          0  &0  &-3 \\
+          0  &0  &1
+        \end{mat}
+        \grstep{(1/3)\rho_2+\rho_3}
+        \begin{mat}[r]
+          1  &2  &1  \\
+          0  &0  &-3 \\
+          0  &0  &0
+        \end{mat}                                     \\
+        \grstep{(-1/3)\rho_2}
+        \begin{mat}[r]
+          1  &2  &1  \\
+          0  &0  &1 \\
+          0  &0  &0
+        \end{mat}
+        \grstep{-\rho_2+\rho_1}
+        \begin{mat}[r]
+          1  &2  &0  \\
+          0  &0  &1 \\
+          0  &0  &0
+        \end{mat}
+      \end{multline*}
+      gives the reduced echelon form of the matrix.
+      Now the two column operations of taking $-2$ times the first column 
+      and adding it to the second, and then of swapping columns two and three
+      produce this partial identity. 
+      \begin{equation*} 
+        B=\begin{mat}[r]
+          1  &0  &0  \\
+          0  &1  &0  \\ 
+          0  &0  &0
+        \end{mat}
+      \end{equation*}
+      All of that translates into matrix terms as:~where
+      \begin{equation*}
+        P=
+        \begin{mat}[r]
+          1  &-1    &0  \\
+          0  &1     &0  \\
+          0  &0     &1         
+        \end{mat}
+        \begin{mat}[r]
+          1  &0    &0  \\
+          0  &-1/3 &0  \\
+          0  &0    &1
+        \end{mat}
+        \begin{mat}[r]
+          1  &0    &0  \\
+          0  &1    &0  \\
+          0  &1/3  &1         
+        \end{mat}
+        \begin{mat}[r]
+          1  &0  &0  \\
+          0  &1  &0  \\
+         -1  &0  &1         
+        \end{mat}
+        \begin{mat}[r]
+          1  &0  &0  \\
+         -3  &1  &0  \\
+          0  &0  &1         
+        \end{mat}
+      \end{equation*}
+      and 
+      \begin{equation*}
+        Q=
+        \begin{mat}[r]
+          1  &-2    &0  \\
+          0  &1     &0  \\
+          0  &0     &1         
+        \end{mat}
+        \begin{mat}[r]
+          0  &1     &0  \\
+          1  &0     &0  \\
+          0  &0     &1         
+        \end{mat}
+      \end{equation*}
+      the given matrix factors as $PBQ$.
+    \end{answer}
+  \item 
+    What combination of dilations, flips, skews, and projections
+    produces a rotation counterclockwise by $2\pi/3$ radians?
+    \begin{answer}
+      We will first represent the map with a matrix $H$,
+      perform the row operations and, if needed, column operations
+      to reduce it to a partial-identity matrix.
+      We will then translate that into a factorization $H=PBQ$.
+      Substituting into the general matrix
+          \begin{equation*}
+            \rep{r_\theta}{\stdbasis_2,\stdbasis_2}
+            \begin{mat}
+              \cos\theta  &-\sin\theta  \\
+              \sin\theta  &\cos\theta
+            \end{mat}
+          \end{equation*}
+          gives this representation.
+          \begin{equation*}
+            \rep{r_{2\pi/3}}{\stdbasis_2,\stdbasis_2}
+            \begin{mat}[r]
+              -1/2        &-\sqrt{3}/2  \\
+              \sqrt{3}/2  &-1/2
+            \end{mat}
+          \end{equation*}
+          Gauss's Method is routine.
+          \begin{equation*}
+            \grstep{\sqrt{3}\rho_1+\rho_2}
+            \begin{mat}[r]
+              -1/2        &-\sqrt{3}/2  \\
+               0          &-2
+            \end{mat}
+            \grstep[(-1/2)\rho_2]{-2\rho_1}
+            \begin{mat}[r]
+               1          &\sqrt{3}    \\
+               0          &1
+            \end{mat}
+            \grstep{-\sqrt{3}\rho_2+\rho_1}
+            \begin{mat}[r]
+               1          &0   \\
+               0          &1
+            \end{mat}
+          \end{equation*}
+          That translates to a matrix equation in this way.
+          \begin{equation*}
+            \begin{mat}[r]
+              1  &-\sqrt{3}  \\
+              0  &1
+            \end{mat}
+            \begin{mat}[r]
+              -2  &0    \\
+               0  &-1/2
+            \end{mat}
+            \begin{mat}[r]
+               1         &0  \\
+               \sqrt{3}  &1
+            \end{mat}
+            \begin{mat}[r]
+              -1/2        &-\sqrt{3}/2  \\
+              \sqrt{3}/2  &-1/2
+            \end{mat}
+            =I
+          \end{equation*}
+          Taking inverses to solve for $H$ yields this factorization.
+          \begin{equation*}
+            \begin{mat}[r]
+              -1/2        &-\sqrt{3}/2  \\
+              \sqrt{3}/2  &-1/2
+            \end{mat}
+            =
+            \begin{mat}[r]
+                1         &0  \\
+               -\sqrt{3}  &1
+            \end{mat}
+            \begin{mat}[r]
+              -1/2  &0    \\
+               0    &-2
+            \end{mat}
+            \begin{mat}[r]
+              1  &\sqrt{3}  \\
+              0  &1
+            \end{mat}
+            I
+          \end{equation*}
+    \end{answer}
+  \item 
+    If a map is nonsingular then to get from its representation to
+    the identity matrix we do not need any column operations,
+    so that in $H=PBQ$ the matrix $Q$ is the identity.
+    An example of a nonsingular map is 
+    the transformation $\map{t_{-\pi/4}}{\Re^2}{\Re^2}$ that rotates
+    vectors clockwise by $\pi/4$~radians.
+    \begin{exparts}
+      \partsitem Find the matrix $H$ representing 
+         this map with respect to the standard bases.
+      \partsitem Use Gauss-Jordan to reduce $H$ to the identity,
+        without column operations.
+      \partsitem
+        Translate that to a matrix equation
+        $T_jT_{j-1}\cdots T_1H=I$.
+      \partsitem Solve the matrix equation for $H$.
+      \partsitem Describe $H$ as a 
+        combination of dilations, flips, skews, and projections
+        (the identity is a trivial projection). 
+    \end{exparts}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem  Recall that rotation counterclockwise by 
+          $\theta$~radians is represented with respect to the standard basis
+          in this way.
+          \begin{equation*}
+            \rep{t_{\pi/4}}{\stdbasis_2,\stdbasis_2}
+            =\begin{mat}
+              \cos\theta  &-\sin\theta  \\
+              \sin\theta  &\cos\theta
+             \end{mat}
+          \end{equation*}
+          A clockwise angle is the negative of a counterclockwise
+          one.  
+          \begin{equation*}
+            \rep{t_{-pi/4}}{\stdbasis_2,\stdbasis_2}
+            =\begin{mat}
+              \cos(-\pi/4)  &-\sin(-\pi/4)  \\
+              \sin(-\pi/4)  &\cos(-\pi/4)
+            \end{mat}
+            =\begin{mat}[r]
+              \sqrt{2}/2  &\sqrt{2}/2  \\
+              -\sqrt{2}/2 &\sqrt{2}/2
+            \end{mat}
+          \end{equation*}
+        \partsitem
+          This Gauss-Jordan reduction
+          \begin{equation*}
+            \grstep{\rho_1+\rho_2}
+            \begin{mat}[r]
+              \sqrt{2}/2  &\sqrt{2}/2  \\
+              0           &\sqrt{2}
+            \end{mat}
+            \grstep[(1/\sqrt{2})\rho_2]{(2/\sqrt{2})\rho_1}
+            \begin{mat}[r]
+              1  &1  \\
+              0  &1
+            \end{mat}
+            \grstep{-\rho_2+\rho_1}
+            \begin{mat}[r]
+              1  &0  \\
+              0  &1
+            \end{mat}
+          \end{equation*}
+          produces the identity matrix. 
+          Thus we do not need column-swapping operations
+          to end with a partial-identity.
+        \partsitem In matrix multiplication the reduction is
+          \begin{equation*}
+            \begin{mat}[r]
+              1  &-1 \\
+              0  &1
+            \end{mat}
+            \begin{mat}[r]
+              2/\sqrt{2}  &0         \\
+              0           &1/\sqrt{2}
+            \end{mat}
+            \begin{mat}[r]
+              1  &0 \\
+              1  &1
+            \end{mat}
+            H
+            =I
+          \end{equation*}
+          (note that composition of the Gaussian operations is 
+          from right to left).
+        \partsitem  Taking inverses 
+          \begin{equation*}
+            H
+            =
+            \underbrace{
+              \begin{mat}[r]
+                1  &0 \\
+                -1  &1
+              \end{mat}
+              \begin{mat}[r]
+                \sqrt{2}/2  &0         \\
+                0           &\sqrt{2}
+              \end{mat}
+              \begin{mat}[r]
+                1  &1 \\
+                0  &1
+              \end{mat}
+             }_P
+            I
+          \end{equation*}
+          gives the desired factorization of $H$. 
+          The partial
+          identity is $I$.
+          % , and $Q$ is trivial, that is, it is also an identity
+          % matrix.
+        \partsitem Reading the composition from right to left (and ignoring the
+          identity matrices as trivial) gives that $H$ has the same
+          effect as first performing this skew 
+          \begin{center}
+            \includegraphics{map/mp/ch3.95}
+         \end{center}
+         followed by a dilation that multiplies all first components by 
+         $\sqrt{2}/2$ (this is a shrink in that $\sqrt{2}/2\approx0.707$ 
+         is less than $1$) 
+         and all second components by $\sqrt{2}$,
+         followed by another skew. 
+          \begin{center}
+            \includegraphics{map/mp/ch3.96}
+         \end{center}
+         For an example we start with the unit vector whose angle with
+         the $x$-axis is $\pi/6$ and apply the components of $H$ in turn.
+          \begin{center}
+            \includegraphics{map/mp/ch3.97}
+         \end{center}
+         We can easily verify that the resulting vector has unit length 
+         and forms an angle with the $x$-axis of $-\pi/12$, which is indeed
+         a rotation clockwise of $\pi/4$ radians 
+         since $(\pi/6)-(\pi/4)=-\pi/12$. 
+      \end{exparts}
+    \end{answer}
+  \item \label{exer:RToRIsScalMult} 
+    Show that any linear transformation of $\Re^1$ is a map $h_k$
+    that multiplies by a scalar $x\mapsto kx$.
+    \begin{answer}
+      Represent it with respect to the 
+      standard bases $\stdbasis_1,\stdbasis_1$. 
+      That produces a $\nbyn{1}$ matrix.
+      The only entry is the scalar~$k$.
+    \end{answer}
+  \item \label{exer:ImageLinSurIsLinSur} 
+    Show that linear maps preserve the linear structures of a space.
+    \begin{exparts}
+      \partsitem Show that for any linear map from $\Re^n$ to $\Re^m$,
+         the image of any line is a line.
+         The image may be a degenerate line, that is, a single point.
+      \partsitem Show that the image of any linear surface is a linear surface.
+         This generalizes the result that under a linear map the image of
+         a subspace is a subspace.
+      \partsitem Linear maps preserve other linear ideas.
+         Show that linear maps preserve ``betweeness'':~if the point
+         $B$ is between $A$ and $C$ then the image of $B$ is between the
+         image of $A$ and the image of $C$.
+    \end{exparts}
+    \begin{answer}
+      \begin{exparts}
+        \partsitem A line is a subset of $\Re^n$ of the form
+          $\set{\vec{v}=\vec{u}+t\cdot\vec{w}\suchthat t\in\Re}$.
+          The image of a point on that line is 
+          $h(\vec{v})=h(\vec{u}+t\cdot\vec{w})=h(\vec{u})+t\cdot h(\vec{w})$,
+          and the set of such vectors, as $t$ ranges over the reals, is
+          a line (albeit, degenerate if $h(\vec{w})=\zero$).
+        \partsitem This is an obvious extension of the prior argument.
+        \partsitem If the point~$B$ is between the points~$A$ and~$C$ then the
+          line from $A$ to $C$ has $B$ in it.
+          That is, there is a $t\in (0\,..\,1)$ such that
+          $\vec{b}=\vec{a}+t\cdot (\vec{c}-\vec{a})$ (where $B$ is the
+          endpoint of $\vec{b}$, etc.).
+          Now, as in the argument of the first item, linearity shows that
+          $h(\vec{b})=h(\vec{a})+t\cdot h(\vec{c}-\vec{a})$.  
+      \end{exparts}
+    \end{answer}
+  \item 
+    Use a picture like the one 
+    that appears in the discussion of the Chain Rule
+    to answer:~if a function $\map{f}{\Re}{\Re}$ has an inverse,
+    what's the relationship between how the function \Dash locally, 
+    approximately \Dash  dilates space, and
+    how its inverse dilates space (assuming, of course, that it has an 
+    inverse)?
+    \begin{answer}
+      The two are inverse.
+      For instance, for a fixed $x\in\Re$,
+      if $f^\prime (x)=k$ (with $k\neq 0$) then 
+      $(f^{-1})^\prime (x)=1/k$.
+      \begin{center}
+        \includegraphics{map/mp/ch3.98}
+     \end{center}
+    \end{answer}
+  \item \label{exer:PermIsCompSwaps}
+    Show that any permutation, any reordering, $p$ of the numbers
+    $1$, \ldots, $n$, the map 
+    \begin{equation*}
+      \colvec{x_1 \\ x_2 \\ \vdots\\ x_n}
+      \mapsto
+      \colvec{x_{p(1)} \\ x_{p(2)} \\ \vdots \\ x_{p(n)}}
+    \end{equation*}
+    can be done with a composition of maps, 
+    each of which only swaps a single pair of coordinates.
+    \textit{Hint:} you can use induction on $n$.
+    (\textit{Remark:}~in the fourth chapter we will show this and we will also 
+    show that the parity of the number of swaps used is determined by $p$.
+    That is, although a particular
+    permutation could be expressed in two different ways
+    with two different numbers of swaps, either both ways use an even number of
+    swaps, or both use an odd number.)
+    \begin{answer}
+      We can show this by induction on the number of components in the 
+      vector.
+      In the $n=1$ base case the only permutation is the trivial one,
+      and the map
+      \begin{equation*}
+        \colvec{x_1}
+        \mapsto
+        \colvec{x_1}
+      \end{equation*}
+      is expressible as a composition of swaps\Dash as zero swaps.
+      For the inductive step we assume that the map induced by 
+      any permutation of fewer than
+      $n$ numbers can be expressed with swaps only, and we consider the map
+      induced by a 
+      permutation $p$ of $n$ numbers.
+      \begin{equation*}
+        \colvec{x_1 \\ x_2 \\ \vdots \\ x_n}
+        \mapsto
+        \colvec{x_{p(1)} \\ x_{p(2)} \\ \vdots \\ x_{p(n)}}
+      \end{equation*}
+      Consider the number~$i$ such that $p(i)=n$.
+      The map      
+      \begin{equation*}
+        \colvec{x_1      \\ x_2      \\ \vdots \\ x_i      \\ \vdots \\ x_n}
+        \mapsunder{\hat{p}}
+        \colvec{x_{p(1)} \\ x_{p(2)} \\ \vdots \\ x_{p(n)} \\ \vdots  \\ x_{n}}
+      \end{equation*}
+      will, when followed by the swap of the $i$-th and $n$-th components, 
+      give the map~$p$.
+      Now, the inductive hypothesis gives that $\hat{p}$ is achievable as 
+      a composition of swaps.
+    \end{answer}
+\end{exercises}
+\index{Geometry of Linear Maps|)}
+\endinput
+
+

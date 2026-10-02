@@ -1,0 +1,1969 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Input-Output Analysis — Jim Hefferon — original English reading edition</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+pre{max-width:100%;overflow-x:auto;white-space:pre}pre code{overflow-wrap:normal}.source-table{max-width:100%;overflow-x:auto}.source-table table{overflow-x:visible}.source-answer-absence{font-style:italic}
+.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/leontief.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — 28 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. Source-only material after the author’s explicit end-of-file command is not included.</p><aside class="notice" aria-label="Editorial source notes"><strong>Source notes from the AI-assisted conversion.</strong> <span id="leontief-demand-note">The <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10001">supplied answers to Exercise 1</a> use demand figures from the next-year example instead of the current-year baseline specified by the questions. The current-year external demands are 17,389 for steel and 21,268 for autos. Thus the question demands for parts (a), (b), (c) are (17,589; 21,268), (17,489; 21,468), and (17,589; 21,468). Each supplied answer instead uses 200 more for steel and 25 less for autos. Original questions and answers below remain unchanged.</span> <span id="leontief-decimal-note">Historical decimal outputs are preserved; a few last digits are not the correctly rounded exact fractions. The separate replay records their exact errors, all within one last printed decimal place. Historical Sage commands were not executed here.</span></aside><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="input-output-analysis">Input-Output Analysis</h1>
+<p><span id="source-index-1" class="source-index" data-source-index="Input-Output Analysis|("></span> An economy is an immensely complicated network of interdependence. Changes in one part can ripple out to affect other parts. Economists have struggled to be able to describe, and to make predictions about, such a complicated object. Mathematical models using systems of linear equations are a key tool. One example is Input-Output Analysis, pioneered by W. Leontief,<span id="source-index-2" class="source-index" data-source-index="Leontief, W."></span> who won the 1973 Nobel Prize in Economics.</p>
+<p>Consider an economy with many parts, two of which are the steel industry and the auto industry. These two interact tightly as they work to meet the demand for their product from other parts of the economy, from users external to the steel and auto sectors. For instance, should the external demand for autos go up, that would increase in the auto industry’s usage of steel. Or should the external demand for steel fall, then it would lower steel’s purchase of trucks. The model that we consider here takes in the external demands and predicts how the two interact to meet those demands.</p>
+<p>We start with production and consumption statistics. (These numbers, giving dollar values in millions, are from <span class="source-citation">[<a href="#bib-Leontief1965" data-citation-key="Leontief1965">Leontief 1965</a>]</span> describing the 1958 U.S. economy. Today’s statistics would be different because of inflation and because of technical changes in the industries.)</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0001" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0001" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"> </td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0002" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0002" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0003" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0003" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>auto</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0004" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0004" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>others</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><em>total</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0005" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0005" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="ed32079a593d6b683f183751cf72b05af553506588a2adc2e64ccaeede402d37"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>395</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="01f8e4d6a686e3aa73bfaa5272ea0a8997d4224101a51395f372549a874b4f4d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>664</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="a4fc689fab62cfc998d20165bd54837a654a0a7404b25b43a9acc70ba82ea15f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>448</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0006" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0006" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>auto</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="98010bd9270f9b100b6214a21754fd33bdc8d41b2bc9f9dd16ff54d3c34ffd71"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>48</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="bc6ca1e7d0851be7bcb93eee4271657c5ef827cc4b0e06c48af3b6b2dd3e0e72"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>9</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>030</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="aa871b6d4c9b797528333a4d741443906f0c2f19d02d30c340bfa23a21c0be2f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>346</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>For instance, the dollar value of steel used by the auto industry in this year is <span><span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="855138648da62038e4dfb56784fa2fc4eb94ff2902b0b785f3caef480348ae77"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mo>,</mo>
+  <mn>664</mn>
+</math></span></span> million. Note that industries may consume some of their own output.</p>
+<p>We can fill in the external demands. This year’s value of the steel used by others is <span><span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="0369348828f2a7ca1927e7a6779da86b58d25da3de3d680be256f5d1b651c023"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mo>,</mo>
+  <mn>389</mn>
+</math></span></span> and the external value of autos is <span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="79faee8d6f7dfbe73fcd7eab2de45d5222b62b9245e9358391e574f4a3f9e573"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mo>,</mo>
+  <mn>268</mn>
+</math></span>.</span> With that we have a complete description of how auto and steel interact to meet their demands.</p>
+<p>Now imagine that the external demand for steel has recently been going up by <span><span class="math-region inline" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> per year and so we estimate that next year it will be <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="a418ee879d58b09ed5f63952b8ee650cf4f537fae2e30047727591d4647fe367"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mo>,</mo>
+  <mn>589</mn>
+</math></span>.</span> We also estimate that next year’s external demand for autos will be down <span><span class="math-region inline" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="b7a56873cd771f2c446d369b649430b65a756ba278ff97ec81bb6f55b2e73569"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+</math></span></span> to <span><span class="math-region inline" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="fa872158d0acfdfe532793b3935e5ba947113ce4613bd1c0e1cff1ab8ecd204d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mo>,</mo>
+  <mn>243</mn>
+</math></span>.</span> We wish to predict next year’s total outputs.</p>
+<p>That prediction isn’t as simple as adding <span><span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> to this year’s steel total and subtracting <span><span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="b7a56873cd771f2c446d369b649430b65a756ba278ff97ec81bb6f55b2e73569"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+</math></span></span> from this year’s auto total. For one thing, a rise in steel will cause that industry to have an increased demand for autos, which will mitigate the loss in external demand for autos. On the other hand, the drop in external demand for autos will cause the auto industry to use less steel and so lessen somewhat the upswing in steel’s business. In short, these two industries form a system. We must predict where the system as a whole will settle.</p>
+<p>Here are the equations.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="8eaa45c94f7cf62155aa8b968dd6f864853fe95aa64f4c6faf452a749237c3d2"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="0em 0em 0.3em 0em 0em 0.3em" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mtext>next year’s production of steel</mtext>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mtext>next year’s use of steel by steel</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:left">
+        <mstyle scriptlevel="0">
+          <mspace width="1em"/>
+        </mstyle>
+        <mstyle displaystyle="false" scriptlevel="0"/>
+        <mo>+</mo>
+        <mtext>next year’s use of steel by auto</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:left">
+        <mstyle scriptlevel="0">
+          <mspace width="1em"/>
+        </mstyle>
+        <mstyle displaystyle="false" scriptlevel="0"/>
+        <mo>+</mo>
+        <mtext>next year’s use of steel by others</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mtext>next year’s production of autos</mtext>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mtext>next year’s use of autos by steel</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:left">
+        <mstyle scriptlevel="0">
+          <mspace width="1em"/>
+        </mstyle>
+        <mstyle displaystyle="false" scriptlevel="0"/>
+        <mo>+</mo>
+        <mtext>next year’s use of autos by auto</mtext>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:left">
+        <mstyle scriptlevel="0">
+          <mspace width="1em"/>
+        </mstyle>
+        <mstyle displaystyle="false" scriptlevel="0"/>
+        <mo>+</mo>
+        <mtext>next year’s use of autos by others</mtext>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>For the left side let <span><span class="math-region inline" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+</math></span></span> be next years total production of steel and let <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+</math></span></span> be next year’s total output of autos. For the right side, as discussed above, our external demand estimates are <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="a418ee879d58b09ed5f63952b8ee650cf4f537fae2e30047727591d4647fe367"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mo>,</mo>
+  <mn>589</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="fa872158d0acfdfe532793b3935e5ba947113ce4613bd1c0e1cff1ab8ecd204d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mo>,</mo>
+  <mn>243</mn>
+</math></span>.</span></p>
+<p>For next year’s use of steel by steel, note that this year the steel industry used <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="b83a36c438b89633bfcd0886fbc9615e76d4e3365fc12c7c641fb66417d925b4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+  <mo>,</mo>
+  <mn>395</mn>
+</math></span></span> units of steel input to produce <span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="f896a4370101356dd1b087620e68336941b5c7db0932967672d74b45012dbf24"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+  <mo>,</mo>
+  <mn>448</mn>
+</math></span></span> units of steel output. So next year, when the steel industry will produce <span><span class="math-region inline" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+</math></span></span> units out, we guess that doing so will take <span><span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="db676232953aeaaec7698e067213bc8abb8e3367dd85027a1faecf9a16ec2e0d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>⋅</mo>
+  <mo stretchy="false">(</mo>
+  <mn>5</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>395</mn>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mo stretchy="false">(</mo>
+  <mn>25</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>448</mn>
+  <mo stretchy="false">)</mo>
+</math></span></span> units of steel input—this is simply the assumption that input is proportional to output. (We are assuming that the ratio of input to output remains constant over time; in practice, models may try to take account of trends of change in the ratios.)</p>
+<p>Next year’s use of steel by the auto industry is similar. This year the auto industry uses <span><span class="math-region inline" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="855138648da62038e4dfb56784fa2fc4eb94ff2902b0b785f3caef480348ae77"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mo>,</mo>
+  <mn>664</mn>
+</math></span></span> units of steel input to produce <span><span class="math-region inline" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="b9b6ccbb39290808cebfd89eac068cdaa811a24490bb14dbda778255d509feaa"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>30</mn>
+  <mo>,</mo>
+  <mn>346</mn>
+</math></span></span> units of auto output. So next year, when the auto industry’s total output is <span><span class="math-region inline" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+</math></span>,</span> we expect it to consume <span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="12f63703fdf7d78f78e3013aaccb5079c0cf733c368494d89545e88cf03ec8da"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>⋅</mo>
+  <mo stretchy="false">(</mo>
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>664</mn>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mo stretchy="false">(</mo>
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>346</mn>
+  <mo stretchy="false">)</mo>
+</math></span></span> units of steel.</p>
+<p>Filling in the other equation in the same way gives this system of linear equations.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="bd9e60052708c82fb1c792e98f3158ac37f4be69df1df4008da8cb9de693f646"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>5</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>395</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>25</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>448</mn>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>2</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>664</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>30</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>346</mn>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>17</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>589</mn>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>s</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>48</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>25</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>448</mn>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>9</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>030</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>30</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>346</mn>
+        <mo stretchy="false">)</mo>
+        <mo>⋅</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>21</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>243</mn>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>a</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>Moving the variables to one side and the constants to the other</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="bb35df493f1b0640ec444f28ce949d64bfd3f6c48012be49becc5adff844df02"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>20</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>053</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>25</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>448</mn>
+        <mo stretchy="false">)</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>2</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>664</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>30</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>346</mn>
+        <mo stretchy="false">)</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>17</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>589</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mo stretchy="false">(</mo>
+        <mn>48</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>25</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>448</mn>
+        <mo stretchy="false">)</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>21</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>316</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>30</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>346</mn>
+        <mo stretchy="false">)</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>21</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>243</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>and applying Gauss’s Method or using <em>Sage</em>, as here</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0001" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0001">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;a,s&#39;)
+(a, s)
+sage: eqns=[(20053/25448)*s - (2664/30346)*a == 17589,  
+....:        (-48/25448)*s + (21316/30346)*a == 21243] 
+sage: solve(eqns, s, a)
+[[s == (2745320544312/106830469), a == (6476293881123/213660938)]]
+sage: n(2745320544312/106830469)
+25697.9171767186
+sage: n(6476293881123/213660938)
+30311.0804517904</code></pre>
+</div>
+<p>gives our prediction: <span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="a7ee905956329b56af5b3a1fe6f029c292f160f5d28b866d64f60585a5d4fde8"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>=</mo>
+  <mn>25</mn>
+  <mo>,</mo>
+  <mn>698</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="103d02e4a082822841e17c794f64061d84638a8475123a6b6b76864c1895d5a5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>=</mo>
+  <mn>30</mn>
+  <mo>,</mo>
+  <mn>311</mn>
+</math></span>.</span></p>
+<p>Above, we discussed that the prediction of next year’s totals isn’t as simple as adding <span><span class="math-region inline" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> to last year’s steel total and subtracting <span><span class="math-region inline" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="b7a56873cd771f2c446d369b649430b65a756ba278ff97ec81bb6f55b2e73569"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+</math></span></span> from last year’s auto total. Comparing these predictions to the numbers for the current year shows that the total production of the steel industry should rise <span>by <span class="math-region inline" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="1e472b39b105d349bcd069c4a711b44a2fffb8e274714bb07ecfff69a9a7f67b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>250</mn>
+</math></span></span> while auto’s total drops by <span><span class="math-region inline" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="9f14025af0065b30e47e23ebb3b491d39ae8ed17d33739e5ff3827ffb3634953"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>35</mn>
+</math></span>.</span> The increase in external demand for steel causes an increase in internal demand by the steel industry, which is lessened somewhat by the drop in autos, but results in a total that is more than <span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> higher. Similarly, auto’s total drops more <span>than <span class="math-region inline" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="b7a56873cd771f2c446d369b649430b65a756ba278ff97ec81bb6f55b2e73569"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+</math></span></span> despite the help that it gets from steel.</p>
+<p>One of the advantages of having a mathematical model is that we can ask “What if …?” questions. For instance, we can ask, “What if our estimates for next year’s external demands are somewhat off?” To try to understand how much the model’s predictions change in reaction to changes in our estimates, we can revise the estimate of next year’s external steel demand from <span><span class="math-region inline" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="a418ee879d58b09ed5f63952b8ee650cf4f537fae2e30047727591d4647fe367"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mo>,</mo>
+  <mn>589</mn>
+</math></span></span> down to <span><span class="math-region inline" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="9d62296830a0156cba894dff6186fde8fae1b0de03d21dfb577b0cc8a286dab2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mo>,</mo>
+  <mn>489</mn>
+</math></span>,</span> while keeping the assumption of next year’s external demand for autos fixed at <span><span class="math-region inline" data-source-math-id="BFOURMATH000040END" data-source-tex-sha256="fa872158d0acfdfe532793b3935e5ba947113ce4613bd1c0e1cff1ab8ecd204d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mo>,</mo>
+  <mn>243</mn>
+</math></span>.</span> The resulting system</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000041END" data-source-tex-sha256="d818afbc76ca2b7b6be90c52bc231003a038d117f60dddff00ad7b7f9674bc7a"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>20</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>053</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>25</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>448</mn>
+        <mo stretchy="false">)</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>2</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>664</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>30</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>346</mn>
+        <mo stretchy="false">)</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>17</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>489</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mo stretchy="false">(</mo>
+        <mn>48</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>25</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>448</mn>
+        <mo stretchy="false">)</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>21</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>316</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>30</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>346</mn>
+        <mo stretchy="false">)</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>21</mn>
+        <mstyle scriptlevel="0">
+          <mspace width="0.167em"/>
+        </mstyle>
+        <mn>243</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000042END" data-source-tex-sha256="8f4aed5f84fb6f239cfe425c5ddca1b0f28ad7def97009531dafe1cd7a0f75c6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>=</mo>
+  <mn>25</mn>
+  <mo>,</mo>
+  <mn>571</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000043END" data-source-tex-sha256="103d02e4a082822841e17c794f64061d84638a8475123a6b6b76864c1895d5a5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>=</mo>
+  <mn>30</mn>
+  <mo>,</mo>
+  <mn>311</mn>
+</math></span>.</span> This is <em>sensitivity analysis</em>. We are seeing how sensitive the predictions of our model are to the accuracy of the assumptions.</p>
+<p>Naturally, we can consider larger models that detail the interactions among more sectors of an economy; these models are typically solved on a computer. Naturally also, a single model does not suit every case and assuring that the assumptions underlying a model are reasonable for a particular prediction requires the judgments of experts. With those caveats however, this model has proven in practice to be a useful and accurate tool for economic analysis. For further reading, try <span class="source-citation">[<a href="#bib-Leontief1951" data-citation-key="Leontief1951">Leontief 1951</a>]</span> and <span class="source-citation">[<a href="#bib-Leontief1965" data-citation-key="Leontief1965">Leontief 1965</a>]</span>.</p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<section id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise-group.source-order.0001" class="source-exercise-group" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise-group.source-order.0001">
+<h4>Exercises</h4>
+<ol type="1">
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10001" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10001" data-source-number="1">
+<p><strong>Exercise 1</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10001.answer.source-order.001">Worked answer</a></p>
+<p>With the steel-auto system given above, estimate next year’s total productions in these cases. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>Next year’s external demands are up <span><span class="math-region inline" data-source-math-id="BFOURMATH000044END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> from this year for steel and are unchanged for autos.</p></li>
+<li><p>Next year’s external demands are up <span><span class="math-region inline" data-source-math-id="BFOURMATH000045END" data-source-tex-sha256="ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>100</mn>
+</math></span></span> for steel and are up <span><span class="math-region inline" data-source-math-id="BFOURMATH000046END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> for autos.</p></li>
+<li><p>Next year’s external demands are up <span><span class="math-region inline" data-source-math-id="BFOURMATH000047END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> for steel and are up <span><span class="math-region inline" data-source-math-id="BFOURMATH000048END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> for autos.</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10001.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10001.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10001">Back to Exercise 1</a></p>
+<p><strong>Answer.</strong> These answers are from <em>Octave</em>. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p><em>Sage</em> gets <span><span class="math-region inline" data-source-math-id="BFOURMATH000049END" data-source-tex-sha256="38c61f7b67e24b3ca3f057780f34e49ce7f676c6d9ceff33c15f54abacaf2453"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>≈</mo>
+  <mn>25</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>952</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000050END" data-source-tex-sha256="17eff141f4d8916cb236e107bc7f8f1123d49cc16f66b96fe2f79657abc1ea16"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>≈</mo>
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>312</mn>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0002" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0002">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;s,a&#39;)
+(s, a)
+sage: system = [(20053/25448)*s -  (2664/30346)*a == 17789,
+....:             -(48/25448)*s + (21316/30346)*a == 21243]
+sage: solve(system, s,a)
+[[s == (2772443022712/106830469), a == (6476439541923/213660938)]]
+sage: n(2772443022712/106830469), n(6476439541923/213660938)
+(25951.8005365305, 30311.7621898814)          </code></pre>
+</div></li>
+<li><p><em>Sage</em> gets <span><span class="math-region inline" data-source-math-id="BFOURMATH000051END" data-source-tex-sha256="dc7a26648330f7c3bb290f3e64b94a43160aafea00073527ad22e0bd8d56507e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>≈</mo>
+  <mn>25</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>857</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000052END" data-source-tex-sha256="59f88103d7eb3e342e09b33c3f442bc6e453ba4637fc577f724a5a292da49599"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>≈</mo>
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>596</mn>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0003" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0003">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: system = [(20053/25448)*s -  (2664/30346)*a == 17689,
+....:             -(48/25448)*s + (21316/30346)*a == 21443]
+sage: solve(system, s,a)
+[[s == (2762271457112/106830469), a == (6537219545323/213660938)]]
+sage: n(2762271457112/106830469), n(6537219545323/213660938)
+(25856.5883213711, 30596.2316112410)</code></pre>
+</div></li>
+<li><p><em>Sage</em> gets <span><span class="math-region inline" data-source-math-id="BFOURMATH000053END" data-source-tex-sha256="68f3b69d1e91a8747dea3e450f8bcd53f9f964393f23b20a4043353ff7615926"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>≈</mo>
+  <mn>25</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>984</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000054END" data-source-tex-sha256="a823bd98c422df56b9639d60431ee1f0b2f99c2e98594ffda9889bcf9d45d14b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>≈</mo>
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>597</mn>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0004" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0004">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: system = [(20053/25448)*s -  (2664/30346)*a == 17789,
+....:             -(48/25448)*s + (21316/30346)*a == 21443]
+sage: solve(system, s,a)
+[[s == (2775832696312/106830469), a == (6537292375723/213660938)]]
+sage: n(2775832696312/106830469), n(6537292375723/213660938)
+(25983.5300012771, 30596.5724802865)          </code></pre>
+</div></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10002" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10002" data-source-number="2">
+<p><strong>Exercise 2</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10002.answer.source-order.001">Worked answer</a></p>
+<p>For the steel-auto system, with the external demand estimates of <span><span class="math-region inline" data-source-math-id="BFOURMATH000055END" data-source-tex-sha256="a418ee879d58b09ed5f63952b8ee650cf4f537fae2e30047727591d4647fe367"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mo>,</mo>
+  <mn>589</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000056END" data-source-tex-sha256="fa872158d0acfdfe532793b3935e5ba947113ce4613bd1c0e1cff1ab8ecd204d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mo>,</mo>
+  <mn>243</mn>
+</math></span></span> discussed above, what will be the value of steel used by steel, the value of steel used by auto, etc.? <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10002.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10002.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10002">Back to Exercise 2</a></p>
+<p><strong>Answer.</strong> This <em>Sage</em> session</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0005" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0005">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;a,s&#39;)
+(a, s)
+sage: eqns=[(20053/25448)*s - (2664/30346)*a == 17589,
+....:       (-48/25448)*s + (21316/30346)*a == 21243] 
+sage: solve(eqns, s, a)
+[[s == (2745320544312/106830469), a == (6476293881123/213660938)]]
+sage: s_by_s = (5395/25448)*2745320544312/106830469
+sage: s_by_s
+582010544505/106830469
+sage: n(s_by_s)
+5447.98267716114
+sage: s_by_a = (2664/30346)*6476293881123/213660938  
+sage: n(s_by_a)
+2660.93449955743
+sage: a_by_s = (48/25448)*2745320544312/106830469
+sage: n(a_by_s)
+48.4713936058822
+sage: a_by_a = (9030/30346)*6476293881123/213660938
+sage: n(a_by_a)
+9019.60905818451        </code></pre>
+</div>
+<p>gives this table.</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0007" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0007" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"> </td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0008" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0008" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0009" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0009" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>auto</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0010" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0010" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>others</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><em>total</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0011" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0011" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000057END" data-source-tex-sha256="26819e14cea16fd8bee654eb1627980dcb958bc37575091e8eddac38a1c8ebde"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>448</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000058END" data-source-tex-sha256="41c2790221e8dd63030ba315dfc44f1030f828ed204ab75424241a3e8c67935a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>661</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000059END" data-source-tex-sha256="52f21c4dc5dc10427a7f0c7dfba616cf3c2d0fe14b294bba5e6dde890023eb90"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>589</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000060END" data-source-tex-sha256="914ec060187ca485d70b0719389e8bfa73fc1cc83ccad113c05e0c337e564ae2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>698</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0012" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0012" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>auto</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000061END" data-source-tex-sha256="98010bd9270f9b100b6214a21754fd33bdc8d41b2bc9f9dd16ff54d3c34ffd71"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>48</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000062END" data-source-tex-sha256="57b125250cea23fbcec16469acdf478703bf57e4dc2da61f3f6c749598bf548d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>9</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>020</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000063END" data-source-tex-sha256="f27aab3881c452291dc8e160d3010534fbb3035cebe522aa326c1358b0950728"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>243</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000064END" data-source-tex-sha256="b7681cb2cac07441187f46ad156210e9cc37e150069a67bebe808547c9f2679f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>311</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>For comparison here is the original table.</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0013" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0013" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"> </td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0014" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0014" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0015" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0015" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>auto</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0016" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0016" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>others</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><em>total</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0017" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0017" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000065END" data-source-tex-sha256="ed32079a593d6b683f183751cf72b05af553506588a2adc2e64ccaeede402d37"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>5</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>395</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000066END" data-source-tex-sha256="01f8e4d6a686e3aa73bfaa5272ea0a8997d4224101a51395f372549a874b4f4d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>664</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000067END" data-source-tex-sha256="dc1e8cfb32e96e910ab1d1f322cf210b085a635534a025388521bf343b47f39f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>389</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000068END" data-source-tex-sha256="a4fc689fab62cfc998d20165bd54837a654a0a7404b25b43a9acc70ba82ea15f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>448</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0018" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0018" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>auto</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000069END" data-source-tex-sha256="98010bd9270f9b100b6214a21754fd33bdc8d41b2bc9f9dd16ff54d3c34ffd71"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>48</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000070END" data-source-tex-sha256="bc6ca1e7d0851be7bcb93eee4271657c5ef827cc4b0e06c48af3b6b2dd3e0e72"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>9</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>030</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000071END" data-source-tex-sha256="dcb49be4585634e2e0c8df8d8b2a285b63407266b9f132c3e44f80b5fdb88b29"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>268</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000072END" data-source-tex-sha256="aa871b6d4c9b797528333a4d741443906f0c2f19d02d30c340bfa23a21c0be2f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>30</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>346</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10003" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10003" data-source-number="3">
+<p><strong>Exercise 3</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10003.answer.source-order.001">Worked answer</a></p>
+<p>In the steel-auto system, the ratio for the use of steel by the auto industry is <span><span class="math-region inline" data-source-math-id="BFOURMATH000073END" data-source-tex-sha256="5b4883007bad273b591c356a7bb7a9cc436517b2de63c8016f4f9629c771975d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mo>,</mo>
+  <mn>664</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>30</mn>
+  <mo>,</mo>
+  <mn>346</mn>
+</math></span>,</span> about <span><span class="math-region inline" data-source-math-id="BFOURMATH000074END" data-source-tex-sha256="65f2f60d6c45a85dc5bfb8d00f203e20b271d30b0a09888b1c6ec8dc0e660f4e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0.0878</mn>
+</math></span>.</span> Imagine that a new process for making autos reduces this ratio to <span><span class="math-region inline" data-source-math-id="BFOURMATH000075END" data-source-tex-sha256="e98e747a2a0a29245688886bc21883bb789fadce23e6ceb4c005c9a191d889b6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>.0500</mn>
+</math></span>.</span> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>How will the predictions for next year’s total productions change compared to the first example discussed above (i.e., taking next year’s external demands to be <span><span class="math-region inline" data-source-math-id="BFOURMATH000076END" data-source-tex-sha256="a418ee879d58b09ed5f63952b8ee650cf4f537fae2e30047727591d4647fe367"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17</mn>
+  <mo>,</mo>
+  <mn>589</mn>
+</math></span></span> for steel and <span><span class="math-region inline" data-source-math-id="BFOURMATH000077END" data-source-tex-sha256="fa872158d0acfdfe532793b3935e5ba947113ce4613bd1c0e1cff1ab8ecd204d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mo>,</mo>
+  <mn>243</mn>
+</math></span></span> for autos)?</p></li>
+<li><p>Predict next year’s totals if, in addition, the external demand for autos rises to be <span><span class="math-region inline" data-source-math-id="BFOURMATH000078END" data-source-tex-sha256="09729d88e25f2a88fe8859624123565aac45eddaeec66b50feb407a23064f9ad"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21</mn>
+  <mo>,</mo>
+  <mn>500</mn>
+</math></span></span> because the new cars are cheaper.</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10003.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10003.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10003">Back to Exercise 3</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p><em>Sage</em> gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000079END" data-source-tex-sha256="f41643e3fbfa82d02fd3e551c9468bdd5ad0f52a75f4787c978c7bb5cbe7f4bb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>=</mo>
+  <mn>24</mn>
+  <mo>,</mo>
+  <mn>244</mn>
+</math></span>,</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000080END" data-source-tex-sha256="b27c378edf9c1c66f379a0b76678fa62d309b816d2d580f49c3377675c1d3774"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>=</mo>
+  <mn>30</mn>
+  <mo>,</mo>
+  <mn>307</mn>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0006" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0006">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code> sage: var(&#39;s,a&#39;)
+(s, a)
+sage: system = [(20053/25448)*s -  0.0500*a == 17589,
+....:             -(48/25448)*s + (21316/30346)*a == 21243]
+sage: solve(system, s,a)
+[[s == (12951731858499/534221147), a == (32381469405615/1068442294)]]
+sage: n(12951731858499/534221147), n(32381469405615/1068442294)
+(24244.1392131918, 30307.1767071166)         </code></pre>
+</div></li>
+<li><p>Sage gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000081END" data-source-tex-sha256="64a1f174604ee3c62247d64d8252d09f655c6b8a9b33fdfe0b99126ac262fee3"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>s</mi>
+  <mo>=</mo>
+  <mn>24</mn>
+  <mo>,</mo>
+  <mn>267</mn>
+</math></span>,</span> <span><span class="math-region inline" data-source-math-id="BFOURMATH000082END" data-source-tex-sha256="5748ade565e74cd90a0a2ee8ef0ea3ff952cec728875ac0f7c3ec506871f23f4"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>a</mi>
+  <mo>=</mo>
+  <mn>30</mn>
+  <mo>,</mo>
+  <mn>673</mn>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0007" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0007">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: system = [(20053/25448)*s -  0.0500*a == 17589,
+....:             -(48/25448)*s + (21316/30346)*a == 21500]
+sage: solve(system, s,a)
+[[s == (12964136043940/534221147), a == (16386224431390/534221147)]]
+sage: n(12964136043940/534221147), n(16386224431390/534221147)
+(24267.3584090448, 30673.1107957993)          </code></pre>
+</div></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10004" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10004" data-source-number="4">
+<p><strong>Exercise 4</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10004.answer.source-order.001">Worked answer</a></p>
+<p>This table gives the numbers for the auto-steel system from a different year, 1947 (see <span class="source-citation">[<a href="#bib-Leontief1951" data-citation-key="Leontief1951">Leontief 1951</a>]</span>). The units here are billions of 1947 dollars.</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0019" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0019" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"> </td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0020" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0020" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0021" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0021" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>auto</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0022" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0022" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>others</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><em>total</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0023" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0023" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>steel</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000083END" data-source-tex-sha256="cc99381b6a3cec29949a9ed0e5bc5d3ad8179f830c643103f331bbe3ccd89e9f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>6.90</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000084END" data-source-tex-sha256="88db5eba87d794489bf4870e2b9cb586941dbc8f9d3d9142e0a276ec0be5b483"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1.28</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000085END" data-source-tex-sha256="6f9887aee16700f14bd3619ca2f2c38e65aa3b1beebfbfa259b9cfc330959326"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>18.69</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0024" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0024" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>autos</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000086END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000087END" data-source-tex-sha256="7ceeb0144b04cd9a03bb870dbb1bdc2c589d5e1655d0ec68435a7b30a4361c25"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4.40</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000088END" data-source-tex-sha256="32e07fa17f1d7011a0c01e9ba135ec2a2afa44a7bb4cf5236cf931a0da19cc3d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>14.27</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>Solve for total output if next year’s external demands are: steel’s demand up <span><span class="math-region inline" data-source-math-id="BFOURMATH000089END" data-source-tex-sha256="4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+</math></span>%</span> and auto’s demand up <span><span class="math-region inline" data-source-math-id="BFOURMATH000090END" data-source-tex-sha256="e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>15</mn>
+</math></span>%.</span></p></li>
+<li><p>How do the ratios compare to those given above in the discussion for the 1958 economy?</p></li>
+<li><p>Solve the 1947 equations with the 1958 external demands (note the difference in units; a 1947 dollar buys about what <span>$<span class="math-region inline" data-source-math-id="BFOURMATH000091END" data-source-tex-sha256="26fe8b1388e8d9d504557abdf8a4d62e1516a9231c665f80adee51947a2a4ca1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1.30</mn>
+</math></span></span> in 1958 dollars buys). How far off are the predictions for total output?</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10004.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10004.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10004">Back to Exercise 4</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>These are the equations.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000092END" data-source-tex-sha256="bbf7e821fb65bcfbcbf1cc908372337bd80527fc3802af912f7a18f182b3456c"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>11.79</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>18.69</mn>
+        <mo stretchy="false">)</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>1.28</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>14.27</mn>
+        <mo stretchy="false">)</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>10.51</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mo stretchy="false">(</mo>
+        <mn>0</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>18.69</mn>
+        <mo stretchy="false">)</mo>
+        <mi>s</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo stretchy="false">(</mo>
+        <mn>9.87</mn>
+        <mrow data-mjx-texclass="ORD">
+          <mo>/</mo>
+        </mrow>
+        <mn>14.27</mn>
+        <mo stretchy="false">)</mo>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>9.87</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p><em>Sage</em> gives this result (including an inital check).</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0008" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0008">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;a,s&#39;)
+(a, s)
+sage: eqns=[(11.79/18.69)*s - (1.28/14.27)*a == 10.51,
+....:       (-0)*s         + (9.87/14.27)*a == 9.87]
+sage: solve(eqns,s,a)
+[[s == (1869/100), a == (1427/100)]]
+sage: n(1869/100)
+18.6900000000000
+sage: n(1427/100)
+14.2700000000000
+sage: eqns=[(11.79/18.69)*s - (1.28/14.27)*a == 11.561,
+....:       (-0)*s         + (9.87/14.27)*a == 11.3505]
+sage: solve(eqns,s,a)
+[[s == (8119559/393000), a == (32821/2000)]]
+sage: n(8119559/393000)
+20.6604554707379
+sage: n(32821/2000)
+16.4105000000000            </code></pre>
+</div></li>
+<li><p>These are the 1947 ratios, to three decimal places.</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0025" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0025" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">1947</th>
+<th style="text-align: center;"><em>by steel</em></th>
+<th style="text-align: center;"><em>by autos</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>use of steel</em></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000093END" data-source-tex-sha256="394165e7c9e843d4fd78e0af6170a4365ad9fbe9ba86c04812772053181c0253"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>6.90</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>18.69</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.369</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000094END" data-source-tex-sha256="8132b23621bfff25a0bee6ba25816c0d2d88fcca7de7892e2ee1ecb76fd8c30c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>1.28</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>14.27</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.090</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>use of autos</em></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000095END" data-source-tex-sha256="7855d092ff4a1fd46ff8b7cfa10aefb365276212d3f27b171b7389aac56d0992"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>0</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>18.69</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.00</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000096END" data-source-tex-sha256="e410b1f9cf07559ff9d281afb5e428bd5edd124f16758259a98988dc21e51d6b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>4.40</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>14.27</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.308</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>These are the 1958 ratios.</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0026" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0026" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">1958</th>
+<th style="text-align: center;"><em>by steel</em></th>
+<th style="text-align: center;"><em>by autos</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>use of steel</em></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000097END" data-source-tex-sha256="ebd3089cc6e806f2516330ebb60af3fc417436014ef1f3cc72482cca86ae5c6d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>5395</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>25448</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.212</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000098END" data-source-tex-sha256="b19ed282fecb830ef558c259caeca29422e56247c15fd98d434bf823cd18c081"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>2664</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>30346</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.088</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>use of autos</em></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000099END" data-source-tex-sha256="1b5bdeb3a59de340b09ccd2c81075cfb5e351f604a7dd98e0a938050b29059ca"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>48</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>25448</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.002</mn>
+</math></span></span></td>
+<td style="text-align: center;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000100END" data-source-tex-sha256="bbe7e32ad29734403566c3f0a92ded9dfdfc39f3bea86b9b87e827e96f606f11"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>9030</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>30346</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>0.298</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div></li>
+<li><p>The external demands in 1958 are <span><span class="math-region inline" data-source-math-id="BFOURMATH000101END" data-source-tex-sha256="24ed0922a03b64910d4146c85ae7511c8f9a123a5cc25132d4a24df2c4debe9b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>17.589</mn>
+</math></span></span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000102END" data-source-tex-sha256="e8a42e3869efe9f78bbf2d9ab37cfa1db5b7d4199f4bb8be255be1ca7d0599fc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>21.243</mn>
+</math></span>,</span> in billions of 1958 dollars. In 1948 dollars those are <span><span class="math-region inline" data-source-math-id="BFOURMATH000103END" data-source-tex-sha256="cb797be0304388815bf710db51b8f87ae9709a378077b967226b90f4ee0d387e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>17.589</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>1.3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>13.53</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000104END" data-source-tex-sha256="69de78110000ae15207394141a9abd80b38a3866bbb0d001af0f118af14c6eb2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>21.243</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>1.3</mn>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mn>16.34</mn>
+</math></span>.</span> <em>Sage</em> gives these numbers.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0009" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.lstlisting.source-order.0009">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: eqns=[(11.79/18.69)*s - (1.28/14.27)*a == 13.53,
+....:       (-0)*s         + (9.87/14.27)*a == 16.34]
+sage: solve(eqns,s,a)
+[[s == (137466107/5541300), a == (1165859/49350)]]
+sage: n(137466107/5541300)
+24.8075554472777
+sage: n(1165859/49350)
+23.6242958459980            </code></pre>
+</div>
+<p>Converting back to 1958 dollars by multiplying by <span><span class="math-region inline" data-source-math-id="BFOURMATH000105END" data-source-tex-sha256="9c193c604ad7de942961af97b39ff541f2e611fdf0b93a3044e16dfbd808f41b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1.3</mn>
+</math></span></span> gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000106END" data-source-tex-sha256="8c2d17afad67a497c6f321998a6cdd3bcf0e0c1bdc0d143b709dc416a2561b30"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>32.25</mn>
+</math></span></span> <span>and <span class="math-region inline" data-source-math-id="BFOURMATH000107END" data-source-tex-sha256="f871e7674c19fb6ed13de7ed2eccb96da6be80c03ad7469a7fc1125dfab73fbc"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>30.71</mn>
+</math></span>.</span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10005" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10005" data-source-number="5">
+<p><strong>Exercise 5</strong> <span class="source-answer-absence" data-answer-status="not_supplied_by_original_source">No answer supplied in the original source.</span></p>
+<p>Predict next year’s total productions of each of the three sectors of the hypothetical economy shown below</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0027" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0027" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"> </td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0028" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0028" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>farm</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0029" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0029" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>rail</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0030" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0030" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>shipping</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0031" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0031" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>others</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><em>total</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0032" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0032" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>farm</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000108END" data-source-tex-sha256="b7a56873cd771f2c446d369b649430b65a756ba278ff97ec81bb6f55b2e73569"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000109END" data-source-tex-sha256="1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>50</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000110END" data-source-tex-sha256="ad57366865126e55649ecb23ae1d48887544976efea46a48eb5d85a6eeb4d306"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>100</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000111END" data-source-tex-sha256="1a1cf797fabe7f95836fabeca626907c77b3e6c9aff7c2290b396a238c69362e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>800</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0033" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0033" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>rail</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000112END" data-source-tex-sha256="b7a56873cd771f2c446d369b649430b65a756ba278ff97ec81bb6f55b2e73569"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>25</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000113END" data-source-tex-sha256="1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>50</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000114END" data-source-tex-sha256="1a6562590ef19d1045d06c4055742d38288e9e6dcd71ccde5cee80f1d5a774eb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>50</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000115END" data-source-tex-sha256="983bd614bb5afece5ab3b6023f71147cd7b6bc2314f9d27af7422541c6558389"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>300</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0034" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0034" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>shipping</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000116END" data-source-tex-sha256="e629fa6598d732768f7c726b4b621285f9c3b85303900aa912017db7617d8bdb"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>15</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000117END" data-source-tex-sha256="4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000118END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000119END" data-source-tex-sha256="0604cd3138feed202ef293e062da2f4720f77a05d25ee036a7a01c9cfcdd1f0a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>500</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>if next year’s external demands are as stated. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000120END" data-source-tex-sha256="ad723f42c7aba316d944f19f340ce47d8e0c6fb354d212736ec4782314a6824a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>625</mn>
+</math></span></span> for farm, <span><span class="math-region inline" data-source-math-id="BFOURMATH000121END" data-source-tex-sha256="27badc983df1780b60c2b3fa9d3a19a00e46aac798451f0febdca52920faaddf"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>200</mn>
+</math></span></span> for rail, <span><span class="math-region inline" data-source-math-id="BFOURMATH000122END" data-source-tex-sha256="b1585fdb272b31401eaac5dd46a936c1c09b4861e53e23f12ac72fc077b3c82c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>475</mn>
+</math></span></span> for shipping</p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000123END" data-source-tex-sha256="2099a9b5f777e242d1f9e19d27e232cc71e2fa7964fc988a319fce5671ca7f73"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>650</mn>
+</math></span></span> for farm, <span><span class="math-region inline" data-source-math-id="BFOURMATH000124END" data-source-tex-sha256="9ae2bdd7beedc2e766c6b76585530e16925115707dc7a06ab5ee4aa2776b2c7b"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>150</mn>
+</math></span></span> for rail, <span><span class="math-region inline" data-source-math-id="BFOURMATH000125END" data-source-tex-sha256="83151157c10d85af7c84657c71c3e3603d955160f0526fce672481da83a2e090"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>450</mn>
+</math></span></span> for shipping</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10006" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.exercise.source-order.10006" data-source-number="6">
+<p><strong>Exercise 6</strong> <span class="source-answer-absence" data-answer-status="not_supplied_by_original_source">No answer supplied in the original source.</span></p>
+<p>This table gives the interrelationships among three segments of an economy (see <span class="source-citation">[<a href="#bib-BangorRpt" data-citation-key="BangorRpt">Clark &amp; Coupe</a>]</span>).</p>
+<div class="center">
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0035" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0035" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"> </td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0036" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0036" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>food</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0037" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0037" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>wholesale</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0038" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0038" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>retail</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0039" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0039" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: center;"><em>used by</em></td>
+</tr>
+<tr>
+<td style="text-align: center;"><em>others</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><em>total</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0040" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0040" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>food</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000126END" data-source-tex-sha256="5feceb66ffc86f38d952786c6d696c79c2dbc239dd4e91b46729d73a27fb57e9"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>0</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000127END" data-source-tex-sha256="c81f786bd8a35f553c3621531a7087c7186bc6387d5dddc0830df449b46abf50"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>318</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000128END" data-source-tex-sha256="c2ec774c7a68e57ac82820c72a4096acfd83b2bf5323767cbd0253f5ea9430d1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>4</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>679</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000129END" data-source-tex-sha256="6e660896d57c1ee1b3eec3d9ce07973c807688b9ebad5971ba8c025ee40b9bae"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>11</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>869</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0041" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0041" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>wholesale</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000130END" data-source-tex-sha256="99a0b871c9047c4f5555fcf062e0623174bae38746fece6efdf032d80fb2221a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>393</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000131END" data-source-tex-sha256="9f298504f53047a78ca7e8aed1fbda8646a338685e3306b35bbfb095bab36234"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>1</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>089</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000132END" data-source-tex-sha256="f06bb3c5b679a9b61428ff77f2f1658f13c1516e41262b0b9a0d8311bdf20699"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>22</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>459</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000133END" data-source-tex-sha256="4daae0542764cc0ee0269508c7af6deb640653b047c5d516a5e2aa18126b17df"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>122</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>242</mn>
+</math></span></span></td>
+</tr>
+<tr>
+<td style="text-align: right;"><div id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0042" class="source-table" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.leontief.tex.tabular.source-order.0042" tabindex="0" role="region" aria-label="Original source table; scroll horizontally if needed">
+<table>
+<tbody>
+<tr>
+<td style="text-align: right;"><em>value of</em></td>
+</tr>
+<tr>
+<td style="text-align: right;"><em>retail</em></td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000134END" data-source-tex-sha256="4e07408562bedb8b60ce05c1decfe3ad16b72230967de01f640b7e4729b49fce"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>3</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000135END" data-source-tex-sha256="2858dcd1057d3eae7f7d5f782167e24b61153c01551450a628cee722509f6529"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>53</mn>
+</math></span></span></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000136END" data-source-tex-sha256="f369cb89fc627e668987007d121ed1eacdc01db9e28f8bb26f358b7d8c4f08ac"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>75</mn>
+</math></span></span></td>
+<td style="text-align: right;"></td>
+<td style="text-align: right;"><span><span class="math-region inline" data-source-math-id="BFOURMATH000137END" data-source-tex-sha256="8b706f59c9f16a7635b8aee0c0db4c521857c8e34e54b6f417180b2342a3e0ba"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>116</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="0.167em"/>
+  </mstyle>
+  <mn>041</mn>
+</math></span></span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>We will do an Input-Output analysis on this system. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>Fill in the numbers for this year’s external demands.</p></li>
+<li><p>Set up the linear system, leaving next year’s external demands blank.</p></li>
+<li><p>Solve the system where we get next year’s external demands by taking this year’s external demands and inflating them <span><span class="math-region inline" data-source-math-id="BFOURMATH000138END" data-source-tex-sha256="4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+</math></span>%.</span> Do all three sectors increase their total business by <span><span class="math-region inline" data-source-math-id="BFOURMATH000139END" data-source-tex-sha256="4a44dc15364204a80fe80e9039455cc1608281820fe2b24f1e5233ade6af1dd5"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>10</mn>
+</math></span>%?</span> Do they all even increase at the same rate?</p></li>
+<li><p>Solve the system where we get next year’s external demands by taking this year’s external demands and reducing them <span><span class="math-region inline" data-source-math-id="BFOURMATH000140END" data-source-tex-sha256="7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>7</mn>
+</math></span>%.</span> (The study from which these numbers come concluded that because of the closing of a local military facility, overall personal income in the area would fall <span><span class="math-region inline" data-source-math-id="BFOURMATH000141END" data-source-tex-sha256="7902699be42c8a8e46fbbb4501726517e86b22c56a189f7625a6da49081b2451"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>7</mn>
+</math></span>%,</span> so this might be a first guess at what would actually happen.)</p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+</ol>
+</section>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span id="source-index-3" class="source-index" data-source-index="Input-Output Analysis|)"></span></p>
+<h2 id="source-bibliography">References cited in this section</h2>
+<div id="bib-Leontief1965" class="source-bibliography-entry">
+<p><strong>Leontief 1965</strong></p>
+<p>Wassily W. Leontief, <em>The Structure of the U.S. Economy</em>, Scientific American, volume 212 number 4 (Apr. 1965), p. 25.</p>
+</div>
+<div id="bib-Leontief1951" class="source-bibliography-entry">
+<p><strong>Leontief 1951</strong></p>
+<p>Wassily W. Leontief, <em>Input-Output Economics</em>, Scientific American, volume 185 number 4 (Oct. 1951), p. 15.</p>
+</div>
+<div id="bib-BangorRpt" class="source-bibliography-entry">
+<p><strong>Clark &amp; Coupe</strong></p>
+<p>David H. Clark, John D. Coupe, <em>The Bangor Area Economy Its Present and Future</em>, report to the city of Bangor ME, Mar. 1967.</p>
+</div>
+</main><footer><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/leontief.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>

@@ -1,0 +1,2077 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Computer Algebra Systems — Jim Hefferon — original English reading edition</title><style>
+*{box-sizing:border-box}html{font-size:18px}body{margin:0;color:#18232f;background:#f8fafb;font-family:Georgia,serif;line-height:1.65}main,header,footer{max-width:78ch;margin:auto;padding:1.2rem}header,footer{font:1rem/1.6 system-ui,sans-serif}a{color:#075a92;overflow-wrap:anywhere}a:focus-visible{outline:3px solid #dc830b;outline-offset:3px}.notice{border-left:4px solid #b57918;background:#fff3d7;padding:.8rem}h1,h2,h3,h4{font-family:system-ui,sans-serif;line-height:1.25}.definition,.theorem,.lemma,.corollary{padding:.8rem 1rem;margin:1.3rem 0;background:#edf4f8;border-left:3px solid #276b8f}.example,.proof{margin:1.3rem 0}.source-answer{margin:1rem 0;padding:.8rem;background:#eef4eb;border-left:3px solid #587f41}.source-exercise-group>ol{list-style:none;padding-left:0}.source-exercise{margin:1.5rem 0}.math-region.display{display:block;overflow-x:auto;max-width:100%;padding:.6rem 0}.math-region.inline{white-space:nowrap}math{font-size:1.05em}img{max-width:100%;height:auto;min-width:240px}.center{text-align:center}table{border-collapse:collapse;max-width:100%;display:block;overflow-x:auto}td,th{padding:.25rem .5rem}p{margin:.8rem 0}.source-index,.source-label,.source-layout{display:none}.proof-end{font-variant:small-caps}.source-bibliography-entry{margin-bottom:1rem}.skip{position:absolute;left:-9999px}.skip:focus{position:static}.footnotes{font-size:.9rem}@media(max-width:480px){html{font-size:17px}main,header,footer{padding:1rem}.definition,.theorem,.lemma,.corollary,.source-answer{padding:.6rem}ol{padding-left:1.4rem}}
+code{overflow-wrap:anywhere}.math-region.inline{display:inline-block;max-width:100%;overflow-x:auto;vertical-align:middle}.math-region{scrollbar-width:thin}
+pre{max-width:100%;overflow-x:auto;white-space:pre}pre code{overflow-wrap:normal}
+.proof>p:first-child>em:first-child{margin-inline-end:.25em}
+</style></head><body><a class="skip" href="#main">Skip to reading</a><header><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/cas.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p class="notice"><strong>Original English by Jim Hefferon — 28 validated sections.</strong> The original mathematics and supplied answers below are preserved. This is a partial-book reading edition, not the complete book or an Everyday-English rewrite.</p><p>Source revision <code>df2262e089a02651c127f1dd12649c4622ee1383</code>; CC BY-SA 2.5 option, with original component credits retained. This is not an Everyday-English rewrite. Source-only material after the author’s explicit end-of-file command is not included.</p><aside class="notice" aria-label="Editorial source notes"><strong>Source notes from the AI-assisted conversion.</strong> <span id="cas-source-sign-note">The <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0006">original Maple chemistry transcript</a> contains a sign error: the fourth coefficient in its second row should be −2, not +2. The printed equation is 8h + i = 5j + 2k. The transcript below is preserved unchanged so this correction remains visible and auditable.</span> <span id="cas-source-condition-note">The final general two-by-two solution formula assumes ad − bc ≠ 0; singular cases need a separate analysis.</span> Historical Sage and Maple commands have not been executed here.</aside><p class="conversion-credit">Source-preserving rebuild, navigation, source packaging and current deterministic checks: OpenAI Codex — GPT-6 Astra, Ultra effort. Jim Hefferon remains the author of the mathematics. Earlier intermediate-conversion runtime identity is not established by its retained receipts and is not reassigned to this rebuild. No human review or exhaustive proof certification is claimed.</p></header><main id="main" tabindex="-1"><h1 id="computer-algebra-systems">Computer Algebra Systems</h1>
+<p><span id="source-index-1" class="source-index" data-source-index="computer algebra systems|("></span> The linear systems in this chapter are small enough that their solution by hand is easy. For large systems, including those involving thousands of equations, we need a computer. There are special purpose programs such as LINPACK<span id="source-index-2" class="source-index" data-source-index="LINPACK"></span> for this. Also popular are general purpose computer algebra systems including <em>Maple</em>,<span id="source-index-3" class="source-index" data-source-index="Maple"></span> <em>Mathematica</em>,<span id="source-index-4" class="source-index" data-source-index="Mathematica"></span> or <em>MATLAB</em>,<span id="source-index-5" class="source-index" data-source-index="MATLAB"></span> and <em>Sage</em><span id="source-index-6" class="source-index" data-source-index="Sage"></span>.</p>
+<p>For example, in the Topic on Networks, we need to solve this.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000000END" data-source-tex-sha256="e06c2c309c07c5b4e38be55a83cf2ce3b856fd30f12bdabf266034a12668e92f"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right center right center right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>0</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>3</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>5</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>4</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>5</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>3</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>4</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>i</mi>
+          <mn>6</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <mn>5</mn>
+        <msub>
+          <mi>i</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>10</mn>
+        <msub>
+          <mi>i</mi>
+          <mn>3</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>10</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <msub>
+          <mi>i</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+        <msub>
+          <mi>i</mi>
+          <mn>4</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>10</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <mn>5</mn>
+        <msub>
+          <mi>i</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <msub>
+          <mi>i</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>50</mn>
+        <msub>
+          <mi>i</mi>
+          <mn>5</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p>Doing this by hand would take time and be error-prone. A computer is better.</p>
+<p>Here is that system solved with <em>Sage</em>. (There are many ways to do this; the one here has the advantage of simplicity.)</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0001" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0001">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;i0,i1,i2,i3,i4,i5,i6&#39;)
+(i0, i1, i2, i3, i4, i5, i6)
+sage: network_system=[i0-i1-i2==0, i1-i3-i5==0, 
+....:       i2-i4+i5==0, i3+i4-i6==0, 5*i1+10*i3==10,
+....:       2*i2+4*i4==10, 5*i1-2*i2+50*i5==0]
+sage: solve(network_system, i0,i1,i2,i3,i4,i5,i6)     
+[[i0 == (7/3), i1 == (2/3), i2 == (5/3), i3 == (2/3), 
+      i4 == (5/3), i5 == 0, i6 == (7/3)]] </code></pre>
+</div>
+<p>Magic.</p>
+<p>Here is the same system solved under Maple. We enter the array of coefficients and the vector of constants, and then we get the solution.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0002" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0002">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>&gt; A:=array( [[1,-1,-1,0,0,0,0],
+             [0,1,0,-1,0,-1,0],
+             [0,0,1,0,-1,1,0],
+             [0,0,0,1,1,0,-1],
+             [0,5,0,10,0,0,0],
+             [0,0,2,0,4,0,0],
+             [0,5,-2,0,0,50,0]] );
+&gt; u:=array( [0,0,0,0,10,10,0] );
+&gt; linsolve(A,u);
+      7  2  5  2  5     7
+    [ -, -, -, -, -, 0, - ]
+      3  3  3  3  3     3</code></pre>
+</div>
+<p>If a system has infinitely many solutions then the program will return a parametrization.</p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<section id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise-group.source-order.0001" class="source-exercise-group" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise-group.source-order.0001">
+<h4>Exercises</h4>
+<ol type="1">
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10001" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10001" data-source-number="1">
+<p><strong>Exercise 1</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10001.answer.source-order.001">Worked answer</a></p>
+<p>Use the computer to solve the two problems that opened this chapter. <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>This is the Statics problem.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000001END" data-source-tex-sha256="51ea88a2498867e8ed5a8bf1588182368dc437c2f8f8a3bdaa4dd141bce4858d"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>40</mn>
+        <mi>h</mi>
+        <mo>+</mo>
+        <mn>15</mn>
+        <mi>c</mi>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mn>100</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>25</mn>
+        <mi>c</mi>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mn>50</mn>
+        <mo>+</mo>
+        <mn>50</mn>
+        <mi>h</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p>This is the Chemistry problem.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000002END" data-source-tex-sha256="6e85db8ea6a990fefac67b81905272b4f7a22ec8e34bc90c3a273270b1482118"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable displaystyle="true" columnalign="right left" columnspacing="0em" rowspacing="3pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>7</mn>
+        <mi>h</mi>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mn>7</mn>
+        <mi>j</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>8</mn>
+        <mi>h</mi>
+        <mo>+</mo>
+        <mn>1</mn>
+        <mi>i</mi>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mn>5</mn>
+        <mi>j</mi>
+        <mo>+</mo>
+        <mn>2</mn>
+        <mi>k</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>1</mn>
+        <mi>i</mi>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mn>3</mn>
+        <mi>j</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>i</mi>
+      </mtd>
+      <mtd style="text-align:left">
+        <mi/>
+        <mo>=</mo>
+        <mn>6</mn>
+        <mi>j</mi>
+        <mo>+</mo>
+        <mn>1</mn>
+        <mi>k</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10001.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10001.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10001">Back to Exercise 1</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p><em>Sage</em> does this.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0003" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0003">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;h,c&#39;)
+(h, c)
+sage: statics = [40*h + 15*c == 100,
+....:            25*c == 50 + 50*h]
+sage: solve(statics, h,c)
+[[h == 1, c == 4]] </code></pre>
+</div>
+<p>Other Computer Algebra Systems have similar commands. These <em>Maple</em> commands</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0004" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0004">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>&gt; A:=array( [[40,15],
+             [-50,25]] );
+&gt; u:=array([100,50]);
+&gt; linsolve(A,u);</code></pre>
+</div>
+<p>get the answer <code>[1,4]</code>.</p></li>
+<li><p>Here there is a free variable. <em>Sage</em> gives this.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0005" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0005">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;h,i,j,k&#39;)
+(h, i, j, k)
+sage: chemistry = [7*h == 7*j,
+....:              8*h + 1*i == 5*j + 2*k,
+....:              1*i == 3*j,
+....:              3*i == 6*j + 1*k]
+sage: solve(chemistry, h,i,j,k)
+[[h == 1/3*r1, i == r1, j == 1/3*r1, k == r1]]          </code></pre>
+</div>
+<p>Similarly, this <em>Maple</em> session</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0006" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0006">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>&gt; A:=array( [[7,0,-7,0],
+             [8,1,-5,2],
+             [0,1,-3,0],
+             [0,3,-6,-1]] );
+&gt; u:=array([0,0,0,0]);
+&gt; linsolve(A,u);</code></pre>
+</div>
+<p>prompts the same reply (but with parameter <span><span class="math-region inline" data-source-math-id="BFOURMATH000003END" data-source-tex-sha256="be8dcefb61dddd9fbf05daa64cf5bcd61a880dee08766957dbd63fb1fd715620"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+</math></span>).</span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10002" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10002" data-source-number="2">
+<p><strong>Exercise 2</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10002.answer.source-order.001">Worked answer</a></p>
+<p>Use the computer to solve these systems from the first subsection, or conclude ‘many solutions’ or ‘no solutions’.</p>
+<ol type="a">
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000004END" data-source-tex-sha256="f57faa28e4d17982ff1453597ff25f2140d380bf26619b431fd59b75af2eb361"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>5</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000005END" data-source-tex-sha256="60d5552d25fcf3703387ef61e539bc9ae45fad7352aba161395890730b8e2433"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000006END" data-source-tex-sha256="bcca75563471c6534446f628cf452f70f0a92f505b5defedddf4a133bc9f1746"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>14</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000007END" data-source-tex-sha256="520c89a3dfc2c90cacae60a734cbeb4d627e38f1b36dcbc3ec727b0d9d0ec73a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>3</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000008END" data-source-tex-sha256="ab7b65e1987499db1d8e1fee924ed0304ff4cb21ef4aa3f49c89195f9c3e6761"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>20</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>5</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>10</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000009END" data-source-tex-sha256="11dca8e42d0eb2a794e7cce6efdaae5d989b70c6ab6ae9455d1d019f4e10da8c"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>5</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>9</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+</ol>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10002.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10002.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10002">Back to Exercise 2</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>The answer is <span><span class="math-region inline" data-source-math-id="BFOURMATH000010END" data-source-tex-sha256="383c306e75a57c455d81a1af735b49a255af79eaa60e78940c8f8fa8e4b086d1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>2</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000011END" data-source-tex-sha256="474af4dea37d68e9991b1c5bdc89c5d1052c189bb5b5664e2e690b966a291f06"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>2</mn>
+</math></span>.</span> A <em>Sage</em> session does this.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0007" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0007">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y&#39;)
+(x, y)
+sage: system = [2*x + 2*y == 5,
+....:              x - 4*y == 0]
+sage: solve(system, x,y)
+[[x == 2, y == (1/2)]]          </code></pre>
+</div>
+<p>A <em>Maple</em> session</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0008" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0008">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>&gt; A:=array( [[2,2],
+             [1,-4]] );
+&gt; u:=array([5,0]);
+&gt; linsolve(A,u);            </code></pre>
+</div>
+<p>gets the same answer, of course.</p></li>
+<li><p>The answer is <span><span class="math-region inline" data-source-math-id="BFOURMATH000012END" data-source-tex-sha256="2cabedf62f3690734ab7e73135386a0dd8f6d9cb73e7d2a040e185b7bfdd5f14"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mn>1</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>2</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000013END" data-source-tex-sha256="a6cbca4cd02eeb8ca1759dbd6f88d7764aa6f4c7aa62b3fb62014e176c4106f3"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mn>3</mn>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>2</mn>
+</math></span>.</span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0009" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0009">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y&#39;)
+(x, y)
+sage: system = [-1*x + y == 1,
+....:              x + y == 2]
+sage: solve(system, x,y)
+[[x == (1/2), y == (3/2)]]          </code></pre>
+</div></li>
+<li><p>This system has infinitely many solutions. In the first subsection, with <span><span class="math-region inline" data-source-math-id="BFOURMATH000014END" data-source-tex-sha256="594e519ae499312b29433b7dd8a97ff068defcba9755b6d5d00e84c524d67b06"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>z</mi>
+</math></span></span> as a parameter, we got <span><span class="math-region inline" data-source-math-id="BFOURMATH000015END" data-source-tex-sha256="2f37d49b2d98a81db485f13fd1031ad250aecf0adb28a82f8430a17b6cea724f"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>x</mi>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mn>43</mn>
+  <mo>−</mo>
+  <mn>7</mn>
+  <mi>z</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>4</mn>
+</math></span></span> and <span><span class="math-region inline" data-source-math-id="BFOURMATH000016END" data-source-tex-sha256="287ac4fd54fbb1626644be259e326b31989abab60696f200867d436095959257"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mn>13</mn>
+  <mo>−</mo>
+  <mi>z</mi>
+  <mo stretchy="false">)</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mo>/</mo>
+  </mrow>
+  <mn>4</mn>
+</math></span>.</span> <em>Sage</em> gets the same.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0010" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0010">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y,z&#39;)
+(x, y, z)
+sage: system = [x - 3*y + z == 1,
+....:           x + y + 2*z == 14]
+sage: solve(system, x,y)
+[[x == -7/4*z + 43/4, y == -1/4*z + 13/4]]             </code></pre>
+</div>
+<p><em>Maple</em> responds with <span><span class="math-region inline" data-source-math-id="BFOURMATH000017END" data-source-tex-sha256="2f4cb6882eb7284342a3ef1c1b84e12f6d550c5124a9f6b50249bdaf12db7978"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mo>−</mo>
+  <mn>12</mn>
+  <mo>+</mo>
+  <mn>7</mn>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <mn>13</mn>
+  <mo>−</mo>
+  <mn>4</mn>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math></span>,</span> preferring <span><span class="math-region inline" data-source-math-id="BFOURMATH000018END" data-source-tex-sha256="a1fce4363854ff888cff4b8e7875d600c2682390412a8cf79b37d0b11148b0fa"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>y</mi>
+</math></span></span> as a parameter.</p></li>
+<li><p>There is no solution to this system. <em>Sage</em> gives an empty list.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0011" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0011">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y&#39;)
+(x, y)
+sage: system = [-1*x - y == 1,
+....:           -3*x - 3*y == 2]
+sage: solve(system, x,y)
+[]          </code></pre>
+</div>
+<p>Similarly, When the array <span><span class="math-region inline" data-source-math-id="BFOURMATH000019END" data-source-tex-sha256="559aead08264d5795d3909718cdd05abd49572e84fe55590eef31a88a08fdffd"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>A</mi>
+</math></span></span> and vector <span><span class="math-region inline" data-source-math-id="BFOURMATH000020END" data-source-tex-sha256="0bfe935e70c321c7ca3afc75ce0d0ca2f98b5422e008bb31c00c6d7f1f1c0ad6"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mi>u</mi>
+</math></span></span> are given to <em>Maple</em> and it is asked to <code>linsolve(A,u)</code>, it returns no result at all; that is, it responds with no solutions.</p></li>
+<li><p><em>Sage</em> finds</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0012" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0012">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y,z&#39;)
+(x, y, z)
+sage: system = [       4*y + z == 20,
+....:            2*x - 2*y + z == 0,
+....:             x +        z == 5,
+....:             x +    y - z == 10]
+sage: solve(system, x,y,z)
+[[x == 5, y == 5, z == 0]]          </code></pre>
+</div>
+<p>that the solutions is <span><span class="math-region inline" data-source-math-id="BFOURMATH000021END" data-source-tex-sha256="61ba37b3f3fb3674c3edff0fc6c43b65f7985959559d7d48c0c780d77447fa31"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mi>x</mi>
+  <mo>,</mo>
+  <mi>y</mi>
+  <mo>,</mo>
+  <mi>z</mi>
+  <mo stretchy="false">)</mo>
+  <mo>=</mo>
+  <mo stretchy="false">(</mo>
+  <mn>5</mn>
+  <mo>,</mo>
+  <mn>5</mn>
+  <mo>,</mo>
+  <mn>0</mn>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p></li>
+<li><p>There are infinitely many solutions. <em>Sage</em> does this.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0013" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0013">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y,z,w&#39;)
+(x, y, z, w)
+sage: system = [ 2*x +        z + w == 5,
+....:                   y -       w == -1,
+....:            3*x -        z - w == 0,
+....:            4*x +  y + 2*z + w == 9]
+sage: solve(system, x,y,z,w)
+[[x == 1, y == r2 - 1, z == -r2 + 3, w == r2]]          </code></pre>
+</div>
+<p><em>Maple</em> gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000022END" data-source-tex-sha256="278ca1520c11f871b49854376651c7f8636b03971012e202d7a95cdb61c4d854"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>1</mn>
+  <mo>,</mo>
+  <mo>−</mo>
+  <mn>1</mn>
+  <mo>+</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <mn>3</mn>
+  <mo>−</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10003" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10003" data-source-number="3">
+<p><strong>Exercise 3</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10003.answer.source-order.001">Worked answer</a></p>
+<p>Use the computer to solve these systems from the second subsection.</p>
+<ol type="a">
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000023END" data-source-tex-sha256="dda7652a0276a20efbae63f851b08d79b049001ef5233fe348f54c91ec118352"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>6</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>18</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>6</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000024END" data-source-tex-sha256="2a68beef9263b9dec24fe1c2ec6d225d51ab80b17dda7736b3fbf7266a96420d"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mo>−</mo>
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000025END" data-source-tex-sha256="719e9f5a9019bf499e0c0a2d549320cd38dcfa05231e53dc2c93371f471484b1"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>3</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <msub>
+          <mi>x</mi>
+          <mn>3</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>5</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+        <msub>
+          <mi>x</mi>
+          <mn>1</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <msub>
+          <mi>x</mi>
+          <mn>2</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>5</mn>
+        <msub>
+          <mi>x</mi>
+          <mn>3</mn>
+        </msub>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>17</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000026END" data-source-tex-sha256="034b50ad64f45a1c309fc6a1433e0c760ea31f7cfb461393d6d8eedd890c2cde"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>b</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>c</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>c</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>a</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>b</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>0</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000027END" data-source-tex-sha256="1bc568e2e5f056057ec1d3193944bb70289880e4dcc516ad37927873a847969e"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>1</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+<li><p><span><span class="math-region inline" data-source-math-id="BFOURMATH000028END" data-source-tex-sha256="4ca90a8a7b2211cee3e859d08a720192bed6e074207a7fb0f7ac76b70cfab915"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mtable columnalign="right center right center right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>4</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>−</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>w</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>2</mn>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mn>3</mn>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>z</mi>
+      </mtd>
+      <mtd style="text-align:center"/>
+      <mtd style="text-align:right"/>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mn>7</mn>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p></li>
+</ol>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10003.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10003.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10003">Back to Exercise 3</a></p>
+<p><strong>Answer.</strong> <span class="source-layout" data-source-layout="\bgroup"></span></p>
+<ol type="a">
+<li><p>This system has infinitely many solutions. In the second subsection we gave the solution set as</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000029END" data-source-tex-sha256="ca019273c1522a8808dcd7784fe8e6f004b372a9c3b6809552a3ce6738e02125"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>6</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>+</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>2</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mi>y</mi>
+  <mo>∣</mo>
+  <mi>y</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+  </mrow>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span></p>
+<p>and <em>Sage</em> finds</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0014" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0014">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y&#39;)
+(x, y)
+sage: system = [ 3*x + 6*y == 18,
+....:              x + 2*y == 6]
+sage: solve(system, x,y)
+[[x == -2*r3 + 6, y == r3]]                </code></pre>
+</div>
+<p>while <em>Maple</em> responds with <span><span class="math-region inline" data-source-math-id="BFOURMATH000030END" data-source-tex-sha256="003665c331923f906421d924b26e20a4a090b801a7203d689aeabf3a151fbbd2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>6</mn>
+  <mo>−</mo>
+  <mn>2</mn>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p></li>
+<li><p>The solution set has only one member.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000031END" data-source-tex-sha256="c35f339041946ae640e46ab387a4326a2953015e46a5b0d39d01a6e7fc423719"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span></p>
+<p><em>Sage</em> gives this.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0015" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0015">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y&#39;)
+(x, y)
+sage: system = [ x + y == 1,
+....:            x - y == -1]
+sage: solve(system, x,y)
+[[x == 0, y == 1]]            </code></pre>
+</div></li>
+<li><p>This system’s solution set is infinite</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000032END" data-source-tex-sha256="97eaf4460ed3b5bcdf449dca1133295adb961e2e813472810f41d9701d314bd5"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>4</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>+</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <msub>
+    <mi>x</mi>
+    <mn>3</mn>
+  </msub>
+  <mo>∣</mo>
+  <msub>
+    <mi>x</mi>
+    <mn>3</mn>
+  </msub>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+  </mrow>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span></p>
+<p><em>Sage</em> gives this</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0016" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0016">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x1,x2,x3&#39;)
+(x1, x2, x3)
+sage: system = [   x1 +        x3 == 4,
+....:              x1 - x2 + 2*x3 == 5,
+....:            4*x1 - x2 + 5*x3 == 17]
+sage: solve(system, x1,x2,x3)
+[[x1 == -r4 + 4, x2 == r4 - 1, x3 == r4]]            </code></pre>
+</div>
+<p>and Maple gives <span><span class="math-region inline" data-source-math-id="BFOURMATH000033END" data-source-tex-sha256="866cb4cac6e6c33e096e80c30ff3a9973c194156301fa02b4e2be3952eba9844"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <mo>−</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <mn>3</mn>
+  <mo>,</mo>
+  <mo>−</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <mn>4</mn>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p></li>
+<li><p>There is a unique solution</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000034END" data-source-tex-sha256="c737d0f58e457a0bc8178ac40483be062af85092a28c3d7ed9aadf5f9dae0123"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span></p>
+<p>and <em>Sage</em> finds it.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0017" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0017">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;a,b,c&#39;)
+(a, b, c)
+sage: system = [ 2*a +  b - c == 2,
+....:            2*a +      c == 3,
+....:              a - b      == 0]
+sage: solve(system, a,b,c)
+[[a == 1, b == 1, c == 1]]             </code></pre>
+</div></li>
+<li><p>This system has infinitely many solutions; in the second subsection we described the solution set with two parameters.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000035END" data-source-tex-sha256="578ff4fe5bf0221bdba335e70b915baaaee9dc85b40d13e6e687fc3e8af8fa08"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mo fence="false" stretchy="false">{</mo>
+  <mspace width=".1em"/>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>5</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mo>/</mo>
+          </mrow>
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mo>/</mo>
+          </mrow>
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mo>+</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>1</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mo>/</mo>
+          </mrow>
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>2</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mo>/</mo>
+          </mrow>
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mi>z</mi>
+  <mo>+</mo>
+  <mrow data-mjx-texclass="INNER">
+    <mo data-mjx-texclass="OPEN">(</mo>
+    <mtable columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+      <mtr>
+        <mtd style="text-align:center">
+          <mo>−</mo>
+          <mn>2</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mo>/</mo>
+          </mrow>
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+          <mrow data-mjx-texclass="ORD">
+            <mo>/</mo>
+          </mrow>
+          <mn>3</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>0</mn>
+        </mtd>
+      </mtr>
+      <mtr>
+        <mtd style="text-align:center">
+          <mn>1</mn>
+        </mtd>
+      </mtr>
+    </mtable>
+    <mo data-mjx-texclass="CLOSE">)</mo>
+  </mrow>
+  <mi>w</mi>
+  <mo>∣</mo>
+  <mi>z</mi>
+  <mo>,</mo>
+  <mi>w</mi>
+  <mo>∈</mo>
+  <mrow data-mjx-texclass="ORD">
+    <mi mathvariant="normal" data-source-mathvariant="double-struck" data-source-character="R">ℝ</mi>
+  </mrow>
+  <mspace width=".1em"/>
+  <mo fence="false" stretchy="false">}</mo>
+</math></span></span></p>
+<p><em>Sage</em> does the same.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0018" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0018">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y,z,w&#39;)
+(x, y, z, w)
+sage: system = [   x + 2*y - z     == 3,
+....:            2*x +   y     + w == 4,
+....:              x -   y + z + w == 1]
+sage: solve(system, x,y,z,w)
+[[x == r6, y == -r5 - 2*r6 + 4, z == -2*r5 - 3*r6 + 5, w == r5]]             </code></pre>
+</div>
+<p>as does <em>Maple</em> <span><span class="math-region inline" data-source-math-id="BFOURMATH000036END" data-source-tex-sha256="46a9209d03d6c3db04d133287068fb59dbaf3d84ca601b09efd2d2fb21783f0a"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mo stretchy="false">(</mo>
+  <mn>3</mn>
+  <mo>−</mo>
+  <mn>2</mn>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>+</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>,</mo>
+  <msub>
+    <mi>t</mi>
+    <mn>2</mn>
+  </msub>
+  <mo>,</mo>
+  <mo>−</mo>
+  <mn>2</mn>
+  <mo>+</mo>
+  <mn>3</mn>
+  <msub>
+    <mi>t</mi>
+    <mn>1</mn>
+  </msub>
+  <mo>−</mo>
+  <mn>2</mn>
+  <msub>
+    <mi>t</mi>
+    <mn>2</mn>
+  </msub>
+  <mo stretchy="false">)</mo>
+</math></span>.</span></p></li>
+<li><p>The solution set is empty.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0019" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0019">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y,z,w&#39;)
+(x, y, z, w)
+sage: system = [   x +      z + w == 4,
+....:            2*x +  y     - w == 2,
+....:            3*x +  y + z     == 7]
+sage: solve(system, x,y,z,w)
+[]          </code></pre>
+</div></li>
+</ol>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+<li><div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10004" class="source-exercise" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10004" data-source-number="4">
+<p><strong>Exercise 4</strong> <a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10004.answer.source-order.001">Worked answer</a></p>
+<p>What does the computer give for the solution of the general <span><span class="math-region inline" data-source-math-id="BFOURMATH000037END" data-source-tex-sha256="08b58a9aebd8af6a1af0e1e2a49c49af9ecb0c14a5ec0241d7250a500814a3b2"><math xmlns="http://www.w3.org/1998/Math/MathML">
+  <mn>2</mn>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mo>×</mo>
+  <mstyle scriptlevel="0">
+    <mspace width="-0.167em"/>
+  </mstyle>
+  <mn>2</mn>
+</math></span></span> system?</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000038END" data-source-tex-sha256="24e6991bb99b1a139662894ee89cfc441f6813156ce3cfbcf6d5b7900d1aa1bf"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mtable columnalign="right center right center right" columnspacing="1em" rowspacing="4pt" style="border-collapse:collapse">
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>a</mi>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>c</mi>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>p</mi>
+      </mtd>
+    </mtr>
+    <mtr>
+      <mtd style="text-align:right">
+        <mi>b</mi>
+        <mi>x</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>+</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>d</mi>
+        <mi>y</mi>
+      </mtd>
+      <mtd style="text-align:center">
+        <mo>=</mo>
+      </mtd>
+      <mtd style="text-align:right">
+        <mi>q</mi>
+      </mtd>
+    </mtr>
+  </mtable>
+</math></span></span></p>
+<p><span class="source-layout" data-source-layout="\bgroup"></span></p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10004.answer.source-order.001" class="source-answer" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10004.answer.source-order.001">
+<p><a href="#r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.exercise.source-order.10004">Back to Exercise 4</a></p>
+<p><strong>Answer.</strong> <em>Sage</em> does this.</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0020" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0020">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>sage: var(&#39;x,y,a,b,c,d,p,q&#39;)
+(x, y, a, b, c, d, p, q)
+sage: system = [ a*x +  c*y == p,
+....:            b*x +  d*y == q]
+sage: solve(system, x,y)
+[[x == -(d*p - c*q)/(b*c - a*d), y == (b*p - a*q)/(b*c - a*d)]]        </code></pre>
+</div>
+<p>In response to this prompting</p>
+<div id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0021" class="source-program" data-source-unit-id="r005.hefferon-linear-algebra.unit.file.src.gr.cas.tex.lstlisting.source-order.0021">
+<pre tabindex="0" role="region" aria-label="Original source code transcript; scroll horizontally if needed"><code>&gt; A:=array( [[a,c],
+             [b,d]] );
+&gt; u:=array([p,q]);
+&gt; linsolve(A,u);</code></pre>
+</div>
+<p><em>Maple</em> gave this reply.</p>
+<p><span><span class="math-region display" data-source-math-id="BFOURMATH000039END" data-source-tex-sha256="4610f487a6cd6cd765871206494cfbcc6c66a5c80aed556ca5f1039a5083944e"><math xmlns="http://www.w3.org/1998/Math/MathML" display="block">
+  <mrow data-mjx-texclass="OPEN">
+    <mo minsize="1.2em" maxsize="1.2em">[</mo>
+  </mrow>
+  <mo>−</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mi>d</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>p</mi>
+      <mo>+</mo>
+      <mi>q</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>c</mi>
+    </mrow>
+    <mrow>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>c</mi>
+      <mo>+</mo>
+      <mi>a</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>d</mi>
+    </mrow>
+  </mfrac>
+  <mo>,</mo>
+  <mfrac>
+    <mrow>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>p</mi>
+      <mo>+</mo>
+      <mi>a</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>q</mi>
+    </mrow>
+    <mrow>
+      <mo>−</mo>
+      <mi>b</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>c</mi>
+      <mo>+</mo>
+      <mi>a</mi>
+      <mstyle scriptlevel="0">
+        <mspace width="0.167em"/>
+      </mstyle>
+      <mi>d</mi>
+    </mrow>
+  </mfrac>
+  <mrow data-mjx-texclass="CLOSE">
+    <mo minsize="1.2em" maxsize="1.2em">]</mo>
+  </mrow>
+</math></span></span></p>
+</div>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+</div></li>
+</ol>
+</section>
+<div class="source-layout" data-source-layout="\egroup">
+
+</div>
+<p><span id="source-index-7" class="source-index" data-source-index="computer algebra systems|)"></span></p>
+</main><footer><nav aria-label="Book reader navigation"><a href="../index.html">Book contents</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/programme/">Full mathematics programme</a> · <a href="../sources/00-linear-algebra-cumulative.tex" download>Complete editable LaTeX</a> · <a href="https://github.com/KokunoYumeto/program-matematika-indonesia/releases/download/b40-original-en-2026.10.02-28-sections/COMPLETE_SOURCE.zip" download>Full source and offline reader ZIP</a> · <a href="../sources/cas.tex" download>This section’s original LaTeX</a></nav><nav aria-label="Program navigation"><a href="https://kokunoyumeto.github.io/program-matematika-indonesia/en/">Mathematics program — English interface</a> · <a href="https://kokunoyumeto.github.io/program-matematika-indonesia/id/">Program matematika — antarmuka Indonesia</a> · <a href="https://hefferon.net/linearalgebra/">Jim Hefferon’s original website</a></nav><p>Mathematics is embedded as native MathML; figures are embedded SVG. No scripts, external fonts or online runtime are required for this reading file.</p></footer></body></html>
