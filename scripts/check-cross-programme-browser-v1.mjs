@@ -29,6 +29,25 @@ try{
     const overflow=await page.evaluate(()=>({inner:innerWidth,document:document.documentElement.scrollWidth}));assert.ok(overflow.document<=overflow.inner+1,'Horizontal overflow '+locale+' '+width);
     const proofNotice=await page.locator('.notice').innerText();assert.ok(proofNotice.length>100);
     if(current){
+      for(const courseId of ['derived-categories-and-sheaf-operations','harmonic-analysis-on-locally-compact-groups']){
+        const section=page.locator('aside[data-portable-course="'+courseId+'"]');
+        assert.equal(await section.count(),1);
+        assert.deepEqual(await section.locator('[data-portable-format]').evaluateAll(nodes=>nodes.map(n=>n.dataset.portableFormat)),['pdf','tex','zip','epub']);
+        const href=await section.locator('[data-portable-reader]').getAttribute('href');
+        assert.ok(href.endsWith('index.'+locale+'.html'));
+        if(width===390&&courseId==='harmonic-analysis-on-locally-compact-groups'){
+          await section.scrollIntoViewIfNeeded();
+          const path=captureDir+'/'+locale+'-390-portable-haar.png';
+          const bytes=await page.screenshot({path:resolve(dir,path),fullPage:false});
+          captures.push({path,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});
+        }
+        await page.goto(origin+new URL(href).pathname.replace('/program-matematika-indonesia',''));
+        assert.equal(await page.locator('html').getAttribute('lang'),locale);
+        assert.equal(await page.locator('.downloads a').count(),4);
+        assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
+        await page.goto(origin+'/'+locale+'/programme/');
+      }
+      checks.push({locale,width,portable_course_routes:2,localized_reader_targets:true,ordered_formats:['pdf','tex','zip','epub'],horizontal_overflow:false});
       assert.equal(await page.locator('[data-advanced-snapshot="801f1868"]').count(),1);
       const b40Expanded=page.locator('#core-B40 a[data-b40-expanded="v1"]');
       assert.equal(await b40Expanded.count(),1);

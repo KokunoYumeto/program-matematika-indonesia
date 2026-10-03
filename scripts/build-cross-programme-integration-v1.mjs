@@ -6,6 +6,7 @@ import {fileURLToPath,pathToFileURL} from 'node:url';
 import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
 import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute,currentRequirementDisposition,renderCurrentRequirements} from './b40-prerequisite-route-v1.mjs';
 import {validateHermitianRoute,renderHermitianRoute} from './finite-hermitian-route-v1.mjs';
+import {loadPortableCourseRoutes,renderPortableCourseRoute} from './portable-course-routes-v1.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'backend/cross-programme-v1');
@@ -252,6 +253,9 @@ for(const resource of additions.resources){
       full_book:false,proof_dependency_closure:false},native_sections:nativeSections,
   });
 }
+const portableRoutes=await loadPortableCourseRoutes(root,new Set(advancedCourses.map(c=>c.id)));
+bridge.portable_edition_catalogue=portableRoutes.catalogue;
+for(const course of advancedCourses)course.portable_editions=portableRoutes.editions.filter(r=>r.course_id===course.id);
 function currentHtml(locale){
   let body=html(locale);
   const update=locale==='en'
@@ -280,6 +284,12 @@ function currentHtml(locale){
     body=body.replace(anchor,anchor+link);
   }
   const consumer=advancedCourses.find(c=>c.id==='RT-FIN');
+  for(const route of portableRoutes.editions){
+    const course=advancedCourses.find(c=>c.id===route.course_id);
+    const anchor='<section id="advanced-'+esc(course.id)+'"><h3><a href="'+esc(course.route)+'" lang="en">'+esc(course.title.en)+'</a></h3>';
+    assert.equal(body.split(anchor).length,2);
+    body=body.replace(anchor,anchor+renderPortableCourseRoute(route,locale));
+  }
   const statusAnchor='<section id="advanced-RT-FIN"><h3><a href="'+esc(consumer.route)+'" lang="en">'+esc(consumer.title.en)+'</a></h3>';
   assert.equal(body.split(statusAnchor).length,2);
   body=body.replace(statusAnchor,statusAnchor+renderCurrentRequirements(bridge.current_result_requirements,locale));
@@ -306,5 +316,6 @@ for(const [path,b] of outputs){
 }
 const receipt={schema:'cross-programme-build/1',state:'local_reading_routes_integrated_proof_correspondence_unfinished',counts:bridge.counts,inputs:manifest.inputs,current_navigation_additions:fact(additionsPath,additionsBytes),source_bound_lesson_route:fact(lessonRoutePath,lessonRouteBytes),outputs:outputs.map(([p,b])=>fact(p,b)),no_native_owner_mutation:true,no_phone_mutation:true,no_mathematical_certification:true,public_deployment:false,script:fact('scripts/build-cross-programme-integration-v1.mjs',await readFile(fileURLToPath(import.meta.url)))};
 receipt.source_bound_lesson_routes=[fact(lessonRoutePath,lessonRouteBytes),fact(b40RoutePath,b40RouteBytes),fact(hermitianPath,hermitianBytes)];
+receipt.portable_course_routes={catalogue:portableRoutes.catalogue,editions:portableRoutes.editions.map(r=>r.edition),script:fact('scripts/portable-course-routes-v1.mjs',await readFile(resolve(root,'scripts/portable-course-routes-v1.mjs')))};
 if(!args.has('--check'))await writeFile(resolve(out,'BUILD_RECEIPT.json'),serialize(receipt));
 console.log(JSON.stringify({state:args.has('--check')?'byte_replay_pass':receipt.state,counts:bridge.counts,outputs:receipt.outputs}));

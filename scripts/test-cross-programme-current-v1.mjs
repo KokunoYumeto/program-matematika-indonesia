@@ -8,10 +8,20 @@ import {crossProgrammeRoutes} from '../docs/interface/cross-programme-routes.js'
 import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-prerequisite-route-v1.mjs';
 import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute,currentRequirementDisposition,renderCurrentRequirements} from './b40-prerequisite-route-v1.mjs';
 import {validateHermitianRoute,renderHermitianRoute} from './finite-hermitian-route-v1.mjs';
+import {loadPortableCourseRoutes,renderPortableCourseRoute} from './portable-course-routes-v1.mjs';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const sha=b=>createHash('sha256').update(b).digest('hex');
 const load=async p=>JSON.parse(await readFile(resolve(root,p)));
 const bridge=await load('docs/data/cross-programme-v1/bridge.json');
+const portable=await loadPortableCourseRoutes(root,new Set(bridge.courses.advanced.map(c=>c.id)));
+assert.deepEqual(bridge.portable_edition_catalogue,portable.catalogue);
+for(const route of portable.editions){
+  assert.deepEqual(bridge.courses.advanced.find(c=>c.id===route.course_id).portable_editions,[route]);
+  for(const locale of ['en','id']){
+    const page=await readFile(resolve(root,'docs/'+locale+'/programme/index.html'),'utf8');
+    assert.ok(page.includes(renderPortableCourseRoute(route,locale)));
+  }
+}
 const coverage=await load('docs/backend/program-backend-coverage.json');
 const capsules=await load('backend/course-capsule-v1/generated/course-capsules.json');
 const expected=bridge.courses.core.map(c=>c.id).sort();
@@ -192,6 +202,7 @@ const result={schema:'current-core-advanced-integration/1',state:'pass',core_rol
   current_requirement_dispositions:{supplied_with_author_self_review:2,recorded_uses:4,
     historical_findings_preserved:true,source_facts_rehashed:true,negative_fixtures_rejected:rejectedDispositionFixtures},
   native_proof_closure_claimed:false,files:facts,
+  portable_editions:portable.editions.length,portable_localized_routes:4,
   provenance:{model:'gpt-6-astra',effort:'ultra',scope:'Combined current-checkout integration verification; upstream route authorship retained'}};
 await writeFile(resolve(root,'backend/cross-programme-v1/CURRENT_INTEGRATION_VALIDATION.json'),JSON.stringify(result,null,2)+'\n');
 console.log(JSON.stringify({state:'pass',core_roles:40,advanced_courses:72,advanced_lessons:1061,current_shells:6}));
