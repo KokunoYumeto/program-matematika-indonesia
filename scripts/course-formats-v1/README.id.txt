@@ -29,6 +29,13 @@ native-course-format-entry-locators/1 dan course-format-locator-index/1.
 Format sumber lain memerlukan adaptor tersendiri; jangan sekadar mengganti
 label berkas. Katalog unduhan mata kuliah inti bukan manifes masukan ini.
 
+Adaptor programme-current-public-course-format-handoff/1 juga menerima paket
+bersumber publik. Adaptor memeriksa ikatan bukti, identitas revisi sumber,
+jumlah pelajaran/bacaan bersama dan catatan ZIP, lalu menerapkan pemeriksaan
+PDF/EPUB/sumber yang sama. Berkas asli tidak diubah atau diberi label ulang;
+izin penerbitan tidak disimpulkan. Tautan mata kuliah dan program daring
+bersifat opsional, bukan dependensi luring.
+
 Tanpa --reader dan --report, perintah hanya memeriksa tanpa menulis. Tujuan
 keluaran baru belum boleh ada. Direktori bacaan harus terpisah dari direktori
 pembuat sumber. Kegagalan tidak menghapus atau mengubah berkas pembuat sumber.

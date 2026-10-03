@@ -25,6 +25,13 @@ native-course-format-entry-locators/1 or course-format-locator-index/1. Other
 native contracts need an explicit adapter; do not relabel incompatible files.
 The public core-course download catalogue is not itself an intake manifest.
 
+The explicit programme-current-public-course-format-handoff/1 adapter also
+accepts public-source packets. It verifies their evidence bindings, pinned
+source identity, lesson/common-reading counts and source-package witness,
+then applies the same PDF/EPUB/source checks. It does not rewrite or relabel
+the native handoff and does not infer publication authority. Original online
+course and programme links are optional online navigation, not offline assets.
+
 Without --reader and --report the command validates without writing. New output
 paths must not exist. The reader output must be separate from the producer
 directory. A failure never deletes or changes producer files. An incomplete new

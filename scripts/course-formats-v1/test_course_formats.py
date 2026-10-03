@@ -188,6 +188,29 @@ class ReaderTests(unittest.TestCase):
 
 
 class ActualIntakeTests(unittest.TestCase):
+    def test_public_handoff_rejects_inconsistent_witnesses(self):
+        if not INTAKE:
+            self.skipTest('Supply --intake for integration fixture')
+        original = f.decode((INTAKE / 'HANDOFF.json').read_bytes())
+        if original['schema'] != 'programme-current-public-course-format-handoff/1':
+            self.skipTest('Public-source handoff fixture only')
+        normalized = f.handoff_contract(INTAKE, original)
+        self.assertEqual(normalized['schema'], original['schema'])
+        self.assertNotIn('receipt', original)
+        mutations = [
+            lambda h: h['source'].update(commit='0' * 40),
+            lambda h: h['coverage'].update(main_lessons=999),
+            lambda h: h['coverage'].update(formula_regions=1),
+            lambda h: h['evidence'].append(h['evidence'][0]),
+            lambda h: h['evidence'].pop(0),
+            lambda h: h['files_in_public_order'][2].update(sha256='0' * 64),
+        ]
+        for mutate in mutations:
+            value = copy.deepcopy(original)
+            mutate(value)
+            with self.assertRaises(f.InvalidPackage):
+                f.handoff_contract(INTAKE, value)
+
     def test_actual_intake_and_negative_routes(self):
         if not INTAKE:
             self.skipTest('Supply --intake for private integration fixture')

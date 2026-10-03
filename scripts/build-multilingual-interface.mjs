@@ -299,7 +299,10 @@ const receipt = {
     inputs: await Promise.all(['scripts/build-course-downloads-v1.mjs', 'scripts/package-course-formats-v1.py',
       'scripts/course-formats-v1/course_formats.py', 'scripts/course-formats-v1/test_course_formats.py',
       'scripts/course-formats-v1/check_reader.mjs', 'scripts/course-formats-v1/README.txt',
-      'scripts/course-formats-v1/README.id.txt', 'docs/downloads/course-format-tools-v1.zip'].map(async path => {
+      'scripts/course-formats-v1/README.id.txt', 'docs/downloads/course-format-tools-v1.zip',
+      'scripts/integrate-public-course-formats-v1.py',
+      'docs/interface/public-course-format-editions.json',
+      'docs/editions/derived-categories-of-sheaves/EDITION.json'].map(async path => {
         const bytes = await readFile(resolve(interfaceRoot, path));
         return {path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')};
       })),

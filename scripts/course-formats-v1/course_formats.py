@@ -285,12 +285,60 @@ def pdf_evidence(pdf_path, routes, native_locations=None):
             'visual_inspection_performed': False}
 
 
+def handoff_contract(root, handoff):
+    """Adapt a public-source packet explicitly, without rewriting its witnesses.
+
+    Source publication and local export validation are not permission to publish.
+    Every evidence mapping is checked before using the producer's counts.
+    """
+    schema = handoff.get('schema')
+    if schema in ('programme-course-format-handoff/1', 'programme-course-format-handoff/2'):
+        return handoff
+    require(schema == 'programme-current-public-course-format-handoff/1', 'Unsupported handoff schema')
+    evidence = handoff['evidence']
+    records = {row['path']: row for row in evidence}
+    require(len(records) == len(evidence), 'Duplicate public handoff evidence')
+    for row in evidence:
+        checked_file(root, row)
+    required = ('FINAL_EXPORT_RECEIPT.json', 'SOURCE_MANIFEST.json', 'FORMAT_LOCATORS.json',
+                'FORMAT_LOCATORS_VALIDATION.json', 'ISOLATED_REPLAY_RECEIPT.json')
+    require(all(name in records for name in required), 'Missing public handoff evidence binding')
+    receipt = decode(checked_file(root, records['FINAL_EXPORT_RECEIPT.json']).read_bytes())
+    require(receipt.get('schema') == 'programme-course-export-acceptance/2', 'Unsupported export receipt')
+    require(receipt['course_id'] == handoff['course_id'], 'Public receipt course differs')
+    require(receipt['public_source_binding'] == handoff['source'], 'Public source binding differs')
+    source = handoff['source']
+    require(re.fullmatch(r'[a-f0-9]{40}', source['commit']) is not None, 'Unpinned public source')
+    require(re.fullmatch(r'[a-f0-9]{64}', source['archive_sha256']) is not None, 'Missing public archive hash')
+    for key in ('repository', 'archive_url'):
+        parsed = urlsplit(source[key])
+        require(parsed.scheme == 'https' and parsed.netloc and not parsed.username and not parsed.password,
+                'Unsafe public source URL')
+    receipt_evidence = receipt['evidence']
+    package_records = [r for r in receipt_evidence if r['path'] == 'SOURCE_PACKAGE_RECEIPT.json']
+    require(len(package_records) == 1, 'Missing source package count witness')
+    package = decode(checked_file(root, package_records[0]).read_bytes())
+    require(package.get('schema') == 'course-source-package-check/1', 'Unsupported source package witness')
+    formats = handoff['files_in_public_order']
+    source_zip = next((r for r in formats if r['path'].endswith('.zip')), None)
+    require(source_zip is not None and package['zip']['sha256'] == source_zip['sha256']
+            and package['zip']['bytes'] == source_zip['bytes'], 'Package witness describes different ZIP')
+    coverage = handoff['coverage']
+    require(coverage['main_lessons'] + coverage['common_readings'] == receipt['source_lessons'],
+            'Public reading-unit count differs')
+    require(coverage['formula_regions'] == receipt['math_regions'], 'Public formula count differs')
+    require(coverage['pdf_pages'] == receipt['pdf_pages'], 'Public PDF count differs')
+    return {**handoff, 'receipt': records['FINAL_EXPORT_RECEIPT.json'],
+            'locators': records['FORMAT_LOCATORS.json'], 'source_manifest': records['SOURCE_MANIFEST.json'],
+            'locator_validation': records['FORMAT_LOCATORS_VALIDATION.json'],
+            'pdf_pages': coverage['pdf_pages'], 'ordered_formula_regions': coverage['formula_regions'],
+            'native_format_locators': coverage['native_format_locators'], 'source_zip_members': package['members']}
+
+
 def validate(root):
     root = root.resolve(strict=True)
     handoff_raw = (root / 'HANDOFF.json').read_bytes()
-    handoff = decode(handoff_raw)
-    require(handoff.get('schema') in ('programme-course-format-handoff/1', 'programme-course-format-handoff/2'),
-            'Unsupported handoff schema')
+    handoff = handoff_contract(root, decode(handoff_raw))
     receipt_path = checked_file(root, handoff['receipt'])
     locator_path = checked_file(root, handoff['locators'])
     receipt, locators = decode(receipt_path.read_bytes()), decode(locator_path.read_bytes())
@@ -305,6 +353,13 @@ def validate(root):
     require(manifest['course_id'] == handoff['course_id'], 'Source course mismatch')
     units = manifest['units']
     require(units and len({u['id'] for u in units}) == len(units), 'Empty/duplicate lesson selection')
+    if handoff['schema'] == 'programme-current-public-course-format-handoff/1':
+        require(manifest['public_source'] == handoff['source'], 'Manifest public source differs')
+        require(len(units) == receipt['source_lessons'], 'Manifest reading-unit count differs')
+        require(sum(u.get('selection_kind', 'lesson') == 'lesson' for u in units) == handoff['coverage']['main_lessons'],
+                'Manifest main-lesson count differs')
+        require(sum(u.get('selection_kind') == 'common reading' for u in units) == handoff['coverage']['common_readings'],
+                'Manifest common-reading count differs')
     formats = handoff['files_in_public_order']
     require(formats == receipt['files_in_public_order'], 'Format bindings differ')
     if locators['schema'] == 'native-course-format-entry-locators/1':
@@ -389,6 +444,7 @@ def validate(root):
               'handoff_sha256': digest(handoff_raw), 'manifest_sha256': digest(manifest_raw),
               'source_status_unchanged': manifest['status'], 'selected_documents': len(units),
               'lessons': sum(u.get('selection_kind', 'lesson') == 'lesson' for u in units),
+              'common_readings': sum(u.get('selection_kind') == 'common reading' for u in units),
               'editorial_supplements': sum(u.get('selection_kind') == 'supplement' for u in units),
               'entry_routes': routes,
               'native_locations': [{key: row[key] for key in
@@ -399,6 +455,14 @@ def validate(root):
               'limits': ['Not a mathematical, linguistic, or independent source-to-formula audit.',
                          'Not EPUBCheck or a visual rendering check; those are separate.',
                          'Not course admission, full dependency coverage, or publication permission.']}
+    if handoff['schema'] == 'programme-current-public-course-format-handoff/1':
+        report['public_source_binding'] = handoff['source']
+        report['public_source_network_rechecked'] = False
+        for key in ('upstream_reader', 'programme'):
+            parsed = urlsplit(manifest[key])
+            require(parsed.scheme == 'https' and parsed.netloc and not parsed.username and not parsed.password,
+                    'Unsafe online navigation URL')
+        report['online_navigation'] = {key: manifest[key] for key in ('upstream_reader', 'programme')}
     return report, manifest, routes
 
 
@@ -418,6 +482,8 @@ COPY = {
         'tagging': 'The PDF is not tagged for assistive reading. The EPUB has a structured reading order and MathML; assistive-technology performance is not certified.',
         'size': 'bytes', 'copy': 'Copied unchanged', 'content': 'Course content', 'supplement': 'Editorial supplement',
         'locations': 'Named locations in this document', 'exact': 'Open exact PDF location',
+        'common': 'Common reading',
+        'online': 'Original online course', 'programme': 'Return to the programme (English)',
     },
     'id': {
         'title': 'Edisi luring mata kuliah', 'nav': 'Bahasa antarmuka', 'downloads': 'Baca dan unduh',
@@ -434,6 +500,8 @@ COPY = {
         'tagging': 'PDF belum memiliki tag untuk teknologi bantu. EPUB memiliki urutan baca terstruktur dan MathML; kinerjanya dengan teknologi bantu belum disertifikasi.',
         'size': 'bita', 'copy': 'Disalin tanpa perubahan', 'content': 'Isi mata kuliah', 'supplement': 'Suplemen editorial',
         'locations': 'Lokasi berlabel dalam dokumen ini', 'exact': 'Buka lokasi PDF yang tepat',
+        'common': 'Bacaan bersama',
+        'online': 'Mata kuliah daring asli', 'programme': 'Kembali ke program (bahasa Inggris)',
     },
 }
 
@@ -463,6 +531,7 @@ def reader_html(report, manifest, routes, locale):
     lessons = ''.join(f'<li id="{esc(r["lesson_id"])}"><strong>{esc(r["lesson_id"])}: '
                       f'<span lang="{esc(content_language)}">{esc(r["title"])}</span></strong><br>'
                       + (f'<em>{esc(c["supplement"])}</em><br>' if r.get('selection_kind') == 'supplement' else '') +
+                      (f'<em>{esc(c["common"])}</em><br>' if r.get('selection_kind') == 'common reading' else '') +
                       f'<a href="{file_link(files[0])}#page={r["pdf"]["page"]}">{esc(c["page"])} {r["pdf"]["page"]}</a>'
                       f' · EPUB: <code>{esc(r["epub"]["member"])}#{esc(r["epub"]["fragment"])}</code>{native_links(r["lesson_id"])}</li>' for r in routes)
     hashes = ''.join(f'<li><a href="{file_link(f)}" download>{esc(Path(f["path"]).name)}</a><br>'
@@ -473,10 +542,13 @@ def reader_html(report, manifest, routes, locale):
         author = json.dumps(author, ensure_ascii=False)
     provenance = str(author) + '\n\n' + str(manifest['conversion_author'])
     warning = f'<p class="notice">{esc(c["tagging"])}</p>' if not report['pdf']['tagged'] else ''
+    online = report.get('online_navigation', {})
+    online_links = ('<p>' + ' · '.join(f'<a href="{esc(online[key])}">{esc(c[label])}</a>'
+                    for key, label in [('upstream_reader', 'online'), ('programme', 'programme')]) + '</p>') if online else ''
     return f'''<!doctype html>
 <html lang="{locale}"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'"><title>{esc(manifest['title'])} - {esc(c['title'])}</title><style>{STYLE}</style></head><body>
 <header><span>{esc(c['title'])}</span><nav aria-label="{esc(c['nav'])}"><a href="index.en.html" lang="en">English</a> · <a href="index.id.html" lang="id">Bahasa Indonesia</a></nav></header>
-<main><h1 lang="{esc(content_language)}">{esc(manifest['title'])}</h1><p>{esc(c['language'])}: <strong>{esc(language_name)}</strong></p><p>{esc(c['separate'])}</p><p>{esc(c['boundary'])}</p>
+<main><h1 lang="{esc(content_language)}">{esc(manifest['title'])}</h1>{online_links}<p>{esc(c['language'])}: <strong>{esc(language_name)}</strong></p><p>{esc(c['separate'])}</p><p>{esc(c['boundary'])}</p>
 <h2>{esc(c['downloads'])}</h2><div class="downloads">{downloads}</div><p>{esc(c['offline'])}</p>{warning}<p>{esc(c['epub_help'])}</p>
 <h2>{esc(c['lessons'])}</h2><ol>{lessons}</ol><article><h2>{esc(c['source'])}</h2><h3>{esc(c['quoted'])}</h3><blockquote lang="{esc(content_language)}" style="white-space:pre-wrap">{esc(original_notice)}</blockquote>
 <h3>{esc(c['provenance'])}</h3><blockquote lang="{esc(content_language)}" style="white-space:pre-wrap">{esc(provenance)}</blockquote><p>{esc(c['unreviewed'])}</p><details><summary>{esc(c['checks'])}</summary><ul>{hashes}</ul></details></article></main><footer><p>{esc(c['credit'])}</p></footer></body></html>

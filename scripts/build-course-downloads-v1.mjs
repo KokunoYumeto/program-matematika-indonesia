@@ -9,6 +9,13 @@ import {siteOrigin} from '../docs/interface/locales.js';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const input='docs/interface/learner-access-manifest.json';
 const hash=bytes=>createHash('sha256').update(bytes).digest('hex');
+export const publicEditions=JSON.parse(await readFile(resolve(root,'docs/interface/public-course-format-editions.json'),'utf8'));
+assert.equal(publicEditions.schema,'public-course-format-catalogue/1');
+assert.equal(new Set(publicEditions.editions.map(e=>e.course_id)).size,publicEditions.editions.length);
+for(const edition of publicEditions.editions){
+  assert.match(edition.slug,/^[a-z0-9]+(?:-[a-z0-9]+)*$/);
+  assert.equal(edition.edition.path,'docs/editions/'+edition.slug+'/EDITION.json');
+}
 const order={pdf:0,tex:1,zip:2,epub:3};
 export function downloadFormat(resource){
   const url=new URL(resource.url);
@@ -76,6 +83,7 @@ export function collectDownloads(manifest){
     counts,resources:files,courses,edition_policy:'Never infer that adjacent formats are the same edition or pair a PDF with an unverified source ZIP. Preserve each exact source link and use the edition record for version, rights and provenance.',
     absence_policy:'No indexed download is not a claim that a format does not exist.',
     advanced_courses:'Separate current-edition export intake; private source snapshots are not exposed by this catalogue.',
+    public_editions:publicEditions.editions,
     new_translation:false,new_mathematical_review:false,new_format_exports:false};
 }
 const copy={
@@ -113,7 +121,9 @@ export function renderDownloadPage(model,locale){
     note:'Read README.txt in the archive. Run it against a compatible local package; nothing is uploaded automatically. Interface language does not change content language. No private courses are included.',
     credit:'Format tools and integration: OpenAI Codex - GPT-6 Astra, Ultra effort. Each course retains its original attribution and licences.'
   };
-  const cards=`<aside id="format-tools"><details><summary>${tool.title}</summary><p>${tool.text}</p><p><a href="../../downloads/course-format-tools-v1.zip">${tool.download}</a></p><p>${tool.note}</p><small>${tool.credit}</small></details></aside>`+model.courses.map(course=>{
+  const publicCards='<aside id="advanced-portable-editions"><details><summary>'+(locale==='id'?'Edisi portabel mata kuliah lanjutan':'Portable advanced-course editions')+'</summary>'
+    +model.public_editions.map(e=>'<p><a data-public-edition="'+esc(e.course_id)+'" href="../../editions/'+esc(e.slug)+'/index.'+locale+'.html"><span lang="'+esc(e.content_language)+'">'+esc(e.title)+'</span></a></p><p>'+esc(e.notes[locale])+'</p>').join('')+'</details></aside>';
+  const cards=`<aside id="format-tools"><details><summary>${tool.title}</summary><p>${tool.text}</p><p><a href="../../downloads/course-format-tools-v1.zip">${tool.download}</a></p><p>${tool.note}</p><small>${tool.credit}</small></details></aside>`+publicCards+model.courses.map(course=>{
     const row=course.locales[locale];const formats=[...new Set(row.downloads.map(r=>byId.get(r.resource_id).format))];
     const links=row.downloads.map(binding=>{
       const resource=byId.get(binding.resource_id);assert.equal(resource.content_language,locale);
@@ -133,6 +143,18 @@ document.body.classList.add('enhanced');const cards=[...document.querySelectorAl
 </script></body></html>\n`;
 }
 export async function buildDownloads(){
+  for(const edition of publicEditions.editions){
+    const raw=await readFile(resolve(root,edition.edition.path));
+    assert.equal(raw.length,edition.edition.bytes);assert.equal(hash(raw),edition.edition.sha256);
+    const record=JSON.parse(raw);
+    assert.equal(record.course_id,edition.course_id);assert.equal(record.content_language,edition.content_language);
+    assert.deepEqual(record.files.map(f=>f.path.split('.').at(-1)),['pdf','tex','zip','epub']);
+    for(const file of record.files){
+      assert.ok(file.path.startsWith('files/')&&!file.path.includes('..')&&!file.path.includes('\\'));
+      const payload=await readFile(resolve(root,dirname(edition.edition.path),file.path));
+      assert.equal(payload.length,file.bytes);assert.equal(hash(payload),file.sha256);
+    }
+  }
   const bytes=await readFile(resolve(root,input));const model=collectDownloads(JSON.parse(bytes));
   model.source={path:'interface/learner-access-manifest.json',bytes:bytes.length,sha256:hash(bytes)};
   const outputs=[];

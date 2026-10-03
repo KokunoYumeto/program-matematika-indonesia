@@ -28,6 +28,11 @@ try {
     }));
     if(state.language!==language||state.overflow||state.downloads.length!==4||state.scripts)throw Error(JSON.stringify(state));
     for(const href of new Set(state.fileLinks.map(href=>href.split('#')[0]))) {
+      if (/^https:\/\//.test(href)) {
+        const url = new URL(href);
+        if (url.username || url.password) throw Error('Credential-bearing online link');
+        continue; // Optional online navigation, never a fetched offline dependency.
+      }
       const path=resolve(reader, decodeURIComponent(href));
       await readFile(path);
     }
