@@ -1,6 +1,42 @@
 // Additive learner links only; course-native source and backend stay canonical.
 export const supplementalReaders = [
   {
+    courseId: 'B80', id: 'B80:id-epub',
+    href: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id/releases/download/v2026.08.22.1/Komputasi-Matematis-dan-Eksperimen-yang-Dapat-Direproduksi.epub',
+    labels: {id: 'EPUB Bahasa Indonesia — 14 unit, edisi 2026.08.22.1', en: 'Indonesian EPUB — 14 units, edition 2026.08.22.1'},
+    notes: {id: 'EPUB rilis asli, tidak diubah. EPUBCheck menemukan satu atribut alt tidak sah pada wadah gambar; teks alternatif gambar tetap ada. Perbaikan format masih diperlukan. Tautan rujukan eksternal memerlukan internet.', en: 'Unchanged original-release EPUB. EPUBCheck reports one invalid alt attribute on a figure container; image alternative text remains present. Format repair is still needed. External references need internet.'},
+    kind: 'companion', format: 'EPUB', offlineAfterDownload: true,
+    evidenceFile: 'docs/interface/evidence/b80-portable-editions.json', contentLanguage: 'id',
+    bytes: 291212, sha256: '8e9e35dd54be8524a8b7752df0a7285749db4c80fc5a10271eb841c01c0c748d'
+  },
+  {
+    courseId: 'B80', id: 'B80:id-native-source',
+    href: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-id/releases/download/v2026.08.22.1/O002_B80_ID_EDITABLE_SOURCE_2026-08-22-1.zip',
+    labels: {id: 'Sumber Quarto Bahasa Indonesia — edisi 2026.08.22.1', en: 'Indonesian Quarto source — edition 2026.08.22.1'},
+    notes: {id: 'Memuat 14 unit sumber, kode, tes, lisensi dan petunjuk build. Tidak memuat LaTeX kumulatif; persyaratan itu belum terpenuhi. Build belum dijalankan ulang oleh integrasi ini.', en: 'Contains 14 source units, code, tests, licences and build instructions. No cumulative LaTeX is included; that requirement remains open. This integration has not rerun the build.'},
+    kind: 'source_archive', format: 'ZIP', offlineAfterDownload: false,
+    evidenceFile: 'docs/interface/evidence/b80-portable-editions.json', contentLanguage: 'id',
+    bytes: 316923, sha256: 'a9dcdc18481b3dc88beee3006d46f1b8187815623534df523bbc70e3e011b9f9'
+  },
+  {
+    courseId: 'B80', id: 'B80:en-epub',
+    href: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-en/releases/download/v2026.08.31.en1/Mathematical-Computing-and-Reproducible-Experiments.epub',
+    labels: {id: 'EPUB bahasa Inggris — 14 unit, edisi 2026.08.31.en1', en: 'English EPUB — 14 units, edition 2026.08.31.en1'},
+    notes: {id: 'EPUB rilis bahasa Inggris, tidak diubah. EPUBCheck menemukan satu atribut alt tidak sah pada wadah gambar; teks alternatif gambar tetap ada. Perbaikan format masih diperlukan. Tautan rujukan eksternal memerlukan internet.', en: 'Unchanged English-release EPUB. EPUBCheck reports one invalid alt attribute on a figure container; image alternative text remains present. Format repair is still needed. External references need internet.'},
+    kind: 'companion', format: 'EPUB', offlineAfterDownload: true,
+    evidenceFile: 'docs/interface/evidence/b80-portable-editions.json', contentLanguage: 'en',
+    bytes: 295164, sha256: 'ed1f8b3e93e56313f27f03f93d1941e39a5485af9975d26f53deef454285e0d8'
+  },
+  {
+    courseId: 'B80', id: 'B80:en-native-source',
+    href: 'https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-en/releases/download/v2026.08.31.en1/O002_B80_EN_EDITABLE_SOURCE_2026-08-31.zip',
+    labels: {id: 'Sumber Quarto bahasa Inggris — edisi 2026.08.31.en1', en: 'English Quarto source — edition 2026.08.31.en1'},
+    notes: {id: 'Memuat 14 unit sumber bahasa Inggris, kode, tes, lisensi dan petunjuk build. Tidak memuat LaTeX kumulatif; persyaratan itu belum terpenuhi. Build belum dijalankan ulang oleh integrasi ini.', en: 'Contains 14 English source units, code, tests, licences and build instructions. No cumulative LaTeX is included; that requirement remains open. This integration has not rerun the build.'},
+    kind: 'source_archive', format: 'ZIP', offlineAfterDownload: false,
+    evidenceFile: 'docs/interface/evidence/b80-portable-editions.json', contentLanguage: 'en',
+    bytes: 438288, sha256: '79005c4717b834ea8b53a292ce01eae293e46528310aff0d86d5ebf36ba2e697'
+  },
+  {
     courseId: 'C110', id: 'C110:released-pdf-mirror',
     href: 'https://github.com/KokunoYumeto/tea-time-numerical-analysis-id/releases/download/v3.0-id.2-r1/Tea-Time-Numerical-Analysis-id-ID.pdf',
     labels: {id: 'PDF edisi 3.0-id.2-r1 — 387 halaman', en: 'Edition 3.0-id.2-r1 PDF — 387 pages'},

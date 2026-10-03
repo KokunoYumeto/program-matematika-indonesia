@@ -1,6 +1,7 @@
 const assert=require('node:assert/strict'),fs=require('node:fs/promises'),path=require('node:path'),http=require('node:http'),crypto=require('node:crypto');
 const {chromium}=require(process.env.PLAYWRIGHT_MODULE_PATH||'playwright');
-const root=path.resolve(__dirname,'..'),docs=path.join(root,'docs'),out=path.join(root,'outputs/course-downloads-111390060');
+const root=path.resolve(__dirname,'..'),docs=path.join(root,'docs'),out=path.resolve(root,process.env.COURSE_DOWNLOAD_QA_DIR||'outputs/course-downloads-111390060');
+assert.ok(out.startsWith(path.join(root,'outputs')+path.sep));
 (async()=>{
   await fs.mkdir(out,{recursive:true});
   const server=http.createServer(async(req,res)=>{try{
@@ -21,6 +22,15 @@ const root=path.resolve(__dirname,'..'),docs=path.join(root,'docs'),out=path.joi
       assert.ok(await page.locator('[data-course="A00"]').evaluate(el=>el.getBoundingClientRect().top<900),'First course must be reachable in the first screen');
       assert.equal(await page.locator('details.edition-notes').getAttribute('open'),null);
       if(javaScriptEnabled){
+        await page.locator('#search').fill('B80');await page.locator('#format').selectOption('epub');
+        assert.equal(await page.locator('[data-course]:visible').count(),1);
+        const b80=page.locator('[data-course="B80"]');
+        assert.equal(await b80.locator('[data-format="epub"]').count(),1);
+        assert.ok((await b80.locator('[data-format="epub"] a').getAttribute('href')).includes('experiments-'+locale+'/releases/download/'));
+        assert.ok((await b80.locator('.edition-scope').allTextContents()).some(text=>locale==='en'?text.includes('No cumulative LaTeX'):text.includes('Tidak memuat LaTeX kumulatif')));
+        assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'B80 overflow');
+        if(width===390)await page.screenshot({path:path.join(out,locale+'-b80-390.png')});
+        await page.locator('#reset').click();
         await page.locator('#format').selectOption('pdf');assert.equal(await page.locator('[data-course]:visible').count(),locale==='en'?15:38);
         await page.locator('#search').fill('zzzz-no-course');assert.equal(await page.locator('[data-course]:visible').count(),0);assert.ok(await page.locator('#empty').isVisible());
         await page.locator('#reset').click();assert.equal(await page.locator('[data-course]:visible').count(),40);

@@ -237,6 +237,7 @@ export function learnerAccessProjection(course, locale) {
     relation_to_source: row.relationToSource ?? 'unspecified', content_language: row.contentLanguage,
     media_type: row.format ?? (row.actionId ? 'PDF' : row.kind), url: row.href,
     label: row.label, label_language: row.labelLanguage, primary: Boolean(row.primary),
+    ...(row.note ? {note: row.note} : {}),
     offline_after_download: Boolean(row.offlineAfterDownload), bytes: row.bytes ?? null, sha256: row.sha256 ?? null,
     source_body_bytes: row.sourceBodyBytes ?? null,
     source_body_sha256: row.sourceBodySha256 ?? null,

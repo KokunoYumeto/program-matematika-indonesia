@@ -53,8 +53,9 @@ export function collectDownloads(manifest){
           }
         }else resources.set(key,fact);
         if(!selections.has(fileId))selections.set(fileId,{resource_id:fileId,label:resource.label,
-          label_language:resource.label_language,authority_roles:[],access_roles:[]});
+          label_language:resource.label_language,notes:[],authority_roles:[],access_roles:[]});
         const selection=selections.get(fileId);
+        if(resource.note){assert.equal(typeof resource.note,'string');if(!selection.notes.includes(resource.note))selection.notes.push(resource.note);}
         for(const [field,value] of [['authority_roles',resource.authority_role],['access_roles',resource.access_role]]){
           assert.equal(typeof value,'string');if(!selection[field].includes(value))selection[field].push(value);
         }
@@ -118,7 +119,8 @@ export function renderDownloadPage(model,locale){
       const resource=byId.get(binding.resource_id);assert.equal(resource.content_language,locale);
       const original=binding.authority_roles.includes('upstream-authority');
       const identity=resource.sha256?`<details><summary>${t.details}</summary><p>${resource.bytes??'?'} bytes · SHA-256 <code>${resource.sha256}</code></p></details>`:`<small>${t.unverified}</small>`;
-      return `<li data-file-id="${resource.id}" data-format="${resource.format}"><a href="${esc(resource.url)}" hreflang="${locale}"><strong>${t.formats[resource.format]}</strong> · <span lang="${esc(binding.label_language)}">${esc(binding.label)}</span></a><small>${original?t.original:t.edition}</small>${identity}</li>`;
+      const notes=binding.notes.map(note=>`<small class="edition-scope">${esc(note)}</small>`).join('');
+      return `<li data-file-id="${resource.id}" data-format="${resource.format}"><a href="${esc(resource.url)}" hreflang="${locale}"><strong>${t.formats[resource.format]}</strong> · <span lang="${esc(binding.label_language)}">${esc(binding.label)}</span></a><small>${original?t.original:t.edition}</small>${notes}${identity}</li>`;
     }).join('\n');
     return `<article id="course-${course.course_id}" data-course="${course.course_id}" data-formats="${formats.join(' ')}"><h2>${course.course_id} · ${esc(row.title)}</h2>${links?`<ul>${links}</ul>`:`<p>${t.none}</p>`}<p><a href="${esc(row.course_url)}">${t.open}</a></p></article>`;
   }).join('\n');

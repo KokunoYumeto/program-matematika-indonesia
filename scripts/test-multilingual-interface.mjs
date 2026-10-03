@@ -196,14 +196,17 @@ assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin)
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {
   assert.ok(ids.includes(row.courseId) && row.id.startsWith(row.courseId+':'));
-  assert.equal(row.contentLanguage,row.courseId==='B40'?'en':'id');
+  assert.equal(row.contentLanguage,row.courseId==='B40'||row.id.startsWith('B80:en-')?'en':'id');
   assert.ok(row.labels.id && row.labels.en && row.notes.id && row.notes.en);
   assert.ok(['companion','portable_html','html_download','editable_source','source_archive'].includes(row.kind));
-  assert.ok(['HTML','HTML ZIP','TEX','PDF','ZIP'].includes(row.format));
+  assert.ok(['HTML','HTML ZIP','TEX','PDF','ZIP','EPUB'].includes(row.format));
   if(row.format==='TEX')assert.equal(row.kind,'editable_source');
   assert.equal(new URL(row.href).protocol,'https:');
   assert.ok(['zenodo.org','kokunoyumeto.github.io','github.com'].includes(new URL(row.href).hostname));
-  if(new URL(row.href).hostname==='github.com')assert.match(row.href,/^https:\/\/github\.com\/KokunoYumeto\/tea-time-numerical-analysis-id\/releases\/download\/v3\.0-id\.2-r1\//);
+  if(new URL(row.href).hostname==='github.com'){
+    if(row.courseId==='B80')assert.ok(row.href.startsWith(`https://github.com/KokunoYumeto/mathematical-computing-reproducible-experiments-${row.contentLanguage}/releases/download/${row.contentLanguage==='id'?'v2026.08.22.1':'v2026.08.31.en1'}/`));
+    else assert.match(row.href,/^https:\/\/github\.com\/KokunoYumeto\/tea-time-numerical-analysis-id\/releases\/download\/v3\.0-id\.2-r1\//);
+  }
   assert.match(row.sha256,/^[a-f0-9]{64}$/);
   assert.match(row.evidenceFile,/^docs\/interface\/evidence\/[a-z0-9-]+\.json$/);
   const proof=JSON.parse(await readFile(resolve(root,row.evidenceFile),'utf8'));
@@ -216,7 +219,17 @@ for (const row of supplementalReaders) {
     assert.equal(proof.status,'release_candidate_pending_public_readback');
     assert.equal(fact.source,'local_release_candidate');
   } else assert.ok(publicFacts.includes(fact));
-  if(row.offlineAfterDownload) {
+  if(row.format==='EPUB') {
+    assert.equal(row.offlineAfterDownload,true);assert.equal(row.kind,'companion');
+    const edition=proof.editions[row.contentLanguage];
+    assert.equal(edition.epub.document_routes_verified,14);
+    assert.equal(edition.epub.native_locations_verified,14);
+    assert.equal(edition.source_archive.exercises,75);
+    assert.equal(edition.source_archive.cumulative_latex_present,false);
+    assert.equal(edition.epub.epubcheck.status,'existing_edition_has_findings');
+    assert.equal(edition.epub.epubcheck.nError,1);
+    assert.ok(row.notes.en.includes('repair is still needed'));
+  } else if(row.offlineAfterDownload) {
     assert.equal(row.kind,'portable_html');
     assert.equal(proof.offline_dependency_replay.external_runtime_dependencies,0);
     assert.equal(proof.offline_dependency_replay.missing_local_references,0);
@@ -232,7 +245,7 @@ for (const row of supplementalReaders) {
     if(row.courseId==='B40'&&locale==='en')assert.ok(!actual[0].label.startsWith('Bahasa Indonesia'));
   }
 }
-assert.deepEqual(supplementalReaders.map(row=>row.id),['C110:released-pdf-mirror','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
+assert.deepEqual(supplementalReaders.map(row=>row.id),['B80:id-epub','B80:id-native-source','B80:en-epub','B80:en-native-source','C110:released-pdf-mirror','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
 const c110Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/c110-cumulative-source.json'),'utf8'));
 assert.equal(c110Proof.status,'published_and_anonymously_verified');
 assert.equal(c110Proof.equivalence.native_and_assembled_pdf_byte_identical,true);

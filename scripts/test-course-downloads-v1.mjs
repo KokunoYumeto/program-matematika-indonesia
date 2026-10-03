@@ -9,9 +9,15 @@ assert.equal(model.courses.length,40);assert.equal(model.new_format_exports,fals
 assert.deepEqual(model,collectDownloads(structuredClone(manifest)));
 // D10's "PDF index" is a publisher HTML page, not a directly downloadable PDF.
 assert.equal(model.counts.id.roles_by_format.pdf,38);assert.equal(model.counts.en.roles_by_format.pdf,15);
-assert.equal(model.counts.id.roles_by_format.epub,3);assert.equal(model.counts.en.roles_by_format.epub,0);
+assert.equal(model.counts.id.roles_by_format.epub,4);assert.equal(model.counts.en.roles_by_format.epub,1);
 assert.equal(model.counts.en.roles_by_format.tex,1);
 assert.equal(model.counts.id.roles_by_format.tex,1);
+const b80=model.courses.find(row=>row.course_id==='B80');
+for(const locale of ['id','en']){
+  const bindings=b80.locales[locale].downloads;
+  assert.deepEqual([...new Set(bindings.map(d=>model.resources.find(r=>r.id===d.resource_id).format))],['pdf','zip','epub']);
+  assert.ok(bindings.some(d=>d.notes.some(note=>/cumulative LaTeX|LaTeX kumulatif/.test(note))));
+}
 const c110=model.courses.find(row=>row.course_id==='C110');
 const c110id=c110.locales.id.downloads.map(d=>model.resources.find(r=>r.id===d.resource_id));
 assert.deepEqual([...new Set(c110id.map(r=>r.format))],['pdf','tex','zip']);
@@ -60,5 +66,7 @@ assert.equal(downloadFormat({url:'https://example.org/index.htm',media_type:'PDF
 assert.equal(downloadFormat({url:'https://example.org/book.pdf.zip'}),'zip');
 const polluted=structuredClone(model);polluted.courses[0].locales.en.title='<script>alert(1)</script>';
 assert.ok(renderDownloadPage(polluted,'en').includes('&lt;script&gt;alert(1)&lt;/script&gt;'));
+const notePolluted=structuredClone(model);notePolluted.courses[0].locales.en.downloads[0].notes=['<img src=x onerror=alert(1)>'];
+assert.ok(renderDownloadPage(notePolluted,'en').includes('&lt;img src=x onerror=alert(1)&gt;'));
 assert.throws(()=>renderDownloadPage(model,'xx'));
 console.log(JSON.stringify({state:'pass',courses:40,locales:2,unique_files:model.resources.length,counts:model.counts,refused,actual_formats_not_interface_language:true,duplicate_downloads_removed:true,missing_not_declared_absent:true}));
