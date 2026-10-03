@@ -1810,11 +1810,23 @@ for (const unit of c100RouteManifest.units.filter(({ kind }) => kind === 'chapte
 
 const centralNavigation = await readJson('backend/authority/central-reader-navigation-v1.json');
 assert.equal(centralNavigation.schema, 'central-reader-navigation-v1');
-assert.equal(centralNavigation.summary.course_surface_roots, 40);
-assert.equal(centralNavigation.summary.course_surface_html_documents, 126);
-assert.equal(centralNavigation.summary.navigation_overlay_documents, 1877);
-assert.equal(centralNavigation.summary.classified_html_documents, 1882);
-assert.equal(centralNavigation.summary.generic_html_documents, 16);
+// Current admitted D80/D20 ledger surfaces and the B40 reader/download pages
+// are already in the authority contract. These are document/root counts, not
+// additional curriculum roles. The independent navigation validator checks
+// every document and link, including the generic reader pages.
+assert.equal(centralNavigation.summary.course_surface_roots, 42);
+assert.equal(centralNavigation.summary.course_surface_html_documents, 130);
+assert.equal(centralNavigation.summary.navigation_overlay_documents, 1883);
+assert.equal(centralNavigation.summary.classified_html_documents, 1932);
+assert.equal(centralNavigation.summary.generic_html_documents, 62);
+assert.equal(centralNavigation.course_surfaces.length,42);
+assert.equal(centralNavigation.course_surfaces.reduce((n,r)=>n+r.documents.length,0),130);
+for(const code of ['d80','d20']) {
+  const surface=centralNavigation.course_surfaces.find(r=>r.root===`docs/backend/${code}/native-ledger`);
+  assert.equal(surface.documents.length,2);
+  assert.deepEqual(surface.documents.map(d=>d.locale).sort(),['en','id']);
+  assert.ok(surface.documents.every(d=>d.course_ids.includes(code.toUpperCase())));
+}
 for(const locale of ['id','en'])assert.ok(centralNavigation.generic_surfaces.some(row=>
   row.document===`docs/${locale}/programme/index.html` && row.navigation_required===true && row.locale===locale));
 const d60NativeSurface=centralNavigation.course_surfaces.find(r=>r.root==='docs/backend/d60/native-ledger');

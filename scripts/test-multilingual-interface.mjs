@@ -198,11 +198,12 @@ for (const row of supplementalReaders) {
   assert.ok(ids.includes(row.courseId) && row.id.startsWith(row.courseId+':'));
   assert.equal(row.contentLanguage,row.courseId==='B40'?'en':'id');
   assert.ok(row.labels.id && row.labels.en && row.notes.id && row.notes.en);
-  assert.ok(['companion','portable_html','html_download','editable_source'].includes(row.kind));
-  assert.ok(['HTML','HTML ZIP','TEX'].includes(row.format));
+  assert.ok(['companion','portable_html','html_download','editable_source','source_archive'].includes(row.kind));
+  assert.ok(['HTML','HTML ZIP','TEX','PDF','ZIP'].includes(row.format));
   if(row.format==='TEX')assert.equal(row.kind,'editable_source');
   assert.equal(new URL(row.href).protocol,'https:');
-  assert.ok(['zenodo.org','kokunoyumeto.github.io'].includes(new URL(row.href).hostname));
+  assert.ok(['zenodo.org','kokunoyumeto.github.io','github.com'].includes(new URL(row.href).hostname));
+  if(new URL(row.href).hostname==='github.com')assert.match(row.href,/^https:\/\/github\.com\/KokunoYumeto\/tea-time-numerical-analysis-id\/releases\/download\/v3\.0-id\.2-r1\//);
   assert.match(row.sha256,/^[a-f0-9]{64}$/);
   assert.match(row.evidenceFile,/^docs\/interface\/evidence\/[a-z0-9-]+\.json$/);
   const proof=JSON.parse(await readFile(resolve(root,row.evidenceFile),'utf8'));
@@ -231,7 +232,17 @@ for (const row of supplementalReaders) {
     if(row.courseId==='B40'&&locale==='en')assert.ok(!actual[0].label.startsWith('Bahasa Indonesia'));
   }
 }
-assert.deepEqual(supplementalReaders.map(row=>row.id),['B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
+assert.deepEqual(supplementalReaders.map(row=>row.id),['C110:released-pdf-mirror','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
+const c110Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/c110-cumulative-source.json'),'utf8'));
+assert.equal(c110Proof.status,'published_and_anonymously_verified');
+assert.equal(c110Proof.equivalence.native_and_assembled_pdf_byte_identical,true);
+assert.equal(c110Proof.equivalence.new_translation,false);
+for(const locale of supportedLocales){
+  const bindings=resourceBindings(interfaceCourses.find(c=>c.id==='C110'),locale);
+  assert.equal(bindings.filter(r=>r.primary).length,1);
+  assert.equal(bindings.find(r=>r.supplementalReaderId==='C110:released-source-archive').accessRole,'source-package');
+  assert.ok(bindings.filter(r=>r.supplementalReaderId).every(r=>r.contentLanguage==='id'&&!r.primary));
+}
 const b40Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/b40-original-english-reading.json'),'utf8'));
 const b40NativeBytes=await readFile(resolve(root,b40Proof.source_manifest.path));
 assert.equal(b40NativeBytes.length,b40Proof.source_manifest.bytes);
@@ -1062,7 +1073,11 @@ for (const locale of supportedLocales) for (const file of ['index.html', 'learni
     // The merged course-to-advanced routes add forty learner links and their
     // exact route table (largest hosted page is 576,269 raw bytes).
     // Preserve all route data and the 128-KiB compressed ceiling.
-    assert.ok(Buffer.byteLength(html) < 576 * 1024, 'Offline map size budget');
+    // Three C110 edition/source links and their complete bilingual descriptions
+    // raise the largest hosted map to 593,467 bytes. This raw-byte engineering
+    // budget is not a content limit: preserve all resources and the unchanged
+    // 128-KiB compressed ceiling plus exact online/offline binding equality.
+    assert.ok(Buffer.byteLength(html) < 600 * 1024, 'Offline map size budget');
     assert.ok(gzipSync(html).length < 128 * 1024, 'Compressed map size budget');
     const run = executeOffline(html, locale);
     assert.deepEqual(JSON.parse(vm.runInContext('JSON.stringify(hostedSurfaceIdentities)',run.context)),JSON.parse(JSON.stringify(hostedSurfaceIdentities)), 'Offline tuple encoding preserves every hosted identity field');

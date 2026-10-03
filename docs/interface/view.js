@@ -153,8 +153,8 @@ export function resourceBindings(course, locale) {
     add(languagePrefix + localizedValue(row.labels, locale), row.href, row.contentLanguage, row.kind, {
       supplementalReaderId: row.id, format: row.format, bytes: row.bytes, sha256: row.sha256,
       primary: false, offlineAfterDownload: row.offlineAfterDownload, note: localizedValue(row.notes, locale),
-      accessRole:row.offlineAfterDownload ? 'offline-copy' : 'companion', authorityRole:'program-edition',
-      relationToSource:row.offlineAfterDownload ? 'offline-copy-of' : 'companion-to',
+      accessRole:row.kind === 'source_archive' ? 'source-package' : row.offlineAfterDownload ? 'offline-copy' : 'companion', authorityRole:'program-edition',
+      relationToSource:row.kind === 'source_archive' ? 'supports' : row.offlineAfterDownload ? 'offline-copy-of' : 'companion-to',
     });
   }
   for (const [field, name] of [['portable_html', 'HTML'], ['epub', 'EPUB']]) {

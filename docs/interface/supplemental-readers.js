@@ -1,6 +1,33 @@
 // Additive learner links only; course-native source and backend stay canonical.
 export const supplementalReaders = [
   {
+    courseId: 'C110', id: 'C110:released-pdf-mirror',
+    href: 'https://github.com/KokunoYumeto/tea-time-numerical-analysis-id/releases/download/v3.0-id.2-r1/Tea-Time-Numerical-Analysis-id-ID.pdf',
+    labels: {id: 'PDF edisi 3.0-id.2-r1 — 387 halaman', en: 'Edition 3.0-id.2-r1 PDF — 387 pages'},
+    notes: {id: 'Salinan PDF rilis yang sama; sumber kumulatif menghasilkan kembali berkas ini byte-identik.', en: 'The same released Indonesian PDF; the cumulative source reproduces this file byte-for-byte.'},
+    kind: 'companion', format: 'PDF', offlineAfterDownload: false,
+    evidenceFile: 'docs/interface/evidence/c110-cumulative-source.json', contentLanguage: 'id',
+    bytes: 8202487, sha256: 'd573b7233d0baa07381e2052a749757885db3a31fbfe695c5a4851ea42d91b6d'
+  },
+  {
+    courseId: 'C110', id: 'C110:cumulative-tex',
+    href: 'https://github.com/KokunoYumeto/tea-time-numerical-analysis-id/releases/download/v3.0-id.2-r1/TeaTimeNumericalAnalysis-id-ID.tex',
+    labels: {id: 'LaTeX kumulatif lengkap — edisi 3.0-id.2-r1', en: 'Complete cumulative LaTeX — edition 3.0-id.2-r1'},
+    notes: {id: 'Teks lengkap, termasuk latihan, solusi dan jawaban. Gunakan gambar, bibliografi dan gaya dalam ZIP sumber edisi yang sama.', en: 'Complete Indonesian text, including exercises, solutions and answers. Use the figures, bibliography and styles from the same edition’s source ZIP.'},
+    kind: 'editable_source', format: 'TEX', offlineAfterDownload: false,
+    evidenceFile: 'docs/interface/evidence/c110-cumulative-source.json', contentLanguage: 'id',
+    bytes: 1271002, sha256: '45261d1ac680ded22b099f4925b7db5d7d7c8aed66c12045511d612c6fc5774e'
+  },
+  {
+    courseId: 'C110', id: 'C110:released-source-archive',
+    href: 'https://github.com/KokunoYumeto/tea-time-numerical-analysis-id/releases/download/v3.0-id.2-r1/Tea-Time-Numerical-Analysis-id-ID-v3.0-id.2-r1-source-backend.zip',
+    labels: {id: 'ZIP sumber lengkap dan backend — edisi 3.0-id.2-r1', en: 'Complete source and backend ZIP — edition 3.0-id.2-r1'},
+    notes: {id: '895 berkas rilis asli; sumber, gambar, bibliografi, gaya, backend, lisensi dan petunjuk build. Bukan EPUB atau paket pembaca HTML.', en: '895 original release files: source, figures, bibliography, styles, backend, licences and build instructions. Not an EPUB or HTML reader bundle.'},
+    kind: 'source_archive', format: 'ZIP', offlineAfterDownload: false,
+    evidenceFile: 'docs/interface/evidence/c110-cumulative-source.json', contentLanguage: 'id',
+    bytes: 33244105, sha256: '0eebe482eec535942524d4e5cb1fb164b9ac7de07f2eb9421e0d7bf29fa7ee4c'
+  },
+  {
     courseId: 'B40', id: 'B40:original-en-partial-tex',
     href: 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/sources/00-linear-algebra-cumulative.tex',
     labels: {id: 'Sumber LaTeX kumulatif — 34 bagian bahasa Inggris', en: 'Cumulative editable LaTeX — 34 English sections'},
