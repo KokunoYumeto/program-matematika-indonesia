@@ -7,6 +7,7 @@ import {validateD80PrerequisiteRoute,renderD80PrerequisiteRoute} from './d80-pre
 import {validateB40PrerequisiteRoute,renderB40PrerequisiteRoute,currentRequirementDisposition,renderCurrentRequirements} from './b40-prerequisite-route-v1.mjs';
 import {validateHermitianRoute,renderHermitianRoute} from './finite-hermitian-route-v1.mjs';
 import {loadPortableCourseRoutes,renderPortableCourseRoute} from './portable-course-routes-v1.mjs';
+import {loadHumanAnalysisRoutes,renderHumanAnalysisRoutes} from './human-analysis-routes-v1.mjs';
 
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'..');
 const out=resolve(root,'backend/cross-programme-v1');
@@ -254,10 +255,20 @@ for(const resource of additions.resources){
   });
 }
 const portableRoutes=await loadPortableCourseRoutes(root,new Set(advancedCourses.map(c=>c.id)));
+const humanAnalysis=await loadHumanAnalysisRoutes(root,new Set(coreCourses.map(c=>c.id)));
+bridge.human_analysis_readings=humanAnalysis;
+for(const course of coreCourses)course.current_human_reading_resources=humanAnalysis.routes.filter(r=>r.course_ids.includes(course.id));
 bridge.portable_edition_catalogue=portableRoutes.catalogue;
 for(const course of advancedCourses)course.portable_editions=portableRoutes.editions.filter(r=>r.course_id===course.id);
 function currentHtml(locale){
   let body=html(locale);
+  for(const course of coreCourses){
+    const panel=renderHumanAnalysisRoutes(humanAnalysis,course.id,locale);
+    if(!panel)continue;
+    const anchor='<section id="core-'+course.id+'"><h3>'+esc(course.title[locale])+'</h3>';
+    assert.equal(body.split(anchor).length,2);
+    body=body.replace(anchor,anchor+panel);
+  }
   const update=locale==='en'
     ?'Advanced catalogue update: OpenAI Codex — GPT-6 Astra, Ultra effort. This snapshot includes 72 public courses and 1,061 lessons; course routes are not proof certification. Local foundation drafts remain separate.'
     :'Pembaruan katalog lanjutan: OpenAI Codex — GPT-6 Astra, tingkat upaya Ultra. Snapshot ini mencakup 72 mata kuliah publik dan 1.061 pelajaran; jalur mata kuliah bukan pengesahan pembuktian. Draf fondasi lokal tetap dicatat terpisah.';
@@ -296,6 +307,12 @@ function currentHtml(locale){
   return body;
 }
 const outputs=[['backend/cross-programme-v1/bridge.json',serialize(bridge)],['docs/data/cross-programme-v1/bridge.json',serialize(bridge)],['docs/interface/cross-programme-routes.js',Buffer.from(moduleText)],...['en','id'].map(l=>['docs/'+l+'/programme/index.html',Buffer.from(currentHtml(l))])];
+// Rebuild only these two programme bodies; retain the already-verified return
+// navigation without running a workspace-wide surface transformation.
+const overlayPath='backend/authority/central-course-surface-navigation-overlay-v1.json';
+const overlayBefore=await readFile(resolve(root,overlayPath));
+const overlayForWrite=json(overlayBefore);
+let overlayChanged=false;
 for(const [path,b] of outputs){
   const full=resolve(root,path);
   if(args.has('--check')){
@@ -312,10 +329,34 @@ for(const [path,b] of outputs){
     body=body.replace(/(?:\n[ \t]*)?<nav\b(?=[^>]*data-central-surface-navigation="v1")(?=[^>]*data-placement="top")[^>]*>[\s\S]*?<\/nav>/i,'');
     body=body.replace(/<nav\b(?=[^>]*data-central-surface-navigation="v1")(?=[^>]*data-placement="bottom")[^>]*>[\s\S]*?<\/nav>(?:\n[ \t]*)?/i,'');
     assert.deepEqual(Buffer.from(body),b,'Hosted navigation must reverse to exact source: '+path);
-  }else{await mkdir(dirname(full),{recursive:true});await writeFile(full,b);}
+  }else{
+    let writeBytes=b;
+    if(['docs/en/programme/index.html','docs/id/programme/index.html'].includes(path)){
+      const record=overlayForWrite.files.find(r=>r.document===path);
+      const current=await readFile(full),text=current.toString('utf8');
+      if(record){
+        assert.deepEqual(record.hosted_surface,fact(path,current),'Concurrent programme edit: do not overwrite');
+        const top=/<nav\b(?=[^>]*data-central-surface-navigation="v1")(?=[^>]*data-placement="top")[^>]*>[\s\S]*?<\/nav>/i;
+        const bottom=/<nav\b(?=[^>]*data-central-surface-navigation="v1")(?=[^>]*data-placement="bottom")[^>]*>[\s\S]*?<\/nav>/i;
+        assert.equal((text.match(/data-central-surface-navigation="v1"/g)||[]).length,2);
+        const head=text.match(top)?.[0],tail=text.match(bottom)?.[0];assert.ok(head&&tail);
+        const priorBody=text.replace(/(?:\n[ \t]*)?<nav\b(?=[^>]*data-central-surface-navigation="v1")(?=[^>]*data-placement="top")[^>]*>[\s\S]*?<\/nav>/i,'').replace(/<nav\b(?=[^>]*data-central-surface-navigation="v1")(?=[^>]*data-placement="bottom")[^>]*>[\s\S]*?<\/nav>(?:\n[ \t]*)?/i,'');
+        assert.deepEqual(record.source_body,fact(path,Buffer.from(priorBody)),'Existing overlay must reverse exactly');
+        writeBytes=Buffer.from(b.toString('utf8').replace(/<body\b[^>]*>/i,m=>m+'\n'+head).replace('</body>',tail+'\n</body>'));
+        record.source_body=fact(path,b);record.hosted_surface=fact(path,writeBytes);
+        overlayChanged=true;
+      }
+    }
+    await mkdir(dirname(full),{recursive:true});await writeFile(full,writeBytes);
+  }
+}
+if(overlayChanged){
+  assert.equal(hash(await readFile(resolve(root,overlayPath))),hash(overlayBefore),'Concurrent overlay receipt edit');
+  await writeFile(resolve(root,overlayPath),serialize(overlayForWrite));
 }
 const receipt={schema:'cross-programme-build/1',state:'local_reading_routes_integrated_proof_correspondence_unfinished',counts:bridge.counts,inputs:manifest.inputs,current_navigation_additions:fact(additionsPath,additionsBytes),source_bound_lesson_route:fact(lessonRoutePath,lessonRouteBytes),outputs:outputs.map(([p,b])=>fact(p,b)),no_native_owner_mutation:true,no_phone_mutation:true,no_mathematical_certification:true,public_deployment:false,script:fact('scripts/build-cross-programme-integration-v1.mjs',await readFile(fileURLToPath(import.meta.url)))};
 receipt.source_bound_lesson_routes=[fact(lessonRoutePath,lessonRouteBytes),fact(b40RoutePath,b40RouteBytes),fact(hermitianPath,hermitianBytes)];
 receipt.portable_course_routes={catalogue:portableRoutes.catalogue,editions:portableRoutes.editions.map(r=>r.edition),script:fact('scripts/portable-course-routes-v1.mjs',await readFile(resolve(root,'scripts/portable-course-routes-v1.mjs')))};
+receipt.human_analysis_routes={...humanAnalysis.evidence,routes:humanAnalysis.routes.length,course_placements:humanAnalysis.routes.reduce((n,r)=>n+r.course_ids.length,0),script:fact('scripts/human-analysis-routes-v1.mjs',await readFile(resolve(root,'scripts/human-analysis-routes-v1.mjs')))};
 if(!args.has('--check'))await writeFile(resolve(out,'BUILD_RECEIPT.json'),serialize(receipt));
 console.log(JSON.stringify({state:args.has('--check')?'byte_replay_pass':receipt.state,counts:bridge.counts,outputs:receipt.outputs}));

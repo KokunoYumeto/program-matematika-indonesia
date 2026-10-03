@@ -29,6 +29,21 @@ try{
     const overflow=await page.evaluate(()=>({inner:innerWidth,document:document.documentElement.scrollWidth}));assert.ok(overflow.document<=overflow.inner+1,'Horizontal overflow '+locale+' '+width);
     const proofNotice=await page.locator('.notice').innerText();assert.ok(proofNotice.length>100);
     if(current){
+      const human=page.locator('aside[data-human-analysis]');
+      assert.equal(await human.count(),5);
+      assert.equal(await human.locator('a[data-human-analysis-route][hreflang="en"]').count(),10);
+      const analysis=page.locator('#core-C10 aside[data-human-analysis="C10"]');
+      assert.equal(await analysis.locator('[data-human-analysis-route]').count(),4);
+      assert.ok((await analysis.innerText()).includes(locale==='en'?'These readings are in English.':'Bacaan berbahasa Inggris'));
+      assert.ok((await analysis.innerText()).includes('Jiří Lebl'));
+      assert.ok((await analysis.innerText()).includes('CC-BY-SA-4.0'));
+      if(width===390){
+        await analysis.scrollIntoViewIfNeeded();
+        const path=captureDir+'/'+locale+'-390-human-analysis.png';
+        const bytes=await page.screenshot({path:resolve(dir,path),fullPage:false});
+        captures.push({path,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});
+      }
+      checks.push({locale,width,human_analysis_panels:5,english_reading_links:10,localized_labels:true});
       for(const courseId of ['derived-categories-and-sheaf-operations','harmonic-analysis-on-locally-compact-groups']){
         const section=page.locator('aside[data-portable-course="'+courseId+'"]');
         assert.equal(await section.count(),1);
