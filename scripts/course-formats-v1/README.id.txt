@@ -35,6 +35,8 @@ jumlah pelajaran/bacaan bersama dan catatan ZIP, lalu menerapkan pemeriksaan
 PDF/EPUB/sumber yang sama. Berkas asli tidak diubah atau diberi label ulang;
 izin penerbitan tidak disimpulkan. Tautan mata kuliah dan program daring
 bersifat opsional, bukan dependensi luring.
+Kategori pelajaran, bacaan bersama, bab prasyarat dan suplemen asli dihitung
+serta ditampilkan terpisah; kategori itu tidak berarti seluruh mata kuliah lengkap.
 
 Tanpa --reader dan --report, perintah hanya memeriksa tanpa menulis. Tujuan
 keluaran baru belum boleh ada. Direktori bacaan harus terpisah dari direktori

@@ -301,8 +301,9 @@ const receipt = {
       'scripts/course-formats-v1/check_reader.mjs', 'scripts/course-formats-v1/README.txt',
       'scripts/course-formats-v1/README.id.txt', 'docs/downloads/course-format-tools-v1.zip',
       'scripts/integrate-public-course-formats-v1.py',
+      'scripts/refresh-public-course-source-v1.py', 'scripts/seal-public-course-refresh-v1.py',
       'docs/interface/public-course-format-editions.json',
-      'docs/editions/derived-categories-of-sheaves/EDITION.json'].map(async path => {
+      ...JSON.parse(await readFile(resolve(interfaceRoot, 'docs/interface/public-course-format-editions.json'), 'utf8')).editions.map(row => row.edition.path)].map(async path => {
         const bytes = await readFile(resolve(interfaceRoot, path));
         return {path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')};
       })),

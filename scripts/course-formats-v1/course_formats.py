@@ -285,6 +285,18 @@ def pdf_evidence(pdf_path, routes, native_locations=None):
             'visual_inspection_performed': False}
 
 
+COVERAGE_KINDS = {'main_lessons': 'lesson', 'common_readings': 'common reading',
+                  'bundled_prerequisite_chapters': 'prerequisite', 'supplementary_proofs': 'supplement'}
+
+
+def coverage_role_counts(coverage):
+    require('main_lessons' in coverage, 'Main-lesson count is missing')
+    counts = {kind: coverage.get(key, 0) for key, kind in COVERAGE_KINDS.items()}
+    require(all(type(value) is int and value >= 0 for value in counts.values()),
+            'Invalid reading-unit category count')
+    return counts
+
+
 def handoff_contract(root, handoff):
     """Adapt a public-source packet explicitly, without rewriting its witnesses.
 
@@ -324,7 +336,7 @@ def handoff_contract(root, handoff):
     require(source_zip is not None and package['zip']['sha256'] == source_zip['sha256']
             and package['zip']['bytes'] == source_zip['bytes'], 'Package witness describes different ZIP')
     coverage = handoff['coverage']
-    require(coverage['main_lessons'] + coverage['common_readings'] == receipt['source_lessons'],
+    require(sum(coverage_role_counts(coverage).values()) == receipt['source_lessons'],
             'Public reading-unit count differs')
     require(coverage['formula_regions'] == receipt['math_regions'], 'Public formula count differs')
     require(coverage['pdf_pages'] == receipt['pdf_pages'], 'Public PDF count differs')
@@ -356,10 +368,11 @@ def validate(root):
     if handoff['schema'] == 'programme-current-public-course-format-handoff/1':
         require(manifest['public_source'] == handoff['source'], 'Manifest public source differs')
         require(len(units) == receipt['source_lessons'], 'Manifest reading-unit count differs')
-        require(sum(u.get('selection_kind', 'lesson') == 'lesson' for u in units) == handoff['coverage']['main_lessons'],
-                'Manifest main-lesson count differs')
-        require(sum(u.get('selection_kind') == 'common reading' for u in units) == handoff['coverage']['common_readings'],
-                'Manifest common-reading count differs')
+        counts = coverage_role_counts(handoff['coverage'])
+        require(all(u.get('selection_kind', 'lesson') in counts for u in units), 'Unknown reading-unit category')
+        for kind, count in counts.items():
+            require(sum(u.get('selection_kind', 'lesson') == kind for u in units) == count,
+                    'Manifest reading-unit category count differs: ' + kind)
     formats = handoff['files_in_public_order']
     require(formats == receipt['files_in_public_order'], 'Format bindings differ')
     if locators['schema'] == 'native-course-format-entry-locators/1':
@@ -445,6 +458,7 @@ def validate(root):
               'source_status_unchanged': manifest['status'], 'selected_documents': len(units),
               'lessons': sum(u.get('selection_kind', 'lesson') == 'lesson' for u in units),
               'common_readings': sum(u.get('selection_kind') == 'common reading' for u in units),
+              'prerequisite_chapters': sum(u.get('selection_kind') == 'prerequisite' for u in units),
               'editorial_supplements': sum(u.get('selection_kind') == 'supplement' for u in units),
               'entry_routes': routes,
               'native_locations': [{key: row[key] for key in
@@ -483,6 +497,7 @@ COPY = {
         'size': 'bytes', 'copy': 'Copied unchanged', 'content': 'Course content', 'supplement': 'Editorial supplement',
         'locations': 'Named locations in this document', 'exact': 'Open exact PDF location',
         'common': 'Common reading',
+        'prerequisite': 'Prerequisite chapter',
         'online': 'Original online course', 'programme': 'Return to the programme (English)',
     },
     'id': {
@@ -501,6 +516,7 @@ COPY = {
         'size': 'bita', 'copy': 'Disalin tanpa perubahan', 'content': 'Isi mata kuliah', 'supplement': 'Suplemen editorial',
         'locations': 'Lokasi berlabel dalam dokumen ini', 'exact': 'Buka lokasi PDF yang tepat',
         'common': 'Bacaan bersama',
+        'prerequisite': 'Bab prasyarat',
         'online': 'Mata kuliah daring asli', 'programme': 'Kembali ke program (bahasa Inggris)',
     },
 }
@@ -532,6 +548,7 @@ def reader_html(report, manifest, routes, locale):
                       f'<span lang="{esc(content_language)}">{esc(r["title"])}</span></strong><br>'
                       + (f'<em>{esc(c["supplement"])}</em><br>' if r.get('selection_kind') == 'supplement' else '') +
                       (f'<em>{esc(c["common"])}</em><br>' if r.get('selection_kind') == 'common reading' else '') +
+                      (f'<em>{esc(c["prerequisite"])}</em><br>' if r.get('selection_kind') == 'prerequisite' else '') +
                       f'<a href="{file_link(files[0])}#page={r["pdf"]["page"]}">{esc(c["page"])} {r["pdf"]["page"]}</a>'
                       f' · EPUB: <code>{esc(r["epub"]["member"])}#{esc(r["epub"]["fragment"])}</code>{native_links(r["lesson_id"])}</li>' for r in routes)
     hashes = ''.join(f'<li><a href="{file_link(f)}" download>{esc(Path(f["path"]).name)}</a><br>'

@@ -6,9 +6,11 @@ const base=new URL('../',import.meta.url);
 const input=await readFile(new URL('docs/interface/learner-access-manifest.json',base));
 const manifest=JSON.parse(input),model=collectDownloads(manifest);
 assert.equal(model.courses.length,40);assert.equal(model.new_format_exports,false);
-assert.equal(model.public_editions.length,1);
+assert.equal(model.public_editions.length,2);
 assert.equal(model.public_editions[0].course_id,'derived-categories-and-sheaf-operations');
 assert.equal(model.public_editions[0].content_language,'en');
+assert.equal(model.public_editions[1].course_id,'harmonic-analysis-on-locally-compact-groups');
+assert.equal(model.public_editions[1].content_language,'en');
 assert.deepEqual(model,collectDownloads(structuredClone(manifest)));
 // D10's "PDF index" is a publisher HTML page, not a directly downloadable PDF.
 assert.equal(model.counts.id.roles_by_format.pdf,38);assert.equal(model.counts.en.roles_by_format.pdf,15);
@@ -50,6 +52,8 @@ for(const locale of ['id','en']){
   assert.match(page,/GPT-6 Astra/);
   assert.match(page,new RegExp('editions/derived-categories-of-sheaves/index.'+locale+'.html'));
   assert.match(page,/data-public-edition="derived-categories-and-sheaf-operations"/);
+  assert.match(page,/data-public-edition="harmonic-analysis-on-locally-compact-groups"/);
+  assert.match(page,new RegExp('editions/haar-measure-and-quotient-integration/index.'+locale+'.html'));
   assert.match(page,new RegExp(`<html lang="${locale}">`));
   assert.doesNotMatch(page,/C:\\Users|Authorization:|access_token/i);
 }

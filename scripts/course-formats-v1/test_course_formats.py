@@ -16,6 +16,15 @@ import course_formats as f
 
 
 class SafetyTests(unittest.TestCase):
+    def test_reading_unit_categories_remain_distinct(self):
+        self.assertEqual(f.coverage_role_counts({'main_lessons':4,'bundled_prerequisite_chapters':7,'supplementary_proofs':1}),
+                         {'lesson':4,'common reading':0,'prerequisite':7,'supplement':1})
+        for value in [-1, True, '7', 1.5]:
+            with self.assertRaises(f.InvalidPackage):
+                f.coverage_role_counts({'main_lessons':4,'bundled_prerequisite_chapters':value})
+        with self.assertRaises(f.InvalidPackage):
+            f.coverage_role_counts({'common_readings':1})
+
     def test_canonical_paths(self):
         for value in ['output/book.tex', 'native/lesson-01.md', 'sumber/latihan α.tex']:
             self.assertEqual(f.safe_name(value), value)
@@ -185,6 +194,14 @@ class ReaderTests(unittest.TestCase):
             for destination in [root, root / 'output', root.parent]:
                 with self.assertRaises(f.InvalidPackage):
                     f.assemble(root, destination, report, manifest, routes)
+
+    def test_prerequisite_and_supplement_labels(self):
+        for locale in ('en', 'id'):
+            report, manifest, routes = self.fixture()
+            for kind, key in [('prerequisite','prerequisite'),('supplement','supplement'),('common reading','common')]:
+                routes[0]['selection_kind'] = kind
+                tree = html.fromstring(f.reader_html(report, manifest, routes, locale))
+                self.assertEqual(tree.xpath('//main/ol/li/em/text()'), [f.COPY[locale][key]])
 
 
 class ActualIntakeTests(unittest.TestCase):

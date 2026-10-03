@@ -59,6 +59,8 @@ def main():
                'source_mathematics_changed': False, 'new_translation': False,
                'documents': len(routes), 'lessons': report['lessons'],
                'common_readings': report['common_readings'], 'pdf_pages': report['pdf']['pages'],
+               'prerequisite_chapters': report['prerequisite_chapters'],
+               'editorial_supplements': report['editorial_supplements'],
                'native_locations': len(report['native_locations']), 'pdf_tagged': report['pdf']['tagged'],
                'files': [{**row, 'path': 'files/' + Path(row['path']).name} for row in report['files']],
                'online_navigation': report['online_navigation'],

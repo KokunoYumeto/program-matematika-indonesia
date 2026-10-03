@@ -27,6 +27,14 @@ assert.ok(out.startsWith(path.join(root,'outputs')+path.sep));
       assert.equal(await page.locator('main > ol > li').count(),11);
       assert.equal(await page.locator('.downloads a').count(),4);
       await page.goto(origin+'/'+locale+'/downloads/');
+      await page.locator('#advanced-portable-editions summary').click();
+      await page.locator('[data-public-edition="harmonic-analysis-on-locally-compact-groups"]').click();
+      assert.equal(await page.locator('html').getAttribute('lang'),locale);
+      assert.equal(await page.locator('main > ol > li').count(),12);
+      assert.equal(await page.locator('.downloads a').count(),4);
+      assert.equal(await page.locator('main > ol > li > em').count(),8);
+      assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Haar overflow');
+      await page.goto(origin+'/'+locale+'/downloads/');
       if(javaScriptEnabled){
         await page.locator('#search').fill('B80');await page.locator('#format').selectOption('epub');
         assert.equal(await page.locator('[data-course]:visible').count(),1);

@@ -31,6 +31,8 @@ source identity, lesson/common-reading counts and source-package witness,
 then applies the same PDF/EPUB/source checks. It does not rewrite or relabel
 the native handoff and does not infer publication authority. Original online
 course and programme links are optional online navigation, not offline assets.
+Native lesson, common-reading, prerequisite-chapter and supplement categories
+are counted and displayed separately; they never imply complete course coverage.
 
 Without --reader and --report the command validates without writing. New output
 paths must not exist. The reader output must be separate from the producer
