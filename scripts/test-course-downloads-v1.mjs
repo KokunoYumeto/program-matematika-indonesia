@@ -10,12 +10,13 @@ assert.deepEqual(model,collectDownloads(structuredClone(manifest)));
 // D10's "PDF index" is a publisher HTML page, not a directly downloadable PDF.
 assert.equal(model.counts.id.roles_by_format.pdf,38);assert.equal(model.counts.en.roles_by_format.pdf,15);
 assert.equal(model.counts.id.roles_by_format.epub,4);assert.equal(model.counts.en.roles_by_format.epub,1);
-assert.equal(model.counts.en.roles_by_format.tex,1);
-assert.equal(model.counts.id.roles_by_format.tex,1);
+assert.equal(model.counts.en.roles_by_format.tex,2);
+assert.equal(model.counts.id.roles_by_format.tex,2);
 const b80=model.courses.find(row=>row.course_id==='B80');
 for(const locale of ['id','en']){
   const bindings=b80.locales[locale].downloads;
-  assert.deepEqual([...new Set(bindings.map(d=>model.resources.find(r=>r.id===d.resource_id).format))],['pdf','zip','epub']);
+  assert.deepEqual([...new Set(bindings.map(d=>model.resources.find(r=>r.id===d.resource_id).format))],['pdf','tex','zip','epub']);
+  for(const extension of ['pdf','tex','zip','epub'])assert.ok(bindings.some(d=>{const r=model.resources.find(r=>r.id===d.resource_id);return r.format===extension&&/\/(00|01|02|03)-b80-/.test(r.url);}), 'Missing paired B80 format '+extension);
   assert.ok(bindings.some(d=>d.notes.some(note=>/cumulative LaTeX|LaTeX kumulatif/.test(note))));
 }
 const c110=model.courses.find(row=>row.course_id==='C110');

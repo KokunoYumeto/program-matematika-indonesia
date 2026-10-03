@@ -219,7 +219,19 @@ for (const row of supplementalReaders) {
     assert.equal(proof.status,'release_candidate_pending_public_readback');
     assert.equal(fact.source,'local_release_candidate');
   } else assert.ok(publicFacts.includes(fact));
-  if(row.format==='EPUB') {
+  if(row.id.includes('-format-')) {
+    assert.equal(proof.status,'published_and_anonymously_verified');
+    const edition=proof.editions[row.contentLanguage];
+    assert.equal(edition.pdf_and_epub_replay,'byte_identical');
+    assert.ok(Object.values(edition.semantic_roundtrip).every(Boolean));
+    assert.equal(edition.epubcheck.errors,0);assert.equal(edition.epubcheck.warnings,0);
+    if(row.id.endsWith('-record')) {
+      assert.equal(row.href,edition.preservation.url);
+      assert.equal(edition.preservation.all_files_anonymously_hash_verified,true);
+      assert.equal(edition.preservation.original_records_unchanged,true);
+    } else assert.ok(edition.files_in_reading_order.some(f=>f.sha256===row.sha256&&f.bytes===row.bytes));
+    assert.ok(row.notes.en.includes('one matching set'));
+  } else if(row.format==='EPUB') {
     assert.equal(row.offlineAfterDownload,true);assert.equal(row.kind,'companion');
     const edition=proof.editions[row.contentLanguage];
     assert.equal(edition.epub.document_routes_verified,14);
@@ -228,7 +240,7 @@ for (const row of supplementalReaders) {
     assert.equal(edition.source_archive.cumulative_latex_present,false);
     assert.equal(edition.epub.epubcheck.status,'existing_edition_has_findings');
     assert.equal(edition.epub.epubcheck.nError,1);
-    assert.ok(row.notes.en.includes('repair is still needed'));
+    assert.ok(row.notes.en.includes('historical file is retained'));
   } else if(row.offlineAfterDownload) {
     assert.equal(row.kind,'portable_html');
     assert.equal(proof.offline_dependency_replay.external_runtime_dependencies,0);
@@ -245,7 +257,7 @@ for (const row of supplementalReaders) {
     if(row.courseId==='B40'&&locale==='en')assert.ok(!actual[0].label.startsWith('Bahasa Indonesia'));
   }
 }
-assert.deepEqual(supplementalReaders.map(row=>row.id),['B80:id-epub','B80:id-native-source','B80:en-epub','B80:en-native-source','C110:released-pdf-mirror','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
+assert.deepEqual(supplementalReaders.map(row=>row.id),[...['id','en'].flatMap(lang=>['pdf','tex','source','epub','record'].map(format=>'B80:'+lang+'-format-'+format)),'B80:id-epub','B80:id-native-source','B80:en-epub','B80:en-native-source','C110:released-pdf-mirror','C110:cumulative-tex','C110:released-source-archive','B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
 const c110Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/c110-cumulative-source.json'),'utf8'));
 assert.equal(c110Proof.status,'published_and_anonymously_verified');
 assert.equal(c110Proof.equivalence.native_and_assembled_pdf_byte_identical,true);

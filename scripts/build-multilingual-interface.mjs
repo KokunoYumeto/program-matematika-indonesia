@@ -145,6 +145,11 @@ const localeSource = await read('docs/interface/locales.js');
 const localeHeader = localeSource.match(/^(?:\/\/[^\n]*\n){3}/)?.[0] || '';
 if (!localeHeader.startsWith('// Presentation and resource bindings only.')) throw new Error('Locale header changed; inspect before compacting');
 const localeRuntime = localeSource.slice(localeHeader.length);
+// Preserve every supplemental binding while avoiding source indentation in offline copies.
+const supplementalNotes = [...new Set(supplementalReaders.map(row => JSON.stringify(row.notes)))].map(row => JSON.parse(row));
+const supplementalTuples = supplementalReaders.map(row => ({...row, notes:supplementalNotes.findIndex(notes => JSON.stringify(notes)===JSON.stringify(row.notes))}));
+const supplementalRuntime = 'const supplementalNotes = ' + JSON.stringify(supplementalNotes) + ';\nconst supplementalReaders = '
+  + JSON.stringify(supplementalTuples) + '.map(row=>({...row,notes:supplementalNotes[row.notes]}));';
 const sources = [
   // Carry the effective catalog once in the offline payload; native inputs are
   // still hash-bound below. No course source or backend is changed.
@@ -152,7 +157,7 @@ const sources = [
   await read('docs/learner-delivery.js'), await read('docs/learner-tools.js'),
   await read('docs/interface/central-hosted-readers.js'),
   await read('docs/interface/cross-programme-routes.js'),
-  await read('docs/learner-state.js'), localeRuntime, await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, await read('docs/interface/supplemental-readers.js'), await read('docs/interface/original-sources.js'), hostedIdentityRuntime, await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
+  await read('docs/learner-state.js'), localeRuntime, await read('docs/interface/reader-actions.js'), await read('docs/interface/final-editions.js'), capabilityRuntime, supplementalRuntime, await read('docs/interface/original-sources.js'), hostedIdentityRuntime, await read(centralGatewayModulePath), await read('docs/interface/view.js'), await read('docs/interface/app.js'),
 ];
 const inlineScript = sources.map((code) => stripExports(stripImports(code))).join('\n').replace(/<\/script/gi, '<\\/script');
 if (/^\s*(import|export)\s/m.test(inlineScript)) throw new Error('Unresolved module dependency in offline map');
