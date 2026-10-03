@@ -185,7 +185,7 @@ def main():
                              'id': 'Integrasi edisi dan pemeriksaan: OpenAI Codex - GPT-6 Astra, upaya Ultra. Atribusi dan lisensi edisi asli tidak diubah.'},
               'verifier': {'path': 'scripts/verify-b80-portable-editions-v1.py', **identity(Path(__file__).read_bytes())}}
     args.report.parent.mkdir(parents=True, exist_ok=True)
-    args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    args.report.write_text(json.dumps(report, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
     print(json.dumps({'state': 'pass', 'public_files': len(facts), 'bytes': sum(row['bytes'] for row in facts),
                       'editions': {lang: {'units': len(row['routes']), 'pages': row['pdf']['pages'],
                                            'epub': row['epub'], 'source': row['source_archive']}
