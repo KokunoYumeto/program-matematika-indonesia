@@ -41,6 +41,7 @@ if (!openCoursesHub || openCoursesHub.public_url !== 'https://kokunoyumeto.githu
 // A separate English site: the link names its content language for every interface locale.
 const openCoursesLink = locale => '<a data-open-courses-link="v1" href="' + openCoursesHub.public_url + '" hreflang="en">' + escapeMarkup(openCoursesHub.labels[locale]) + '</a>';
 const downloadsLink = locale => '<a data-course-downloads="v1" href="' + siteOrigin + localeMetadata[locale].routeSegment + '/downloads/">' + (locale === 'id' ? 'Unduhan buku' : 'Book downloads') + '</a>';
+const sourceEvidenceLink = locale => ['en', 'id'].includes(locale) ? '<a data-source-evidence="v1" href="' + siteOrigin + localeMetadata[locale].routeSegment + '/source-evidence.html">' + (locale === 'id' ? 'Sumber dan hasil' : 'Sources and results') + '</a>' : '';
 // Additive starter, not a fully translated forty-course interface locale.
 const chineseStarterLink = '<a data-chinese-starter="v1" href="' + siteOrigin + 'zh/" lang="zh-Hans-CN" hreflang="zh-Hans-CN">中文（起步版）</a>';
 if (centralNavigationContract.schema !== 'central-reader-navigation-v1' || centralNavigationOverlay.schema !== 'central-course-surface-navigation-overlay-v1' || centralNavigationOverlay.status !== 'pass') {
@@ -189,7 +190,7 @@ function renderDocument(locale, offline, paired = false) {
     + (offline ? '<style>\n' + css + '\n</style>' : '<link rel="stylesheet" href="../interface/styles.css?v=' + cssRevision + '">')
     + '\n</head>\n<body>\n<a class="skip-link" href="#katalog">' + t.skip + '</a>'
     + '<header class="site-header"><div class="header-inner"><a class="brand" href="#top">' + esc(t.shortTitle) + '</a>'
-    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + downloadsLink(locale) + libraryLink(locale) + openCoursesLink(locale) + '</nav>'
+    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + downloadsLink(locale) + sourceEvidenceLink(locale) + libraryLink(locale) + openCoursesLink(locale) + '</nav>'
     + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + chineseStarterLink + '</nav></div></header>'
     + '<main id="top"><section class="intro"><h1>' + esc(t.title) + '</h1><p>' + esc(t.description) + '</p></section>'
     + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://doi.org/10.5281/zenodo.22059707">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
@@ -269,6 +270,8 @@ await writeFile(resolve(interfaceRoot, 'docs/interface/learner-access-manifest.j
 const {buildDownloads} = await import('./build-course-downloads-v1.mjs');
 const downloadBuild = await buildDownloads();
 outputFiles.push(...downloadBuild.outputs);
+const {explorerOutputs} = await import('./build-source-evidence-explorer.mjs');
+outputFiles.push(...explorerOutputs);
 outputFiles.push({path:'docs/interface/learner-access-manifest.json', bytes:learnerAccessManifestBytes.length, sha256:createHash('sha256').update(learnerAccessManifestBytes).digest('hex')});
 const receipt = {
   schema: 'multilingual-interface-build/v1', locales: supportedLocales, canonicalCourseCount: interfaceCourses.length,
@@ -278,6 +281,14 @@ const receipt = {
     return { path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex') };
   })),
   outputs: outputFiles,
+  sourceEvidenceConsumer: {
+    schema: 'existing-proof-evidence-projection/1',
+    publicDataBundled: false,
+    inputs: await Promise.all(['scripts/build-source-evidence-explorer.mjs', 'docs/interface/source-evidence-model.js', 'docs/interface/source-evidence-ui.js'].map(async path => {
+      const bytes = await readFile(resolve(interfaceRoot, path));
+      return {path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')};
+    })),
+  },
   rootLocaleChooser,
   resourceBindingScope: 'Presentation/resource URLs only; no corpus or backend mutation.',
   learnerAccessContract: {

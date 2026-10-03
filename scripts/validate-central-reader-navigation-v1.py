@@ -995,6 +995,19 @@ def main() -> int:
                         raise ValueError(f"{path}: generic program-return link has no label")
                 if matches != 2:
                     raise ValueError(f"{path}: generic surface needs exact top/bottom program returns")
+            elif row.get("navigation_provider") == "source-evidence-native-v1":
+                locale = row["locale"]
+                if locale not in {"en", "id"} or row["document"] != f"docs/{locale}/source-evidence.html":
+                    raise ValueError("Source-evidence navigation cannot exempt another page")
+                text = path.read_text(encoding="utf-8")
+                href = f"../{locale}/programme/"
+                target, fragment = resolve_href(path, href)
+                if text.count(f'id="programme-link" href="{href}"') != 1 or fragment or not target.is_file():
+                    raise ValueError("Source-evidence view lacks its exact programme return")
+                if '<option value="en" lang="en">English</option>' not in text or '<option value="id" lang="id">Bahasa Indonesia</option>' not in text:
+                    raise ValueError("Source-evidence language controls are incomplete")
+                if parser.surface_navigation_markers:
+                    raise ValueError("Self-contained evidence view has a redundant overlay")
             elif row.get("navigation_provider") == "sealed-library-v1":
                 if row["document"] != "docs/library/index.html":
                     raise ValueError("Library navigation provider cannot exempt another page")
