@@ -196,10 +196,11 @@ assert.deepEqual(['B80','D120'].map(id=>additionalOriginalSources[id][0].origin)
 assert.equal(new Set(supplementalReaders.map(row=>row.id)).size,supplementalReaders.length);
 for (const row of supplementalReaders) {
   assert.ok(ids.includes(row.courseId) && row.id.startsWith(row.courseId+':'));
-  assert.equal(row.contentLanguage,'id');
+  assert.equal(row.contentLanguage,row.courseId==='B40'?'en':'id');
   assert.ok(row.labels.id && row.labels.en && row.notes.id && row.notes.en);
-  assert.ok(['companion','portable_html','html_download'].includes(row.kind));
-  assert.ok(['HTML','HTML ZIP'].includes(row.format));
+  assert.ok(['companion','portable_html','html_download','editable_source'].includes(row.kind));
+  assert.ok(['HTML','HTML ZIP','TEX'].includes(row.format));
+  if(row.format==='TEX')assert.equal(row.kind,'editable_source');
   assert.equal(new URL(row.href).protocol,'https:');
   assert.ok(['zenodo.org','kokunoyumeto.github.io'].includes(new URL(row.href).hostname));
   assert.match(row.sha256,/^[a-f0-9]{64}$/);
@@ -226,10 +227,26 @@ for (const row of supplementalReaders) {
     const rows=resourceBindings(interfaceCourses.find(c=>c.id===row.courseId),locale);
     const actual=rows.filter(item=>item.href===row.href);
     assert.equal(actual.length,1); assert.equal(actual[0].primary,false);
-    assert.equal(actual[0].contentLanguage,'id'); assert.equal(actual[0].note,row.notes[locale]);
+    assert.equal(actual[0].contentLanguage,row.contentLanguage); assert.equal(actual[0].note,row.notes[locale]);
+    if(row.courseId==='B40'&&locale==='en')assert.ok(!actual[0].label.startsWith('Bahasa Indonesia'));
   }
 }
-assert.deepEqual(supplementalReaders.map(row=>row.id),['D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
+assert.deepEqual(supplementalReaders.map(row=>row.id),['B40:original-en-partial-tex','D20:complete-companion-html','D20:complete-offline-html','B10:complete-html-download','D90:original-02-central-html']);
+const b40Proof=JSON.parse(await readFile(resolve(root,'docs/interface/evidence/b40-original-english-reading.json'),'utf8'));
+const b40NativeBytes=await readFile(resolve(root,b40Proof.source_manifest.path));
+assert.equal(b40NativeBytes.length,b40Proof.source_manifest.bytes);
+assert.equal(createHash('sha256').update(b40NativeBytes).digest('hex'),b40Proof.source_manifest.sha256);
+const b40Native=JSON.parse(b40NativeBytes);
+assert.equal(b40Proof.scope.whole_course,false);
+assert.equal(b40Native.sections.length,b40Proof.scope.sections);
+assert.equal(b40Native.counts.exercises,b40Proof.scope.exercises);
+assert.equal(b40Native.counts.exercise_answer_pairs,b40Proof.scope.supplied_answers);
+assert.equal(b40Native.counts.absent_original_answers,b40Proof.scope.missing_answers);
+assert.ok(resourceBindings(interfaceCourses.find(c=>c.id==='B40'),'en').filter(row=>row.supplementalReaderId).every(row=>row.accessRole==='companion'&&!row.primary));
+for(const locale of supportedLocales){
+  const projection=learnerAccessProjection(interfaceCourses.find(c=>c.id==='B40'),locale);
+  assert.ok(!projection.program_hosted_reader.resources.some(r=>r.media_type==='TEX'),'Editable source must not become a hosted reader');
+}
 const b10Download=supplementalReaders.find(row=>row.courseId==='B10');
 assert.equal(b10Download.offlineAfterDownload,false);
 assert.equal(b10Download.kind,'html_download');

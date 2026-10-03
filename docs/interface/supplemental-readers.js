@@ -1,6 +1,15 @@
 // Additive learner links only; course-native source and backend stay canonical.
 export const supplementalReaders = [
   {
+    courseId: 'B40', id: 'B40:original-en-partial-tex',
+    href: 'https://kokunoyumeto.github.io/program-matematika-indonesia/en/readers/hefferon-linear-algebra/sources/00-linear-algebra-cumulative.tex',
+    labels: {id: 'Sumber LaTeX kumulatif — 34 bagian bahasa Inggris', en: 'Cumulative editable LaTeX — 34 English sections'},
+    notes: {id: 'Sumber lengkap untuk 34 bagian yang disajikan, bukan seluruh buku. Berkas pendukung dan petunjuk reproduksi tersedia dalam ZIP edisi yang sama.', en: 'Complete source for the 34 presented sections, not the entire book. Dependencies and reproduction instructions are in the same edition’s ZIP.'},
+    kind: 'editable_source', format: 'TEX', offlineAfterDownload: false,
+    evidenceFile: 'docs/interface/evidence/b40-original-english-reading.json', contentLanguage: 'en',
+    bytes: 2379861, sha256: 'dcc6e3cdc1f8dec361760d02ef072c5a71fc1e4525b04738e7f8a991cd134f96'
+  },
+  {
     "courseId": "D20",
     "id": "D20:complete-companion-html",
     "href": "https://kokunoyumeto.github.io/functional-analysis-erdman-id/output/html-companion/index.html",

@@ -10,6 +10,9 @@ assert.deepEqual(model,collectDownloads(structuredClone(manifest)));
 // D10's "PDF index" is a publisher HTML page, not a directly downloadable PDF.
 assert.equal(model.counts.id.roles_by_format.pdf,38);assert.equal(model.counts.en.roles_by_format.pdf,15);
 assert.equal(model.counts.id.roles_by_format.epub,3);assert.equal(model.counts.en.roles_by_format.epub,0);
+assert.equal(model.counts.en.roles_by_format.tex,1);
+const b40Source=model.courses.find(row=>row.course_id==='B40').locales.en.downloads.filter(binding=>model.resources.find(r=>r.id===binding.resource_id).format==='tex');
+assert.equal(b40Source.length,1);assert.match(b40Source[0].label,/34 English sections/);
 const resources=new Map(model.resources.map(r=>[r.id,r]));
 assert.equal(resources.size,model.resources.length);
 for(const course of model.courses)for(const locale of ['id','en']){
