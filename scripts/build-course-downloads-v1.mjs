@@ -99,7 +99,20 @@ const copy={
 };
 export function renderDownloadPage(model,locale){
   assert.ok(copy[locale]);const t=copy[locale],byId=new Map(model.resources.map(r=>[r.id,r]));
-  const cards=model.courses.map(course=>{
+  const tool=locale==='id'?{
+    title:'Siapkan edisi luring dari ekspor yang sudah ada',
+    text:'Untuk pengajar dan pengelola bahan: alat ini memeriksa ikatan sumber PDF, LaTeX, ZIP dan EPUB, lalu membuat direktori bacaan luring dengan pilihan bahasa antarmuka dan tautan pelajaran. Berkas sumber tidak diubah. Ini bukan konverter PDF/EPUB dan tidak berarti semua mata kuliah telah memiliki semua format.',
+    download:'Unduh alat dan kode sumber lengkap',
+    note:'Baca README.id.txt dalam arsip. Jalankan alat pada paket lokal yang sesuai; tidak ada unggahan otomatis. Bahasa antarmuka tidak mengubah bahasa isi. Mata kuliah privat tidak disertakan.',
+    credit:'Alat dan integrasi format: OpenAI Codex - GPT-6 Astra, upaya Ultra. Atribusi dan lisensi setiap mata kuliah tetap mengikuti sumber aslinya.'
+  }:{
+    title:'Prepare an offline edition from existing exports',
+    text:'For educators and maintainers: this tool verifies the source bindings of PDF, LaTeX, ZIP and EPUB files, then creates an offline reading directory with language controls and lesson links. Source files are unchanged. It is not a PDF/EPUB converter and does not mean every course has every format.',
+    download:'Download the toolkit and complete source',
+    note:'Read README.txt in the archive. Run it against a compatible local package; nothing is uploaded automatically. Interface language does not change content language. No private courses are included.',
+    credit:'Format tools and integration: OpenAI Codex - GPT-6 Astra, Ultra effort. Each course retains its original attribution and licences.'
+  };
+  const cards=`<aside id="format-tools"><details><summary>${tool.title}</summary><p>${tool.text}</p><p><a href="../../downloads/course-format-tools-v1.zip">${tool.download}</a></p><p>${tool.note}</p><small>${tool.credit}</small></details></aside>`+model.courses.map(course=>{
     const row=course.locales[locale];const formats=[...new Set(row.downloads.map(r=>byId.get(r.resource_id).format))];
     const links=row.downloads.map(binding=>{
       const resource=byId.get(binding.resource_id);assert.equal(resource.content_language,locale);

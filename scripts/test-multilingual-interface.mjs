@@ -979,7 +979,10 @@ function executeOffline(html, locale, sharedStorage = new Map(), options = {}) {
 }
 const sizes = [];
 const receipt = JSON.parse(await readFile(resolve(root, 'docs/interface/build-receipt.json'), 'utf8'));
-for (const item of [...receipt.inputs, ...receipt.outputs]) {
+assert.equal(receipt.courseFormatTools?.schema, 'course-format-tools-package/1');
+assert.equal(receipt.courseFormatTools.privateCourseData, false);
+assert.ok(receipt.courseFormatTools.inputs.some(row => row.path === 'docs/downloads/course-format-tools-v1.zip'));
+for (const item of [...receipt.inputs, ...receipt.outputs, ...receipt.courseFormatTools.inputs]) {
   const bytes = await readFile(resolve(root, item.path));
   assert.equal(bytes.length, item.bytes, item.path);
   assert.equal(createHash('sha256').update(bytes).digest('hex'), item.sha256, item.path);

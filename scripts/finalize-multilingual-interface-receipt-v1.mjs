@@ -28,6 +28,10 @@ receipt.outputs=await Promise.all(receipt.outputs.map(async row=>{
   const bytes=await readFile(resolve(root,row.path));
   return fact(row.path,bytes);
 }));
+if (receipt.courseFormatTools) {
+  receipt.courseFormatTools.inputs = await Promise.all(receipt.courseFormatTools.inputs.map(async row =>
+    fact(row.path, await readFile(resolve(root, row.path)))));
+}
 for(const path of [
   'docs/id/learning-map.html','docs/id/learning-map-paired.html',
   'docs/en/learning-map.html','docs/en/learning-map-paired.html',

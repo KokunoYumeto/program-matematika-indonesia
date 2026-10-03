@@ -289,6 +289,16 @@ const receipt = {
       return {path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')};
     })),
   },
+  courseFormatTools: {
+    schema: 'course-format-tools-package/1', privateCourseData: false,
+    inputs: await Promise.all(['scripts/build-course-downloads-v1.mjs', 'scripts/package-course-formats-v1.py',
+      'scripts/course-formats-v1/course_formats.py', 'scripts/course-formats-v1/test_course_formats.py',
+      'scripts/course-formats-v1/check_reader.mjs', 'scripts/course-formats-v1/README.txt',
+      'scripts/course-formats-v1/README.id.txt', 'docs/downloads/course-format-tools-v1.zip'].map(async path => {
+        const bytes = await readFile(resolve(interfaceRoot, path));
+        return {path, bytes: bytes.length, sha256: createHash('sha256').update(bytes).digest('hex')};
+      })),
+  },
   rootLocaleChooser,
   resourceBindingScope: 'Presentation/resource URLs only; no corpus or backend mutation.',
   learnerAccessContract: {

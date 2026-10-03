@@ -36,6 +36,8 @@ for(const locale of ['id','en']){
     assert.deepEqual(record.source_body,identity(generated));assert.deepEqual(record.hosted_surface,identity(page));
   }
   assert.equal((page.match(/data-course="/g)||[]).length,40);
+  assert.equal((page.match(/href="\.\.\/\.\.\/downloads\/course-format-tools-v1.zip"/g)||[]).length,1);
+  assert.match(page,/GPT-6 Astra/);
   assert.match(page,new RegExp(`<html lang="${locale}">`));
   assert.doesNotMatch(page,/C:\\Users|Authorization:|access_token/i);
 }
