@@ -15,7 +15,9 @@ const overlay=JSON.parse(overlayBytes);
 assert.equal(receipt.schema,'multilingual-interface-build/v1');
 assert.equal(overlay.status,'pass');
 assert.equal(overlay.schema,'central-course-surface-navigation-overlay-v1');
-assert.equal(receipt.outputs.length,receipt.locales.length*3+3,'Multilingual interface output closure changed.');
+assert.equal(receipt.outputs.length,receipt.locales.length*4+4,'Multilingual interface output closure changed.');
+for(const path of ['docs/id/downloads/index.html','docs/en/downloads/index.html','docs/interface/course-downloads-v1.json'])
+  assert.ok(receipt.outputs.some(row=>row.path===path),'Missing localized download output: '+path);
 const generationOverlayInput=receipt.inputs.find(row=>row.path===overlayPath);
 assert.ok(generationOverlayInput,'Generation overlay input is missing.');
 receipt.generation_input_navigation_overlay=generationOverlayInput;

@@ -40,6 +40,7 @@ if (!openCoursesHub || openCoursesHub.public_url !== 'https://kokunoyumeto.githu
 }
 // A separate English site: the link names its content language for every interface locale.
 const openCoursesLink = locale => '<a data-open-courses-link="v1" href="' + openCoursesHub.public_url + '" hreflang="en">' + escapeMarkup(openCoursesHub.labels[locale]) + '</a>';
+const downloadsLink = locale => '<a data-course-downloads="v1" href="' + siteOrigin + localeMetadata[locale].routeSegment + '/downloads/">' + (locale === 'id' ? 'Unduhan buku' : 'Book downloads') + '</a>';
 // Additive starter, not a fully translated forty-course interface locale.
 const chineseStarterLink = '<a data-chinese-starter="v1" href="' + siteOrigin + 'zh/" lang="zh-Hans-CN" hreflang="zh-Hans-CN">中文（起步版）</a>';
 if (centralNavigationContract.schema !== 'central-reader-navigation-v1' || centralNavigationOverlay.schema !== 'central-course-surface-navigation-overlay-v1' || centralNavigationOverlay.status !== 'pass') {
@@ -188,7 +189,7 @@ function renderDocument(locale, offline, paired = false) {
     + (offline ? '<style>\n' + css + '\n</style>' : '<link rel="stylesheet" href="../interface/styles.css?v=' + cssRevision + '">')
     + '\n</head>\n<body>\n<a class="skip-link" href="#katalog">' + t.skip + '</a>'
     + '<header class="site-header"><div class="header-inner"><a class="brand" href="#top">' + esc(t.shortTitle) + '</a>'
-    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + libraryLink(locale) + openCoursesLink(locale) + '</nav>'
+    + '<nav class="primary-nav" aria-label="' + t.nav + '"><a href="#katalog">' + t.catalog + '</a><a class="js-only" href="#progress">' + t.progress + '</a><a href="#about">' + t.about + '</a>' + downloadsLink(locale) + libraryLink(locale) + openCoursesLink(locale) + '</nav>'
     + '<nav class="locale-switcher" aria-label="' + t.language + '"><span>' + t.language + '</span>' + languageLinks + chineseStarterLink + '</nav></div></header>'
     + '<main id="top"><section class="intro"><h1>' + esc(t.title) + '</h1><p>' + esc(t.description) + '</p></section>'
     + '<div class="offline-bar"><a href="' + (offline ? '#katalog' : 'learning-map.html') + '"' + (offline ? '' : ' download') + '>' + (offline ? t.catalog : t.offlineMap) + '</a><a href="https://doi.org/10.5281/zenodo.22059707">' + t.offlineBundle + '</a></div><p class="footnote">' + t.offlineHelp + '</p>'
@@ -265,6 +266,9 @@ const learnerAccessManifest = {
 };
 const learnerAccessManifestBytes = Buffer.from(JSON.stringify(learnerAccessManifest, null, 2) + '\n');
 await writeFile(resolve(interfaceRoot, 'docs/interface/learner-access-manifest.json'), learnerAccessManifestBytes);
+const {buildDownloads} = await import('./build-course-downloads-v1.mjs');
+const downloadBuild = await buildDownloads();
+outputFiles.push(...downloadBuild.outputs);
 outputFiles.push({path:'docs/interface/learner-access-manifest.json', bytes:learnerAccessManifestBytes.length, sha256:createHash('sha256').update(learnerAccessManifestBytes).digest('hex')});
 const receipt = {
   schema: 'multilingual-interface-build/v1', locales: supportedLocales, canonicalCourseCount: interfaceCourses.length,
@@ -311,5 +315,8 @@ const a20MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/inter
 receipt.inputs.push({path:'docs/interface/evidence/a20-original-english-mirror.json', bytes:a20MirrorEvidenceBytes.length, sha256:createHash('sha256').update(a20MirrorEvidenceBytes).digest('hex')});
 const d110MirrorEvidenceBytes = await readFile(resolve(interfaceRoot, 'docs/interface/evidence/d110-original-english-mirror.json'));
 receipt.inputs.push({path:'docs/interface/evidence/d110-original-english-mirror.json', bytes:d110MirrorEvidenceBytes.length, sha256:createHash('sha256').update(d110MirrorEvidenceBytes).digest('hex')});
+const downloadsBuilderPath = 'scripts/build-course-downloads-v1.mjs';
+const downloadsBuilderBytes = await readFile(resolve(interfaceRoot, downloadsBuilderPath));
+receipt.inputs.push({path:downloadsBuilderPath, bytes:downloadsBuilderBytes.length, sha256:createHash('sha256').update(downloadsBuilderBytes).digest('hex')});
 await writeFile(resolve(interfaceRoot, 'docs/interface/build-receipt.json'), JSON.stringify(receipt, null, 2) + '\n');
 console.log(JSON.stringify({ locales: supportedLocales, courses: receipt.canonicalCourseCount, edges: receipt.canonicalEdgeCount, outputs: outputFiles }));
