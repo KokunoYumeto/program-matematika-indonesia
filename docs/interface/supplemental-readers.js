@@ -102,6 +102,88 @@ export const supplementalReaders = [
     "sha256": "02efeffcaf25d72dbca9ef52129c266bad6ac7ff777d3580ebf88a89081350ea"
   },
   // END A00 FORMAT PAIRS
+  // BEGIN A00 ENGLISH FORMAT PAIRS
+  {
+    "courseId": "A00",
+    "id": "A00:en-format-pdf",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/00-a00-en.pdf",
+    "labels": {
+      "id": "PDF Praljabar bahasa Inggris — 1.591 halaman",
+      "en": "English Prealgebra PDF — 1,591 pages"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, teks asli bahasa Inggris: 75 modul. PDF, LaTeX kumulatif, ZIP sumber dan EPUB merupakan satu set yang cocok; PDF dan EPUB dibangun ulang byte-identik dari paket sumber. Sumber utama CNXML/MathML dan HTML terdahulu tetap tersedia. Penulis: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Penyiapan HTML: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan terjemahan baru atau peninjauan matematika/manusia. Lisensi dan kredit setiap komponen tersedia dalam paket sumber. Tautan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, original English text: 75 modules. PDF, cumulative LaTeX, source ZIP and EPUB form one matching set; PDF and EPUB rebuild byte-identically from the source package. The CNXML/MathML master and earlier HTML remain available. Authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. HTML preparation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation, mathematical review or human review. Component licences and credits are included in the source package. External links need internet."
+    },
+    "kind": "companion",
+    "format": "PDF",
+    "offlineAfterDownload": true,
+    "evidenceFile": "docs/interface/evidence/a00-english-portable-formats.json",
+    "contentLanguage": "en",
+    "bytes": 87316562,
+    "sha256": "071120ccc2aaf21395fd734f5aafab103ebd2f9b1dd88ecfc049e3a3f39736c1"
+  },
+  {
+    "courseId": "A00",
+    "id": "A00:en-format-tex",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/01-a00-en.tex",
+    "labels": {
+      "id": "LaTeX kumulatif untuk PDF Praljabar bahasa Inggris",
+      "en": "Cumulative LaTeX for the English Prealgebra PDF"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, teks asli bahasa Inggris: 75 modul. PDF, LaTeX kumulatif, ZIP sumber dan EPUB merupakan satu set yang cocok; PDF dan EPUB dibangun ulang byte-identik dari paket sumber. Sumber utama CNXML/MathML dan HTML terdahulu tetap tersedia. Penulis: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Penyiapan HTML: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan terjemahan baru atau peninjauan matematika/manusia. Lisensi dan kredit setiap komponen tersedia dalam paket sumber. Tautan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, original English text: 75 modules. PDF, cumulative LaTeX, source ZIP and EPUB form one matching set; PDF and EPUB rebuild byte-identically from the source package. The CNXML/MathML master and earlier HTML remain available. Authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. HTML preparation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation, mathematical review or human review. Component licences and credits are included in the source package. External links need internet."
+    },
+    "kind": "editable_source",
+    "format": "TEX",
+    "offlineAfterDownload": false,
+    "evidenceFile": "docs/interface/evidence/a00-english-portable-formats.json",
+    "contentLanguage": "en",
+    "bytes": 6050357,
+    "sha256": "152eedf36d454f90211712a3564a577437dff3790357f17754cf04de6dd46b75"
+  },
+  {
+    "courseId": "A00",
+    "id": "A00:en-format-source",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/02-a00-en-source.zip",
+    "labels": {
+      "id": "Sumber lengkap PDF dan EPUB Praljabar bahasa Inggris",
+      "en": "Complete English Prealgebra PDF and EPUB source"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, teks asli bahasa Inggris: 75 modul. PDF, LaTeX kumulatif, ZIP sumber dan EPUB merupakan satu set yang cocok; PDF dan EPUB dibangun ulang byte-identik dari paket sumber. Sumber utama CNXML/MathML dan HTML terdahulu tetap tersedia. Penulis: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Penyiapan HTML: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan terjemahan baru atau peninjauan matematika/manusia. Lisensi dan kredit setiap komponen tersedia dalam paket sumber. Tautan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, original English text: 75 modules. PDF, cumulative LaTeX, source ZIP and EPUB form one matching set; PDF and EPUB rebuild byte-identically from the source package. The CNXML/MathML master and earlier HTML remain available. Authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. HTML preparation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation, mathematical review or human review. Component licences and credits are included in the source package. External links need internet."
+    },
+    "kind": "source_archive",
+    "format": "ZIP",
+    "offlineAfterDownload": false,
+    "evidenceFile": "docs/interface/evidence/a00-english-portable-formats.json",
+    "contentLanguage": "en",
+    "bytes": 235829949,
+    "sha256": "61e59d60024c0bdcc89d2dd7a9c833634d99433fbe7a9ced670986b5a0791412"
+  },
+  {
+    "courseId": "A00",
+    "id": "A00:en-format-epub",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-original-en/releases/download/v1.0.0/03-a00-en.epub",
+    "labels": {
+      "id": "EPUB Praljabar bahasa Inggris",
+      "en": "English Prealgebra EPUB"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, teks asli bahasa Inggris: 75 modul. PDF, LaTeX kumulatif, ZIP sumber dan EPUB merupakan satu set yang cocok; PDF dan EPUB dibangun ulang byte-identik dari paket sumber. Sumber utama CNXML/MathML dan HTML terdahulu tetap tersedia. Penulis: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Penyiapan HTML: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan terjemahan baru atau peninjauan matematika/manusia. Lisensi dan kredit setiap komponen tersedia dalam paket sumber. Tautan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, original English text: 75 modules. PDF, cumulative LaTeX, source ZIP and EPUB form one matching set; PDF and EPUB rebuild byte-identically from the source package. The CNXML/MathML master and earlier HTML remain available. Authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. HTML preparation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation, mathematical review or human review. Component licences and credits are included in the source package. External links need internet."
+    },
+    "kind": "companion",
+    "format": "EPUB",
+    "offlineAfterDownload": true,
+    "evidenceFile": "docs/interface/evidence/a00-english-portable-formats.json",
+    "contentLanguage": "en",
+    "bytes": 77090438,
+    "sha256": "1febe9b59351654f5118806a058602007bb5e57c695b8deed66f9f5f43ff3d3e"
+  },
+  // END A00 ENGLISH FORMAT PAIRS
   // BEGIN B80 FORMAT PAIRS
   {
     "courseId": "B80",

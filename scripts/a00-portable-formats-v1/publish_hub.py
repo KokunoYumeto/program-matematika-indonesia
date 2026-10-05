@@ -7,6 +7,7 @@ import argparse
 import base64
 import hashlib
 import json
+import os
 import re
 import subprocess
 from datetime import datetime, timezone
@@ -17,12 +18,18 @@ import requests
 ROOT = Path(__file__).resolve().parents[2]
 OUT = ROOT / 'outputs/a00-portable-formats-v1'
 PARENT = '540e24a71d351c2573d81ab33632b1bb5d1d7384'
+LANGUAGE = os.environ.get('A00_HUB_LANGUAGE', 'id')
+assert LANGUAGE in ('id', 'en')
+if LANGUAGE == 'en':
+    OUT = ROOT / 'outputs/a00-english-portable-formats-v1'
+    PARENT = json.loads((OUT / 'hub-parent/BASELINE.json').read_text(encoding='utf-8'))['parent']
 API = 'https://api.github.com/repos/KokunoYumeto/program-matematika-indonesia'
 RAW = 'https://raw.githubusercontent.com/KokunoYumeto/program-matematika-indonesia/'
 PAGES = 'https://kokunoyumeto.github.io/program-matematika-indonesia/'
 PLAN = OUT / 'HUB_PUBLICATION_PLAN.json'
 RECEIPT = OUT / 'HUB_PUBLICATION_RECEIPT.json'
 VALIDATION = 'docs/interface/evidence/a00-hub-integration-validation.json'
+EDITION_EVIDENCE = 'docs/interface/evidence/a00-portable-formats.json'
 EXTRAS = [
     'docs/interface/evidence/a00-portable-formats.json', VALIDATION,
     'scripts/a00-portable-formats-v1/integrate.py',
@@ -32,6 +39,11 @@ EXTRAS = [
     'scripts/a00-portable-formats-v1/capture_hub_parent.py',
     'scripts/a00-portable-formats-v1/publish_hub.py',
 ]
+if LANGUAGE == 'en':
+    VALIDATION = 'docs/interface/evidence/a00-english-hub-integration-validation.json'
+    EDITION_EVIDENCE = 'docs/interface/evidence/a00-english-portable-formats.json'
+    EXTRAS = [EDITION_EVIDENCE, VALIDATION,
+              'scripts/a00-portable-formats-v1/integrate_english.py']
 
 
 def read(path):
@@ -61,14 +73,20 @@ def seal():
     additive = read(OUT / 'HUB_ADDITIVE_CHECK.json')
     browser = read(OUT / 'HUB_BROWSER_CHECK.json')
     assert additive['state'] == browser['state'] == 'pass'
-    assert additive['parent'] == PARENT and len(additive['changed']) == 16
+    assert additive['parent'] == PARENT
+    if LANGUAGE == 'id':
+        assert len(additive['changed']) == 16
+    else:
+        assert {'docs/en/index.html', 'docs/en/downloads/index.html',
+                'docs/interface/learner-access-manifest.json',
+                'docs/interface/supplemental-readers.js'}.issubset({row['path'] for row in additive['changed']})
     assert len(browser['checks']) == 32
     for row in additive['changed']:
         assert fact(row['path']) == {k: row[k] for k in ('path', 'bytes', 'sha256')}
     for row in browser['captures']:
         raw = (OUT / row['path']).read_bytes()
         assert len(raw) == row['bytes'] and sha(raw) == row['sha256']
-    proof = read(ROOT / 'docs/interface/evidence/a00-portable-formats.json')
+    proof = read(ROOT / EDITION_EVIDENCE)
     for name, identity in proof['evidence_receipts'].items():
         raw = (OUT / name).read_bytes()
         assert identity == {'bytes': len(raw), 'sha256': sha(raw)}
@@ -86,12 +104,12 @@ def seal():
         'schema': 'a00-additive-hub-validation/1', 'state': 'pass', 'parent': PARENT,
         'model': 'gpt-6-astra', 'effort': 'ultra',
         'checked_utc': datetime.now(timezone.utc).isoformat(),
-        'scope': 'Indonesian A00 formats in both language interfaces; not an English translation or whole-program completion.',
+        'scope': ('Original English A00 formats in both interfaces; existing Indonesian resources preserved; no new translation or programme completion.' if LANGUAGE == 'en' else 'Indonesian A00 formats in both language interfaces; not an English translation or whole-program completion.'),
         'changed_file_identities': additive['changed'],
         'preservation': {k: additive[k] for k in ['resource_data', 'cardChecks', 'unchanged_other_navigation_rows']},
         'regression_tests': tests, 'browser_validation': browser,
-        'visual_review': 'Both saved 390-pixel A00 format groups inspected: readable links, correct format order and explicit Indonesian content labels in both interfaces.',
-        'source_edition_evidence': fact('docs/interface/evidence/a00-portable-formats.json'),
+        'visual_review': ('Both saved 390-pixel English A00 format groups inspected: readable links, PDF/LaTeX/ZIP/EPUB order and explicit English content labels in both interfaces.' if LANGUAGE == 'en' else 'Both saved 390-pixel A00 format groups inspected: readable links, correct format order and explicit Indonesian content labels in both interfaces.'),
+        'source_edition_evidence': fact(EDITION_EVIDENCE),
         'limitations': ['Browser checks cover the prepared local pages.',
                        'No new mathematical or linguistic review of the textbook.',
                        'Anonymous deployed-byte verification is a separate publication receipt.'],
@@ -188,7 +206,7 @@ def publish(plan):
         tree = api(session, 'POST', '/git/trees', json={'base_tree': parent['tree']['sha'], 'tree': blobs})
         actor = {'name': 'OpenAI Codex', 'email': 'codex@users.noreply.github.com', 'date': datetime.now(timezone.utc).isoformat()}
         commit = api(session, 'POST', '/git/commits', json={
-            'message': 'Tambahkan unduhan PDF, LaTeX, sumber, dan EPUB Praljabar\n\nFormat Bahasa Indonesia tersedia dari kedua antarmuka. Integrasi oleh OpenAI Codex — GPT-6 Astra, upaya Ultra; sumber asli dan akses terdahulu dipertahankan.',
+            'message': ('Tambahkan edisi Praljabar bahasa Inggris dalam PDF, LaTeX dan EPUB\n\n75 modul dengan sumber lengkap yang dapat dibangun ulang. Edisi Bahasa Indonesia dan akses terdahulu tetap tersedia. Integrasi oleh OpenAI Codex — GPT-6 Astra, upaya Ultra.' if LANGUAGE == 'en' else 'Tambahkan unduhan PDF, LaTeX, sumber, dan EPUB Praljabar\n\nFormat Bahasa Indonesia tersedia dari kedua antarmuka. Integrasi oleh OpenAI Codex — GPT-6 Astra, upaya Ultra; sumber asli dan akses terdahulu dipertahankan.'),
             'tree': tree['sha'], 'parents': [head], 'author': actor, 'committer': actor})
         receipt = {'schema': 'a00-additive-hub-publication-receipt/1', 'state': 'commit_created_ref_pending',
                    'parent': head, 'commit': commit['sha'], 'tree': tree['sha'],

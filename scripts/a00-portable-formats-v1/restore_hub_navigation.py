@@ -1,11 +1,16 @@
 """Restore existing navigation only on regenerated interface pages."""
 import importlib.util
 import json
+import os
 import sys
 from pathlib import Path
 
 ROOT=Path(__file__).resolve().parents[2]
 OUT=ROOT/'outputs/a00-portable-formats-v1'
+LANGUAGE=os.environ.get('A00_HUB_LANGUAGE','id')
+assert LANGUAGE in ('id','en')
+if LANGUAGE=='en':OUT=ROOT/'outputs/a00-english-portable-formats-v1'
+REFRESH='a00_english_format_link_refresh' if LANGUAGE=='en' else 'a00_format_link_refresh'
 sys.path.insert(0,str(ROOT/'scripts'))
 spec=importlib.util.spec_from_file_location('surface_nav',ROOT/'scripts/apply-central-course-surface-navigation-v1.py')
 nav=importlib.util.module_from_spec(spec);spec.loader.exec_module(nav)
@@ -16,7 +21,7 @@ old_raw=(OUT/'hub-parent'/overlay_path).read_bytes()
 overlay=read(OUT/'hub-parent'/overlay_path)
 current_overlay=read(ROOT/overlay_path)
 if current_overlay!=overlay:
-    refresh=current_overlay.get('a00_format_link_refresh',{})
+    refresh=current_overlay.get(REFRESH,{})
     assert refresh.get('parent_overlay_sha256')==nav.sha256_bytes(old_raw),'Navigation changed concurrently'
     assert refresh['script']['path']=='scripts/a00-portable-formats-v1/restore_hub_navigation.py'
     assert set(refresh['documents']).issubset({r['path'] for r in baseline['files'] if r['path'].endswith('.html')})
@@ -27,7 +32,7 @@ if current_overlay!=overlay:
         else:
             assert {k:v for k,v in oldrow.items() if k not in ('source_body','hosted_surface')}=={k:v for k,v in newrow.items() if k not in ('source_body','hosted_surface')}
     reconstructed=json.loads(json.dumps(current_overlay))
-    del reconstructed['a00_format_link_refresh']
+    del reconstructed[REFRESH]
     reconstructed['files']=overlay['files']
     reconstructed['authority']['learner_access_manifest']=overlay['authority']['learner_access_manifest']
     assert reconstructed==overlay,'Unrelated navigation metadata changed'
@@ -52,7 +57,7 @@ for fact in baseline['files']:
     updated.append(path)
 manifest_path='docs/interface/learner-access-manifest.json'
 overlay['authority']['learner_access_manifest']=nav.fact(manifest_path,(ROOT/manifest_path).read_bytes())
-overlay['a00_format_link_refresh']={
+overlay[REFRESH]={
     'parent_overlay_sha256':nav.sha256_bytes(old_raw),
     'script':nav.fact('scripts/a00-portable-formats-v1/restore_hub_navigation.py',Path(__file__).read_bytes()),
     'documents':updated,'other_navigation_rows_unchanged':True,

@@ -6,7 +6,9 @@ import {createHash} from 'node:crypto';
 import {resolve,dirname,extname} from 'node:path';
 import {fileURLToPath} from 'node:url';
 const root=resolve(dirname(fileURLToPath(import.meta.url)),'../..');
-const docs=resolve(root,'docs'),out=resolve(root,'outputs/a00-portable-formats-v1');
+const language=process.env.A00_HUB_LANGUAGE??'id';
+assert.ok(['id','en'].includes(language));
+const docs=resolve(root,'docs'),out=resolve(root,language==='en'?'outputs/a00-english-portable-formats-v1':'outputs/a00-portable-formats-v1');
 const require=createRequire(import.meta.url);
 assert.ok(process.env.OPEN_COURSES_NODE_MODULES);
 const {chromium}=require(resolve(process.env.OPEN_COURSES_NODE_MODULES,'playwright'));
@@ -28,16 +30,19 @@ try{
   for(const file of ['index.html','learning-map.html','learning-map-paired.html']){
    await page.goto(`${origin}/${locale}/${file}#course-A00`,{waitUntil:'load'});
    assert.equal(await page.locator('.course-card').count(),40);
-   const set=page.locator('#course-A00 [data-access-group="paired-formats"]');
-   assert.equal(await set.count(),1);assert.equal(await set.getAttribute('data-format-set-language'),'id');
-   assert.deepEqual(await set.locator('[data-supplemental-reader]').evaluateAll(ns=>ns.map(n=>n.dataset.supplementalReader)),['pdf','tex','source','epub','record'].map(x=>'A00:id-format-'+x));
+   const set=page.locator(`#course-A00 [data-access-group="paired-formats"][data-format-set-language="${language}"]`);
+   assert.equal(await set.count(),1);
+   const expected=language==='en'?['pdf','tex','source','epub']:['pdf','tex','source','epub','record'];
+   assert.deepEqual(await set.locator('[data-supplemental-reader]').evaluateAll(ns=>ns.map(n=>n.dataset.supplementalReader)),expected.map(x=>`A00:${language}-format-`+x));
+   const preserved=page.locator('#course-A00 [data-format-set-language="id"] [data-supplemental-reader]');
+   assert.deepEqual(await preserved.evaluateAll(ns=>ns.map(n=>n.dataset.supplementalReader)),['pdf','tex','source','epub','record'].map(x=>'A00:id-format-'+x));
    assert.equal(await set.locator('.footnote').count(),1,'Shared explanation appears once');
    assert.equal(await page.locator('#course-B80 [data-access-group="paired-formats"]').count(),2);
    assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1),'Horizontal overflow');
    assert.equal(await page.locator('html').getAttribute('lang'),locale);
    if(file==='index.html'&&width===390&&js){
     await set.scrollIntoViewIfNeeded();const path=`hub-browser-captures/${locale}-390-a00-formats.png`;
-    const bytes=await page.screenshot({path:resolve(out,path),fullPage:false});captures.push({path,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});
+    const bytes=await set.screenshot({path:resolve(out,path)});captures.push({path,bytes:bytes.length,sha256:createHash('sha256').update(bytes).digest('hex')});
     const other=locale==='id'?'en':'id';await page.locator(`[data-locale-link="${other}"]`).click();
     assert.equal(await page.locator('html').getAttribute('lang'),other);assert.ok(page.url().includes('#course-A00'));
    }
@@ -45,8 +50,10 @@ try{
   }
   await page.goto(`${origin}/${locale}/downloads/`,{waitUntil:'load'});
   assert.equal(await page.locator('[data-course]').count(),40);
-  const files=page.locator('[data-course="A00"] a[href*="/00-a00-id.pdf"], [data-course="A00"] a[href*="/01-a00-id.tex"], [data-course="A00"] a[href*="/02-a00-id-source.zip"], [data-course="A00"] a[href*="/03-a00-id.epub"]');
-  assert.equal(await files.count(),locale==='id'?4:0,'Actual content language controls download list');
+  for(const edition of (language==='en'?['id','en']:['id'])){
+   const files=page.locator(`[data-course="A00"] a[href*="/00-a00-${edition}.pdf"], [data-course="A00"] a[href*="/01-a00-${edition}.tex"], [data-course="A00"] a[href*="/02-a00-${edition}-source.zip"], [data-course="A00"] a[href*="/03-a00-${edition}.epub"]`);
+   assert.equal(await files.count(),locale===edition?4:0,'Actual content language controls download list');
+  }
   assert.ok(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1));
   assert.deepEqual(errors,[]);checks.push({locale,width,js,page:'downloads',actual_content_language:true,errors:0});
   await context.close();
