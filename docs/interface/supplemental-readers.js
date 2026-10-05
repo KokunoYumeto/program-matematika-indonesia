@@ -1,5 +1,107 @@
 // Additive learner links only; course-native source and backend stay canonical.
 export const supplementalReaders = [
+  // BEGIN A00 FORMAT PAIRS
+  {
+    "courseId": "A00",
+    "id": "A00:id-format-pdf",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID/releases/download/prealgebra-2e-id-ID-v0.2.7/00-a00-id.pdf",
+    "labels": {
+      "id": "PDF Praljabar — 1.638 halaman",
+      "en": "Prealgebra PDF — 1,638 pages"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, Bahasa Indonesia: 75 modul; PDF, LaTeX, ZIP sumber dan EPUB merupakan satu set yang cocok. PDF dan EPUB dapat dibangun ulang byte-identik. Sumber utama CNXML/MathML dan edisi terdahulu tetap tersedia. Penulis asli: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Terjemahan: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan penerjemahan atau peninjauan matematika baru. Ketentuan lisensi setiap komponen mengikuti paket sumber. Rujukan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, Indonesian content: 75 modules; PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically. The CNXML/MathML master and earlier editions remain available. Original authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. Translation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation or mathematical review. Component licence terms remain in the source package. External references need internet."
+    },
+    "kind": "companion",
+    "format": "PDF",
+    "offlineAfterDownload": true,
+    "evidenceFile": "docs/interface/evidence/a00-portable-formats.json",
+    "contentLanguage": "id",
+    "bytes": 78585844,
+    "sha256": "5ac3aeae594bad98b105f5f854a7f14f58dc0f9edac26141460ece10e225476d"
+  },
+  {
+    "courseId": "A00",
+    "id": "A00:id-format-tex",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID/releases/download/prealgebra-2e-id-ID-v0.2.7/01-a00-id.tex",
+    "labels": {
+      "id": "LaTeX kumulatif untuk PDF Praljabar",
+      "en": "Cumulative LaTeX for the Prealgebra PDF"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, Bahasa Indonesia: 75 modul; PDF, LaTeX, ZIP sumber dan EPUB merupakan satu set yang cocok. PDF dan EPUB dapat dibangun ulang byte-identik. Sumber utama CNXML/MathML dan edisi terdahulu tetap tersedia. Penulis asli: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Terjemahan: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan penerjemahan atau peninjauan matematika baru. Ketentuan lisensi setiap komponen mengikuti paket sumber. Rujukan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, Indonesian content: 75 modules; PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically. The CNXML/MathML master and earlier editions remain available. Original authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. Translation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation or mathematical review. Component licence terms remain in the source package. External references need internet."
+    },
+    "kind": "editable_source",
+    "format": "TEX",
+    "offlineAfterDownload": false,
+    "evidenceFile": "docs/interface/evidence/a00-portable-formats.json",
+    "contentLanguage": "id",
+    "bytes": 6045484,
+    "sha256": "9c96606ad34cb989aaa6692a9f0ad4e4f73e3dee59bbb248167c0094f534553f"
+  },
+  {
+    "courseId": "A00",
+    "id": "A00:id-format-source",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID/releases/download/prealgebra-2e-id-ID-v0.2.7/02-a00-id-source.zip",
+    "labels": {
+      "id": "Sumber lengkap PDF dan EPUB Praljabar",
+      "en": "Complete Prealgebra PDF and EPUB source"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, Bahasa Indonesia: 75 modul; PDF, LaTeX, ZIP sumber dan EPUB merupakan satu set yang cocok. PDF dan EPUB dapat dibangun ulang byte-identik. Sumber utama CNXML/MathML dan edisi terdahulu tetap tersedia. Penulis asli: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Terjemahan: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan penerjemahan atau peninjauan matematika baru. Ketentuan lisensi setiap komponen mengikuti paket sumber. Rujukan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, Indonesian content: 75 modules; PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically. The CNXML/MathML master and earlier editions remain available. Original authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. Translation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation or mathematical review. Component licence terms remain in the source package. External references need internet."
+    },
+    "kind": "source_archive",
+    "format": "ZIP",
+    "offlineAfterDownload": false,
+    "evidenceFile": "docs/interface/evidence/a00-portable-formats.json",
+    "contentLanguage": "id",
+    "bytes": 214085303,
+    "sha256": "545b4d099582561988cb8c0d18cb6e78f0db428f5b12e389d537bb7dbff90101"
+  },
+  {
+    "courseId": "A00",
+    "id": "A00:id-format-epub",
+    "href": "https://github.com/KokunoYumeto/openstax-prealgebra-2e-id-ID/releases/download/prealgebra-2e-id-ID-v0.2.7/03-a00-id.epub",
+    "labels": {
+      "id": "EPUB Praljabar",
+      "en": "Prealgebra EPUB"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, Bahasa Indonesia: 75 modul; PDF, LaTeX, ZIP sumber dan EPUB merupakan satu set yang cocok. PDF dan EPUB dapat dibangun ulang byte-identik. Sumber utama CNXML/MathML dan edisi terdahulu tetap tersedia. Penulis asli: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Terjemahan: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan penerjemahan atau peninjauan matematika baru. Ketentuan lisensi setiap komponen mengikuti paket sumber. Rujukan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, Indonesian content: 75 modules; PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically. The CNXML/MathML master and earlier editions remain available. Original authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. Translation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation or mathematical review. Component licence terms remain in the source package. External references need internet."
+    },
+    "kind": "companion",
+    "format": "EPUB",
+    "offlineAfterDownload": true,
+    "evidenceFile": "docs/interface/evidence/a00-portable-formats.json",
+    "contentLanguage": "id",
+    "bytes": 61582591,
+    "sha256": "9507100a2060f664df673d64abb93fe19503745b497dc09529eca8dc87d4dd6e"
+  },
+  {
+    "courseId": "A00",
+    "id": "A00:id-format-record",
+    "href": "https://zenodo.org/records/23149334",
+    "labels": {
+      "id": "Arsip Zenodo — edisi format Bahasa Indonesia",
+      "en": "Zenodo archive — Indonesian format edition"
+    },
+    "notes": {
+      "id": "Edisi format 5 Oktober 2026, Bahasa Indonesia: 75 modul; PDF, LaTeX, ZIP sumber dan EPUB merupakan satu set yang cocok. PDF dan EPUB dapat dibangun ulang byte-identik. Sumber utama CNXML/MathML dan edisi terdahulu tetap tersedia. Penulis asli: Lynn Marecek, MaryAnne Anthony-Smith dan Andrea Honeycutt Mathis, OpenStax. Terjemahan: OpenAI Codex gpt-5.6-sol, upaya Ultra. Ekspor dan integrasi format: OpenAI Codex — GPT-6 Astra, upaya Ultra. Bukan penerjemahan atau peninjauan matematika baru. Ketentuan lisensi setiap komponen mengikuti paket sumber. Rujukan eksternal memerlukan internet.",
+      "en": "Format edition 5 October 2026, Indonesian content: 75 modules; PDF, LaTeX, source ZIP and EPUB form one matching set. PDF and EPUB rebuild byte-identically. The CNXML/MathML master and earlier editions remain available. Original authors: Lynn Marecek, MaryAnne Anthony-Smith and Andrea Honeycutt Mathis, OpenStax. Translation: OpenAI Codex gpt-5.6-sol, Ultra effort. Format exports and integration: OpenAI Codex — GPT-6 Astra, Ultra effort. Not a new translation or mathematical review. Component licence terms remain in the source package. External references need internet."
+    },
+    "kind": "companion",
+    "format": "HTML",
+    "offlineAfterDownload": false,
+    "evidenceFile": "docs/interface/evidence/a00-portable-formats.json",
+    "contentLanguage": "id",
+    "bytes": 105085,
+    "sha256": "02efeffcaf25d72dbca9ef52129c266bad6ac7ff777d3580ebf88a89081350ea"
+  },
+  // END A00 FORMAT PAIRS
   // BEGIN B80 FORMAT PAIRS
   {
     "courseId": "B80",

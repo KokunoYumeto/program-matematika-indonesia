@@ -14,9 +14,17 @@ assert.equal(model.public_editions[1].content_language,'en');
 assert.deepEqual(model,collectDownloads(structuredClone(manifest)));
 // D10's "PDF index" is a publisher HTML page, not a directly downloadable PDF.
 assert.equal(model.counts.id.roles_by_format.pdf,38);assert.equal(model.counts.en.roles_by_format.pdf,15);
-assert.equal(model.counts.id.roles_by_format.epub,4);assert.equal(model.counts.en.roles_by_format.epub,1);
+assert.equal(model.counts.id.roles_by_format.epub,5);assert.equal(model.counts.en.roles_by_format.epub,1);
 assert.equal(model.counts.en.roles_by_format.tex,2);
-assert.equal(model.counts.id.roles_by_format.tex,2);
+assert.equal(model.counts.id.roles_by_format.tex,3);
+const a00=model.courses.find(row=>row.course_id==='A00');
+for(const extension of ['pdf','tex','zip','epub']){
+  const matches=a00.locales.id.downloads.filter(d=>{const r=model.resources.find(r=>r.id===d.resource_id);return r.format===extension&&/\/(00|01|02|03)-a00-id/.test(r.url);});
+  assert.equal(matches.length,1,'Exactly one matching Indonesian A00 '+extension);
+  const resource=model.resources.find(r=>r.id===matches[0].resource_id);
+  assert.ok(resource.bytes>0);assert.match(resource.sha256,/^[0-9a-f]{64}$/);
+}
+assert.ok(!a00.locales.en.downloads.some(d=>model.resources.find(r=>r.id===d.resource_id).url.includes('-a00-id')),'Indonesian A00 formats must not be relabelled English');
 const b80=model.courses.find(row=>row.course_id==='B80');
 for(const locale of ['id','en']){
   const bindings=b80.locales[locale].downloads;

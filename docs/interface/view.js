@@ -201,15 +201,19 @@ export function contentLanguageName(code, locale) {
 export function renderResourceLinks(course, locale) {
   const t = interfaceCopy[locale];
   const rows = resourceBindings(course, locale);
+  // Keep evidence-bound format sets together. Access-role metadata is unchanged.
+  const paired = rows.filter(row => /:(?:id|en)-format-(?:pdf|tex|source|epub|record)$/.test(row.supplementalReaderId ?? ''));
+  const pairedIds = new Set(paired.map(row => row.supplementalReaderId));
+  const ordinary = rows.filter(row => !pairedIds.has(row.supplementalReaderId));
   const interfaceLanguageTag = localeMetadata[locale].languageTag.toLowerCase();
   const inInterfaceLanguage = (row) => row.contentLanguage.toLowerCase() === interfaceLanguageTag;
-  const hostedReaders = rows.filter((row) => inInterfaceLanguage(row) && row.accessRole === 'hosted-reader');
-  const offlineCopies = rows.filter((row) => inInterfaceLanguage(row) && row.accessRole === 'offline-copy');
+  const hostedReaders = ordinary.filter((row) => inInterfaceLanguage(row) && row.accessRole === 'hosted-reader');
+  const offlineCopies = ordinary.filter((row) => inInterfaceLanguage(row) && row.accessRole === 'offline-copy');
   const hosted = [...hostedReaders, ...offlineCopies];
-  const originals = rows.filter(row => row.accessRole === 'authoritative-original');
-  const preferred = rows.filter((row) => inInterfaceLanguage(row) && !hosted.includes(row) && !originals.includes(row)
+  const originals = ordinary.filter(row => row.accessRole === 'authoritative-original');
+  const preferred = ordinary.filter((row) => inInterfaceLanguage(row) && !hosted.includes(row) && !originals.includes(row)
     && !['repository', 'preservation-record', 'source-package', 'backend'].includes(row.accessRole));
-  const other = rows.filter((row) => !hosted.includes(row) && !preferred.includes(row) && !originals.includes(row));
+  const other = ordinary.filter((row) => !hosted.includes(row) && !preferred.includes(row) && !originals.includes(row));
   const link = (row) => '<a class="resource-link' + (row.primary ? ' primary' : '') + '" href="' + escapeMarkup(row.href)
     + '" data-content-language="' + row.contentLanguage + '" hreflang="' + row.contentLanguage
     + '" data-access-role="' + escapeMarkup(row.accessRole)
@@ -222,10 +226,19 @@ export function renderResourceLinks(course, locale) {
     + '<span lang="' + escapeMarkup(row.labelLanguage) + '">' + escapeMarkup(row.label) + '</span><small>' + escapeMarkup(row.format ?? (row.actionId ? 'PDF' : row.kind))
     + ' · <span lang="' + escapeMarkup(row.contentLanguage === 'und' ? interfaceLanguageTag : row.contentLanguage) + '">' + escapeMarkup(contentLanguageName(row.contentLanguage, locale)) + '</span>'
     + (row.offlineAfterDownload ? ' · ' + t.offlineAfterDownload : '') + '</small></a>'
-    + (row.note ? '<p class="footnote" lang="'+escapeMarkup(localeMetadata[locale].languageTag)+'">'+escapeMarkup(row.note)+'</p>' : '');
+    + (row.note && !pairedIds.has(row.supplementalReaderId) ? '<p class="footnote" lang="'+escapeMarkup(localeMetadata[locale].languageTag)+'">'+escapeMarkup(row.note)+'</p>' : '');
   const group = (role, title, body) => '<section class="resource-group" data-access-group="' + role + '"><h4>' + escapeMarkup(title) + '</h4>' + body + '</section>';
+  const formatOrder = {PDF:0,TEX:1,ZIP:2,EPUB:3,HTML:4};
+  const pairedGroups = [...new Set(paired.map(row=>row.contentLanguage))].map(language=>{
+    const set = paired.filter(row=>row.contentLanguage===language).sort((a,b)=>formatOrder[a.format]-formatOrder[b.format]);
+    const notes = [...new Set(set.map(row=>row.note).filter(Boolean))];
+    return '<section class="resource-group" data-access-group="paired-formats" data-format-set-language="'+escapeMarkup(language)+'"><h4>'
+      + escapeMarkup(t.matchingFormatSet+' — '+contentLanguageName(language,locale))+'</h4>'
+      + set.map(link).join('')+notes.map(note=>'<p class="footnote" lang="'+escapeMarkup(localeMetadata[locale].languageTag)+'">'+escapeMarkup(note)+'</p>').join('')+'</section>';
+  }).join('');
   return group('hosted-reader', t.hostedReader, (hostedReaders.length ? '' : '<p class="binding-note">' + escapeMarkup(t.noHostedReader) + '</p>') + hosted.map(link).join(''))
     + group('authoritative-original', t.authoritativeOriginal, originals.length ? originals.map(link).join('') : '<p class="binding-note">' + escapeMarkup(t.noAuthoritativeOriginal) + '</p>')
+    + pairedGroups
     + preferred.map(link).join('')
     + (other.length ? '<details class="resource-details"><summary>' + escapeMarkup(t.otherResourcesSummary)
       + '</summary><div class="resource-list">' + other.map(link).join('') + '</div></details>' : '');
