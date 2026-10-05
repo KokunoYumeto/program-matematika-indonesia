@@ -1,5 +1,6 @@
 // Presentation provenance only: live source sites are not frozen edition identities.
 // English originals already have exact bindings in locales.js.
+import { clpOriginalSources } from './clp-original-downloads.js';
 const originalSource = (label, href, contentLanguage, origin = 'upstream-original') => ({
   label, href, contentLanguage, origin,
   accessRole: 'authoritative-original',
@@ -7,6 +8,7 @@ const originalSource = (label, href, contentLanguage, origin = 'upstream-origina
   relationToSource: 'source',
 });
 export const additionalOriginalSources = {
+  ...clpOriginalSources,
   B80: [originalSource('Komputasi Matematis dan Eksperimen Reprodusibel', 'https://kokunoyumeto.github.io/mathematical-computing-reproducible-experiments-id/', 'id', 'program-original')],
   D50: [originalSource('Holger Brenner — Differentialgeometrie (Osnabrück 2023)', 'https://de.wikiversity.org/wiki/Kurs:Differentialgeometrie_(Osnabr%C3%BCck_2023)', 'de')],
   D70: [originalSource('Wen-Wei Li — 代数学方法：卷一', 'https://wwli.asia/zh/docs/books/', 'zh')],

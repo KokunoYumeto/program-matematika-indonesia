@@ -13,7 +13,7 @@ assert.equal(model.public_editions[1].course_id,'harmonic-analysis-on-locally-co
 assert.equal(model.public_editions[1].content_language,'en');
 assert.deepEqual(model,collectDownloads(structuredClone(manifest)));
 // D10's "PDF index" is a publisher HTML page, not a directly downloadable PDF.
-assert.equal(model.counts.id.roles_by_format.pdf,38);assert.equal(model.counts.en.roles_by_format.pdf,16);
+assert.equal(model.counts.id.roles_by_format.pdf,38);assert.equal(model.counts.en.roles_by_format.pdf,20);
 assert.equal(model.counts.id.roles_by_format.epub,5);assert.equal(model.counts.en.roles_by_format.epub,2);
 assert.equal(model.counts.en.roles_by_format.tex,3);
 assert.equal(model.counts.id.roles_by_format.tex,3);
@@ -33,6 +33,24 @@ for(const extension of ['pdf','tex','zip','epub']){
 }
 assert.ok(!a00.locales.id.downloads.some(d=>model.resources.find(r=>r.id===d.resource_id).url.includes('-a00-en')),'English A00 formats must not be relabelled Indonesian');
 const b80=model.courses.find(row=>row.course_id==='B80');
+const clpProof=JSON.parse(await readFile(new URL('docs/interface/evidence/clp-original-downloads-v1.json',base)));
+assert.equal(clpProof.books.length,4);
+for(const book of clpProof.books){
+  const course=model.courses.find(row=>row.course_id===book.course_id);
+  assert.equal(book.combined_pdf_claimed,false);
+  assert.equal(book.pdf_source_reproduction_verified,false);
+  for(const original of book.files){
+    const binding=course.locales.en.downloads.find(d=>model.resources.find(r=>r.id===d.resource_id).url===original.url);
+    assert.ok(binding,'Missing original CLP '+original.role);
+    const file=model.resources.find(r=>r.id===binding.resource_id);
+    assert.equal(file.format,'pdf');assert.equal(file.content_language,'en');
+    assert.equal(file.bytes,original.bytes);assert.equal(file.sha256,original.sha256);
+    assert.deepEqual(binding.authority_roles,['upstream-authority']);
+    assert.deepEqual(binding.access_roles,['authoritative-original']);
+    assert.ok(binding.notes.some(note=>note.includes('separate PDFs')));
+    assert.ok(!course.locales.id.downloads.some(d=>model.resources.find(r=>r.id===d.resource_id).url===original.url),'English original must not become an Indonesian download');
+  }
+}
 for(const locale of ['id','en']){
   const bindings=b80.locales[locale].downloads;
   assert.deepEqual([...new Set(bindings.map(d=>model.resources.find(r=>r.id===d.resource_id).format))],['pdf','tex','zip','epub']);

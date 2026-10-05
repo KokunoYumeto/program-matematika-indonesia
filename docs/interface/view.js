@@ -176,7 +176,11 @@ export function resourceBindings(course, locale) {
   // These indices are shared metadata, not an English translation of course prose.
   add(t.sharedBackend, 'backend/index.html', 'und', 'backend', {accessRole:'backend', authorityRole:'program-edition', relationToSource:'indexes'});
   for (const source of additionalOriginalSources[course.id] ?? []) {
-    add(source.label, source.href, source.contentLanguage, 'HTML', {...source, labelLanguage:source.contentLanguage, primary:false});
+    const {labels,notes,label,...facts} = source;
+    add(labels ? localizedValue(labels, locale) : label, source.href, source.contentLanguage, source.kind ?? 'HTML', {
+      ...facts, labelLanguage:labels ? interfaceLanguageTag : source.contentLanguage,
+      ...(notes ? {note:localizedValue(notes, locale)} : {}), primary:false,
+    });
   }
   for (const gateway of centralGatewayResources.filter(row => row.courseId === course.id)) {
     const normalizedHref = safeResourceUrl(gateway.href);
