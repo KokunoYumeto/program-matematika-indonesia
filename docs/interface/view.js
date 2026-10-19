@@ -152,7 +152,8 @@ export function resourceBindings(course, locale) {
   const delivery = learnerDeliveryByCourseId[course.id];
   for (const row of supplementalReaders.filter(item => item.courseId === course.id)) {
     const languagePrefix = row.contentLanguage === interfaceLanguageTag ? '' : contentLanguageName(row.contentLanguage, locale) + ' — ';
-    add(languagePrefix + localizedValue(row.labels, locale), row.href, row.contentLanguage, row.kind, {
+    const href = row.hrefs ? localizedValue(row.hrefs, locale) : row.href;
+    add(languagePrefix + localizedValue(row.labels, locale), href, row.contentLanguage, row.kind, {
       supplementalReaderId: row.id, format: row.format, bytes: row.bytes, sha256: row.sha256,
       primary: false, offlineAfterDownload: row.offlineAfterDownload, note: localizedValue(row.notes, locale),
       accessRole:row.kind === 'source_archive' ? 'source-package' : row.offlineAfterDownload ? 'offline-copy' : 'companion', authorityRole:'program-edition',

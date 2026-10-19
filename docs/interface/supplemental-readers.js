@@ -534,5 +534,26 @@ export const supplementalReaders = [
     "contentLanguage": "id",
     "bytes": 190680,
     "sha256": "d867f4551cf05e531cc6f53336a55b9ba3ee0dfffbc4acede425e1bceae82a24"
-  }
+  },
+{
+  "courseId": "B80",
+  "id": "B80:open-data-structures",
+  "href": "https://kokunoyumeto.github.io/program-matematika-indonesia/human/open-data-structures/",
+  "hrefs": {
+    "en": "https://kokunoyumeto.github.io/program-matematika-indonesia/human/open-data-structures/",
+    "id": "https://kokunoyumeto.github.io/program-matematika-indonesia/human/open-data-structures/id.html"
+  },
+  "labels": {
+    "en": "Open Data Structures — Pat Morin, complete Java book",
+    "id": "Open Data Structures — Pat Morin, buku Java lengkap dalam bahasa Inggris"
+  },
+  "notes": {
+    "en": "Fourteen chapters with proofs, Java implementations and exercises. English PDF, cumulative LaTeX and editable-source ZIP; English and Indonesian navigation. A data-structures companion to the computing course. Source assembly, typesetting and programme navigation: OpenAI Codex — GPT-6.1 Sol, Ultra effort.",
+    "id": "Empat belas bab dengan pembuktian, implementasi Java, dan latihan. Buku PDF, LaTeX kumulatif, dan ZIP sumber lengkap berbahasa Inggris; navigasi tersedia dalam bahasa Indonesia dan Inggris. Buku pendamping tentang struktur data untuk mata kuliah komputasi. Penataan sumber, pengaturan tampilan, dan integrasi program: OpenAI Codex — GPT-6.1 Sol, upaya Ultra."
+  },
+  "kind": "companion",
+  "format": "HTML",
+  "offlineAfterDownload": false,
+  "contentLanguage": "en"
+}
 ];
